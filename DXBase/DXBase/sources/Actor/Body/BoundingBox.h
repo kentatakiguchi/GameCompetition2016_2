@@ -3,11 +3,16 @@
 #include "../../Math/Math.h"
 #include "Body.h"
 
+
 class BoundingBox : public Body {
 public:
 	BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight);
 
 	explicit BoundingBox();
+
+	virtual bool intersects(BoundingSphere& other) override { return false; }
+	virtual bool intersects(Capsule& other) override { return false; }
+	virtual bool intersects(Model& other) override { return false; }
 
 	// Body ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
 	virtual bool intersects(BoundingBox & other) override;
@@ -15,6 +20,7 @@ public:
 	virtual bool intersects(BoundingCapsule & other) override;
 
 	virtual void update(const Vector2 & center) override;
+	virtual void update(const Vector3& center) override {}
 
 	virtual void debug() const override;
 

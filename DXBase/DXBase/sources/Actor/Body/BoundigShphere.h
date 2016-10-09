@@ -15,8 +15,12 @@ public:
 	virtual bool intersects(Capsule & other) override;
 
 	virtual bool intersects(Model & other) override;
+	virtual bool intersects(BoundingBox& other) override { return false; }
+	virtual bool intersects(BoundingCapsule& other) override { return false; }
+
 
 	virtual void update(const Vector3 & center) override;
+	virtual void update(const Vector2& center) override {};
 
 	virtual void debug() const override;
 

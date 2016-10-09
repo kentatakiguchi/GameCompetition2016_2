@@ -8,6 +8,9 @@ public:
 	BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius);
 
 	explicit BoundingCapsule(float radius=0);
+	virtual bool intersects(BoundingSphere& other) { return false; }
+	virtual bool intersects(Capsule& other) { return false; }
+	virtual bool intersects(Model& other) { return false; }
 
 	// Body ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	virtual bool intersects(BoundingBox & other) override;
@@ -15,6 +18,7 @@ public:
 	virtual bool intersects(BoundingCapsule & other) override;
 
 	virtual void update(const Vector2 & center) override;
+	virtual void update(const Vector3& center) {}
 
 	virtual void debug() const override;
 
