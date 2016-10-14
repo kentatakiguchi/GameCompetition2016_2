@@ -6,7 +6,11 @@
 #include "ActorPtr.h"
 #include "../../Input/InputMgr.h"
 #include "../../Math/Math.h"
+#include "../Body/Body.h"
 #include "../Body/BoundigShphere.h"
+#include "../Body/BoundingBox.h"
+#include "../Body/BoundingCapsule.h"
+#include"..//Body/CollisionBase.h"
 #include "../../Animation/Animation.h"
 #include <string>
 #include <memory>
@@ -20,7 +24,7 @@ enum class EventMessage;
 class Actor {
 public:
 	// コンストラクタ
-	Actor(IWorld* world, const std::string& name, const Vector3& position, const BoundingSphere& body);
+	Actor(IWorld* world, const std::string& name, const Vector3& position, const CollisionBase& body);
 	// コンストラクタ
 	explicit Actor(const std::string& name = "none");
 	// 仮想デストラクタ
@@ -89,8 +93,12 @@ private:
 	// 衝突した
 	virtual void onCollide(Actor& other);
 	// 衝突判定
-	bool isCollide(const Actor& other) const;
-
+public:
+	bool isCollide(Actor& other);
+	void translate(Vector2& position) {
+		body_.translate(position);
+	}
+	
 protected:
 	// ワールド
 	IWorld*				world_;
@@ -101,7 +109,7 @@ protected:
 	// 回転
 	Matrix				rotation_;
 	// 衝突判定
-	BoundingSphere		body_;
+	CollisionBase		body_;
 	// 死亡フラグ
 	bool				dead_;
 	// モデルハンドル

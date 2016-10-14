@@ -3,20 +3,25 @@
 #include "Model.h"
 
 BoundingCapsule::BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) :
-	component_(startPoint, endPoint, capsuleRadius) {
+	component_(startPoint, endPoint, capsuleRadius),enabled(true) {
+}
+
+BoundingCapsule::BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius, bool isEnabled):
+	component_(startPoint, endPoint, capsuleRadius),enabled(isEnabled)
+{
 }
 
 BoundingCapsule::BoundingCapsule(float radius) :
-	BoundingCapsule({ 0.0f, 0.0f }, { 0.0f, 0.0f }, radius) {
+	BoundingCapsule({ 0.0f, 0.0f }, { 0.0f, 0.0f }, radius,false) {
 }
 
 BoundingCapsule BoundingCapsule::translate(const Vector2& position) const {
 	return BoundingCapsule(component_.point[0] + position,
-		component_.point[1] + position,component_.radius);
+		component_.point[1] + position,component_.radius,enabled);
 }
 
 BoundingCapsule BoundingCapsule::transform(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) const {
-	return BoundingCapsule(startPoint, endPoint, capsuleRadius);
+	return BoundingCapsule(startPoint, endPoint, capsuleRadius,enabled);
 }
 
 //bool BoundingSphere::intersects(const BoundingSphere& other) const {
@@ -37,15 +42,18 @@ void BoundingCapsule::draw() const {
 
 bool BoundingCapsule::intersects(BoundingBox & other)
 {
+	if (!other.enabled||!enabled)return false;
+
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 
 	for (int i = 0; i < 4; i++)
 	{
-		DrawFormatString(200 * i, 100, GetColor(255, 255, 255), "kurikaesi");
+		//DrawFormatString(200 * i, 100, GetColor(255, 255, 255), "kurikaesi");
 		if (isIntersectThisRayToOtherLineBox(other, intSet[i][0], intSet[i][1]))
 		{
 			if (isIntersectOtherRayToThisLineBox(other, intSet[i][0], intSet[i][1]))
 			{
+
 				//Œð·‚µ‚Ä‚¢‚é
 				return true;
 			}
@@ -63,6 +71,7 @@ bool BoundingCapsule::intersects(BoundingBox & other)
 				float perpendicularMain = min(perpendicular1, perpendicular2);
 				if (component_.radius >= perpendicularMain)
 				{
+
 					return true;
 				}
 			}
@@ -152,6 +161,7 @@ bool BoundingCapsule::intersects(BoundingBox & other)
 						float perpendicularMain = min(perpendicular1, perpendicular2);
 						if (component_.radius >= perpendicularMain)
 						{
+
 							return true;
 						}
 
@@ -192,6 +202,7 @@ bool BoundingCapsule::intersects(BoundingBox & other)
 			float perpendicularMain = min(perpendicularMin1, perpendicularMin2);
 			if (component_.radius >= perpendicularMain)
 			{
+
 				return true;
 			}
 		}
@@ -201,6 +212,8 @@ bool BoundingCapsule::intersects(BoundingBox & other)
 
 }
 bool BoundingCapsule::intersects(BoundingCapsule & other) {
+	if (!enabled)return false;
+
 	if (isIntersectOtherRayToThisLineCapsule(other))
 	{
 		if (isIntersectThisRayToOtherLineCapsule(other))
@@ -375,6 +388,7 @@ bool BoundingCapsule::isIntersectOtherRayToThisLineCapsule(BoundingCapsule & oth
 
 	if (otherPoint1*otherPoint2 < 0)
 	{
+
 		return true;
 	}
 	return false;
@@ -413,6 +427,7 @@ bool BoundingCapsule::isIntersectOtherRayToThisLineBox(BoundingBox & other,int p
 
 	if (otherPoint1*otherPoint2 < 0)
 	{
+
 		return true;
 	}
 	return false;
@@ -421,7 +436,7 @@ bool BoundingCapsule::isIntersectThisRayToOtherLineBox(BoundingBox & other,int p
 {
 	float otherPoint1 =
 		(other.component_.point[point1].x - other.component_.point[point2].x)
-		*(component_.point[0].y - other.component_.point[point2].y)
+		*(component_.point[0].y - other.component_.point[point1].y)
 		+ (other.component_.point[point1].y - other.component_.point[point2].y)
 		*(other.component_.point[point1].x - component_.point[0].x);
 	float otherPoint2 =
@@ -432,6 +447,8 @@ bool BoundingCapsule::isIntersectThisRayToOtherLineBox(BoundingBox & other,int p
 
 	if (otherPoint1*otherPoint2 < 0)
 	{
+		//DrawFormatString(375, 200, GetColor(255, 255, 255), "“–‚½‚Á‚½");
+
 		return true;
 	}
 	return false;

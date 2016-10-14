@@ -20,13 +20,14 @@ class Body
 {
 public:
 	virtual ~Body() {}
-	virtual bool intersects(BoundingSphere& other) = 0;
-	virtual bool intersects(Capsule& other) = 0;
-	virtual bool intersects(Model& other) = 0;
-	virtual bool intersects(BoundingBox& other) = 0;
-	virtual bool intersects(BoundingCapsule& other) = 0;
-	virtual void update(const Vector3& center) = 0;
-	virtual void update(const Vector2& center) = 0;
-	virtual void debug() const = 0;
+	virtual bool intersects(BoundingSphere& other) { return false; }
+	virtual bool intersects(Capsule& other) { return false; }
+	virtual bool intersects(Model& other) { return false; }
+	virtual bool intersects(BoundingBox& other) { return false; }
+	virtual bool intersects(BoundingCapsule& other) { return false; }
+	virtual void update(const Vector3& center) {}
+	virtual void update(const Vector2& center) {}
+	virtual void draw() const {}
+	virtual void debug() const {}
 };
 

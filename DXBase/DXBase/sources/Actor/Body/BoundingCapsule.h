@@ -5,9 +5,12 @@
 
 class BoundingCapsule : public Body {
 public:
+	//カプセルの判定を作成する(判定を行う場合) topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2)
 	BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius);
-
-	explicit BoundingCapsule(float radius=0);
+	//カプセルの判定を作成する(判定を行う場合) topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2) isEnabled:判定をするかどうか(bool)
+	BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius,bool isEnabled);
+	//カプセルの判定を作成する(判定を行わない場合)
+	explicit BoundingCapsule(float radius=-1);
 	virtual bool intersects(BoundingSphere& other) { return false; }
 	virtual bool intersects(Capsule& other) { return false; }
 	virtual bool intersects(Model& other) { return false; }
@@ -26,7 +29,7 @@ public:
 
 	BoundingCapsule transform(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) const;
 
-	void draw() const;
+	virtual void draw() const override;
 private:
 	bool isIntersectOtherRayToThisLineCapsule(BoundingCapsule & other);
 	bool isIntersectThisRayToOtherLineCapsule(BoundingCapsule & other);

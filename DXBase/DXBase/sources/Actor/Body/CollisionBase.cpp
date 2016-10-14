@@ -1,0 +1,121 @@
+#include "CollisionBase.h"
+
+CollisionBase::CollisionBase():box_(),capsule_(),type_(NoneCol)
+{
+}
+
+CollisionBase::CollisionBase(const Vector2 & topLeft, const Vector2 & topRight, const Vector2 & bottomLeft, const Vector2 & bottomRight) :
+	box_(topLeft, topRight, bottomLeft, bottomRight), capsule_(), type_(BoxCol)
+{
+	
+}
+
+CollisionBase::CollisionBase(Vector2& startPoint, Vector2& endPoint, float capsuleRadius):
+	box_(),capsule_(startPoint,endPoint,capsuleRadius),type_(CapsuleCol)
+{
+
+}
+
+void CollisionBase::draw() const
+{
+	switch (type_)
+	{
+	case BoxCol:
+		box_.draw();
+		break;
+	case CapsuleCol:
+		capsule_.draw();
+		break;
+	case NoneCol:
+		break;
+	default:
+		break;
+	}
+}
+
+void CollisionBase::transform(Vector2 & topLeft, Vector2 & topRight, Vector2 & bottomLeft, Vector2 & bottomRight)
+{
+	box_= box_.transform(topLeft,topRight,bottomLeft,bottomRight);
+}
+
+void CollisionBase::transoform(Vector2 & startPoint, Vector2 & endPoint, float capsuleRadius)
+{
+	capsule_= capsule_.transform(startPoint, endPoint, capsuleRadius);
+}
+
+void CollisionBase::translate(Vector2 position)
+{
+	switch (type_)
+	{
+	case BoxCol:
+		box_= box_.translate(position);
+		break;
+	case CapsuleCol:
+		capsule_=capsule_.translate(position);
+		break;
+	case NoneCol:
+		break;
+	default:
+		break;
+	}
+}
+
+bool CollisionBase::intersects(CollisionBase & other)
+{
+	switch (type_)
+	{
+	case BoxCol:
+		switch (other.type_)
+		{
+		case BoxCol:
+
+			return box_.intersects(other.box_);
+
+			break;
+		case CapsuleCol:
+			return box_.intersects(other.capsule_);
+			break;
+		case NoneCol:
+			break;
+		default:
+			break;
+		}
+		break;
+	case CapsuleCol:
+		switch (other.type_)
+		{
+		case BoxCol:
+			return capsule_.intersects(other.box_);
+			break;
+		case CapsuleCol:
+			return capsule_.intersects(other.capsule_);
+			break;
+		case NoneCol:
+			break;
+		default:
+			break;
+		}
+
+		break;
+	case NoneCol:
+		break;
+	default:
+		break;
+	}
+	return false;
+}
+
+CollisionType CollisionBase::GetType() const
+{
+	return type_;
+}
+
+BoundingBox CollisionBase::GetBox() const
+{
+	return box_;
+}
+
+BoundingCapsule CollisionBase::GetCapsule() const
+{
+	return capsule_;
+}

@@ -2,7 +2,7 @@
 #include <algorithm>
 
 // コンストラクタ
-Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, const BoundingSphere& body) :
+Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, const CollisionBase& body) :
  world_(world),
  name_(name),
  position_(position),
@@ -21,6 +21,7 @@ Actor::Actor(const std::string& name) :
 	rotation_(Matrix::Identity),
 	dead_(false),
 	animation_(-1){
+	
 }
 
 
@@ -182,18 +183,19 @@ void Actor::onUpdate(float) {}
 
 // 描画
 void Actor::onDraw() const {
-	body_.translate(position_).draw(); // デバッグ表示
+	body_.draw(); // デバッグ表示
 }
 
 // 衝突した
 void Actor::onCollide(Actor&) {
+	body_.draw();
 	//dead();
 }
 
 // 衝突判定
-bool Actor::isCollide(const Actor& other) const {
-	//if (!other.body_.enabled || !body_.enabled)return false;
-	return body_.transform(getPose()).intersects(other.body_.transform(other.getPose()));
+bool Actor::isCollide(Actor& other){
+	return body_.intersects(other.body_);
+
 }
 
 // end of file
