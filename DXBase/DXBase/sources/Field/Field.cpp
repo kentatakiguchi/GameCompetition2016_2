@@ -26,7 +26,7 @@ void Field::update(float deltaTime) {
 
 // •`‰æ
 void Field::draw() const {
-	MV1DrawModel(skybox_);
+   	MV1DrawModel(skybox_);
 	MV1DrawModel(field_);
 	//MV1DrawModel(field_coll_);
 

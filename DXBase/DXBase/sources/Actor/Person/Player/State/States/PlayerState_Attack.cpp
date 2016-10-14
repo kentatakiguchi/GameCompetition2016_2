@@ -3,31 +3,28 @@
 
 #include "../../Player_AttackRange.h"
 
-PlayerState_Attack::PlayerState_Attack(){}
+PlayerState_Attack::PlayerState_Attack() {}
 
-void PlayerState_Attack::init(Actor & actor){
-	isEndRequest = false;
-	actor.getWorld()->addActor(ActorGroup::Player_AttackRange, std::make_shared<Player_AttackRange>(actor.getWorld(), actor.getPosition()));
-	actor.setMotion(0);
+void PlayerState_Attack::unique_init(Actor & actor){
+	main_body_ = player_->getMainBody();
+	sub_body_ = player_->getSubBody();
+
+	dir_ = Vector3::Normalize(sub_body_->getPosition() - main_body_->getPosition());
+	power_ = 20;
+	main_body_->launch(dir_ * power_);
+	sub_body_->launch(dir_ * power_);
 }
 
 void PlayerState_Attack::update(Actor & actor, float deltaTime) {
-	if (actor.getAnim().isAnimEnd()) {
+	dir_ += Vector3(0, 1, 0) * 0.02f;
+	main_body_->launch(dir_ * power_);
+	sub_body_->launch(dir_ * power_);
+	main_body_->gravity();
+	sub_body_->gravity();
+
+	if (std::abs(dir_.y) <= 0) {
 		change((unsigned int)Player_EnumState::IDLE);
 	}
-}
-
-void PlayerState_Attack::change(unsigned int nextState) {
-	nextState_ = nextState;
-	isEndRequest = true;
-}
-
-bool PlayerState_Attack::isEnd(){
-	return isEndRequest;
-}
-
-unsigned int PlayerState_Attack::next() const{
-	return (unsigned int)nextState_;
 }
 
 void PlayerState_Attack::end(){

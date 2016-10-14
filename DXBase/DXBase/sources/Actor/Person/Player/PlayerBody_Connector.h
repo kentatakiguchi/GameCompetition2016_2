@@ -8,33 +8,24 @@
 //#include "EventMessage.h"
 #include "../../../Math/Vector3.h"
 #include "State/Base/StateMgr.h"
-#include "PlayerBody.h"
 
 // プレーヤー
-class Player : public Actor {
+class PlayerBody_Connector : public Actor {
 public:
-	using PlayerBodyPtr = std::shared_ptr<PlayerBody>;
-
-	enum class MOTION {};
+	enum class MOTION {
+		WALK1,
+		WALK2
+	};
 public:
-	Player(IWorld* world, const Vector3& position);
-	~Player();
+	PlayerBody_Connector(IWorld* world, const Vector3& position);
+	~PlayerBody_Connector();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
 	void changeMotion(float deltaTime);
-	void setBody(PlayerBodyPtr main, PlayerBodyPtr sub);
-	PlayerBodyPtr getMainBody();
-	PlayerBodyPtr getSubBody();
-	//void field();
 private:
-	void createWindow();
 	StateMgr stateMgr_;
-
-	int hp_;
-
-
-	PlayerBodyPtr main_body_;
-	PlayerBodyPtr sub_body_;
+	
+	Vector3 prePosition;						// 移動前の座標	
+	Vector3 curPosition;						// 移動後の座標
 };
-

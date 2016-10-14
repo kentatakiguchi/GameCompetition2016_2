@@ -5,8 +5,7 @@
 PlayerState_Damage::PlayerState_Damage(){
 }
 
-void PlayerState_Damage::init(Actor & actor){
-	isEndRequest = false;
+void PlayerState_Damage::unique_init(Actor & actor){
 	actor.setMotion(6);
 }
 
@@ -16,19 +15,5 @@ void PlayerState_Damage::update(Actor & actor, float deltaTime){
 	}
 }
 
-void PlayerState_Damage::change(unsigned int nextState){
-	nextState_ = nextState;
-	isEndRequest = true;
-}
-
-bool PlayerState_Damage::isEnd(){
-	return isEndRequest;
-}
-
-unsigned int PlayerState_Damage::next() const{
-	return (unsigned int)nextState_;
-}
-
-void PlayerState_Damage::end()
-{
+void PlayerState_Damage::end(){
 }

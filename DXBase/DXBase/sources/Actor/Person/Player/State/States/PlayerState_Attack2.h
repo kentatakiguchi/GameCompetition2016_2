@@ -1,25 +1,15 @@
 #pragma once
 
-#include "../Base/IState.h"
+#include "../Base/PlayerState.h"
 
-class PlayerState_Attack2 : public IState {
+class PlayerState_Attack2 : public PlayerState {
 public:
 	PlayerState_Attack2();
-	//PlayerState_Attack(StateMgr& stateMgr, Actor* actor);
 
 	// IState ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
-	virtual void init(Actor & actor) override;
+	virtual void unique_init(Actor & actor) override;
 
 	virtual void update(Actor & actor, float deltaTime) override;
 
-	virtual void change(unsigned int nextState) override;
-
-	virtual bool isEnd() override;
-
-	virtual unsigned int next() const override;
-
 	virtual void end() override;
-private:
-	unsigned int nextState_;
-	bool isEndRequest;
 };

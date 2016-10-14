@@ -12,8 +12,8 @@ LoadingScene::~LoadingScene(){
 void LoadingScene::start(){
 	isEnd_ = false;
 
-	ResourceLoader::GetInstance().loadModel(ModelID::PLAYER, "./resources/model/player/MotusMan_v2.mv1");
-	ResourceLoader::GetInstance().loadModel(ModelID::ENEMY, "./resources/model/enemy/Enemy.mv1");
+	//ResourceLoader::GetInstance().loadModel(ModelID::PLAYER, "./resources/model/player/MotusMan_v2.mv1");
+	//ResourceLoader::GetInstance().loadModel(ModelID::ENEMY, "./resources/model/enemy/Enemy.mv1");
 	
 	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE, "./resources/model/stage/DesertFortress/sampleStage/SampleStage_DesertFortress.mqo");
 	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE_COLL, "./resources/model/stage/DesertFortress/sampleStage/SampleStage_DesertFortress_Collision.mqo");
@@ -27,10 +27,10 @@ void LoadingScene::start(){
 	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE, "./resources/model/stage/CampfirePack/sampleStage/Sample_Stage_Campfire.mqo");
 	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE_COLL, "./resources/model/stage/CampfirePack/sampleStage/Sample_Stage_Campfire_Collision.mqo");
 	
-	ResourceLoader::GetInstance().loadModel(ModelID::STAGE, "./resources/model/stage/field.mqo");
-	ResourceLoader::GetInstance().loadModel(ModelID::STAGE_COLL, "./resources/model/stage/field.mqo");
+	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE, "./resources/model/stage/field.mqo");
+	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE_COLL, "./resources/model/stage/field.mqo");
 
-	ResourceLoader::GetInstance().loadModel(ModelID::SKYDOME, "./resources/model/skydome/skydome.mqo");
+	//ResourceLoader::GetInstance().loadModel(ModelID::SKYDOME, "./resources/model/skydome/skydome.mqo");
 
 }
 

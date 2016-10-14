@@ -1,25 +1,39 @@
 #pragma once
 
-#include "StateMgr.h"
+//#include "StateMgr.h"
 #include "../../../../../World/IWorld.h"
 #include "../../../../Base/ActorGroup.h"
+#include "ActionType.h"
 
 class Actor;
 
 class IState {
 public:
+	struct StateElement {
+		unsigned int state_;
+		ActionType action_type_;
+
+		StateElement(unsigned int state, ActionType action_type = ActionType::None){
+			state_ = state;
+			action_type_ = action_type;
+		}
+	};
+
+public:
 	// 仮想デストラクタ
 	virtual ~IState() {}
-	//初期化
-	virtual void init(Actor & actor) = 0;
+	// 全状態共通の初期化
+	virtual void common_init(Actor & actor, ActionType type = ActionType::None) = 0;
+	// 各状態独自の初期化
+	virtual void unique_init(Actor & actor) = 0;
 	// 更新
 	virtual void update(Actor & actor, float deltaTime) = 0;
-	//状態の変更
-	virtual void change(unsigned int nextState) = 0;
+	// 状態の変更
+	virtual void change(StateElement element) = 0;
 	// 終了を返す
 	virtual bool isEnd() = 0;
 
-	virtual unsigned int next() const = 0;
+	virtual StateElement next() const = 0;
 
 	virtual void end() = 0;
 };

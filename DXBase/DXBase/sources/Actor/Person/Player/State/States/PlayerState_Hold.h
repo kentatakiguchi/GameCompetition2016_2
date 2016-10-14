@@ -2,14 +2,18 @@
 
 #include "../Base/PlayerState.h"
 
-class PlayerState_Jump : public PlayerState {
-public:
-	PlayerState_Jump();
+#include "../../PlayerBody.h"
 
-	// IState ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+class PlayerState_Hold : public PlayerState {
+public:
+	PlayerState_Hold();
+
 	virtual void unique_init(Actor & actor) override;
 
 	virtual void update(Actor & actor, float deltaTime) override;
 
 	virtual void end() override;
-};
+private:
+	bool isReady();
+	void move();
+}; 

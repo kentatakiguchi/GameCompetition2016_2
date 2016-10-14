@@ -8,7 +8,7 @@ World::World() :
 
 // XV
 void World::update(float deltaTime) {
-	field_->update(deltaTime);
+	//field_->update(deltaTime);
 	actors_.update(deltaTime);
 	camera_->update(deltaTime);
 	light_->update(deltaTime);
@@ -16,7 +16,7 @@ void World::update(float deltaTime) {
 
 // •`‰æ
 void World::draw() const {
-	field_->draw();
+	//field_->draw();
 	camera_->draw();
 	light_->draw();
 	actors_.draw();

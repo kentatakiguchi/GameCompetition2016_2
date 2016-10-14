@@ -10,7 +10,7 @@ public:
 	StateMgr();
 public:
 	void action(Actor & actor, float deltaTime) ;
-	void changeState(Actor & actor, unsigned int nextState);
+	void changeState(Actor & actor, IState::StateElement element);
 	// ƒV[ƒ“‚Ì’Ç‰Á
 	void add(unsigned int state, const IStatePtr& scene);
 	unsigned int currentState();
