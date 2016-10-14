@@ -9,6 +9,7 @@ enum Scene {
 	Title,
 	GamePlay,
 	GameOver,
+	Kataoka,
 	Ending
 };
 

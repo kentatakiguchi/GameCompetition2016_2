@@ -8,17 +8,17 @@ World::World() :
 
 // 更新
 void World::update(float deltaTime) {
-	field_->update(deltaTime);
+	//field_->update(deltaTime);
 	actors_.update(deltaTime);
-	camera_->update(deltaTime);
-	light_->update(deltaTime);
+	//camera_->update(deltaTime);
+	//light_->update(deltaTime);
 }
 
 // 描画
 void World::draw() const {
-	field_->draw();
-	camera_->draw();
-	light_->draw();
+	//field_->draw();
+	//camera_->draw();
+	//light_->draw();
 	actors_.draw();
 }
 
@@ -28,8 +28,8 @@ void World::handleMessage(EventMessage message, void* param) {
 	listener_(message, param);
 	// アクターのメッセージ処理
 	actors_.handleMessage(message, param);
-	camera_->handleMessage(message, param);
-	light_->handleMessage(message, param);
+	//camera_->handleMessage(message, param);
+	//light_->handleMessage(message, param);
 }
  
 // フィールドの追加
