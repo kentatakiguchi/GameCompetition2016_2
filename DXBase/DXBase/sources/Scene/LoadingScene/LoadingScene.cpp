@@ -14,7 +14,7 @@ void LoadingScene::start(){
 
 	//ResourceLoader::GetInstance().loadModel(ModelID::PLAYER, "./resources/model/player/MotusMan_v2.mv1");
 	//ResourceLoader::GetInstance().loadModel(ModelID::ENEMY, "./resources/model/enemy/Enemy.mv1");
-	
+	//
 	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE, "./resources/model/stage/DesertFortress/sampleStage/SampleStage_DesertFortress.mqo");
 	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE_COLL, "./resources/model/stage/DesertFortress/sampleStage/SampleStage_DesertFortress_Collision.mqo");
 	
@@ -28,8 +28,13 @@ void LoadingScene::start(){
 	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE_COLL, "./resources/model/stage/CampfirePack/sampleStage/Sample_Stage_Campfire_Collision.mqo");
 	
 	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE, "./resources/model/stage/field.mqo");
-	//ResourceLoader::GetInstance().loadModel(ModelID::STAGE_COLL, "./resources/model/stage/field.mqo");
-
+	ResourceLoader::GetInstance().loadModel(ModelID::STAGE_COLL, "./resources/model/stage/field.mqo");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND1_TEX, "./resources/sprite/BackGraund1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND2_TEX, "./resources/sprite/BackGraund2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND3_TEX, "./resources/sprite/BackGraund3.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND4_TEX, "./resources/sprite/BackGraund4.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND_BOT_TEX, "./resources/sprite/BackGraundBot.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND_TOP_TEX, "./resources/sprite/BackGraundTop.png");
 	//ResourceLoader::GetInstance().loadModel(ModelID::SKYDOME, "./resources/model/skydome/skydome.mqo");
 
 }
@@ -49,5 +54,5 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::Title;
+	return Scene::Kataoka;
 }

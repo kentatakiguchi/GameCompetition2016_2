@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="sources\Actor\BackGraundManager\BackGraundManager.h" />
     <ClInclude Include="sources\Actor\Base\Actor.h" />
     <ClInclude Include="sources\Actor\Base\ActorGroup.h" />
     <ClInclude Include="sources\Actor\Base\ActorManager.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_QuickMove.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\State_Dammy.h" />
     <ClInclude Include="sources\Actor\Person\Player\Status\Status.h" />
+    <ClInclude Include="sources\Actor\TestPlayer\TestPlayer.h" />
     <ClInclude Include="sources\Animation\Animation.h" />
     <ClInclude Include="sources\AquaLib\AquaLib.h" />
     <ClInclude Include="sources\AquaLib\A_Utility.h" />
@@ -215,6 +217,7 @@
     <ClInclude Include="sources\Scene\Base\SceneNull.h" />
     <ClInclude Include="sources\Scene\GameOver\GameOverScene.h" />
     <ClInclude Include="sources\Scene\GamePlay\GamePlayScene.h" />
+    <ClInclude Include="sources\Scene\KataokaScene\KataokaScene.h" />
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h" />
     <ClInclude Include="sources\Scene\Title\TitleScene.h" />
     <ClInclude Include="sources\World\IWorld.h" />
@@ -223,6 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="sources\Actor\BackGraundManager\BackGraundManager.cpp" />
     <ClCompile Include="sources\Actor\Base\Actor.cpp" />
     <ClCompile Include="sources\Actor\Base\ActorManager.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingSpherer.cpp" />
@@ -247,6 +251,7 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Move.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_QuickMove.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Status\Status.cpp" />
+    <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
     <ClCompile Include="sources\Animation\Animation.cpp" />
     <ClCompile Include="sources\FileReader\CsvReader.cpp" />
     <ClCompile Include="sources\Math\MathHelper.cpp" />
@@ -264,9 +269,15 @@
     <ClCompile Include="sources\Scene\Base\SceneNull.cpp" />
     <ClCompile Include="sources\Scene\GameOver\GameOverScene.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\GamePlayScene.cpp" />
+    <ClCompile Include="sources\Scene\KataokaScene\KataokaScene.cpp" />
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp" />
     <ClCompile Include="sources\Scene\Title\TitleScene.cpp" />
     <ClCompile Include="sources\World\World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\sprite\BackGraund.png" />
+    <Image Include="resources\sprite\BackGraundBot.png" />
+    <Image Include="resources\sprite\BackGraundTop.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

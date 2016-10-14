@@ -8,7 +8,8 @@ enum class ActorGroup {
 	Enemy_AttackRange,		// プレーヤ弾
 	Enemy_Spawner,		// プレーヤ弾
 	EnemyBullet,		// 敵弾
-	Effect				// エフェクト
+	Effect,				// エフェクト
+	BACKGRAUND
 };
 
 #endif

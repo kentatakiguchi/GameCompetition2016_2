@@ -4,6 +4,7 @@
 #include "../Scene/Title/TitleScene.h"
 #include "../Scene/GamePlay/GamePlayScene.h"
 #include "../Scene/GameOver/GameOverScene.h"
+#include "../Scene/KataokaScene/KataokaScene.h"
 
 GameDevice::GameDevice(){
 
@@ -18,6 +19,7 @@ void GameDevice::start(){
 	sceneMgr_.add(Scene::Title, std::make_shared<TitleScene>());
 	sceneMgr_.add(Scene::GamePlay, std::make_shared<GamePlayScene>());
 	sceneMgr_.add(Scene::GameOver, std::make_shared<GameOverScene>());
+	sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>());
 	sceneMgr_.change(Scene::Loading);
 }
 
