@@ -34,6 +34,8 @@ public:
 	BoundingBox GetBox() const;
 	//カプセル判定を取得/カプセル判定以外を利用している場合、動作しないカプセル判定を返す return:自身のカプセル判定(BoundingBox)
 	BoundingCapsule GetCapsule() const;
+	//判定を利用するかどうかを変更する
+	void enabled(bool change);
 private:
 	//利用している判定の種類
 	CollisionType type_;

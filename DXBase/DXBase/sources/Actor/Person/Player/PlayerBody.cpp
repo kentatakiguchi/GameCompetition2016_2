@@ -1,11 +1,12 @@
 #include "PlayerBody.h"
+#include"../../Body/CollisionBase.h"
 
 const float SPEED = 1.0f;
 const float MAX_NORMAL_LENGTH = 100.0f;
 const float MAX_STRETCH_LENGTH = 150.0f;
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector3 & position) :
-	Actor(world, name, position, BoundingSphere(10.0f)){
+	Actor(world, name, position, CollisionBase()){
 	selected_ = false;
 }
 
@@ -25,10 +26,10 @@ void PlayerBody::onUpdate(float deltaTime){
 
 void PlayerBody::onDraw() const{
 	if (!selected_) {
-		DrawCircle(position_.x, position_.y, body_.component_.radius_, GetColor(0, 0, 255), FALSE);
+		//DrawCircle(position_.x, position_.y, body_.component_.radius_, GetColor(0, 0, 255), FALSE);
 	}
 	else {
-		DrawCircle(position_.x, position_.y, body_.component_.radius_, GetColor(0, 255, 0), FALSE);
+		//DrawCircle(position_.x, position_.y, body_.component_.radius_, GetColor(0, 255, 0), FALSE);
 	}
 }
 

@@ -1,7 +1,8 @@
 #include "Player_AttackRange.h"
+#include"../../Body/CollisionBase.h"
 
 Player_AttackRange::Player_AttackRange(IWorld * world, const Vector3 & position) :
-	Actor(world, "Player_AttackRange", position, BoundingSphere(15.0f)),
+	Actor(world, "Player_AttackRange", position, CollisionBase()),
 	lifeTimer_(0){
 	
 }

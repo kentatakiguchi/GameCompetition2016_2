@@ -1,12 +1,13 @@
 #include "Camera.h"
 #include "../../World/IWorld.h"
 #include "../../Input/InputMgr.h"
+#include"../Body/CollisionBase.h"
 
 #define CAMERA_PLAYER_TARGET_HEIGHT		400.0f		// プレイヤー座標からどれだけ高い位置を注視点とするか
 
 // コンストラクタ
 Camera::Camera(IWorld* world) :
-	Actor(world, "Camera", { 0.0f, 0.0f, 0.0f }, BoundingSphere(1.0f)) {
+	Actor(world, "Camera", { 0.0f, 0.0f, 0.0f }, CollisionBase()) {
 	// カメラの向きを初期化
 	rotation_ *= Matrix::CreateFromAxisAngle(Vector3::Up, 90);
 	rotation_ *= Matrix::CreateFromAxisAngle(getPose().Right(), 20);

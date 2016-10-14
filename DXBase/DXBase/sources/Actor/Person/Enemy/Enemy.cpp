@@ -1,12 +1,13 @@
 #include "Enemy.h"
 
 #include "../../../ResourceLoader/ResourceLoader.h"
+#include"../../Body/CollisionBase.h"
 #include "../../Base/ActorGroup.h"
 #include "Enemy_AttackRange.h"
 #include <algorithm>
 
 Enemy::Enemy(IWorld * world, const Vector3 & position) :
-	Actor(world, "Enemy", position, BoundingSphere(10.0f)){
+	Actor(world, "Enemy", position, CollisionBase()){
 	// ÉÇÉfÉãÇÃì«Ç›çûÇ›
 	modelHandle_ = MV1DuplicateModel(ResourceLoader::GetInstance().getModelID(ModelID::ENEMY));
 
@@ -44,7 +45,7 @@ void Enemy::onDraw() const{
 void Enemy::onCollide(Actor & actor){
 	if (actor.getName() == "Player_AttackRange") {
 		changeState(State::DAMAGE, ENEMY_DAMAGE);
-		body_.enabled = false;
+		body_.enabled(false);
 	}
 }
 
@@ -83,7 +84,7 @@ void Enemy::init() {
 void Enemy::idle(float deltaTime){
 	if (animation_.isAnimEnd())
 	{
-		body_.enabled = true;
+		body_.enabled(true);
 		changeState(State::MOVE, ENEMY_WALK);
 	}
 }

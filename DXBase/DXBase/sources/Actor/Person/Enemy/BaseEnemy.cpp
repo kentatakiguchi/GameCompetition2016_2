@@ -1,10 +1,11 @@
 #include "BaseEnemy.h"
 #include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../Base/ActorGroup.h"
+#include"../../Body/CollisionBase.h"
 #include "Enemy_AttackRange.h"
 
 BaseEnemy::BaseEnemy(IWorld * world, const Vector3& position) :
-	Actor(world, "BaseEnemy", position, BoundingSphere(1.0f)),
+	Actor(world, "BaseEnemy", position, CollisionBase()),
 	hp_(10),
 	ap_(0),
 	speed_(0.3f),
@@ -46,7 +47,7 @@ void BaseEnemy::onCollide(Actor & actor)
 	hp_ -= 10;
 	if (hp_ <= 0) changeState(State::Dead, ENEMY_DEAD);
 	else changeState(State::Damage, ENEMY_DAMAGE);
-	body_.enabled = false;
+	body_.enabled(false);
 }
 
 void BaseEnemy::onMessage(EventMessage event, void *)

@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ActionType{
+enum class ActionType {
 	None,
 	Right,
 	Left

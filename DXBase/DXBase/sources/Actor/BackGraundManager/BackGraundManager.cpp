@@ -132,7 +132,7 @@ void BackGraundManager::Draw() const
 	{
 		for (auto j : i.positions)
 		{
-			DrawFormatString(550, 25 + 32*count, GetColor(255, 255, 255), "Position:%f,%f", j.x,j.y);
+			//DrawFormatString(550, 25 + 32*count, GetColor(255, 255, 255), "Position:%f,%f", j.x,j.y);
 			count++;
 		}
 	}

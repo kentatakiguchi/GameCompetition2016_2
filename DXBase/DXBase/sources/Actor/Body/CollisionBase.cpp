@@ -119,3 +119,20 @@ BoundingCapsule CollisionBase::GetCapsule() const
 {
 	return capsule_;
 }
+
+void CollisionBase::enabled(bool change)
+{
+	switch (type_)
+	{
+	case BoxCol:
+		box_.enabled = change;
+		break;
+	case CapsuleCol:
+		capsule_.enabled = change;
+		break;
+	case NoneCol:
+		break;
+	default:
+		break;
+	}
+}

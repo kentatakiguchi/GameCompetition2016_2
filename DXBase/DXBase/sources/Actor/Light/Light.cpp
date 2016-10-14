@@ -1,8 +1,9 @@
 #include "Light.h"
+#include"../Body/CollisionBase.h"
 
 // コンストラクタ
 Light::Light(IWorld* world, const Vector3& position) :
-	Actor(world, "Light", position, BoundingSphere()) {
+	Actor(world, "Light", position, CollisionBase ()) {
 	SetUseLighting(TRUE);
 	ChangeLightTypeDir(VGet(1.0f, -1.0f, 1.0f));
 }

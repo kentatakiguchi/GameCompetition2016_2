@@ -1,7 +1,9 @@
 #include "TestPlayer.h"
 #include "../../Game/Time.h"
+#include"../Body/CollisionBase.h"
+
 TestPlayer::TestPlayer(IWorld * world, const Vector3 & position) :
-	Actor(world, "Player", position, BoundingSphere(5.0f))
+	Actor(world, "Player", position, CollisionBase())
 {
 	position_ = Vector3::Zero;
 }

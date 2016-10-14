@@ -3,10 +3,11 @@
 #include "Enemy.h"
 #include "../../../World/IWorld.h"
 #include "../../Base/ActorGroup.h"
+#include"../../Body/CollisionBase.h"
 #include "../../../FileReader/CsvReader.h"
 
 EnemySpawner::EnemySpawner(IWorld * world, const std::string& file_name) :
-	Actor(world, "EnemySpawner", Vector3::Zero, BoundingSphere(0.0f)) {
+	Actor(world, "EnemySpawner", Vector3::Zero, CollisionBase()) {
 	spawn(file_name);
 }
 

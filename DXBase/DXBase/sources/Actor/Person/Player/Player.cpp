@@ -12,6 +12,7 @@
 
 #include "PlayerBody.h"
 #include "PlayerBody_Connector.h"
+#include"../../Body/CollisionBase.h"
 
 #include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../../Math/Vector3.h"
@@ -23,7 +24,7 @@ const float MAX_NORMAL_LENGTH = 100.0f;
 //const float MAX_STRETCH_LENGTH = 100.0f;
 
 Player::Player(IWorld * world, const Vector3 & position) :
-	Actor(world, "Player", position, BoundingSphere(10.0f)){
+	Actor(world, "Player", position, CollisionBase()){
 
 	// ƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
 	//modelHandle_ = MV1DuplicateModel(ResourceLoader::GetInstance().getModelID(ModelID::PLAYER));
@@ -75,10 +76,10 @@ void Player::onDraw() const{
 	Vector3 center =  (main_body_->getPosition() + sub_body_->getPosition()) / 2;
 	float dis = Vector3::Distance(main_body_->getPosition(), sub_body_->getPosition());
 	if (dis > MAX_NORMAL_LENGTH) {
-		DrawOval(center.x, center.y, dis, body_.component_.radius_ * 5, GetColor(0, 255, 255), TRUE);
+		//DrawOval(center.x, center.y, dis, body_.component_.radius_ * 5, GetColor(0, 255, 255), TRUE);
 	}
 	else {
-		DrawOval(center.x, center.y, MAX_NORMAL_LENGTH, body_.component_.radius_ * 5, GetColor(0, 255, 255), TRUE);
+		//DrawOval(center.x, center.y, MAX_NORMAL_LENGTH, body_.component_.radius_ * 5, GetColor(0, 255, 255), TRUE);
 
 	}
 
