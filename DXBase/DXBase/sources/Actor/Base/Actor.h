@@ -98,7 +98,15 @@ public:
 	void translate(Vector2& position) {
 		body_.translate(position);
 	}
-	
+	Vector2 GetMoveFlag() {
+		return moveFlag;
+	}
+
+private:
+	void ActorMove();
+private:
+	//1だったらtrue,0だったらfalse
+	Vector2 moveFlag;
 protected:
 	// ワールド
 	IWorld*				world_;
@@ -120,6 +128,9 @@ protected:
 	unsigned int		motion_;
 
 	float				alpha_;
+
+	//範囲外にいるから背景がうごくフラグ
+	bool outPlayerFlag;
 private:
 	// 子アクター
 	std::forward_list<ActorPtr> children_;

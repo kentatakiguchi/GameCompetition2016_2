@@ -26,9 +26,11 @@ public:
 	void SetUpBackGraund(TextureID id);
 	//地面を設定する(ロードしたテクスチャ限定)
 	void SetDownBackGraund(TextureID id);
+	//背景を全部消す
 	void AllDeleteBackGraund();
 	void Update(float deltatime);
 	void Draw() const;
+
 private:
 	//ワールド
 	IWorld* mWorld;
@@ -38,6 +40,6 @@ private:
 	std::list<BackGraundState> backStates;
 	//空の背景
 	BackGraundState upBackStates;
-	
-	float le;
+	//地面の背景
+	BackGraundState downBackStates;
 };

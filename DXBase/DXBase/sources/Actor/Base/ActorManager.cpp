@@ -2,7 +2,7 @@
 #include "ActorGroup.h"
 
 #include "../Body/ShapeType.h"
-
+#include "../TestPlayer/TestPlayer.h"
 // コンストラクタ
 ActorManager::ActorManager() {
 	initialize();
@@ -28,13 +28,15 @@ void ActorManager::initialize() {
 	root_.addChild(actors_[ActorGroup::Player]);
 	root_.addChild(actors_[ActorGroup::BACKGRAUND]);
 
+	velo = Vector2::Zero;
 }
 
 // 更新
 void ActorManager::update(float deltaTime) {
 	root_.update(deltaTime);
 	collide();
-	root_.removeChildren();
+	//MoveActor();
+	//root_.removeChildren();
 }
 
 // 描画

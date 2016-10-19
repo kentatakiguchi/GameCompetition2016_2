@@ -1,7 +1,6 @@
 #include "BackGraundManager.h"
 #include "../TestPlayer/TestPlayer.h"
-BackGraundManager::BackGraundManager(IWorld * world) :
-	le(0.0f)
+BackGraundManager::BackGraundManager(IWorld * world)
 {
 	//分からないから一応
 	for (auto& i : backStates)
@@ -51,7 +50,16 @@ void BackGraundManager::SetUpBackGraund(TextureID id)
 
 void BackGraundManager::SetDownBackGraund(TextureID id)
 {
-
+	//idを追加
+	downBackStates.id = ResourceLoader::GetInstance().getTextureID(id);
+	//サイズを追加
+	downBackStates.size = ResourceLoader::GetInstance().GetTextureSize(id);
+	Vector2 size = upBackStates.size;
+	//ポジションを4つ入れる(4枚背景を張り付けるため)
+	downBackStates.positions.push_back(Vector2(0, 0));
+	downBackStates.positions.push_back(Vector2(0, size.y));
+	downBackStates.positions.push_back(Vector2(size.x, size.y));
+	downBackStates.positions.push_back(Vector2(size.x, 0));
 }
 
 void BackGraundManager::AllDeleteBackGraund()
@@ -65,51 +73,73 @@ void BackGraundManager::AllDeleteBackGraund()
 
 void BackGraundManager::Update(float deltatime)
 {
-
 	//要素内が何もなかったりプレイヤーがnullだったらリターン
 	if (backStates.empty() || mPlayer == nullptr) return;
 	//背景階層の数を取得
 	float layerNum = backStates.size();
-	//コピーを使わないために＆を付けて参照する(for内でiの中身を弄る場合に使う)
-	Vector2 vec = mPlayer->GetVelo();
-	le = vec.Length();
+	//移動するかどうかフラグ
+	Vector2 moveFlag = mPlayer->GetMoveFlag();
 	//地面系
+	//コピーを使わないために＆を付けて参照する(for内でiの中身を弄る場合に使う)
 	for (auto& i : backStates)
 	{
 		for (auto& j : i.positions)
 		{
 			//奥に行くほど遅くする
 			Vector2 vec = mPlayer->GetVelo()*(1.0f / layerNum);
-			float len = vec.Length();
+			//移動する場合flagには1が、移動しない場合flagには0が
+			vec = Vector2(vec.x*moveFlag.x, vec.y*moveFlag.y);
 			//プレイヤーベクトル加算
 			j += vec;
 			//地面テクスチャサイズ
 			Vector2 size = i.size;
+			//x軸のループ
 			if (j.x <= -size.x)
-				j.x = size.x;
+				j.x = size.x + i.size.x + j.x;
 			else if (j.x >= size.x)
-				j.x = -size.x;
+				j.x = -size.x - i.size.x + j.x;
 		}
 		layerNum--;
 	}
-	//空のテクスチャサイズ
-	Vector2 sizeUp = upBackStates.size;
+	//地面テクスチャサイズ
+	Vector2 size = upBackStates.size;
 	//空系
 	for (auto& i : upBackStates.positions)
 	{
 		//一番奥の速度と一緒にする
 		Vector2 vec = mPlayer->GetVelo()*(1.0f / backStates.size());
+		//移動する場合flagには1が、移動しない場合flagには0が
+		vec = Vector2(vec.x*moveFlag.x, vec.y*moveFlag.y);
 		//プレイヤー速度加算
 		i += vec;
-		if (i.x <= -sizeUp.x)
-			i.x = sizeUp.x;
-		else if (i.x >= sizeUp.x)
-			i.x = -sizeUp.x;
-
-		if (i.y <= -sizeUp.y)
-			i.y = sizeUp.y;
-		else if (i.y >= sizeUp.y)
-			i.y = -sizeUp.y;
+		//x軸のループ
+		if (i.x <= -size.x)
+			i.x = size.x + size.x + i.x;
+		else if (i.x >= size.x)
+			i.x = -size.x - size.x + i.x;
+		//Y軸のループ
+		if (i.y <= -size.y)
+			i.y = size.y + size.y + i.y;
+		else if (i.y >= size.y)
+			i.y = -size.y - size.y + i.y;
+	}
+	//地下系
+	for (auto& i : downBackStates.positions)
+	{
+		//一番奥の速度と一緒にする
+		Vector2 vec = mPlayer->GetVelo()*(1.0f / backStates.size());
+		//プレイヤー速度加算
+		i += vec;
+		//x軸のループ
+		if (i.x <= -size.x)
+			i.x = size.x + size.x + i.x;
+		else if (i.x >= size.x)
+			i.x = -size.x - size.x + i.x;
+		//Y軸のループ
+		if (i.y <= -size.y)
+			i.y = size.y + size.y + i.y;
+		else if (i.y >= size.y)
+			i.y = -size.y - size.y + i.y;
 	}
 
 }
@@ -127,17 +157,9 @@ void BackGraundManager::Draw() const
 			DrawGraph(j.x, j.y, i.id, true);
 		}
 	}
-	int count = 0;
-	for (auto i : backStates)
+	for (auto i : downBackStates.positions)
 	{
-		for (auto j : i.positions)
-		{
-			//DrawFormatString(550, 25 + 32*count, GetColor(255, 255, 255), "Position:%f,%f", j.x,j.y);
-			count++;
-		}
+
 	}
-	Vector2 a = mPlayer->GetVelo();
-	//DrawFormatString(550, 25 + 32, GetColor(255, 255, 255), "vec:%f,%f", a.x, a.y);
-	//DrawFormatString(550, 25, GetColor(255, 255, 255), "lenght:%f", le);
 
 }

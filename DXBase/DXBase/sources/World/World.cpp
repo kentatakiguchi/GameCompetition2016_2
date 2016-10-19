@@ -1,6 +1,6 @@
 #include "World.h"
 #include "../Field/Field.h"
-
+#include "../Actor/TestPlayer/TestPlayer.h"
 // コンストラクタ
 World::World() :
 	listener_([](EventMessage, void*) {}) {
@@ -10,6 +10,8 @@ World::World() :
 void World::update(float deltaTime) {
 	//field_->update(deltaTime);
 	actors_.update(deltaTime);
+
+	
 	//camera_->update(deltaTime);
 	//light_->update(deltaTime);
 }
@@ -76,6 +78,12 @@ void World::sendMessage(EventMessage message, void* param) {
 void World::addEventMessageListener(
 	std::function<void(EventMessage, void*)> listener) {
 	listener_ = listener;
+}
+
+Vector2 World::MoveActor()
+{
+	TestPlayer* player = dynamic_cast<TestPlayer*>(findActor("Player").get());
+	return player->GetVelo();
 }
 
 

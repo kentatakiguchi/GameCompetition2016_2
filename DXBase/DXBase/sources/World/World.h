@@ -38,7 +38,9 @@ public:
 	// イベントリスナーの追加
 	void addEventMessageListener(std::function<void(EventMessage, void*)> listener);
 
-	unsigned int fieldHandle();
+	//速度
+	virtual Vector2 MoveActor() override;
+	//unsigned int fieldHandle();
 
 	// コピー禁止
 	World(const World& other) = delete;

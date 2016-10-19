@@ -3,7 +3,7 @@
 
 #include "Actor.h"
 #include <unordered_map>
-
+#include <list>
 enum class ActorGroup;
 enum class ShapeType;
 
@@ -34,7 +34,8 @@ private:
 	Actor root_;
 	// アクターグループ
 	std::unordered_map<ActorGroup, ActorPtr> actors_;
-
+	//速度
+	Vector2 velo;
 	//using CollideFunc = std::unordered_map < ShapeType, std::function<bool(Collider&, Collider&)> >;
 	//std::unordered_map<ShapeType, CollideFunc> collision;
 

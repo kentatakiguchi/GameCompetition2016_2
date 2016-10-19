@@ -21,6 +21,7 @@ public:
 	virtual FieldPtr getField() const = 0;
 	virtual unsigned int fieldHandle() const = 0;
 
+	virtual Vector2 MoveActor() = 0;
 	// メッセージの送信
 	virtual void sendMessage(EventMessage message, void* param = nullptr) = 0;
 };

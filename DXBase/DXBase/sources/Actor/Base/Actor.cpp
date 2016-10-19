@@ -1,16 +1,18 @@
 #include "Actor.h"
 #include <algorithm>
-
+#include "../TestPlayer/TestPlayer.h"
+#include "../../Input/KeyCode.h"
 // コンストラクタ
 Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, const CollisionBase& body) :
- world_(world),
- name_(name),
- position_(position),
- rotation_(Matrix::Identity),
- body_(body),
- dead_(false),
- animation_(-1),
- alpha_(0.0f){
+	world_(world),
+	name_(name),
+	position_(position),
+	rotation_(Matrix::Identity),
+	body_(body),
+	dead_(false),
+	animation_(-1),
+	alpha_(0.0f),
+	outPlayerFlag(false) {
 }
 
 // コンストラクタ
@@ -20,8 +22,8 @@ Actor::Actor(const std::string& name) :
 	position_(0.0f, 0.0f, 0.0f),
 	rotation_(Matrix::Identity),
 	dead_(false),
-	animation_(-1){
-	
+	animation_(-1) {
+
 }
 
 
@@ -29,6 +31,8 @@ Actor::Actor(const std::string& name) :
 void Actor::update(float deltaTime) {
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
+	//移動update
+	ActorMove();
 }
 
 // 描画
@@ -85,7 +89,7 @@ ActorPtr Actor::findCildren(const std::string& name) {
 }
 
 // 子の検索
-ActorPtr Actor::findCildren(std::function<bool (const Actor&)> fn) {
+ActorPtr Actor::findCildren(std::function<bool(const Actor&)> fn) {
 	const auto i = std::find_if(children_.begin(), children_.end(),
 		[&](const ActorPtr& child) { return fn(*child); });
 	if (i != children_.end()) {
@@ -104,8 +108,8 @@ ActorPtr Actor::findCildren(std::function<bool (const Actor&)> fn) {
 void Actor::collideChildren(Actor& other) {
 	eachChildren(
 		[&](Actor& my) {
-			other.eachChildren([&](Actor& target) { my.collide(target); });
-		});
+		other.eachChildren([&](Actor& target) { my.collide(target); });
+	});
 }
 
 // 子の衝突判定
@@ -122,14 +126,14 @@ void Actor::addChild(const ActorPtr& child) {
 }
 
 // 子を巡回
-void Actor::eachChildren(std::function<void (Actor&)>  fn) {
+void Actor::eachChildren(std::function<void(Actor&)>  fn) {
 	std::for_each(
 		children_.begin(), children_.end(),
 		[&](const ActorPtr& child) { fn(*child); });
 }
 
 // 子を巡回 (const版）
-void Actor::eachChildren(std::function<void (const Actor&)> fn) const {
+void Actor::eachChildren(std::function<void(const Actor&)> fn) const {
 	std::for_each(
 		children_.begin(), children_.end(),
 		[&](const ActorPtr& child) { fn(*child); });
@@ -152,20 +156,20 @@ void Actor::clearChildren() {
 	children_.clear();
 }
 
-void Actor::setMotion(const unsigned int motion){
+void Actor::setMotion(const unsigned int motion) {
 	motion_ = motion;
 }
 
-void Actor::setTransform(Vector3 pos, Matrix rot){
+void Actor::setTransform(Vector3 pos, Matrix rot) {
 	position_ = pos;
 	rotation_ = rot;
 }
 
-IWorld* Actor::getWorld(){
+IWorld* Actor::getWorld() {
 	return world_;
 }
 
-Animation Actor::getAnim(){
+Animation Actor::getAnim() {
 	return animation_;
 }
 
@@ -193,9 +197,54 @@ void Actor::onCollide(Actor&) {
 }
 
 // 衝突判定
-bool Actor::isCollide(Actor& other){
+bool Actor::isCollide(Actor& other) {
 	return body_.intersects(other.body_);
 
+}
+//アクターを全部プレイヤーと同期させる
+void Actor::ActorMove()
+{
+	//フラグ初期化
+	moveFlag = Vector2::Zero;
+	//worldを持ってなかったらリターン
+	if (world_ == nullptr) return;
+	//プレイヤーの座標を取得
+	Vector2 player = 
+		Vector2(world_->findActor("Player")->getPosition().x, world_->findActor("Player")->getPosition().y);
+	//プレイヤーで一定の範囲外に行ったら今の速度と逆の速度を足してあげる
+	if (getName() == "Player")
+	{
+		//x軸
+		if (((int)player.x < 200 || 600 < (int)player.x))
+		{
+			position_ += Vector3(world_->MoveActor().x, 0.0f, 0.0f);
+			//x軸移動してます
+			moveFlag.x = 1;
+		}
+		//Y軸
+		if ((int)player.y > 400 || (int)player.y < 100)
+		{
+			position_ += Vector3(0.0f, world_->MoveActor().y, 0.0f);
+			//y軸移動してます
+			moveFlag.y = 1;
+		}
+	}
+	//プレイヤー以外の動き
+	else
+	{
+		//x軸
+		if ((int)player.x <= 200+ world_->MoveActor().x ||
+			(int)player.x>=600+ world_->MoveActor().x)
+		{
+			position_ += Vector3(world_->MoveActor().x, 0.0f, 0.0f);
+		}
+		//Y軸
+		if ((int)player.y >= 400+ world_->MoveActor().y ||
+			(int)player.y <= 100+ world_->MoveActor().y)
+		{
+			position_ += Vector3(0.0f, world_->MoveActor().y, 0.0f);
+		}
+	}
 }
 
 // end of file
