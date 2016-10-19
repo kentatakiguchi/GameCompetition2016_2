@@ -14,10 +14,6 @@ public:
 private:
 	// 待機状態です
 	void idel();
-	// 索敵移動します
-	void searchMove();
-	// プレイヤーを追跡します
-	void chaseMove();
 	//// プレイヤーとの距離が短いときの行動です
 	//void shortDistanceAttack();
 	//// プレイヤーとの距離が中間の行動です
@@ -30,8 +26,10 @@ private:
 	//void damageMove();
 	//// 死亡行動です
 	//void deadMove();
-	//// 状態の変更を行います
-	//void changeState(State state, unsigned int motion);
+	// 索敵時の行動です
+	void searchMove();
+	// 追跡時の行動です
+	void chaseMove();
 };
 
 #endif

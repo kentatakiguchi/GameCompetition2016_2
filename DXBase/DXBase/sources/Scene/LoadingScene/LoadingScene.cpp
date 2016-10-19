@@ -35,6 +35,7 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND4_TEX, "./resources/sprite/BackGraund4.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND_BOT_TEX, "./resources/sprite/BackGraundBot.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND_TOP_TEX, "./resources/sprite/BackGraundTop.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_SAMPLE_TEX, "./resources/sprite/EnemySample.png");
 	//ResourceLoader::GetInstance().loadModel(ModelID::SKYDOME, "./resources/model/skydome/skydome.mqo");
 
 }
@@ -54,5 +55,5 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::Kataoka;
+	return Scene::Title;
 }

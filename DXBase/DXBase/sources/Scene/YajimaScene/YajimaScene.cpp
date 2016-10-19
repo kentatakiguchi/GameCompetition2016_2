@@ -9,7 +9,7 @@
 #include "../../Actor/Person/Enemy/EnemySpawner.h"
 #include "../../ResourceLoader/ResourceLoader.h"
 
-const Vector3 START_POS = Vector3(2800, 25, 4500);
+const Vector3 START_POS = Vector3(300, 125, 0);
 
 YajimaScene::YajimaScene() : 
 	id(0)
@@ -35,7 +35,7 @@ void YajimaScene::start()
 	world_->addCamera(std::make_shared<Camera>(world_.get()));
 	world_->addLight(std::make_shared<Light>(world_.get(), Vector3(10.0f, 10.0f, 10.0f)));
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), START_POS));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<WeakEnemy>(world_.get(), START_POS + Vector3(120, 0, 0)));
+	world_->addActor(ActorGroup::Enemy, std::make_shared<WeakEnemy>(world_.get(), START_POS + Vector3(15, 5, 0)));
 }
 
 void YajimaScene::update()

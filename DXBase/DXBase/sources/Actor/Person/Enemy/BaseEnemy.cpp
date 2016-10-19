@@ -4,17 +4,24 @@
 #include"../../Body/CollisionBase.h"
 #include "Enemy_AttackRange.h"
 
-BaseEnemy::BaseEnemy(IWorld * world, const Vector3& position) :
-	Actor(world, "BaseEnemy", position, CollisionBase()),
+
+BaseEnemy::BaseEnemy(IWorld * world, const Vector3& position, const float bodyScale) :
+	Actor(world, "BaseEnemy", position, CollisionBase(Vector2(-bodyScale, -bodyScale), Vector2(bodyScale, -bodyScale), Vector2(-bodyScale, bodyScale), Vector2(bodyScale, bodyScale))),
 	hp_(10),
 	ap_(0),
-	speed_(0.3f),
+	speed_(1.0f),
+	initSpeed_(speed_),
+	discoveryLenght_(50),
 	color_(GetColor(255, 255, 255)),
 	stateTimer_(0.0f),
 	state_(State::Idel),
+	stateString_(""),
+	discoveryPosition_(Vector3(0.0f, 0.0f, 0.0f)),
 	animation_(),
-	player_(nullptr)
+	player_(nullptr),
+	enemyManager_(EnemyManager())
 {
+	
 }
 
 BaseEnemy::~BaseEnemy()
@@ -23,6 +30,8 @@ BaseEnemy::~BaseEnemy()
 
 void BaseEnemy::onUpdate(float deltaTime)
 {
+	// エネミーマネージャーの更新
+	enemyManager_.update(deltaTime);
 	// 状態の更新
 	updateState(deltaTime);
 	// アニメーションの変更
@@ -33,10 +42,14 @@ void BaseEnemy::onUpdate(float deltaTime)
 
 void BaseEnemy::onDraw() const
 {
-	//auto vec2Position = Vector2(position_.x, position_.y);
-	//animation_.draw(vec2Position, NULL, 1.0f, 0.0f);
-	//DrawRotaGraph2(position_.x, position_.y, 0.5f, 0.5f, 0.0f, 0.0f, 1, 1);
-	DrawSphere3D(Vector3::Vector3ToVECTOR(position_), 1.0f, 16, color_, GetColor(0, 0, 0), 1);
+	auto stateChar = stateString_.c_str();
+	DrawGraph(position_.x - 1.0f, position_.y - 1.0f, ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
+	DrawString(position_.x, position_.y - 20, stateChar, GetColor(255, 255, 255));
+
+	//char lengthChar = static_cast<char>(enemyManager_.getPlayerLength());
+	//DrawString(position_.x + 50, position_.y - 20, &lengthChar, GetColor(255, 255, 255));
+	
+	body_.draw();
 }
 
 void BaseEnemy::onCollide(Actor & actor)
@@ -54,29 +67,55 @@ void BaseEnemy::onMessage(EventMessage event, void *)
 {
 }
 
+// 待機状態です
 void BaseEnemy::idle()
 {
 	color_ = GetColor(255, 255, 255);
-	//position_ += BaseEnemy::playerNormalizeDirection() * -speed_;
-	if (playerLength() < 100) changeState(State::Search, ENEMY_WALK);
+	stateString_ = "待機";
+	//position_ += BaseEnemy::getPlayerNormalizeDirection() * -speed_;
+	if (enemyManager_.getPlayerLength() < 100) changeState(State::Search, ENEMY_WALK);
 }
-// 索敵移動します(デフォルト)
-void BaseEnemy::searchMove()
+// 索敵移動です(デフォルト)
+void BaseEnemy::search()
 {
 	// プレイヤーの捜索
 	findPlayer();
 	color_ = GetColor(0, 255, 0);
+	stateString_ = "捜索";
+	// 捜索行動
+	searchMove();
 	// 一定距離内なら追跡する
-	if (playerLength() <= 10) changeState(State::Chase, ENEMY_WALK);
-	else if(playerLength() >= 100) changeState(State::Idel, ENEMY_IDLE);
+	if (enemyManager_.getPlayerLength() <= discoveryLenght_) {
+		changeState(State::Discovery, ENEMY_DISCOVERY);
+		discoveryPosition_ = position_;
+	}
+	//else if(getPlayerLength() >= 100) changeState(State::Idel, ENEMY_IDLE);
 }
-// プレイヤーを追跡します(デフォルト)
-void BaseEnemy::chaseMove()
+
+// プレイヤーを発見した時の行動です
+void BaseEnemy::discovery()
+{
+	// プレイヤーの捜索
+	//findPlayer();
+	stateString_ = "発見";
+	position_.y += -4.0f + stateTimer_ * 9.8f;
+	position_.y = MathHelper::Clamp(
+		position_.y, discoveryPosition_.y - 100.0f, discoveryPosition_.y);
+	if(position_.y == discoveryPosition_.y)
+		changeState(State::Chase, ENEMY_WALK);
+}
+
+// プレイヤーの追跡行動です(デフォルト)
+void BaseEnemy::chase()
 {
 	// プレイヤーの捜索
 	findPlayer();
 	color_ = GetColor(255, 0, 0);
-	if (playerLength() > 10) changeState(State::Search, ENEMY_WALK);
+	stateString_ = "追跡";
+	// 追跡行動
+	chaseMove();
+	if (enemyManager_.getPlayerLength() > discoveryLenght_)
+		changeState(State::Search, ENEMY_WALK);
 	// 前方に移動(仮)
 	//auto distance = position_ - player_->getPosition();
 	////auto direction = 1.0f;
@@ -86,9 +125,9 @@ void BaseEnemy::chaseMove()
 	//else direction_ = 0;
 
 	//// 水平方向に移動
-	//position_ += position_.Left * -speed_ * playerDirection().x;
+	//position_ += position_.Left * -speed_ * getPlayerDirection().x;
 	//// 移動
-	//position_ += BaseEnemy::playerNormalizeDirection() * -speed_;
+	//position_ += BaseEnemy::getPlayerNormalizeDirection() * -speed_;
 }
 
 //void BaseEnemy::shortDistanceAttack()
@@ -103,26 +142,34 @@ void BaseEnemy::chaseMove()
 //{
 //}
 
+// 攻撃行動です
 void BaseEnemy::Attack()
 {
 	/*world_->addActor(
 		ActorGroup::Enemy_AttackRange, std::make_shared<Enemy_AttackRange>(world_, position_));*/
+	stateString_ = "攻撃";
 	if (stateTimer_ >= 3.0f)
 		changeState(State::Search, ENEMY_IDLE);
 }
 
+// 被弾行動です
 void BaseEnemy::damageMove()
 {
-	color_ = GetColor(100, 100, 100);
+	color_ = GetColor(255, 255, 0);
+	stateString_ = "ダメージ";
 	if (stateTimer_ >= 3.0f)
 		changeState(State::Chase, ENEMY_WALK);
 }
 
+// 死亡行動です
 void BaseEnemy::deadMove()
 {
 	//if (stateTimer_ >= 3.0f) dead();
+	stateString_ = "死亡";
+	color_ = GetColor(10, 10, 10);
 }
 
+// 状態の変更を行います
 void BaseEnemy::changeState(State state, unsigned int motion)
 {
 	state_ = state;
@@ -130,6 +177,7 @@ void BaseEnemy::changeState(State state, unsigned int motion)
 	motion_ = motion;
 }
 
+// プレイヤーを捜索します
 void BaseEnemy::findPlayer()
 {
 	// プレイヤーがいなければ待機状態
@@ -139,52 +187,12 @@ void BaseEnemy::findPlayer()
 	}
 }
 
-// プレイヤーとの距離を返します
-float BaseEnemy::playerLength()
+void BaseEnemy::searchMove()
 {
-	// プレイヤーの位置を取得
-	Vector3 target = player_->getPosition();
-	target_ = Vector2(target.x, target.y);
-	Vector2 vec2Position_ = Vector2(position_.x, position_.y);
-	Vector2 length = target_ - vec2Position_;
-	return length.Length();
 }
 
-// プレイヤーとの方向を単位ベクトルで取得します
-Vector2 BaseEnemy::playerDirection()
+void BaseEnemy::chaseMove()
 {
-	// 方向の計算
-	auto distance = position_ - player_->getPosition();
-	auto direction = Vector2().Zero;
-	//auto direction = 1.0f;
-	// 方向の値を代入
-	// X
-	if (distance.x < 0)
-		direction.x = -1;
-	else if (distance.x > 0)
-		direction.x = 1;
-	else direction.x = 0;
-	// Y
-	if (distance.y < 0)
-		direction.y = 1;
-	else if (distance.x > 0)
-		direction.y = -1;
-	else direction.y = 0;
-	return direction;
-}
-
-// プレイヤーとの方向を正規化されたベクトルで取得します
-Vector3 BaseEnemy::playerNormalizeDirection()
-{
-	// 方向の計算
-	auto distance = position_ - player_->getPosition();
-	//// 変換
-	//auto nomaDistance = Vector2(distance.x, distance.y);
-	//// 正規化
-	//nomaDistance = nomaDistance.Normalize(nomaDistance);
-	//auto distance3 = Vector3(nomaDistance.x, nomaDistance.y, 0.0f);
-	distance = distance.Normalize(distance);
-	return distance;
 }
 
 // 敵が飲み込まれた時のスケールポイントを返します
@@ -203,12 +211,15 @@ void BaseEnemy::updateState(float deltaTime)
 {
 	// プレイヤーの捜索
 	player_ = world_->findActor("Player");
-
+	// プレイヤーが取得できれば、エネミーマネージャーに位置を入れる
+	if (player_ != nullptr)
+		enemyManager_.setEMPosition(position_, player_->getPosition());
 	switch (state_)
 	{
 	case State::Idel: idle(); break;
-	case State::Search: searchMove(); break;
-	case State::Chase: chaseMove(); break;
+	case State::Search: search(); break;
+	case State::Discovery: discovery(); break;
+	case State::Chase: chase(); break;
 	case State::Attack: Attack(); break;
 		// State::Return: ; break;
 	case State::Damage: damageMove(); break;
