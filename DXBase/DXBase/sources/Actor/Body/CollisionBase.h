@@ -2,10 +2,15 @@
 
 #include"BoundingBox.h"
 #include"BoundingCapsule.h"
+#include"BoundingCircle.h"
+#include"BoundingSegment.h"
+
 enum CollisionType
 {
 	BoxCol,
 	CapsuleCol,
+	CircleCol,
+	SegmentCol,
 	NoneCol
 };
 class CollisionBase
@@ -18,12 +23,20 @@ public:
 	CollisionBase(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight);
 	//カプセル判定を利用する場合
 	CollisionBase(Vector2& startPoint, Vector2& endPoint, float capsuleRadius);
+	//円判定を利用する場合
+	CollisionBase(Vector2& center, float circleRadius);
+	//線分判定を利用する場合
+	CollisionBase(const Vector2& startPoint, const Vector2& endPoint);
 	//デバッグ用の判定表示
 	void draw() const;
 	//四角判定の大きさ、形状の変更
 	void transform(Vector2& topLeft, Vector2& topRight, Vector2& bottomLeft, Vector2& bottomRight);
 	//カプセル判定の大きさ、形状の変更
-	void transoform(Vector2& startPoint, Vector2& endPoint, float capsuleRadius);
+	void transform(Vector2& startPoint, Vector2& endPoint, float capsuleRadius);
+	//円判定の大きさ、形状の変更
+	void transform(Vector2& center, float circleRadius);
+	//線分判定の大きさ、形状を変更
+	void transform(Vector2& startPoint,Vector2& endPoint);
 	//判定の移動
 	void translate(Vector2 position);
 	//対象と当たっているか  other:判定したい相手(CollisionBase) return:判定結果(bool)
@@ -32,8 +45,12 @@ public:
 	CollisionType GetType() const;
 	//四角判定を取得/四角判定以外を利用している場合、動作しない四角判定を返す return:自身の四角判定(BoundingBox)
 	BoundingBox GetBox() const;
-	//カプセル判定を取得/カプセル判定以外を利用している場合、動作しないカプセル判定を返す return:自身のカプセル判定(BoundingBox)
+	//カプセル判定を取得/カプセル判定以外を利用している場合、動作しないカプセル判定を返す return:自身のカプセル判定(BoundingCapsule)
 	BoundingCapsule GetCapsule() const;
+	//円判定を取得/円判定以外を利用している場合、動作しない円判定を返す return:自身の円判定(BoundingCircle)
+	BoundingCircle GetCircle() const;
+	//線分判定を取得/線分判定以外を利用している場合、動作しない線分判定を返す return:自身の線分判定(BoundingSegment)
+	BoundingSegment GetSegment() const;
 	//判定を利用するかどうかを変更する
 	void enabled(bool change);
 private:
@@ -43,4 +60,8 @@ private:
 	BoundingBox box_;
 	//カプセル判定
 	BoundingCapsule capsule_;
+	//円判定
+	BoundingCircle circle_;
+	//線分判定
+	BoundingSegment segment_;
 };

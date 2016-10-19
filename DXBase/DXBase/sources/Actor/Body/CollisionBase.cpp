@@ -5,15 +5,25 @@ CollisionBase::CollisionBase():box_(),capsule_(),type_(NoneCol)
 }
 
 CollisionBase::CollisionBase(const Vector2 & topLeft, const Vector2 & topRight, const Vector2 & bottomLeft, const Vector2 & bottomRight) :
-	box_(topLeft, topRight, bottomLeft, bottomRight), capsule_(), type_(BoxCol)
+	box_(topLeft, topRight, bottomLeft, bottomRight), capsule_(),segment_(),circle_(), type_(BoxCol)
 {
 	
 }
 
 CollisionBase::CollisionBase(Vector2& startPoint, Vector2& endPoint, float capsuleRadius):
-	box_(),capsule_(startPoint,endPoint,capsuleRadius),type_(CapsuleCol)
+	box_(),capsule_(startPoint,endPoint,capsuleRadius),segment_(),circle_(),type_(CapsuleCol)
 {
 
+}
+
+CollisionBase::CollisionBase(Vector2 & center, float circleRadius):
+	box_(), capsule_(), segment_(), circle_(center,circleRadius), type_(CircleCol)
+{
+}
+
+CollisionBase::CollisionBase(const Vector2 & startPoint, const Vector2 & endPoint):
+	box_(), capsule_(), segment_(startPoint,endPoint), circle_(), type_(SegmentCol)
+{
 }
 
 void CollisionBase::draw() const
@@ -25,6 +35,12 @@ void CollisionBase::draw() const
 		break;
 	case CapsuleCol:
 		capsule_.draw();
+		break;
+	case CircleCol:
+		circle_.draw();
+		break;
+	case SegmentCol:
+		segment_.draw();
 		break;
 	case NoneCol:
 		break;
@@ -38,9 +54,19 @@ void CollisionBase::transform(Vector2 & topLeft, Vector2 & topRight, Vector2 & b
 	box_= box_.transform(topLeft,topRight,bottomLeft,bottomRight);
 }
 
-void CollisionBase::transoform(Vector2 & startPoint, Vector2 & endPoint, float capsuleRadius)
+void CollisionBase::transform(Vector2 & startPoint, Vector2 & endPoint, float capsuleRadius)
 {
 	capsule_= capsule_.transform(startPoint, endPoint, capsuleRadius);
+}
+
+void CollisionBase::transform(Vector2 & center, float circleRadius)
+{
+	circle_ = circle_.transform(center, circleRadius);
+}
+
+void CollisionBase::transform(Vector2 & startPoint, Vector2 & endPoint)
+{
+	segment_ = segment_.transform(startPoint, endPoint);
 }
 
 void CollisionBase::translate(Vector2 position)
@@ -52,6 +78,12 @@ void CollisionBase::translate(Vector2 position)
 		break;
 	case CapsuleCol:
 		capsule_=capsule_.translate(position);
+		break;
+	case CircleCol:
+		circle_ = circle_.translate(position);
+		break;
+	case SegmentCol:
+		segment_ = segment_.translate(position);
 		break;
 	case NoneCol:
 		break;
@@ -68,12 +100,16 @@ bool CollisionBase::intersects(CollisionBase & other)
 		switch (other.type_)
 		{
 		case BoxCol:
-
 			return box_.intersects(other.box_);
-
 			break;
 		case CapsuleCol:
 			return box_.intersects(other.capsule_);
+			break;
+		case CircleCol:
+			return box_.intersects(other.circle_);
+			break;
+		case SegmentCol:
+			return box_.intersects(other.segment_);
 			break;
 		case NoneCol:
 			break;
@@ -90,12 +126,59 @@ bool CollisionBase::intersects(CollisionBase & other)
 		case CapsuleCol:
 			return capsule_.intersects(other.capsule_);
 			break;
+		case CircleCol:
+			return capsule_.intersects(other.circle_);
+			break;
+		case SegmentCol:
+			return capsule_.intersects(other.segment_);
+			break;
 		case NoneCol:
 			break;
 		default:
 			break;
 		}
-
+		break;
+	case CircleCol:
+		switch (other.type_)
+		{
+		case BoxCol:
+			return circle_.intersects(other.box_);
+			break;
+		case CapsuleCol:
+			return circle_.intersects(other.capsule_);
+			break;
+		case CircleCol:
+			return circle_.intersects(other.circle_);
+			break;
+		case SegmentCol:
+			return circle_.intersects(other.segment_);
+			break;
+		case NoneCol:
+			break;
+		default:
+			break;
+		}
+		break;
+	case SegmentCol:
+		switch (other.type_)
+		{
+		case BoxCol:
+			return segment_.intersects(other.box_);
+			break;
+		case CapsuleCol:
+			return segment_.intersects(other.capsule_);
+			break;
+		case CircleCol:
+			return segment_.intersects(other.circle_);
+			break;
+		case SegmentCol:
+			return segment_.intersects(other.segment_);
+			break;
+		case NoneCol:
+			break;
+		default:
+			break;
+		}
 		break;
 	case NoneCol:
 		break;
@@ -120,6 +203,16 @@ BoundingCapsule CollisionBase::GetCapsule() const
 	return capsule_;
 }
 
+BoundingCircle CollisionBase::GetCircle() const
+{
+	return circle_;
+}
+
+BoundingSegment CollisionBase::GetSegment() const
+{
+	return segment_;
+}
+
 void CollisionBase::enabled(bool change)
 {
 	switch (type_)
@@ -129,6 +222,12 @@ void CollisionBase::enabled(bool change)
 		break;
 	case CapsuleCol:
 		capsule_.enabled = change;
+		break;
+	case CircleCol:
+		circle_.enabled = change;
+		break;
+	case SegmentCol:
+		segment_.enabled = change;
 		break;
 	case NoneCol:
 		break;

@@ -1,42 +1,46 @@
-#ifndef BOUNDING_CAPSULE_H_
-#define BOUNDING_CAPSULE_H_
+#ifndef BOUNDING_CIRCLE_H_
+#define BOUNDING_CIRCLE_H_
+
 
 #include "../../Math/Math.h"
 #include "Body.h"
 
-class BoundingCapsule : public Body {
+class BoundingCircle : public Body {
 public:
 	//カプセルの判定を作成する(判定を行う場合) topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2)
-	BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius);
+	BoundingCircle(Vector2 center,float circleRadius);
 	//カプセルの判定を作成する(判定を行う場合) topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2) isEnabled:判定をするかどうか(bool)
-	BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius,bool isEnabled);
+	BoundingCircle(Vector2 center,float circleRadius, bool isEnabled);
 	//カプセルの判定を作成する(判定を行わない場合)
-	explicit BoundingCapsule(float radius=-1);
+	explicit BoundingCircle(float radius = -1);
+	//使用しない
 	virtual bool intersects(BoundingSphere& other) { return false; }
+	//使用しない
 	virtual bool intersects(Capsule& other) { return false; }
+	//使用しない
 	virtual bool intersects(Model& other) { return false; }
-
-	// Body を介して継承されました
+	// 自身(Circle)と相手(Box)の判定 other:判定したい相手(BoundingBox) return:判定結果(bool)
 	virtual bool intersects(BoundingBox & other) override;
-
+	// 自身(Circle)と相手(Capsule)の判定 other:判定したい相手(BoundingCapsule) return:判定結果(bool)
 	virtual bool intersects(BoundingCapsule & other) override;
-
+	// 自身(Circle)と相手(Segment)の判定 other:判定したい相手(BoundingSegment) return:判定結果(bool)
 	virtual bool intersects(BoundingSegment & other) override;
-
+	// 自身(Circle)と相手(Circle)の判定 other:判定したい相手(BoundingCircle) return:判定結果(bool)
 	virtual bool intersects(BoundingCircle & other) override;
-
+	//使用しない
 	virtual void update(const Vector2 & center) override;
+	//使用しない
 	virtual void update(const Vector3& center) {}
-
+	//使用しない
 	virtual void debug() const override;
-
-	BoundingCapsule translate(const Vector2& position) const;
-
-	BoundingCapsule transform(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) const;
-
+	//自身(Circle)を移動する position:移動量(Vector2) return:移動した結果(BoundingCircle)
+	BoundingCircle translate(const Vector2& position) const;
+	//自身(Box)を変形する center:中心点(Vector2) circleRadius:半径(float) return:変形した結果(BoundingCircle)
+	BoundingCircle transform(Vector2 center, float circleRadius) const;
+	//判定の表示(デバッグ用)
 	virtual void draw() const override;
 private:
-	Vector2 CreateVector(const Vector2& p, const Vector2& q) {
+	Vector2 CreateVector(const Vector2& p, const Vector2& q){
 		return Vector2(q.x - p.x, q.y - p.y);
 	}
 	float InnerProduct(const Vector2 &a, const Vector2 &b) {
@@ -48,50 +52,21 @@ private:
 	float VectorLength2(const Vector2 &v) {
 		return InnerProduct(v, v);//v・v=|v|^2
 	}
-	bool isIntersectOtherRayToThisLine(Vector2 a1,Vector2 a2,Vector2 a3,Vector2 a4)
-	{
-		Vector2 bc = CreateVector(a1, a2);
-		Vector2 bp = CreateVector(a1, a3);
-		Vector2 bq = CreateVector(a1, a4);
-		Vector2 pb = CreateVector(a3, a1);
-		Vector2 pq = CreateVector(a3, a4);
-		Vector2 pc = CreateVector(a3, a2);
-		float otherPoint1 =
-			(bp.x*bc.y - bp.y*bc.x)*(bq.x*bc.y - bq.y*bc.x);
-			//(a1.x - a2.x)
-			//*(a3.y - a1.y)
-			//+ (a1.y - a2.y)
-			//*(a1.x - a3.x);
-		float otherPoint2 =
-			(pb.x*pq.y - pb.y*pq.x)*(pc.x*pq.y - pc.y*pq.x);
-		//(a1.x - a2.x)
-			//*(a4.y - a1.y)
-			//+ (a1.y - a2.y)
-			//*(a1.x - a4.x);
-
-		if (otherPoint1<= 0&&otherPoint2<=0)
-		{
-			return true;
-		}
-		return false;
-	}
-
 	bool isIntersectOtherRayToThisLineSegment(BoundingSegment & other);
 	bool isIntersectThisRayToOtherLineSegment(BoundingSegment & other);
 	bool isIntersectOtherRayToThisLineCapsule(BoundingCapsule & other);
 	bool isIntersectThisRayToOtherLineCapsule(BoundingCapsule & other);
-	bool isIntersectOtherRayToThisLineBox(BoundingBox & other,int point1,int point2);
-	bool isIntersectThisRayToOtherLineBox(BoundingBox & other,int point1,int point2);
+	bool isIntersectOtherRayToThisLineBox(BoundingBox & other, int point1, int point2);
+	bool isIntersectThisRayToOtherLineBox(BoundingBox & other, int point1, int point2);
 public:
 	struct Component {
-		// [0]:始点 [1]:終点
-		Vector2 point[2];
+		// [0]:始点
+		Vector2 point[1];
 		//半径
 		float radius;
 
-		Component(Vector2 startPoint, Vector2 endPoint,float capsuleRadius) {
-			point[0] = startPoint;
-			point[1] = endPoint;
+		Component(Vector2 center,float capsuleRadius) {
+			point[0] = center;
 			radius = capsuleRadius;
 		}
 	};

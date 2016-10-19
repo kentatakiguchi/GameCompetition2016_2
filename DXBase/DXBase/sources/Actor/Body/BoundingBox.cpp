@@ -1,5 +1,7 @@
 #include "BoundingBox.h"
 #include "Model.h"
+#include"BoundingSegment.h"
+#include"BoundingCircle.h"
 #include"BoundingCapsule.h"
 BoundingBox::BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight):
 	component_(topLeft,topRight,bottomLeft,bottomRight),enabled(true) {
@@ -46,22 +48,65 @@ void BoundingBox::draw() const {
 }
 
 
-
 bool BoundingBox::intersects(BoundingBox & other)
 {
 	if (!enabled)return false;
 
-	if (component_.point[1].x >= other.component_.point[0].x&&
-		component_.point[0].x <= other.component_.point[1].x)
+	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
+
+	for (int i = 0; i < 4; i++)
 	{
-		if (component_.point[2].y >= other.component_.point[0].y&&
-			component_.point[0].y <= other.component_.point[2].y)
+		for (int x = 0; x < 4; x++)
 		{
-			return true;
+			float otherPoint1 =
+				(other.component_.point[intSet[x][0]].x - other.component_.point[intSet[x][1]].x)
+				*(component_.point[intSet[i][0]].y - other.component_.point[intSet[x][0]].y)
+				+ (other.component_.point[intSet[x][0]].y - other.component_.point[intSet[x][1]].y)
+				*(other.component_.point[intSet[x][0]].x - component_.point[intSet[i][0]].x);
+			float otherPoint2 =
+				(other.component_.point[intSet[x][0]].x - other.component_.point[intSet[x][1]].x)
+				*(component_.point[intSet[i][1]].y - other.component_.point[intSet[x][0]].y)
+				+ (other.component_.point[intSet[x][0]].y - other.component_.point[intSet[x][1]].y)
+				*(other.component_.point[intSet[x][0]].x - component_.point[intSet[i][1]].x);
+
+			if (otherPoint1*otherPoint2 < 0)
+			{
+				float otherPoint1 =
+					(component_.point[intSet[i][0]].x - component_.point[intSet[i][1]].x)
+					*(other.component_.point[intSet[x][0]].y - component_.point[intSet[i][0]].y)
+					+ (component_.point[intSet[i][0]].y - component_.point[intSet[i][1]].y)
+					*(component_.point[intSet[i][0]].x - other.component_.point[intSet[x][0]].x);
+				float otherPoint2 =
+					(component_.point[intSet[i][0]].x - component_.point[intSet[i][1]].x)
+					*(other.component_.point[intSet[x][1]].y - component_.point[intSet[i][0]].y)
+					+ (component_.point[intSet[i][0]].y - component_.point[intSet[i][1]].y)
+					*(component_.point[intSet[i][0]].x - other.component_.point[intSet[x][1]].x);
+
+				if (otherPoint1*otherPoint2 < 0)
+				{
+
+					return true;
+				}
+			}
 		}
 	}
 	return false;
 }
+//bool BoundingBox::intersects(BoundingBox & other)
+//{
+//	if (!enabled)return false;
+//
+//	if (component_.point[1].x >= other.component_.point[0].x&&
+//		component_.point[0].x <= other.component_.point[1].x)
+//	{
+//		if (component_.point[2].y >= other.component_.point[0].y&&
+//			component_.point[0].y <= other.component_.point[2].y)
+//		{
+//			return true;
+//		}
+//	}
+//	return false;
+//}
 
 bool BoundingBox::intersects(BoundingCapsule & other) {
 	if (!enabled||!other.enabled)return false;
@@ -71,19 +116,28 @@ bool BoundingBox::intersects(BoundingCapsule & other) {
 
 	for (int i = 0; i < 4; i++)
 	{
+			float xmin = min(other.component_.point[0].x, other.component_.point[1].x);
+			float xmax = max(other.component_.point[0].x, other.component_.point[1].x);
+			float ymin = min(other.component_.point[0].y, other.component_.point[1].y);
+			float ymax = max(other.component_.point[0].y, other.component_.point[1].y);
+			float oxmin = min(component_.point[intSet[i][0]].x, component_.point[intSet[i][1]].x);
+			float oxmax = max(component_.point[intSet[i][0]].x, component_.point[intSet[i][1]].x);
+			float oymin = min(component_.point[intSet[i][0]].y, component_.point[intSet[i][1]].y);
+			float oymax = max(component_.point[intSet[i][0]].y, component_.point[intSet[i][1]].y);
+					
 		if (isIntersectOtherRayToThisLine(other, intSet[i][0], intSet[i][1]))
 		{
 			if (isIntersectThisRayToOtherLine(other, intSet[i][0], intSet[i][1]))
 			{
-				
 				//DrawFormatString(375, 50*i, GetColor(255, 255, 255), "当たった");
-
 				//交差している
 				return true;
 			}
-			else
+			else if (xmax + other.component_.radius >= oxmin &&
+				xmin - other.component_.radius <= oxmax &&
+				ymax + other.component_.radius >= oymin &&
+				ymin - other.component_.radius <= oymax)
 			{
-
 				float a1 = other.component_.point[0].y - other.component_.point[1].y;
 				float b1 = -(other.component_.point[0].x - other.component_.point[1].x);
 				float c1 = (other.component_.point[0].x*other.component_.point[1].y)
@@ -96,33 +150,31 @@ bool BoundingBox::intersects(BoundingCapsule & other) {
 				float perpendicularMain = min(perpendicular1, perpendicular2);
 				if (other.component_.radius >= perpendicularMain)
 				{
+
 					return true;
 				}
 			}
 		}
 		
-		else if (isIntersectThisRayToOtherLine(other, intSet[i][0], intSet[i][1]))
-		//else if()
-		{
-			//DrawFormatString(200 * i, 100, GetColor(255, 255, 255), "kurikaesi");
+		//else if (isIntersectThisRayToOtherLine(other, intSet[i][0], intSet[i][1]))
+		//{
+		//	//DrawFormatString(200 * i, 100, GetColor(255, 255, 255), "kurikaesi");
+		//	float a1 = component_.point[intSet[i][0]].y - component_.point[intSet[i][1]].y;
+		//	float b1 = -(component_.point[intSet[i][0]].x - component_.point[intSet[i][1]].x);
+		//	float c1 = (component_.point[intSet[i][0]].x*component_.point[intSet[i][1]].y)
+		//		- (component_.point[intSet[i][1]].x*component_.point[intSet[i][0]].y);
+		//	//自分が横、Otherが斜め(Otherが点)
+		//	float perpendicular1 =
+		//		(abs(a1*other.component_.point[0].x + b1*other.component_.point[0].y + c1)) / sqrtf(a1*a1 + b1*b1);
+		//	float perpendicular2 =
+		//		(abs(a1*other.component_.point[1].x + b1*other.component_.point[1].y + c1)) / sqrtf(a1*a1 + b1*b1);
+		//	float perpendicularMain = min(perpendicular1, perpendicular2);
+		//	if (other.component_.radius >= perpendicularMain)
+		//	{
+		//		return true;
+		//	}
+		//}
 
-			float a1 = component_.point[intSet[i][0]].y - component_.point[intSet[i][1]].y;
-			float b1 = -(component_.point[intSet[i][0]].x - component_.point[intSet[i][1]].x);
-			float c1 = (component_.point[intSet[i][0]].x*component_.point[intSet[i][1]].y)
-				- (component_.point[intSet[i][1]].x*component_.point[intSet[i][0]].y);
-			//自分が横、Otherが斜め(Otherが点)
-			float perpendicular1 =
-				(abs(a1*other.component_.point[0].x + b1*other.component_.point[0].y + c1)) / sqrtf(a1*a1 + b1*b1);
-			float perpendicular2 =
-				(abs(a1*other.component_.point[1].x + b1*other.component_.point[1].y + c1)) / sqrtf(a1*a1 + b1*b1);
-			float perpendicularMain = min(perpendicular1, perpendicular2);
-			if (other.component_.radius >= perpendicularMain)
-			{
-				return true;
-			}
-		}
-
-		//else
 		{
 			float otherPoint1 =
 				(component_.point[intSet[i][0]].x - component_.point[intSet[i][1]].x)
@@ -134,44 +186,31 @@ bool BoundingBox::intersects(BoundingCapsule & other) {
 				*(other.component_.point[1].y - component_.point[intSet[i][0]].y)
 				+ (component_.point[intSet[i][0]].y - component_.point[intSet[i][1]].y)
 				*(component_.point[intSet[i][0]].x - other.component_.point[1].x);
-
 			if (otherPoint1 == otherPoint2)
 			{
-				float xmin = min(other.component_.point[0].x, other.component_.point[1].x);
-				float xmax = max(other.component_.point[0].x, other.component_.point[1].x);
-				float ymin = min(other.component_.point[0].y, other.component_.point[1].y);
-				float ymax = max(other.component_.point[0].y, other.component_.point[1].y);
-				float oxmin = min(component_.point[intSet[i][0]].x, component_.point[intSet[i][1]].x);
-				float oxmax = max(component_.point[intSet[i][0]].x, component_.point[intSet[i][1]].x);
-				float oymin = min(component_.point[intSet[i][0]].y, component_.point[intSet[i][1]].y);
-				float oymax = max(component_.point[intSet[i][0]].y, component_.point[intSet[i][1]].y);
-
-				if (xmax == xmin || ymax == ymin)
-				{
-					if (xmax + other.component_.radius >= oxmin &&
-						xmin - other.component_.radius <= oxmax &&
-						ymax + other.component_.radius >= oymin &&
-						ymin - other.component_.radius <= oymax)
-					{
-
-						float a1 = component_.point[intSet[i][1]].y - component_.point[intSet[i][0]].y;
-						float b1 = -(component_.point[intSet[i][1]].x - component_.point[intSet[i][0]].x);
-						float c1 = component_.point[intSet[i][1]].y*(component_.point[intSet[i][1]].x - component_.point[intSet[i][0]].x)
-							- component_.point[intSet[i][1]].x*(component_.point[intSet[i][1]].y - component_.point[intSet[i][0]].y);
-						//自分が斜め、Otherが横(自分が点)
-						float perpendicular1 =
-							(abs(a1*other.component_.point[0].x + b1*other.component_.point[0].y + c1)) / sqrtf(a1*a1 + b1*b1);
-						float perpendicular2 =
-							(abs(a1*other.component_.point[1].x + b1*other.component_.point[1].y + c1)) / sqrtf(a1*a1 + b1*b1);
-						float perpendicularMain = min(perpendicular1, perpendicular2);
-						if (other.component_.radius >= perpendicularMain)
-						{
-							return true;
-						}
-
-
-					}
-				}
+				//if (xmax == xmin || ymax == ymin)
+				//{
+				//	if (xmax + other.component_.radius >= oxmin &&
+				//		xmin - other.component_.radius <= oxmax &&
+				//		ymax + other.component_.radius >= oymin &&
+				//		ymin - other.component_.radius <= oymax)
+				//	{
+				//		float a1 = component_.point[intSet[i][1]].y - component_.point[intSet[i][0]].y;
+				//		float b1 = -(component_.point[intSet[i][1]].x - component_.point[intSet[i][0]].x);
+				//		float c1 = component_.point[intSet[i][1]].y*(component_.point[intSet[i][1]].x - component_.point[intSet[i][0]].x)
+				//			- component_.point[intSet[i][1]].x*(component_.point[intSet[i][1]].y - component_.point[intSet[i][0]].y);
+				//		//自分が斜め、Otherが横(自分が点)
+				//		float perpendicular1 =
+				//			(abs(a1*other.component_.point[0].x + b1*other.component_.point[0].y + c1)) / sqrtf(a1*a1 + b1*b1);
+				//		float perpendicular2 =
+				//			(abs(a1*other.component_.point[1].x + b1*other.component_.point[1].y + c1)) / sqrtf(a1*a1 + b1*b1);
+				//		float perpendicularMain = min(perpendicular1, perpendicular2);
+				//		if (other.component_.radius >= perpendicularMain)
+				//		{
+				//			return true;
+				//		}
+				//	}
+				//}
 				if (xmax >= oxmin&& xmin <= oxmax)
 				{
 					if (ymax >= oymin&&ymin <= oymax)
@@ -190,11 +229,9 @@ bool BoundingBox::intersects(BoundingCapsule & other) {
 						{
 							return true;
 						}
-
 					}
 				}
 			}
-
 			//2線分が交わらない
 			float perpendicular1 =
 				sqrtf(
@@ -234,8 +271,130 @@ bool BoundingBox::intersects(BoundingCapsule & other) {
 		}
 	}
 	return false;
+}
+bool BoundingBox::intersects(BoundingSegment & other)
+{
+	if (!enabled)return false;
+
+	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
+
+	for (int i = 0; i < 4; i++)
+	{
+		float otherPoint1 =
+			(other.component_.point[0].x - other.component_.point[1].x)
+			*(component_.point[intSet[i][0]].y - other.component_.point[0].y)
+			+ (other.component_.point[0].y - other.component_.point[1].y)
+			*(other.component_.point[0].x - component_.point[intSet[i][0]].x);
+		float otherPoint2 =
+			(other.component_.point[0].x - other.component_.point[1].x)
+			*(component_.point[intSet[i][1]].y - other.component_.point[0].y)
+			+ (other.component_.point[0].y - other.component_.point[1].y)
+			*(other.component_.point[0].x - component_.point[intSet[i][1]].x);
+
+		if (otherPoint1*otherPoint2 < 0)
+		{
+			float otherPoint1 =
+				(component_.point[intSet[i][0]].x - component_.point[intSet[i][1]].x)
+				*(other.component_.point[0].y - component_.point[intSet[i][0]].y)
+				+ (component_.point[intSet[i][0]].y - component_.point[intSet[i][1]].y)
+				*(component_.point[intSet[i][0]].x - other.component_.point[0].x);
+			float otherPoint2 =
+				(component_.point[intSet[i][0]].x - component_.point[intSet[i][1]].x)
+				*(other.component_.point[1].y - component_.point[intSet[i][0]].y)
+				+ (component_.point[intSet[i][0]].y - component_.point[intSet[i][1]].y)
+				*(component_.point[intSet[i][0]].x - other.component_.point[1].x);
+
+			if (otherPoint1*otherPoint2 < 0)
+			{
+
+				return true;
+			}
+
+		}
+	}
+	return false;
+
+
+	//if (component_.point[1].x >= other.component_.point[0].x&&
+	//	component_.point[0].x <= other.component_.point[1].x)
+	//{
+	//	if (component_.point[2].y >= other.component_.point[0].y&&
+	//		component_.point[0].y <= other.component_.point[2].y)
+	//	{
+	//		return true;
+	//	}
+	//}
+	//return false;
+}
+
+bool BoundingBox::intersects(BoundingCircle & other)
+{
+	if (!other.enabled || !enabled)return false;
+
+	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
+	//端点
+	float dx, dy, r;
+	//線分
+	Vector2 pq, pm;
+	float inner, k, pqd2, pmd2, phd2, d2;
+	//内側
+	Vector2 pp, inpm;
+	float ininner, outer, theta[2];
+
+	//端点と触れているかどうか
+	for (int i = 0; i < 4; i++)
+	{
+		dx = component_.point[i].x - other.component_.point[0].x;
+		dy = component_.point[i].y - other.component_.point[0].y;
+		r = other.component_.radius;
+		if ((dx*dx) + (dy*dy) < (r*r))
+		{
+			return true;
+		}
+	}
+
+	//線分に触れているかどうか
+	for (int i = 0; i < 4; i++)
+	{
+		pq = CreateVector(component_.point[intSet[i][0]], component_.point[intSet[i][1]]);
+		pm = CreateVector(component_.point[intSet[i][0]], other.component_.point[0]);
+
+		//inner = Vector2::Dot(pq, pm);
+		inner = InnerProduct(pq, pm);
+		pqd2 = pq.LengthSquared();
+		pmd2 = pm.LengthSquared();
+
+		k = inner / pqd2;
+
+		if (k < 0 || 1 < k)continue;
+
+		phd2 = (inner*inner) / pqd2;
+		d2 = pmd2 - phd2;
+
+		if (d2 < other.component_.radius*other.component_.radius)return true;
+	}
+	//四角の内側かどうか
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			pp = CreateVector(component_.point[i * 3], component_.point[1 + i]);
+			inpm = CreateVector(component_.point[i * 3], other.component_.point[0]);
+
+			ininner = InnerProduct(pp, inpm);
+			outer = OuterProduct(pp, inpm);
+
+			theta[i] = (atan2(outer, ininner)*(180 / MathHelper::Pi));
+		}
+		if (0 <= theta[0] && theta[0] <= 90 &&
+			0 <= theta[1] && theta[1] <= 90)
+		{
+			return true;
+		}
+	}
+	return false;
 
 }
+
 //bool BoundingBox::isIntersectOtherRayToThisLine(BoundingBox & other, int point1, int point2)
 //{
 //	float otherPoint1 =

@@ -9,6 +9,8 @@ class Capsule;
 class Model;
 class BoundingBox;
 class BoundingCapsule;
+class BoundingSegment;
+class BoundingCircle;
 
 struct BodyData {
 	std::string name;
@@ -25,6 +27,8 @@ public:
 	virtual bool intersects(Model& other) { return false; }
 	virtual bool intersects(BoundingBox& other) { return false; }
 	virtual bool intersects(BoundingCapsule& other) { return false; }
+	virtual bool intersects(BoundingSegment& other) { return false; }
+	virtual bool intersects(BoundingCircle& other) { return false; }
 	virtual void update(const Vector3& center) {}
 	virtual void update(const Vector2& center) {}
 	virtual void draw() const {}
