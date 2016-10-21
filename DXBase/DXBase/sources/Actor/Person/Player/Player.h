@@ -26,14 +26,16 @@ public:
 	void setBody(PlayerBodyPtr main, PlayerBodyPtr sub);
 	PlayerBodyPtr getMainBody();
 	PlayerBodyPtr getSubBody();
+
+	void createOval(Vector3 r_pos, Vector3 l_pos, int height)const;
+	void createOval(Vector3 center, float width, int height)const;
 	//void field();
 private:
 	void createWindow();
 	StateMgr stateMgr_;
 
 	int hp_;
-
-
+	
 	PlayerBodyPtr main_body_;
 	PlayerBodyPtr sub_body_;
 };

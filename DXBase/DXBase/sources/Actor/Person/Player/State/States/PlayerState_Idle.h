@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Base/PlayerState.h"
+#include "../PlayerState.h"
 #include "../Player_EnumState.h"
 
 #include "../../PlayerBody.h"

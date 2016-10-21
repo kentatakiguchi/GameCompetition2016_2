@@ -1,9 +1,8 @@
 #include "Player.h"
-#include "State/Player_StateMgr.h"
 #include "State/States/State_Dammy.h"
+#include "State/States/PlayerState_StandBy.h"
 #include "State/States/PlayerState_Idle.h"
 #include "State/States/PlayerState_Move.h"
-#include "State/States/PlayerState_MoveL.h"
 #include "State/States/PlayerState_Hold.h"
 #include "State/States/PlayerState_Jump.h"
 #include "State/States/PlayerState_Attack.h"
@@ -24,7 +23,7 @@ const float MAX_NORMAL_LENGTH = 100.0f;
 //const float MAX_STRETCH_LENGTH = 100.0f;
 
 Player::Player(IWorld * world, const Vector3 & position) :
-	Actor(world, "Player", position, CollisionBase()){
+	Actor(world, "Player", position, CollisionBase(Vector2(0,0), Vector2(0, 0), 10.0f)){
 
 	// モデルの読み込み
 	//modelHandle_ = MV1DuplicateModel(ResourceLoader::GetInstance().getModelID(ModelID::PLAYER));
@@ -37,16 +36,16 @@ Player::Player(IWorld * world, const Vector3 & position) :
 	addChild(std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ + Vector3(MAX_NORMAL_LENGTH / 2, 0, 0)));
 	addChild(std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ - Vector3(MAX_NORMAL_LENGTH / 2, 0, 0)));
 
+	stateMgr_.add((unsigned int)Player_EnumState::STAND_BY, std::make_shared<PlayerState_StandBy>());
 	stateMgr_.add((unsigned int)Player_EnumState::IDLE, std::make_shared<PlayerState_Idle>());
-	stateMgr_.add((unsigned int)Player_EnumState::MOVE_R, std::make_shared<PlayerState_Move>());
-	stateMgr_.add((unsigned int)Player_EnumState::MOVE_L, std::make_shared<PlayerState_MoveL>());
+	stateMgr_.add((unsigned int)Player_EnumState::MOVE, std::make_shared<PlayerState_Move>());
 	stateMgr_.add((unsigned int)Player_EnumState::HOLD, std::make_shared<PlayerState_Hold>());
 	stateMgr_.add((unsigned int)Player_EnumState::JUMP, std::make_shared<PlayerState_Jump>());
 	stateMgr_.add((unsigned int)Player_EnumState::QUICK, std::make_shared<PlayerState_Move>());
 	stateMgr_.add((unsigned int)Player_EnumState::ATTACK, std::make_shared<PlayerState_Attack>());
 	stateMgr_.add((unsigned int)Player_EnumState::ATTACK2, std::make_shared<PlayerState_Attack2>());
 	stateMgr_.add((unsigned int)Player_EnumState::DAMAGE, std::make_shared<PlayerState_Damage>());
-	stateMgr_.changeState(*this, IState::StateElement((unsigned int)Player_EnumState::IDLE));
+	stateMgr_.changeState(*this, IState::StateElement((unsigned int)Player_EnumState::STAND_BY));
 
 	hp_ = 10;
 
@@ -59,6 +58,9 @@ Player::~Player(){}
 void Player::onUpdate(float deltaTime) {
 
 	stateMgr_.action(*this, deltaTime);
+
+	body_.transform(Vector2(main_body_->getPosition().x, main_body_->getPosition().y), Vector2(sub_body_->getPosition().x, sub_body_->getPosition().y), 10);
+
 
 	//animation_.changeAnim(motion_);
 	//animation_.update(deltaTime);
@@ -75,13 +77,9 @@ void Player::onDraw() const{
 	// プレイヤーの描画
 	Vector3 center =  (main_body_->getPosition() + sub_body_->getPosition()) / 2;
 	float dis = Vector3::Distance(main_body_->getPosition(), sub_body_->getPosition());
-	if (dis > MAX_NORMAL_LENGTH) {
-		//DrawOval(center.x, center.y, dis, body_.component_.radius_ * 5, GetColor(0, 255, 255), TRUE);
-	}
-	else {
-		//DrawOval(center.x, center.y, MAX_NORMAL_LENGTH, body_.component_.radius_ * 5, GetColor(0, 255, 255), TRUE);
 
-	}
+	createOval(main_body_->getPosition(), sub_body_->getPosition(), body_.GetCapsule().component_.radius * 5);
+
 
 	//DrawFormatString(25, 25, GetColor(255, 255, 255), "座標 : x->%d, z->%d", (int)position_.x, (int)position_.z);
 	//DrawFormatString(25, 50, GetColor(255, 255, 255), "HP : %d", hp_);
@@ -119,6 +117,39 @@ Player::PlayerBodyPtr Player::getMainBody() {
 
 Player::PlayerBodyPtr Player::getSubBody(){
 	return sub_body_;
+}
+
+void Player::createOval(Vector3 r_pos, Vector3 l_pos, int height) const
+{
+	Vector3 vec = (r_pos - l_pos).Normalize();
+	Vector3 center = (r_pos + l_pos) / 2;
+
+	float dis = Vector3::Distance(r_pos, l_pos);
+	float angle = Vector3::Angle(Vector3::Right, vec);
+
+
+	float a = 0;
+	if (dis > MAX_NORMAL_LENGTH) a = dis;
+	else a = MAX_NORMAL_LENGTH;
+
+	float b = height;
+
+	for (int i = 0; i < dis * 4; i++) {
+
+		float x = i - dis * 2;
+		float y = std::sqrt(b * b * (1 - ((x * x) / (a * a))));
+
+		Vector3 pos_p = center + Vector3(x, y)* Matrix::CreateFromAxisAngle(Vector3::Forward, angle);
+		Vector3 pos_n = center + Vector3(x, -y)* Matrix::CreateFromAxisAngle(Vector3::Forward, angle);
+	
+		DrawPixel(pos_p.x, pos_p.y, GetColor(0, 255, 0));
+		DrawPixel(pos_n.x, pos_n.y, GetColor(0, 255, 0));
+	}
+}
+
+void Player::createOval(Vector3 center, float width, int height) const
+{
+	
 }
 
 void Player::createWindow()

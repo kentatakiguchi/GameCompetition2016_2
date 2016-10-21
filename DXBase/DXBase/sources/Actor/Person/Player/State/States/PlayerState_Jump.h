@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Base/PlayerState.h"
+#include "../PlayerState.h"
 
 class PlayerState_Jump : public PlayerState {
 public:

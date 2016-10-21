@@ -14,7 +14,7 @@
 const Vector3 START_POS = Vector3(50, 50, 0);
 
 GamePlayScene::GamePlayScene() : 
-	id(0) {
+	id(0){
 	isEnd_ = false;
 }
 
@@ -46,10 +46,94 @@ void GamePlayScene::start() {
 	//}
 
 	status_ = Status(10);
+
+
+
+
+
+
+	texHandle = LoadGraph("resources/sprite/001.jpg");
+	//GetGraphSize(texHandle, &size_x, &size_y);
+
+	////分割した際の個々の画像サイズ
+	//div_size_ = Vector2(size_x / row_, size_y / column_);
+
+	////配列の確保
+	//sprites_ = std::vector<std::vector<int>>(column_, std::vector<int>(row_));
+	////分割後のidを格納
+	//for (int i = 0; i < column_; ++i) {
+	//	for (int j = 0; j < row_; ++j) {
+	//		float src_x = size_x / row_ * j;
+	//		float src_y = size_y / column_ * i;
+	//		sprites_[i][j] = DerivationGraph(src_x, src_y, div_size_.x, div_size_.y, texHandle);
+	//	}
+	//}
+
+	//vib_center_ = div_size_ * 2;
+
+	//position_.x = div_size_.x * 4;
+	//position_.y = div_size_.y * 2;
+
+	//velocity_ = Vector2::Zero;
+	//accelarate_ = Vector2::Zero;
+
+	//natural_length_ = div_size_.x * 2;
+
+
+	//spring_constant_ = 10.0f;
+	//attenuation_constant_ = 0.5f;
+	//mass_ = 0.3f;
+	//angular_freq_ = std::sqrtf(spring_constant_ / mass_);
+	//p_ = attenuation_constant_ / 2 / mass_;
+	//e_ = 2.7f;
+	//time_ = 0;
+
+	//amplitude_ = div_size_.x * 3;
+
+	//phase_ = position_;
+
+	//puyo_ = Puyo_Texture(texHandle, 10, 10);
 }
 
 void GamePlayScene::update() {
 	world_->update(Time::GetInstance().deltaTime());
+
+	time_ += Time::GetInstance().deltaTime();
+
+
+	//position_.x = div_size_.x * 4 + velocity_.x;
+	//position_.y = div_size_.y * 2 + velocity_.y;
+	//velocity_.x = amplitude_ * angular_freq_ * std::cos(angular_freq_ * time_ + phase_.x);
+	//velocity_.y = amplitude_ * angular_freq_ * std::cos(angular_freq_ * time_ + phase_.y);
+
+
+	//position_.x = div_size_.x * 4 + amplitude_ * std::pow(e_ ,-p_ * time_) * std::sin(angular_freq_ * time_ + phase_.x);
+	//position_.y = div_size_.y * 2 + amplitude_ * std::pow(e_, -p_ * time_) * std::sin(angular_freq_ * time_ + phase_.y);
+
+
+	//position_.x += velocity_.x * time_;
+	////position_y_ += velocity_y_ * time_;
+
+	//velocity_.x += accelarate_.x * time_;
+	////velocity_y_ += accelarate_y_ * time_;
+
+	//accelarate_.x = -spring_constant_ * ((position_.x - vib_center_.x) - natural_length_);
+	////accelarate_y_ = 0;
+
+	//DrawGraph(position_.x, position_.y, sprites_[2][2], FALSE);
+	////DrawGraph(vib_center_.x, vib_center_.y, sprites_[2][2], FALSE);
+
+	//DrawFormatString(550, 150, GetColor(255, 255, 255), "%d, %d", (int)position_.x, (int)position_.y);
+
+
+	//puyo_.calc_acc();
+	//puyo_.calc_pos();
+
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::SPACE)) puyo_.trans_node_pos();
+	
+	//DrawFormatString(550, 150, GetColor(255, 255, 255), "%d, %d", (int)(puyo_.get_node_data(3, 3).get_pos().x), (int)(puyo_.get_node_data(3, 3).get_pos().y));
+	//DrawFormatString(550, 175, GetColor(255, 255, 255), "%d, %d", (int)(puyo_.get_node_data(3, 3).get_acc().x), (int)(puyo_.get_node_data(3, 3).get_acc().y));
+	//DrawFormatString(550, 200, GetColor(255, 255, 255), "%d, %d", (int)(puyo_.get_node_data(2, 2).get_acc().x), (int)(puyo_.get_node_data(2, 2).get_acc().y));
 
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN)) isEnd_ = true;
 }
@@ -58,6 +142,8 @@ void GamePlayScene::draw() const {
 	//world描画
 	world_->draw();
 
+	//puyo_.draw();
+
 	DrawFormatString(550, 25, GetColor(255, 255, 255), "キャラ移動：方向キー");
 	DrawFormatString(550, 50, GetColor(255, 255, 255), "カメラ回転：WASDキー");
 	DrawFormatString(550, 75, GetColor(255, 255, 255), "ジャンプ：SPACEキー");
@@ -65,6 +151,9 @@ void GamePlayScene::draw() const {
 	DrawFormatString(550, 125, GetColor(255, 255, 255), "攻撃2：Xキー");
 
 	DrawFormatString(550, 550, GetColor(255, 255, 255), "ENTERボタンでリザルトへ");
+
+
+
 }
 
 void GamePlayScene::end() {

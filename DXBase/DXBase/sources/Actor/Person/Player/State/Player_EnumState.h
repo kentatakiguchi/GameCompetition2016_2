@@ -1,10 +1,11 @@
 #pragma once
 
+// プレイヤーのステート一覧
 enum class Player_EnumState{
 	DAMMY,
+	STAND_BY,
 	IDLE,
-	MOVE_R,
-	MOVE_L,
+	MOVE,
 	HOLD,
 	QUICK,
 	JUMP,

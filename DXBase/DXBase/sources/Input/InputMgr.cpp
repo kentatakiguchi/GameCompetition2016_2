@@ -92,3 +92,10 @@ bool InputMgr::IsMoving(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
 	}
 	return false;
 }
+
+bool InputMgr::IsStoped(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
+	if (!IsKeyOn(up) && !IsKeyOn(down) && !IsKeyOn(right) && !IsKeyOn(left)) {
+		return true;
+	}
+	return false;
+}

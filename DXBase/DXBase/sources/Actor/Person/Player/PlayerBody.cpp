@@ -6,7 +6,7 @@ const float MAX_NORMAL_LENGTH = 100.0f;
 const float MAX_STRETCH_LENGTH = 150.0f;
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector3 & position) :
-	Actor(world, name, position, CollisionBase()){
+	Actor(world, name, position, CollisionBase(Vector2(0, 0), Vector2(0, 0), 10.0f)){
 	selected_ = false;
 }
 
@@ -19,17 +19,18 @@ void PlayerBody::onUpdate(float deltaTime){
 	//// プレーヤがいない
 	//if (player == nullptr) return;
 
-	position_ = Vector3::Clamp(position_, Vector3::Zero, Vector3(640, 480, 0) - Vector3(50, 50, 0));
+	position_ = Vector3::Clamp(position_, Vector3(0,0,0), Vector3(600, 300, 0));
 
+	//DrawFormatString(25, 50, GetColor(255, 255, 255), "座標 : x->%d, z->%d", (int)position_.x, (int)position_.z);
 
 }
 
 void PlayerBody::onDraw() const{
 	if (!selected_) {
-		//DrawCircle(position_.x, position_.y, body_.component_.radius_, GetColor(0, 0, 255), FALSE);
+		DrawCircle(position_.x, position_.y, body_.GetCapsule().component_.radius, GetColor(0, 0, 255), FALSE);
 	}
 	else {
-		//DrawCircle(position_.x, position_.y, body_.component_.radius_, GetColor(0, 255, 0), FALSE);
+		DrawCircle(position_.x, position_.y, body_.GetCapsule().component_.radius, GetColor(0, 255, 0), FALSE);
 	}
 }
 
@@ -59,7 +60,27 @@ void PlayerBody::move(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
 	}
 	position_ += velocity_ * SPEED;
 
+	//// プレーヤを検索
+	//auto player = world_->findActor("Player");
+	//// プレーヤがいない
+	//if (player == nullptr) return;
+
+	//position_.y = MathHelper::Clamp(position_.y, player->getPosition().y - 2.5f, player->getPosition().y + 2.5f);
+
 	selected_ = true;
+}
+
+void PlayerBody::move_ver(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
+	velocity_ = Vector3::Zero;
+
+	if (InputMgr::GetInstance().IsKeyOn(right)) {
+		velocity_.x = 1;
+	}
+	if (InputMgr::GetInstance().IsKeyOn(left)) {
+		velocity_.x = -1;
+	}
+
+	position_ += velocity_ * SPEED;
 }
 
 void PlayerBody::chase() {

@@ -5,22 +5,29 @@
 #include "../../../../Base/Actor.h"
 #include <unordered_map>
 
+// ステートの処理管理
 class StateMgr{
 public:
+	// コンストラクタ
 	StateMgr();
 public:
+	// 更新処理
 	void action(Actor & actor, float deltaTime) ;
+	// ステートの変更処理
 	void changeState(Actor & actor, IState::StateElement element);
-	// シーンの追加
+	// ステートの追加
 	void add(unsigned int state, const IStatePtr& scene);
+	// 現在のステート
 	unsigned int currentState();
 private:
 	// コピー禁止
 	StateMgr(const StateMgr& other) = delete;
 	StateMgr& operator = (const StateMgr& other) = delete;
 protected:
+	// ステート登録用map
 	std::unordered_map<unsigned int, IStatePtr> states_;
+	// 現在のステート
 	IStatePtr currentState_;
+	// 現在のステート名
 	unsigned int currentStateName_;
-	Actor actor_;
 };

@@ -21,6 +21,7 @@ public:
 	bool IsKeyUp(KeyCode handle);
 
 	bool IsMoving(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
+	bool IsStoped(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 private:
 	static const int MAX_KEY_NUM = 256;
 	

@@ -163,6 +163,8 @@
     <ClInclude Include="sources\Actor\Body\BoundigShphere.h" />
     <ClInclude Include="sources\Actor\Body\BoundingBox.h" />
     <ClInclude Include="sources\Actor\Body\BoundingCapsule.h" />
+    <ClInclude Include="sources\Actor\Body\BoundingCircle.h" />
+    <ClInclude Include="sources\Actor\Body\BoundingSegment.h" />
     <ClInclude Include="sources\Actor\Body\Capsule.h" />
     <ClInclude Include="sources\Actor\Body\CollisionBase.h" />
     <ClInclude Include="sources\Actor\Body\Model.h" />
@@ -171,10 +173,13 @@
     <ClInclude Include="sources\Actor\Body\ShapeType.h" />
     <ClInclude Include="sources\Actor\Camera\Camera.h" />
     <ClInclude Include="sources\Actor\Light\Light.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\BaseEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemy.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\EnemyManager.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\EnemySpawner.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemy_AttackRange.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\States\Enemy_IdleState.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\WeakEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Player\Player.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody_Connector.h" />
@@ -182,11 +187,11 @@
     <ClInclude Include="sources\Actor\Person\Player\State\Base\ActionType.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IState.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IStatePtr.h" />
-    <ClInclude Include="sources\Actor\Person\Player\State\Base\PlayerState.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\PlayerStatePtr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\StateMgr.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\PlayerState.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\PlayerStatePtr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Player_EnumState.h" />
-    <ClInclude Include="sources\Actor\Person\Player\State\Player_StateMgr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Attack.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Attack2.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Damage.h" />
@@ -194,12 +199,13 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Idle.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Jump.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Move.h" />
-    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_MoveL.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_StandBy.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\State_Dammy.h" />
     <ClInclude Include="sources\Actor\Person\Player\Status\Status.h" />
     <ClInclude Include="sources\Actor\TestObject\TestObject.h" />
     <ClInclude Include="sources\Actor\TestPlayer\TestPlayer.h" />
     <ClInclude Include="sources\Animation\Animation.h" />
+    <ClInclude Include="sources\Animation\Animation2D.h" />
     <ClInclude Include="sources\AquaLib\AquaLib.h" />
     <ClInclude Include="sources\AquaLib\A_Utility.h" />
     <ClInclude Include="sources\FileReader\CsvReader.h" />
@@ -217,6 +223,7 @@
     <ClInclude Include="sources\Game\Time.h" />
     <ClInclude Include="sources\Input\InputMgr.h" />
     <ClInclude Include="sources\Input\KeyCode.h" />
+    <ClInclude Include="sources\Renderer\Puyo_Texture.h" />
     <ClInclude Include="sources\Renderer\Renderer.h" />
     <ClInclude Include="sources\ResourceID.h" />
     <ClInclude Include="sources\ResourceLoader\ResourceLoader.h" />
@@ -230,6 +237,7 @@
     <ClInclude Include="sources\Scene\KataokaScene\KataokaScene.h" />
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h" />
     <ClInclude Include="sources\Scene\Title\TitleScene.h" />
+    <ClInclude Include="sources\Scene\YajimaScene\YajimaScene.h" />
     <ClInclude Include="sources\World\IWorld.h" />
     <ClInclude Include="sources\World\IWorldPtr.h" />
     <ClInclude Include="sources\World\World.h" />
@@ -241,6 +249,8 @@
     <ClCompile Include="sources\Actor\Base\ActorManager.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingBox.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingCapsule.cpp" />
+    <ClCompile Include="sources\Actor\Body\BoundingCircle.cpp" />
+    <ClCompile Include="sources\Actor\Body\BoundingSegment.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingSpherer.cpp" />
     <ClCompile Include="sources\Actor\Body\Capsule.cpp" />
     <ClCompile Include="sources\Actor\Body\CollisionBase.cpp" />
@@ -249,16 +259,18 @@
     <ClCompile Include="sources\Actor\Body\Segment.cpp" />
     <ClCompile Include="sources\Actor\Camera\Camera.cpp" />
     <ClCompile Include="sources\Actor\Light\Light.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\BaseEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemy.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\EnemyManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\EnemySpawner.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemy_AttackRange.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\WeakEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Player.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerBody.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerBody_Connector.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Player_AttackRange.cpp" />
-    <ClCompile Include="sources\Actor\Person\Player\State\Base\PlayerState.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp" />
-    <ClCompile Include="sources\Actor\Person\Player\State\Player_StateMgr.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\PlayerState.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Attack.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Attack2.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Damage.cpp" />
@@ -266,11 +278,12 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Idle.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Jump.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Move.cpp" />
-    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_MoveL.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_StandBy.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Status\Status.cpp" />
     <ClCompile Include="sources\Actor\TestObject\TestObject.cpp" />
     <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
     <ClCompile Include="sources\Animation\Animation.cpp" />
+    <ClCompile Include="sources\Animation\Animation2D.cpp" />
     <ClCompile Include="sources\FileReader\CsvReader.cpp" />
     <ClCompile Include="sources\Math\MathHelper.cpp" />
     <ClCompile Include="sources\Math\Matrix.cpp" />
@@ -282,6 +295,7 @@
     <ClCompile Include="sources\Game\MyGame.cpp" />
     <ClCompile Include="sources\Game\Time.cpp" />
     <ClCompile Include="sources\Input\InputMgr.cpp" />
+    <ClCompile Include="sources\Renderer\Puyo_Texture.cpp" />
     <ClCompile Include="sources\ResourceLoader\ResourceLoader.cpp" />
     <ClCompile Include="sources\Scene\Base\SceneMgr.cpp" />
     <ClCompile Include="sources\Scene\Base\SceneNull.cpp" />
@@ -290,6 +304,7 @@
     <ClCompile Include="sources\Scene\KataokaScene\KataokaScene.cpp" />
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp" />
     <ClCompile Include="sources\Scene\Title\TitleScene.cpp" />
+    <ClCompile Include="sources\Scene\YajimaScene\YajimaScene.cpp" />
     <ClCompile Include="sources\World\World.cpp" />
   </ItemGroup>
   <ItemGroup>

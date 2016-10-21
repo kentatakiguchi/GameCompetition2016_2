@@ -19,6 +19,7 @@ public:
 	virtual void onCollide(Actor& other) override;
 	void changeMotion(float deltaTime);
 	void move(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
+	void move_ver(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 	void chase();
 	void gravity();
 	void circleClamp();
