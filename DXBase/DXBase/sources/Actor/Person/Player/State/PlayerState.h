@@ -33,4 +33,6 @@ protected:
 	Player::PlayerBodyPtr main_body_;
 	// sub となる部位
 	Player::PlayerBodyPtr sub_body_;
+	// タイマー
+	float timer_;
 };

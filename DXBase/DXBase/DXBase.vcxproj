@@ -182,7 +182,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\WeakEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Player\Player.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody.h" />
-    <ClInclude Include="sources\Actor\Person\Player\PlayerBody_Connector.h" />
+    <ClInclude Include="sources\Actor\Person\Player\PlayerConnector.h" />
     <ClInclude Include="sources\Actor\Person\Player\Player_AttackRange.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\ActionType.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IState.h" />
@@ -202,12 +202,14 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_StandBy.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\State_Dammy.h" />
     <ClInclude Include="sources\Actor\Person\Player\Status\Status.h" />
+    <ClInclude Include="sources\Actor\Person\Player\TestColl.h" />
     <ClInclude Include="sources\Actor\TestObject\TestObject.h" />
     <ClInclude Include="sources\Actor\TestPlayer\TestPlayer.h" />
     <ClInclude Include="sources\Animation\Animation.h" />
     <ClInclude Include="sources\Animation\Animation2D.h" />
     <ClInclude Include="sources\AquaLib\AquaLib.h" />
     <ClInclude Include="sources\AquaLib\A_Utility.h" />
+    <ClInclude Include="sources\Define.h" />
     <ClInclude Include="sources\FileReader\CsvReader.h" />
     <ClInclude Include="sources\Math\Math.h" />
     <ClInclude Include="sources\Math\MathHelper.h" />
@@ -267,7 +269,7 @@
     <ClCompile Include="sources\Actor\Person\Enemy\WeakEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Player.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerBody.cpp" />
-    <ClCompile Include="sources\Actor\Person\Player\PlayerBody_Connector.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\PlayerConnector.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Player_AttackRange.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\PlayerState.cpp" />
@@ -280,6 +282,7 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Move.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_StandBy.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Status\Status.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\TestColl.cpp" />
     <ClCompile Include="sources\Actor\TestObject\TestObject.cpp" />
     <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
     <ClCompile Include="sources\Animation\Animation.cpp" />

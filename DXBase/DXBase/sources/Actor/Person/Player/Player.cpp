@@ -10,7 +10,7 @@
 #include "State/States/PlayerState_Damage.h"
 
 #include "PlayerBody.h"
-#include "PlayerBody_Connector.h"
+#include "PlayerConnector.h"
 #include"../../Body/CollisionBase.h"
 
 #include "../../../ResourceLoader/ResourceLoader.h"
@@ -35,6 +35,7 @@ Player::Player(IWorld * world, const Vector3 & position) :
 
 	addChild(std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ + Vector3(MAX_NORMAL_LENGTH / 2, 0, 0)));
 	addChild(std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ - Vector3(MAX_NORMAL_LENGTH / 2, 0, 0)));
+	addChild(std::make_shared<PlayerConnector>(world_));
 
 	stateMgr_.add((unsigned int)Player_EnumState::STAND_BY, std::make_shared<PlayerState_StandBy>());
 	stateMgr_.add((unsigned int)Player_EnumState::IDLE, std::make_shared<PlayerState_Idle>());
@@ -61,7 +62,6 @@ void Player::onUpdate(float deltaTime) {
 
 	body_.transform(Vector2(main_body_->getPosition().x, main_body_->getPosition().y), Vector2(sub_body_->getPosition().x, sub_body_->getPosition().y), 10);
 
-
 	//animation_.changeAnim(motion_);
 	//animation_.update(deltaTime);
 
@@ -72,26 +72,25 @@ void Player::onUpdate(float deltaTime) {
 	//position_ = Vector3::Lerp(position_, curPosition, 0.8f);
 }
 
-void Player::onDraw() const{
+void Player::onLateUpdate(float deltaTime){
+	body_.transform(Vector2(main_body_->getPosition().x, main_body_->getPosition().y), Vector2(sub_body_->getPosition().x, sub_body_->getPosition().y), 10);
+
+	body_.draw();
+
 	if (main_body_ == nullptr || sub_body_ == nullptr)return;
-	// プレイヤーの描画
-	Vector3 center =  (main_body_->getPosition() + sub_body_->getPosition()) / 2;
-	float dis = Vector3::Distance(main_body_->getPosition(), sub_body_->getPosition());
 
 	createOval(main_body_->getPosition(), sub_body_->getPosition(), body_.GetCapsule().component_.radius * 5);
+}
 
-
-	//DrawFormatString(25, 25, GetColor(255, 255, 255), "座標 : x->%d, z->%d", (int)position_.x, (int)position_.z);
-	//DrawFormatString(25, 50, GetColor(255, 255, 255), "HP : %d", hp_);
+void Player::onDraw() const {
+	DrawFormatString(main_body_->getPosition().x, main_body_->getPosition().y, GetColor(255, 255, 255), "main");
+	DrawFormatString(sub_body_->getPosition().x, sub_body_->getPosition().y, GetColor(255, 255, 255), "sub");
 }
 
 void Player::onCollide(Actor & other){
 	//if (stateMgr_.currentState() == (unsigned int)Player_EnumState::DAMAGE)return;
 
-	//if (other.getName() == "Enemy_AttackRange") {
-	//	stateMgr_.changeState(*this, (unsigned int)Player_EnumState::DAMAGE);
-	//	hp_ -= 1;
-	//}
+
 }
 
 void Player::changeMotion(float deltaTime){
@@ -119,14 +118,16 @@ Player::PlayerBodyPtr Player::getSubBody(){
 	return sub_body_;
 }
 
-void Player::createOval(Vector3 r_pos, Vector3 l_pos, int height) const
+void Player::createOval(Vector3 main_pos, Vector3 sub_pos, int height) const
 {
-	Vector3 vec = (r_pos - l_pos).Normalize();
-	Vector3 center = (r_pos + l_pos) / 2;
+	Vector3 vec = (main_pos - sub_pos).Normalize();
+	Vector2 sign = Vector2(MathHelper::Sign(vec.x), MathHelper::Sign(vec.y));
+	vec *= sign.x;
+	float angle = Vector3::Angle(Vector3::Right * sign.x, vec) * sign.y;
 
-	float dis = Vector3::Distance(r_pos, l_pos);
-	float angle = Vector3::Angle(Vector3::Right, vec);
+	Vector3 center = (main_pos + sub_pos) / 2;
 
+	float dis = Vector3::Distance(main_pos, sub_pos);
 
 	float a = 0;
 	if (dis > MAX_NORMAL_LENGTH) a = dis;
@@ -135,21 +136,18 @@ void Player::createOval(Vector3 r_pos, Vector3 l_pos, int height) const
 	float b = height;
 
 	for (int i = 0; i < dis * 4; i++) {
-
 		float x = i - dis * 2;
 		float y = std::sqrt(b * b * (1 - ((x * x) / (a * a))));
 
-		Vector3 pos_p = center + Vector3(x, y)* Matrix::CreateFromAxisAngle(Vector3::Forward, angle);
-		Vector3 pos_n = center + Vector3(x, -y)* Matrix::CreateFromAxisAngle(Vector3::Forward, angle);
+		Vector3 pos_p = Vector3(x, y) * Matrix::CreateFromAxisAngle(Vector3::Forward, angle) + center;
+		Vector3 pos_n = Vector3(x, -y) * Matrix::CreateFromAxisAngle(Vector3::Forward, angle) + center;
 	
 		DrawPixel(pos_p.x, pos_p.y, GetColor(0, 255, 0));
 		DrawPixel(pos_n.x, pos_n.y, GetColor(0, 255, 0));
 	}
 }
 
-void Player::createOval(Vector3 center, float width, int height) const
-{
-	
+void Player::createOval(Vector3 center, float width, int height) const{
 }
 
 void Player::createWindow()

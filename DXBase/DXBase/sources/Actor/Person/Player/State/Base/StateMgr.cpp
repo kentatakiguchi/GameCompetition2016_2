@@ -7,6 +7,7 @@ StateMgr::StateMgr() {}
 void StateMgr::action(Actor & actor, float deltaTime) {
 	// 更新処理
 	currentState_->update(actor, deltaTime);
+	currentState_->end();
 	// 終了判定がtrueになった場合ステートを変更
 	if (currentState_->isEnd()) changeState(actor, currentState_->next());
 }

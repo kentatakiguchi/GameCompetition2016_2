@@ -12,6 +12,16 @@ public:
 
 	virtual void end() override;
 private:
+	float gsEasingInExpo(float t);
+	float gsEasingOutExpo(float t);
+	float gsEasingInOutExpo(float t);
+
+private:
 	Vector3 dir_;
+	float dump_;
 	float power_;
+
+	float dir_easeing_;
+	float gra_easeing_;
+
 };

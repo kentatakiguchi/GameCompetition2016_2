@@ -20,6 +20,7 @@ public:
 	Player(IWorld* world, const Vector3& position);
 	~Player();
 	virtual void onUpdate(float deltaTime) override;
+	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
 	void changeMotion(float deltaTime);
@@ -27,8 +28,9 @@ public:
 	PlayerBodyPtr getMainBody();
 	PlayerBodyPtr getSubBody();
 
-	void createOval(Vector3 r_pos, Vector3 l_pos, int height)const;
+	void createOval(Vector3 main_pos, Vector3 sub_pos, int height)const;
 	void createOval(Vector3 center, float width, int height)const;
+	
 	//void field();
 private:
 	void createWindow();

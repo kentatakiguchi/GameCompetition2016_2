@@ -21,10 +21,11 @@ void PlayerState_Move::update(Actor & actor, float deltaTime){
 void PlayerState_Move::end(){ }
 
 void PlayerState_Move::move(Actor & actor, float deltaTime) {
-	main_body_->move_ver();
-	sub_body_->move_ver(KeyCode::W, KeyCode::S, KeyCode::D, KeyCode::A);
-
+	main_body_->move_hor();
+	sub_body_->move_hor(KeyCode::W, KeyCode::S, KeyCode::D, KeyCode::A);
 	main_body_->chase();
 	sub_body_->chase();
+	main_body_->gravity();
+	sub_body_->gravity();
 }
 

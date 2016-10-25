@@ -29,6 +29,8 @@ public:
 	static float ACos(float c);
 
 	static float ATan(float y, float x);
+	// •Ï”‚Ì•„†‚ğó‚¯æ‚é
+	static int Sign(float value);
 };
 
 #endif

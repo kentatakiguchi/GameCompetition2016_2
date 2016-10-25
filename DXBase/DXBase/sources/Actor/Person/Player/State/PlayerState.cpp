@@ -3,19 +3,21 @@
 // コンストラクタ
 PlayerState::PlayerState() :
 	element_(-1),
+	timer_(0),
 	isEnd_(false){
 }
 
 // 全てのステートに共通する初期化処理
 void PlayerState::common_init(Actor & actor, ActionType type){
 	element_ = StateElement(-1, type);
+	timer_ = 0;
 	isEnd_ = false;
 
 	player_ = dynamic_cast<Player*>(&actor);
 	main_body_ = player_->getMainBody();
 	sub_body_ = player_->getSubBody();
 
-	// いずれかのBodyがnull出ない場合return
+	// いずれかのBodyがnullでない場合return
 	if (main_body_ != nullptr || sub_body_ != nullptr)return;
 
 	auto body1_ = std::static_pointer_cast<PlayerBody>(actor.findCildren((const std::string)"PlayerBody1"));
@@ -28,21 +30,6 @@ void PlayerState::common_init(Actor & actor, ActionType type){
 
 	main_body_->target(sub_body_);
 	sub_body_->target(main_body_);
-
-	//if (type == ActionType::None) {
-	//	main_body_ = body1_;
-	//	sub_body_ = body2_;
-	//}
-	//else if (type == ActionType::Right) {
-	//	main_body_ = compareMax(body1_, body2_);
-	//	sub_body_  = compareMin(body1_, body2_);
-	//}
-	//else if (type == ActionType::Left) {
-	//	main_body_ = compareMin(body1_, body2_);
-	//	sub_body_  = compareMax(body1_, body2_);
-	//}
-	//main_body_->target(sub_body_);
-	//sub_body_->target(main_body_);
 }
 
 // ステートの変更処理

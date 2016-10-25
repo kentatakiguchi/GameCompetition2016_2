@@ -53,3 +53,8 @@ float MathHelper::ACos(float c) {
 float MathHelper::ATan(float y, float x) {
 	return ToDegrees(std::atan2(y, x));
 }
+
+int MathHelper::Sign(float value){
+	if (value < 0)return -1;
+	return 1;
+}

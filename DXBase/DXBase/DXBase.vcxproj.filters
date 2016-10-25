@@ -198,9 +198,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\Player_EnumState.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\Player_StateMgr.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\Status\Status.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -231,19 +228,10 @@
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\PlayerBody_Connector.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Hold.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_MoveL.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\Base\ActionType.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\Base\PlayerState.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\Base\PlayerStatePtr.h">
@@ -283,6 +271,15 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Scene\YajimaScene\YajimaScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\TestColl.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Define.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\PlayerConnector.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -407,9 +404,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Move.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\Player_StateMgr.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\Status\Status.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -440,16 +434,7 @@
     <ClCompile Include="sources\Actor\Person\Player\PlayerBody.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\PlayerBody_Connector.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Hold.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_MoveL.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\Base\PlayerState.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\TestObject\TestObject.cpp">
@@ -483,6 +468,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Scene\YajimaScene\YajimaScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\TestColl.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\PlayerConnector.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

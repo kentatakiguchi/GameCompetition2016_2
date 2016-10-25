@@ -14,6 +14,5 @@ public:
 
 	virtual void end() override;
 private:
-	bool isReady();
 	void move();
 }; 
