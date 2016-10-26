@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "../TestPlayer/TestPlayer.h"
 #include "../../Input/KeyCode.h"
+#include "../../Math/MathHelper.h"
 // コンストラクタ
 Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, const CollisionBase& body) :
 	world_(world),
@@ -12,8 +13,15 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, co
 	dead_(false),
 	animation_(-1),
 	alpha_(0.0f),
+<<<<<<< HEAD
 	outPlayerFlag(false) {
 	body_.setPosition({position_.x, position_.y});
+=======
+	outPlayerFlag(false),
+	resPos(Vector2::Zero),
+	veloPlus(Vector2::Zero),
+	velo(Vector2::Zero) {
+>>>>>>> 3ad04f9e9befd3cf25c056d21498339e8af2b99a
 }
 
 // コンストラクタ
@@ -216,22 +224,22 @@ void Actor::ActorMove()
 	//worldを持ってなかったらリターン
 	if (world_ == nullptr) return;
 	//プレイヤーの座標を取得
-	Vector2 player = 
+	Vector2 player =
 		Vector2(world_->findActor("Player")->getPosition().x, world_->findActor("Player")->getPosition().y);
 	//プレイヤーで一定の範囲外に行ったら今の速度と逆の速度を足してあげる
 	if (getName() == "Player")
 	{
 		//x軸
-		if (((int)player.x < 200 || 600 < (int)player.x))
+		if ((int)player.x != 800 / 2)
 		{
-			position_ += Vector3(world_->MoveActor().x, 0.0f, 0.0f);
+			resPos.x = world_->MoveActor().x;
 			//x軸移動してます
 			moveFlag.x = 1;
 		}
 		//Y軸
-		if ((int)player.y > 400 || (int)player.y < 100)
+		if ((int)player.y != 600 / 2)
 		{
-			position_ += Vector3(0.0f, world_->MoveActor().y, 0.0f);
+			resPos.y = world_->MoveActor().y;
 			//y軸移動してます
 			moveFlag.y = 1;
 		}
@@ -240,18 +248,20 @@ void Actor::ActorMove()
 	else
 	{
 		//x軸
-		if ((int)player.x <= 200+ world_->MoveActor().x ||
-			(int)player.x>=600+ world_->MoveActor().x)
+		if ((int)player.x != 800 / 2)
 		{
-			position_ += Vector3(world_->MoveActor().x, 0.0f, 0.0f);
+			resPos.x = world_->MoveActor().x;
 		}
 		//Y軸
-		if ((int)player.y >= 400+ world_->MoveActor().y ||
-			(int)player.y <= 100+ world_->MoveActor().y)
+		if ((int)player.y != 600 / 2)
 		{
-			position_ += Vector3(0.0f, world_->MoveActor().y, 0.0f);
+			resPos.y = world_->MoveActor().y;
 		}
 	}
+	//補間処理
+	MathHelper::Spring(veloPlus.x, resPos.x, velo.x, 0.1f, 0.5f, 2.0f);
+	MathHelper::Spring(veloPlus.y, resPos.y, velo.y, 0.1f, 0.5f, 2.0f);
+	position_ += Vector3(veloPlus.x,veloPlus.y,0.0f);
 }
 
 // end of file

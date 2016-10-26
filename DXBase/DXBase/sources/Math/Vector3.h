@@ -50,7 +50,8 @@ struct Vector3 {
 	float Yaw() const;
 	//２つのベクトル間の鋭角を返します
 	static float Angle(const Vector3& from, const Vector3& to);
-	
+	//バネの補正
+	static void Spring(Vector3& pos, Vector3& resPos, Vector3& velo, float stiffness, float friction, float mass);
 	//Dxlib用変換関数
 	static VECTOR Vector3ToVECTOR(const Vector3& v);
 	

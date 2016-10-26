@@ -31,6 +31,8 @@ public:
 	static float ATan(float y, float x);
 	// •Ï”‚Ì•„†‚ğó‚¯æ‚é
 	static int Sign(float value);
+	//ƒoƒl•â³
+	static void Spring(float & num, float & resNum, float & velo, float stiffness, float friction, float mass);
 };
 
 #endif

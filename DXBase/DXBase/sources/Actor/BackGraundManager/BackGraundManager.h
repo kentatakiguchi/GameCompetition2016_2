@@ -42,4 +42,7 @@ private:
 	BackGraundState upBackStates;
 	//ínñ ÇÃîwåi
 	BackGraundState downBackStates;
+	//ï‚ê≥ä÷åW
+	Vector3 restPos;
+	Vector3 velo;
 };
