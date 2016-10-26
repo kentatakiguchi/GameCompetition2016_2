@@ -11,11 +11,11 @@ public:
 	MapChip(){}
 	//マップチップの生成
 	MapChip(IWorld* world, Vector2& position);
-	MapChip(std::shared_ptr<MapChip> chip, Vector2& position);
-	MapChip(MapChip& chip,Vector2& position);
+	MapChip(std::shared_ptr<MapChip> chip,IWorld* world, Vector2& position);
+	MapChip(MapChip& chip,IWorld* world,Vector2& position);
 	void set(Vector2& pos);
 	MapChip& operator = (std::shared_ptr<MapChip> other) {
-		return MapChip(other, Vector2(0, 0));
+		return MapChip(other,world_, Vector2(0, 0));
 	};
 
 private:

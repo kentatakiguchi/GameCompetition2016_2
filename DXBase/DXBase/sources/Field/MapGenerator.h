@@ -26,7 +26,7 @@ public:
 			for (int colN = 0; colN < reader_.columns(rowN); colN++)
 			{
 				if (reader_.geti(rowN, colN) == 0) continue;
-				world_->addActor(ActorGroup::Field, std::make_shared<MapChip>(chips[(reader_.geti(rowN, colN))], Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				world_->addActor(ActorGroup::Field, std::make_shared<MapChip>(chips[(reader_.geti(rowN, colN))],world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 
 			}
 		}
