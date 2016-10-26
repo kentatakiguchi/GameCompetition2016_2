@@ -3,6 +3,7 @@
 #include "../../Base/ActorGroup.h"
 #include"../../Body/CollisionBase.h"
 #include "Enemy_AttackRange.h"
+#include "FloorSearchPoint.h"
 
 
 BaseEnemy::BaseEnemy(IWorld * world, const Vector3& position, const float bodyScale) :
@@ -11,6 +12,7 @@ BaseEnemy::BaseEnemy(IWorld * world, const Vector3& position, const float bodySc
 	ap_(0),
 	speed_(1.0f),
 	initSpeed_(speed_),
+	scale_(bodyScale),
 	discoveryLenght_(50),
 	color_(GetColor(255, 255, 255)),
 	stateTimer_(0.0f),
@@ -19,9 +21,15 @@ BaseEnemy::BaseEnemy(IWorld * world, const Vector3& position, const float bodySc
 	discoveryPosition_(Vector3(0.0f, 0.0f, 0.0f)),
 	animation_(),
 	player_(nullptr),
-	enemyManager_(EnemyManager())
+	fsPointScript(nullptr),
+	enemyManager_(EnemyManager(position))
 {
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<WeakEnemy>(world_.get(), Vector3(15, 5, 0)));
 	
+	//fsPointScript = &*fsPoint_;
+
+	//objD->s
+	//fsPointScript = typeid(fsPoint_).name();
 }
 
 BaseEnemy::~BaseEnemy()
@@ -43,8 +51,10 @@ void BaseEnemy::onUpdate(float deltaTime)
 void BaseEnemy::onDraw() const
 {
 	auto stateChar = stateString_.c_str();
-	DrawGraph(position_.x - 1.0f, position_.y - 1.0f, ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
-	DrawString(position_.x, position_.y - 20, stateChar, GetColor(255, 255, 255));
+	DrawGraph(
+		position_.x - scale_, position_.y - scale_, 
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
+	DrawString(position_.x - scale_, position_.y - 20 - scale_, stateChar, GetColor(255, 255, 255));
 
 	//char lengthChar = static_cast<char>(enemyManager_.getPlayerLength());
 	//DrawString(position_.x + 50, position_.y - 20, &lengthChar, GetColor(255, 255, 255));
@@ -193,6 +203,27 @@ void BaseEnemy::searchMove()
 
 void BaseEnemy::chaseMove()
 {
+}
+
+// 床捜索オブジェクトの生成
+void BaseEnemy::createFSP()
+{
+	// 追加された位置分だけ生成する
+	for (int i = 0; i != fspPositionContainer_.size(); ++i) {
+		// 床捜索オブジェクトの追加
+		auto fsObj = std::make_shared<FloorSearchPoint>(world_, position_);
+		//fsPoint_ = std::make_shared<FloorSearchPoint>(world_, position_);
+		world_->addActor(ActorGroup::Effect, fsObj);
+		// 床オブジェクトのスクリプト取得
+		auto fspScript = &*fsObj;
+		//fsPointScript->setEnemyScale(Vector2(scale_, scale_));
+		// 追加
+		fspContainer_.push_back(fspScript);
+		fspContainer_[i]->setEnemyScale(Vector2(scale_, scale_));
+		fspContainer_[i]->setPosition(position_ + fspPositionContainer_[i]);
+		// エネミーマネージャー
+		enemyManager_.addFSP(fspScript);
+	}
 }
 
 // 敵が飲み込まれた時のスケールポイントを返します

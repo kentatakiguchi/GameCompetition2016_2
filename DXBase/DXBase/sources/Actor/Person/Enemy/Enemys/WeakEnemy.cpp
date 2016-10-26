@@ -40,13 +40,13 @@ void WeakEnemy::searchMove()
 	//BaseEnemy::searchMove();
 	// 通常時の速度に戻す
 	speed_ = initSpeed_;
-	auto direction = 1;
-	if ((int)(stateTimer_ / 2.0f) % 2 == 1)
-		direction = -1;
-	// 垂直移動
-	position_.y += -speed_ * direction;
+	//auto direction = 1;
+	//if ((int)(stateTimer_ / 2.0f) % 2 == 1)
+	//	direction = -1;
+	//// 垂直移動
+	//position_.y += -speed_ * direction;
 	// ボックス移動
-	//position_ += enemyManager_.boxMove() * speed_;
+	position_ += enemyManager_.boxMove() * speed_;
 }
 
 // 追跡時の行動です

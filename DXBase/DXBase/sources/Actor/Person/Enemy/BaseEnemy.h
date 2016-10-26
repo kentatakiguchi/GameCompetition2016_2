@@ -8,6 +8,8 @@
 #include "EnemyManager.h"
 #include <vector>
 
+class FloorSearchPoint;
+
 // モーション番号(仮)
 enum {
 	ENEMY_IDLE = 0,
@@ -84,6 +86,8 @@ protected:
 	virtual void searchMove();
 	// 追跡時の行動です
 	virtual void chaseMove();
+	// 床捜索オブジェクトの生成
+	void createFSP();
 
 public:
 	// 敵が飲み込まれた時のスケールポイントを返します
@@ -101,6 +105,7 @@ protected:
 	int ap_;						// アタックポイント
 	float speed_;					// 移動速度
 	float initSpeed_;				// 初期の移動速度
+	float scale_;					// 大きさ
 	float discoveryLenght_;			// プレイヤーに気づく距離
 
 	unsigned int color_;			// 球体の色
@@ -112,8 +117,15 @@ protected:
 
 	Animation2D animation_;			// アニメーション
 	ActorPtr player_;				// プレイヤー
+	//ActorPtr fsPoint_;				// 床捜索オブジェクト
 
-	EnemyManager enemyManager_;
+	EnemyManager enemyManager_;		// エネミーマネージャー
+	FloorSearchPoint* fsPointScript;
+
+	typedef std::vector<FloorSearchPoint*> FSPContainer;
+	FSPContainer fspContainer_;
+	typedef std::vector<Vector3> FSPPositionContainer;
+	FSPPositionContainer fspPositionContainer_;
 };
 
 #endif

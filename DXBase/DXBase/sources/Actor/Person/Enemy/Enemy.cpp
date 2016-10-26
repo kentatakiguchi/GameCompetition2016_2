@@ -27,6 +27,9 @@ Enemy::~Enemy(){
 
 void Enemy::onUpdate(float deltaTime){
 	updateState(deltaTime);
+	// “–‚½‚è”»’è‚ÌˆÚ“®
+	auto position = Vector2(position_.x, position_.y);
+	body_.translate(position);
 
 	animation_.changeAnim(motion_);
 	animation_.update(deltaTime);

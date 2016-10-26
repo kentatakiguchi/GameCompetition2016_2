@@ -1,7 +1,7 @@
 #ifndef WEAK_ENEMY_H_
 #define WEAK_ENEMY_H_
 
-#include "BaseEnemy.h"
+#include "../BaseEnemy.h"
 
 class WeakEnemy : public BaseEnemy {
 public:
