@@ -52,12 +52,19 @@ bool BoundingBox::intersects(BoundingBox & other)
 {
 	if (!enabled)return false;
 
+
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 
 	for (int i = 0; i < 4; i++)
 	{
 		for (int x = 0; x < 4; x++)
 		{
+			//判定の大きさ、位置が完全に一致した場合の例外
+			if(component_.point[intSet[i][0]].x==other.component_.point[intSet[x][0]].x&&component_.point[intSet[i][0]].y == other.component_.point[intSet[x][0]].y
+				&&component_.point[intSet[i][1]].x == other.component_.point[intSet[x][1]].x&&component_.point[intSet[i][1]].y == other.component_.point[intSet[x][1]].y)
+			{
+				return true;
+			}
 			float otherPoint1 =
 				(other.component_.point[intSet[x][0]].x - other.component_.point[intSet[x][1]].x)
 				*(component_.point[intSet[i][0]].y - other.component_.point[intSet[x][0]].y)
@@ -69,6 +76,7 @@ bool BoundingBox::intersects(BoundingBox & other)
 				+ (other.component_.point[intSet[x][0]].y - other.component_.point[intSet[x][1]].y)
 				*(other.component_.point[intSet[x][0]].x - component_.point[intSet[i][1]].x);
 
+			//2直線が交差しているかを調べる
 			if (otherPoint1*otherPoint2 < 0)
 			{
 				float otherPoint1 =
@@ -82,7 +90,7 @@ bool BoundingBox::intersects(BoundingBox & other)
 					+ (component_.point[intSet[i][0]].y - component_.point[intSet[i][1]].y)
 					*(component_.point[intSet[i][0]].x - other.component_.point[intSet[x][1]].x);
 
-				if (otherPoint1*otherPoint2 < 0)
+				if (otherPoint1*otherPoint2 <= 0)
 				{
 
 					return true;

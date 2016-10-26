@@ -13,6 +13,7 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, co
 	animation_(-1),
 	alpha_(0.0f),
 	outPlayerFlag(false) {
+	body_.setPosition({position_.x, position_.y});
 }
 
 // コンストラクタ
@@ -173,6 +174,11 @@ Animation Actor::getAnim() {
 	return animation_;
 }
 
+CollisionBase Actor::getBody()
+{
+	return body_;
+}
+
 // メッセージ処理
 void Actor::handleMessage(EventMessage message, void* param) {
 	onMessage(message, param);
@@ -198,8 +204,9 @@ void Actor::onCollide(Actor&) {
 
 // 衝突判定
 bool Actor::isCollide(Actor& other) {
+	body_.MovePos(Vector2( position_.x,position_.y ));
+	other.body_.MovePos(Vector2(other.position_.x, other.position_.y));
 	return body_.intersects(other.body_);
-
 }
 //アクターを全部プレイヤーと同期させる
 void Actor::ActorMove()

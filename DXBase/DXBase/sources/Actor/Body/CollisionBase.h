@@ -26,7 +26,8 @@ public:
 	//円判定を利用する場合
 	CollisionBase(Vector2& center, float circleRadius);
 	//線分判定を利用する場合
-	CollisionBase(const Vector2& startPoint, const Vector2& endPoint);
+	explicit CollisionBase(Vector2& startPoint, Vector2& endPoint);
+	void setPosition(Vector2 position);
 	//デバッグ用の判定表示
 	void draw() const;
 	//四角判定の大きさ、形状の変更
@@ -37,6 +38,8 @@ public:
 	void transform(Vector2& center, float circleRadius);
 	//線分判定の大きさ、形状を変更
 	void transform(Vector2& startPoint,Vector2& endPoint);
+	//判定の移動(自身のポジションを参照)
+	void MovePos(Vector2 & position);
 	//判定の移動
 	void translate(Vector2 position);
 	//対象と当たっているか  other:判定したい相手(CollisionBase) return:判定結果(bool)
@@ -64,4 +67,7 @@ private:
 	BoundingCircle circle_;
 	//線分判定
 	BoundingSegment segment_;
+
+	Vector2 movePoint[4];
+	float radius_;
 };

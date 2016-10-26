@@ -17,13 +17,53 @@ CollisionBase::CollisionBase(Vector2& startPoint, Vector2& endPoint, float capsu
 }
 
 CollisionBase::CollisionBase(Vector2 & center, float circleRadius):
-	box_(), capsule_(), segment_(), circle_(center,circleRadius), type_(CircleCol)
+	circle_(center, circleRadius), box_(), capsule_(), segment_(),  type_(CircleCol)
 {
 }
 
-CollisionBase::CollisionBase(const Vector2 & startPoint, const Vector2 & endPoint):
+CollisionBase::CollisionBase(Vector2 & startPoint, Vector2 & endPoint):
 	box_(), capsule_(), segment_(startPoint,endPoint), circle_(), type_(SegmentCol)
 {
+
+}
+
+void CollisionBase::setPosition(Vector2 position)
+{
+	switch (type_)
+	{
+	case BoxCol:
+	{
+		movePoint[0] = position - box_.component_.point[0];
+		movePoint[1] = position - box_.component_.point[1];
+		movePoint[2] = position - box_.component_.point[2];
+		movePoint[3] = position - box_.component_.point[3];
+		break;
+	}
+	case CapsuleCol:
+	{
+		movePoint[0] = position - capsule_.component_.point[0];
+		movePoint[1] = position - capsule_.component_.point[1];
+		radius_ = capsule_.component_.radius;
+		break;
+	}
+	case CircleCol:
+	{	
+		radius_ = circle_.component_.radius;
+	break;
+	}
+	case SegmentCol:
+	{
+		movePoint[0] = position - segment_.component_.point[0];
+		movePoint[1] = position - segment_.component_.point[1];
+		break;
+	}
+	case NoneCol:
+	{	break;
+	}
+	default:
+	{	break;
+	}
+	}
 }
 
 void CollisionBase::draw() const
@@ -67,6 +107,29 @@ void CollisionBase::transform(Vector2 & center, float circleRadius)
 void CollisionBase::transform(Vector2 & startPoint, Vector2 & endPoint)
 {
 	segment_ = segment_.transform(startPoint, endPoint);
+}
+
+void CollisionBase::MovePos(Vector2 & position)
+{
+	switch (type_)
+	{
+	case BoxCol:
+		box_ = BoundingBox(Vector2( position + movePoint[0] ), Vector2( position + movePoint[1] ), Vector2( position + movePoint[2] ), Vector2( position + movePoint[3] ));
+		break;
+	case CapsuleCol:
+		capsule_ = BoundingCapsule(Vector2( position + movePoint[0] ), Vector2( position + movePoint[1] ), radius_);
+		break;
+	case CircleCol:
+		circle_ = BoundingCircle(position,radius_);
+		break;
+	case SegmentCol:
+		segment_ = BoundingSegment(Vector2( position + movePoint[0] ), Vector2( position + movePoint[1] ));
+		break;
+	case NoneCol:
+		break;
+	default:
+		break;
+	}
 }
 
 void CollisionBase::translate(Vector2 position)

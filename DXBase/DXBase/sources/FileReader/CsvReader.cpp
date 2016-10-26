@@ -10,6 +10,7 @@ CsvReader::CsvReader() {
 // コンストラクタ
 CsvReader::CsvReader(const std::string& fileName) {
 	load(fileName);
+	
 }
 
 // ファイルの読み込み

@@ -15,7 +15,7 @@ public:
 	//四角の判定を作成する(判定を行わない場合)
 	explicit BoundingBox();
 	//使用しない
-	virtual bool intersects(BoundingSphere& other) override { return false; }
+	virtual bool intersects(BoundingSphere& other) override{ return false; }
 	//使用しない
 	virtual bool intersects(Capsule& other) override { return false; }
 	//使用しない
@@ -34,6 +34,9 @@ public:
 	virtual void debug() const override;
 	//判定の表示(デバッグ用)
 	virtual void draw() const override;
+	BoundingBox movePos(Vector2& position) {
+		return BoundingBox();
+	}
 	//自身(Box)を移動する position:移動量(Vector2) return:移動した結果(BoundingBox)
 	BoundingBox translate(const Vector2& position) const;
 	//自身(Box)を変形する topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2) return:変形した結果(BoundingBox)
@@ -69,7 +72,6 @@ public:
 			point[1] = topRight;
 			point[2] = bottomLeft;
 			point[3] = bottomRight;
-
 		}
 	};
 	//四角を生成するための4点を保存する
@@ -77,6 +79,7 @@ public:
 
 	//intersectsを使うかどうか true:判定する false:判定しない
 	bool enabled;
+
 
 
 };

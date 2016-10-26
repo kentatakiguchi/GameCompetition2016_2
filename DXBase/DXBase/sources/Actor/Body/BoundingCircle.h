@@ -12,7 +12,7 @@ public:
 	//カプセルの判定を作成する(判定を行う場合) topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2) isEnabled:判定をするかどうか(bool)
 	BoundingCircle(Vector2 center,float circleRadius, bool isEnabled);
 	//カプセルの判定を作成する(判定を行わない場合)
-	explicit BoundingCircle(float radius = -1);
+	BoundingCircle(float radius = -1);
 	//使用しない
 	virtual bool intersects(BoundingSphere& other) { return false; }
 	//使用しない

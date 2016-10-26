@@ -18,6 +18,7 @@ void ActorManager::initialize() {
 	actors_[ActorGroup::Enemy_Spawner] = std::make_shared<Actor>();
 	actors_[ActorGroup::Effect] = std::make_shared<Actor>();
 	actors_[ActorGroup::BACKGRAUND] = std::make_shared<Actor>();
+	actors_[ActorGroup::Field] = std::make_shared<Actor>();
 	root_.clearChildren();
 	root_.addChild(actors_[ActorGroup::Effect]);
 	root_.addChild(actors_[ActorGroup::EnemyBullet]);
@@ -27,6 +28,7 @@ void ActorManager::initialize() {
 	root_.addChild(actors_[ActorGroup::Enemy_Spawner]);
 	root_.addChild(actors_[ActorGroup::Player]);
 	root_.addChild(actors_[ActorGroup::BACKGRAUND]);
+	root_.addChild(actors_[ActorGroup::Field]);
 
 	velo = Vector2::Zero;
 }
@@ -64,5 +66,6 @@ void ActorManager::collide() {
 	//actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy_AttackRange]);
 	actors_[ActorGroup::Player_AttackRange]->collideChildren(*actors_[ActorGroup::Enemy]);
+	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Field]);
 
 }

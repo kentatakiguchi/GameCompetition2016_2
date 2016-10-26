@@ -10,6 +10,8 @@
 #include "../Body/BoundigShphere.h"
 #include "../Body/BoundingBox.h"
 #include "../Body/BoundingCapsule.h"
+#include "../Body/BoundingCircle.h"
+#include "../Body/BoundingSegment.h"
 #include"..//Body/CollisionBase.h"
 #include "../../Animation/Animation.h"
 #include <string>
@@ -76,6 +78,8 @@ public:
 	IWorld* getWorld();
 	// アニメーションの取得
 	Animation getAnim();
+	//Bodyの取得 return:CollisionBase
+	CollisionBase getBody();
 
 	// メッセージ処理
 	void handleMessage(EventMessage message, void* param);
@@ -92,8 +96,8 @@ private:
 	virtual void onDraw() const;
 	// 衝突した
 	virtual void onCollide(Actor& other);
-	// 衝突判定
 public:
+	// 衝突判定
 	bool isCollide(Actor& other);
 	void translate(Vector2& position) {
 		body_.translate(position);
@@ -107,7 +111,7 @@ private:
 private:
 	//1だったらtrue,0だったらfalse
 	Vector2 moveFlag;
-protected:
+public:
 	// ワールド
 	IWorld*				world_;
 	// 名前

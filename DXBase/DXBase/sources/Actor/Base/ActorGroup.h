@@ -9,7 +9,8 @@ enum class ActorGroup {
 	Enemy_Spawner,		// プレーヤ弾
 	EnemyBullet,		// 敵弾
 	Effect,				// エフェクト
-	BACKGRAUND
+	BACKGRAUND,
+	Field				//ステージ
 };
 
 #endif
