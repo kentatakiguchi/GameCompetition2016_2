@@ -1,5 +1,5 @@
 #include "TestObject.h"
-
+#include "../../Game/Time.h"
 TestObject::TestObject(IWorld * world, const Vector3 & position):
 	Actor(world, "Object", position, CollisionBase())
 {
@@ -12,6 +12,7 @@ TestObject::~TestObject()
 
 void TestObject::onUpdate(float deltaTime)
 {
+	position_.x += 200.0f*Time::GetInstance().deltaTime();
 }
 
 void TestObject::onDraw() const

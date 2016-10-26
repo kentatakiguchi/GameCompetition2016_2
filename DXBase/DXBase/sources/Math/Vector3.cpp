@@ -117,6 +117,20 @@ float Vector3::Angle(const Vector3 & from, const Vector3 & to){
 	return MathHelper::ACos(MathHelper::Clamp(dot, -1.0f, 1.0f));
 }
 
+void Vector3::Spring(Vector3 & pos, Vector3 & resPos, Vector3 & velo, float stiffness, float friction, float mass)
+{
+	// バネの伸び具合を計算
+	Vector3 stretch = (pos - resPos);
+	// バネの力を計算
+	Vector3 force = -stiffness * stretch;
+	// 加速度を追加
+	Vector3 acceleration = force / mass;
+	// 移動速度を計算
+	velo = friction * (velo + acceleration);
+	// 座標の更新
+	pos += velo;
+}
+
 //Dxlib用変換関数
 VECTOR Vector3::Vector3ToVECTOR(const Vector3& v) {
 	return VGet(v.x, v.y, v.z);

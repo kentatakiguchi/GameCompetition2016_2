@@ -86,7 +86,7 @@ void BackGraundManager::Update(float deltatime)
 		for (auto& j : i.positions)
 		{
 			//奥に行くほど遅くする
-			Vector2 vec = mPlayer->GetVelo()*(1.0f / layerNum);
+			Vector2 vec = mPlayer->GetSpringVelo()*(1.0f / layerNum);
 			//移動する場合flagには1が、移動しない場合flagには0が
 			vec = Vector2(vec.x*moveFlag.x, vec.y*moveFlag.y);
 			//プレイヤーベクトル加算
@@ -107,7 +107,7 @@ void BackGraundManager::Update(float deltatime)
 	for (auto& i : upBackStates.positions)
 	{
 		//一番奥の速度と一緒にする
-		Vector2 vec = mPlayer->GetVelo()*(1.0f / backStates.size());
+		Vector2 vec = mPlayer->GetSpringVelo()*(1.0f / backStates.size());
 		//移動する場合flagには1が、移動しない場合flagには0が
 		vec = Vector2(vec.x*moveFlag.x, vec.y*moveFlag.y);
 		//プレイヤー速度加算
@@ -127,7 +127,7 @@ void BackGraundManager::Update(float deltatime)
 	for (auto& i : downBackStates.positions)
 	{
 		//一番奥の速度と一緒にする
-		Vector2 vec = mPlayer->GetVelo()*(1.0f / backStates.size());
+		Vector2 vec = mPlayer->GetSpringVelo()*(1.0f / backStates.size());
 		//プレイヤー速度加算
 		i += vec;
 		//x軸のループ
@@ -141,7 +141,6 @@ void BackGraundManager::Update(float deltatime)
 		else if (i.y >= size.y)
 			i.y = -size.y - size.y + i.y;
 	}
-
 }
 
 void BackGraundManager::Draw() const
@@ -159,7 +158,6 @@ void BackGraundManager::Draw() const
 	}
 	for (auto i : downBackStates.positions)
 	{
-
+		DrawGraph(i.x, i.y, upBackStates.id, true);
 	}
-
 }

@@ -131,9 +131,15 @@ protected:
 
 	//範囲外にいるから背景がうごくフラグ
 	bool outPlayerFlag;
+	//ポジションに足す用速度
+	Vector2 veloPlus;
 private:
 	// 子アクター
 	std::forward_list<ActorPtr> children_;
+	//補正用速度
+	Vector2 velo;
+	//補正用ポジション
+	Vector2 resPos;
 };
 
 #endif

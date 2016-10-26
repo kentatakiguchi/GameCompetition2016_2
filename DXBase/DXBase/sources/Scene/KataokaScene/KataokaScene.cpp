@@ -21,7 +21,7 @@ void KataokaScene::start()
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
-	world_->addActor(ActorGroup::Player, std::make_shared<TestPlayer>(world_.get(), Vector3::Zero));
+	world_->addActor(ActorGroup::Player, std::make_shared<TestPlayer>(world_.get(), Vector3(800/2,600/2)));
 	world_->addActor(ActorGroup::Enemy, std::make_shared<TestObject>(world_.get(), Vector3::Zero));
 	backManager = new BackGraundManager(world_.get());
 	//先にセットされたテクスチャほど奥に描写される
