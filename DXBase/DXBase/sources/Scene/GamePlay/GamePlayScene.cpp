@@ -9,6 +9,8 @@
 #include "../../Actor/Person/Enemy/EnemySpawner.h"
 #include "../../ResourceLoader/ResourceLoader.h"
 #include "../../Actor/Person/Player/TestColl.h"
+#include "../../Field/MapGenerator.h"
+#include "../../Actor/BackGraundManager/BackGraundManager.h"
 #include <memory>
 #include <random>
 
@@ -29,7 +31,6 @@ void GamePlayScene::start() {
 
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
-
 	world_ = std::make_shared<World>();
 	//world_->addEventMessageListener(
 	//	[=](EventMessage msg, void* param) {
@@ -40,16 +41,19 @@ void GamePlayScene::start() {
 	world_->addCamera(std::make_shared<Camera>(world_.get()));
 	world_->addLight(std::make_shared<Light>(world_.get(), Vector3(10.0f, 10.0f, 10.0f)));
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), START_POS));
-
-	world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 0, 400, 0)));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 1, 400, 0)));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 2, 400, 0)));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 3, 400, 0)));
 	
-	world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 6, 400, 0)));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 6, 300, 0)));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 6, 200, 0)));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 6, 100, 0)));
+	MapGenerator gener = MapGenerator(world_.get());
+	gener.create("test.csv");
+
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 0, 400, 0)));
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 1, 400, 0)));
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 2, 400, 0)));
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 3, 400, 0)));
+	//
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 6, 400, 0)));
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 6, 300, 0)));
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 6, 200, 0)));
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<TestColl>(world_.get(), Vector3(100 * 6, 100, 0)));
 	//world_->addActor(ActorGroup::Enemy_Spawner, std::make_shared<EnemySpawner>(world_.get(), "./resources/file/test.csv"));
 
 	//for (int i = 0; i < 10; i++) {
@@ -58,9 +62,14 @@ void GamePlayScene::start() {
 
 	status_ = Status(10);
 
+	backManager = new BackGraundManager(world_.get());
+	//先にセットされたテクスチャほど奥に描写される
+	backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX);
+	backManager->SetBackGraund(TextureID::BACKGRAUND3_TEX);
+	backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX);
+	backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX);
 
-
-
+	backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 
 
 	texHandle = LoadGraph("resources/sprite/001.jpg");

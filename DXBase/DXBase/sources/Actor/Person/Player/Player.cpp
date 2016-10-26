@@ -59,15 +59,19 @@ Player::~Player(){}
 void Player::onUpdate(float deltaTime) {
 
 	stateMgr_.action(*this, deltaTime);
+	prePosition = mPositionVelo;
 
+	mPositionVelo = Vector2((main_body_->getPosition() + sub_body_->getPosition()).x, (main_body_->getPosition() + sub_body_->getPosition()).y)/2;
+	position_ = Vector3(mPositionVelo.x, mPositionVelo.y,0.0f);
+	curPosition = mPositionVelo;
+	mVelo = prePosition - curPosition;
 	body_.transform(Vector2(main_body_->getPosition().x, main_body_->getPosition().y), Vector2(sub_body_->getPosition().x, sub_body_->getPosition().y), 10);
 
 	//animation_.changeAnim(motion_);
 	//animation_.update(deltaTime);
 
 	//モーション遷移
-	//changeMotion(deltaTime);
-
+	//changeMotion(deltaTime)
 	// 新しい座標を保存する
 	//position_ = Vector3::Lerp(position_, curPosition, 0.8f);
 }

@@ -31,7 +31,17 @@ public:
 	void createOval(Vector3 main_pos, Vector3 sub_pos, int height)const;
 	void createOval(Vector3 center, float width, int height)const;
 	
-	//void field();
+
+	void field();	
+
+	Vector2 GetVelo()
+	{
+		return mVelo;
+	}
+	Vector2 GetSpringVelo()
+	{
+		return veloPlus;
+	}
 private:
 	void createWindow();
 	StateMgr stateMgr_;
@@ -40,5 +50,10 @@ private:
 	
 	PlayerBodyPtr main_body_;
 	PlayerBodyPtr sub_body_;
+
+	Vector2 prePosition;						// 移動前の座標	
+	Vector2 curPosition;						// 移動後の座標
+	Vector2 mVelo;                              //プレイヤーの速度
+	Vector2 mPositionVelo;                      //速度用の座標
 };
 

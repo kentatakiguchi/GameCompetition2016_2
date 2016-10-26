@@ -6,7 +6,7 @@ const float MAX_NORMAL_LENGTH = 100.0f;
 const float MAX_STRETCH_LENGTH = 150.0f;
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector3 & position) :
-	Actor(world, name, position, CollisionBase(Vector2::Zero, 20.0f)){
+	Actor(world, name, position, CollisionBase(Vector2(0, 0), 20.0f)) {
 }
 
 PlayerBody::~PlayerBody(){}
@@ -32,7 +32,7 @@ void PlayerBody::onLateUpdate(float deltaTime){
 
 void PlayerBody::onCollide(Actor & other){
 
-	if (other.getName() == "TestColl") {
+	if (other.getName() == "MapChip") {
 		auto pos = Vector2(position_.x, position_.y);
 
 		auto t_left =  other.getBody().GetBox().component_.point[0];

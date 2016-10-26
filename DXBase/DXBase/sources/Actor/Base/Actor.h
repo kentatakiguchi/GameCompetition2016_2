@@ -33,6 +33,8 @@ public:
 	virtual ~Actor() {}
 	// 更新
 	void update(float deltaTime);
+	// 更新
+	void late_update(float deltaTime);
 	// 描画
 	void draw() const;
 	// 衝突処理
@@ -92,6 +94,9 @@ private:
 	virtual void onMessage(EventMessage message, void* param);
 	// 更新
 	virtual void onUpdate(float deltaTime);
+
+	virtual void onLateUpdate(float deltaTime) ;
+
 	// 描画
 	virtual void onDraw() const;
 	// 衝突した

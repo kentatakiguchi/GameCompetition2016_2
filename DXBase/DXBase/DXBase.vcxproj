@@ -177,9 +177,11 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Enemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\EnemyManager.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\EnemySpawner.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemy_AttackRange.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\FloorSearchPoint.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\States\Enemy_IdleState.h" />
-    <ClInclude Include="sources\Actor\Person\Enemy\WeakEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Player\Player.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerConnector.h" />
@@ -210,6 +212,8 @@
     <ClInclude Include="sources\AquaLib\AquaLib.h" />
     <ClInclude Include="sources\AquaLib\A_Utility.h" />
     <ClInclude Include="sources\Define.h" />
+    <ClInclude Include="sources\Field\MapChip.h" />
+    <ClInclude Include="sources\Field\MapGenerator.h" />
     <ClInclude Include="sources\FileReader\CsvReader.h" />
     <ClInclude Include="sources\Math\Math.h" />
     <ClInclude Include="sources\Math\MathHelper.h" />
@@ -238,6 +242,8 @@
     <ClInclude Include="sources\Scene\GamePlay\GamePlayScene.h" />
     <ClInclude Include="sources\Scene\KataokaScene\KataokaScene.h" />
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h" />
+    <ClInclude Include="sources\Scene\Test\TestChara.h" />
+    <ClInclude Include="sources\Scene\Test\TestScene.h" />
     <ClInclude Include="sources\Scene\Title\TitleScene.h" />
     <ClInclude Include="sources\Scene\YajimaScene\YajimaScene.h" />
     <ClInclude Include="sources\World\IWorld.h" />
@@ -265,8 +271,10 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Enemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\EnemyManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\EnemySpawner.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemy_AttackRange.cpp" />
-    <ClCompile Include="sources\Actor\Person\Enemy\WeakEnemy.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\FloorSearchPoint.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Player.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerBody.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerConnector.cpp" />
@@ -287,6 +295,7 @@
     <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
     <ClCompile Include="sources\Animation\Animation.cpp" />
     <ClCompile Include="sources\Animation\Animation2D.cpp" />
+    <ClCompile Include="sources\Field\MapChip.cpp" />
     <ClCompile Include="sources\FileReader\CsvReader.cpp" />
     <ClCompile Include="sources\Math\MathHelper.cpp" />
     <ClCompile Include="sources\Math\Matrix.cpp" />
@@ -306,6 +315,7 @@
     <ClCompile Include="sources\Scene\GamePlay\GamePlayScene.cpp" />
     <ClCompile Include="sources\Scene\KataokaScene\KataokaScene.cpp" />
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp" />
+    <ClCompile Include="sources\Scene\Test\TestScene.cpp" />
     <ClCompile Include="sources\Scene\Title\TitleScene.cpp" />
     <ClCompile Include="sources\Scene\YajimaScene\YajimaScene.cpp" />
     <ClCompile Include="sources\World\World.cpp" />

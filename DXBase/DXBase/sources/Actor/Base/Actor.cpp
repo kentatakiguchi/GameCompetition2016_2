@@ -13,15 +13,11 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, co
 	dead_(false),
 	animation_(-1),
 	alpha_(0.0f),
-<<<<<<< HEAD
-	outPlayerFlag(false) {
-	body_.setPosition({position_.x, position_.y});
-=======
 	outPlayerFlag(false),
 	resPos(Vector2::Zero),
 	veloPlus(Vector2::Zero),
 	velo(Vector2::Zero) {
->>>>>>> 3ad04f9e9befd3cf25c056d21498339e8af2b99a
+		body_.setPosition({ position_.x, position_.y });
 }
 
 // コンストラクタ
@@ -41,7 +37,12 @@ void Actor::update(float deltaTime) {
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//移動update
-	ActorMove();
+	//ActorMove();
+}
+
+void Actor::late_update(float deltaTime){
+	onLateUpdate(deltaTime);
+	eachChildren([&](Actor& child) { child.late_update(deltaTime); });
 }
 
 // 描画
@@ -198,6 +199,10 @@ void Actor::onMessage(EventMessage, void*) {}
 
 // 更新
 void Actor::onUpdate(float) {}
+
+void Actor::onLateUpdate(float deltaTime)
+{
+}
 
 // 描画
 void Actor::onDraw() const {

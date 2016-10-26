@@ -7,7 +7,7 @@
 #include "../../Actor/Person/Player/Player.h"
 #include "../../Actor/Person/Enemy/Enemys/WeakEnemy.h"
 #include "../../Actor/Person/Enemy/Enemys/FloorTurnEnemy.h"
-#include "../../Actor/Person/Enemy/Enemys/PendulumEnemy.h"
+//#include "../../Actor/Person/Enemy/Enemys/PendulumEnemy.h"
 #include "../../Actor/Person/Enemy/EnemySpawner.h"
 #include "../../ResourceLoader/ResourceLoader.h"
 

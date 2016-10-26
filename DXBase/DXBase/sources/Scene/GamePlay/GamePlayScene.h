@@ -9,7 +9,7 @@
 #include "../../Renderer/Puyo_Texture.h"
 
 class World;
-
+class BackGraundManager;
 class GamePlayScene : public IScene{
 public:
 	GamePlayScene();
@@ -67,6 +67,7 @@ private:
 	int ModelHandle;
 	int GradTexHandle;
 
+	BackGraundManager* backManager;
 	//Puyo_Texture puyo_;
 
 };

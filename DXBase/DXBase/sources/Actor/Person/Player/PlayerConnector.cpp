@@ -5,7 +5,7 @@
 #include"../../Body/CollisionBase.h"
 
 PlayerConnector::PlayerConnector(IWorld * world) :
-	Actor(world, "PlayerConnector", Vector3::Zero, CollisionBase(Vector2::Zero, Vector2::Zero)){
+	Actor(world, "PlayerConnector", Vector3::Zero, CollisionBase(Vector2(0, 0), Vector2(0, 0))) {
 
 }
 

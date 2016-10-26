@@ -37,6 +37,7 @@ void ActorManager::initialize() {
 void ActorManager::update(float deltaTime) {
 	root_.update(deltaTime);
 	collide();
+	root_.late_update(deltaTime);
 	//MoveActor();
 	//root_.removeChildren();
 }
@@ -63,7 +64,7 @@ void ActorManager::handleMessage(EventMessage message, void* param) {
 
 // Õ“Ë”»’è
 void ActorManager::collide() {
-	//actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy]);
+	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy_AttackRange]);
 	actors_[ActorGroup::Player_AttackRange]->collideChildren(*actors_[ActorGroup::Enemy]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Field]);
