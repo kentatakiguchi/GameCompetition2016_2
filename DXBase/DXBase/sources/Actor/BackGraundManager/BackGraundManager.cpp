@@ -1,13 +1,15 @@
 #include "BackGraundManager.h"
 #include "../TestPlayer/TestPlayer.h"
-BackGraundManager::BackGraundManager(IWorld * world)
+#include "../Person/Player/Player.h"
+BackGraundManager::BackGraundManager(IWorld * world):
+	stageFlag(true)
 {
 	//分からないから一応
 	for (auto& i : backStates)
 		i.positions.clear();
 	backStates.clear();
 	//プレイヤー変換
-	mPlayer = dynamic_cast<TestPlayer*>(world->findActor("Player").get());
+	mPlayer = dynamic_cast<Player*>(world->findActor("Player").get());
 }
 
 BackGraundManager::~BackGraundManager()
@@ -56,10 +58,10 @@ void BackGraundManager::SetDownBackGraund(TextureID id)
 	downBackStates.size = ResourceLoader::GetInstance().GetTextureSize(id);
 	Vector2 size = upBackStates.size;
 	//ポジションを4つ入れる(4枚背景を張り付けるため)
-	downBackStates.positions.push_back(Vector2(0, 0));
 	downBackStates.positions.push_back(Vector2(0, size.y));
+	downBackStates.positions.push_back(Vector2(0, size.y*2));
 	downBackStates.positions.push_back(Vector2(size.x, size.y));
-	downBackStates.positions.push_back(Vector2(size.x, 0));
+	downBackStates.positions.push_back(Vector2(size.x, size.y*2));
 }
 
 void BackGraundManager::AllDeleteBackGraund()
@@ -156,8 +158,8 @@ void BackGraundManager::Draw() const
 			DrawGraph(j.x, j.y, i.id, true);
 		}
 	}
-	for (auto i : downBackStates.positions)
-	{
-		DrawGraph(i.x, i.y, upBackStates.id, true);
-	}
+	//for (auto i : downBackStates.positions)
+	//{
+	//	DrawGraph(i.x, i.y, downBackStates.id, true);
+	//}
 }

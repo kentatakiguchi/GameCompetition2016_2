@@ -1,6 +1,7 @@
 #include "World.h"
 #include "../Field/Field.h"
 #include "../Actor/TestPlayer/TestPlayer.h"
+#include "../Actor/Person/Player/Player.h"
 // コンストラクタ
 World::World() :
 	listener_([](EventMessage, void*) {}) {
@@ -82,7 +83,7 @@ void World::addEventMessageListener(
 
 Vector2 World::MoveActor()
 {
-	TestPlayer* player = dynamic_cast<TestPlayer*>(findActor("Player").get());
+	Player* player = dynamic_cast<Player*>(findActor("Player").get());
 	return player->GetVelo();
 }
 

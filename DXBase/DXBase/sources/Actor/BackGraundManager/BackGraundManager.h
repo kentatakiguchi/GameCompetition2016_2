@@ -4,6 +4,7 @@
 #include "../../Math/Vector2.h"
 #include "../../World/IWorld.h"
 class TestPlayer;
+class Player;
 
 struct BackGraundState
 {
@@ -35,7 +36,9 @@ private:
 	//ワールド
 	IWorld* mWorld;
 	//プレイヤー
-	TestPlayer* mPlayer;
+	Player* mPlayer;
+	//地上が表示されているか？
+	bool stageFlag;
 	//地上の背景
 	std::list<BackGraundState> backStates;
 	//空の背景

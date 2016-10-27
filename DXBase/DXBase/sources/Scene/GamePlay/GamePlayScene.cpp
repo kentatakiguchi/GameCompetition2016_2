@@ -11,10 +11,11 @@
 #include "../../Actor/Person/Player/TestColl.h"
 #include "../../Field/MapGenerator.h"
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
+#include "../../Actor/TestPlayer/TestPlayer.h"
 #include <memory>
 #include <random>
 
-const Vector3 START_POS = Vector3(50, 50, 0);
+const Vector3 START_POS = Vector3(800/2, 600/2, 0);
 
 GamePlayScene::GamePlayScene() : 
 	id(0){
@@ -117,7 +118,7 @@ void GamePlayScene::start() {
 
 void GamePlayScene::update() {
 	world_->update(Time::GetInstance().deltaTime());
-
+	backManager->Update(Time::GetInstance().deltaTime());
 	time_ += Time::GetInstance().deltaTime();
 
 
@@ -159,6 +160,7 @@ void GamePlayScene::update() {
 }
 
 void GamePlayScene::draw() const {
+	backManager->Draw();
 	//world•`‰æ
 	world_->draw();
 

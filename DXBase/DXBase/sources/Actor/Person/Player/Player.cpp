@@ -23,7 +23,12 @@ const float MAX_NORMAL_LENGTH = 100.0f;
 //const float MAX_STRETCH_LENGTH = 100.0f;
 
 Player::Player(IWorld * world, const Vector3 & position) :
-	Actor(world, "Player", position, CollisionBase(Vector2(0,0), Vector2(0, 0), 10.0f)){
+	Actor(world, "Player", position, CollisionBase(Vector2(0,0), Vector2(0, 0), 10.0f)),
+prePosition(Vector2::Zero),
+mVelo(Vector2::Zero),
+curPosition(Vector2::Zero),
+mSevePos(Vector2::Zero)
+{
 
 	// モデルの読み込み
 	//modelHandle_ = MV1DuplicateModel(ResourceLoader::GetInstance().getModelID(ModelID::PLAYER));
@@ -59,12 +64,17 @@ Player::~Player(){}
 void Player::onUpdate(float deltaTime) {
 
 	stateMgr_.action(*this, deltaTime);
-	prePosition = mPositionVelo;
-
-	mPositionVelo = Vector2((main_body_->getPosition() + sub_body_->getPosition()).x, (main_body_->getPosition() + sub_body_->getPosition()).y)/2;
-	position_ = Vector3(mPositionVelo.x, mPositionVelo.y,0.0f);
-	curPosition = mPositionVelo;
+	//1フレーム前の座標
+	prePosition = curPosition;
+	//position_にスクロール関係の移動量をすべて足しているためスクリーンがスライムを付いていかなくなってしまう//
+	position_ = (main_body_->getPosition() + sub_body_->getPosition())/2;
+	//移動後の座標
+	curPosition = (Vector2((main_body_->getPosition() + sub_body_->getPosition()).x,
+		(main_body_->getPosition() + sub_body_->getPosition()).y)) / 2;
+	//速度を計算
 	mVelo = prePosition - curPosition;
+	
+
 	body_.transform(Vector2(main_body_->getPosition().x, main_body_->getPosition().y), Vector2(sub_body_->getPosition().x, sub_body_->getPosition().y), 10);
 
 	//animation_.changeAnim(motion_);
@@ -89,6 +99,8 @@ void Player::onLateUpdate(float deltaTime){
 void Player::onDraw() const {
 	DrawFormatString(main_body_->getPosition().x, main_body_->getPosition().y, GetColor(255, 255, 255), "main");
 	DrawFormatString(sub_body_->getPosition().x, sub_body_->getPosition().y, GetColor(255, 255, 255), "sub");
+	DrawFormatString(300,555,GetColor(255, 255, 255), "Velo: %f,%f",mVelo.x,mVelo.y);
+	DrawCircle(position_.x, position_.y, 10.0f, GetColor(255, 255, 255), TRUE);
 }
 
 void Player::onCollide(Actor & other){

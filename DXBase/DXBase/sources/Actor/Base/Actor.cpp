@@ -37,7 +37,7 @@ void Actor::update(float deltaTime) {
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//移動update
-	//ActorMove();
+	ActorMove();
 }
 
 void Actor::late_update(float deltaTime){
@@ -227,7 +227,9 @@ void Actor::ActorMove()
 	//フラグ初期化
 	moveFlag = Vector2::Zero;
 	//worldを持ってなかったらリターン
-	if (world_ == nullptr) return;
+	if (world_ == nullptr) {
+		return;
+	}
 	//プレイヤーの座標を取得
 	Vector2 player =
 		Vector2(world_->findActor("Player")->getPosition().x, world_->findActor("Player")->getPosition().y);
