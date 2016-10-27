@@ -12,22 +12,17 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector3 & p
 PlayerBody::~PlayerBody(){}
 
 void PlayerBody::onUpdate(float deltaTime){
-	//position_ = Vector3::Clamp(position_, Vector3(-300,0,0), Vector3(2000, 400 - body_.GetCapsule().component_.radius, 0));
-	
-	auto pos = Vector2(position_.x, position_.y);
-	body_.transform(pos, body_.GetCircle().component_.radius);
+	position_ = Vector3::Clamp(position_, Vector3::Zero, Vector3(3000, 1000, 0));
 }
 
 void PlayerBody::onDraw() const{
+	body_.draw();
+
 	if (opponent_ == Opponent::NONE)DrawFormatString(25, 75, GetColor(255, 255, 255), "NONE");
 	else if (opponent_ == Opponent::FLOOR) DrawFormatString(25, 100, GetColor(255, 255, 255), "FLOOR");
 }
 
 void PlayerBody::onLateUpdate(float deltaTime){
-	last_pos_ = position_;	
-	auto pos = Vector2(position_.x, position_.y);
-	body_.transform(pos, body_.GetCircle().component_.radius);
-	body_.draw();
 }
 
 void PlayerBody::onCollide(Actor & other){

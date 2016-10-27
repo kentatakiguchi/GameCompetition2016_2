@@ -243,6 +243,7 @@
     <ClInclude Include="sources\Scene\GamePlay\GamePlayScene.h" />
     <ClInclude Include="sources\Scene\KataokaScene\KataokaScene.h" />
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h" />
+    <ClInclude Include="sources\Scene\NaganoScene\NaganoScene.h" />
     <ClInclude Include="sources\Scene\Test\TestChara.h" />
     <ClInclude Include="sources\Scene\Test\TestScene.h" />
     <ClInclude Include="sources\Scene\Title\TitleScene.h" />
@@ -317,6 +318,7 @@
     <ClCompile Include="sources\Scene\GamePlay\GamePlayScene.cpp" />
     <ClCompile Include="sources\Scene\KataokaScene\KataokaScene.cpp" />
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp" />
+    <ClCompile Include="sources\Scene\NaganoScene\NaganoScene.cpp" />
     <ClCompile Include="sources\Scene\Test\TestScene.cpp" />
     <ClCompile Include="sources\Scene\Title\TitleScene.cpp" />
     <ClCompile Include="sources\Scene\YajimaScene\YajimaScene.cpp" />

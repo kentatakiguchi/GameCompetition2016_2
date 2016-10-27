@@ -75,7 +75,6 @@ void Player::onUpdate(float deltaTime) {
 	mVelo = prePosition - curPosition;
 	
 
-	body_.transform(Vector2(main_body_->getPosition().x, main_body_->getPosition().y), Vector2(sub_body_->getPosition().x, sub_body_->getPosition().y), 10);
 
 	//animation_.changeAnim(motion_);
 	//animation_.update(deltaTime);
@@ -87,17 +86,13 @@ void Player::onUpdate(float deltaTime) {
 }
 
 void Player::onLateUpdate(float deltaTime){
-	body_.transform(Vector2(main_body_->getPosition().x, main_body_->getPosition().y), Vector2(sub_body_->getPosition().x, sub_body_->getPosition().y), 10);
-
-	body_.draw();
-
-	if (main_body_ == nullptr || sub_body_ == nullptr)return;
-
-	createOval(main_body_->getPosition(), sub_body_->getPosition(), body_.GetCapsule().component_.radius * 5);
 }
 
 void Player::onDraw() const {
-	DrawFormatString(main_body_->getPosition().x, main_body_->getPosition().y, GetColor(255, 255, 255), "main");
+	body_.draw();
+	createOval(main_body_->getPosition(), sub_body_->getPosition(), body_.GetCapsule().component_.radius * 5);
+
+ 	DrawFormatString(main_body_->getPosition().x, main_body_->getPosition().y, GetColor(255, 255, 255), "main");
 	DrawFormatString(sub_body_->getPosition().x, sub_body_->getPosition().y, GetColor(255, 255, 255), "sub");
 	DrawFormatString(300,555,GetColor(255, 255, 255), "Velo: %f,%f",mVelo.x,mVelo.y);
 	DrawCircle(position_.x, position_.y, 10.0f, GetColor(255, 255, 255), TRUE);

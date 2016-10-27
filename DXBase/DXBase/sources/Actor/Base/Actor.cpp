@@ -227,9 +227,7 @@ void Actor::ActorMove()
 	//フラグ初期化
 	moveFlag = Vector2::Zero;
 	//worldを持ってなかったらリターン
-	if (world_ == nullptr) {
-		return;
-	}
+	if (world_ == nullptr) return;
 	//プレイヤーの座標を取得
 	Vector2 player =
 		Vector2(world_->findActor("Player")->getPosition().x, world_->findActor("Player")->getPosition().y);
