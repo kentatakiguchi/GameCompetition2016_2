@@ -73,11 +73,12 @@ Vector3 EnemyManager::cliffMove(bool isFloor)
 		distance_ *= -1;*/
 
 	// 仮
-	boxMoveCount += deltaTimer_ / 2.0f;
+	/*boxMoveCount += deltaTimer_ / 2.0f;
 	if ((int)boxMoveCount % 2 == 0)
 		distance_ = -1;
-	else distance_ = 1;
+	else distance_ = 1;*/
 	// 仮
+
 	posi = posi.Left * distance_;
 	// 敵の前方下部に当たり判定のあるオブジェクトを配置
 	// 向いている方向によって、オブジェクトの位置を変える
@@ -156,7 +157,7 @@ Vector2 EnemyManager::getPlayerDirection()
 	// Y
 	if (distance.y < 0)
 		direction.y = 1;
-	else if (distance.x > 0)
+	else if (distance.y > 0)
 		direction.y = -1;
 	else direction.y = 0;
 	return direction;

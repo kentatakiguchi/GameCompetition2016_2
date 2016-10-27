@@ -3,6 +3,8 @@
 
 #include "../BaseEnemy.h"
 
+class FloorSearchPoint;
+
 class FloorTurnEnemy : public BaseEnemy {
 public:
 	FloorTurnEnemy(IWorld * world, const Vector3& position);
@@ -19,6 +21,9 @@ private:
 	void searchMove();
 	// í«ê’éûÇÃçsìÆÇ≈Ç∑
 	void chaseMove();
+
+private:
+	FloorSearchPoint* fspObj_;
 };
 
 #endif

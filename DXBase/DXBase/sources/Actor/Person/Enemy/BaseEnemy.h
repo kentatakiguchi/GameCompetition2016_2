@@ -55,7 +55,7 @@ protected:
 	// 待機状態です
 	void idle();
 	// 索敵移動です
-	void search();
+	virtual void search();
 	// プレイヤーを発見した時の行動です
 	void discovery();
 	// プレイヤーの追跡行動です
@@ -101,12 +101,21 @@ private:
 
 protected:
 	// メンバ変数
+	float deltaTimer_;				// 現在の時間
+
 	int hp_;						// 体力
 	int ap_;						// アタックポイント
 	float speed_;					// 移動速度
 	float initSpeed_;				// 初期の移動速度
 	float scale_;					// 大きさ
+	float directionX_;
+	float directionY_;
 	float discoveryLenght_;			// プレイヤーに気づく距離
+
+	float distance_;	// デバッグ用
+	bool isGround_;					// 接地しているか
+	bool isUseGravity_;				// 重力を使うか
+	bool isInvincible_;				// 無敵か
 
 	unsigned int color_;			// 球体の色
 	float stateTimer_;				// 状態タイマ
@@ -121,11 +130,14 @@ protected:
 
 	EnemyManager enemyManager_;		// エネミーマネージャー
 	FloorSearchPoint* fsPointScript;
+	FloorSearchPoint* wsScript;
 
 	typedef std::vector<FloorSearchPoint*> FSPContainer;
 	FSPContainer fspContainer_;
 	typedef std::vector<Vector3> FSPPositionContainer;
 	FSPPositionContainer fspPositionContainer_;
+	// 重力加速度
+	const float GRAVITY_ = 9.8f;
 };
 
 #endif

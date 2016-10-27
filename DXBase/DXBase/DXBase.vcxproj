@@ -178,6 +178,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\EnemyManager.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\EnemySpawner.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemy_AttackRange.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\FloorSearchPoint.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="sources\Actor\Person\Enemy\EnemyManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\EnemySpawner.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemy_AttackRange.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\FloorSearchPoint.cpp" />

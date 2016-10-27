@@ -3,19 +3,26 @@
 #include "../../Base/ActorGroup.h"
 #include"../../Body/CollisionBase.h"
 
-FloorSearchPoint::FloorSearchPoint(IWorld * world, const Vector3 & position) :
-	vec2Position_(position.x, position.y),
-	Actor(world, "BaseEnemy", position, CollisionBase(vec2Position_, 10.0f)),
-	direction_(0),
+FloorSearchPoint::FloorSearchPoint(IWorld * world, const Vector3& pointPosition, const Vector3&  collidePosition) :
+	pointPosition_(pointPosition),
+	Actor(world, "FSP", collidePosition, 
+		CollisionBase(Vector2(collidePosition.x, collidePosition.y), 1.0f)),
 	turnCount_(0),
 	isFloor_(false),
+	isGround_(false),
+	direction_(1.0f, 1.0f),
 	enemyScale_(Vector2::Zero)
 {
 }
 
 void FloorSearchPoint::onUpdate(float deltaTime)
 {
-
+	auto pos = position_;
+	auto pointPos = Vector3(
+		pointPosition_.x * direction_.x, pointPosition_.y * direction_.y, 0.0f);
+	position_ = pos + pointPos;
+	isFloor_ = false;
+	isGround_ = false;
 }
 
 void FloorSearchPoint::onDraw() const
@@ -26,8 +33,9 @@ void FloorSearchPoint::onDraw() const
 void FloorSearchPoint::onCollide(Actor & actor)
 {
 	// °‚É“–‚½‚Á‚Ä‚¢‚½AU‚èŒü‚«‰ñ”‚ğƒŠƒZƒbƒg
-	if (actor.getName() == "Floor") {
+	if (actor.getName() == "MapChip") {
 		turnCount_ = 0;
+		isGround_ = true;
 		return;
 	}
 	//// U‚èŒü‚«‰ñ”‚ğ‰ÁZ
@@ -39,6 +47,7 @@ void FloorSearchPoint::onCollide(Actor & actor)
 	//}
 	//// •ûŒü‚Ì•ÏX
 	//direction_ *= -1;
+	//position_.x *= -1;
 	isFloor_ = true;
 }
 
@@ -53,9 +62,14 @@ void FloorSearchPoint::setPosition(Vector3 position)
 }
 
 // •ûŒü‚Ìİ’è
-void FloorSearchPoint::setDirection(int direction)
+void FloorSearchPoint::setDirectionX(int direction)
 {
-	direction_ = direction;
+	direction_.x = direction;
+}
+
+void FloorSearchPoint::setDirectionY(int direction)
+{
+	direction_.y = direction;
 }
 
 // “G‚Ì‘å‚«‚³‚ğ“ü‚ê‚Ü‚·
@@ -70,4 +84,9 @@ void FloorSearchPoint::setEnemyScale(const Vector2 scale)
 bool FloorSearchPoint::isFloor()
 {
 	return isFloor_;
+}
+
+bool FloorSearchPoint::isGround()
+{
+	return isGround_;
 }

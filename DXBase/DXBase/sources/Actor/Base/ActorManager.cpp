@@ -68,5 +68,5 @@ void ActorManager::collide() {
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy_AttackRange]);
 	actors_[ActorGroup::Player_AttackRange]->collideChildren(*actors_[ActorGroup::Enemy]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Field]);
-
+	actors_[ActorGroup::Enemy]->collideChildren(*actors_[ActorGroup::Field]);
 }
