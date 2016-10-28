@@ -55,5 +55,5 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::Title;
+	return Scene::Kataoka;
 }

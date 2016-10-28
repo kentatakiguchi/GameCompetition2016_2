@@ -36,7 +36,7 @@ private:
 	//ワールド
 	IWorld* mWorld;
 	//プレイヤー
-	Player* mPlayer;
+	TestPlayer* mPlayer;
 	//地上が表示されているか？
 	bool stageFlag;
 	//地上の背景

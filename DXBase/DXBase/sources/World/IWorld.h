@@ -22,6 +22,7 @@ public:
 	virtual unsigned int fieldHandle() const = 0;
 
 	virtual Vector2 MoveActor() = 0;
+	virtual Vector2 ScroolStopFlag() = 0;
 	// メッセージの送信
 	virtual void sendMessage(EventMessage message, void* param = nullptr) = 0;
 };

@@ -10,6 +10,7 @@ enum class ActorGroup {
 	EnemyBullet,		// 敵弾
 	Effect,				// エフェクト
 	BACKGRAUND,
+	SCROOLSTOP,
 	Field				//ステージ
 };
 

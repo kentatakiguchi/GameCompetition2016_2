@@ -1,12 +1,15 @@
 #include "PlayerBody.h"
 #include"../../Body/CollisionBase.h"
-
+#include "../../../World/IWorld.h"
+#include "../../../World/World.h"
 const float SPEED = 3.0f;
 const float MAX_NORMAL_LENGTH = 100.0f;
 const float MAX_STRETCH_LENGTH = 150.0f;
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector3 & position) :
 	Actor(world, name, position, CollisionBase(Vector2(0, 0), 20.0f)) {
+	world_ = world;
+	int a = 0;
 }
 
 PlayerBody::~PlayerBody(){}

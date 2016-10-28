@@ -206,6 +206,7 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\State_Dammy.h" />
     <ClInclude Include="sources\Actor\Person\Player\Status\Status.h" />
     <ClInclude Include="sources\Actor\Person\Player\TestColl.h" />
+    <ClInclude Include="sources\Actor\ScroolStop\ScroolStop.h" />
     <ClInclude Include="sources\Actor\TestObject\TestObject.h" />
     <ClInclude Include="sources\Actor\TestPlayer\TestPlayer.h" />
     <ClInclude Include="sources\Animation\Animation.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_StandBy.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Status\Status.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\TestColl.cpp" />
+    <ClCompile Include="sources\Actor\ScroolStop\ScroolStop.cpp" />
     <ClCompile Include="sources\Actor\TestObject\TestObject.cpp" />
     <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
     <ClCompile Include="sources\Animation\Animation.cpp" />

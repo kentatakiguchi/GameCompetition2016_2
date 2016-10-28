@@ -1,7 +1,7 @@
 #include "BackGraundManager.h"
 #include "../TestPlayer/TestPlayer.h"
 #include "../Person/Player/Player.h"
-BackGraundManager::BackGraundManager(IWorld * world):
+BackGraundManager::BackGraundManager(IWorld * world) :
 	stageFlag(true)
 {
 	//分からないから一応
@@ -9,7 +9,7 @@ BackGraundManager::BackGraundManager(IWorld * world):
 		i.positions.clear();
 	backStates.clear();
 	//プレイヤー変換
-	mPlayer = dynamic_cast<Player*>(world->findActor("Player").get());
+	mPlayer = dynamic_cast<TestPlayer*>(world->findActor("Player").get());
 }
 
 BackGraundManager::~BackGraundManager()
@@ -59,9 +59,9 @@ void BackGraundManager::SetDownBackGraund(TextureID id)
 	Vector2 size = upBackStates.size;
 	//ポジションを4つ入れる(4枚背景を張り付けるため)
 	downBackStates.positions.push_back(Vector2(0, size.y));
-	downBackStates.positions.push_back(Vector2(0, size.y*2));
+	downBackStates.positions.push_back(Vector2(0, size.y * 2));
 	downBackStates.positions.push_back(Vector2(size.x, size.y));
-	downBackStates.positions.push_back(Vector2(size.x, size.y*2));
+	downBackStates.positions.push_back(Vector2(size.x, size.y * 2));
 }
 
 void BackGraundManager::AllDeleteBackGraund()
@@ -100,6 +100,12 @@ void BackGraundManager::Update(float deltatime)
 				j.x = size.x + i.size.x + j.x;
 			else if (j.x >= size.x)
 				j.x = -size.x - i.size.x + j.x;
+			//地上が見えているか
+			if (j.y <= -size.y)
+				stageFlag = false;
+			else
+				stageFlag = true;
+
 		}
 		layerNum--;
 	}
@@ -128,8 +134,8 @@ void BackGraundManager::Update(float deltatime)
 	//地下系
 	for (auto& i : downBackStates.positions)
 	{
-		//一番奥の速度と一緒にする
-		Vector2 vec = mPlayer->GetSpringVelo()*(1.0f / backStates.size());
+		//一番手前の速度と一緒
+		Vector2 vec = mPlayer->GetSpringVelo();
 		//プレイヤー速度加算
 		i += vec;
 		//x軸のループ
@@ -137,20 +143,25 @@ void BackGraundManager::Update(float deltatime)
 			i.x = size.x + size.x + i.x;
 		else if (i.x >= size.x)
 			i.x = -size.x - size.x + i.x;
-		//Y軸のループ
-		if (i.y <= -size.y)
-			i.y = size.y + size.y + i.y;
-		else if (i.y >= size.y)
-			i.y = -size.y - size.y + i.y;
+		//Y軸のループ(地上が見えていなかった場合)
+		if (!stageFlag)
+		{
+			if (i.y <= -size.y)
+				i.y = size.y + size.y + i.y;
+			else if (i.y >= size.y)
+				i.y = -size.y - size.y + i.y;
+		}
 	}
 }
 
 void BackGraundManager::Draw() const
 {
+	//空の描写
 	for (auto i : upBackStates.positions)
 	{
 		DrawGraph(i.x, i.y, upBackStates.id, true);
 	}
+	//地上の描写
 	for (auto i : backStates)
 	{
 		for (auto j : i.positions)
@@ -158,8 +169,9 @@ void BackGraundManager::Draw() const
 			DrawGraph(j.x, j.y, i.id, true);
 		}
 	}
-	//for (auto i : downBackStates.positions)
-	//{
-	//	DrawGraph(i.x, i.y, downBackStates.id, true);
-	//}
+	//地下の描写
+	for (auto i : downBackStates.positions)
+	{
+		DrawGraph(i.x, i.y, downBackStates.id, true);
+	}
 }

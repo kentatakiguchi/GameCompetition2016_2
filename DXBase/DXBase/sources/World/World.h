@@ -41,7 +41,7 @@ public:
 	//速度
 	virtual Vector2 MoveActor() override;
 	//unsigned int fieldHandle();
-
+	virtual Vector2 ScroolStopFlag() override;
 	// コピー禁止
 	World(const World& other) = delete;
 	World& operator = (const World& other) = delete;

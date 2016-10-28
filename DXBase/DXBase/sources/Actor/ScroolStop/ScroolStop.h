@@ -1,0 +1,40 @@
+#pragma once
+#ifndef SCROOL_STOP_H_
+#define SCROOL_STOP_H_
+
+#include "../Base/Actor.h"
+#include "../../World/IWorld.h"
+#include "../../Math/Vector3.h"
+
+
+
+
+// ÉvÉåÅ[ÉÑÅ[
+class ScroolStop : public Actor {
+public:
+	enum StopDirection {
+		RIGHT,
+		LEFT,
+		TOP,
+		BOT
+	};
+
+public:
+	ScroolStop(IWorld* world, const Vector2& position,StopDirection dire);
+	~ScroolStop();
+	virtual void onUpdate(float deltaTime) override;
+	virtual void onDraw() const override;
+	virtual void onCollide(Actor& other) override;
+
+public:
+	Vector2 GetSceneInFlag() {
+		return sceneInFlag;
+	}
+private:
+	//âÊñ ì‡Ç…ì¸Ç¡ÇƒÇ¢ÇÈÇ©xé≤
+	Vector2 sceneInFlag;
+	//Ç«ÇÃï˚å¸Ç≈é~ÇﬂÇÈÇ©
+	StopDirection mDire;
+};
+
+#endif
