@@ -28,8 +28,10 @@ public:
 	//線分判定を利用する場合
 	explicit CollisionBase(Vector2& startPoint, Vector2& endPoint);
 	void setPosition(Vector2 position);
+	void RotateCapsule(Vector2 point1, Vector2 point2,float radius);
 	//デバッグ用の判定表示
 	void draw() const;
+	void update(Vector2 position);
 	//四角判定の大きさ、形状の変更
 	void transform(Vector2& topLeft, Vector2& topRight, Vector2& bottomLeft, Vector2& bottomRight);
 	//カプセル判定の大きさ、形状の変更
@@ -69,5 +71,7 @@ private:
 	BoundingSegment segment_;
 
 	Vector2 movePoint[4];
+	Vector2 position_;
+	Vector2 previousPosition_;
 	float radius_;
 };

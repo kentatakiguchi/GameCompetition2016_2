@@ -1,6 +1,6 @@
 #include "CollisionBase.h"
 
-CollisionBase::CollisionBase():box_(),capsule_(),type_(NoneCol)
+CollisionBase::CollisionBase():box_(),capsule_(),circle_(),segment_(),type_(NoneCol)
 {
 }
 
@@ -29,10 +29,15 @@ CollisionBase::CollisionBase(Vector2 & startPoint, Vector2 & endPoint):
 
 void CollisionBase::setPosition(Vector2 position)
 {
+	position_ = position;
+	previousPosition_ = position;
 	switch (type_)
 	{
 	case BoxCol:
 	{
+		box_.position_ = position;
+		box_.previousPosition_ = position;
+		
 		movePoint[0] = position - box_.component_.point[0];
 		movePoint[1] = position - box_.component_.point[1];
 		movePoint[2] = position - box_.component_.point[2];
@@ -41,6 +46,9 @@ void CollisionBase::setPosition(Vector2 position)
 	}
 	case CapsuleCol:
 	{
+		capsule_.position_ = position;
+		capsule_.previousPosition_ = position;
+
 		movePoint[0] = position - capsule_.component_.point[0];
 		movePoint[1] = position - capsule_.component_.point[1];
 		radius_ = capsule_.component_.radius;
@@ -48,11 +56,17 @@ void CollisionBase::setPosition(Vector2 position)
 	}
 	case CircleCol:
 	{	
+		circle_.position_ = position;
+		circle_.previousPosition_ = position;
+
 		radius_ = circle_.component_.radius;
 	break;
 	}
 	case SegmentCol:
 	{
+		segment_.position_ = position;
+		segment_.previousPosition_ = position;
+
 		movePoint[0] = position - segment_.component_.point[0];
 		movePoint[1] = position - segment_.component_.point[1];
 		break;
@@ -65,7 +79,18 @@ void CollisionBase::setPosition(Vector2 position)
 	}
 	}
 }
+void CollisionBase::RotateCapsule(Vector2 point1, Vector2 point2,float radius)
+{
+	if (type_ != CollisionType::CapsuleCol) return;
 
+	movePoint[0] = point1;
+	movePoint[1] = point2;
+	radius_ = radius;
+}
+void CollisionBase::update(Vector2 position)
+{
+	MovePos(position);
+}
 void CollisionBase::draw() const
 {
 	switch (type_)
@@ -111,19 +136,29 @@ void CollisionBase::transform(Vector2 & startPoint, Vector2 & endPoint)
 
 void CollisionBase::MovePos(Vector2 & position)
 {
+	previousPosition_ = position_;
+	position_ = position;
 	switch (type_)
 	{
 	case BoxCol:
 		box_ = BoundingBox(Vector2( position + movePoint[0] ), Vector2( position + movePoint[1] ), Vector2( position + movePoint[2] ), Vector2( position + movePoint[3] ));
+		box_.previousPosition_ = previousPosition_;
+		box_.position_ = position;
 		break;
 	case CapsuleCol:
 		capsule_ = BoundingCapsule(Vector2( position + movePoint[0] ), Vector2( position + movePoint[1] ), radius_);
+		capsule_.previousPosition_ = previousPosition_;
+		capsule_.position_ = position;
 		break;
-	case CircleCol:
+	case CircleCol:		
 		circle_ = BoundingCircle(position,radius_);
+		circle_.previousPosition_ = previousPosition_;
+		circle_.position_ = position;
 		break;
-	case SegmentCol:
+	case SegmentCol:	
 		segment_ = BoundingSegment(Vector2( position + movePoint[0] ), Vector2( position + movePoint[1] ));
+		segment_.previousPosition_ = previousPosition_;
+		segment_.position_ = position;
 		break;
 	case NoneCol:
 		break;
