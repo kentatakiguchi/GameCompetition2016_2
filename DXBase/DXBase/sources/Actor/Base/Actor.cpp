@@ -17,7 +17,7 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, co
 	resPos(Vector2::Zero),
 	veloPlus(Vector2::Zero),
 	velo(Vector2::Zero) {
-		body_.setPosition({ position_.x, position_.y });
+	body_.setPosition({ position_.x, position_.y });
 }
 
 // コンストラクタ
@@ -37,12 +37,10 @@ void Actor::update(float deltaTime) {
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//移動update
-	//修正
-	//ActorMove();
-	body_.MovePos(Vector2(position_.x, position_.y));
+	ActorMove();
 }
 
-void Actor::late_update(float deltaTime){
+void Actor::late_update(float deltaTime) {
 	onLateUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.late_update(deltaTime); });
 }
@@ -219,6 +217,8 @@ void Actor::onCollide(Actor&) {
 
 // 衝突判定
 bool Actor::isCollide(Actor& other) {
+	body_.MovePos(Vector2(position_.x, position_.y));
+	other.body_.MovePos(Vector2(other.position_.x, other.position_.y));
 	return body_.intersects(other.body_);
 }
 //アクターを全部プレイヤーと同期させる
@@ -232,41 +232,34 @@ void Actor::ActorMove()
 	Vector2 player =
 		Vector2(world_->findActor("Player")->getPosition().x, world_->findActor("Player")->getPosition().y);
 	//プレイヤーで一定の範囲外に行ったら今の速度と逆の速度を足してあげる
-	if (getName() == "Player")
+	if (getName() != "ScroolStopPoint")
 	{
 		//x軸
-		if ((int)player.x != 800 / 2)
+		if ((int)player.x != 800 / 2 && world_->ScroolStopFlag().x == FALSE)
 		{
 			resPos.x = world_->MoveActor().x;
 			//x軸移動してます
 			moveFlag.x = 1;
 		}
 		//Y軸
-		if ((int)player.y != 600 / 2)
+		if ((int)player.y != 600 / 2 && world_->ScroolStopFlag().y == FALSE)
 		{
 			resPos.y = world_->MoveActor().y;
 			//y軸移動してます
 			moveFlag.y = 1;
 		}
 	}
-	//プレイヤー以外の動き
-	else
+	//ストップスクロール以外
+	if (getName() == "ScroolStopPoint")
 	{
-		//x軸
-		if ((int)player.x != 800 / 2)
-		{
-			resPos.x = world_->MoveActor().x;
-		}
-		//Y軸
-		if ((int)player.y != 600 / 2)
-		{
-			resPos.y = world_->MoveActor().y;
-		}
+		//強制的にスクロール
+		resPos.x = world_->MoveActor().x;
+		resPos.y = world_->MoveActor().y;
 	}
 	//補間処理
 	MathHelper::Spring(veloPlus.x, resPos.x, velo.x, 0.1f, 0.5f, 2.0f);
 	MathHelper::Spring(veloPlus.y, resPos.y, velo.y, 0.1f, 0.5f, 2.0f);
-	position_ += Vector3(veloPlus.x,veloPlus.y,0.0f);
+	position_ += Vector3(veloPlus.x, veloPlus.y, 0.0f);
 }
 
 // end of file
