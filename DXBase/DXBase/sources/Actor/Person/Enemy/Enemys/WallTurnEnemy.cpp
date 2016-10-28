@@ -1,27 +1,37 @@
 #include "WallTurnEnemy.h"
 #include "../../../Base/ActorGroup.h"
 #include "../FloorSearchPoint.h"
+#include "Prickle.h"
 
-WallTrunEnemy::WallTrunEnemy(IWorld * world, const Vector3 & position) :
+WallTrunEnemy::WallTrunEnemy(IWorld * world, const Vector2 & position) :
 	BaseEnemy(world, position, 64.0f)
 {
 	isUseGravity_ = false;
 	isInvincible_ = true;
-	// 崖捜索オブジェクトの追加
+	// 壁捜索オブジェクトの生成
 	auto wsObj = std::make_shared<FloorSearchPoint>(
 		world_, Vector3(0.0f, -(scale_ / 2.0f + 1.0f), 0.0f), position_);
 	// ワールドに追加
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsObj_ = &*wsObj;
+
+	//// トゲオブジェクトの生成(for文で回す)
+	//auto pricleObj = std::make_shared<Prickle>(
+	//	world_, position_, Vector3::Zero, 32.0f);
+	//world_->addActor(ActorGroup::Enemy_AttackRange, pricleObj);
+	//pricleObj_ = &*pricleObj;
 }
 
 void WallTrunEnemy::onUpdate(float deltaTime)
 {
 	BaseEnemy::onUpdate(deltaTime);
 	if (wsObj_->isGround())
-		directionY_ *= -1;
-	wsObj_->setDirectionY(directionY_);
+		direction_.y *= -1;
+	wsObj_->setDirection(direction_);
 	wsObj_->setPosition(position_);
+
+	/*pricleObj_->setDirection(direction_);
+	pricleObj_->setEnemyPosition(position_);*/
 }
 
 void WallTrunEnemy::onCollide(Actor & actor)
@@ -41,7 +51,6 @@ void WallTrunEnemy::search()
 {
 	// プレイヤーの捜索
 	findPlayer();
-	color_ = GetColor(0, 255, 0);
 	stateString_ = "捜索";
 	// 捜索行動
 	searchMove();
@@ -53,7 +62,7 @@ void WallTrunEnemy::Attack()
 
 void WallTrunEnemy::searchMove()
 {
-	position_ += Vector3::Down * speed_ * directionY_;
+	position_ += Vector3::Down * speed_ * direction_.y * deltaTimer_;
 }
 
 void WallTrunEnemy::chaseMove()

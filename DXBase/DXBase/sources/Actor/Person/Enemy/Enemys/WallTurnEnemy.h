@@ -7,7 +7,7 @@ class FloorSearchPoint;
 
 class WallTrunEnemy : public BaseEnemy {
 public:
-	WallTrunEnemy(IWorld * world, const Vector3& position);
+	WallTrunEnemy(IWorld * world, const Vector2& position);
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onCollide(Actor& actor) override;
 	virtual void onMessage(EventMessage event, void*) override;

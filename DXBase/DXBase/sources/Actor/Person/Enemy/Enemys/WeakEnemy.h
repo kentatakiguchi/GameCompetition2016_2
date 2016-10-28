@@ -5,7 +5,7 @@
 
 class WeakEnemy : public BaseEnemy {
 public:
-	WeakEnemy(IWorld * world, const Vector3& position);
+	WeakEnemy(IWorld * world, const Vector2& position);
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& actor) override;

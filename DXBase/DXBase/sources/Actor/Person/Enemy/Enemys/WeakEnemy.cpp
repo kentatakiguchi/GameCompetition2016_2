@@ -1,6 +1,6 @@
 #include "WeakEnemy.h"
 
-WeakEnemy::WeakEnemy(IWorld * world, const Vector3& position) :
+WeakEnemy::WeakEnemy(IWorld * world, const Vector2& position) :
 	BaseEnemy(world, position, 64.0f)
 {
 }

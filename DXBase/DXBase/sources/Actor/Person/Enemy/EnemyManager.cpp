@@ -1,14 +1,14 @@
 #include "EnemyManager.h"
 
-EnemyManager::EnemyManager(const Vector3 position) :
+EnemyManager::EnemyManager(const Vector2 position) :
 	distance_(1),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
 	boxMoveCount(0.0f),
 	enemyPosition_(position),
-	playerPosition_(Vector3::Zero),
-	threadPosition_(position + Vector3::Left * 100.0f),
-	threadLength_(Vector3::Distance(enemyPosition_, threadPosition_)),
+	playerPosition_(Vector2::Zero),
+	threadPosition_(position + Vector2::Left * 100.0f),
+	threadLength_(Vector2::Distance(enemyPosition_, threadPosition_)),
 	rotate_(0.0f),
 	rotateSpeed_(10.0f),
 	threadGravity_(0.5f)
@@ -31,21 +31,20 @@ void EnemyManager::update(float deltaTime)
 }
 
 // 箱の動き方(壁なし)
-Vector3 EnemyManager::boxMove()
+Vector2 EnemyManager::boxMove()
 {
 	boxMoveCount += deltaTimer_ / 2.0f;
 	auto direction = enemyPosition_;
-	direction = Vector3(
+	direction = Vector2(
 		boxMoveConteiner_[(int)boxMoveCount % 4] * 3.0f,
-		boxMoveConteiner_[((int)boxMoveCount + 3) % 4] * 1.0f,
-		0.0f
+		boxMoveConteiner_[((int)boxMoveCount + 3) % 4] * 1.0f
 		);
 	//if((int)timer_ %  1 * 60.0f >= 0)
 	return direction;
 }
 
 // 壁に沿った動き方（まだ）
-Vector3 EnemyManager::wallMove()
+Vector2 EnemyManager::wallMove()
 {
 	auto directionX = 0;
 	auto directionY = 0;
@@ -61,11 +60,11 @@ Vector3 EnemyManager::wallMove()
 		directionY = 1;
 	// 敵の四方に当たり判定のあるオブジェクトを配置
 	// 当たったオブジェクトの名前などを参照して、方向の値を決定する
-	return Vector3();
+	return Vector2();
 }
 
 // 崖を避ける動き方
-Vector3 EnemyManager::cliffMove(bool isFloor)
+Vector2 EnemyManager::cliffMove(bool isFloor)
 {
 	auto posi = enemyPosition_;
 	// 床に当たっていなかったら方向転換
@@ -86,7 +85,7 @@ Vector3 EnemyManager::cliffMove(bool isFloor)
 }
 
 // 糸を使った動き方
-Vector3 EnemyManager::threadMove()
+Vector2 EnemyManager::threadMove()
 {
 	// おもりの位置
 	auto radius = rotate_ * MathHelper::Pi / 180.0f;
@@ -113,7 +112,7 @@ Vector3 EnemyManager::threadMove()
 
 	// 半分になったらポイントを移動
 	if (rotate_ >= 100.0f * 100.0f) {
-		threadPosition_ = enemyPosition_ + Vector3::Left * 100.0f;
+		threadPosition_ = enemyPosition_ + Vector2::Left * 100.0f;
 		rotate_ = 0.0f;
 	}
 	rotateSpeed_ += sub;
@@ -127,7 +126,7 @@ Vector3 EnemyManager::threadMove()
 	auto posi = Vector3(px, py, 0.0f);
 	//auto nomaPosi = Vector3::Normalize(posi);
 
-	return Vector3(px, py, 0.0f);
+	return Vector2(px, py);
 }
 
 // プレイヤーとの距離を返します
@@ -164,7 +163,7 @@ Vector2 EnemyManager::getPlayerDirection()
 }
 
 // プレイヤーとの方向を正規化されたベクトルで取得します
-Vector3 EnemyManager::getPlayerNormalizeDirection()
+Vector2 EnemyManager::getPlayerNormalizeDirection()
 {
 	// 方向の計算
 	auto distance = enemyPosition_ - playerPosition_;
@@ -178,14 +177,14 @@ Vector3 EnemyManager::getPlayerNormalizeDirection()
 }
 
 //　敵自身とプレイヤーの位置を入れます
-void EnemyManager::setEMPosition(const Vector3& enemyPosition, const Vector3& playerPosition)
+void EnemyManager::setEMPosition(const Vector2& enemyPosition, const Vector2& playerPosition)
 {
 	enemyPosition_ = enemyPosition;
 	playerPosition_ = playerPosition;
 }
 
 // 糸の支点の位置取得
-Vector3 EnemyManager::getThreadPoint()
+Vector2 EnemyManager::getThreadPoint()
 {
 	return threadPosition_;
 }
@@ -197,7 +196,7 @@ void EnemyManager::addFSP(FloorSearchPoint * fsp)
 }
 
 // 壁に沿った動き方
-Vector3 EnemyManager::getWallDirection()
+Vector2 EnemyManager::getWallDirection()
 {
-	return Vector3();
+	return Vector2();
 }

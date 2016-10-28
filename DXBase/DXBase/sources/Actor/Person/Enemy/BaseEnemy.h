@@ -9,6 +9,7 @@
 #include <vector>
 
 class FloorSearchPoint;
+class Prickle;
 
 // モーション番号(仮)
 enum {
@@ -44,8 +45,9 @@ enum class State {
 
 class BaseEnemy : public Actor {
 public:
-	BaseEnemy(IWorld* world, const Vector3&  position, const float bodyScale);
+	BaseEnemy(IWorld* world, const Vector2&  position, const float bodyScale);
 	~BaseEnemy();
+	void Initialize();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& actor) override;
@@ -88,6 +90,8 @@ protected:
 	virtual void chaseMove();
 	// 床捜索オブジェクトの生成
 	void createFSP();
+	// デルタタイム(最大値1)の設定
+	void setDeltaTime(float deltatime);
 
 public:
 	// 敵が飲み込まれた時のスケールポイントを返します
@@ -98,6 +102,10 @@ public:
 private:
 	// 状態の更新を行います
 	void updateState(float deltaTime);
+	// 捜索オブジェクト関連の更新
+	void updateSearchObjct();
+	//地面の位置に補正します
+	void groundClamp();
 
 protected:
 	// メンバ変数
@@ -108,33 +116,33 @@ protected:
 	float speed_;					// 移動速度
 	float initSpeed_;				// 初期の移動速度
 	float scale_;					// 大きさ
-	float directionX_;
-	float directionY_;
 	float discoveryLenght_;			// プレイヤーに気づく距離
+	float playerLostLenght_;		// プレイヤーを見失う距離
+	Vector2 direction_;				// 方向
 
 	float distance_;	// デバッグ用
 	bool isGround_;					// 接地しているか
 	bool isUseGravity_;				// 重力を使うか
 	bool isInvincible_;				// 無敵か
 
-	unsigned int color_;			// 球体の色
 	float stateTimer_;				// 状態タイマ
 	std::string stateString_;		// 状態の文字列（デバッグ用）
 	State state_;					// 状態
 	Vector2 target_;				// ターゲットの位置
-	Vector3 discoveryPosition_;		// 発見したときの位置
+	Vector2 discoveryPosition_;		// 発見したときの位置
 
 	Animation2D animation_;			// アニメーション
 	ActorPtr player_;				// プレイヤー
 	//ActorPtr fsPoint_;				// 床捜索オブジェクト
 
 	EnemyManager enemyManager_;		// エネミーマネージャー
-	FloorSearchPoint* fsPointScript;
-	FloorSearchPoint* wsScript;
+	FloorSearchPoint* fspScript;	// 床捜索オブジェクト
+	FloorSearchPoint* wsScript;		// 壁捜索オブジェクト
+	Prickle* pricleObj_;			// トゲのオブジェクト
 
 	typedef std::vector<FloorSearchPoint*> FSPContainer;
 	FSPContainer fspContainer_;
-	typedef std::vector<Vector3> FSPPositionContainer;
+	typedef std::vector<Vector2> FSPPositionContainer;
 	FSPPositionContainer fspPositionContainer_;
 	// 重力加速度
 	const float GRAVITY_ = 9.8f;

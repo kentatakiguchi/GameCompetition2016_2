@@ -1,29 +1,39 @@
 #include "FloorTurnEnemy.h"
 #include "../../../Base/ActorGroup.h"
 #include "../FloorSearchPoint.h"
+#include "Prickle.h"
 
-FloorTurnEnemy::FloorTurnEnemy(IWorld * world, const Vector3 & position) :
+FloorTurnEnemy::FloorTurnEnemy(IWorld * world, const Vector2 & position) :
 	BaseEnemy(world, position, 64.0f),
 	fspObj_(nullptr)
 {
 	// 崖捜索オブジェクトの追加
 	auto fsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector3(
-			-(scale_ / 2.0f + 1.0f), scale_ / 2.0f + 1.0f, 0.0f), position_);
+		world_, 
+		Vector2(-(scale_ / 2.0f + 1.0f), scale_ / 2.0f + 1.0f), 
+		position_);
 	// ワールドに追加
 	world_->addActor(ActorGroup::Enemy, fsObj);
 	fspObj_ = &*fsObj;
+	// トゲオブジェクトの生成
+	auto pricleObj = std::make_shared<Prickle>(
+		world_, position_, Vector2::Up * -(scale_ / 2.0f + 1.0f), 32.0f);
+	world_->addActor(ActorGroup::Enemy_AttackRange, pricleObj);
+	pricleObj_ = &*pricleObj;
 }
 
 void FloorTurnEnemy::onUpdate(float deltaTime)
 {
 	BaseEnemy::onUpdate(deltaTime);
-	if (!fspObj_->isGround() && fsPointScript->isGround()) {
-		directionX_ *= -1;
+	if (!fspObj_->isGround() && fspScript->isGround()) {
+		direction_.x *= -1;
 	}
-	fspObj_->setDirectionX(directionX_);
 	// 崖捜索オブジェクトの更新
+	fspObj_->setDirection(direction_);
 	fspObj_->setPosition(position_);
+	// トゲの更新
+	pricleObj_->setDirection(direction_);
+	pricleObj_->setEnemyPosition(position_);
 }
 
 void FloorTurnEnemy::onCollide(Actor & actor)
@@ -47,8 +57,8 @@ void FloorTurnEnemy::searchMove()
 {
 	speed_ = initSpeed_;
 	position_ += 
-		enemyManager_.cliffMove(fsPointScript->isFloor())
-		* speed_ * directionX_;
+		enemyManager_.cliffMove(fspScript->isFloor())
+		* speed_ * direction_.x;
 	// 崖移動(仮)
 	//position_ += enemyManager_.cliffMove(true) * speed_;
 }
@@ -64,5 +74,5 @@ void FloorTurnEnemy::chaseMove()
 	if (std::abs(distance) < speed)
 		speed = std::abs(distance);
 	// 追跡
-	position_ += enemyManager_.getPlayerDirection().x * -speed;
+	position_ += enemyManager_.getPlayerDirection().x * -speed * deltaTimer_;
 }

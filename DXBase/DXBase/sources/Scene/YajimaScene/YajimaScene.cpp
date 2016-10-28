@@ -9,7 +9,6 @@
 #include "../../Actor/Person/Enemy/Enemys/FloorTurnEnemy.h"
 #include "../../Actor/Person/Enemy/Enemys/WallTurnEnemy.h"
 //#include "../../Actor/Person/Enemy/Enemys/PendulumEnemy.h"
-#include "../../Actor/Person/Enemy/EnemySpawner.h"
 #include "../../Field/MapGenerator.h"
 #include "../../ResourceLoader/ResourceLoader.h"
 

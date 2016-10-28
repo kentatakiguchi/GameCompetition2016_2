@@ -6,7 +6,7 @@
 #include "FloorSearchPoint.h"
 
 
-BaseEnemy::BaseEnemy(IWorld * world, const Vector3& position, const float bodyScale) :
+BaseEnemy::BaseEnemy(IWorld * world, const Vector2& position, const float bodyScale) :
 	Actor(world, "BaseEnemy", position,
 		CollisionBase(
 			Vector2(position.x + bodyScale / 2.0f, position.y + bodyScale / 2.0f),
@@ -19,65 +19,56 @@ BaseEnemy::BaseEnemy(IWorld * world, const Vector3& position, const float bodySc
 	speed_(1.0f),
 	initSpeed_(speed_),
 	scale_(bodyScale),
-	directionX_(1.0f),
-	directionY_(1.0f),
+	direction_(Vector2(1.0f, 1.0f)),
 	isGround_(false),
 	isUseGravity_(true),
 	isInvincible_(false),
 	discoveryLenght_(125),
-	color_(GetColor(255, 255, 255)),
 	stateTimer_(0.0f),
 	state_(State::Idel),
 	stateString_(""),
-	discoveryPosition_(Vector3(0.0f, 0.0f, 0.0f)),
+	discoveryPosition_(Vector2::Zero),
 	animation_(),
 	player_(nullptr),
-	fsPointScript(nullptr),
+	fspScript(nullptr),
 	wsScript(nullptr),
+	pricleObj_(nullptr),
 	enemyManager_(EnemyManager(position))
 {
-	// 床捜索オブジェクトの追加
-	auto fsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector3(0.0f, 0.0f + scale_ / 2.0f, 0.0f), position_);
-	// ワールドに追加
-	world_->addActor(ActorGroup::Enemy, fsObj);
-	fsPointScript = &*fsObj;
-	// 壁捜索オブジェクト
-	auto wsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector3(-scale_ / 2.0f, 0.0f, 0.0f), position_);
-	world_->addActor(ActorGroup::Enemy, wsObj);
-	wsScript = &*wsObj;
-	// fspContainer_[i]->setEnemyScale(Vector2(scale_, scale_));
-	// fspContainer_[i]->setPosition(position_ + fspPositionContainer_[i]);
-
-	// fsPointScript
+	Initialize();
 }
 
 BaseEnemy::~BaseEnemy()
 {
 }
 
+void BaseEnemy::Initialize()
+{
+	// 床捜索オブジェクトの追加
+	auto fsObj = std::make_shared<FloorSearchPoint>(
+		world_, Vector3(0.0f, 0.0f + scale_ / 2.0f, 0.0f), position_);
+	// ワールドに追加
+	world_->addActor(ActorGroup::Enemy, fsObj);
+	fspScript = &*fsObj;
+	fspScript->setPosition(position_);
+	// 壁捜索オブジェクト
+	auto wsObj = std::make_shared<FloorSearchPoint>(
+		world_, Vector3(-scale_ / 2.0f, 0.0f, 0.0f), position_);
+	world_->addActor(ActorGroup::Enemy, wsObj);
+	wsScript = &*wsObj;
+}
+
 void BaseEnemy::onUpdate(float deltaTime)
 {
-	deltaTimer_ = deltaTime;
+	// デルタタイムの値を設定する
+	setDeltaTime(deltaTime);
 	// エネミーマネージャーの更新
 	enemyManager_.update(deltaTime);
 	// 状態の更新
 	updateState(deltaTime);
-	// 接地していないなら重力加算
-	if (!fsPointScript->isGround() && isUseGravity_) {
-		position_.y += GRAVITY_;
-	}
-	// 壁に当たったら方向転換(X)
-	if (wsScript->isGround()) {
-		directionX_ *= -1.0f;
-	}
-	wsScript->setDirectionX(directionX_);
-	/*if (!isGround_)
-		position_.y += GRAVITY_;*/
-
-	fsPointScript->setPosition(position_);
-	wsScript->setPosition(position_);
+	// 捜索オブジェクトの更新
+	updateSearchObjct();
+	
 	// デバッグ
 	distance_ = enemyManager_.getPlayerLength();
 	isGround_ = false;
@@ -86,17 +77,16 @@ void BaseEnemy::onUpdate(float deltaTime)
 	//animation_.change(motion_);
 	// アニメーションの更新
 	//animation_.update(deltaTime);
-
-	//auto position = Vector2(position_.x, position_.y);
-	//body_.setPosition(position);
 }
 
 void BaseEnemy::onDraw() const
 {
 	auto stateChar = stateString_.c_str();
+	// 敵の表示
 	DrawGraph(
 		position_.x - scale_ / 2.0f, position_.y - scale_ / 2.0f,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
+	// 文字の表示
 	DrawString(
 		position_.x - scale_, position_.y - 20 - scale_,
 		stateChar, GetColor(255, 255, 255));
@@ -114,14 +104,6 @@ void BaseEnemy::onDraw() const
 void BaseEnemy::onCollide(Actor & actor)
 {
 	auto actorName = actor.getName();
-	// 接地しているなら
-	/*if (actorName == "MapChip") {
-		isGround_ = true;
-		if (actor.position_.y < position_.y)
-			position_.y = MathHelper::Clamp(
-				position_.y, actor.position_.y, actor.position_.y + 1.0f);
-		return;
-	}*/
 	// プレイヤー関連のオブジェクトに当たっているなら
 	// actorName != "Player_AttackRange"
 	// if (actorName != "Player") return;
@@ -151,9 +133,7 @@ void BaseEnemy::onMessage(EventMessage event, void *)
 // 待機状態です
 void BaseEnemy::idle()
 {
-	color_ = GetColor(255, 255, 255);
 	stateString_ = "待機";
-	//position_ += BaseEnemy::getPlayerNormalizeDirection() * -speed_;
 	// if (enemyManager_.getPlayerLength() < 100) changeState(State::Search, ENEMY_WALK);
 	changeState(State::Search, ENEMY_WALK);
 }
@@ -162,7 +142,6 @@ void BaseEnemy::search()
 {
 	// プレイヤーの捜索
 	findPlayer();
-	color_ = GetColor(0, 255, 0);
 	stateString_ = "捜索";
 	// 捜索行動
 	searchMove();
@@ -179,18 +158,14 @@ void BaseEnemy::discovery()
 {
 	isUseGravity_ = false;
 	// プレイヤーの捜索
-	/*if (!fsPointScript->isGround()) {
-		discoveryPosition_ = position_;
-		return;
-	}*/
 	//findPlayer();
 	stateString_ = "発見";
-	//isUseGravity_ = false;
-	//position_.y += -4.0f + stateTimer_ * GRAVITY_;
-	position_.y += (-0.5f + stateTimer_) * GRAVITY_;
-	position_.y = MathHelper::Clamp(
-		position_.y, discoveryPosition_.y - 100.0f, discoveryPosition_.y);
-	if (position_.y == discoveryPosition_.y) {
+	// ジャンプモーション
+	position_.y += (-0.5f + stateTimer_) * GRAVITY_ * deltaTimer_;
+	// 位置を補正
+	groundClamp();
+	// 補正されたら、追跡に移行
+	if (position_.y >= fspScript->getFloorPosition().y) {
 		changeState(State::Chase, ENEMY_WALK);
 		isUseGravity_ = true;
 	}
@@ -201,7 +176,6 @@ void BaseEnemy::chase()
 {
 	// プレイヤーの捜索
 	findPlayer();
-	color_ = GetColor(255, 0, 0);
 	stateString_ = "追跡";
 	// 追跡行動
 	chaseMove();
@@ -246,7 +220,6 @@ void BaseEnemy::Attack()
 // 被弾行動です
 void BaseEnemy::damageMove()
 {
-	color_ = GetColor(255, 255, 0);
 	stateString_ = "ダメージ";
 	if (stateTimer_ >= 3.0f)
 		changeState(State::Chase, ENEMY_WALK);
@@ -257,7 +230,6 @@ void BaseEnemy::deadMove()
 {
 	//if (stateTimer_ >= 3.0f) dead();
 	stateString_ = "死亡";
-	color_ = GetColor(10, 10, 10);
 	//dead();
 }
 
@@ -298,7 +270,7 @@ void BaseEnemy::createFSP()
 		world_->addActor(ActorGroup::Effect, fsObj);
 		// 床オブジェクトのスクリプト取得
 		auto fspScript = &*fsObj;
-		//fsPointScript->setEnemyScale(Vector2(scale_, scale_));
+		//fspScript->setEnemyScale(Vector2(scale_, scale_));
 		// 追加
 		fspContainer_.push_back(fspScript);
 		fspContainer_[i]->setEnemyScale(Vector2(scale_, scale_));
@@ -306,6 +278,11 @@ void BaseEnemy::createFSP()
 		// エネミーマネージャー
 		enemyManager_.addFSP(fspScript);
 	}
+}
+
+void BaseEnemy::setDeltaTime(float deltatime)
+{
+	deltaTimer_ = deltatime * 60.0f;
 }
 
 // 敵が飲み込まれた時のスケールポイントを返します
@@ -317,7 +294,7 @@ float BaseEnemy::getSP()
 // 敵の大きさを返します
 int BaseEnemy::getScale()
 {
-	return 1;
+	return (int)scale_;
 }
 
 void BaseEnemy::updateState(float deltaTime)
@@ -340,4 +317,31 @@ void BaseEnemy::updateState(float deltaTime)
 	}
 
 	stateTimer_ += deltaTime;
+}
+
+// 捜索オブジェクトの更新
+void BaseEnemy::updateSearchObjct()
+{
+	// 接地していないなら重力加算
+	if (!fspScript->isGround() && isUseGravity_)
+		position_.y += GRAVITY_ * deltaTimer_;
+	// 床の位置に補正する
+	if (fspScript->isGround())
+		groundClamp();
+	// 壁に当たったら方向転換(X)
+	if (wsScript->isGround())
+		direction_.x *= -1.0f;
+	// 捜索オブジェクトにプレイヤーの方向を入れる
+	wsScript->setDirection(direction_);
+	// 各捜索オブジェクトに位置を入れる
+	fspScript->setPosition(position_);
+	wsScript->setPosition(position_);
+}
+
+//地面の位置に補正します
+void BaseEnemy::groundClamp()
+{
+	position_.y = MathHelper::Clamp(position_.y,
+		fspScript->getFloorPosition().y - 100.0f,
+		fspScript->getFloorPosition().y);
 }
