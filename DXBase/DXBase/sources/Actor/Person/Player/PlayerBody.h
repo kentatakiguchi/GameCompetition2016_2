@@ -43,8 +43,10 @@ public:
 	void target(std::shared_ptr<PlayerBody> target);
 	void set_name(std::string name);
 private:
+	Vector3 input_;
 	Vector3 velocity_;
 	Vector3 gravity_;
+	Vector3 launch_;
 	Vector3 last_pos_;
 	std::shared_ptr<PlayerBody> target_;
 	Opponent opponent_;

@@ -18,6 +18,8 @@
 #include <memory>
 #include <algorithm>
 
+#include "../../../Define.h"
+
 const float CENTER_HEIGHT = 5.0f;
 const float MAX_NORMAL_LENGTH = 100.0f;
 //const float MAX_STRETCH_LENGTH = 100.0f;
@@ -29,6 +31,8 @@ mVelo(Vector2::Zero),
 curPosition(Vector2::Zero),
 mSevePos(Vector2::Zero)
 {
+
+	float a = HEIGHT;
 
 	// ƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
 	//modelHandle_ = MV1DuplicateModel(ResourceLoader::GetInstance().getModelID(ModelID::PLAYER));
@@ -74,7 +78,9 @@ void Player::onUpdate(float deltaTime) {
 	//‘¬“x‚ðŒvŽZ
 	mVelo = prePosition - curPosition;
 	
-
+	//Vector2 main_pos = Vector2(main_body_->getPosition().x, main_body_->getPosition().y);
+	//Vector2 sub_pos = Vector2(sub_body_->getPosition().x, sub_body_->getPosition().y);
+	//body_.RotateCapsule(main_pos, sub_pos, body_.GetCapsule().component_.radius);
 
 	//animation_.changeAnim(motion_);
 	//animation_.update(deltaTime);
@@ -100,8 +106,6 @@ void Player::onDraw() const {
 
 void Player::onCollide(Actor & other){
 	//if (stateMgr_.currentState() == (unsigned int)Player_EnumState::DAMAGE)return;
-
-
 }
 
 void Player::changeMotion(float deltaTime){
