@@ -1,24 +1,29 @@
 #include "PlayerBody.h"
 #include"../../Body/CollisionBase.h"
-#include "../../../World/IWorld.h"
-#include "../../../World/World.h"
+
 const float SPEED = 3.0f;
 const float MAX_NORMAL_LENGTH = 100.0f;
 const float MAX_STRETCH_LENGTH = 150.0f;
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector3 & position) :
 	Actor(world, name, position, CollisionBase(Vector2(0, 0), 20.0f)) {
-	world_ = world;
-	int a = 0;
 }
 
 PlayerBody::~PlayerBody(){}
 
 void PlayerBody::onUpdate(float deltaTime){
+	velocity_ = input_ * SPEED + gravity_ + launch_;
+
+	position_ += velocity_;
+
 	position_ = Vector3::Clamp(position_, Vector3::Zero, Vector3(3000, 1000, 0));
+
 }
 
 void PlayerBody::onDraw() const{
+	if (name_ == "PlayerBody1")	DrawFormatString(25, 25, GetColor(255, 255, 255), "1 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
+	if (name_ == "PlayerBody2")	DrawFormatString(25, 50, GetColor(255, 255, 255), "2 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
+
 	body_.draw();
 
 	if (opponent_ == Opponent::NONE)DrawFormatString(25, 75, GetColor(255, 255, 255), "NONE");
@@ -26,6 +31,10 @@ void PlayerBody::onDraw() const{
 }
 
 void PlayerBody::onLateUpdate(float deltaTime){
+
+	input_ = Vector3::Zero;
+	gravity_ = Vector3::Zero;
+	launch_ = Vector3::Zero;
 }
 
 void PlayerBody::onCollide(Actor & other){
@@ -100,33 +109,28 @@ void PlayerBody::changeMotion(float deltaTime){
 void PlayerBody::move(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
 	if (distance() > MAX_STRETCH_LENGTH) {	}
 
-	velocity_ = Vector3::Zero;
-	if (InputMgr::GetInstance().IsKeyOn(right)) velocity_.x = 1;
-	if (InputMgr::GetInstance().IsKeyOn(left)) 	velocity_.x = -1;
-	if (InputMgr::GetInstance().IsKeyOn(up)) 	velocity_.y = -1;
-	if (InputMgr::GetInstance().IsKeyOn(down)) 	velocity_.y = 1;
+	input_ = Vector3::Zero;
+	if (InputMgr::GetInstance().IsKeyOn(right)) input_.x = 1;
+	if (InputMgr::GetInstance().IsKeyOn(left)) 	input_.x = -1;
+	if (InputMgr::GetInstance().IsKeyOn(up)) 	input_.y = -1;
+	if (InputMgr::GetInstance().IsKeyOn(down)) 	input_.y = 1;
 	
-	position_ += velocity_ * SPEED;
+	//position_ += input_ * SPEED;
 }
 
 void PlayerBody::move_ver(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
 	if (distance() > MAX_STRETCH_LENGTH) {	}
 
-	velocity_ = Vector3::Zero;
+	if (InputMgr::GetInstance().IsKeyOn(down))	input_.y = 1;
+	if (InputMgr::GetInstance().IsKeyOn(up))	input_.y = -1;
 
-	if (InputMgr::GetInstance().IsKeyOn(down)) velocity_.y = 1;
-	if (InputMgr::GetInstance().IsKeyOn(up)) 	velocity_.y = -1;
-
-	position_ += velocity_ * SPEED;
+	//position_ += input_ * SPEED;
 }
 
 void PlayerBody::move_hor(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
 
-
-	velocity_ = Vector3::Zero;
-
-	if (InputMgr::GetInstance().IsKeyOn(right)) velocity_.x = 1;
-	if (InputMgr::GetInstance().IsKeyOn(left)) 	velocity_.x = -1;
+	if (InputMgr::GetInstance().IsKeyOn(right)) input_.x = 1;
+	if (InputMgr::GetInstance().IsKeyOn(left)) 	input_.x = -1;
 
 	//if (distance() >= MAX_STRETCH_LENGTH) {
 	//	//auto vec = Vector3::Normalize(position_ - target_->getPosition()) * MAX_STRETCH_LENGTH;
@@ -139,19 +143,19 @@ void PlayerBody::move_hor(KeyCode up, KeyCode down, KeyCode right, KeyCode left)
 	//if (distance() >= MAX_STRETCH_LENGTH) {
 	//}
 
-	position_ += velocity_ * SPEED;
+	//position_ += input_ * SPEED;
 }
 
 void PlayerBody::chase() {
-	if (target_ == nullptr || Vector3::Distance(Vector3::Zero, velocity_) > 0)return;
+	if (target_ == nullptr || Vector3::Distance(Vector3::Zero, input_) > 0)return;
 	if (distance() <= MAX_NORMAL_LENGTH) return;
 	auto vec = Vector3::Normalize(position_ - target_->getPosition()) * MAX_NORMAL_LENGTH;
 	position_ = Vector3::Lerp(position_, target_->getPosition() + vec, 0.2f);
 }
 
 void PlayerBody::gravity(){
-	if (opponent_ == Opponent::FLOOR)position_ += Vector3(0, 5, 0);
-	else position_ += Vector3(0, 5, 0);
+	if (opponent_ == Opponent::FLOOR)gravity_ = Vector3(0, 5, 0);
+	else gravity_ = Vector3(0, 5, 0);
 }
 
 void PlayerBody::acc_gravity(){
@@ -159,7 +163,7 @@ void PlayerBody::acc_gravity(){
 }
 
 void PlayerBody::hold_gravity(){
-	if (Vector3::Distance(Vector3::Zero, velocity_) > 0)return;
+	if (Vector3::Distance(Vector3::Zero, input_) > 0)return;
 	gravity();
 }
 
@@ -171,7 +175,7 @@ void PlayerBody::circleClamp() {
 }
 
 void PlayerBody::launch(Vector3 dir){
-	position_ += dir;
+	launch_ = dir;
 }
 
 PlayerBody::Opponent PlayerBody::hitOpponent(){
@@ -183,7 +187,7 @@ void PlayerBody::reset_opponent(){
 }
 
 void PlayerBody::reset_velocity(){
-	velocity_ = Vector3::Zero;
+	input_ = Vector3::Zero;
 }
 
 void PlayerBody::pre_vector(){
