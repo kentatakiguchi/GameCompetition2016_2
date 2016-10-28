@@ -18,7 +18,7 @@
 #include <memory>
 #include <random>
 
-const Vector3 START_POS = Vector3(800, 600, 0) / 2;
+const Vector3 START_POS = Vector3(300, 400, 0);
 
 GamePlayScene::GamePlayScene(){
 	isEnd_ = false;
@@ -56,6 +56,7 @@ void GamePlayScene::start() {
 	backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX);
 
 	backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
+	backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 }
 
 void GamePlayScene::update() {

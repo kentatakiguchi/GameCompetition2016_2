@@ -42,6 +42,10 @@ public:
 	float distance();
 	void target(std::shared_ptr<PlayerBody> target);
 	void set_name(std::string name);
+
+	Vector2 GetVelo() {
+		return Vector2(velocity_.x, velocity_.y);
+	}
 private:
 	Vector3 input_;
 	Vector3 velocity_;

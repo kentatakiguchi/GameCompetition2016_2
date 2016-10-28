@@ -12,11 +12,9 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector3 & p
 PlayerBody::~PlayerBody(){}
 
 void PlayerBody::onUpdate(float deltaTime){
-	velocity_ = input_ * SPEED + gravity_ + launch_;
-
-	position_ += velocity_;
-
-	position_ = Vector3::Clamp(position_, Vector3::Zero, Vector3(3000, 1000, 0));
+	position_ += input_ * SPEED  + launch_ + gravity_;;
+	velocity_=position_- Vector3(body_.GetCircle().previousPosition_.x, body_.GetCircle().previousPosition_.y,0.0f);
+	//position_ = Vector3::Clamp(position_, Vector3::Zero, Vector3(3000, 1000, 0));
 
 }
 

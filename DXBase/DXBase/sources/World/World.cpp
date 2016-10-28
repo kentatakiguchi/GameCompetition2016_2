@@ -3,6 +3,7 @@
 #include "../Actor/TestPlayer/TestPlayer.h"
 #include "../Actor/Person/Player/Player.h"
 #include "../Actor/ScroolStop/ScroolStop.h"
+#include"../Actor/Person/Player/PlayerBody.h"
 // コンストラクタ
 World::World() :
 	listener_([](EventMessage, void*) {}) {
@@ -84,7 +85,7 @@ void World::addEventMessageListener(
 
 Vector2 World::MoveActor()
 {
-	Player* player = dynamic_cast<Player*>(findActor("Player").get());
+	PlayerBody* player = dynamic_cast<PlayerBody*>(findActor("PlayerBody1").get());
 	return player->GetVelo();
 }
 
