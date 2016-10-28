@@ -156,15 +156,6 @@
     <ClInclude Include="sources\Actor\Person\Enemy\States\Enemy_IdleState.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Enemy_AttackRange.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\EnemySpawner.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IState.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -228,9 +219,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\Base\PlayerStatePtr.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\TestObject\TestObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Body\BoundingCircle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -291,10 +279,10 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Scene\NaganoScene\NaganoScene.h">
+    <ClInclude Include="sources\Actor\ScroolStop\ScroolStop.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\ScroolStop\ScroolStop.h">
+    <ClInclude Include="sources\Actor\Person\Enemy\Enemys\Prickle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -389,15 +377,6 @@
     <ClCompile Include="sources\Actor\Light\Light.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\Enemy_AttackRange.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\EnemySpawner.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -441,9 +420,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Hold.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\TestObject\TestObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Body\BoundingCircle.cpp">
@@ -494,10 +470,10 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Scene\NaganoScene\NaganoScene.cpp">
+    <ClCompile Include="sources\Actor\ScroolStop\ScroolStop.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\ScroolStop\ScroolStop.cpp">
+    <ClCompile Include="sources\Actor\Person\Enemy\Enemys\Prickle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

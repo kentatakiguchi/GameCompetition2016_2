@@ -2,11 +2,11 @@
 #include "../../Game/Time.h"
 #include"../Body/CollisionBase.h"
 
-TestPlayer::TestPlayer(IWorld * world, const Vector3 & position) :
+TestPlayer::TestPlayer(IWorld * world, const Vector2 & position) :
 	Actor(world, "Player", position, CollisionBase()),
 	mPositionVelo(Vector2(800 / 2, 600 / 2))
 {
-	position_ = Vector3(800/2,600/2,0);
+	position_ = Vector2(800/2,600/2);
 }
 
 TestPlayer::~TestPlayer()
@@ -35,7 +35,7 @@ void TestPlayer::onUpdate(float deltaTime)
 	}
 	vec = vec.Normalize();
 	mPositionVelo += Vector2(vec.x, vec.y)*500.0f*Time::GetInstance().deltaTime();
-	position_ += Vector3(vec.x, vec.y,0)*500.0f*Time::GetInstance().deltaTime();
+	position_ += Vector2(vec.x, vec.y)*500.0f*Time::GetInstance().deltaTime();
 	curPosition =mPositionVelo;
 	//‘¬“x‚ðŒvŽZ
 	mVelo = prePosition - curPosition;

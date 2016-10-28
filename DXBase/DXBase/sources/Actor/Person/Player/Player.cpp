@@ -4,9 +4,7 @@
 #include "State/States/PlayerState_Idle.h"
 #include "State/States/PlayerState_Move.h"
 #include "State/States/PlayerState_Hold.h"
-#include "State/States/PlayerState_Jump.h"
 #include "State/States/PlayerState_Attack.h"
-#include "State/States/PlayerState_Attack2.h"
 #include "State/States/PlayerState_Damage.h"
 
 #include "PlayerBody.h"
@@ -47,10 +45,8 @@ mSevePos(Vector2::Zero)
 	stateMgr_.add((unsigned int)Player_EnumState::IDLE, std::make_shared<PlayerState_Idle>());
 	stateMgr_.add((unsigned int)Player_EnumState::MOVE, std::make_shared<PlayerState_Move>());
 	stateMgr_.add((unsigned int)Player_EnumState::HOLD, std::make_shared<PlayerState_Hold>());
-	stateMgr_.add((unsigned int)Player_EnumState::JUMP, std::make_shared<PlayerState_Jump>());
 	stateMgr_.add((unsigned int)Player_EnumState::QUICK, std::make_shared<PlayerState_Move>());
 	stateMgr_.add((unsigned int)Player_EnumState::ATTACK, std::make_shared<PlayerState_Attack>());
-	stateMgr_.add((unsigned int)Player_EnumState::ATTACK2, std::make_shared<PlayerState_Attack2>());
 	stateMgr_.add((unsigned int)Player_EnumState::DAMAGE, std::make_shared<PlayerState_Damage>());
 	stateMgr_.changeState(*this, IState::StateElement((unsigned int)Player_EnumState::STAND_BY));
 

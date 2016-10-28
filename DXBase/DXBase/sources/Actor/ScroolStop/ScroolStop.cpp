@@ -2,7 +2,7 @@
 #include "../../World/IWorld.h"
 #include "../Body/CollisionBase.h"
 ScroolStop::ScroolStop(IWorld* world, const Vector2& position, StopDirection dire) :
-	Actor(world, "ScroolStopPoint", Vector3(position.x, position.y, 0.0f), CollisionBase()),
+	Actor(world, "ScroolStopPoint", position, CollisionBase()),
 	mDire(dire),
 	sceneInFlag(Vector2::Zero)
 {

@@ -28,7 +28,7 @@ public:
 	void createOval(Vector2 center, float width, int height)const;
 	
 
-	void field();	
+	//void field();	
 
 	Vector2 GetVelo()
 	{

@@ -4,9 +4,7 @@
 #include"../../Body/CollisionBase.h"
 
 FloorSearchPoint::FloorSearchPoint(IWorld * world, const Vector2& pointPosition, const Vector2&  collidePosition) :
-	pointPosition_(pointPosition),
-	Actor(world, "FSP", collidePosition, 
-		CollisionBase(Vector2(collidePosition.x, collidePosition.y), 1.0f)),
+	pointPosition_(pointPosition),	Actor(world, "FSP", collidePosition, CollisionBase(Vector2(collidePosition.x, collidePosition.y), 1.0f)),
 	turnCount_(0),
 	isFloor_(false),
 	isGround_(false),

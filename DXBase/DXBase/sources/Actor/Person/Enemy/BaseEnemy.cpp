@@ -45,14 +45,14 @@ void BaseEnemy::Initialize()
 {
 	// 床捜索オブジェクトの追加
 	auto fsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector3(0.0f, 0.0f + scale_ / 2.0f, 0.0f), position_);
+		world_, Vector2(0.0f, 0.0f + scale_ / 2.0f), position_);
 	// ワールドに追加
 	world_->addActor(ActorGroup::Enemy, fsObj);
 	fspScript = &*fsObj;
 	fspScript->setPosition(position_);
 	// 壁捜索オブジェクト
 	auto wsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector3(-scale_ / 2.0f, 0.0f, 0.0f), position_);
+		world_, Vector2(-scale_ / 2.0f, 0.0f), position_);
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsScript = &*wsObj;
 }
@@ -264,7 +264,7 @@ void BaseEnemy::createFSP()
 	// 追加された位置分だけ生成する
 	for (int i = 0; i != fspPositionContainer_.size(); ++i) {
 		// 捜索オブジェクトの追加
-		auto fsObj = std::make_shared<FloorSearchPoint>(world_, Vector3::Zero, position_);
+		auto fsObj = std::make_shared<FloorSearchPoint>(world_, Vector2::Zero, position_);
 		//fsPoint_ = std::make_shared<FloorSearchPoint>(world_, position_);
 		world_->addActor(ActorGroup::Effect, fsObj);
 		// 床オブジェクトのスクリプト取得

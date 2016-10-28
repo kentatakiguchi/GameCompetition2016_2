@@ -12,7 +12,7 @@
 #include "../../Field/MapGenerator.h"
 #include "../../ResourceLoader/ResourceLoader.h"
 
-const Vector3 START_POS = Vector3(300, 125, 0);
+const Vector2 START_POS = Vector2(300, 125);
 
 YajimaScene::YajimaScene() : 
 	id(0)
@@ -36,11 +36,11 @@ void YajimaScene::start()
 	world_ = std::make_shared<World>();
 	world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
 	world_->addCamera(std::make_shared<Camera>(world_.get()));
-	world_->addLight(std::make_shared<Light>(world_.get(), Vector3(10.0f, 10.0f, 10.0f)));
-	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), START_POS + Vector3(15, 5, 0)));
+	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
+	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), START_POS + Vector2(15, 5)));
 	//world_->addActor(ActorGroup::Player, std::make_shared<WeakEnemy>(world_.get(), START_POS + Vector3(50, -105, 0)));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector3(50, 205, 0)));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), START_POS + Vector3(-50, 200, 0)));
+	world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(50, 205)));
+	world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), START_POS + Vector2(-50, 200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<PendulumEnemy>(world_.get(), START_POS + Vector3(105, 5, 0)));
 
 	MapGenerator gener = MapGenerator(world_.get());

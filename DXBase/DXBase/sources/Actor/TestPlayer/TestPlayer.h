@@ -7,7 +7,7 @@
 // ÉvÉåÅ[ÉÑÅ[
 class TestPlayer : public Actor {
 public:
-	TestPlayer(IWorld* world, const Vector3& position);
+	TestPlayer(IWorld* world, const Vector2& position);
 	~TestPlayer();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;

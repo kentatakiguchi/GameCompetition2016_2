@@ -10,7 +10,7 @@ WallTrunEnemy::WallTrunEnemy(IWorld * world, const Vector2 & position) :
 	isInvincible_ = true;
 	// 壁捜索オブジェクトの生成
 	auto wsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector3(0.0f, -(scale_ / 2.0f + 1.0f), 0.0f), position_);
+		world_, Vector2(0.0f, -(scale_ / 2.0f + 1.0f)), position_);
 	// ワールドに追加
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsObj_ = &*wsObj;
@@ -62,7 +62,7 @@ void WallTrunEnemy::Attack()
 
 void WallTrunEnemy::searchMove()
 {
-	position_ += Vector3::Down * speed_ * direction_.y * deltaTimer_;
+	position_ += Vector2::Down * speed_ * direction_.y * deltaTimer_;
 }
 
 void WallTrunEnemy::chaseMove()
