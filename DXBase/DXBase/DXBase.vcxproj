@@ -174,13 +174,10 @@
     <ClInclude Include="sources\Actor\Camera\Camera.h" />
     <ClInclude Include="sources\Actor\Light\Light.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\BaseEnemy.h" />
-    <ClInclude Include="sources\Actor\Person\Enemy\Enemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\EnemyManager.h" />
-    <ClInclude Include="sources\Actor\Person\Enemy\EnemySpawner.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.h" />
-    <ClInclude Include="sources\Actor\Person\Enemy\Enemy_AttackRange.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\FloorSearchPoint.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\States\Enemy_IdleState.h" />
     <ClInclude Include="sources\Actor\Person\Player\Player.h" />
@@ -267,13 +264,10 @@
     <ClCompile Include="sources\Actor\Camera\Camera.cpp" />
     <ClCompile Include="sources\Actor\Light\Light.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\BaseEnemy.cpp" />
-    <ClCompile Include="sources\Actor\Person\Enemy\Enemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\EnemyManager.cpp" />
-    <ClCompile Include="sources\Actor\Person\Enemy\EnemySpawner.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.cpp" />
-    <ClCompile Include="sources\Actor\Person\Enemy\Enemy_AttackRange.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\FloorSearchPoint.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Player.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerBody.cpp" />
