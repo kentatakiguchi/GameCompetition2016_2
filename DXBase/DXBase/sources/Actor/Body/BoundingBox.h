@@ -14,6 +14,19 @@ public:
 	BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight,bool isEnabled);
 	//四角の判定を作成する(判定を行わない場合)
 	explicit BoundingBox();
+
+	float getWidth() {
+		Vector2 lengthVectWidth1 = Vector2((component_.point[0].x + component_.point[2].x) / 2, (component_.point[0].y + component_.point[2].y) / 2);
+		Vector2 lengthVectWidth2 = Vector2((component_.point[1].x + component_.point[3].x) / 2, (component_.point[1].y + component_.point[3].y) / 2);
+		Vector2 lengthVectMain = CreateVector(lengthVectWidth1, lengthVectWidth2);
+		return lengthVectMain.Length();
+	}
+	float getHeight() {
+		Vector2 lengthVectHeight1 = Vector2((component_.point[0].x+component_.point[1].x)/2, (component_.point[0].y + component_.point[1].y) / 2);
+		Vector2 lengthVectHeight2 = Vector2((component_.point[2].x + component_.point[3].x) / 2, (component_.point[2].y + component_.point[3].y) / 2);
+		Vector2 lengthVectMain = CreateVector(lengthVectHeight1,lengthVectHeight2);
+		return lengthVectMain.Length();
+	}
 	//使用しない
 	virtual bool intersects(BoundingSphere& other) override{ return false; }
 	//使用しない

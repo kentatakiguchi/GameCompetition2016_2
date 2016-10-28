@@ -12,6 +12,11 @@ public:
 	BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius,bool isEnabled);
 	//カプセルの判定を作成する(判定を行わない場合)
 	explicit BoundingCapsule(float radius=-1);
+	float getRadius() { return component_.radius; }
+	float getLength(){
+		Vector2 lengthVect = CreateVector(component_.point[0], component_.point[1]);
+		return lengthVect.Length();
+	}
 	virtual bool intersects(BoundingSphere& other) { return false; }
 	virtual bool intersects(Capsule& other) { return false; }
 	virtual bool intersects(Model& other) { return false; }

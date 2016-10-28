@@ -360,7 +360,7 @@ bool BoundingBox::intersects(BoundingCircle & other)
 		CB = CreateVector(component_.point[intSet[i][0]], other.position_);
 
 		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
-			OuterProduct(CD, CA)*OuterProduct(CD, CB) <= 0.0f)
+			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
 			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 			//OutputDebugString("sdasd");

@@ -13,6 +13,7 @@ public:
 	BoundingCircle(Vector2 center,float circleRadius, bool isEnabled);
 	//カプセルの判定を作成する(判定を行わない場合)
 	BoundingCircle(float radius = -1);
+	float getRadius() { return component_.radius; }
 	//使用しない
 	virtual bool intersects(BoundingSphere& other) { return false; }
 	//使用しない
@@ -40,7 +41,7 @@ public:
 	//判定の表示(デバッグ用)
 	virtual void draw() const override;
 private:
-	Vector2 CreateVector(const Vector2& p, const Vector2& q){
+	Vector2& CreateVector(const Vector2& p, const Vector2& q){
 		return Vector2(q.x - p.x, q.y - p.y);
 	}
 	float InnerProduct(const Vector2 &a, const Vector2 &b) {

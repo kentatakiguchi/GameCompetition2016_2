@@ -2,8 +2,7 @@
 #ifndef MAPCHIP_H_
 #define MAPCHIP_H_
 #include"../Actor/Base/Actor.h"
-
-#define CHIPSIZE 32
+#include"../Define.h"
 
 class MapChip :public Actor{
 public:

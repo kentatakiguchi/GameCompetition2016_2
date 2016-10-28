@@ -1,7 +1,7 @@
 #include "MapChip.h"
 
 MapChip::MapChip(IWorld * world, Vector2 & position):
-	Actor(world, "MapChip", Vector3(position.x, position.y, 0), CollisionBase(
+	Actor(world, "MapChip", Vector2(position.x, position.y), CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
@@ -11,7 +11,7 @@ MapChip::MapChip(IWorld * world, Vector2 & position):
 }
 
 MapChip::MapChip(std::shared_ptr<MapChip> chip,IWorld* world, Vector2 & position)
-	:Actor(world, "MapChip", Vector3(position.x, position.y, 0), CollisionBase(
+	:Actor(world, "MapChip", Vector2(position.x, position.y), CollisionBase(
 		Vector2{ position.x ,position.y },
 		Vector2{ position.x - (CHIPSIZE ),position.y  },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
@@ -22,7 +22,7 @@ MapChip::MapChip(std::shared_ptr<MapChip> chip,IWorld* world, Vector2 & position
 }
 
 MapChip::MapChip(MapChip& chip,IWorld* world, Vector2 & position)
-	:Actor(world, "MapChip", Vector3(position.x, position.y, 0), CollisionBase(
+	:Actor(world, "MapChip", Vector2(position.x, position.y), CollisionBase(
 		Vector2{ position.x ,position.y  },
 		Vector2{ position.x - (CHIPSIZE),position.y },
 		Vector2{ position.x,position.y - (CHIPSIZE) },

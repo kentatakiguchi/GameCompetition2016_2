@@ -8,31 +8,51 @@
 class TestChara :public Actor {
 public:
 	TestChara(IWorld* world, Vector2& position) :
-		Actor(world, "TestChara", Vector3(position.x, position.y, 0), CollisionBase(
-			Vector2(0,0),0.f))
+		Actor(world, "TestChara", Vector2(position.x, position.y), CollisionBase(
+			Vector2(0,0),30.f))
 	{
 
 	}
 private:
 	virtual void onUpdate(float deltaTime) {
+		if (InputMgr::GetInstance().IsKeyOn(KeyCode::D))
+		{
+			position_ += Vector2(50, 0);
+			//box_ = box_.translate({ 10,0 });
+		}
+		if (InputMgr::GetInstance().IsKeyOn(KeyCode::A))
+		{
+			position_ += Vector2(-50, 0);
+			//	box_ = box_.translate({ -10,0 });
+		}
+		if (InputMgr::GetInstance().IsKeyOn(KeyCode::W))
+		{
+			position_ += Vector2(0, -50);
+			//box_ = box_.translate({ 0,-10 });
+		}
+		if (InputMgr::GetInstance().IsKeyOn(KeyCode::S))
+		{
+			position_ += Vector2(0, 50);
+			//		box_ = box_.translate({ 0,10 });
+		}
 		if (InputMgr::GetInstance().IsKeyOn(KeyCode::RIGHT))
 		{
-			position_ += Vector3(1, 0, 0);
+			position_ += Vector2(1, 0);
 			//box_ = box_.translate({ 10,0 });
 		}
 		if (InputMgr::GetInstance().IsKeyOn(KeyCode::LEFT))
 		{
-			position_ += Vector3(-1, 0, 0);
+			position_ += Vector2(-1, 0);
 			//	box_ = box_.translate({ -10,0 });
 		}
 		if (InputMgr::GetInstance().IsKeyOn(KeyCode::UP))
 		{
-			position_ += Vector3(0, -1, 0);
+			position_ += Vector2(0, -1);
 			//box_ = box_.translate({ 0,-10 });
 		}
 		if (InputMgr::GetInstance().IsKeyOn(KeyCode::DOWN))
 		{
-			position_ += Vector3(0, 1, 0);
+			position_ += Vector2(0, 1);
 			//		box_ = box_.translate({ 0,10 });
 		}
 

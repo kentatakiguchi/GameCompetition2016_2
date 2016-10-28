@@ -13,6 +13,10 @@ public:
 	BoundingSegment(const Vector2& startPoint, const Vector2& endPoint, bool isEnabled);
 	//四角の判定を作成する(判定を行わない場合)
 	explicit BoundingSegment();
+	float getLength() {
+		Vector2 lengthVect = CreateVector(component_.point[0], component_.point[1]);
+		return lengthVect.Length();
+	}
 	//使用しない
 	virtual bool intersects(BoundingSphere& other) override { return false; }
 	//使用しない

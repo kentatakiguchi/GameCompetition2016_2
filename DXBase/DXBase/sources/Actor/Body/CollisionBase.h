@@ -31,6 +31,7 @@ public:
 	void RotateCapsule(Vector2 point1, Vector2 point2,float radius);
 	//デバッグ用の判定表示
 	void draw() const;
+	//
 	void update(Vector2 position);
 	//四角判定の大きさ、形状の変更
 	void transform(Vector2& topLeft, Vector2& topRight, Vector2& bottomLeft, Vector2& bottomRight);
