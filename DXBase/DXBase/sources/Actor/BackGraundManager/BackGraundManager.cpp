@@ -9,7 +9,7 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 		i.positions.clear();
 	backStates.clear();
 	//ƒvƒŒƒCƒ„[•ÏŠ·
-	mPlayer = dynamic_cast<TestPlayer*>(world->findActor("Player").get());
+	mPlayer = dynamic_cast<Player*>(world->findActor("Player").get());
 }
 
 BackGraundManager::~BackGraundManager()

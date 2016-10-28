@@ -84,7 +84,7 @@ void World::addEventMessageListener(
 
 Vector2 World::MoveActor()
 {
-	TestPlayer* player = dynamic_cast<TestPlayer*>(findActor("Player").get());
+	Player* player = dynamic_cast<Player*>(findActor("Player").get());
 	return player->GetVelo();
 }
 

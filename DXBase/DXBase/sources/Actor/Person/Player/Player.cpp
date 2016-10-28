@@ -31,9 +31,6 @@ mVelo(Vector2::Zero),
 curPosition(Vector2::Zero),
 mSevePos(Vector2::Zero)
 {
-
-	float a = HEIGHT;
-
 	// ÉÇÉfÉãÇÃì«Ç›çûÇ›
 	//modelHandle_ = MV1DuplicateModel(ResourceLoader::GetInstance().getModelID(ModelID::PLAYER));
 	//animation_ = Animation(modelHandle_);
