@@ -26,7 +26,7 @@ enum class EventMessage;
 class Actor {
 public:
 	// コンストラクタ
-	Actor(IWorld* world, const std::string& name, const Vector3& position, const CollisionBase& body);
+	Actor(IWorld* world, const std::string& name, const Vector2& position, const CollisionBase& body);
 	// コンストラクタ
 	explicit Actor(const std::string& name = "none");
 	// 仮想デストラクタ
@@ -46,7 +46,7 @@ public:
 	// 名前を返す
 	const std::string& getName() const;
 	// 座標を返す
-	Vector3 getPosition() const;
+	Vector2 getPosition() const;
 	// 回転行列を返す
 	Matrix getRotate() const;
 	// 変換行列を返す
@@ -75,7 +75,7 @@ public:
 	// モーションの設定
 	void setMotion(unsigned int motion);
 	// Transformの設定
-	void setTransform(Vector3 pos, Matrix rot);
+	void setTransform(Vector2 pos, Matrix rot);
 	// Worldの取得
 	IWorld* getWorld();
 	// アニメーションの取得
@@ -122,7 +122,7 @@ public:
 	// 名前
 	std::string			name_;
 	// 座標
-	Vector3				position_;
+	Vector2				position_;
 	// 回転
 	Matrix				rotation_;
 	// 衝突判定

@@ -4,7 +4,7 @@
 #include "../../Input/KeyCode.h"
 #include "../../Math/MathHelper.h"
 // コンストラクタ
-Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, const CollisionBase& body) :
+Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, const CollisionBase& body) :
 	world_(world),
 	name_(name),
 	position_(position),
@@ -24,7 +24,7 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector3& position, co
 Actor::Actor(const std::string& name) :
 	world_(nullptr),
 	name_(name),
-	position_(0.0f, 0.0f, 0.0f),
+	position_(0.0f, 0.0f),
 	rotation_(Matrix::Identity),
 	dead_(false),
 	animation_(-1) {
@@ -80,8 +80,8 @@ const std::string& Actor::getName() const {
 }
 
 // 座標を返す
-Vector3 Actor::getPosition() const {
-	return position_;
+Vector2 Actor::getPosition() const {
+	return Vector2(position_.x,position_.y);
 }
 
 // 回転行列を返す
@@ -91,7 +91,7 @@ Matrix Actor::getRotate() const {
 
 // 変換行列を返す
 Matrix Actor::getPose() const {
-	return Matrix(rotation_).Translation(position_);
+	return Matrix(rotation_).Translation(Vector3(position_.x,position_.y,0));
 }
 
 // 子の検索
@@ -172,7 +172,7 @@ void Actor::setMotion(const unsigned int motion) {
 	motion_ = motion;
 }
 
-void Actor::setTransform(Vector3 pos, Matrix rot) {
+void Actor::setTransform(Vector2 pos, Matrix rot) {
 	position_ = pos;
 	rotation_ = rot;
 }
@@ -259,7 +259,7 @@ void Actor::ActorMove()
 	//補間処理
 	MathHelper::Spring(veloPlus.x, resPos.x, velo.x, 0.1f, 0.5f, 2.0f);
 	MathHelper::Spring(veloPlus.y, resPos.y, velo.y, 0.1f, 0.5f, 2.0f);
-	position_ += Vector3(veloPlus.x, veloPlus.y, 0.0f);
+	position_ += Vector2(veloPlus.x, veloPlus.y);
 }
 
 // end of file
