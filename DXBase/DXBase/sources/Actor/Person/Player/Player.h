@@ -2,11 +2,7 @@
 
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
-//#include "Field.h"
-//#include "Ray.h"
-//#include "Bullet.h"
 //#include "EventMessage.h"
-#include "../../../Math/Vector3.h"
 #include "State/Base/StateMgr.h"
 #include "PlayerBody.h"
 
@@ -17,7 +13,7 @@ public:
 
 	enum class MOTION {};
 public:
-	Player(IWorld* world, const Vector3& position);
+	Player(IWorld* world, const Vector2& position);
 	~Player();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onLateUpdate(float deltaTime) override;
@@ -28,8 +24,8 @@ public:
 	PlayerBodyPtr getMainBody();
 	PlayerBodyPtr getSubBody();
 
-	void createOval(Vector3 main_pos, Vector3 sub_pos, int height)const;
-	void createOval(Vector3 center, float width, int height)const;
+	void createOval(Vector2 main_pos, Vector2 sub_pos, int height)const;
+	void createOval(Vector2 center, float width, int height)const;
 	
 
 	void field();	

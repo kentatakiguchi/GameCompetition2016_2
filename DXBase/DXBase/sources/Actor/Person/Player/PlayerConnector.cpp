@@ -5,8 +5,7 @@
 #include"../../Body/CollisionBase.h"
 
 PlayerConnector::PlayerConnector(IWorld * world) :
-	Actor(world, "PlayerConnector", Vector3::Zero, CollisionBase(Vector2(0, 0), Vector2(0, 0))) {
-
+	Actor(world, "PlayerConnector", Vector2::Zero, CollisionBase(Vector2(0, 0), Vector2(0, 0))) {
 }
 
 PlayerConnector::~PlayerConnector(){
@@ -42,7 +41,6 @@ void PlayerConnector::onDraw() const{
 void PlayerConnector::onCollide(Actor & other){
 	if (other.getName() == "TestColl") {
 		auto pos = Vector2(position_.x, position_.y);
-
 	}
 }
 

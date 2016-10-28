@@ -2,11 +2,7 @@
 
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
-//#include "Field.h"
-//#include "Ray.h"
-//#include "Bullet.h"
 //#include "EventMessage.h"
-#include "../../../Math/Vector3.h"
 #include "State/Base/StateMgr.h"
 
 // ÉvÉåÅ[ÉÑÅ[
@@ -19,7 +15,7 @@ public:
 		TEST
 	};
 public:
-	PlayerBody(IWorld* world, const std::string name, const Vector3& position);
+	PlayerBody(IWorld* world, const std::string name, const Vector2& position);
 	~PlayerBody();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
@@ -34,7 +30,7 @@ public:
 	void acc_gravity();
 	void hold_gravity();
 	void circleClamp();
-	void launch(Vector3 dir);
+	void launch(Vector2 dir);
 	Opponent hitOpponent();
 	void reset_opponent();
 	void reset_velocity();
@@ -47,11 +43,11 @@ public:
 		return Vector2(velocity_.x, velocity_.y);
 	}
 private:
-	Vector3 input_;
-	Vector3 velocity_;
-	Vector3 gravity_;
-	Vector3 launch_;
-	Vector3 last_pos_;
+	Vector2 input_;
+	Vector2 velocity_;
+	Vector2 gravity_;
+	Vector2 launch_;
+	Vector2 last_pos_;
 	std::shared_ptr<PlayerBody> target_;
 	Opponent opponent_;
 	Vector2 x;

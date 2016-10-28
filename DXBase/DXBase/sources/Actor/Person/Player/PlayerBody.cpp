@@ -5,7 +5,7 @@ const float SPEED = 3.0f;
 const float MAX_NORMAL_LENGTH = 100.0f;
 const float MAX_STRETCH_LENGTH = 150.0f;
 
-PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector3 & position) :
+PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
 	Actor(world, name, position, CollisionBase(Vector2(0, 0), 20.0f)) {
 }
 
@@ -13,7 +13,7 @@ PlayerBody::~PlayerBody(){}
 
 void PlayerBody::onUpdate(float deltaTime){
 	position_ += input_ * SPEED  + launch_ + gravity_;;
-	velocity_=position_- Vector3(body_.GetCircle().previousPosition_.x, body_.GetCircle().previousPosition_.y,0.0f);
+	velocity_ = position_ - body_.GetCircle().previousPosition_;
 	//position_ = Vector3::Clamp(position_, Vector3::Zero, Vector3(3000, 1000, 0));
 
 }
@@ -30,9 +30,9 @@ void PlayerBody::onDraw() const{
 
 void PlayerBody::onLateUpdate(float deltaTime){
 
-	input_ = Vector3::Zero;
-	gravity_ = Vector3::Zero;
-	launch_ = Vector3::Zero;
+	input_ = Vector2::Zero;
+	gravity_ = Vector2::Zero;
+	launch_ = Vector2::Zero;
 }
 
 void PlayerBody::onCollide(Actor & other){
@@ -107,7 +107,7 @@ void PlayerBody::changeMotion(float deltaTime){
 void PlayerBody::move(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
 	if (distance() > MAX_STRETCH_LENGTH) {	}
 
-	input_ = Vector3::Zero;
+	input_ = Vector2::Zero;
 	if (InputMgr::GetInstance().IsKeyOn(right)) input_.x = 1;
 	if (InputMgr::GetInstance().IsKeyOn(left)) 	input_.x = -1;
 	if (InputMgr::GetInstance().IsKeyOn(up)) 	input_.y = -1;
@@ -145,15 +145,15 @@ void PlayerBody::move_hor(KeyCode up, KeyCode down, KeyCode right, KeyCode left)
 }
 
 void PlayerBody::chase() {
-	if (target_ == nullptr || Vector3::Distance(Vector3::Zero, input_) > 0)return;
+	if (target_ == nullptr || Vector2::Distance(Vector2::Zero, input_) > 0)return;
 	if (distance() <= MAX_NORMAL_LENGTH) return;
-	auto vec = Vector3::Normalize(position_ - target_->getPosition()) * MAX_NORMAL_LENGTH;
-	position_ = Vector3::Lerp(position_, target_->getPosition() + vec, 0.2f);
+	auto vec = Vector2::Normalize(position_ - target_->getPosition()) * MAX_NORMAL_LENGTH;
+	position_ = Vector2::Lerp(position_, target_->getPosition() + vec, 0.2f);
 }
 
 void PlayerBody::gravity(){
-	if (opponent_ == Opponent::FLOOR)gravity_ = Vector3(0, 5, 0);
-	else gravity_ = Vector3(0, 5, 0);
+	if (opponent_ == Opponent::FLOOR)gravity_ = Vector2(0, 5);
+	else gravity_ = Vector2(0, 5);
 }
 
 void PlayerBody::acc_gravity(){
@@ -161,18 +161,18 @@ void PlayerBody::acc_gravity(){
 }
 
 void PlayerBody::hold_gravity(){
-	if (Vector3::Distance(Vector3::Zero, input_) > 0)return;
+	if (Vector2::Distance(Vector2::Zero, input_) > 0)return;
 	gravity();
 }
 
 void PlayerBody::circleClamp() {
 	if (distance() > MAX_STRETCH_LENGTH) {
-		Vector3	vec = Vector3::Normalize(position_ - target_->getPosition());
+		Vector2	vec = Vector2::Normalize(position_ - target_->getPosition());
 		position_ = target_->getPosition() + vec * MAX_STRETCH_LENGTH;
 	}
 }
 
-void PlayerBody::launch(Vector3 dir){
+void PlayerBody::launch(Vector2 dir){
 	launch_ = dir;
 }
 
@@ -185,7 +185,7 @@ void PlayerBody::reset_opponent(){
 }
 
 void PlayerBody::reset_velocity(){
-	input_ = Vector3::Zero;
+	input_ = Vector2::Zero;
 }
 
 void PlayerBody::pre_vector(){
@@ -193,7 +193,7 @@ void PlayerBody::pre_vector(){
 }
 
 float PlayerBody::distance(){
-	return Vector3::Distance(position_, target_->getPosition());
+	return Vector2::Distance(position_, target_->getPosition());
 }
 
 void PlayerBody::target(std::shared_ptr<PlayerBody> target){

@@ -1,8 +1,6 @@
 #include "PlayerState_Attack.h"
 #include "../Player_EnumState.h"
 
-#include "../../Player_AttackRange.h"
-
 #include <algorithm>
 
 PlayerState_Attack::PlayerState_Attack() {}
@@ -18,7 +16,7 @@ void PlayerState_Attack::unique_init(Actor & actor){
 	sub_body_->reset_opponent();
 
 	dump_ = 0;
-	dir_ = Vector3::Normalize(sub_body_->getPosition() - main_body_->getPosition());
+	dir_ = Vector2::Normalize(sub_body_->getPosition() - main_body_->getPosition());
 	power_ = 150;
 	dir_easeing_ = 0;
 	gra_easeing_ = 0;

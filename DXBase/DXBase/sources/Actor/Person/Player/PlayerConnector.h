@@ -26,7 +26,4 @@ public:
 	void changeMotion(float deltaTime);
 private:
 	StateMgr stateMgr_;
-	
-	Vector3 prePosition;						// ˆÚ“®‘O‚ÌÀ•W	
-	Vector3 curPosition;						// ˆÚ“®Œã‚ÌÀ•W
 };
