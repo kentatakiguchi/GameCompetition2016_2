@@ -37,7 +37,7 @@ void Actor::update(float deltaTime) {
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//移動update
-	//ActorMove();
+	ActorMove();
 	body_.MovePos(Vector2(position_.x, position_.y));
 }
 
@@ -230,36 +230,36 @@ void Actor::ActorMove()
 	if (world_ == nullptr) return;
 	//プレイヤーの座標を取得
 	Vector2 player =
-		Vector2(world_->findActor("Player")->getPosition().x, world_->findActor("Player")->getPosition().y);
+		Vector2(world_->findActor("PlayerBody1")->getPosition().x, world_->findActor("PlayerBody1")->getPosition().y);
 	//プレイヤーで一定の範囲外に行ったら今の速度と逆の速度を足してあげる
 	if (getName() != "ScroolStopPoint")
 	{
 		//x軸
-		if ((int)player.x != 800 / 2 && world_->ScroolStopFlag().x == FALSE)
+		if ((int)player.x != 800 / 2 /*&& world_->ScroolStopFlag().x == FALSE*/)
 		{
-			resPos.x = world_->MoveActor().x;
+			resPos.x =- world_->MoveActor().x;
 			//x軸移動してます
 			moveFlag.x = 1;
 		}
 		//Y軸
-		if ((int)player.y != 600 / 2 && world_->ScroolStopFlag().y == FALSE)
+		if ((int)player.y != 600 / 2 /*&& world_->ScroolStopFlag().y == FALSE*/)
 		{
-			resPos.y = world_->MoveActor().y;
+			resPos.y =- world_->MoveActor().y;
 			//y軸移動してます
 			moveFlag.y = 1;
 		}
 	}
 	//ストップスクロール以外
-	if (getName() == "ScroolStopPoint")
-	{
-		//強制的にスクロール
-		resPos.x = world_->MoveActor().x;
-		resPos.y = world_->MoveActor().y;
-	}
+	//if (getName() == "ScroolStopPoint")
+	//{
+	//	//強制的にスクロール
+	//	resPos.x = world_->MoveActor().x;
+	//	resPos.y = world_->MoveActor().y;
+	//}
 	//補間処理
 	MathHelper::Spring(veloPlus.x, resPos.x, velo.x, 0.1f, 0.5f, 2.0f);
 	MathHelper::Spring(veloPlus.y, resPos.y, velo.y, 0.1f, 0.5f, 2.0f);
-	position_ += Vector2(veloPlus.x, veloPlus.y);
+	position_ += veloPlus;
 }
 
 // end of file

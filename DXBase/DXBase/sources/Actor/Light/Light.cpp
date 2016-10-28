@@ -2,7 +2,7 @@
 #include"../Body/CollisionBase.h"
 
 // コンストラクタ
-Light::Light(IWorld* world, const Vector3& position) :
+Light::Light(IWorld* world, const Vector2& position) :
 	Actor(world, "Light", position, CollisionBase ()) {
 	SetUseLighting(TRUE);
 	ChangeLightTypeDir(VGet(1.0f, -1.0f, 1.0f));
