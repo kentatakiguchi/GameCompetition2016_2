@@ -37,7 +37,9 @@ void Actor::update(float deltaTime) {
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//移動update
-	ActorMove();
+	//修正
+	//ActorMove();
+	body_.MovePos(Vector2(position_.x, position_.y));
 }
 
 void Actor::late_update(float deltaTime){
@@ -217,8 +219,6 @@ void Actor::onCollide(Actor&) {
 
 // 衝突判定
 bool Actor::isCollide(Actor& other) {
-	body_.MovePos(Vector2( position_.x,position_.y ));
-	other.body_.MovePos(Vector2(other.position_.x, other.position_.y));
 	return body_.intersects(other.body_);
 }
 //アクターを全部プレイヤーと同期させる

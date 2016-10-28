@@ -52,6 +52,61 @@ bool BoundingCircle::intersects(BoundingBox & other)
 	Vector2 pp,inpm;
 	float ininner, outer, theta[2];
 
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	float otherPoint1 =
+	//		(other.component_.point[intSet[i][0]].x - other.component_.point[intSet[i][1]].x)
+	//		*(previousPosition_.y - other.component_.point[intSet[i][0]].y)
+	//		+ (other.component_.point[intSet[i][0]].y - other.component_.point[intSet[i][1]].y)
+	//		*(other.component_.point[intSet[i][0]].x - previousPosition_.x);
+	//	float otherPoint2 =
+	//		(other.component_.point[intSet[i][0]].x - other.component_.point[intSet[i][1]].x)
+	//		*(position_.y - other.component_.point[intSet[i][0]].y)
+	//		+ (other.component_.point[intSet[i][0]].y - other.component_.point[intSet[i][1]].y)
+	//		*(other.component_.point[intSet[i][0]].x - position_.x);
+	//	if (otherPoint1*otherPoint2 < 0)
+	//	{
+	//		float otherPoint1 =
+	//			(previousPosition_.x - position_.x)
+	//			*(other.component_.point[intSet[i][0]].y - previousPosition_.y)
+	//			+ (previousPosition_.y - position_.y)
+	//			*(previousPosition_.x - other.component_.point[intSet[i][0]].x);
+	//		float otherPoint2 =
+	//			(previousPosition_.x - position_.x)
+	//			*(other.component_.point[intSet[i][1]].y - previousPosition_.y)
+	//			+ (previousPosition_.y - position_.y)
+	//			*(previousPosition_.x - other.component_.point[intSet[i][1]].x);
+
+	//		if (otherPoint1*otherPoint2 <= 0)
+	//		{
+	//			OutputDebugString("sdasd");
+
+	//			return true;
+	//		}
+	//	}
+
+	//}
+
+	Vector2 AB = CreateVector(previousPosition_, position_);
+	Vector2 AC,AD,CD,CA,CB;
+	for (int i = 0; i < 4; i++)
+	{
+		AC = CreateVector(previousPosition_, other.component_.point[intSet[i][0]]);
+		AD = CreateVector(previousPosition_, other.component_.point[intSet[i][1]]);
+		CD = CreateVector(other.component_.point[intSet[i][0]], other.component_.point[intSet[i][1]]);
+		CA = CreateVector(other.component_.point[intSet[i][0]], previousPosition_);
+		CB = CreateVector(other.component_.point[intSet[i][0]], position_);
+
+		if (Vector2::Cross(AB, AC)*Vector2::Cross(AB, AD) <= 0.0f&&
+			Vector2::Cross(CD, CA)*Vector2::Cross(CD, CB) <= 0.0f) 
+		{
+			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			OutputDebugString("stds");
+			OutputDebugString("\n");
+			return true;
+		}
+	}
+
 	//’[“_‚ÆG‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	for (int i = 0; i < 4; i++)
 	{

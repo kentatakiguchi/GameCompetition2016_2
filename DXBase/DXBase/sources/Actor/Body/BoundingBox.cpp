@@ -349,6 +349,27 @@ bool BoundingBox::intersects(BoundingCircle & other)
 	Vector2 pp, inpm;
 	float ininner, outer, theta[2];
 
+	Vector2 AB = CreateVector(other.previousPosition_, other.position_);
+	Vector2 AC, AD, CD, CA, CB;
+	for (int i = 0; i < 4; i++)
+	{
+		AC = CreateVector(other.previousPosition_, component_.point[intSet[i][0]]);
+		AD = CreateVector(other.previousPosition_, component_.point[intSet[i][1]]);
+		CD = CreateVector(component_.point[intSet[i][0]], component_.point[intSet[i][1]]);
+		CA = CreateVector(component_.point[intSet[i][0]], other.previousPosition_);
+		CB = CreateVector(component_.point[intSet[i][0]], other.position_);
+
+		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
+			OuterProduct(CD, CA)*OuterProduct(CD, CB) <= 0.0f)
+		{
+			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			//OutputDebugString("sdasd");
+			//OutputDebugString("\n");
+			return true;
+		}
+	}
+
+
 	//’[“_‚ÆG‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	for (int i = 0; i < 4; i++)
 	{

@@ -21,6 +21,7 @@ struct BodyData {
 class Body
 {
 public:
+	Body() {}
 	virtual ~Body() {}
 	virtual bool intersects(BoundingSphere& other) { return false; }
 	virtual bool intersects(Capsule& other) { return false; }
@@ -31,7 +32,11 @@ public:
 	virtual bool intersects(BoundingCircle& other) { return false; }
 	virtual void update(const Vector3& center) {}
 	virtual void update(const Vector2& center) {}
+	virtual void update(Vector2 position) {}
 	virtual void draw() const {}
 	virtual void debug() const {}
+public:
+	Vector2 position_;
+	Vector2 previousPosition_;
 };
 
