@@ -129,21 +129,6 @@
     <ClInclude Include="sources\Actor\Body\Body.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Body\BoundigShphere.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Body\Capsule.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Body\Model.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Body\Ray.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Body\Segment.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Body\ShapeType.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -285,6 +270,12 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\Prickle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Scene\NaganoScene\NaganoScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Math\BezierCurve.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -354,21 +345,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Base\ActorManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Body\BoundingSpherer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Body\Capsule.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Body\Model.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Body\Ray.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Body\Segment.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Camera\Camera.cpp">
@@ -474,6 +450,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\Prickle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Scene\NaganoScene\NaganoScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Math\BezierCurve.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

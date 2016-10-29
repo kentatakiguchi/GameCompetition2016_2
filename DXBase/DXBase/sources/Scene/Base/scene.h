@@ -10,6 +10,7 @@ enum Scene {
 	GamePlay,
 	GameOver,
 	Kataoka,
+	Nagano,
 	Ending
 };
 

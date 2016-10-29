@@ -40,6 +40,7 @@ public:
 	BoundingCircle transform(Vector2 center, float circleRadius) const;
 	//判定の表示(デバッグ用)
 	virtual void draw() const override;
+	virtual void draw(Matrix inv) const override;
 private:
 	Vector2& CreateVector(const Vector2& p, const Vector2& q){
 		return Vector2(q.x - p.x, q.y - p.y);

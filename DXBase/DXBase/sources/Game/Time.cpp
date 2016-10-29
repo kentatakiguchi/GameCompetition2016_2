@@ -2,7 +2,6 @@
 
 Time::Time() :
 	m_LastFrame(0), m_LastTime(0), m_RealtimeSinceStartup(0), m_FrameCount(0), m_DeltaTime(0) {
-
 }
 
 Time & Time::GetInstance() {

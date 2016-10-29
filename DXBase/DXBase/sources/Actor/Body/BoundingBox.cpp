@@ -1,5 +1,4 @@
 #include "BoundingBox.h"
-#include "Model.h"
 #include"BoundingSegment.h"
 #include"BoundingCircle.h"
 #include"BoundingCapsule.h"
@@ -47,6 +46,23 @@ void BoundingBox::draw() const {
 	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
 }
 
+void BoundingBox::draw(Matrix inv) const {
+	//if (!enabled)return;
+
+	Vector3 pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+	Vector3 pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
+	Vector3 pos2 = Vector3(component_.point[2].x, component_.point[2].y) * inv;
+	Vector3 pos3 = Vector3(component_.point[3].x, component_.point[3].y) * inv;
+
+	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
+	DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));
+	DrawLine(pos0.x, pos0.y, pos2.x, pos2.y, GetColor(255, 0, 0));
+	DrawLine(pos2.x, pos2.y, pos3.x, pos3.y, GetColor(255, 0, 0));
+
+	//DrawBox(component_.point[0].x, component_.point[0].y,
+	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);
+	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
+}
 
 bool BoundingBox::intersects(BoundingBox & other)
 {

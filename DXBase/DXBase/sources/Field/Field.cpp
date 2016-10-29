@@ -1,7 +1,6 @@
 #include "Field.h"
 //#include "Ray.h"
 //#include "Line.h"
-#include "../Actor/Body/BoundigShphere.h"
 
 const float FIELD_SIZE = 1000.0f;
 const float FIELD_SCALE = 5.0f;

@@ -91,7 +91,15 @@ Matrix Actor::getRotate() const {
 
 // 変換行列を返す
 Matrix Actor::getPose() const {
-	return Matrix(rotation_).Translation(Vector3(position_.x,position_.y,0));
+	return Matrix().Translation(Vector3(position_.x, position_.y));
+	//return Matrix(rotation_).Translation(Vector3(position_.x, position_.y));
+}
+
+Matrix Actor::inv() const{
+	if (world_ == nullptr) return Matrix::Identity;
+	auto player = world_->findActor("PlayerBody1");
+	Matrix inv = Matrix::Invert(player->getPose()) * Matrix::CreateTranslation(Vector3(400, 300));
+	return inv;
 }
 
 // 子の検索
@@ -208,12 +216,12 @@ void Actor::onLateUpdate(float deltaTime)
 
 // 描画
 void Actor::onDraw() const {
-	body_.draw(); // デバッグ表示
+	body_.draw(/*inv()*/); // デバッグ表示
 }
 
 // 衝突した
 void Actor::onCollide(Actor&) {
-	body_.draw();
+	body_.draw(/*inv()*/);
 	//dead();
 }
 
@@ -261,5 +269,6 @@ void Actor::ActorMove()
 	MathHelper::Spring(veloPlus.y, resPos.y, velo.y, 0.1f, 0.5f, 2.0f);
 	position_ += veloPlus;
 }
+
 
 // end of file

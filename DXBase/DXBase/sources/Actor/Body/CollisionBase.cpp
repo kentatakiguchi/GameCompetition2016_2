@@ -91,21 +91,22 @@ void CollisionBase::update(Vector2 position)
 {
 	MovePos(position);
 }
-void CollisionBase::draw() const
+
+void CollisionBase::draw(Matrix inv) const
 {
 	switch (type_)
 	{
 	case BoxCol:
-		box_.draw();
+		box_.draw(inv);
 		break;
 	case CapsuleCol:
-		capsule_.draw();
+		capsule_.draw(inv);
 		break;
 	case CircleCol:
-		circle_.draw();
+		circle_.draw(inv);
 		break;
 	case SegmentCol:
-		segment_.draw();
+		segment_.draw(inv);
 		break;
 	case NoneCol:
 		break;

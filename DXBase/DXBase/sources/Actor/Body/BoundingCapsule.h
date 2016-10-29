@@ -40,6 +40,7 @@ public:
 	BoundingCapsule transform(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) const;
 
 	virtual void draw() const override;
+	virtual void draw(Matrix inv) const override;
 private:
 	Vector2 CreateVector(const Vector2& p, const Vector2& q) {
 		return Vector2(q.x - p.x, q.y - p.y);

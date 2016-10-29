@@ -30,7 +30,7 @@ public:
 	void setPosition(Vector2 position);
 	void RotateCapsule(Vector2 point1, Vector2 point2,float radius);
 	//デバッグ用の判定表示
-	void draw() const;
+	void draw(Matrix inv = Matrix::Identity) const;
 	//
 	void update(Vector2 position);
 	//四角判定の大きさ、形状の変更

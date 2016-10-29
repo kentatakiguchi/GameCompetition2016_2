@@ -1,6 +1,7 @@
 #include "MyGame.h"
+#include "../Define.h"
 
-MyGame::MyGame(){
+MyGame::MyGame() : Game(SCREEN_SIZE.x, SCREEN_SIZE.y, WINDOW_RATE, WINDOW_MODE){
 }
 
 MyGame::~MyGame(){

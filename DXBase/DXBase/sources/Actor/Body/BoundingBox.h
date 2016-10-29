@@ -47,6 +47,7 @@ public:
 	virtual void debug() const override;
 	//判定の表示(デバッグ用)
 	virtual void draw() const override;
+	virtual void draw(Matrix inv) const override;
 	BoundingBox movePos(Vector2& position) {
 		return BoundingBox();
 	}

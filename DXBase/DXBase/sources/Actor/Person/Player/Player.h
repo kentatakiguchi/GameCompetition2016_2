@@ -5,11 +5,13 @@
 //#include "EventMessage.h"
 #include "State/Base/StateMgr.h"
 #include "PlayerBody.h"
+#include "PlayerConnector.h"
 
 // プレーヤー
 class Player : public Actor {
 public:
 	using PlayerBodyPtr = std::shared_ptr<PlayerBody>;
+	using PlayerCntrPtr = std::shared_ptr<PlayerConnector>;
 
 	enum class MOTION {};
 public:
@@ -46,6 +48,7 @@ private:
 	
 	PlayerBodyPtr main_body_;
 	PlayerBodyPtr sub_body_;
+	PlayerCntrPtr connector_;
 
 	Vector2 prePosition;						// 移動前の座標	
 	Vector2 curPosition;						// 移動後の座標

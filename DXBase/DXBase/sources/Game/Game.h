@@ -1,5 +1,4 @@
-#ifndef _GAME_H_
-#define _GAME_H_
+#pragma once
 
 #include "DxLib.h"
 #include "Time.h"
@@ -8,24 +7,19 @@
 class Game{
 protected:
 	// コンストラクタ
-	Game(int width = 800, int height = 600, int fullScreen = TRUE, float fps = 60.0f):
-		width_(width), 
-		height_(height), 
-		fullScreen_(fullScreen), 
-		fps_(fps) {
-		
+	Game(int width = 800, int height = 600, float rate = 1.0f, int window = TRUE, float fps = 60.0f):
+		width_(width), height_(height), rate_(rate), window_(window), fps_(fps) {
 	}
 
 public:
 	// 実行
 	int run() {
-		ChangeWindowMode(fullScreen_);
+		ChangeWindowMode(window_);
 		
 		SetGraphMode(width_, height_, 32);
-
+		SetWindowSizeExtendRate(rate_);
 		//DXLib初期化処理
 		if (DxLib_Init() == -1)return -1;//エラーが起きたら終了
-
 
 		start();
 
@@ -72,10 +66,10 @@ private:
 	int width_;
 	// ウィンドウの高さ
 	int height_;
-	// フルスクリーンか？
-	int fullScreen_;
+	// ウインドウの描画比率
+	float rate_;
+	// ウインドウモードか？
+	int window_;
 	// FPS
 	float fps_;
 };
-
-#endif

@@ -22,7 +22,7 @@ void PlayerBody::onDraw() const{
 	if (name_ == "PlayerBody1")	DrawFormatString(25, 25, GetColor(255, 255, 255), "1 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
 	if (name_ == "PlayerBody2")	DrawFormatString(25, 50, GetColor(255, 255, 255), "2 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
 
-	body_.draw();
+	body_.draw(/*inv()*/);
 
 	if (opponent_ == Opponent::NONE)DrawFormatString(25, 75, GetColor(255, 255, 255), "NONE");
 	else if (opponent_ == Opponent::FLOOR) DrawFormatString(25, 100, GetColor(255, 255, 255), "FLOOR");

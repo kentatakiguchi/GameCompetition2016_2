@@ -1,6 +1,8 @@
 #include "LoadingScene.h"
 #include "../../ResourceLoader/ResourceLoader.h"
 
+#include "../../Define.h"
+
 LoadingScene::LoadingScene():
 isEnd_(false){
 }
@@ -10,6 +12,8 @@ LoadingScene::~LoadingScene(){
 }
 
 void LoadingScene::start(){
+	DrawFormatString(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2, GetColor(255, 255, 255), "NowLoading");
+
 	isEnd_ = false;
 
 	//ResourceLoader::GetInstance().loadModel(ModelID::PLAYER, "./resources/model/player/MotusMan_v2.mv1");
@@ -41,10 +45,13 @@ void LoadingScene::start(){
 }
 
 void LoadingScene::update(){
+	DrawFormatString(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2, GetColor(255, 255, 255), "NowLoading");
+
 	isEnd_ = true;
 }
 
 void LoadingScene::draw() const{
+	DrawFormatString(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2, GetColor(255, 255, 255), "NowLoading");
 }
 
 void LoadingScene::end(){
@@ -55,5 +62,5 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::GamePlay;
+	return Scene::Title;
 }

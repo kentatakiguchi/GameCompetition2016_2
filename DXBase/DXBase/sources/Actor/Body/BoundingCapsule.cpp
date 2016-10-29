@@ -2,7 +2,6 @@
 #include"BoundingBox.h"
 #include"BoundingSegment.h"
 #include"BoundingCircle.h"
-#include "Model.h"
 
 BoundingCapsule::BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) :
 	component_(startPoint, endPoint, capsuleRadius),enabled(true) {
@@ -40,7 +39,17 @@ void BoundingCapsule::draw() const {
 	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
 }
 
+void BoundingCapsule::draw(Matrix inv) const {
+	Vector3 pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+	Vector3 pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
 
+	DrawCircle(pos0.x, pos0.y, component_.radius, GetColor(255, 0, 0), FALSE);
+	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0), FALSE);
+	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0), FALSE);
+	DrawCircle(pos1.x, pos1.y, component_.radius, GetColor(255, 0, 0), FALSE);
+
+	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
+}
 
 bool BoundingCapsule::intersects(BoundingBox & other)
 {

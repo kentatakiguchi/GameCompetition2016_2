@@ -160,16 +160,11 @@
     <ClInclude Include="sources\Actor\Base\ActorManager.h" />
     <ClInclude Include="sources\Actor\Base\ActorPtr.h" />
     <ClInclude Include="sources\Actor\Body\Body.h" />
-    <ClInclude Include="sources\Actor\Body\BoundigShphere.h" />
     <ClInclude Include="sources\Actor\Body\BoundingBox.h" />
     <ClInclude Include="sources\Actor\Body\BoundingCapsule.h" />
     <ClInclude Include="sources\Actor\Body\BoundingCircle.h" />
     <ClInclude Include="sources\Actor\Body\BoundingSegment.h" />
-    <ClInclude Include="sources\Actor\Body\Capsule.h" />
     <ClInclude Include="sources\Actor\Body\CollisionBase.h" />
-    <ClInclude Include="sources\Actor\Body\Model.h" />
-    <ClInclude Include="sources\Actor\Body\Ray.h" />
-    <ClInclude Include="sources\Actor\Body\Segment.h" />
     <ClInclude Include="sources\Actor\Body\ShapeType.h" />
     <ClInclude Include="sources\Actor\Camera\Camera.h" />
     <ClInclude Include="sources\Actor\Light\Light.h" />
@@ -210,6 +205,7 @@
     <ClInclude Include="sources\Field\MapChip.h" />
     <ClInclude Include="sources\Field\MapGenerator.h" />
     <ClInclude Include="sources\FileReader\CsvReader.h" />
+    <ClInclude Include="sources\Math\BezierCurve.h" />
     <ClInclude Include="sources\Math\Math.h" />
     <ClInclude Include="sources\Math\MathHelper.h" />
     <ClInclude Include="sources\Math\Matrix.h" />
@@ -237,6 +233,7 @@
     <ClInclude Include="sources\Scene\GamePlay\GamePlayScene.h" />
     <ClInclude Include="sources\Scene\KataokaScene\KataokaScene.h" />
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h" />
+    <ClInclude Include="sources\Scene\NaganoScene\NaganoScene.h" />
     <ClInclude Include="sources\Scene\Test\TestChara.h" />
     <ClInclude Include="sources\Scene\Test\TestScene.h" />
     <ClInclude Include="sources\Scene\Title\TitleScene.h" />
@@ -254,12 +251,7 @@
     <ClCompile Include="sources\Actor\Body\BoundingCapsule.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingCircle.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingSegment.cpp" />
-    <ClCompile Include="sources\Actor\Body\BoundingSpherer.cpp" />
-    <ClCompile Include="sources\Actor\Body\Capsule.cpp" />
     <ClCompile Include="sources\Actor\Body\CollisionBase.cpp" />
-    <ClCompile Include="sources\Actor\Body\Model.cpp" />
-    <ClCompile Include="sources\Actor\Body\Ray.cpp" />
-    <ClCompile Include="sources\Actor\Body\Segment.cpp" />
     <ClCompile Include="sources\Actor\Camera\Camera.cpp" />
     <ClCompile Include="sources\Actor\Light\Light.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\BaseEnemy.cpp" />
@@ -287,6 +279,7 @@
     <ClCompile Include="sources\Animation\Animation2D.cpp" />
     <ClCompile Include="sources\Field\MapChip.cpp" />
     <ClCompile Include="sources\FileReader\CsvReader.cpp" />
+    <ClCompile Include="sources\Math\BezierCurve.cpp" />
     <ClCompile Include="sources\Math\MathHelper.cpp" />
     <ClCompile Include="sources\Math\Matrix.cpp" />
     <ClCompile Include="sources\Math\Quaternion.cpp" />
@@ -305,6 +298,7 @@
     <ClCompile Include="sources\Scene\GamePlay\GamePlayScene.cpp" />
     <ClCompile Include="sources\Scene\KataokaScene\KataokaScene.cpp" />
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp" />
+    <ClCompile Include="sources\Scene\NaganoScene\NaganoScene.cpp" />
     <ClCompile Include="sources\Scene\Test\TestScene.cpp" />
     <ClCompile Include="sources\Scene\Title\TitleScene.cpp" />
     <ClCompile Include="sources\Scene\YajimaScene\YajimaScene.cpp" />

@@ -5,17 +5,13 @@ TitleScene::TitleScene() :
 	isEnd_ = false;
 }
 
-TitleScene::~TitleScene(){
-	
-}
+TitleScene::~TitleScene(){}
 
 void TitleScene::start() {
 	isEnd_ = false;
 
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
-	// グラフィックのロード
-	id = LoadGraph("./resources/Player.png");
 }
 
 void TitleScene::update() {
@@ -23,16 +19,11 @@ void TitleScene::update() {
 }
 
 void TitleScene::draw() const {
-
-	if (isEnd_)DrawGraph(250, 500, id, TRUE);
-
 	DrawFormatString(375, 200, GetColor(255, 255, 255), "タイトル");
 	DrawFormatString(300, 500, GetColor(255, 255, 255), "SPACEボタンでゲームスタート");	
 }
 
-void TitleScene::end() {
-
-}
+void TitleScene::end() {}
 
 bool TitleScene::isEnd() const {
 	return isEnd_;

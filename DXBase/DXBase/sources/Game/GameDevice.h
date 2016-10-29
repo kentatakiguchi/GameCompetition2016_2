@@ -12,12 +12,10 @@ public:
 	void update();
 	void draw();
 	void end();
-
 private:
 	// ÉRÉsÅ[ã÷é~
 	GameDevice(const GameDevice& other) = delete;
 	GameDevice& operator = (const GameDevice& other) = delete;
-
 private:
 	SceneMgr sceneMgr_;
 };

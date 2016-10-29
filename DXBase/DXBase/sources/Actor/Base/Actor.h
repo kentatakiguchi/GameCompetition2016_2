@@ -7,7 +7,6 @@
 #include "../../Input/InputMgr.h"
 #include "../../Math/Math.h"
 #include "../Body/Body.h"
-#include "../Body/BoundigShphere.h"
 #include "../Body/BoundingBox.h"
 #include "../Body/BoundingCapsule.h"
 #include "../Body/BoundingCircle.h"
@@ -51,6 +50,8 @@ public:
 	Matrix getRotate() const;
 	// •ÏŠ·s—ñ‚ğ•Ô‚·
 	Matrix getPose() const;
+
+	Matrix inv() const;
 	// q‚ÌŒŸõ
 	ActorPtr findCildren(const std::string& name);
 	// q‚ÌŒŸõ
@@ -113,6 +114,7 @@ public:
 
 private:
 	void ActorMove();
+
 private:
 	//1‚¾‚Á‚½‚çtrue,0‚¾‚Á‚½‚çfalse
 	Vector2 moveFlag;

@@ -38,8 +38,8 @@ mSevePos(Vector2::Zero)
 	rotation_.NormalizeRotationMatrix();
 
 	addChild(std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ + Vector2(MAX_NORMAL_LENGTH / 2, 0)));
-	addChild(std::make_shared<PlayerConnector>(world_));
 	addChild(std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ - Vector2(MAX_NORMAL_LENGTH / 2, 0)));
+	addChild(std::make_shared<PlayerConnector>(world_));
 
 	stateMgr_.add((unsigned int)Player_EnumState::STAND_BY, std::make_shared<PlayerState_StandBy>());
 	stateMgr_.add((unsigned int)Player_EnumState::IDLE, std::make_shared<PlayerState_Idle>());
@@ -53,13 +53,14 @@ mSevePos(Vector2::Zero)
 	hp_ = 10;
 
 	//world_->addActor(ActorGroup::Player, std::make_shared<PlayerBody_Connector>(world_, position_));
-
+	//connector_ = std::static_pointer_cast<PlayerConnector>(findCildren((const std::string)"PlayerConnector"));
 }
 
 Player::~Player(){}
 
 void Player::onUpdate(float deltaTime) {
 
+	//connector_->set_point(main_body_->getPosition() ,sub_body_->getPosition());
 	stateMgr_.action(*this, deltaTime);
 	//1フレーム前の座標
 	prePosition = curPosition;
@@ -82,13 +83,14 @@ void Player::onUpdate(float deltaTime) {
 	//changeMotion(deltaTime)
 	// 新しい座標を保存する
 	//position_ = Vector3::Lerp(position_, curPosition, 0.8f);
+
 }
 
 void Player::onLateUpdate(float deltaTime){
 }
 
 void Player::onDraw() const {
-	body_.draw();
+	body_.draw(/*inv()*/);
 	createOval(main_body_->getPosition(), sub_body_->getPosition(), body_.GetCapsule().component_.radius * 5);
 
  	DrawFormatString(main_body_->getPosition().x, main_body_->getPosition().y, GetColor(255, 255, 255), "main");
