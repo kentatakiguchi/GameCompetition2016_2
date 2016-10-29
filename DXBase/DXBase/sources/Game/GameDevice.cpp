@@ -18,7 +18,7 @@ void GameDevice::start(){
 	sceneMgr_.add(Scene::GameOver, std::make_shared<GameOverScene>());
 	sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>());
 	sceneMgr_.add(Scene::Nagano, std::make_shared<NaganoScene>());
-	sceneMgr_.change(Scene::Nagano);
+	sceneMgr_.change(Scene::Loading);
 }
 
 void GameDevice::update(){
