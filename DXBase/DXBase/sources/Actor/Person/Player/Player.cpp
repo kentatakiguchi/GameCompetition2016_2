@@ -4,53 +4,41 @@
 #include "State/States/PlayerState_Idle.h"
 #include "State/States/PlayerState_Move.h"
 #include "State/States/PlayerState_Hold.h"
+#include "State/States/PlayerState_HoldBoth.h"
 #include "State/States/PlayerState_Attack.h"
 #include "State/States/PlayerState_Damage.h"
 
-#include "PlayerBody.h"
-#include "PlayerConnector.h"
 #include"../../Body/CollisionBase.h"
 
 #include "../../../ResourceLoader/ResourceLoader.h"
-#include "../../../Math/Vector3.h"
+#include "../../../Renderer/DrawShape.h"
+
 #include <memory>
 #include <algorithm>
 
-#include "../../../Define.h"
-
-const float CENTER_HEIGHT = 5.0f;
-const float MAX_NORMAL_LENGTH = 100.0f;
-//const float MAX_STRETCH_LENGTH = 100.0f;
-
 Player::Player(IWorld * world, const Vector2 & position) :
-	Actor(world, "Player", position, CollisionBase(Vector2(0,0), Vector2(0, 0), 10.0f)),
-prePosition(Vector2::Zero),
-mVelo(Vector2::Zero),
-curPosition(Vector2::Zero),
-mSevePos(Vector2::Zero)
-{
+	Actor(world, "Player", position, CollisionBase(Vector2(0, 0), Vector2(0, 0), 8.0f)){
 	// モデルの読み込み
 	//modelHandle_ = MV1DuplicateModel(ResourceLoader::GetInstance().getModelID(ModelID::PLAYER));
 	//animation_ = Animation(modelHandle_);
 	
-	//初期状態を正面に設定
-	rotation_ *= Matrix::CreateFromAxisAngle(rotation_.Up(), 90);
-	rotation_.NormalizeRotationMatrix();
+	auto body1 = std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ + Vector2(MAX_NORMAL_LENGTH / 2, 0));
+	auto body2 = std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ - Vector2(MAX_NORMAL_LENGTH / 2, 0));
+	auto cntr = std::make_shared<PlayerConnector>(world_, main_, sub_);
 
-	addChild(std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ + Vector2(MAX_NORMAL_LENGTH / 2, 0)));
-	addChild(std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ - Vector2(MAX_NORMAL_LENGTH / 2, 0)));
-	addChild(std::make_shared<PlayerConnector>(world_));
+	addChild(body1);
+	addChild(body2);
+	addChild(cntr);
 
 	stateMgr_.add((unsigned int)Player_EnumState::STAND_BY, std::make_shared<PlayerState_StandBy>());
 	stateMgr_.add((unsigned int)Player_EnumState::IDLE, std::make_shared<PlayerState_Idle>());
 	stateMgr_.add((unsigned int)Player_EnumState::MOVE, std::make_shared<PlayerState_Move>());
 	stateMgr_.add((unsigned int)Player_EnumState::HOLD, std::make_shared<PlayerState_Hold>());
+	stateMgr_.add((unsigned int)Player_EnumState::HOLD_BOTH, std::make_shared<PlayerState_HoldBoth>());
 	stateMgr_.add((unsigned int)Player_EnumState::QUICK, std::make_shared<PlayerState_Move>());
 	stateMgr_.add((unsigned int)Player_EnumState::ATTACK, std::make_shared<PlayerState_Attack>());
 	stateMgr_.add((unsigned int)Player_EnumState::DAMAGE, std::make_shared<PlayerState_Damage>());
 	stateMgr_.changeState(*this, IState::StateElement((unsigned int)Player_EnumState::STAND_BY));
-
-	hp_ = 10;
 
 	//world_->addActor(ActorGroup::Player, std::make_shared<PlayerBody_Connector>(world_, position_));
 	//connector_ = std::static_pointer_cast<PlayerConnector>(findCildren((const std::string)"PlayerConnector"));
@@ -60,43 +48,30 @@ Player::~Player(){}
 
 void Player::onUpdate(float deltaTime) {
 
-	//connector_->set_point(main_body_->getPosition() ,sub_body_->getPosition());
 	stateMgr_.action(*this, deltaTime);
-	//1フレーム前の座標
-	prePosition = curPosition;
-	//position_にスクロール関係の移動量をすべて足しているためスクリーンがスライムを付いていかなくなってしまう//
-	position_ = (main_body_->getPosition() + sub_body_->getPosition())/2;
-	//移動後の座標
-	curPosition = (Vector2((main_body_->getPosition() + sub_body_->getPosition()).x,
-		(main_body_->getPosition() + sub_body_->getPosition()).y)) / 2;
-	//速度を計算
-	mVelo = prePosition - curPosition;
-	
-	//Vector2 main_pos = Vector2(main_body_->getPosition().x, main_body_->getPosition().y);
-	//Vector2 sub_pos = Vector2(sub_body_->getPosition().x, sub_body_->getPosition().y);
-	//body_.RotateCapsule(main_pos, sub_pos, body_.GetCapsule().component_.radius);
 
-	//animation_.changeAnim(motion_);
-	//animation_.update(deltaTime);
+	Vector2 main_pos = Vector2(main_->getPosition().x, main_->getPosition().y);
+	Vector2 sub_pos = Vector2(sub_->getPosition().x, sub_->getPosition().y);
+	position_ = (main_pos + sub_pos) / 2;
+	body_.RotateCapsule(main_pos - position_, sub_pos - position_, body_.GetCapsule().component_.radius);
 
-	//モーション遷移
-	//changeMotion(deltaTime)
 	// 新しい座標を保存する
 	//position_ = Vector3::Lerp(position_, curPosition, 0.8f);
 
+	DrawFormatString(25, 25, GetColor(255, 255, 255), "%d", stateMgr_.currentState());
 }
 
 void Player::onLateUpdate(float deltaTime){
 }
 
 void Player::onDraw() const {
-	body_.draw(/*inv()*/);
-	createOval(main_body_->getPosition(), sub_body_->getPosition(), body_.GetCapsule().component_.radius * 5);
+	//connector_->set_point(main_body_, sub_body_);
 
- 	DrawFormatString(main_body_->getPosition().x, main_body_->getPosition().y, GetColor(255, 255, 255), "main");
-	DrawFormatString(sub_body_->getPosition().x, sub_body_->getPosition().y, GetColor(255, 255, 255), "sub");
-	DrawFormatString(300,555,GetColor(255, 255, 255), "Velo: %f,%f",mVelo.x,mVelo.y);
-	DrawCircle(position_.x, position_.y, 10.0f, GetColor(255, 255, 255), TRUE);
+	//body_.draw(/*inv()*/);
+	DrawShape::Oval(main_->getPosition(), sub_->getPosition(), body_.GetCapsule().component_.radius * 5, MAX_NORMAL_LENGTH);
+
+ 	DrawFormatString(main_->getPosition().x, main_->getPosition().y, GetColor(255, 255, 255), "main");
+	DrawFormatString(sub_->getPosition().x, sub_->getPosition().y, GetColor(255, 255, 255), "sub");
 }
 
 void Player::onCollide(Actor & other){
@@ -116,48 +91,15 @@ void Player::changeMotion(float deltaTime){
 }
 
 void Player::setBody(PlayerBodyPtr main, PlayerBodyPtr sub){
-	main_body_ = main;	
-	sub_body_ = sub;
+	main_ = main;	
+	sub_ = sub;
 }
 
-Player::PlayerBodyPtr Player::getMainBody() {
-	return main_body_;
+PlayerBodyPtr Player::getMainBody() {
+	return main_;
 }
-
-Player::PlayerBodyPtr Player::getSubBody(){
-	return sub_body_;
-}
-
-void Player::createOval(Vector2 main_pos, Vector2 sub_pos, int height) const
-{
-	Vector2 vec = (main_pos - sub_pos).Normalize();
-	Vector2 sign = Vector2(MathHelper::Sign(vec.x), MathHelper::Sign(vec.y));
-	vec *= sign.x;
-	float angle = Vector3::Angle(Vector3::Right * sign.x, Vector3(vec.x, vec.y, 0)) * sign.y;
-
-	Vector2 center = (main_pos + sub_pos) / 2;
-
-	float dis = Vector2::Distance(main_pos, sub_pos);
-
-	float a = 0;
-	if (dis > MAX_NORMAL_LENGTH) a = dis;
-	else a = MAX_NORMAL_LENGTH;
-
-	float b = height;
-
-	for (int i = 0; i < dis * 4; i++) {
-		float x = i - dis * 2;
-		float y = std::sqrt(b * b * (1 - ((x * x) / (a * a))));
-
-		Vector3 pos_p = Vector3(x, y) * Matrix::CreateFromAxisAngle(Vector3::Forward, angle) + Vector3(center.x, center.y);
-		Vector3 pos_n = Vector3(x, -y) * Matrix::CreateFromAxisAngle(Vector3::Forward, angle) + Vector3(center.x, center.y);
-	
-		DrawPixel(pos_p.x, pos_p.y, GetColor(0, 255, 0));
-		DrawPixel(pos_n.x, pos_n.y, GetColor(0, 255, 0));
-	}
-}
-
-void Player::createOval(Vector2 center, float width, int height) const{
+PlayerBodyPtr Player::getSubBody(){
+	return sub_;
 }
 
 void Player::createWindow()

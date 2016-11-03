@@ -17,7 +17,7 @@ void PlayerState_Attack::unique_init(Actor & actor){
 
 	dump_ = 0;
 	dir_ = Vector2::Normalize(sub_body_->getPosition() - main_body_->getPosition());
-	power_ = 150;
+	power_ = PLAYER_LAUNCH_POWER;
 	dir_easeing_ = 0;
 	gra_easeing_ = 0;
 	main_body_->launch(dir_ * power_);
@@ -27,23 +27,16 @@ void PlayerState_Attack::update(Actor & actor, float deltaTime) {
 	timer_ += deltaTime;
 	//timer_ = std::min<float>(timer_ + deltaTime, 60);
 
-	dir_easeing_ = gsEasingOutExpo(timer_);
-	gra_easeing_ = gsEasingInExpo(timer_);
+	dir_easeing_ = gsEasingOutExpo(timer_ * 0.5f);
+	gra_easeing_ = gsEasingInExpo(timer_ * 0.5f);
 
 	dir_ *= -dir_easeing_ + 1;
 
 	dir_.y += 0.001f * gra_easeing_;
 	
-	//if (power_ != 0) {
-		main_body_->launch(dir_ * power_);
-	//}
-	//else {
-	//	main_body_->gravity();
-	//}
-	sub_body_->chase();
+	main_body_->launch(dir_ * power_);
 
-	//DrawFormatString(25, 25, GetColor(255, 255, 255), "main: x->%d, y->%d", (int)(main_body_->getPosition().x), (int)(main_body_->getPosition().y));
-	//DrawFormatString(25, 50, GetColor(255, 255, 255), "sub : x->%d, y->%d", (int)(sub_body_->getPosition().x), (int)(sub_body_->getPosition().y));
+	sub_body_->chase();
 
 	main_body_->gravity();
 	sub_body_->gravity();

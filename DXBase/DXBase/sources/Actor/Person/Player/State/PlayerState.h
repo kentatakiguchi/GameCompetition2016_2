@@ -19,9 +19,9 @@ public:
 	virtual StateElement next() const override;
 protected:
 	// プレイヤーの左右比較(右側を返す)
-	Player::PlayerBodyPtr compareMax(Player::PlayerBodyPtr p1, Player::PlayerBodyPtr p2);
+	PlayerBodyPtr compareMax(PlayerBodyPtr p1, PlayerBodyPtr p2);
 	// プレイヤーの左右比較(左側を返す)
-	Player::PlayerBodyPtr compareMin(Player::PlayerBodyPtr p1, Player::PlayerBodyPtr p2);
+	PlayerBodyPtr compareMin(PlayerBodyPtr p1, PlayerBodyPtr p2);
 protected:
 	// ステートの要素
 	StateElement element_;
@@ -30,9 +30,9 @@ protected:
 	// プレイヤーポインタ
 	Player* player_;
 	// mainとなる部位
-	Player::PlayerBodyPtr main_body_;
+	PlayerBodyPtr main_body_;
 	// sub となる部位
-	Player::PlayerBodyPtr sub_body_;
+	PlayerBodyPtr sub_body_;
 	// タイマー
 	float timer_;
 };

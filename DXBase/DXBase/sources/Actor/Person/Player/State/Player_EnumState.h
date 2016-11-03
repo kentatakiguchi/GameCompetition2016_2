@@ -7,6 +7,7 @@ enum class Player_EnumState{
 	IDLE,
 	MOVE,
 	HOLD,
+	HOLD_BOTH,
 	QUICK,
 	JUMP,
 	ATTACK, 

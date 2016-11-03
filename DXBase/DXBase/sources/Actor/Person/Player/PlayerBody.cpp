@@ -1,26 +1,26 @@
 #include "PlayerBody.h"
 #include"../../Body/CollisionBase.h"
 
-const float SPEED = 3.0f;
-const float MAX_NORMAL_LENGTH = 100.0f;
-const float MAX_STRETCH_LENGTH = 150.0f;
+PlayerBody::PlayerBody()
+{
+}
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
-	Actor(world, name, position, CollisionBase(Vector2(0, 0), 20.0f)) {
+	Actor(world, name, position, CollisionBase(Vector2(0, 0), 16.0f)) {
 }
 
 PlayerBody::~PlayerBody(){}
 
 void PlayerBody::onUpdate(float deltaTime){
-	position_ += input_ * SPEED  + launch_ + gravity_;;
+	position_ += input_ * PLAYER_SPEED  + launch_ + gravity_;;
 	velocity_ = position_ - body_.GetCircle().previousPosition_;
-	//position_ = Vector3::Clamp(position_, Vector3::Zero, Vector3(3000, 1000, 0));
 
+	opponent_ = Opponent::NONE;
 }
 
 void PlayerBody::onDraw() const{
-	if (name_ == "PlayerBody1")	DrawFormatString(25, 25, GetColor(255, 255, 255), "1 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
-	if (name_ == "PlayerBody2")	DrawFormatString(25, 50, GetColor(255, 255, 255), "2 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
+	//if (name_ == "PlayerBody1")	DrawFormatString(25, 25, GetColor(255, 255, 255), "1 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
+	//if (name_ == "PlayerBody2")	DrawFormatString(25, 50, GetColor(255, 255, 255), "2 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
 
 	body_.draw(/*inv()*/);
 
@@ -36,7 +36,7 @@ void PlayerBody::onLateUpdate(float deltaTime){
 }
 
 void PlayerBody::onCollide(Actor & other){
-
+	
 	if (other.getName() == "MapChip") {
 		auto pos = Vector2(position_.x, position_.y);
 
@@ -96,8 +96,13 @@ void PlayerBody::onCollide(Actor & other){
 
 		opponent_ = Opponent::FLOOR;
 	}
-	else if (other.getName() == "item") {
-		opponent_ = Opponent::ITEM;
+	if (opponent_ == Opponent::FLOOR)return;
+	if (other.getName() == "NavChip") {
+		auto box = other.getBody().GetBox();
+		Vector2 center = box.component_.point[0] + Vector2(box.getWidth(), box.getHeight()) / 2;
+		oppenent_pos_ = center;		
+		DrawPixel(center.x, center.y, GetColor(0, 255, 0));
+		if (Vector2::Distance(center, position_) <= 12)	opponent_ = Opponent::FLOOR;
 	}
 }
 
@@ -200,7 +205,4 @@ void PlayerBody::target(std::shared_ptr<PlayerBody> target){
 	target_ = target;
 }
 
-void PlayerBody::set_name(std::string name){
-	name_1_ = name;
-}
 

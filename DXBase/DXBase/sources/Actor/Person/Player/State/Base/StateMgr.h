@@ -23,7 +23,7 @@ private:
 	// コピー禁止
 	StateMgr(const StateMgr& other) = delete;
 	StateMgr& operator = (const StateMgr& other) = delete;
-protected:
+private:
 	// ステート登録用map
 	std::unordered_map<unsigned int, IStatePtr> states_;
 	// 現在のステート

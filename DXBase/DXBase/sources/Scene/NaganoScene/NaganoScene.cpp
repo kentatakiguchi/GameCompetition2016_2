@@ -34,15 +34,15 @@ void NaganoScene::start() {
 	//	handleMessage(msg, param);
 	//}
 	//);
-	world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
-	world_->addCamera(std::make_shared<Camera>(world_.get()));
-	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
+	//world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
+	//world_->addCamera(std::make_shared<Camera>(world_.get()));
+	//world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), START_POS));
 	world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
 	world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
 
 	MapGenerator gener = MapGenerator(world_.get());
-	gener.create("test.csv");
+	gener.create("resources/file/test2.csv");
 
 	status_ = Status(10);
 

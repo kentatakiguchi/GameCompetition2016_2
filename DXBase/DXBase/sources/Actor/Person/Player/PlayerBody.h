@@ -3,7 +3,8 @@
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
-#include "State/Base/StateMgr.h"
+//#include "State/Base/StateMgr.h"
+#include "PlayerPtr.h"
 
 // ÉvÉåÅ[ÉÑÅ[
 class PlayerBody : public Actor {
@@ -15,6 +16,7 @@ public:
 		TEST
 	};
 public:
+	PlayerBody();
 	PlayerBody(IWorld* world, const std::string name, const Vector2& position);
 	~PlayerBody();
 	virtual void onUpdate(float deltaTime) override;
@@ -37,7 +39,6 @@ public:
 	void pre_vector();
 	float distance();
 	void target(std::shared_ptr<PlayerBody> target);
-	void set_name(std::string name);
 
 	Vector2 GetVelo() {
 		return Vector2(velocity_.x, velocity_.y);
@@ -48,9 +49,10 @@ private:
 	Vector2 gravity_;
 	Vector2 launch_;
 	Vector2 last_pos_;
-	std::shared_ptr<PlayerBody> target_;
+	PlayerBodyPtr target_;
 	Opponent opponent_;
-	Vector2 x;
-	std::string name_1_;
+	Vector2 oppenent_pos_;
 };
+
+
 

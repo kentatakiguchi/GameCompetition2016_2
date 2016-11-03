@@ -28,7 +28,8 @@ public:
 	//線分判定を利用する場合
 	explicit CollisionBase(Vector2& startPoint, Vector2& endPoint);
 	void setPosition(Vector2 position);
-	void RotateCapsule(Vector2 point1, Vector2 point2,float radius);
+	void RotateCapsule(Vector2 point1, Vector2 point2, float radius);
+	void RotateSegment(Vector2 point1, Vector2 point2);
 	//デバッグ用の判定表示
 	void draw(Matrix inv = Matrix::Identity) const;
 	//

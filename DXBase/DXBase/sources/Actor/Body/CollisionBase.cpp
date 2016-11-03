@@ -87,6 +87,13 @@ void CollisionBase::RotateCapsule(Vector2 point1, Vector2 point2,float radius)
 	movePoint[1] = point2;
 	radius_ = radius;
 }
+void CollisionBase::RotateSegment(Vector2 point1, Vector2 point2)
+{
+	if (type_ != CollisionType::SegmentCol) return;
+
+	movePoint[0] = point1;
+	movePoint[1] = point2;
+}
 void CollisionBase::update(Vector2 position)
 {
 	MovePos(position);
@@ -97,7 +104,7 @@ void CollisionBase::draw(Matrix inv) const
 	switch (type_)
 	{
 	case BoxCol:
-		box_.draw(inv);
+		box_.draw();
 		break;
 	case CapsuleCol:
 		capsule_.draw(inv);

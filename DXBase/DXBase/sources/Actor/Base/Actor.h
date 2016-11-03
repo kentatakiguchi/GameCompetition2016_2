@@ -13,6 +13,8 @@
 #include "../Body/BoundingSegment.h"
 #include"..//Body/CollisionBase.h"
 #include "../../Animation/Animation.h"
+
+#include "../../Define.h"
 #include <string>
 #include <memory>
 #include <functional>

@@ -1,8 +1,6 @@
 #include "PlayerState_Hold.h"
 #include "../Player_EnumState.h"
 
-const float MAX_STRETCH_LENGTH = 150.0f;
-
 PlayerState_Hold::PlayerState_Hold(){}
 
 void PlayerState_Hold::unique_init(Actor & actor){
@@ -22,30 +20,21 @@ void PlayerState_Hold::unique_init(Actor & actor){
 
 	player_->setBody(main_body_, sub_body_);
 
-	main_body_->set_name("main");
-	sub_body_->set_name("sub");
-
 	if (main_body_->hitOpponent() != PlayerBody::Opponent::FLOOR)change((unsigned int)Player_EnumState::IDLE);
 }
 
 void PlayerState_Hold::update(Actor & actor, float deltaTime) {
 	move();
 
-	if (InputMgr::GetInstance().IsKeyUp(KeyCode::R_SHIFT) && element_.action_type_ == ActionType::Right) {
-		if (sub_body_->distance() >= MAX_STRETCH_LENGTH - 5) {
-			change((unsigned int)Player_EnumState::ATTACK);
-		}
-		else {
-			change((unsigned int)Player_EnumState::IDLE);
-		}
+	if (InputMgr::GetInstance().IsKeyUp(KeyCode::R_SHIFT) && element_.action_type_ == ActionType::Right || 
+		InputMgr::GetInstance().IsKeyUp(KeyCode::L_SHIFT) && element_.action_type_ == ActionType::Left) {
+		if (sub_body_->distance() >= MAX_STRETCH_LENGTH - 5)change((unsigned int)Player_EnumState::ATTACK);
+		else change((unsigned int)Player_EnumState::IDLE);
 	}
-	if (InputMgr::GetInstance().IsKeyUp(KeyCode::L_SHIFT) && element_.action_type_ == ActionType::Left) {
-		if (sub_body_->distance() >= MAX_STRETCH_LENGTH - 5) {
-			change((unsigned int)Player_EnumState::ATTACK);
-		}
-		else {
-			change((unsigned int)Player_EnumState::IDLE);
-		}
+
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && element_.action_type_ == ActionType::Left ||
+		InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && element_.action_type_ == ActionType::Right) {
+		if(sub_body_->hitOpponent() == PlayerBody::Opponent::FLOOR)	change((unsigned int)Player_EnumState::HOLD_BOTH);
 	}
 }
 

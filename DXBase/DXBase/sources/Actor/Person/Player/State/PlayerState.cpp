@@ -49,14 +49,14 @@ IState::StateElement PlayerState::next() const{
 }
 
 // プレイヤーの左右比較(右側を返す)
-Player::PlayerBodyPtr PlayerState::compareMax(Player::PlayerBodyPtr p1, Player::PlayerBodyPtr p2){
+PlayerBodyPtr PlayerState::compareMax(PlayerBodyPtr p1, PlayerBodyPtr p2){
 	if (p1->getPosition().x >= p2->getPosition().x) return p1;
 	else return p2;
 	return nullptr;
 }
 
 // プレイヤーの左右比較(左側を返す)
-Player::PlayerBodyPtr PlayerState::compareMin(Player::PlayerBodyPtr p1, Player::PlayerBodyPtr p2){
+PlayerBodyPtr PlayerState::compareMin(PlayerBodyPtr p1, PlayerBodyPtr p2){
 	if (p1->getPosition().x <= p2->getPosition().x) return p1;
 	else return p2;
 	return nullptr;
