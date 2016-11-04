@@ -79,16 +79,16 @@ void CollisionBase::setPosition(Vector2 position)
 	}
 	}
 }
-Vector2 CollisionBase::setSegmentPoint(Vector2 & startPoint, Vector2 & endPoint)
+Vector2 CollisionBase::setSegmentPoint(Vector2& position,Vector2 & startPoint, Vector2 & endPoint)
 {
 	if (type_ != CollisionType::SegmentCol)return Vector2::Zero;
 
-	movePoint[0] =startPoint;
-	movePoint[1] =endPoint;
+	movePoint[0] =position-startPoint;
+	movePoint[1] =position-endPoint;
 
 	return (startPoint + endPoint)/2;
-
 }
+
 void CollisionBase::RotateCapsule(Vector2 point1, Vector2 point2,float radius)
 {
 	if (type_ != CollisionType::CapsuleCol) return;
