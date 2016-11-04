@@ -10,19 +10,17 @@ public:
 	MapChip(){}
 	//マップチップの生成
 	MapChip(IWorld* world, Vector2& position);
-	MapChip(std::shared_ptr<MapChip> chip,IWorld* world, Vector2& position);
+	MapChip(IWorld* world, Vector2& position,CollisionBase& base);
+	MapChip(std::shared_ptr<MapChip> chip, IWorld* world, Vector2& position);
 	MapChip(MapChip& chip,IWorld* world,Vector2& position);
-	void set(Vector2& pos);
+	virtual void set(Vector2& pos);
 	MapChip& operator = (std::shared_ptr<MapChip> other) {
 		return MapChip(other,world_, Vector2(0, 0));
 	};
-
 private:
-	virtual void onUpdate(float deltaTime);
-	virtual void onDraw() const override;
-	virtual void onCollide(Actor& other);
+	void onUpdate(float deltaTime);
+	void onDraw() const override;
+	void onCollide(Actor& other);
 };
 
 #endif // !MAPCHIP_H_
-
-
