@@ -6,10 +6,10 @@
 class WeakEnemy : public BaseEnemy {
 public:
 	WeakEnemy(IWorld * world, const Vector2& position);
-	virtual void onUpdate(float deltaTime) override;
-	virtual void onDraw() const override;
-	virtual void onCollide(Actor& actor) override;
-	virtual void onMessage(EventMessage event, void*) override;
+	void onUpdate(float deltaTime) override;
+	void onDraw() const override;
+	void onCollide(Actor& actor) override;
+	void onMessage(EventMessage event, void*) override;
 
 private:
 	// 待機状態です
@@ -21,7 +21,7 @@ private:
 	//// プレイヤーとの距離が長いときの行動です
 	//void longDistanceAttack();
 	// 攻撃行動です
-	void Attack();
+	void attack();
 	//// 被弾行動です
 	//void damageMove();
 	//// 死亡行動です

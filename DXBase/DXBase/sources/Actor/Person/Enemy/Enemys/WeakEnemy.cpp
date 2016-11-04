@@ -29,9 +29,9 @@ void WeakEnemy::idel()
 	BaseEnemy::idle();
 }
 
-void WeakEnemy::Attack()
+void WeakEnemy::attack()
 {
-	BaseEnemy::Attack();
+	BaseEnemy::attack();
 }
 
 // õ“G‚Ìs“®‚Å‚·

@@ -4,10 +4,16 @@
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
 #include "../../../Math/Math.h"
+#include "../../../Define.h"
 
 class FloorSearchPoint : public Actor {
 public:
-	FloorSearchPoint(IWorld* world,const Vector2& pointPosition , const Vector2&  collidePosition);
+	FloorSearchPoint(
+		IWorld* world, 
+		const Vector2& enemyPosition,
+		const Vector2& addPosition, 
+		const Vector2& bodyScale
+		);
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& actor) override;
@@ -30,9 +36,10 @@ private:
 	int turnCount_;			// U‚èŒü‚«‰ñ”
 	bool isFloor_;
 	bool isGround_;
-	Vector2 direction_;			// •ûŒü
-	Vector2 enemyScale_;	// “G‚Ì‘å‚«‚³
-	Vector2 pointPosition_;
+	Vector2 direction_;		// •ûŒü
+	Vector2 scale_;			// “G‚Ì‘å‚«‚³
+	Vector2 enemyPosition_;
+	Vector2 addPosition_;
 	Vector2 floorPosition_;	// °‚ÌˆÊ’u
 };
 

@@ -3,24 +3,44 @@
 #include "../../Base/ActorGroup.h"
 #include"../../Body/CollisionBase.h"
 
-FloorSearchPoint::FloorSearchPoint(IWorld * world, const Vector2& pointPosition, const Vector2&  collidePosition) :
-	pointPosition_(pointPosition),	Actor(world, "FSP", collidePosition, CollisionBase(Vector2(collidePosition.x, collidePosition.y), 1.0f)),
+FloorSearchPoint::FloorSearchPoint(
+	IWorld * world, 
+	const Vector2& enemyPosition,
+	const Vector2& addPosition,
+	const Vector2& bodyScale
+	) :
+	Actor(world, "FSP", enemyPosition + addPosition,
+		CollisionBase(
+			Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+			Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+			Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f),
+			Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f)
+			)
+		),
 	turnCount_(0),
 	isFloor_(false),
 	isGround_(false),
 	direction_(1.0f, 1.0f),
-	enemyScale_(Vector2::Zero),
+	scale_(bodyScale),
+	enemyPosition_(enemyPosition),
+	addPosition_(addPosition),
 	floorPosition_(Vector2::Zero)
 {
 }
 
 void FloorSearchPoint::onUpdate(float deltaTime)
 {
-	auto pos = position_;
+	/*auto pos = position_;
 	auto pointPos = Vector2(
 		pointPosition_.x * direction_.x,
-		pointPosition_.y * direction_.y);
-	position_ = pos + pointPos;
+		pointPosition_.y * direction_.y);*/
+	//position_ = pos + pointPos;
+
+	auto addPos = Vector2(
+		addPosition_.x * direction_.x,
+		addPosition_.y * direction_.y);
+	position_ = enemyPosition_ + addPos;
+
 	isFloor_ = false;
 	isGround_ = false;
 }
@@ -33,7 +53,7 @@ void FloorSearchPoint::onDraw() const
 void FloorSearchPoint::onCollide(Actor & actor)
 {
 	// 床に当たっていた、振り向き回数をリセット
-	if (actor.getName() == "MapChip") {
+	if (actor.getName() == "MovelessFloor") {
 		turnCount_ = 0;
 		isGround_ = true;
 		// 位置をブロックの上面に修正する
@@ -60,7 +80,8 @@ void FloorSearchPoint::onMessage(EventMessage event, void *)
 // 位置の設定
 void FloorSearchPoint::setPosition(const Vector2& position)
 {
-	position_ = position;
+	//position_ = position;
+	enemyPosition_ = position;
 }
 
 // 方向の設定
@@ -98,7 +119,7 @@ Vector2 FloorSearchPoint::getFloorPosition()
 void FloorSearchPoint::clampPosition(const Vector2& thisPosition, const Vector2& otherPosition)
 {
 	// 床との位置を計算　負の値の場合、床の下にいる
-	auto posY = otherPosition.y - thisPosition.y - 32.0f;
+	auto posY = otherPosition.y - thisPosition.y - CHIPSIZE; //blockScale;
 	//// 半径を加算した位置にする
 	if (posY < 0)
 		floorPosition_ = position_ + Vector2::Up * posY;

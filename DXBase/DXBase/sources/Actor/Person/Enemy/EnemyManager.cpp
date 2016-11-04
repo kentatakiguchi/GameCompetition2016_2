@@ -1,22 +1,36 @@
 #include "EnemyManager.h"
+#include "FloorSearchPoint.h"
 
 EnemyManager::EnemyManager(const Vector2 position) :
 	distance_(1),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
 	boxMoveCount(0.0f),
+	wspResult_(0.0f),
 	enemyPosition_(position),
 	playerPosition_(Vector2::Zero),
 	threadPosition_(position + Vector2::Left * 100.0f),
 	threadLength_(Vector2::Distance(enemyPosition_, threadPosition_)),
+	enemyDirection_(Vector2::Zero),
+	wsDirection_(1.0f, 0.0f),
 	rotate_(0.0f),
 	rotateSpeed_(10.0f),
 	threadGravity_(0.5f)
 {
-	boxMoveConteiner_.push_back(0);
-	boxMoveConteiner_.push_back(1);
-	boxMoveConteiner_.push_back(0);
-	boxMoveConteiner_.push_back(-1);
+	wallMoveConteiner_.push_back(0);
+	wallMoveConteiner_.push_back(1);
+	wallMoveConteiner_.push_back(0);
+	wallMoveConteiner_.push_back(-1);
+	// mapに追加
+
+
+	// 1つのみ当たらない
+	wspDirectionMap_[74] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[70] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[66] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[60] = Vector2(0.0f, 1.0f);
+	// 全部当たっている
+	wspDirectionMap_[77] = Vector2::Zero;
 }
 
 EnemyManager::~EnemyManager()
@@ -36,8 +50,8 @@ Vector2 EnemyManager::boxMove()
 	boxMoveCount += deltaTimer_ / 2.0f;
 	auto direction = enemyPosition_;
 	direction = Vector2(
-		boxMoveConteiner_[(int)boxMoveCount % 4] * 3.0f,
-		boxMoveConteiner_[((int)boxMoveCount + 3) % 4] * 1.0f
+		wallMoveConteiner_[(int)boxMoveCount % 4] * 3.0f,
+		wallMoveConteiner_[((int)boxMoveCount + 3) % 4] * 1.0f
 		);
 	//if((int)timer_ %  1 * 60.0f >= 0)
 	return direction;
@@ -46,21 +60,47 @@ Vector2 EnemyManager::boxMove()
 // 壁に沿った動き方（まだ）
 Vector2 EnemyManager::wallMove()
 {
-	auto directionX = 0;
-	auto directionY = 0;
-	auto count = 1;
-	// X
-	if (count == 1 || count == 4)
-		directionX = 1;
-	// Y
-	if (count == 2 || count == 3)
-		directionY = 1;
+	//auto direction = Vector2::Zero;
+	// 壁に当たっているかを検索
+	//if (wspContainer_[0]->isGround()) {
+	//	if (wspContainer_[1]->isGround()) {
+	//		wsDirection_.x = 1;
+	//		wsDirection_.y = 0;
+	//	}
+	//	else if (wspContainer_[3]->isGround()) {
+	//		wsDirection_.x = 0;
+	//		//wsDirection_.y = 1;
+	//	}
+	//	else if (!wspContainer_[1]->isGround()) {
+	//		if (wsDirection_.x == 1)
+	//			wsDirection_.y = -1;
+	//		else if (wsDirection_.y == 1)
+	//			wsDirection_.x = -1;
+	//	}
+	//}
+	//else if (wspContainer_[5]->isGround()) {
+	//	if (wsDirection_.x == 1)
+	//		wsDirection_.y = 1;
+	//	else if (wsDirection_.y == -1)
+	//		wsDirection_.x = -1;
+	//}
 
-	if (count == 4 && (count == 2 || count == 3))
-		directionY = 1;
+	/*else if (wspContainer_[2]->isGround()) {
+		if (enemyDirection_.x == -1)
+			direction.y = -1;
+		else if (enemyDirection_.y == 1)
+			direction.x = 1;
+	}
+	else if (wspContainer_[7]->isGround()) {
+		if (enemyDirection_.x == -1)
+			direction.y = 1;
+		else if (enemyDirection_.y == -1)
+			direction.x = 1;
+	}*/
+
 	// 敵の四方に当たり判定のあるオブジェクトを配置
 	// 当たったオブジェクトの名前などを参照して、方向の値を決定する
-	return Vector2();
+	return wsDirection_;
 }
 
 // 崖を避ける動き方
@@ -129,21 +169,25 @@ Vector2 EnemyManager::threadMove()
 	return Vector2(px, py);
 }
 
+// 指定したオブジェクトとの距離を返します
+float EnemyManager::getLength(const Vector2 & otherPosition)
+{
+	auto length = otherPosition - enemyPosition_;
+	return length.Length();
+}
+
 // プレイヤーとの距離を返します
 float EnemyManager::getPlayerLength()
 {
 	// プレイヤーの位置を取得
-	Vector2 vec2PlayerPosition = Vector2(playerPosition_.x, playerPosition_.y);
-	Vector2 vec2EnemyPosition = Vector2(enemyPosition_.x, enemyPosition_.y);
-	Vector2 length = vec2PlayerPosition - vec2EnemyPosition;
-	return length.Length();
+	return getLength(playerPosition_);
 }
 
-// プレイヤーとの方向を単位ベクトルで取得します
-Vector2 EnemyManager::getPlayerDirection()
+// 指定したオブジェクトとの方向を単位ベクトルで取得します
+Vector2 EnemyManager::getDirection(const Vector2& otherPosition)
 {
 	// 方向の計算
-	auto distance = enemyPosition_ - playerPosition_;
+	auto distance = enemyPosition_ - otherPosition;
 	auto direction = Vector2().Zero;
 	//auto direction = 1.0f;
 	// 方向の値を代入
@@ -162,25 +206,26 @@ Vector2 EnemyManager::getPlayerDirection()
 	return direction;
 }
 
+// プレイヤーとの方向を単位ベクトルで取得します
+Vector2 EnemyManager::getPlayerDirection()
+{
+	return getDirection(playerPosition_);
+}
+
 // プレイヤーとの方向を正規化されたベクトルで取得します
 Vector2 EnemyManager::getPlayerNormalizeDirection()
 {
 	// 方向の計算
 	auto distance = enemyPosition_ - playerPosition_;
-	//// 変換
-	//auto nomaDistance = Vector2(distance.x, distance.y);
-	//// 正規化
-	//nomaDistance = nomaDistance.Normalize(nomaDistance);
-	//auto distance3 = Vector3(nomaDistance.x, nomaDistance.y, 0.0f);
-	distance = distance.Normalize(distance);
-	return distance;
+	return distance.Normalize(distance);
 }
 
 //　敵自身とプレイヤーの位置を入れます
-void EnemyManager::setEMPosition(const Vector2& enemyPosition, const Vector2& playerPosition)
+void EnemyManager::setEMPosition(const Vector2& enemyPosition, const Vector2& playerPosition, const Vector2 direction)
 {
 	enemyPosition_ = enemyPosition;
 	playerPosition_ = playerPosition;
+	enemyDirection_ = direction;
 }
 
 // 糸の支点の位置取得
@@ -192,11 +237,33 @@ Vector2 EnemyManager::getThreadPoint()
 // 捜索オブジェクトの設定
 void EnemyManager::addFSP(FloorSearchPoint * fsp)
 {
-	fspContainer_.push_back(fsp);
+	wspContainer_.push_back(fsp);
 }
 
 // 壁に沿った動き方
 Vector2 EnemyManager::getWallDirection()
 {
-	return Vector2();
+	auto direction = Vector2::Zero;
+	// 
+	for (auto i = wspDirectionMap_.begin(); i != wspDirectionMap_.end(); i++) {
+		// マップに入れてある値と同一ならば、方向を決める
+		if (i->first == wspResult_)
+			direction = wspDirectionMap_[wspResult_];
+	}
+	return direction;
+	//return Vector2();
+}
+
+float EnemyManager::eachWSPObj()
+{
+	//for (auto i = wspDirectionMap_.begin(); i != wspDirectionMap_.end(); i++) {
+	//	// マップに入れてある値と同一ならば、方向を決める
+	//	if (i->first == wspResult_)
+	//}
+	return 0.0f;
+}
+
+FloorSearchPoint* EnemyManager::getWSPObj(const int number)
+{
+	return wspContainer_[number];
 }

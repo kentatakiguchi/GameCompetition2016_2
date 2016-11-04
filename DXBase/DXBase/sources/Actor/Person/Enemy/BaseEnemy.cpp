@@ -3,7 +3,7 @@
 #include "../../Base/ActorGroup.h"
 #include"../../Body/CollisionBase.h"
 #include "FloorSearchPoint.h"
-
+#include "PlayerSearchObj.h"
 
 BaseEnemy::BaseEnemy(IWorld * world, const Vector2& position, const float bodyScale) :
 	Actor(world, "BaseEnemy", position,
@@ -29,6 +29,7 @@ BaseEnemy::BaseEnemy(IWorld * world, const Vector2& position, const float bodySc
 	discoveryPosition_(Vector2::Zero),
 	animation_(),
 	player_(nullptr),
+	psObj_(nullptr),
 	fspScript(nullptr),
 	wsScript(nullptr),
 	pricleObj_(nullptr),
@@ -44,17 +45,32 @@ BaseEnemy::~BaseEnemy()
 void BaseEnemy::Initialize()
 {
 	// 床捜索オブジェクトの追加
+	/*auto fsObj = std::make_shared<FloorSearchPoint>(
+		world_, Vector2(0.0f, 0.0f + scale_ / 2.0f), position_);*/
 	auto fsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector2(0.0f, 0.0f + scale_ / 2.0f), position_);
+		world_, position_,
+		Vector2(0.0f, 0.0f + scale_ / 2.0f),
+		Vector2(scale_, 2.0f));
 	// ワールドに追加
 	world_->addActor(ActorGroup::Enemy, fsObj);
 	fspScript = &*fsObj;
 	fspScript->setPosition(position_);
 	// 壁捜索オブジェクト
+	/*auto wsObj = std::make_shared<FloorSearchPoint>(
+		world_, Vector2(-scale_ / 2.0f, 0.0f), position_);*/
 	auto wsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector2(-scale_ / 2.0f, 0.0f), position_);
+		world_, position_, 
+		Vector2(-scale_ / 2.0f, 0.0f),
+		Vector2(2.0f, scale_));
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsScript = &*wsObj;
+	// rayオブジェクトの追加
+	auto player = world_->findActor("Player");
+	//ray_ = CollisionBase(position_, vec);
+	auto ray = std::make_shared<PlayerSearchObj>(
+		world_, position_, player->getPosition());
+	world_->addActor(ActorGroup::Effect, ray);
+	psObj_ = &*ray;
 }
 
 void BaseEnemy::onUpdate(float deltaTime)
@@ -68,8 +84,6 @@ void BaseEnemy::onUpdate(float deltaTime)
 	// 捜索オブジェクトの更新
 	updateSearchObjct();
 	
-	// デバッグ
-	distance_ = enemyManager_.getPlayerLength();
 	isGround_ = false;
 
 	// アニメーションの変更
@@ -108,7 +122,8 @@ void BaseEnemy::onCollide(Actor & actor)
 	// if (actorName != "Player") return;
 
 	// プレイヤーに当たらない？
-	if (actorName == "PlayerBody2" && !isInvincible_) {
+	if ((actorName == "PlayerBody2" || actorName == "PlayerBody1") &&
+		!isInvincible_) {
 		// ダメージ
 		/*hp_ -= 10;
 		if (hp_ <= 0) changeState(State::Dead, ENEMY_DEAD);
@@ -142,6 +157,7 @@ void BaseEnemy::search()
 	// プレイヤーの捜索
 	findPlayer();
 	stateString_ = "捜索";
+	speed_ = initSpeed_;
 	// 捜索行動
 	searchMove();
 	// 一定距離内なら追跡する
@@ -176,6 +192,7 @@ void BaseEnemy::chase()
 	// プレイヤーの捜索
 	findPlayer();
 	stateString_ = "追跡";
+	speed_ = initSpeed_ * 1.5f;
 	// 追跡行動
 	chaseMove();
 	if (enemyManager_.getPlayerLength() > discoveryLenght_)
@@ -207,7 +224,7 @@ void BaseEnemy::chase()
 //}
 
 // 攻撃行動です
-void BaseEnemy::Attack()
+void BaseEnemy::attack()
 {
 	/*world_->addActor(
 		ActorGroup::Enemy_AttackRange, std::make_shared<Enemy_AttackRange>(world_, position_));*/
@@ -230,6 +247,11 @@ void BaseEnemy::deadMove()
 	//if (stateTimer_ >= 3.0f) dead();
 	stateString_ = "死亡";
 	//dead();
+}
+
+// プレイヤーを見失ったときの行動です
+void BaseEnemy::lostMove()
+{
 }
 
 // 状態の変更を行います
@@ -264,17 +286,21 @@ void BaseEnemy::createFSP()
 	// 追加された位置分だけ生成する
 	for (int i = 0; i != fspPositionContainer_.size(); ++i) {
 		// 捜索オブジェクトの追加
-		auto fsObj = std::make_shared<FloorSearchPoint>(world_, Vector2::Zero, position_);
-		//fsPoint_ = std::make_shared<FloorSearchPoint>(world_, position_);
-		world_->addActor(ActorGroup::Effect, fsObj);
+		auto fsObj = 
+			std::make_shared<FloorSearchPoint>(
+				world_, position_, 
+				fspPositionContainer_[i],
+				fspScaleContainer_[i]
+				);
+		world_->addActor(ActorGroup::Enemy, fsObj);
 		// 床オブジェクトのスクリプト取得
 		auto fspScript = &*fsObj;
 		//fspScript->setEnemyScale(Vector2(scale_, scale_));
 		// 追加
-		fspContainer_.push_back(fspScript);
-		fspContainer_[i]->setEnemyScale(Vector2(scale_, scale_));
-		fspContainer_[i]->setPosition(position_ + fspPositionContainer_[i]);
-		// エネミーマネージャー
+		/*wspContainer_.push_back(fspScript);
+		wspContainer_[i]->setEnemyScale(Vector2(scale_, scale_));
+		wspContainer_[i]->setPosition(position_ + fspPositionContainer_[i]);*/
+		// エネミーマネージャーに追加
 		enemyManager_.addFSP(fspScript);
 	}
 }
@@ -282,6 +308,7 @@ void BaseEnemy::createFSP()
 void BaseEnemy::setDeltaTime(float deltatime)
 {
 	deltaTimer_ = deltatime * 60.0f;
+	
 }
 
 // 敵が飲み込まれた時のスケールポイントを返します
@@ -301,15 +328,18 @@ void BaseEnemy::updateState(float deltaTime)
 	// プレイヤーの捜索
 	player_ = world_->findActor("Player");
 	// プレイヤーが取得できれば、エネミーマネージャーに位置を入れる
-	if (player_ != nullptr)
-		enemyManager_.setEMPosition(position_, player_->getPosition());
+	if (player_ != nullptr) {
+		enemyManager_.setEMPosition(position_, player_->getPosition(), direction_);
+		psObj_->setPosition(position_, player_->getPosition());
+	}
 	switch (state_)
 	{
 	case State::Idel: idle(); break;
 	case State::Search: search(); break;
 	case State::Discovery: discovery(); break;
 	case State::Chase: chase(); break;
-	case State::Attack: Attack(); break;
+	case State::Lost: lostMove(); break;
+	case State::attack: attack(); break;
 		// State::Return: ; break;
 	case State::Damage: damageMove(); break;
 	case State::Dead: deadMove(); break;

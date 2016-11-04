@@ -8,9 +8,9 @@ class FloorSearchPoint;
 class WallTrunEnemy : public BaseEnemy {
 public:
 	WallTrunEnemy(IWorld * world, const Vector2& position);
-	virtual void onUpdate(float deltaTime) override;
-	virtual void onCollide(Actor& actor) override;
-	virtual void onMessage(EventMessage event, void*) override;
+	void onUpdate(float deltaTime) override;
+	void onCollide(Actor& actor) override;
+	void onMessage(EventMessage event, void*) override;
 
 private:
 	// ‘Ò‹@ó‘Ô‚Å‚·
@@ -18,7 +18,7 @@ private:
 	// õ“GˆÚ“®‚Å‚·
 	void search();
 	// UŒ‚s“®‚Å‚·
-	void Attack();
+	void attack();
 	// õ“G‚Ìs“®‚Å‚·
 	void searchMove();
 	// ’ÇÕ‚Ìs“®‚Å‚·

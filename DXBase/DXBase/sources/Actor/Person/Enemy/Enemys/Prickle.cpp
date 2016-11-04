@@ -3,13 +3,12 @@
 #include "../../../Base/ActorGroup.h"
 #include"../../../Body/CollisionBase.h"
 
-Prickle::Prickle(IWorld * world, const Vector2& enemyPosition, const Vector2& addPosition, const float bodyScale) :
-	totalPosition_(enemyPosition + addPosition),
+Prickle::Prickle(IWorld * world, const Vector2& enemyPosition, const Vector2& addPosition, const Vector2& bodyScale) :
 	Actor(world, "Prickle", enemyPosition + addPosition, CollisionBase(
-		Vector2(totalPosition_.x + bodyScale / 2.0f, totalPosition_.y + bodyScale / 2.0f),
-		Vector2(totalPosition_.x - bodyScale / 2.0f, totalPosition_.y + bodyScale / 2.0f),
-		Vector2(totalPosition_.x + bodyScale / 2.0f, totalPosition_.y - bodyScale / 2.0f),
-		Vector2(totalPosition_.x - bodyScale / 2.0f, totalPosition_.y - bodyScale / 2.0f)
+		Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+		Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+		Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f),
+		Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f)
 		)),
 	ap_(10),
 	direction_(Vector2(1.0f, 1.0f)),
@@ -20,7 +19,9 @@ Prickle::Prickle(IWorld * world, const Vector2& enemyPosition, const Vector2& ad
 
 void Prickle::onUpdate(float deltaTime)
 {
-	auto addPos = Vector2(addPosition_.x * direction_.x, addPosition_.y * direction_.y);
+	auto addPos = Vector2(
+		addPosition_.x * direction_.x,
+		addPosition_.y * direction_.y);
 	position_ = enemyPosition_ + addPos;
 }
 
@@ -41,6 +42,12 @@ void Prickle::onMessage(EventMessage event, void *)
 void Prickle::setEnemyPosition(const Vector2 & position)
 {
 	enemyPosition_ = position;
+}
+
+// ’Ç‰ÁˆÊ’u‚ð“ü‚ê‚Ü‚·
+void Prickle::setAddPosition(const Vector2 & position)
+{
+	addPosition_ = position;
 }
 
 // •ûŒü‚ð“ü‚ê‚Ü‚·
