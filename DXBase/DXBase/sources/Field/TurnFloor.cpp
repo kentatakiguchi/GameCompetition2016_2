@@ -1,7 +1,7 @@
 #include "TurnFloor.h"
 
 TurnFloor::TurnFloor(IWorld * world, Vector2 & position) :
-	MapChip(world, Vector2(position.x, position.y), CollisionBase(
+	MapChip(world, Vector2(position.x, position.y), "TurnFloor", CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE * 2),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
@@ -11,7 +11,7 @@ TurnFloor::TurnFloor(IWorld * world, Vector2 & position) :
 }
 
 TurnFloor::TurnFloor(std::shared_ptr<TurnFloor> chip, IWorld * world, Vector2 & position) :
-	MapChip(world, Vector2(position.x, position.y), CollisionBase(
+	MapChip(world, Vector2(position.x, position.y), "TurnFloor", CollisionBase(
 		Vector2{ position.x ,position.y },
 		Vector2{ position.x - (CHIPSIZE * 2),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
@@ -22,7 +22,7 @@ TurnFloor::TurnFloor(std::shared_ptr<TurnFloor> chip, IWorld * world, Vector2 & 
 }
 
 TurnFloor::TurnFloor(TurnFloor & chip, IWorld * world, Vector2 & position) :
-	MapChip(world, Vector2(position.x, position.y), CollisionBase(
+	MapChip(world, Vector2(position.x, position.y), "TurnFloor", CollisionBase(
 		Vector2{ position.x ,position.y },
 		Vector2{ position.x - (CHIPSIZE * 2),position.y },
 		Vector2{ position.x,position.y - (CHIPSIZE) },

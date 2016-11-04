@@ -1,7 +1,7 @@
 #include "MoveFloorRightLeft.h"
 
 MoveFloorRightLeft::MoveFloorRightLeft(IWorld * world, Vector2 & position) :
-	MapChip(world, Vector2(position.x, position.y), CollisionBase(
+	MapChip(world, Vector2(position.x, position.y),"MoveFloorRightLeft", CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE * 2),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
@@ -11,7 +11,7 @@ MoveFloorRightLeft::MoveFloorRightLeft(IWorld * world, Vector2 & position) :
 }
 
 MoveFloorRightLeft::MoveFloorRightLeft(std::shared_ptr<MoveFloorRightLeft> chip, IWorld * world, Vector2 & position) :
-	MapChip(world, Vector2(position.x, position.y), CollisionBase(
+	MapChip(world, Vector2(position.x, position.y), "MoveFloorRightLeft", CollisionBase(
 		Vector2{ position.x ,position.y },
 		Vector2{ position.x - (CHIPSIZE * 2),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
@@ -22,7 +22,7 @@ MoveFloorRightLeft::MoveFloorRightLeft(std::shared_ptr<MoveFloorRightLeft> chip,
 }
 
 MoveFloorRightLeft::MoveFloorRightLeft(MoveFloorRightLeft & chip, IWorld * world, Vector2 & position) :
-	MapChip(world, Vector2(position.x, position.y), CollisionBase(
+	MapChip(world, Vector2(position.x, position.y), "MoveFloorRightLeft", CollisionBase(
 		Vector2{ position.x ,position.y },
 		Vector2{ position.x - (CHIPSIZE * 2),position.y },
 		Vector2{ position.x,position.y - (CHIPSIZE) },

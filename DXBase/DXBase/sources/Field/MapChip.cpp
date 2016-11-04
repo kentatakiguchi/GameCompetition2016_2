@@ -14,6 +14,10 @@ MapChip::MapChip(IWorld * world, Vector2 & position,CollisionBase& base) :
 
 }
 
+MapChip::MapChip(IWorld * world, Vector2 & position, std::string name, CollisionBase & base)
+:Actor(world,name, Vector2(position.x, position.y), base){
+}
+
 
 MapChip::MapChip(std::shared_ptr<MapChip> chip,IWorld* world, Vector2 & position)
 	:Actor(world, "MapChip", Vector2(position.x, position.y), CollisionBase(
