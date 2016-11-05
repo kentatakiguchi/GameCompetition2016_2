@@ -17,7 +17,7 @@ public:
 		TEST
 	};
 public:
-	PlayerBody_Point(IWorld* world, const std::string& name, const int& point_num);
+	PlayerBody_Point(IWorld* world, const std::string& name, const int& point_num, const int& point_index, PlayerBodyPtr main, PlayerBodyPtr sub);
 	~PlayerBody_Point();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
@@ -33,7 +33,8 @@ private:
 	Opponent opponent_;
 	Vector2 oppenent_pos_;
 
-	PlayerBodyPtr main_target_;
-	PlayerBodyPtr sub_target_;
+	PlayerBodyPtr main_;
+	PlayerBodyPtr sub_;
 	int num_;
+	int index_;
 };

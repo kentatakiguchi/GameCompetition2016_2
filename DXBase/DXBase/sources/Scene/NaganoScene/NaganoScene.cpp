@@ -55,6 +55,20 @@ void NaganoScene::start() {
 
 	backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 	backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
+
+
+
+	spring_constant_ = 10.0f;
+	attenuation_constant_ = 0.5f;
+	mass_ = 0.3f;
+	angular_freq_ = std::sqrtf(spring_constant_ / mass_);
+	p_ = attenuation_constant_ / 2 / mass_;
+	e_ = 2.7f;
+	time_ = 0;
+
+	amplitude_ = 20 * 3;
+
+	phase_ = position_;
 }
 
 void NaganoScene::update() {
@@ -71,10 +85,11 @@ void NaganoScene::draw() const {
 	//world描画
 	world_->draw();
 
+
+
 	DrawFormatString(550, 25, GetColor(255, 255, 255), "キャラ移動：WASDキー / 方向キー");
 	DrawFormatString(550, 50, GetColor(255, 255, 255), "吸着：L_Shift / R_Shift");
 	DrawFormatString(550, 500, GetColor(255, 255, 255), "NaganoScene");
-
 }
 
 void NaganoScene::end() {

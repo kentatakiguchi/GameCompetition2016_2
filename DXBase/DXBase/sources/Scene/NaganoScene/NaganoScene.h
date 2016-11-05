@@ -30,6 +30,21 @@ private:
 	BackGraundManager* backManager;
 
 	float time_;
+
+	int size_x, size_y;
+	Vector2 div_size_;
+	Vector2 vib_center_;	//U“®’†S
+	Vector2 position_;		//À•W
+	float angular_freq_;				//ŠpU“®”
+	float amplitude_;					//U•
+	Vector2 phase_;						//ˆÊ‘Š
+	
+	float spring_constant_;				//‚Î‚Ë’è”
+	float attenuation_constant_;		//Œ¸Š’è”
+	float natural_length_;				//©‘R’·
+	float mass_;						//¿—Ê
+	float p_;						//¿—Ê
+	float e_;						//¿—Ê
 };
 
 

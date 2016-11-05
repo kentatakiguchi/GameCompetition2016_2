@@ -43,13 +43,13 @@ const static int		WINDOW_MODE = TRUE;
 // プレイヤーの移動速度
 const static float		PLAYER_SPEED = 3.0f;
 // プレイヤーの本体の半径
-const static float		PLAYER_RADIUS = 16.0f;
+const static float		PLAYER_RADIUS = 24.0f;
 // プレイヤーの通常の長さ
-const static float		MAX_NORMAL_LENGTH = 50.0f;
+const static float		PLAYER_MAX_NORMAL_LENGTH = 50.0f;
 // プレイヤーが伸びた場合の最大値
-const static float		MAX_STRETCH_LENGTH = 100.0f;
+const static float		PLAYER_MAX_STRETCH_LENGTH = 100.0f;
 // プレイヤーの発射速度
-const static float		PLAYER_LAUNCH_POWER = 80.0f;
+const static float		PLAYER_LAUNCH_POWER = 50.0f;
 
 
 

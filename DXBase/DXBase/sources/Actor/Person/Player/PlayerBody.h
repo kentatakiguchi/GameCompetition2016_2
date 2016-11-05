@@ -3,7 +3,7 @@
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
-//#include "State/Base/StateMgr.h"
+#include "State/Base/StateMgr.h"
 #include "PlayerPtr.h"
 
 // ÉvÉåÅ[ÉÑÅ[
@@ -27,6 +27,7 @@ public:
 	void move(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 	void move_ver(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 	void move_hor(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
+	void sprit_move(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 	void chase();
 	void gravity();
 	void acc_gravity();
@@ -40,6 +41,8 @@ public:
 	float distance();
 	void target(std::shared_ptr<PlayerBody> target);
 
+	void single_action(float deltaTime);
+
 	Vector2 GetVelo() {
 		return Vector2(velocity_.x, velocity_.y);
 	}
@@ -52,6 +55,11 @@ private:
 	PlayerBodyPtr target_;
 	Opponent opponent_;
 	Vector2 oppenent_pos_;
+
+	float jump_power_;
+
+	StateMgr stateMgr_;
+
 };
 
 

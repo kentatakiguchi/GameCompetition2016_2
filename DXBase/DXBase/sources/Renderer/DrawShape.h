@@ -4,6 +4,6 @@
 
 class DrawShape {
 public:
-	static void Oval(const Vector2& main_pos, const Vector2& sub_pos, const int& height, const float& max);
+	static void Oval(const Vector2& main_pos, const Vector2& sub_pos, const float& height, const float& max);
 
 };

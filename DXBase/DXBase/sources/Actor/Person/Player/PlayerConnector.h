@@ -18,11 +18,8 @@ public:
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
-	void changeMotion(float deltaTime);
-	void set_point(PlayerBodyPtr start, PlayerBodyPtr end);
 	void create_point(int point_num = 0);
 private:
-
 	BezierCurve bezier_;
 	
 	PlayerBodyPtr start_point_;

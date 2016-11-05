@@ -4,7 +4,7 @@
 
 #include <algorithm>
 
-void DrawShape::Oval(const Vector2 & main_pos, const Vector2 & sub_pos, const int & height, const float& max)
+void DrawShape::Oval(const Vector2 & main_pos, const Vector2 & sub_pos, const float & height, const float& max)
 {
 	Vector2 vec = (main_pos - sub_pos).Normalize();
 	Vector2 sign = Vector2(MathHelper::Sign(vec.x), MathHelper::Sign(vec.y));

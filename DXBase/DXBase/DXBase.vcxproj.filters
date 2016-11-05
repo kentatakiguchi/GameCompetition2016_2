@@ -150,24 +150,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\Base\StateMgr.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Attack.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Damage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Idle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Move.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\State_Dammy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\Player_EnumState.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\Status\Status.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -195,9 +177,6 @@
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_Hold.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\Base\ActionType.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -216,13 +195,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\EnemyManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\PlayerState.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\PlayerStatePtr.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_StandBy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Animation\Animation2D.h">
@@ -282,13 +255,70 @@
     <ClInclude Include="sources\Field\NavChip.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\PlayerState_HoldBoth.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody_Point.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\PlayerPtr.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Field\MoveFloorRightLeft.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Field\MoveFloorUpDown.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Field\MovelessFloor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Field\TurnFloor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\PlayerSearchObj.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\PlayerState_Enum.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Attack.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Damage.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Move.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Split.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_StandBy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Idle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Jump.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\Base\State_Dammy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -371,18 +401,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Attack.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Damage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Idle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Move.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\Status\Status.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -410,9 +428,6 @@
     <ClCompile Include="sources\Actor\Person\Player\PlayerBody.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_Hold.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Body\BoundingCircle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -423,12 +438,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\EnemyManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\PlayerState.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_StandBy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Animation\Animation2D.cpp">
@@ -479,10 +488,61 @@
     <ClCompile Include="sources\Field\NavChip.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\PlayerState_HoldBoth.cpp">
+    <ClCompile Include="sources\Actor\Person\Player\PlayerBody_Point.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\PlayerBody_Point.cpp">
+    <ClCompile Include="sources\Field\MoveFloorRightLeft.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Field\MoveFloorUpDown.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Field\MovelessFloor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Field\TurnFloor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\PlayerSearchObj.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Attack.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Damage.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Move.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Split.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Idle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Jump.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_StandBy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
