@@ -58,8 +58,9 @@ void Player::onUpdate(float deltaTime) {
 	position_ = (main_pos + sub_pos) / 2;
 	body_.RotateCapsule(main_pos - position_, sub_pos - position_, body_.GetCapsule().component_.radius);
 
-	if(InputMgr::GetInstance().IsKeyOn(KeyCode::P))	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::SPLIT));
-
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::P) && stateMgr_.currentState() != (unsigned int)PlayerState_Enum_Union::SPLIT) {
+		stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::SPLIT));
+	}
 	// êVÇµÇ¢ç¿ïWÇï€ë∂Ç∑ÇÈ
 	//position_ = Vector3::Lerp(position_, curPosition, 0.8f);
 

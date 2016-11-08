@@ -34,7 +34,7 @@ void PlayerSearchObj::onUpdate(float deltaTime)
 
 	// position = Žn“_‚ÌˆÊ’u
 	position_ = enemyPosition_;
-	body_.setSegmentPoint(const_cast<Vector2&>(Vector2::Zero), playerPosition_ - enemyPosition_);
+	//body_.setSegmentPoint(const_cast<Vector2&>(Vector2::Zero), playerPosition_ - enemyPosition_);
 	/*position_ = Vector2::Zero;
 	body_.setSegmentPoint(enemyPosition_, playerPosition_);*/
 

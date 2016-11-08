@@ -220,6 +220,7 @@
     <ClInclude Include="sources\Field\TurnFloor.h" />
     <ClInclude Include="sources\FileReader\CsvReader.h" />
     <ClInclude Include="sources\Math\BezierCurve.h" />
+    <ClInclude Include="sources\Math\Easing.h" />
     <ClInclude Include="sources\Math\Math.h" />
     <ClInclude Include="sources\Math\MathHelper.h" />
     <ClInclude Include="sources\Math\Matrix.h" />

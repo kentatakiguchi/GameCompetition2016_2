@@ -13,7 +13,7 @@ void PlayerState_Single::common_init(Actor & actor, ActionType type) {
 	timer_ = 0;
 	isEnd_ = false;
 
-	player_ = dynamic_cast<Player*>(&actor);
+	player_body_ = dynamic_cast<PlayerBody*>(&actor);
 	//main_body_ = player_->getMainBody();
 	//sub_body_ = player_->getSubBody();
 

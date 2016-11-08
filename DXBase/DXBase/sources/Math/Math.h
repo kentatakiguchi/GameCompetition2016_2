@@ -5,4 +5,5 @@
 #include "Matrix.h"
 #include "Quaternion.h"
 #include "MathHelper.h"
+#include "Easing.h"
 

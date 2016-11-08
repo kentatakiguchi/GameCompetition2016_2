@@ -7,16 +7,20 @@
 #include "State/States/Single/Elements/PlayerState_Single_Idle.h"
 #include "State/States/Single/Elements/PlayerState_Single_Jump.h"
 
-PlayerBody::PlayerBody(){
+PlayerBody::PlayerBody(){}
+
+PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
+	Actor(world, name, position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS)),
+	is_single_(false){
+	keys_ = SingleKeys();
+	if (name == "PlayerBody2")keys_ = SingleKeys(KeyCode::W, KeyCode::S, KeyCode::D, KeyCode::A);
+
 	stateMgr_.add((unsigned int)PlayerState_Enum_Single::STAND_BY, std::make_shared<PlayerState_Single_StandBy>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Single::IDLE, std::make_shared<PlayerState_Single_Idle>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Single::JUMP, std::make_shared<PlayerState_Single_Jump>());
 	//stateMgr_.add((unsigned int)PlayerState_Enum_Single::MOVE, std::make_shared<PlayerState_Single_Idle>());
 	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
-}
 
-PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
-	Actor(world, name, position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS)) {
 }
 
 PlayerBody::~PlayerBody(){}
@@ -81,8 +85,7 @@ void PlayerBody::onCollide(Actor & other){
 
 		opponent_ = Opponent::FLOOR;
 	}
-	if (opponent_ == Opponent::FLOOR)return;
-	if (other.getName() == "NavChip") {
+	if (other.getName() == "NavChip" && opponent_ != Opponent::FLOOR) {
 		auto pos = body_.GetCircle().previousPosition_;
 
 		auto box = other.getBody().GetBox();
@@ -91,6 +94,8 @@ void PlayerBody::onCollide(Actor & other){
 		DrawPixel(center.x, center.y, GetColor(0, 255, 0));
 		//if(Vector2::Distance(pos, oppenent_pos_) <= 12)opponent_ = Opponent::FLOOR;
 	}
+
+	//if(other.)
 }
 
 void PlayerBody::changeMotion(float deltaTime){
@@ -113,11 +118,9 @@ void PlayerBody::move_ver(KeyCode up, KeyCode down, KeyCode right, KeyCode left)
 
 	if (InputMgr::GetInstance().IsKeyOn(down))	input_.y = 1;
 	if (InputMgr::GetInstance().IsKeyOn(up))	input_.y = -1;
-
-	//position_ += input_ * SPEED;
 }
 
-void PlayerBody::move_hor(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
+void PlayerBody::move_hor(KeyCode right, KeyCode left){
 
 	if (InputMgr::GetInstance().IsKeyOn(right)) input_.x = 1;
 	if (InputMgr::GetInstance().IsKeyOn(left)) 	input_.x = -1;
@@ -132,8 +135,6 @@ void PlayerBody::move_hor(KeyCode up, KeyCode down, KeyCode right, KeyCode left)
 	//}
 	//if (distance() >= MAX_STRETCH_LENGTH) {
 	//}
-
-	//position_ += input_ * SPEED;
 }
 
 void PlayerBody::sprit_move(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
@@ -204,6 +205,10 @@ void PlayerBody::target(std::shared_ptr<PlayerBody> target){
 
 void PlayerBody::single_action(float deltaTime){
 	stateMgr_.action(*this, deltaTime);
+}
+
+PlayerBody::SingleKeys PlayerBody::get_keys(){
+	return keys_;
 }
 
 

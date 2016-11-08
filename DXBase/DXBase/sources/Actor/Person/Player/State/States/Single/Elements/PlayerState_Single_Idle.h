@@ -13,5 +13,11 @@ public:
 	virtual void end() override;
 private:
 	void move(Actor & actor, float deltaTime);
+private:
+	Vector2 dir_;
+	float dump_;
+	float power_;
+
+	float gra_easeing_;
 };
 

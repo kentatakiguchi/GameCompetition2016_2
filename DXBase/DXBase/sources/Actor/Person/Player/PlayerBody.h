@@ -16,6 +16,21 @@ public:
 		TEST
 	};
 public:
+	struct SingleKeys {
+	public:
+		KeyCode up;
+		KeyCode down;
+		KeyCode right;
+		KeyCode left;
+	public:
+		SingleKeys(KeyCode up_key = KeyCode::UP, KeyCode down_key = KeyCode::DOWN, KeyCode right_key = KeyCode::RIGHT, KeyCode left_key = KeyCode::LEFT) {
+			up = up_key;
+			down = down_key;
+			right = right_key;
+			left = left_key;
+		}
+	};
+public:
 	PlayerBody();
 	PlayerBody(IWorld* world, const std::string name, const Vector2& position);
 	~PlayerBody();
@@ -26,7 +41,7 @@ public:
 	void changeMotion(float deltaTime);
 	void move(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 	void move_ver(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
-	void move_hor(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
+	void move_hor(KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 	void sprit_move(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 	void chase();
 	void gravity();
@@ -42,6 +57,7 @@ public:
 	void target(std::shared_ptr<PlayerBody> target);
 
 	void single_action(float deltaTime);
+	SingleKeys get_keys();
 
 	Vector2 GetVelo() {
 		return Vector2(velocity_.x, velocity_.y);
@@ -58,8 +74,11 @@ private:
 
 	float jump_power_;
 
+	// íPì∆èÛë‘Ç©î€Ç©
+	bool is_single_;
 	StateMgr stateMgr_;
-
+	// ï™ó£éûÇÃÉLÅ[
+	SingleKeys keys_;
 };
 
 

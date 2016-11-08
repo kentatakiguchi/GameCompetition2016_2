@@ -21,7 +21,7 @@ void PlayerState_Move::end(){ }
 
 void PlayerState_Move::move(Actor & actor, float deltaTime) {
 	main_body_->move_hor();
-	sub_body_->move_hor(KeyCode::W, KeyCode::S, KeyCode::D, KeyCode::A);
+	sub_body_->move_hor(KeyCode::D, KeyCode::A);
 	main_body_->chase();
 	sub_body_->chase();
 	main_body_->gravity();

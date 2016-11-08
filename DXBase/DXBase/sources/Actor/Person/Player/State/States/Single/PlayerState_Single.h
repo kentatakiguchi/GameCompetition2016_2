@@ -24,7 +24,7 @@ protected:
 	// ステートが終了したか否か
 	bool isEnd_;
 	// プレイヤーポインタ
-	Player* player_;
+	PlayerBody* player_body_;
 	// タイマー
 	float timer_;
 }; 

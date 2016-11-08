@@ -50,6 +50,8 @@ const static float		PLAYER_MAX_NORMAL_LENGTH = 50.0f;
 const static float		PLAYER_MAX_STRETCH_LENGTH = 100.0f;
 // プレイヤーの発射速度
 const static float		PLAYER_LAUNCH_POWER = 50.0f;
+// プレイヤーのジャンプ速度
+const static float		PLAYER_JUMP_POWER = 10.0f;
 
 
 

@@ -26,8 +26,8 @@ void PlayerState_Attack::update(Actor & actor, float deltaTime) {
 	timer_ += deltaTime;
 	//timer_ = std::min<float>(timer_ + deltaTime, 60);
 
-	dir_easeing_ = gsEasingOutExpo(timer_ * 0.2f);
-	gra_easeing_ = gsEasingInExpo(timer_ * 0.2f);
+	dir_easeing_ = EasingOutExpo(timer_ * 0.2f);
+	gra_easeing_ = EasingInExpo(timer_ * 0.2f);
 
 	dir_ *= -dir_easeing_ + 1;
 
@@ -55,13 +55,13 @@ void PlayerState_Attack::end(){
 
 }
 
-float PlayerState_Attack::gsEasingInExpo(float t){
-	return (t == 0) ? 0.0f : std::pow(2.0f, 10.0f * (t - 1.0f));
-}
-
-float PlayerState_Attack::gsEasingOutExpo(float t){
-	return (t == 1.0f) ? 1.0f : (-std::pow(2.0f, -10.0f * t) + 1.0f);
-}
+//float PlayerState_Attack::gsEasingInExpo(float t){
+//	return (t == 0) ? 0.0f : std::pow(2.0f, 10.0f * (t - 1.0f));
+//}
+//
+//float PlayerState_Attack::gsEasingOutExpo(float t){
+//	return (t == 1.0f) ? 1.0f : (-std::pow(2.0f, -10.0f * t) + 1.0f);
+//}
 
 
 
