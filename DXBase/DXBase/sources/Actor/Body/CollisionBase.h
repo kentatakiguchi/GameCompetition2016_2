@@ -31,6 +31,7 @@ public:
 	Vector2 setSegmentPoint(Vector2& position,Vector2& startPoint, Vector2& endPoint);
 	void RotateCapsule(Vector2 point1, Vector2 point2, float radius);
 	void RotateSegment(Vector2 point1, Vector2 point2);
+	void RotateBox(int rotation);
 	//デバッグ用の判定表示
 	void draw(Matrix inv = Matrix::Identity) const;
 	//
@@ -76,5 +77,7 @@ private:
 	Vector2 movePoint[4];
 	Vector2 position_;
 	Vector2 previousPosition_;
+	Vector2 testVect[4];
+	Vector2 myvect[4];
 	float radius_;
 };

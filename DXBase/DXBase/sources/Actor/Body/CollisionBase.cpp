@@ -1,4 +1,5 @@
 #include "CollisionBase.h"
+#include"../../Define.h"
 
 CollisionBase::CollisionBase():box_(),capsule_(),circle_(),segment_(),type_(NoneCol)
 {
@@ -42,6 +43,17 @@ void CollisionBase::setPosition(Vector2 position)
 		movePoint[1] = position - box_.component_.point[1];
 		movePoint[2] = position - box_.component_.point[2];
 		movePoint[3] = position - box_.component_.point[3];
+		
+		for (int i = 0; i < 4; i++)
+		{
+			myvect[i] = movePoint[i];
+		}
+
+		//leng[0] = (movePoint[0] + testVect[0]).Length();
+		//leng[1] = (movePoint[1] + testVect[1]).Length();
+		//leng[2] = (movePoint[2] + testVect[2]).Length();
+		//leng[3] = (movePoint[3] + testVect[3]).Length();
+
 		break;
 	}
 	case CapsuleCol:
@@ -69,6 +81,7 @@ void CollisionBase::setPosition(Vector2 position)
 
 		movePoint[0] = position - segment_.component_.point[0];
 		movePoint[1] = position - segment_.component_.point[1];
+
 		break;
 	}
 	case NoneCol:
@@ -103,6 +116,69 @@ void CollisionBase::RotateSegment(Vector2 point1, Vector2 point2)
 
 	movePoint[0] = point1;
 	movePoint[1] = point2;
+}
+void CollisionBase::RotateBox(int rotation)
+{
+	if (type_ != CollisionType::BoxCol) return;
+
+
+
+	for (int i = 0; i < 4; i++)
+	{
+		Vector2 thisVect;
+
+		thisVect = myvect[i];
+
+		Vector2 vect;
+		vect.x = (CHIPSIZE*TURNLESS_FLOOR_SIZE) / 2;
+		vect.y = (CHIPSIZE) /2;
+
+		thisVect -= vect;
+
+
+		movePoint[i].x = thisVect.x * cosf(rotation * MathHelper::Pi / 180) - thisVect.y * sinf(rotation * MathHelper::Pi / 180);
+		movePoint[i].y = thisVect.x * sinf(rotation * MathHelper::Pi / 180) + thisVect.y * cosf(rotation * MathHelper::Pi / 180);
+		
+		movePoint[i] += vect;
+		
+	}
+	//float turnx;
+	//float turny;
+	//Vector2 turn;
+
+
+	//turnx= cosf((rotates[0]) * MathHelper::Pi / 180);
+	//turny= sinf((rotates[0]) * MathHelper::Pi / 180);
+	//turn= Vector2(turnx, turny);
+	//movePoint[0].x = (turn.x*32);
+	//movePoint[0].y =(turn.y*16);
+
+	//turnx = cosf((rotates[1])*MathHelper::Pi / 180);
+	//turny = sinf((rotates[1])*MathHelper::Pi / 180);
+	//turn = Vector2(turnx, turny);
+	//movePoint[1].x = (turn.x * 32);
+	//movePoint[1].y = (turn.y * 16);
+
+	//turnx = cosf((rotates[2])*MathHelper::Pi / 180);
+	//turny = sinf((rotates[2])*MathHelper::Pi / 180);
+	//turn = Vector2(turnx, turny);
+	//movePoint[2].x = (turn.x * 32);
+	//movePoint[2].y = (turn.y * 16);
+
+	//turnx = cosf((rotates[3])*MathHelper::Pi / 180);
+	//turny = sinf((rotates[3])*MathHelper::Pi / 180);
+	//turn = Vector2(turnx, turny);
+	//movePoint[3].x = (turn.x * 32);
+	//movePoint[3].y = (turn.y * 16);
+
+	for (int i = 0; i < 4; i++)
+		DrawFormatString(movePoint[i].x, movePoint[i].y, GetColor(255, 255, 255), "%d", i);
+	//leng = (position_ - movePoint[1].Normalize()).Length();
+	//movePoint[1] = turn + Vector2(1, 1)*leng;
+	//leng = (position_ - movePoint[2].Normalize()).Length();
+	//movePoint[2] = turn + Vector2(1, 1)*leng;
+	//leng = (position_ - movePoint[3].Normalize()).Length();
+	//movePoint[3] = turn + Vector2(1, 1)*leng;
 }
 void CollisionBase::update(Vector2 position)
 {

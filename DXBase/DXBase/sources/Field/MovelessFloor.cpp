@@ -42,7 +42,14 @@ void MovelessFloor::set(Vector2 & pos)
 
 void MovelessFloor::onUpdate(float deltaTime)
 {
-
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R)) {
+		position_ += 10;
+	}
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L)) {
+		position_ += 10;
+	}
+	position_ += InputMgr::GetInstance().AnalogPadVectorL();
+	position_ += InputMgr::GetInstance().AnalogPadVectorR();
 }
 
 void MovelessFloor::onDraw() const

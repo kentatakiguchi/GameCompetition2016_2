@@ -26,7 +26,28 @@ int InputMgr::GetHitKeyFrameAll()
 		}
 		else current_key_state[i] = 0;
 	}
+	previous_button_state = current_button_state;
+	current_button_state = GetJoypadInputState(DX_INPUT_PAD1);
+
 	return 0;
+}
+
+void InputMgr::setButton(Buttons targetButton,unsigned int changeButton)
+{
+	ButtonName[targetButton] = changeButton;
+
+	//if ((current_button_state&PAD_INPUT_1) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_2) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_3) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_4) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_5) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_6) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_7) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_8) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_9) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_10) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_11) != 0)ButtonName[targetButton] = PAD_INPUT_1;
+	//if ((current_button_state&PAD_INPUT_12) != 0)ButtonName[targetButton] = PAD_INPUT_1;	
 }
 
 void InputMgr::RegistKeyCode(){
@@ -66,6 +87,15 @@ void InputMgr::RegistKeyCode(){
 	KeyName[KeyCode::L_SHIFT] = KEY_INPUT_LSHIFT;
 	KeyName[KeyCode::R_SHIFT] = KEY_INPUT_RSHIFT;
 
+	ButtonName[Buttons::BUTTON_CIRCLE] = PAD_INPUT_3;
+	ButtonName[Buttons::BUTTON_CROSS] = PAD_INPUT_2;
+	ButtonName[Buttons::BUTTON_START] = PAD_INPUT_10;
+	ButtonName[Buttons::BUTTON_L] = PAD_INPUT_5;
+	ButtonName[Buttons::BUTTON_R] = PAD_INPUT_6;
+	ButtonName[Buttons::BUTTON_UP] = PAD_INPUT_UP;
+	ButtonName[Buttons::BUTTON_DOWN] = PAD_INPUT_DOWN;
+	ButtonName[Buttons::BUTTON_RIGHT] = PAD_INPUT_RIGHT;
+	ButtonName[Buttons::BUTTON_LEFT] = PAD_INPUT_LEFT;
 }
 
 bool InputMgr::IsKeyDown(KeyCode handle)
@@ -86,6 +116,36 @@ bool InputMgr::IsKeyUp(KeyCode handle)
 	return false;
 }
 
+bool InputMgr::IsButtonDown(Buttons handle)
+{
+	if ((previous_button_state&ButtonName[handle])==0 &&(current_button_state&ButtonName[handle]) != 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool InputMgr::IsButtonOn(Buttons handle)
+{
+	if ((previous_button_state&ButtonName[handle]) != 0 && (current_button_state&ButtonName[handle]) != 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool InputMgr::IsButtonUp(Buttons handle)
+{
+	if ((previous_button_state&ButtonName[handle]) != 0 && (current_button_state&ButtonName[handle]) == 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 bool InputMgr::IsMoving(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
 	if (IsKeyDown(up) || IsKeyDown(down) || IsKeyDown(right) || IsKeyDown(left)) {
 		return true;
@@ -98,4 +158,83 @@ bool InputMgr::IsStoped(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
 		return true;
 	}
 	return false;
+}
+
+Vector2 InputMgr::AnalogPadVectorL()
+{
+	int horizontal;
+	int vertical;
+	GetJoypadAnalogInput(&horizontal, &vertical, DX_INPUT_PAD1);
+	return Vector2(horizontal, vertical);
+
+}
+Vector2 InputMgr::AnalogPadVectorR()
+{
+	DINPUT_JOYSTATE joy;
+	GetJoypadDirectInputState(DX_INPUT_PAD1, &joy);
+
+	float horizontal;
+	float vertical;
+
+	horizontal = joy.Z;
+	vertical = joy.Rz;
+
+	return Vector2(horizontal, vertical);
+}
+Vector2 InputMgr::DirectPadVector() {
+	DINPUT_JOYSTATE joy;
+	GetJoypadDirectInputState(DX_INPUT_PAD1,&joy);
+
+	if (joy.POV[0] == 0xffffffff) return Vector2::Zero;
+
+	float horizontal=0;
+	float vertical=0;
+
+	if (joy.POV[0] == 0) {
+		vertical = -1;
+
+	}
+	if (joy.POV[0] == 4500) {
+		vertical = -1;
+		horizontal = 1;
+	}
+	if (joy.POV[0] == 9000) {
+		horizontal = 1;
+	}
+	if (joy.POV[0] == 4500) {
+		vertical = -1;
+		horizontal = 1;
+	}
+	if (joy.POV[0] == 13500) {
+		vertical = 1;
+		horizontal = 1;
+	}
+	if (joy.POV[0] == 18000) {
+		vertical = 1;
+	}
+	if (joy.POV[0] == 22500) {
+		vertical = 1;
+		horizontal = -1;
+	}
+	if (joy.POV[0] == 27000) {
+		horizontal = -1;
+	}
+	if (joy.POV[0] == 31500) {
+		vertical = -1;
+		horizontal = -1;
+	}
+	//DrawFormatString(0, 48, GetColor(255,255,255), "POV 0:%d 1:%d 2:%d 3:%d",
+	//	joy.POV[0], joy.POV[1],
+	//	joy.POV[2], joy.POV[3]);
+
+	return Vector2(horizontal*1000 ,vertical*1000);
+}
+
+Vector2 InputMgr::XPadVector()
+{
+	XINPUT_STATE joy;
+	GetJoypadXInputState(DX_INPUT_PAD1,&joy);
+	float horizontal= joy.ThumbLX;
+	float vertical = joy.ThumbLY;
+	return Vector2(horizontal, vertical);
 }

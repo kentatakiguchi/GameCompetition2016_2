@@ -68,8 +68,30 @@ bool BoundingBox::intersects(BoundingBox & other)
 {
 	if (!enabled)return false;
 
-
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
+
+	Vector2 AB = CreateVector(previousPosition_, position_);
+	Vector2 AC, AD, CD, CA, CB;
+
+	for (int i = 0; i < 4; i++)
+	{
+		AC = CreateVector(previousPosition_, other.component_.point[intSet[i][0]]);
+		AD = CreateVector(previousPosition_, other.component_.point[intSet[i][1]]);
+		CD = CreateVector(other.component_.point[intSet[i][0]], other.component_.point[intSet[i][1]]);
+		CA = CreateVector(other.component_.point[intSet[i][0]], previousPosition_);
+		CB = CreateVector(other.component_.point[intSet[i][0]], position_);
+
+		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
+			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
+		{
+			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			OutputDebugString("sdasd");
+			OutputDebugString("\n");
+			return true;
+		}
+	}
+
+
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -134,9 +156,31 @@ bool BoundingBox::intersects(BoundingBox & other)
 
 bool BoundingBox::intersects(BoundingCapsule & other) {
 	if (!enabled||!other.enabled)return false;
+	
+	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 
+	Vector2 AB = CreateVector(other.previousPosition_, other.position_);
+	Vector2 AC, AD, CD, CA, CB;
 
-	int intSet[][2] = { {0,1},{0,2},{1,3},{2,3} };
+	for (int i = 0; i < 4; i++)
+	{
+		//‚·‚è”²‚¯‚½‚©
+		AC = CreateVector(other.previousPosition_, component_.point[intSet[i][0]]);
+		AD = CreateVector(other.previousPosition_, component_.point[intSet[i][1]]);
+		CD = CreateVector(component_.point[intSet[i][0]], component_.point[intSet[i][1]]);
+		CA = CreateVector(component_.point[intSet[i][0]], other.previousPosition_);
+		CB = CreateVector(component_.point[intSet[i][0]], other.position_);
+
+		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
+			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
+		{
+			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			OutputDebugString("sdasd");
+			OutputDebugString("\n");
+			return true;
+		}
+	}
+
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -302,6 +346,27 @@ bool BoundingBox::intersects(BoundingSegment & other)
 
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 
+	Vector2 AB = CreateVector(other.previousPosition_, other.position_);
+	Vector2 AC, AD, CD, CA, CB;
+
+	for (int i = 0; i < 4; i++)
+	{
+		AC = CreateVector(other.previousPosition_, component_.point[intSet[i][0]]);
+		AD = CreateVector(other.previousPosition_, component_.point[intSet[i][1]]);
+		CD = CreateVector(component_.point[intSet[i][0]], component_.point[intSet[i][1]]);
+		CA = CreateVector(component_.point[intSet[i][0]], other.previousPosition_);
+		CB = CreateVector(component_.point[intSet[i][0]], other.position_);
+
+		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
+			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
+		{
+			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			OutputDebugString("sdasd");
+			OutputDebugString("\n");
+			return true;
+		}
+	}
+
 	for (int i = 0; i < 4; i++)
 	{
 		float otherPoint1 =
@@ -367,6 +432,8 @@ bool BoundingBox::intersects(BoundingCircle & other)
 
 	Vector2 AB = CreateVector(other.previousPosition_, other.position_);
 	Vector2 AC, AD, CD, CA, CB;
+	
+	//‚·‚è”²‚¯‚½‚©
 	for (int i = 0; i < 4; i++)
 	{
 		AC = CreateVector(other.previousPosition_, component_.point[intSet[i][0]]);
@@ -379,8 +446,8 @@ bool BoundingBox::intersects(BoundingCircle & other)
 			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
 			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
-			//OutputDebugString("sdasd");
-			//OutputDebugString("\n");
+			OutputDebugString("sdasd");
+			OutputDebugString("\n");
 			return true;
 		}
 	}
