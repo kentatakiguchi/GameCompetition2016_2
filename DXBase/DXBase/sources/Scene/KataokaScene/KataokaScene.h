@@ -5,6 +5,7 @@
 #include "../../Actor/Person/Player/Status/Status.h"
 #include <memory>
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
+#include "../../Renderer/Puyo_Texture_K.h"
 class World;
 
 class KataokaScene : public IScene {
@@ -29,6 +30,12 @@ private:
 	Status status_;
 
 	BackGraundManager* backManager;
+
+	PuyoTextureK* puyo;
+
+	Vector2 pos;
+	Vector2 scale;
+	float rotate;
 };
 
 #endif
