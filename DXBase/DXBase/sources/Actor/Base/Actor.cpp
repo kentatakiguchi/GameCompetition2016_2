@@ -16,7 +16,9 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, co
 	outPlayerFlag(false),
 	resPos(Vector2::Zero),
 	veloPlus(Vector2::Zero),
-	velo(Vector2::Zero) {
+	velo(Vector2::Zero),
+	resInv_(Matrix::Identity),
+	inv_(Matrix::Identity){
 	body_.setPosition({ position_.x, position_.y });
 }
 
@@ -37,7 +39,8 @@ void Actor::update(float deltaTime) {
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//移動update
-	ActorMove();
+	//ActorMove();
+	inv();
 	body_.MovePos(Vector2(position_.x, position_.y));
 }
 
@@ -95,11 +98,17 @@ Matrix Actor::getPose() const {
 	//return Matrix(rotation_).Translation(Vector3(position_.x, position_.y));
 }
 
-Matrix Actor::inv() const{
+Matrix Actor::inv() {
 	if (world_ == nullptr) return Matrix::Identity;
 	auto player = world_->findActor("PlayerBody1");
-	Matrix inv = Matrix::Invert(player->getPose()) * Matrix::CreateTranslation(Vector3(400, 300));
-	return inv;
+
+	//Vector2 spring = Spring(Vector2(300, 400),velo);
+	resInv_ = Matrix::Invert(player->getPose()) * Matrix::CreateTranslation(Vector3(300, 400, 0.0f));
+
+	Vector2 resPos = Vector2(resInv_.Translation().x, resInv_.Translation().y);
+	Vector2 pos = Vector2(inv_.Translation().x, inv_.Translation().y);
+	Spring(pos, resPos, velo);
+	inv_ = Matrix::CreateTranslation(Vector3(pos.x, pos.y));
 }
 
 // 子の検索
@@ -216,12 +225,12 @@ void Actor::onLateUpdate(float deltaTime)
 
 // 描画
 void Actor::onDraw() const {
-	body_.draw(/*inv()*/); // デバッグ表示
+	body_.draw(inv_); // デバッグ表示
 }
 
 // 衝突した
 void Actor::onCollide(Actor&) {
-	body_.draw(/*inv()*/);
+	body_.draw(inv_);
 	//dead();
 }
 
@@ -268,6 +277,20 @@ void Actor::ActorMove()
 	MathHelper::Spring(veloPlus.x, resPos.x, velo.x, 0.1f, 0.5f, 2.0f);
 	MathHelper::Spring(veloPlus.y, resPos.y, velo.y, 0.1f, 0.5f, 2.0f);
 	position_ += veloPlus;
+}
+
+void Actor::Spring(Vector2& pos ,Vector2& resPos, Vector2& velo,float stiffness, float friction, float mass)const
+{
+	// バネの伸び具合を計算
+	Vector2 stretch = (pos- resPos);
+	// バネの力を計算
+	Vector2 force = -stiffness * stretch;
+	// 加速度を追加
+	Vector2 acceleration = force / mass;
+	// 移動速度を計算
+	velo= friction * (velo + acceleration);
+
+	pos = pos + velo;
 }
 
 

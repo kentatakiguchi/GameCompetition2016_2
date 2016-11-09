@@ -13,7 +13,6 @@
 #include "../Body/BoundingSegment.h"
 #include"..//Body/CollisionBase.h"
 #include "../../Animation/Animation.h"
-
 #include "../../Define.h"
 #include <string>
 #include <memory>
@@ -53,7 +52,7 @@ public:
 	// 変換行列を返す
 	Matrix getPose() const;
 
-	Matrix inv() const;
+	Matrix inv();
 	// 子の検索
 	ActorPtr findCildren(const std::string& name);
 	// 子の検索
@@ -116,6 +115,7 @@ public:
 
 private:
 	void ActorMove();
+	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness=0.1f, float friction=0.5f, float mass=2.0f)const;
 
 private:
 	//1だったらtrue,0だったらfalse
@@ -142,6 +142,8 @@ public:
 
 	float				alpha_;
 
+	Matrix inv_;
+	Matrix resInv_;
 	//範囲外にいるから背景がうごくフラグ
 	bool outPlayerFlag;
 	//ポジションに足す用速度

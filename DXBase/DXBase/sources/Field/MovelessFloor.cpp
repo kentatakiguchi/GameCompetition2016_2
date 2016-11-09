@@ -46,7 +46,7 @@ void MovelessFloor::onUpdate(float deltaTime)
 
 void MovelessFloor::onDraw() const
 {
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void MovelessFloor::onCollide(Actor & other)

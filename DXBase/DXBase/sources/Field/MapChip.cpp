@@ -56,7 +56,7 @@ void MapChip::onUpdate(float deltaTime)
 
 void MapChip::onDraw() const
 {
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void MapChip::onCollide(Actor & other)

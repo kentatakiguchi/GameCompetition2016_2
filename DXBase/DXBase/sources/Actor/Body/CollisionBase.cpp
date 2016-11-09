@@ -190,7 +190,7 @@ void CollisionBase::draw(Matrix inv) const
 	switch (type_)
 	{
 	case BoxCol:
-		box_.draw();
+		box_.draw(inv);
 		break;
 	case CapsuleCol:
 		capsule_.draw(inv);
