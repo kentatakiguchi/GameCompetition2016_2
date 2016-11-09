@@ -8,11 +8,19 @@
 
 class FloorSearchPoint : public Actor {
 public:
+	// コンストラクタ(短形)
 	FloorSearchPoint(
 		IWorld* world, 
 		const Vector2& enemyPosition,
 		const Vector2& addPosition, 
 		const Vector2& bodyScale
+		);
+	// コンストラクタ(円)
+	FloorSearchPoint(
+		IWorld* world,
+		const Vector2& enemyPosition,
+		const Vector2& addPosition,
+		const float radius
 		);
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;

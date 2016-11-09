@@ -50,6 +50,7 @@ enum class State {
 
 class BaseEnemy : public Actor {
 public:
+	// 短形
 	BaseEnemy(IWorld* world, const Vector2&  position, const float bodyScale);
 	~BaseEnemy();
 	void Initialize();
@@ -106,7 +107,7 @@ public:
 	// 敵の大きさを返します
 	int getScale();
 
-private:
+protected:
 	// 状態の更新を行います
 	void updateState(float deltaTime);
 	// 捜索オブジェクト関連の更新
@@ -128,6 +129,10 @@ protected:
 	float playerLostLenght_;		// プレイヤーを見失う距離
 	Vector2 direction_;				// 方向
 
+	bool isMove_;					// 動くか
+	bool isBlockCollideBegin_;		// ブロックと当たっているか(初回時)
+	bool isBlockCollideEnter_;		// ブロックと当たっているか(衝突中)
+	bool isBlockCollideExit_;		// ブロックと当たっているか(衝突後)
 	bool isGround_;					// 接地しているか trueで接地しています
 	bool isUseGravity_;				// 重力を使うか trueで重力を追加します
 	bool isInvincible_;				// 無敵か trueで無敵になります

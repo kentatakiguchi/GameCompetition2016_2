@@ -10,6 +10,8 @@ FlyingEnemy::FlyingEnemy(IWorld * world, const Vector2 & position) :
 	pastPosition(Vector2::Zero),
 	wsObj_(nullptr)
 {
+	BaseEnemy::Initialize();
+
 	isUseGravity_ = false;
 	// 壁捜索オブジェクトの生成
 	auto wsObj = std::make_shared<FloorSearchPoint>(
@@ -79,7 +81,6 @@ void FlyingEnemy::onMessage(EventMessage event, void *)
 
 void FlyingEnemy::discovery()
 {
-	//auto player = world_->findActor("PlayerBody1");
 	auto player = world_->findActor("Player");
 	pastPosition = player->getPosition();
 	pricleObj_->setDirection(enemyManager_.getDirection(pastPosition));

@@ -19,6 +19,8 @@ BaseEnemy::BaseEnemy(IWorld * world, const Vector2& position, const float bodySc
 	initSpeed_(speed_),
 	scale_(bodyScale),
 	direction_(Vector2(1.0f, 1.0f)),
+	isMove_(false),
+	isBlockCollideBegin_(false),
 	isGround_(false),
 	isUseGravity_(true),
 	isInvincible_(false),
@@ -35,7 +37,15 @@ BaseEnemy::BaseEnemy(IWorld * world, const Vector2& position, const float bodySc
 	pricleObj_(nullptr),
 	enemyManager_(EnemyManager(position))
 {
-	Initialize();
+	//Initialize();
+
+	// rayオブジェクトの追加
+	auto player = world_->findActor("Player");
+	//ray_ = CollisionBase(position_, vec);
+	auto ray = std::make_shared<PlayerSearchObj>(
+		world_, position_, player->getPosition());
+	world_->addActor(ActorGroup::Effect, ray);
+	psObj_ = &*ray;
 }
 
 BaseEnemy::~BaseEnemy()
@@ -61,16 +71,9 @@ void BaseEnemy::Initialize()
 	auto wsObj = std::make_shared<FloorSearchPoint>(
 		world_, position_, 
 		Vector2(-scale_ / 2.0f, 0.0f),
-		Vector2(2.0f, scale_));
+		Vector2(2.0f, scale_- 4.0f));
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsScript = &*wsObj;
-	// rayオブジェクトの追加
-	auto player = world_->findActor("Player");
-	//ray_ = CollisionBase(position_, vec);
-	auto ray = std::make_shared<PlayerSearchObj>(
-		world_, position_, player->getPosition());
-	world_->addActor(ActorGroup::Effect, ray);
-	psObj_ = &*ray;
 }
 
 void BaseEnemy::onUpdate(float deltaTime)
@@ -85,6 +88,9 @@ void BaseEnemy::onUpdate(float deltaTime)
 	updateSearchObjct();
 	
 	isGround_ = false;
+	// 衝突判定後のboolがtureなら、falseに変える
+	if (!isBlockCollideExit_) return;
+	isBlockCollideExit_ = false;
 
 	// アニメーションの変更
 	//animation_.change(motion_);
@@ -121,6 +127,23 @@ void BaseEnemy::onCollide(Actor & actor)
 	// actorName != "Player_AttackRange"
 	// if (actorName != "Player") return;
 
+	// 名無しなら,boolを衝突後のものにする
+	if (actorName == "") {
+		isBlockCollideExit_ = true;
+		isBlockCollideEnter_ = false;
+		return;
+	}
+	// マップのブロックに当たったら、処理を行う
+	if (actorName == "MovelessFloor") {
+		// Enterがfalseなら、beginをtrueにする
+		// 逆ならば、beginをfalseに変える
+		if(!isBlockCollideEnter_)
+			isBlockCollideBegin_ = true;
+		else isBlockCollideBegin_ = false;
+		isBlockCollideEnter_ = true;
+		return;
+	}
+
 	// プレイヤーに当たらない？
 	if ((actorName == "PlayerBody2" || actorName == "PlayerBody1") &&
 		!isInvincible_) {
@@ -131,6 +154,7 @@ void BaseEnemy::onCollide(Actor & actor)
 		changeState(State::Dead, ENEMY_DEAD);
 		isUseGravity_ = true;
 		body_.enabled(false);
+		return;
 	}
 	//// ダメージ
 	//// hp_ -= player->GetAP(); とか

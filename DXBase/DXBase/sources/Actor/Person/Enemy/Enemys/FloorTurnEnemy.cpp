@@ -7,15 +7,23 @@ FloorTurnEnemy::FloorTurnEnemy(IWorld * world, const Vector2 & position) :
 	BaseEnemy(world, position, 64.0f),
 	fspObj_(nullptr)
 {
+	BaseEnemy::Initialize();
+
 	// 崖捜索オブジェクトの追加
 	auto fsObj = std::make_shared<FloorSearchPoint>(
 		world_, 
 		position_,
-		Vector2(-(scale_ / 2.0f + 1.0f), scale_ / 2.0f + 1.0f), 
-		Vector2(2.0f, 2.0f));
+		Vector2(-(scale_ / 2.0f + 1.0f), scale_ / 2.0f + 3.0f), 
+		Vector2(8.0f, 8.0f));
+	/*auto fsObj = std::make_shared<FloorSearchPoint>(
+		world_,
+		position_,
+		Vector2(-(scale_ / 2.0f + 1.0f), scale_ / 2.0f + 3.0f),
+		2.0f);*/
 	// ワールドに追加
 	world_->addActor(ActorGroup::Enemy, fsObj);
 	fspObj_ = &*fsObj;
+
 	// トゲオブジェクトの生成
 	auto pricleObj = std::make_shared<Prickle>(
 		world_,
@@ -60,7 +68,7 @@ void FloorTurnEnemy::attack()
 void FloorTurnEnemy::searchMove()
 {
 	speed_ = initSpeed_;
-	position_ += 
+	position_ +=
 		enemyManager_.cliffMove(fspScript->isFloor())
 		* speed_ * direction_.x;
 	pricleObj_->setAddPosition(Vector2::Up * -(scale_ + 1.0f));

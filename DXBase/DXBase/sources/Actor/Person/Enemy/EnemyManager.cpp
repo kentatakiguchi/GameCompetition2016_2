@@ -3,34 +3,112 @@
 
 EnemyManager::EnemyManager(const Vector2 position) :
 	distance_(1),
+	wspResult_(0),
+	wCollideCount_(0),
+	wCollidePastCount_(wCollideCount_),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
 	boxMoveCount(0.0f),
-	wspResult_(0.0f),
+	isDirection_(true),
 	enemyPosition_(position),
 	playerPosition_(Vector2::Zero),
 	threadPosition_(position + Vector2::Left * 100.0f),
 	threadLength_(Vector2::Distance(enemyPosition_, threadPosition_)),
 	enemyDirection_(Vector2::Zero),
-	wsDirection_(1.0f, 0.0f),
+	wsDirection_(-1.0f, 0.0f),
 	rotate_(0.0f),
 	rotateSpeed_(10.0f),
 	threadGravity_(0.5f)
 {
+	wspDirectionMap_.clear();
+
 	wallMoveConteiner_.push_back(0);
 	wallMoveConteiner_.push_back(1);
 	wallMoveConteiner_.push_back(0);
 	wallMoveConteiner_.push_back(-1);
+	// 素数を追加(3～4桁)
+	primeContainer_.push_back(200);
+	primeContainer_.push_back(300);
+	primeContainer_.push_back(500);
+	primeContainer_.push_back(700);
+	primeContainer_.push_back(1100);
+	primeContainer_.push_back(1300);
+	primeContainer_.push_back(1700);
+	primeContainer_.push_back(1900);
 	// mapに追加
+	// 1つのみ(四隅) 2 5 13 19
+	// X に移動量がある場合
+	wspDirectionMap_[211] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[511] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[1311] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[1911] = Vector2(0.0f, 1.0f);
+	// Y に移動量がある場合
+	wspDirectionMap_[221] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[521] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[1321] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[1921] = Vector2(1.0f, 0.0f);
+	// 1つのみ(上下左右) 3 7 11 17
+	/*wspDirectionMap_[311] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[721] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[1121] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[1711] = Vector2(1.0f, 0.0f);*/
+	// 2つ当たる
+	wspDirectionMap_[812] = Vector2(wsDirection_.x, 0.0f);
+	wspDirectionMap_[822] = Vector2(wsDirection_.x, 0.0f);
+	// 3つ当たる(辺) 10 22 35 49
+	wspDirectionMap_[1003] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[2203] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[3503] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[4903] = Vector2(-1.0f, 0.0f);
+	// 3つ当たる(隅の近辺) 12 19 27 47
+	// X に移動量がある場合
+	wspDirectionMap_[1213] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[1913] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[2713] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[4713] = Vector2(0.0f, -1.0f);
+	// Y に移動量がある場合
+	wspDirectionMap_[1223] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[1923] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[2723] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[4723] = Vector2(-1.0f, 0.0f);
+	// 3つの(四隅の組み合わせ)当たる 20 28 34 37
+	// X に移動量がある場合
+	wspDirectionMap_[2013] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[2813] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[3413] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[3713] = Vector2(0.0f, -1.0f);
+	// Y に移動量がある場合
+	wspDirectionMap_[2023] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[2823] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[3423] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[3723] = Vector2(-1.0f, 0.0f);
 
+	// 4つ当たる(隅) (0135) (0356) (2147) (2467) 
+	// X に移動量がある場合
+	wspDirectionMap_[2514] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[3814] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[3914] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[5214] = Vector2(0.0f, -1.0f);
+	// Y に移動量がある場合
+	wspDirectionMap_[2524] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[3824] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[3924] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[5224] = Vector2(-1.0f, 0.0f);
+	// 5点当たる
+	wspDirectionMap_[5515] = Vector2(0.0f, -1.0f);
 
-	// 1つのみ当たらない
-	wspDirectionMap_[74] = Vector2(0.0f, -1.0f);
-	wspDirectionMap_[70] = Vector2(-1.0f, 0.0f);
-	wspDirectionMap_[66] = Vector2(1.0f, 0.0f);
-	wspDirectionMap_[60] = Vector2(0.0f, 1.0f);
+	// 1つのみ当たらない 74 70 66 60
+	wspDirectionMap_[7417] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[7017] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[6617] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[6017] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[7427] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[7027] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[6627] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[6027] = Vector2(0.0f, 1.0f);
 	// 全部当たっている
-	wspDirectionMap_[77] = Vector2::Zero;
+	wspDirectionMap_[7718] = Vector2::Zero;
+	wspDirectionMap_[7728] = Vector2::Zero;
 }
 
 EnemyManager::~EnemyManager()
@@ -60,44 +138,6 @@ Vector2 EnemyManager::boxMove()
 // 壁に沿った動き方（まだ）
 Vector2 EnemyManager::wallMove()
 {
-	//auto direction = Vector2::Zero;
-	// 壁に当たっているかを検索
-	//if (wspContainer_[0]->isGround()) {
-	//	if (wspContainer_[1]->isGround()) {
-	//		wsDirection_.x = 1;
-	//		wsDirection_.y = 0;
-	//	}
-	//	else if (wspContainer_[3]->isGround()) {
-	//		wsDirection_.x = 0;
-	//		//wsDirection_.y = 1;
-	//	}
-	//	else if (!wspContainer_[1]->isGround()) {
-	//		if (wsDirection_.x == 1)
-	//			wsDirection_.y = -1;
-	//		else if (wsDirection_.y == 1)
-	//			wsDirection_.x = -1;
-	//	}
-	//}
-	//else if (wspContainer_[5]->isGround()) {
-	//	if (wsDirection_.x == 1)
-	//		wsDirection_.y = 1;
-	//	else if (wsDirection_.y == -1)
-	//		wsDirection_.x = -1;
-	//}
-
-	/*else if (wspContainer_[2]->isGround()) {
-		if (enemyDirection_.x == -1)
-			direction.y = -1;
-		else if (enemyDirection_.y == 1)
-			direction.x = 1;
-	}
-	else if (wspContainer_[7]->isGround()) {
-		if (enemyDirection_.x == -1)
-			direction.y = 1;
-		else if (enemyDirection_.y == -1)
-			direction.x = 1;
-	}*/
-
 	// 敵の四方に当たり判定のあるオブジェクトを配置
 	// 当たったオブジェクトの名前などを参照して、方向の値を決定する
 	return wsDirection_;
@@ -243,27 +283,65 @@ void EnemyManager::addFSP(FloorSearchPoint * fsp)
 // 壁に沿った動き方
 Vector2 EnemyManager::getWallDirection()
 {
-	auto direction = Vector2::Zero;
-	// 
+	eachWSPObj();
+	// 全部の値に割り振られていれば不要
 	for (auto i = wspDirectionMap_.begin(); i != wspDirectionMap_.end(); i++) {
+		// 方向を決められる場合か、ヒット数が1の場合　かつ
 		// マップに入れてある値と同一ならば、方向を決める
-		if (i->first == wspResult_)
-			direction = wspDirectionMap_[wspResult_];
+		/*if ((isDirection_ || (wCollideCount_ == 1 || wCollidePastCount_ != wCollideCount_)) &&
+			i->first == wspResult_) {*/
+		if (isDirecion() && i->first == wspResult_) {
+			wsDirection_ = wspDirectionMap_[wspResult_];
+			// 方向を決めたらfalseにする
+			isDirection_ = false;
+			break;
+		}
 	}
-	return direction;
+	// 過去のカウントを更新
+	wCollidePastCount_ = wCollideCount_;
+	return wsDirection_;
 	//return Vector2();
+}
+
+void EnemyManager::setIsDirection(bool isDirection)
+{
+	isDirection_ = isDirection;
 }
 
 float EnemyManager::eachWSPObj()
 {
-	//for (auto i = wspDirectionMap_.begin(); i != wspDirectionMap_.end(); i++) {
-	//	// マップに入れてある値と同一ならば、方向を決める
-	//	if (i->first == wspResult_)
-	//}
-	return 0.0f;
+	wspResult_ = 0;
+	wCollideCount_ = 0;
+	for (int i = 0; i != wspContainer_.size(); i++) {
+		// 当たっているなら、コンテナの値とヒット数を加算する
+		if (wspContainer_[i]->isGround()) {
+			wspResult_ += primeContainer_[i];
+			wspResult_ += 1;
+			wCollideCount_ += 1;
+		}
+	}
+	// 進行方向によって、値を加算する(2桁)
+	if (wsDirection_.x != 0)
+		wspResult_ += 10;
+	else if (wsDirection_.y != 0)
+		wspResult_ += 20;
+
+	return wspResult_;
 }
 
 FloorSearchPoint* EnemyManager::getWSPObj(const int number)
 {
 	return wspContainer_[number];
+}
+
+bool EnemyManager::isDirecion()
+{
+	// カウントが同一なら、falseを返す
+	if (wCollidePastCount_ == wCollideCount_) 
+		return false;
+	//// 敵側の判定でtrueか、衝突数が1以外の場合はtrueを返す
+	//if (isDirection_ || wCollideCount_ != 1)
+	//	return true;
+
+	return true;
 }

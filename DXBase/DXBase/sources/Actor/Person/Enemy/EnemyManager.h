@@ -40,24 +40,34 @@ public:
 	void addFSP(FloorSearchPoint* fsp);
 	// 壁に沿った動き方
 	Vector2 getWallDirection();
+	// 方向を決めるか
+	void setIsDirection(bool isDirection);
 	// 壁オブジェクトを回して、合計値を返します
 	float eachWSPObj();
 	// 指定した要素数の壁捜索オブジェクトを取得します
 	FloorSearchPoint* getWSPObj(const int number);
+	// mapに追加処理を行います
+	void initWSPMap();
+	// 壁移動の方向を決定するかを返します
+	bool isDirecion();
 
 private:
 	int distance_;				// 方向
+	int wspResult_;				// 壁移動に使う値の合計値
+	int wCollideCount_;			// 壁に当たっているオブジェクトの数
+	int wCollidePastCount_;		// 壁に当たっているオブジェクトの過去の数
 	float timer_;				// 経過時間
 	float deltaTimer_;			// 時間
 	float boxMoveCount;			// 四角形移動カウント
-	float wspResult_;			// 壁移動に使う値の合計値
+
+	bool isDirection_;			// 方向を代入するか
 
 	Vector2 enemyPosition_;		// 敵の位置
 	Vector2 playerPosition_;	// プレイヤーの位置
 	Vector2 threadPosition_;	// 糸の位置
 	Vector2 enemyDirection_;
 
-	Vector2 wsDirection_;
+	Vector2 wsDirection_;		// 壁移動時の方向
 
 	// 四角形移動用コンテナ
 	typedef std::vector<float> WallMoveConteiner;
@@ -65,8 +75,11 @@ private:
 	// 
 	typedef std::vector<FloorSearchPoint*> WSPContainer;
 	WSPContainer wspContainer_;
+	// 素数コンテナ
+	typedef std::vector<int> PrimeContainer;
+	PrimeContainer primeContainer_;
 	// map
-	typedef std::map<float, Vector2> WSPDirectionMap;
+	typedef std::map<int, Vector2> WSPDirectionMap;
 	WSPDirectionMap wspDirectionMap_;
 
 // 糸移動用

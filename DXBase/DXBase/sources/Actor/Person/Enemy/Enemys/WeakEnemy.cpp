@@ -3,6 +3,7 @@
 WeakEnemy::WeakEnemy(IWorld * world, const Vector2& position) :
 	BaseEnemy(world, position, 64.0f)
 {
+	BaseEnemy::Initialize();
 }
 
 void WeakEnemy::onUpdate(float deltaTime)

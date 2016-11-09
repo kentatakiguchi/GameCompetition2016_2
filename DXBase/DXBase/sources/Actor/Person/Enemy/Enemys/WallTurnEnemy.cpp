@@ -6,6 +6,8 @@
 WallTrunEnemy::WallTrunEnemy(IWorld * world, const Vector2 & position) :
 	BaseEnemy(world, position, 64.0f)
 {
+	BaseEnemy::Initialize();
+
 	isUseGravity_ = false;
 	isInvincible_ = true;
 	// 壁捜索オブジェクトの生成

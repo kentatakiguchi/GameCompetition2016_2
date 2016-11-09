@@ -28,6 +28,24 @@ FloorSearchPoint::FloorSearchPoint(
 {
 }
 
+FloorSearchPoint::FloorSearchPoint(
+	IWorld * world, 
+	const Vector2 & enemyPosition,
+	const Vector2 & addPosition,
+	const float radius) : 
+	Actor(world, "FSP", enemyPosition + addPosition,
+		CollisionBase(position_, radius)),
+	turnCount_(0),
+	isFloor_(false),
+	isGround_(false),
+	direction_(1.0f, 1.0f),
+	scale_(Vector2(radius, radius)),
+	enemyPosition_(enemyPosition),
+	addPosition_(addPosition),
+	floorPosition_(Vector2::Zero)
+{
+}
+
 void FloorSearchPoint::onUpdate(float deltaTime)
 {
 	/*auto pos = position_;
