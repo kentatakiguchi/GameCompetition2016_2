@@ -169,12 +169,16 @@
     <ClInclude Include="sources\Actor\Camera\Camera.h" />
     <ClInclude Include="sources\Actor\Light\Light.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\BaseEnemy.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BaseBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\EnemyManager.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FlyingEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\Prickle.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WallMoveEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\FloorSearchPoint.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\ImportEnemys.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\PlayerSearchObj.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\States\Enemy_IdleState.h" />
     <ClInclude Include="sources\Actor\Person\Player\Player.h" />
@@ -217,6 +221,7 @@
     <ClInclude Include="sources\Field\MoveFloorUpDown.h" />
     <ClInclude Include="sources\Field\MovelessFloor.h" />
     <ClInclude Include="sources\Field\NavChip.h" />
+    <ClInclude Include="sources\Field\TranslessTurnFloor.h" />
     <ClInclude Include="sources\Field\TurnFloor.h" />
     <ClInclude Include="sources\FileReader\CsvReader.h" />
     <ClInclude Include="sources\Math\BezierCurve.h" />
@@ -237,6 +242,7 @@
     <ClInclude Include="sources\Input\KeyCode.h" />
     <ClInclude Include="sources\Renderer\DrawShape.h" />
     <ClInclude Include="sources\Renderer\Puyo_Texture.h" />
+    <ClInclude Include="sources\Renderer\Puyo_Texture_K.h" />
     <ClInclude Include="sources\Renderer\Renderer.h" />
     <ClInclude Include="sources\ResourceID.h" />
     <ClInclude Include="sources\ResourceLoader\ResourceLoader.h" />
@@ -271,9 +277,12 @@
     <ClCompile Include="sources\Actor\Camera\Camera.cpp" />
     <ClCompile Include="sources\Actor\Light\Light.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\BaseEnemy.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BaseBoss.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\EnemyManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FlyingEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\Prickle.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WallMoveEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\FloorSearchPoint.cpp" />
@@ -306,6 +315,7 @@
     <ClCompile Include="sources\Field\MoveFloorUpDown.cpp" />
     <ClCompile Include="sources\Field\MovelessFloor.cpp" />
     <ClCompile Include="sources\Field\NavChip.cpp" />
+    <ClCompile Include="sources\Field\TranslessTurnFloor.cpp" />
     <ClCompile Include="sources\Field\TurnFloor.cpp" />
     <ClCompile Include="sources\FileReader\CsvReader.cpp" />
     <ClCompile Include="sources\Math\BezierCurve.cpp" />
@@ -321,6 +331,7 @@
     <ClCompile Include="sources\Input\InputMgr.cpp" />
     <ClCompile Include="sources\Renderer\DrawShape.cpp" />
     <ClCompile Include="sources\Renderer\Puyo_Texture.cpp" />
+    <ClCompile Include="sources\Renderer\Puyo_Texture_K.cpp" />
     <ClCompile Include="sources\ResourceLoader\ResourceLoader.cpp" />
     <ClCompile Include="sources\Scene\Base\SceneMgr.cpp" />
     <ClCompile Include="sources\Scene\Base\SceneNull.cpp" />

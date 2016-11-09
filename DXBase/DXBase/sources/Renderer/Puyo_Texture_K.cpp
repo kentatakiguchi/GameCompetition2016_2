@@ -5,6 +5,7 @@
 #include "../Math/Matrix.h"
 #include "../Math/Vector3.h"
 //一応正方形で考える
+const int SplitSize = 16.0f;
 
 PuyoTextureK::PuyoTextureK(TextureID tex, Vector2 pos, Vector2 scale, float rotate) :
 	textureIndex(ResourceLoader::GetInstance().getTextureID(tex)),
@@ -15,7 +16,11 @@ PuyoTextureK::PuyoTextureK(TextureID tex, Vector2 pos, Vector2 scale, float rota
 {
 	loopX = textureSize.x / SplitSize;
 	loopY = textureSize.y / SplitSize;
+	//動かない頂点をセット
+	PuyoVertexSetInit();
+	//グラフィックの設定
 	PuyoGraphSplit();
+	//グラフィックに頂点を設定
 	PuyoGraphVertex();
 	//バネ定数
 	spring_constant_ = 15.0f;
@@ -116,13 +121,13 @@ void PuyoTextureK::PuyoDraw()
 		}
 	}
 
-	//for (int y = 0; y <= loopY; y++)
-	//{
-	//	for (int x = 0; x <= loopX; x++)
-	//	{
-	//		DrawCircle(commonVertexH[x][y].position.x + mPosition.x, commonVertexH[x][y].position.y + mPosition.y, 1, GetColor(255, 255, 255));
-	//	}
-	//}
+	for (int y = 0; y <= loopY; y++)
+	{
+		for (int x = 0; x <= loopX; x++)
+		{
+			DrawCircle(commonVertexH[x][y].position.x + mPosition.x, commonVertexH[x][y].position.y + mPosition.y, 1, GetColor(255, 255, 255));
+		}
+	}
 	//DrawCircle(test.x, test.y, 10, GetColor(255, 255, 0));
 	//DrawFormatString(500,500, GetColor(255, 255, 255), "座標:%f,%f",test.x,test.y);
 }
@@ -171,13 +176,40 @@ void PuyoTextureK::PuyoVertexSet()
 		}
 	}
 }
-
-void PuyoTextureK::PuyoAddPower(int x_, int y_,Vector2 velocity)
+void PuyoTextureK::PuyoVertexSetInit()
+{
+	//画像に頂点を打つ
+	for (int y = 0; y <= loopY; y++)
+	{
+		for (int x = 0; x <= loopX; x++)
+		{
+			commonVertexHNoMove[x][y].position = Vector2(x*SplitSize, y*SplitSize);
+		}
+	}
+}
+void PuyoTextureK::PuyoAddPower(Vector2 pos, Vector2 velo)
 {
 	float Amplitude = 15.0f;
 	//遠くに行くほどふり幅が小さい
 	float AmplitudeVib = 1.0f;
 	float count = 0;
+
+	Vector2 sevePos=Vector2(999,999);
+	int x_ = 0;
+	int y_ = 0;
+	//設定された一番近い配列の場所を調べる
+	for (int y = 0; y <= loopY; y++)
+	{
+		for (int x = 0; x <= loopX; x++)
+		{
+			if ((commonVertexHNoMove[x][y].position - pos).Length() <= (sevePos - pos).Length())
+			{
+				sevePos = commonVertexHNoMove[x][y].position;
+				x_ = x;
+				y_ = y;
+			}
+		}
+	}
 
 	for (int y = 0; y <= 15; y++)
 	{
@@ -196,7 +228,7 @@ void PuyoTextureK::PuyoAddPower(int x_, int y_,Vector2 velocity)
 				commonVertexH[x + x_][y + y_].time = 0.0f;
 				commonVertexH[x + x_][y + y_].vibrationTimer = 0.0f;
 				commonVertexH[x + x_][y + y_].vibrationTime += AmplitudeVib / 1000.0f;
-				commonVertexH[x + x_][y + y_].velocity = velocity;
+				commonVertexH[x + x_][y + y_].velocity = velo;
 			}
 			if ((x + x_) <= 16 && (y_ - y) <= 16 &&
 				(x + x_) >= 0 && (y_ - y) >= 0)
@@ -204,8 +236,8 @@ void PuyoTextureK::PuyoAddPower(int x_, int y_,Vector2 velocity)
 				commonVertexH[x + x_][y_ - y].amplitude = Amplitude / AmplitudeVib;
 				commonVertexH[x + x_][y_ - y].time = 0.0f;
 				commonVertexH[x + x_][y_ - y].vibrationTimer = 0.0f;
-				commonVertexH[x + x_][y_ - y].vibrationTime+= AmplitudeVib / 1000.0f;
-				commonVertexH[x + x_][y_ - y].velocity = velocity;
+				commonVertexH[x + x_][y_ - y].vibrationTime += AmplitudeVib / 1000.0f;
+				commonVertexH[x + x_][y_ - y].velocity = velo;
 			}
 			if ((x_ - x) <= 16 && (y_ - y) <= 16 &&
 				(x_ - x) >= 0 && (y_ - y) >= 0)
@@ -214,16 +246,16 @@ void PuyoTextureK::PuyoAddPower(int x_, int y_,Vector2 velocity)
 				commonVertexH[x_ - x][y_ - y].time = 0.0f;
 				commonVertexH[x_ - x][y_ - y].vibrationTimer = 0.0f;
 				commonVertexH[x_ - x][y_ - y].vibrationTime += AmplitudeVib / 1000.0f;
-				commonVertexH[x_ - x][y_ - y].velocity = velocity;
+				commonVertexH[x_ - x][y_ - y].velocity = velo;
 			}
 			if ((x_ - x) <= 16 && (y_ + y) <= 16 &&
 				(x_ - x) >= 0 && (y_ + y) >= 0)
 			{
 				commonVertexH[x_ - x][y_ + y].amplitude = Amplitude / AmplitudeVib;
 				commonVertexH[x_ - x][y_ + y].time = 0.0f;
-				commonVertexH[x_ - x][y_ + y].vibrationTimer= 0.0f;
+				commonVertexH[x_ - x][y_ + y].vibrationTimer = 0.0f;
 				commonVertexH[x_ - x][y_ + y].vibrationTime += AmplitudeVib / 1000.0f;
-				commonVertexH[x_ - x][y_ + y].velocity = velocity;
+				commonVertexH[x_ - x][y_ + y].velocity = velo;
 			}
 		}
 	}

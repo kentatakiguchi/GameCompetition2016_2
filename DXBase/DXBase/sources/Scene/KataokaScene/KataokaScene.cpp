@@ -66,19 +66,19 @@ void KataokaScene::update()
 	//テスト用
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::H))
 	{
-		puyo->PuyoAddPower(0, 8, Vector2(0, -2));
+		puyo->PuyoAddPower(Vector2(0,128), Vector2(2, -2));
 	}
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
 	{
-		puyo->PuyoAddPower(1, 8, Vector2(1, 0));
+		puyo->PuyoAddPower(Vector2(128, 128), Vector2(2, -2));
 	}
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::K))
 	{
-		puyo->PuyoAddPower(15, 1, Vector2(2, 2));
+		puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
 	}
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L))
 	{
-		puyo->PuyoAddPower(15, 15, Vector2(2, -2));
+		puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
 	}
 
 	puyo->SetPosition(pos,scale,rotate);
