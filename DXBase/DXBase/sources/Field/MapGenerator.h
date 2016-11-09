@@ -13,6 +13,7 @@
 #include"TurnFloor.h"
 #include"MovelessFloor.h"
 #include"NavChip.h"
+#include"TranslessTurnFloor.h"
 
 class MapGenerator {
 public:
@@ -26,6 +27,7 @@ public:
 		chips[3] = std::make_shared<MoveFloorRightLeft>(world_, Vector2(0, 0));
 		chips[4] = std::make_shared<TurnFloor>(world_, Vector2(0, 0));
 		chips[5] = std::make_shared<NavChip>(world_, Vector2(0, 0));
+		chips[6] = std::make_shared<TranslessTurnFloor>(world_, Vector2(0, 0));
 	}
 	//ファイル名(拡張子まで書く事)から、マップを生成する fileName:マップ用の.csv 0:生成しない 1:MapChipを生成
 	void create(std::string fileName)
@@ -56,6 +58,10 @@ public:
 				if (reader_.geti(rowN, colN) == 5) {
 					world_->addActor(ActorGroup::Field, std::make_shared<NavChip>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
+				if (reader_.geti(rowN, colN) == 6) {
+					world_->addActor(ActorGroup::Field, std::make_shared<TranslessTurnFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+
 			}
 		}
 	}

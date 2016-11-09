@@ -20,6 +20,9 @@ const static float CHIPSIZE = 32;
 
 /*** ‹{“à ***/
 
+const static float CHIPSIZE = 32;
+
+const static float TURNLESS_FLOOR_SIZE = 2;
 
 
 
