@@ -3,7 +3,8 @@
 #include "../ResourceLoader/ResourceLoader.h"
 #include "../Math/Vector2.h"
 #include "../Math/Matrix.h"
-
+const Vector2 texSize = ResourceLoader::GetInstance().GetTextureSize(TextureID::PUYO_TEST_TEX);
+const int SplitSize = 8.0f;
 struct VertexPos {
 	//ç∂è„
 	Vector2 LeftTopPos=Vector2::Zero;
@@ -13,16 +14,6 @@ struct VertexPos {
 	Vector2 RightTopPos = Vector2::Zero;
 	//âEâ∫
 	Vector2 RightDownPos = Vector2::Zero;
-};
-struct VertexPosMat {
-	//ç∂è„
-	Matrix LeftTopPosM = Matrix::Identity;
-	//ç∂â∫
-	Matrix LeftDownPosM = Matrix::Identity;
-	//âEè„
-	Matrix RightTopPosM = Matrix::Identity;
-	//âEâ∫
-	Matrix RightDownPosM = Matrix::Identity;
 };
 struct SpringState {
 	float amplitude = 0.0f;				           //êUïù

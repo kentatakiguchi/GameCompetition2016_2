@@ -6,7 +6,6 @@
 #include "../Math/Vector3.h"
 //一応正方形で考える
 
-const int SplitSize = 8.0f;
 PuyoTextureK::PuyoTextureK(TextureID tex, Vector2 pos, Vector2 scale, float rotate) :
 	textureIndex(ResourceLoader::GetInstance().getTextureID(tex)),
 	textureSize(ResourceLoader::GetInstance().GetTextureSize(tex)),
@@ -117,13 +116,13 @@ void PuyoTextureK::PuyoDraw()
 		}
 	}
 
-	for (int y = 0; y <= loopY; y++)
-	{
-		for (int x = 0; x <= loopX; x++)
-		{
-			DrawCircle(commonVertexH[x][y].position.x + mPosition.x, commonVertexH[x][y].position.y + mPosition.y, 1, GetColor(255, 255, 255));
-		}
-	}
+	//for (int y = 0; y <= loopY; y++)
+	//{
+	//	for (int x = 0; x <= loopX; x++)
+	//	{
+	//		DrawCircle(commonVertexH[x][y].position.x + mPosition.x, commonVertexH[x][y].position.y + mPosition.y, 1, GetColor(255, 255, 255));
+	//	}
+	//}
 	//DrawCircle(test.x, test.y, 10, GetColor(255, 255, 0));
 	//DrawFormatString(500,500, GetColor(255, 255, 255), "座標:%f,%f",test.x,test.y);
 }
@@ -180,11 +179,11 @@ void PuyoTextureK::PuyoAddPower(int x_, int y_,Vector2 velocity)
 	float AmplitudeVib = 1.0f;
 	float count = 0;
 
-	for (int y = 0; y <= 6; y++)
+	for (int y = 0; y <= 15; y++)
 	{
 		AmplitudeVib = y + 1;
 		count = 0;
-		for (int x = 0; x <= 6; x++)
+		for (int x = 0; x <= 15; x++)
 		{
 			if (count >= AmplitudeVib)
 				AmplitudeVib++;
@@ -196,7 +195,7 @@ void PuyoTextureK::PuyoAddPower(int x_, int y_,Vector2 velocity)
 				commonVertexH[x + x_][y + y_].amplitude = Amplitude / AmplitudeVib;
 				commonVertexH[x + x_][y + y_].time = 0.0f;
 				commonVertexH[x + x_][y + y_].vibrationTimer = 0.0f;
-				commonVertexH[x + x_][y + y_].vibrationTime += AmplitudeVib / 100.0f;
+				commonVertexH[x + x_][y + y_].vibrationTime += AmplitudeVib / 1000.0f;
 				commonVertexH[x + x_][y + y_].velocity = velocity;
 			}
 			if ((x + x_) <= 16 && (y_ - y) <= 16 &&
@@ -205,7 +204,7 @@ void PuyoTextureK::PuyoAddPower(int x_, int y_,Vector2 velocity)
 				commonVertexH[x + x_][y_ - y].amplitude = Amplitude / AmplitudeVib;
 				commonVertexH[x + x_][y_ - y].time = 0.0f;
 				commonVertexH[x + x_][y_ - y].vibrationTimer = 0.0f;
-				commonVertexH[x + x_][y_ - y].vibrationTime+= AmplitudeVib / 100.0f;
+				commonVertexH[x + x_][y_ - y].vibrationTime+= AmplitudeVib / 1000.0f;
 				commonVertexH[x + x_][y_ - y].velocity = velocity;
 			}
 			if ((x_ - x) <= 16 && (y_ - y) <= 16 &&
@@ -214,7 +213,7 @@ void PuyoTextureK::PuyoAddPower(int x_, int y_,Vector2 velocity)
 				commonVertexH[x_ - x][y_ - y].amplitude = Amplitude / AmplitudeVib;
 				commonVertexH[x_ - x][y_ - y].time = 0.0f;
 				commonVertexH[x_ - x][y_ - y].vibrationTimer = 0.0f;
-				commonVertexH[x_ - x][y_ - y].vibrationTime += AmplitudeVib / 100.0f;
+				commonVertexH[x_ - x][y_ - y].vibrationTime += AmplitudeVib / 1000.0f;
 				commonVertexH[x_ - x][y_ - y].velocity = velocity;
 			}
 			if ((x_ - x) <= 16 && (y_ + y) <= 16 &&
@@ -223,52 +222,9 @@ void PuyoTextureK::PuyoAddPower(int x_, int y_,Vector2 velocity)
 				commonVertexH[x_ - x][y_ + y].amplitude = Amplitude / AmplitudeVib;
 				commonVertexH[x_ - x][y_ + y].time = 0.0f;
 				commonVertexH[x_ - x][y_ + y].vibrationTimer= 0.0f;
-				commonVertexH[x_ - x][y_ + y].vibrationTime += AmplitudeVib / 100.0f;
+				commonVertexH[x_ - x][y_ + y].vibrationTime += AmplitudeVib / 1000.0f;
 				commonVertexH[x_ - x][y_ + y].velocity = velocity;
 			}
 		}
 	}
-
-
-
-	////整理します
-	//for (int y = 0; y <= 5; y++)
-	//{
-	//	//力が加わったところは1倍の力が加わるため+1
-	//	AmplitudeVib = y + 1;
-	//	//上と同じ
-	//	count = 1;
-	//	for (int x = 0; x <= 5; x++)
-	//	{
-	//		if (count > y + 1)
-	//			AmplitudeVib++;
-	//		count++;
-	//		//配列内だったら代入する
-	//		if ((x_ + x) >= 0 && (x_ + x) <= 17 &&
-	//			(y_ + y) >= 0 && (y_ + y) <= 17)
-	//		{
-	//			//力が加わったところからはなれると力が弱くなる
-	//			commonVertexH[x_ + x][y_ + y].amplitude = Amplitude / AmplitudeVib;
-	//			commonVertexH[x_ + x][y_ + y].time = 0.0f;
-	//		}
-	//		if ((x_ - x) >= 0 && (x_ - x) <= 17 &&
-	//			(y_ - y) >= 0 && (y_ - y) <= 17 )
-	//		{
-	//			commonVertexH[x_ - x][y_ - y].amplitude = Amplitude / AmplitudeVib;
-	//			commonVertexH[x_ - x][y_ - y].time = 0.0f;
-	//		}
-	//		if ((x_ + x) >= 0 && (x_ - x) <= 17 &&
-	//			(y_ + y) >= 0 && (y_ - y) <= 17)
-	//		{
-	//			commonVertexH[x_ + x][y_ - y].amplitude = Amplitude / AmplitudeVib;
-	//			commonVertexH[x_ + x][y_ - y].time = 0.0f;
-	//		}
-	//		if ((x_ - x) >= 0 && (x_ + x) <= 17 &&
-	//			(y_ - y) >= 0 && (y_ + y) <= 17)
-	//		{
-	//			commonVertexH[x_ - x][y_ + y].amplitude = Amplitude / AmplitudeVib;
-	//			commonVertexH[x_ - x][y_ + y].time = 0.0f;
-	//		}
-	//	}
-	//}
 }

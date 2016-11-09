@@ -66,7 +66,7 @@ void KataokaScene::update()
 	//テスト用
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::H))
 	{
-		puyo->PuyoAddPower(1, 1, Vector2(2, -2));
+		puyo->PuyoAddPower(0, 8, Vector2(0, -2));
 	}
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
 	{

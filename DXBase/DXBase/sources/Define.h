@@ -2,9 +2,6 @@
 #include "Math/Math.h"
 
 
-//MapChipの大きさを変更する
-const static float CHIPSIZE = 32;
-
 //追加する定数は自分の名前の下に書いてください。
 //競合が起こる可能性が高いので扱いには注意
 
