@@ -14,6 +14,7 @@
 #include"MovelessFloor.h"
 #include"NavChip.h"
 #include"TranslessTurnFloor.h"
+#include"../Actor/Person/Enemy/ImportEnemys.h"
 
 class MapGenerator {
 public:
@@ -60,6 +61,18 @@ public:
 				}
 				if (reader_.geti(rowN, colN) == 6) {
 					world_->addActor(ActorGroup::Field, std::make_shared<TranslessTurnFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 7) {
+					//エネミー1
+				}
+				if (reader_.geti(rowN, colN) == 8) {
+					//エネミー2
+				}
+				if (reader_.geti(rowN, colN) == 9) {
+					//エネミー3
+				}
+				if (reader_.geti(rowN, colN) == 10) {
+					//エネミー4
 				}
 
 			}
