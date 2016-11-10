@@ -14,13 +14,15 @@ protected:
 public:
 	// 実行
 	int run() {
-		ChangeWindowMode(window_);
 		
 		SetGraphMode(width_, height_, 32);
 		SetWindowSizeExtendRate(rate_);
+
+		ChangeWindowMode(window_);
+
 		//DXLib初期化処理
 		if (DxLib_Init() == -1)return -1;//エラーが起きたら終了
-
+		SetDrawScreen(DX_SCREEN_BACK);
 		start();
 
 		// キーが押されるまでループします

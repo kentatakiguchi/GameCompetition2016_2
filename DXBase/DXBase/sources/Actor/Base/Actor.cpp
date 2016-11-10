@@ -40,12 +40,12 @@ void Actor::update(float deltaTime) {
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//ˆÚ“®update
 	//ActorMove();
-	inv();
 	body_.MovePos(Vector2(position_.x, position_.y));
 }
 
 void Actor::late_update(float deltaTime) {
 	body_.MovePos(Vector2(position_.x, position_.y));
+	inv();
 	onLateUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.late_update(deltaTime); });
 }
@@ -103,7 +103,7 @@ Matrix Actor::inv() {
 	auto player = world_->findActor("PlayerBody1");
 
 	//Vector2 spring = Spring(Vector2(300, 400),velo);
-	resInv_ = Matrix::Invert(player->getPose()) * Matrix::CreateTranslation(Vector3(300, 400, 0.0f));
+	resInv_ = Matrix::Invert(player->getPose()) * Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
 
 	Vector2 resPos = Vector2(resInv_.Translation().x, resInv_.Translation().y);
 	Vector2 pos = Vector2(inv_.Translation().x, inv_.Translation().y);

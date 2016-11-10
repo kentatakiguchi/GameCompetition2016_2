@@ -24,7 +24,7 @@ class BezierCurve {
 public:
 	BezierCurve();
 	void set(const Vector2 &start, const Vector2 &end, const std::vector<Vector2>& control, const float &time);
-	void draw(const int & point_num) const;
+	void draw(const int & point_num, Matrix inv = Matrix::Identity) const;
 private:
 	std::vector<Vector2> all_points(const Vector2 & start, const Vector2 & end, const std::vector<Vector2>& control) const;
 	Vector2 calc_point(const std::vector<Vector2>& points, const float & t) const;

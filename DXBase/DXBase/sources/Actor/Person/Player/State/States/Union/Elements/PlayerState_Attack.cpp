@@ -40,13 +40,11 @@ void PlayerState_Attack::update(Actor & actor, float deltaTime) {
 	main_body_->gravity();
 	sub_body_->gravity();
 
-	if (main_body_->hitOpponent() == PlayerBody::Opponent::FLOOR ||
-		sub_body_->hitOpponent() == PlayerBody::Opponent::FLOOR) {
+	if (main_body_->isOnFloor() ||	sub_body_->isOnFloor()) {
 		power_ = 0;
 	}
 
-	if (main_body_->hitOpponent() == PlayerBody::Opponent::FLOOR &&
-		sub_body_->hitOpponent() == PlayerBody::Opponent::FLOOR) {
+	if (main_body_->isOnFloor() &&	sub_body_->isOnFloor()) {
 		change((unsigned int)PlayerState_Enum_Union::IDLE);
 	}
 }

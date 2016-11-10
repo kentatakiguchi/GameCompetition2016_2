@@ -6,10 +6,20 @@
 #include "PlayerPtr.h"
 
 #include "../../../Math/BezierCurve.h"
+#include "../../../Renderer/Puyo_Texture_K.h"
+
 #include "Player.h"
 
 // ÉvÉåÅ[ÉÑÅ[
 class PlayerConnector : public Actor {
+public:
+	enum class Opponent {
+		NONE,
+		FLOOR,
+		ITEM,
+		ENEMY,
+		TEST
+	};
 public:
 	PlayerConnector();
 	PlayerConnector(IWorld* world, PlayerBodyPtr main, PlayerBodyPtr sub);
@@ -22,9 +32,10 @@ public:
 private:
 	BezierCurve bezier_;
 	
-	PlayerBodyPtr start_point_;
-	PlayerBodyPtr end_point_;
+	PlayerBodyPtr main_;
+	PlayerBodyPtr sub_;
 	std::vector<Vector2> points;
 
-	BoundingBox map_chip_;
+	PuyoTextureK* puyo;
+
 };

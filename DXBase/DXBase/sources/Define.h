@@ -27,19 +27,21 @@ const static float TURNLESS_FLOOR_SIZE = 2;
 
 /* ウインドウ系統 */
 
-// スクリーンのアスペクト比
-const static Vector2	SCREEN_ASPECT = Vector2(4, 3);
-// スクリーンのサイズ倍率
-const static float		SCREEN_RATE = 200;
+//// スクリーンのサイズ倍率
+//const static float		SCREEN_RATE = 200;
 // スクリーンのサイズ
-const static Vector2	SCREEN_SIZE = SCREEN_ASPECT * SCREEN_RATE;
+const static Vector2	SCREEN_SIZE = Vector2(1920, 1080);
+// スクリーンのアスペクト比
+const static float		SCREEN_ASPECT = SCREEN_SIZE.x / SCREEN_SIZE.y;
 // ウインドウの表示倍率(おそらくデバック時のみ)
-const static float		WINDOW_RATE = 1.0f;
+const static float		WINDOW_RATE = 0.5f;
 // ウインドウモードにするかしないか(TRUE : FALSE)
 const static int		WINDOW_MODE = TRUE;
 
 /* プレイヤーパラメータ系統 */
 
+// プレイヤーの表示位置
+const static Vector2	PLAYER_SCREEN_POSITION = Vector2(SCREEN_SIZE.x * 0.5f, SCREEN_SIZE.y * 0.75f);
 // プレイヤーの移動速度
 const static float		PLAYER_SPEED = 3.0f;
 // プレイヤーの本体の半径

@@ -11,8 +11,10 @@ class PlayerBody : public Actor {
 public:
 	enum class Opponent {
 		NONE,
-		FLOOR,
+		//FLOOR,
 		ITEM,
+		PARTNER,
+		ENEMY,
 		TEST
 	};
 public:
@@ -55,7 +57,7 @@ public:
 	void pre_vector();
 	float distance();
 	void target(std::shared_ptr<PlayerBody> target);
-
+	bool isOnFloor();
 	void single_action(float deltaTime);
 	SingleKeys get_keys();
 
@@ -70,10 +72,11 @@ private:
 	Vector2 last_pos_;
 	PlayerBodyPtr target_;
 	Opponent opponent_;
+	bool isOnFloor_;
 	Vector2 oppenent_pos_;
 
 	float jump_power_;
-
+	const char* other_;
 	// íPì∆èÛë‘Ç©î€Ç©
 	bool is_single_;
 	StateMgr stateMgr_;

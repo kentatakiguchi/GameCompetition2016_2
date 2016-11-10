@@ -26,7 +26,7 @@ void PlayerState_Single_Jump::update(Actor & actor, float deltaTime){
 
 	player_body_->launch(dir_ * power_);
 
-	if (player_body_->hitOpponent() == PlayerBody::Opponent::FLOOR) {
+	if (player_body_->isOnFloor()) {
 		change((unsigned int)PlayerState_Enum_Single::IDLE);
 	}
 }

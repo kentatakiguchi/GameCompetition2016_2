@@ -20,6 +20,8 @@ public:
 	virtual void onCollide(Actor& other) override;
 	void changeMotion(float deltaTime);
 	void setBody(PlayerBodyPtr main, PlayerBodyPtr sub);
+	void connect(PlayerBodyPtr main, PlayerBodyPtr sub);
+	void split_body();
 	PlayerBodyPtr getMainBody();
 	PlayerBodyPtr getSubBody();
 
@@ -28,7 +30,6 @@ public:
 		return veloPlus;
 	}
 private:
-	void createWindow();
 	StateMgr stateMgr_;
 
 	PlayerBodyPtr main_;

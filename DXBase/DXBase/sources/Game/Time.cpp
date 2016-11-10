@@ -1,5 +1,7 @@
 #include "Time.h"
 
+#include <DxLib.h>
+
 Time::Time() :
 	m_LastFrame(0), m_LastTime(0), m_RealtimeSinceStartup(0), m_FrameCount(0), m_DeltaTime(0) {
 }
@@ -25,3 +27,4 @@ void Time::update(){
 float Time::deltaTime(){
 	return m_DeltaTime;
 }
+

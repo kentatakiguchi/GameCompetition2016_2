@@ -19,7 +19,7 @@ void PlayerState_Hold::unique_init(Actor & actor){
 
 	player_->setBody(main_body_, sub_body_);
 
-	if (main_body_->hitOpponent() != PlayerBody::Opponent::FLOOR)change((unsigned int)PlayerState_Enum_Union::IDLE);
+	if (main_body_->isOnFloor())change((unsigned int)PlayerState_Enum_Union::IDLE);
 }
 
 void PlayerState_Hold::update(Actor & actor, float deltaTime) {
@@ -33,7 +33,7 @@ void PlayerState_Hold::update(Actor & actor, float deltaTime) {
 
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && element_.action_type_ == ActionType::Left ||
 		InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && element_.action_type_ == ActionType::Right) {
-		if(sub_body_->hitOpponent() == PlayerBody::Opponent::FLOOR)	change((unsigned int)PlayerState_Enum_Union::HOLD_BOTH);
+		if(sub_body_->isOnFloor())	change((unsigned int)PlayerState_Enum_Union::HOLD_BOTH);
 	}
 }
 

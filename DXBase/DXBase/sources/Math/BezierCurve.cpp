@@ -10,17 +10,24 @@ void BezierCurve::set(const Vector2 & start, const Vector2 & end, const std::vec
 	control_points_ = control;
 }
 
-void BezierCurve::draw(const int & point_num) const {
+void BezierCurve::draw(const int & point_num, Matrix inv) const {
 	for (int i = 0; i <= point_num; i++) {
 		float t = 1.0f / point_num * i;
 		Vector2 pos = get(start_point_, end_point_, control_points_, t);
-		DrawPixel(pos.x, pos.y, GetColor(0, 255, 0));
+		Vector3 pos_inv = Vector3(pos.x, pos.y) * inv;
+		DrawPixel(pos_inv.x, pos_inv.y, GetColor(0, 255, 0));
 	}
-	DrawCircle(start_point_.x, start_point_.y, 5.0f, GetColor(255, 0, 0), TRUE);
+
+	Vector3 start_inv = Vector3(start_point_.x, start_point_.y) * inv;
+	DrawCircle(start_inv.x, start_inv.y, 5.0f, GetColor(255, 0, 0), TRUE);
+
 	for (int i = 0; i < control_points_.size(); i++) {
-		DrawCircle(control_points_[i].x, control_points_[i].y, 5.0f, GetColor(255, 0, 0), TRUE);
+		Vector3 pos_inv = Vector3(control_points_[i].x, control_points_[i].y) * inv;
+		DrawCircle(pos_inv.x, pos_inv.y, 5.0f, GetColor(255, 0, 0), TRUE);
 	}
-	DrawCircle(end_point_.x, end_point_.y, 5.0f, GetColor(255, 0, 0), TRUE);
+
+	Vector3 end_inv = Vector3(end_point_.x, end_point_.y) * inv;
+	DrawCircle(end_inv.x, end_inv.y, 5.0f, GetColor(255, 0, 0), TRUE);
 } 
 
 Vector2 BezierCurve::get(const Vector2 & start, const Vector2 & end, const std::vector<Vector2>& control, const float & time) const {

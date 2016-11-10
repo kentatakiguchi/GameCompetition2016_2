@@ -21,25 +21,22 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	//stateMgr_.add((unsigned int)PlayerState_Enum_Single::MOVE, std::make_shared<PlayerState_Single_Idle>());
 	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
 
+	other_ = "";
 }
 
 PlayerBody::~PlayerBody(){}
 
 void PlayerBody::onUpdate(float deltaTime){
-	position_ += input_ * PLAYER_SPEED  + launch_ + gravity_;
+	position_ += input_ * PLAYER_SPEED  + launch_ + gravity_ * deltaTime * GetRefreshRate();
 	velocity_ = position_ - body_.GetCircle().previousPosition_;
 
-	opponent_ = Opponent::NONE;
+	isOnFloor_ = false;
+
+
 }
 
 void PlayerBody::onDraw() const{
-	//if (name_ == "PlayerBody1")	DrawFormatString(25, 25, GetColor(255, 255, 255), "1 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
-	//if (name_ == "PlayerBody2")	DrawFormatString(25, 50, GetColor(255, 255, 255), "2 : x->%d, y->%d", (int)velocity_.x, (int)velocity_.y);
-
 	body_.draw(inv_);
-
-	if (opponent_ == Opponent::NONE)DrawFormatString(25, 75, GetColor(255, 255, 255), "NONE");
-	else if (opponent_ == Opponent::FLOOR) DrawFormatString(25, 100, GetColor(255, 255, 255), "FLOOR");
 }
 
 void PlayerBody::onLateUpdate(float deltaTime){
@@ -83,9 +80,9 @@ void PlayerBody::onCollide(Actor & other){
 			position_.x = b_left.x - body_.GetCircle().component_.radius;
 		}
 
-		opponent_ = Opponent::FLOOR;
+		isOnFloor_ = true;
 	}
-	if (other.getName() == "NavChip" && opponent_ != Opponent::FLOOR) {
+	if (other.getName() == "NavChip" && !isOnFloor_) {
 		auto pos = body_.GetCircle().previousPosition_;
 
 		auto box = other.getBody().GetBox();
@@ -95,8 +92,20 @@ void PlayerBody::onCollide(Actor & other){
 		//if(Vector2::Distance(pos, oppenent_pos_) <= 12)opponent_ = Opponent::FLOOR;
 	}
 
-	//if(other.)
+	if (other.getName() == "BaseEnemy") {
+		opponent_ = Opponent::ENEMY;
+	}
+
+	if (other.getName() == "PlayerBody2")/* ||
+		(name_ == "PlayerBody2" && other.getName() == "PlayerBody1")*/ {
+		/*if()*/ opponent_ = Opponent::PARTNER;
+	}
+
+	//if (this == nullptr)return;
+	other_ = other.getName().c_str();
+
 }
+
 
 void PlayerBody::changeMotion(float deltaTime){
 }
@@ -155,7 +164,7 @@ void PlayerBody::chase() {
 }
 
 void PlayerBody::gravity(){
-	if (opponent_ == Opponent::FLOOR)gravity_ = Vector2(0, 5);
+	if (isOnFloor_)gravity_ = Vector2(0, 5);
 	else gravity_ = Vector2(0, 5);
 }
 
@@ -201,6 +210,11 @@ float PlayerBody::distance(){
 
 void PlayerBody::target(std::shared_ptr<PlayerBody> target){
 	target_ = target;
+}
+
+bool PlayerBody::isOnFloor()
+{
+	return isOnFloor_;
 }
 
 void PlayerBody::single_action(float deltaTime){
