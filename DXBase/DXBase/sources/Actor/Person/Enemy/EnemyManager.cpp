@@ -36,6 +36,10 @@ EnemyManager::EnemyManager(const Vector2 position) :
 	primeContainer_.push_back(1700);
 	primeContainer_.push_back(1900);
 	// map‚É’Ç‰Á
+	//// “–‚½‚Á‚Ä‚¢‚È‚¢
+	//wspDirectionMap_[0] = Vector2(0.0f, 0.0f);
+	//wspDirectionMap_[10] = Vector2(0.0f, 0.0f);
+	//wspDirectionMap_[20] = Vector2(0.0f, 0.0f);
 	// 1‚Â‚Ì‚İ(l‹÷) 2 5 13 19
 	// X ‚ÉˆÚ“®—Ê‚ª‚ ‚éê‡
 	wspDirectionMap_[211] = Vector2(0.0f, -1.0f);

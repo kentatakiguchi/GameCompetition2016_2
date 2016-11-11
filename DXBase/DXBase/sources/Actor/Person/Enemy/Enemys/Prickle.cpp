@@ -27,7 +27,7 @@ void Prickle::onUpdate(float deltaTime)
 
 void Prickle::onDraw() const
 {
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void Prickle::onCollide(Actor & actor)

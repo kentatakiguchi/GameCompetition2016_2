@@ -7,40 +7,96 @@
 #include "../../../../Math/Math.h"
 #include "../../../../Define.h"
 
-// モーション番号(仮)
-enum {
-	ENEMY_IDLE = 0,
-	ENEMY_WALK = 1,
-	ENEMY_DISCOVERY = 2,
-	ENEMY_LOST = 3,
-	ENEMY_ATTACK = 4,
-	ENEMY_DAMAGE = 5,
-	ENEMY_DEAD = 6,
-};
+#include "BossManager.h"
 
-// 状態列挙
-enum class State {
-	Idel,
-	//Search,
-	attack,
-	Damage,
-	Dead
-};
+// class BossManager;
 
 class BaseBoss : public Actor {
+protected:
+	// モーション番号
+	enum {
+		BOSS_IDLE = 0,
+		BOSS_ATTACK = 1,
+		BOSS_FLINCH = 2,
+		BOSS_DEAD = 3,
+	};
+	// 攻撃行動の番号
+	enum {
+		ATTACK_JUMPATTACK_NUMBER = 0,
+		ATTACK_WALLATTACK_NUMBER = 1,
+		ATTACK_SPECIALATTACK_NUMBER = 2
+	};
+	// 状態列挙
+	enum class State {
+		Idel,
+		//Search,
+		Attack,
+		Flinch,
+		Dead
+	};
+	// 攻撃状態の列挙
+	enum class AttackState {
+		JumpAttack,
+		WallAttack,
+		SpeacialAttack
+	};
+
 public:
 	BaseBoss(IWorld* world, const Vector2&  position, const float bodyScale);
 	~BaseBoss();
-	void Initialize();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& actor) override;
 	virtual void onMessage(EventMessage event, void*) override;
 
 protected:
-	int damageResult_;		// ひるむまでのダメージ数
-	int initDamageResult_;	// ひるむまでのダメージ数(初期値)
-	int hp_;				// 体力
+	// 状態の更新
+	void updateState(float deltaTime);
+	// 状態の変更を行います
+	void changeState(State state, unsigned int motion);
+	// 攻撃状態の変更を行います
+	void changeAttackState(AttackState aState, unsigned int motion);
+	// 待機状態
+	void idel(float deltaTime);
+	// 攻撃行動
+	void attack(float deltaTime);
+	// ひるみ状態
+	void flinch(float deltaTime);
+	// 死亡状態
+	void deadMove(float deltaTime);
+
+// 攻撃行動
+protected:
+	// ジャンプ攻撃
+	void jumpAttack(float deltaTime);
+	// 壁攻撃
+	void wallAttack(float deltaTime);
+	// スペシャルアタック
+	void specialAttack(float deltaTime);
+
+private:
+	// デルタタイム(最大値1)の設定
+	void setTimer(float deltaTime);
+
+protected:
+	int dp_;					// ひるむまでの耐久値
+	int initDp_;				// ひるむまでの耐久値(初期値)
+	int hp_;					// 体力
+	float stateTimer_;			// 状態の時間
+	float timer_;				// 現在の時間(最大値 1)
+	float deltaTimer_;			// 現在の時間(補間)
+
+	std::string stateString_;	// 状態の文字列（デバッグ用）
+
+	// BossManager* bossManager_;	// ボスマネージャー
+	BossManager bossManager_;
+
+private:
+	Vector2 playerPastPosition_;
+	ActorPtr player_;
+
+	State state_;				// 状態
+	AttackState attackState_;	// 攻撃状態
 };
 
 #endif

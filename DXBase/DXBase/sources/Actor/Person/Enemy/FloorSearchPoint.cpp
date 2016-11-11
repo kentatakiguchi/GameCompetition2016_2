@@ -65,7 +65,7 @@ void FloorSearchPoint::onUpdate(float deltaTime)
 
 void FloorSearchPoint::onDraw() const
 {
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void FloorSearchPoint::onCollide(Actor & actor)
@@ -124,6 +124,8 @@ bool FloorSearchPoint::isFloor()
 
 bool FloorSearchPoint::isGround()
 {
+	// ‚±‚±‚ÉŒvŽZŽ®‚ð’Ç‰Á‚·‚é
+
 	return isGround_;
 }
 

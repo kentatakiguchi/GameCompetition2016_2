@@ -13,8 +13,7 @@ PlayerSearchObj::PlayerSearchObj(IWorld * world, const Vector2& enemyPosition, c
 			)
 		),
 	enemyPosition_(enemyPosition),
-	playerPosition_(playerPosition),
-	samplePos_(Vector2::Zero)
+	playerPosition_(playerPosition)
 {
 }
 
@@ -52,7 +51,7 @@ void PlayerSearchObj::onDraw() const
 		"ÉvÉåÉCÉÑÅ[Ç∆ÇÃê¸ï™:X%d, Y%d",
 		(int)position_.x,
 		(int)position_.y);
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void PlayerSearchObj::onCollide(Actor & actor)

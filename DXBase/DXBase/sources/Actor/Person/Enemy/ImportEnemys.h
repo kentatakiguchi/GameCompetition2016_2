@@ -5,5 +5,6 @@
 #include "Enemys/WallTurnEnemy.h"
 #include "Enemys/FlyingEnemy.h"
 #include "Enemys/WallMoveEnemy.h"
+#include "Bosses/BaseBoss.h"
 
 #endif

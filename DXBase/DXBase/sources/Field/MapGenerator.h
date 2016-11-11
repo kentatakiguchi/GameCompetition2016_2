@@ -63,16 +63,20 @@ public:
 					world_->addActor(ActorGroup::Field, std::make_shared<TranslessTurnFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
 				if (reader_.geti(rowN, colN) == 7) {
-					//エネミー1
+					// クリボーエネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
 				if (reader_.geti(rowN, colN) == 8) {
-					//エネミー2
+					// ゴルドエネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
 				if (reader_.geti(rowN, colN) == 9) {
-					//エネミー3
+					// ハネクリボーエネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<FlyingEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
 				if (reader_.geti(rowN, colN) == 10) {
-					//エネミー4
+					// 壁移動エネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
 
 			}

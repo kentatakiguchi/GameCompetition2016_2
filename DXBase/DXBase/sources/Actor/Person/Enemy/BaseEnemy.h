@@ -14,33 +14,6 @@ class FloorSearchPoint;
 class Prickle;
 class PlayerSearchObj;
 
-// モーション番号(仮)
-enum {
-	ENEMY_IDLE = 0,
-	ENEMY_WALK = 1,
-	ENEMY_DISCOVERY = 2,
-	ENEMY_LOST = 3,
-	ENEMY_ATTACK = 4,
-	ENEMY_DAMAGE = 5,
-	ENEMY_DEAD = 6,
-};
-
-// 状態列挙
-enum class State {
-	Idel,
-	Search,
-	Discovery,
-	Chase,
-	Lost,
-	/*PlayerShortDistance,
-	PlayerCenterDistance,
-	PlayerLongDistance,*/
-	attack,
-	Damage,
-	Dead,
-	Return
-};
-
 //// 死亡状態列挙(特定状態の死亡などに対応　現在使用しない)
 //enum class DeadState {
 //	KnockBackDead,
@@ -49,6 +22,33 @@ enum class State {
 //};
 
 class BaseEnemy : public Actor {
+protected:
+	// モーション番号(仮)
+	enum {
+		ENEMY_IDLE = 0,
+		ENEMY_WALK = 1,
+		ENEMY_DISCOVERY = 2,
+		ENEMY_LOST = 3,
+		ENEMY_ATTACK = 4,
+		ENEMY_DAMAGE = 5,
+		ENEMY_DEAD = 6,
+	};
+	// 状態列挙
+	enum class State {
+		Idel,
+		Search,
+		Discovery,
+		Chase,
+		Lost,
+		/*PlayerShortDistance,
+		PlayerCenterDistance,
+		PlayerLongDistance,*/
+		attack,
+		Damage,
+		Dead,
+		Return
+	};
+
 public:
 	// 短形
 	BaseEnemy(IWorld* world, const Vector2&  position, const float bodyScale);
@@ -117,8 +117,8 @@ protected:
 
 protected:
 	// メンバ変数
-	float timer_;					// 現在の時間(最大値:1)
-	float deltaTimer_;				// 現在の時間(補間)
+	float timer_;					// 現在の時間(補間)
+	float deltaTimer_;				// 現在の時間(補間, 最大値 1)
 
 	int hp_;						// 体力
 	int ap_;						// アタックポイント

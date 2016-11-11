@@ -101,13 +101,15 @@ void BaseEnemy::onUpdate(float deltaTime)
 void BaseEnemy::onDraw() const
 {
 	auto stateChar = stateString_.c_str();
+	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
+	vec3Pos = vec3Pos * inv_;
 	// 敵の表示
 	DrawGraph(
-		position_.x - scale_ / 2.0f, position_.y - scale_ / 2.0f,
+		vec3Pos.x - scale_ / 2.0f, vec3Pos.y - scale_ / 2.0f,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
 	// 文字の表示
 	DrawString(
-		position_.x - scale_, position_.y - 20 - scale_,
+		vec3Pos.x - scale_, vec3Pos.y - 20 - scale_,
 		stateChar, GetColor(255, 255, 255));
 
 	// デバッグ
@@ -117,7 +119,7 @@ void BaseEnemy::onDraw() const
 
 	//char lengthChar = static_cast<char>(enemyManager_.getPlayerLength());
 	//DrawString(position_.x + 50, position_.y - 20, &lengthChar, GetColor(255, 255, 255));
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void BaseEnemy::onCollide(Actor & actor)
@@ -131,6 +133,7 @@ void BaseEnemy::onCollide(Actor & actor)
 	if (actorName == "") {
 		isBlockCollideExit_ = true;
 		isBlockCollideEnter_ = false;
+		body_.enabled(false);
 		return;
 	}
 	// マップのブロックに当たったら、処理を行う
@@ -141,6 +144,7 @@ void BaseEnemy::onCollide(Actor & actor)
 			isBlockCollideBegin_ = true;
 		else isBlockCollideBegin_ = false;
 		isBlockCollideEnter_ = true;
+		body_.enabled(false);
 		return;
 	}
 
@@ -219,7 +223,7 @@ void BaseEnemy::chase()
 	speed_ = initSpeed_ * 1.5f;
 	// 追跡行動
 	chaseMove();
-	if (enemyManager_.getPlayerLength() > discoveryLenght_)
+	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 30.0f)
 		changeState(State::Search, ENEMY_WALK);
 	// 前方に移動(仮)
 	//auto distance = position_ - player_->getPosition();
@@ -332,7 +336,6 @@ void BaseEnemy::createFSP()
 void BaseEnemy::setDeltaTime(float deltatime)
 {
 	deltaTimer_ = deltatime * 60.0f;
-	
 }
 
 // 敵が飲み込まれた時のスケールポイントを返します

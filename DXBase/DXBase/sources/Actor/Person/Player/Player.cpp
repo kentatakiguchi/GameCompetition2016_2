@@ -61,7 +61,8 @@ void Player::onUpdate(float deltaTime) {
 	if (main_->hitOpponent() == PlayerBody::Opponent::PARTNER ||
 		sub_->hitOpponent() == PlayerBody::Opponent::PARTNER || 
 		InputMgr::GetInstance().IsKeyDown(KeyCode::C)) {
-		connect(main_, sub_);
+
+		//connect(main_, sub_);
 	}
 
 	// V‚µ‚¢À•W‚ğ•Û‘¶‚·‚é

@@ -13,12 +13,15 @@ public:
 	virtual void onCollide(Actor& actor) override;
 	// 敵とプレイヤーの位置を設定します
 	void setPosition(const Vector2& enemyPosition, const Vector2& playerPosition);
+	// プレイヤーが見えているかを返します
+	bool isPlayerLook();
 
 private:
-	Vector2 enemyPosition_;
-	Vector2 playerPosition_;
+	//bool isLook_;				// プレイヤーが見えているか
 
-	Vector2 samplePos_;
+	Vector2 enemyPosition_;		// 敵の位置
+	Vector2 playerPosition_;	// プレイヤーの位置
+	Vector2 blockPosition_;		// ブロックの位置
 };
 
 #endif

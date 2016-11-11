@@ -42,6 +42,8 @@ void WallMoveEnemy::onUpdate(float deltaTime)
 		isGCont[i] = enemyManager_.getWSPObj(i)->isGround();
 	}
 	result_ = enemyManager_.eachWSPObj();
+
+	//position_ += world_->MoveActor();
 }
 
 void WallMoveEnemy::onDraw() const
@@ -116,7 +118,7 @@ void WallMoveEnemy::searchMove()
 	//position_ += enemyManager_.wallMove() * speed_;
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::Z))
 		return;
-	position_ += enemyManager_.getWallDirection() * speed_;
+	position_ += enemyManager_.getWallDirection() * speed_ * deltaTimer_;
 }
 
 void WallMoveEnemy::addWSPPosition()
