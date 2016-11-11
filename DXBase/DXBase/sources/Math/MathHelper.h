@@ -33,6 +33,7 @@ public:
 	static int Sign(float value);
 	//ÉoÉlï‚ê≥
 	static void Spring(float & num, float & resNum, float & velo, float stiffness, float friction, float mass);
+	static void SpringInt(int & num, int & resNum, int & velo, float stiffness, float friction, float mass);
 
 };
 

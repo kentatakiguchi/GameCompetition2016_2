@@ -27,6 +27,8 @@ public:
 
 	// アクターの追加
 	virtual void addActor(ActorGroup group, const ActorPtr& actor) override;
+	//UIアクターの追加
+	virtual void addUIActor(const ActorUIPtr& actor) override;
 	// アクターの検索
 	virtual ActorPtr findActor(const std::string& name) override;
 	// フィールドの取得

@@ -5,6 +5,7 @@
 #include "../../ResourceLoader/ResourceLoader.h"
 #include "../../Actor/TestPlayer/TestPlayer.h"
 #include "../../Actor/ScroolStop/ScroolStop.h"
+#include "../../Actor/UIActor/BossGaugeUI/BossGaugeUI.h"
 #include <memory>
 #include <random>
 KataokaScene::KataokaScene()
@@ -25,6 +26,7 @@ void KataokaScene::start()
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
 	puyo = new PuyoTextureK(TextureID::PUYO_TEST_TEX,pos,scale,rotate);
+	world_->addUIActor(std::make_shared<BossGaugeUI>(world_.get(), Vector2(500, 500)));
 	//backManager = new BackGraundManager(world_.get());
 	////先にセットされたテクスチャほど奥に描写される
 	//backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX);
@@ -40,50 +42,50 @@ void KataokaScene::update()
 {
 	puyo->PuyoUpdate();
 
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::D))
-		pos.x += 100.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::A))
-		pos.x -= 100.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::W))
-		pos.y += 100.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::S))
-		pos.y -= 100.0f*Time::GetInstance().deltaTime();
-	
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::UP))
-		scale.y += 10.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::DOWN))
-		scale.y -= 10.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::LEFT))
-		scale.x += 10.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::RIGHT))
-		scale.x -= 10.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::D))
+	//	pos.x += 100.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::A))
+	//	pos.x -= 100.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::W))
+	//	pos.y += 100.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::S))
+	//	pos.y -= 100.0f*Time::GetInstance().deltaTime();
+	//
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::UP))
+	//	scale.y += 10.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::DOWN))
+	//	scale.y -= 10.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::LEFT))
+	//	scale.x += 10.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::RIGHT))
+	//	scale.x -= 10.0f*Time::GetInstance().deltaTime();
 
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::G))
-		rotate += 100.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::F))
-		rotate -= 100.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::G))
+	//	rotate += 100.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::F))
+	//	rotate -= 100.0f*Time::GetInstance().deltaTime();
 
-	//テスト用
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::H))
-	{
-		puyo->PuyoAddPower(Vector2(0,128), Vector2(2, -2));
-	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
-	{
-		puyo->PuyoAddPower(Vector2(128, 128), Vector2(2, -2));
-	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::K))
-	{
-		puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
-	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L))
-	{
-		puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
-	}
+	////テスト用
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::H))
+	//{
+	//	puyo->PuyoAddPower(Vector2(0,128), Vector2(2, -2));
+	//}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
+	//{
+	//	puyo->PuyoAddPower(Vector2(128, 128), Vector2(2, -2));
+	//}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::K))
+	//{
+	//	puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
+	//}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::L))
+	//{
+	//	puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
+	//}
 
 	puyo->SetPosition(pos,scale,rotate);
 
-	//world_->update(Time::GetInstance().deltaTime());
+	world_->update(Time::GetInstance().deltaTime());
 	////背景update
 	//backManager->Update(Time::GetInstance().deltaTime());
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN)) isEnd_ = true;
@@ -94,7 +96,7 @@ void KataokaScene::draw() const
 	puyo->PuyoDraw();
 	////背景draw
 	//backManager->Draw();
-	//world_->draw();
+	world_->draw();
 }
 
 void KataokaScene::end()

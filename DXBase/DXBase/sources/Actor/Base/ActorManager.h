@@ -2,6 +2,7 @@
 #define ACTOR_MANAGER_H_
 
 #include "Actor.h"
+#include "ActorUI.h"
 #include <unordered_map>
 #include <list>
 enum class ActorGroup;
@@ -19,6 +20,8 @@ public:
 	void draw() const;
 	// アクターの追加
 	void addActor(ActorGroup group, const ActorPtr& actor);
+	//UIアクターの追加
+	void addUIActor(const ActorUIPtr & actor);
 	// アクターの検索
 	ActorPtr findActor(const std::string& name);
 	// メッセージ処理
@@ -29,11 +32,17 @@ public:
 private:
 	// 衝突判定
 	void collide();
+
+	void UiUpdate(float delta);
+	void UIDraw()const;
 private:
 	// ルートノード
 	Actor root_;
 	// アクターグループ
 	std::unordered_map<ActorGroup, ActorPtr> actors_;
+
+	//UIアクター
+	std::list<ActorUIPtr> uiActors_;
 	//速度
 	Vector2 velo;
 	//using CollideFunc = std::unordered_map < ShapeType, std::function<bool(Collider&, Collider&)> >;

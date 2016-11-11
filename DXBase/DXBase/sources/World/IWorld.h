@@ -15,6 +15,8 @@ public:
 	virtual ~IWorld() {}
 	// アクターの追加
 	virtual void addActor(ActorGroup group, const ActorPtr& actor) = 0;
+	//UIアクターの追加
+	virtual void addUIActor(const ActorUIPtr& actor) = 0;
 	// アクターの検索
 	virtual ActorPtr findActor(const std::string& name) = 0;
 	// フィールドの取得

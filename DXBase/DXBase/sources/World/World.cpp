@@ -57,6 +57,10 @@ void World::addActor(ActorGroup group, const ActorPtr& actor) {
 	actors_.addActor(group, actor);
 }
 
+void World::addUIActor(const ActorUIPtr & actor)
+{
+	actors_.addUIActor(actor);
+}
 // アクターの検索
 ActorPtr World::findActor(const std::string& name) {
 	return actors_.findActor(name);

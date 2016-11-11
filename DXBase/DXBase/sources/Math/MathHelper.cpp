@@ -71,4 +71,16 @@ void MathHelper::Spring(float & num, float & resNum, float & velo, float stiffne
 	// 座標の更新
 	num += velo;
 }
-
+void MathHelper::SpringInt(int & num, int & resNum, int & velo, float stiffness, float friction, float mass)
+{
+	// バネの伸び具合を計算
+	float stretch = (num - resNum);
+	// バネの力を計算
+	float force = -stiffness * stretch;
+	// 加速度を追加
+	float acceleration = force / mass;
+	// 移動速度を計算
+	velo = friction * (velo + acceleration);
+	// 座標の更新
+	num += velo;
+}
