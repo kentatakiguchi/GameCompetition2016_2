@@ -14,6 +14,10 @@ struct BackGraundState
 	Vector2 size = Vector2::Zero;
 	//2つ画像を張るための座標
 	std::list<Vector2> positions;
+	//補正関係
+	Vector2 resVelo = Vector2::Zero;
+	Vector2 springVelo = Vector2::Zero;
+	Vector2 velocity = Vector2::Zero;
 };
 
 class BackGraundManager
@@ -32,6 +36,9 @@ public:
 	void Update(float deltatime);
 	void Draw() const;
 
+	//バネ
+	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness=0.05f, float friction=0.5f, float mass=2.0f);
+
 private:
 	//ワールド
 	IWorld* mWorld;
@@ -46,6 +53,6 @@ private:
 	//地面の背景
 	BackGraundState downBackStates;
 	//補正関係
-	Vector3 restPos;
-	Vector3 velo;
+	Vector2 restPos;
+	Vector2 velo;
 };

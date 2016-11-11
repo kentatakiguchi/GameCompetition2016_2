@@ -1,15 +1,18 @@
 #include "BackGraundManager.h"
 #include "../TestPlayer/TestPlayer.h"
 #include "../Person/Player/Player.h"
+#include "../../Actor/Person/Player/PlayerBody.h"
+#include "../../World/IWorld.h"
 BackGraundManager::BackGraundManager(IWorld * world) :
-	stageFlag(true)
+	stageFlag(true),
+	mWorld(world)
 {
 	//分からないから一応
 	for (auto& i : backStates)
 		i.positions.clear();
 	backStates.clear();
-	//プレイヤー変換
-	mPlayer = dynamic_cast<Player*>(world->findActor("Player").get());
+	////プレイヤー変換
+	//mPlayer = dynamic_cast<PlayerBody*>(world->findActor("Player").get());
 }
 
 BackGraundManager::~BackGraundManager()
@@ -76,11 +79,9 @@ void BackGraundManager::AllDeleteBackGraund()
 void BackGraundManager::Update(float deltatime)
 {
 	//要素内が何もなかったりプレイヤーがnullだったらリターン
-	if (backStates.empty() || mPlayer == nullptr) return;
+	if (backStates.empty()) return;
 	//背景階層の数を取得
 	float layerNum = backStates.size();
-	//移動するかどうかフラグ
-	Vector2 moveFlag = mPlayer->GetMoveFlag();
 	//地面系
 	//コピーを使わないために＆を付けて参照する(for内でiの中身を弄る場合に使う)
 	for (auto& i : backStates)
@@ -88,11 +89,10 @@ void BackGraundManager::Update(float deltatime)
 		for (auto& j : i.positions)
 		{
 			//奥に行くほど遅くする
-			Vector2 vec = mPlayer->GetSpringVelo()*(1.0f / layerNum);
-			//移動する場合flagには1が、移動しない場合flagには0が
-			vec = Vector2(vec.x*moveFlag.x, vec.y*moveFlag.y);
+			i.resVelo = -mWorld->MoveActor()*(1.0f / layerNum);
+			Spring(i.velocity, i.resVelo, i.springVelo);
 			//プレイヤーベクトル加算
-			j += vec;
+			j += i.velocity;
 			//地面テクスチャサイズ
 			Vector2 size = i.size;
 			//x軸のループ
@@ -115,11 +115,10 @@ void BackGraundManager::Update(float deltatime)
 	for (auto& i : upBackStates.positions)
 	{
 		//一番奥の速度と一緒にする
-		Vector2 vec = mPlayer->GetSpringVelo()*(1.0f / backStates.size());
-		//移動する場合flagには1が、移動しない場合flagには0が
-		vec = Vector2(vec.x*moveFlag.x, vec.y*moveFlag.y);
+		upBackStates.resVelo = -mWorld->MoveActor()*(1.0f / backStates.size());
+		Spring(upBackStates.velocity, upBackStates.resVelo, upBackStates.springVelo);
 		//プレイヤー速度加算
-		i += vec;
+		i += upBackStates.velocity;
 		//x軸のループ
 		if (i.x <= -size.x)
 			i.x = size.x + size.x + i.x;
@@ -135,9 +134,10 @@ void BackGraundManager::Update(float deltatime)
 	for (auto& i : downBackStates.positions)
 	{
 		//一番手前の速度と一緒
-		Vector2 vec = mPlayer->GetSpringVelo();
+		downBackStates.resVelo = -mWorld->MoveActor();
+		Spring(downBackStates.velocity, downBackStates.resVelo, downBackStates.springVelo);
 		//プレイヤー速度加算
-		i += vec;
+		i += downBackStates.velocity;
 		//x軸のループ
 		if (i.x <= -size.x)
 			i.x = size.x + size.x + i.x;
@@ -174,4 +174,18 @@ void BackGraundManager::Draw() const
 	{
 		DrawGraph(i.x, i.y, downBackStates.id, true);
 	}
+}
+
+void BackGraundManager::Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness, float friction, float mass)
+{
+	// バネの伸び具合を計算
+	Vector2 stretch = (pos - resPos);
+	// バネの力を計算
+	Vector2 force = -stiffness * stretch;
+	// 加速度を追加
+	Vector2 acceleration = force / mass;
+	// 移動速度を計算
+	velo = friction * (velo + acceleration);
+
+	pos = pos + velo;
 }

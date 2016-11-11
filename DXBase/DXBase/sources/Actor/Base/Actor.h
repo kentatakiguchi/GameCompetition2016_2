@@ -109,9 +109,6 @@ public:
 	void translate(Vector2& position) {
 		body_.translate(position);
 	}
-	Vector2 GetMoveFlag() {
-		return moveFlag;
-	}
 
 private:
 	void ActorMove();

@@ -64,5 +64,5 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::Kataoka;
+	return Scene::GamePlay;
 }
