@@ -15,7 +15,10 @@ struct VertexPos {
 	Vector2 RightDownPos = Vector2::Zero;
 };
 struct SpringState {
-	float amplitude = 0.0f;				           //振幅
+	float veloNum=0.0f;                                 //補間用バネ
+	float resNum=0.0f;                                  //補間用現在
+	float num = 0.0f;
+	float power = 0.0f;                            //加える力
 	float time=0.0f;						       //経過時間
 	float vibrationTime = 0.0f;                    //振動するまでの時間
 	float vibrationTimer = 0.0f;                   //振動するまでのカウント
@@ -34,6 +37,8 @@ public:
 	void SetPosition(Vector2 pos, Vector2 scale, float rotate);
 	//力を加える頂点(pos:テクスチャから見た力を加える座標,velo:揺らす方向と大きさ)
 	void PuyoAddPower(Vector2 pos,Vector2 velo);
+	//力を加え続ける頂点（周りににも）(pos:テクスチャから見た力を加える座標,velo:揺らす方向と大きさ)※毎フレーム呼ぶこと
+	void PuyoAddPowerDx(Vector2 pos, Vector2 velo);
 	void PuyoUpdate();
 	void PuyoDraw();
 private:
@@ -41,6 +46,7 @@ private:
 	void PuyoGraphVertex();
 	void PuyoVertexSet();
 	void PuyoVertexSetInit();
+
 private:
 
 	//頂点情報
@@ -66,17 +72,12 @@ private:
 	float mRotate;
 
 
-	//test
-	Vector2 test;
 	float time;
-	//バネ関係
-	Vector2 vib_center_;	//振動中心
-	float angular_freq_;				//角振動数
-	Vector2 phase_;						//位相
-	float spring_constant_;				//ばね定数
-	float attenuation_constant_;		//減衰定数
-	float mass_;						//質量
-	float p_;						//質量
-	float e_;						//質量
+
+	float tesNum;
+	Vector2 test;
+	float tesTimer;
+	float testVelo;
+	float testRes;
 
 };

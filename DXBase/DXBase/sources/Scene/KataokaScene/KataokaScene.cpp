@@ -42,38 +42,38 @@ void KataokaScene::update()
 {
 	puyo->PuyoUpdate();
 
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::D))
-	//	pos.x += 100.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::A))
-	//	pos.x -= 100.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::W))
-	//	pos.y += 100.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::S))
-	//	pos.y -= 100.0f*Time::GetInstance().deltaTime();
-	//
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::UP))
-	//	scale.y += 10.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::DOWN))
-	//	scale.y -= 10.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::LEFT))
-	//	scale.x += 10.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::RIGHT))
-	//	scale.x -= 10.0f*Time::GetInstance().deltaTime();
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::D))
+		pos.x += 100.0f*Time::GetInstance().deltaTime();
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::A))
+		pos.x -= 100.0f*Time::GetInstance().deltaTime();
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::W))
+		pos.y += 100.0f*Time::GetInstance().deltaTime();
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::S))
+		pos.y -= 100.0f*Time::GetInstance().deltaTime();
+	
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::UP))
+		scale.y += 10.0f*Time::GetInstance().deltaTime();
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::DOWN))
+		scale.y -= 10.0f*Time::GetInstance().deltaTime();
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::LEFT))
+		scale.x += 10.0f*Time::GetInstance().deltaTime();
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::RIGHT))
+		scale.x -= 10.0f*Time::GetInstance().deltaTime();
 
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::G))
-	//	rotate += 100.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::F))
-	//	rotate -= 100.0f*Time::GetInstance().deltaTime();
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::G))
+		rotate += 100.0f*Time::GetInstance().deltaTime();
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::F))
+		rotate -= 100.0f*Time::GetInstance().deltaTime();
 
-	////テスト用
-	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::H))
-	//{
-	//	puyo->PuyoAddPower(Vector2(0,128), Vector2(2, -2));
-	//}
-	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
-	//{
-	//	puyo->PuyoAddPower(Vector2(128, 128), Vector2(2, -2));
-	//}
+	//テスト用
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::H))
+	{
+		puyo->PuyoAddPowerDx(Vector2(0,128), Vector2(3, -3));
+	}
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
+	{
+		puyo->PuyoAddPower(Vector2(128, 128), Vector2(2, -2));
+	}
 	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::K))
 	//{
 	//	puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
@@ -97,6 +97,9 @@ void KataokaScene::draw() const
 	////背景draw
 	//backManager->Draw();
 	world_->draw();
+	DrawFormatString(550, 25, GetColor(255, 255, 255), "Hキー長押し:力を加え続ける");
+	DrawFormatString(550, 50, GetColor(255, 255, 255), "Jキー      :一瞬だけ力を加える");
+	DrawFormatString(550, 75, GetColor(255, 255, 255), "Hキー押したままJキーを押すとバグるかも");
 }
 
 void KataokaScene::end()
