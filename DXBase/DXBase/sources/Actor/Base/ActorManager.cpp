@@ -41,16 +41,22 @@ void ActorManager::update(float deltaTime) {
 	root_.late_update(deltaTime);
 	//MoveActor();
 	root_.removeChildren();
+	UiUpdate(deltaTime);
 }
 
 // 描画
 void ActorManager::draw() const {
 	root_.draw();
+	UIDraw();
 }
 
 // アクターの追加
 void ActorManager::addActor(ActorGroup group, const ActorPtr& actor) {
 	actors_[group]->addChild(actor);
+}
+void ActorManager::addUIActor(const ActorUIPtr & actor)
+{
+	uiActors_.push_back(actor);
 }
 
 // アクターの検索
@@ -71,4 +77,21 @@ void ActorManager::collide() {
 	actors_[ActorGroup::Player_AttackRange]->collideChildren(*actors_[ActorGroup::Enemy]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Field]);
 	actors_[ActorGroup::Enemy]->collideChildren(*actors_[ActorGroup::Field]);
+}
+
+void ActorManager::UiUpdate(float delta)
+{
+	for (auto& i : uiActors_)
+	{
+		i->update(delta);
+	}
+
+}
+
+void ActorManager::UIDraw() const
+{
+	for (auto& i : uiActors_)
+	{
+		i->draw();
+	}
 }

@@ -159,6 +159,7 @@
     <ClInclude Include="sources\Actor\Base\ActorGroup.h" />
     <ClInclude Include="sources\Actor\Base\ActorManager.h" />
     <ClInclude Include="sources\Actor\Base\ActorPtr.h" />
+    <ClInclude Include="sources\Actor\Base\ActorUI.h" />
     <ClInclude Include="sources\Actor\Body\Body.h" />
     <ClInclude Include="sources\Actor\Body\BoundingBox.h" />
     <ClInclude Include="sources\Actor\Body\BoundingCapsule.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="sources\Actor\Person\Player\Status\Status.h" />
     <ClInclude Include="sources\Actor\ScroolStop\ScroolStop.h" />
     <ClInclude Include="sources\Actor\TestPlayer\TestPlayer.h" />
+    <ClInclude Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.h" />
     <ClInclude Include="sources\Animation\Animation.h" />
     <ClInclude Include="sources\Animation\Animation2D.h" />
     <ClInclude Include="sources\AquaLib\AquaLib.h" />
@@ -269,6 +271,7 @@
     <ClCompile Include="sources\Actor\BackGraundManager\BackGraundManager.cpp" />
     <ClCompile Include="sources\Actor\Base\Actor.cpp" />
     <ClCompile Include="sources\Actor\Base\ActorManager.cpp" />
+    <ClCompile Include="sources\Actor\Base\ActorUI.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingBox.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingCapsule.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingCircle.cpp" />
@@ -308,6 +311,7 @@
     <ClCompile Include="sources\Actor\Person\Player\Status\Status.cpp" />
     <ClCompile Include="sources\Actor\ScroolStop\ScroolStop.cpp" />
     <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
+    <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
     <ClCompile Include="sources\Animation\Animation.cpp" />
     <ClCompile Include="sources\Animation\Animation2D.cpp" />
     <ClCompile Include="sources\Field\MapChip.cpp" />
