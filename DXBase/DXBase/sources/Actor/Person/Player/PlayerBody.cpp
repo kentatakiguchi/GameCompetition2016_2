@@ -19,7 +19,7 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	stateMgr_.add((unsigned int)PlayerState_Enum_Single::IDLE, std::make_shared<PlayerState_Single_Idle>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Single::JUMP, std::make_shared<PlayerState_Single_Jump>());
 	//stateMgr_.add((unsigned int)PlayerState_Enum_Single::MOVE, std::make_shared<PlayerState_Single_Idle>());
-	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
+	init_state();
 
 	other_ = "";
 }
@@ -27,12 +27,10 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 PlayerBody::~PlayerBody(){}
 
 void PlayerBody::onUpdate(float deltaTime){
-	position_ += input_ * PLAYER_SPEED  + launch_ + gravity_ * deltaTime * GetRefreshRate();
+	position_ += input_ * PLAYER_SPEED  + launch_ + gravity_ * deltaTime * static_cast<float>(GetRefreshRate());
 	velocity_ = position_ - body_.GetCircle().previousPosition_;
 
 	isOnFloor_ = false;
-
-
 }
 
 void PlayerBody::onDraw() const{
@@ -67,17 +65,17 @@ void PlayerBody::onCollide(Actor & other){
 		auto up_down = Vector2::Cross(m_left - m_right, (pos - m_right));
 		auto right_left = Vector2::Cross(m_top - m_bot, (pos - m_bot));
 
-		if (top > 0 && left <= 0 && right <= 0) {
-			position_.y = t_left.y - body_.GetCircle().component_.radius;
+		if (top >= 0 && left <= 0 && right <= 0) {
+			position_.y = t_left.y - (body_.GetCircle().component_.radius + 5);
 		}
-		if (bottom > 0 && left <= 0 && right <= 0) {
-			position_.y = b_right.y + body_.GetCircle().component_.radius;
+		if (bottom >= 0 && left <= 0 && right <= 0) {
+			position_.y = b_right.y + (body_.GetCircle().component_.radius + 5);
 		}
-		if (right > 0 && top <= 0 && bottom <= 0) {
-			position_.x = t_right.x + body_.GetCircle().component_.radius;
+		if (right >= 0 && top <= 0 && bottom <= 0) {
+			position_.x = t_right.x + (body_.GetCircle().component_.radius + 5);
 		}
-		if (left > 0 && top <= 0 && bottom <= 0) {
-			position_.x = b_left.x - body_.GetCircle().component_.radius;
+		if (left >= 0 && top <= 0 && bottom <= 0) {
+			position_.x = b_left.x - (body_.GetCircle().component_.radius + 5);
 		}
 
 		isOnFloor_ = true;
@@ -106,44 +104,14 @@ void PlayerBody::onCollide(Actor & other){
 
 }
 
-
-void PlayerBody::changeMotion(float deltaTime){
+void PlayerBody::init_state(){
+	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
 }
 
-void PlayerBody::move(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
-	if (distance() > PLAYER_MAX_STRETCH_LENGTH) {	}
-
-	input_ = Vector2::Zero;
-	if (InputMgr::GetInstance().IsKeyOn(right)) input_.x = 1;
-	if (InputMgr::GetInstance().IsKeyOn(left)) 	input_.x = -1;
-	if (InputMgr::GetInstance().IsKeyOn(up)) 	input_.y = -1;
-	if (InputMgr::GetInstance().IsKeyOn(down)) 	input_.y = 1;
+void PlayerBody::move(Vector2 vector){
+	if (distance() >= PLAYER_MAX_STRETCH_LENGTH && stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::STAND_BY)) return;
 	
-	//position_ += input_ * SPEED;
-}
-
-void PlayerBody::move_ver(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
-	if (distance() > PLAYER_MAX_STRETCH_LENGTH) {	}
-
-	if (InputMgr::GetInstance().IsKeyOn(down))	input_.y = 1;
-	if (InputMgr::GetInstance().IsKeyOn(up))	input_.y = -1;
-}
-
-void PlayerBody::move_hor(KeyCode right, KeyCode left){
-
-	if (InputMgr::GetInstance().IsKeyOn(right)) input_.x = 1;
-	if (InputMgr::GetInstance().IsKeyOn(left)) 	input_.x = -1;
-
-	//if (distance() >= MAX_STRETCH_LENGTH) {
-	//	//auto vec = Vector3::Normalize(position_ - target_->getPosition()) * MAX_STRETCH_LENGTH;
-	//	//position_ = target_->getPosition() + vec;
-	//	velocity_ = Vector3::Zero;
-
-	//	//position_ = last_pos_;
-	//	return;
-	//}
-	//if (distance() >= MAX_STRETCH_LENGTH) {
-	//}
+	input_ = vector;
 }
 
 void PlayerBody::sprit_move(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
@@ -160,12 +128,12 @@ void PlayerBody::chase() {
 	if (target_ == nullptr || Vector2::Distance(Vector2::Zero, input_) > 0)return;
 	if (distance() <= PLAYER_MAX_NORMAL_LENGTH) return;
 	auto vec = Vector2::Normalize(position_ - target_->getPosition()) * PLAYER_MAX_NORMAL_LENGTH;
-	position_ = Vector2::Lerp(position_, target_->getPosition() + vec, 0.2f);
+	position_ = Vector2::Lerp(position_, target_->getPosition() + vec, 0.3f);
 }
 
 void PlayerBody::gravity(){
-	if (isOnFloor_)gravity_ = Vector2(0, 5);
-	else gravity_ = Vector2(0, 5);
+	if (isOnFloor_)gravity_ = Vector2(0, 9.8f);
+	else gravity_ = Vector2(0, 9.8f);
 }
 
 void PlayerBody::acc_gravity(){
@@ -215,6 +183,10 @@ void PlayerBody::target(std::shared_ptr<PlayerBody> target){
 bool PlayerBody::isOnFloor()
 {
 	return isOnFloor_;
+}
+
+bool PlayerBody::isDead(){
+	return dead_limit_ >= PLAYER_DEAD_LIMIT;
 }
 
 void PlayerBody::single_action(float deltaTime){

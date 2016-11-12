@@ -101,7 +101,7 @@ inline float EasingOutBounce(float t)
 		return 7.5625f * t * t + 0.9375f;
 	}
 	t -= 2.625f / 2.75f;
-	return 7.5625 * t * t + 0.984375;
+	return static_cast<float>(7.5625 * t * t + 0.984375);
 }
 
 inline float EasingOutCirc(float t)
@@ -149,7 +149,7 @@ inline float EasingOutQuad(float t)
 inline float EasingOutQuart(float t)
 {
 	t -= 1.0f;
-	return 1.0 - t * t * t * t;
+	return static_cast<float>(1.0 - t * t * t * t);
 }
 
 inline float EasingOutQuint(float t)
@@ -169,10 +169,10 @@ inline float EasingInOutBack(float t, float s = 1.70158f)
 	t *= 2.0f;
 	s *= k;
 	if (t < 1) {
-		return 0.5 * (t * t * ((s + 1) * t - s));
+		return static_cast<float>(0.5 * (t * t * ((s + 1) * t - s)));
 	}
 	t -= 2;
-	return 0.5 * (t * t * ((s + 1) * t + s) + 2);
+	return static_cast<float>(0.5 * (t * t * ((s + 1) * t + s) + 2));
 }
 
 inline float EasingInOutBounce(float t)
@@ -196,10 +196,10 @@ inline float EasingInOutCubic(float t)
 {
 	t *= 2.0f;
 	if (t < 1) {
-		return 0.5 * t * t * t;
+		return static_cast<float>(0.5 * t * t * t);
 	}
 	t -= 2.0f;
-	return 0.5f * (t * t * t + 2.0f);
+	return static_cast<float>(0.5f * (t * t * t + 2.0f));
 }
 
 inline float EasingInOutElastic(float t, float s = 1.70158f)

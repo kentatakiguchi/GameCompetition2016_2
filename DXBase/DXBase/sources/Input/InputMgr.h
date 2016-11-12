@@ -26,13 +26,15 @@ public:
 	bool IsButtonOn(Buttons handle);
 	bool IsButtonUp(Buttons handle);
 
-	bool IsMoving(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
-	bool IsStoped(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
-
 	Vector2 AnalogPadVectorL();
 	Vector2 AnalogPadVectorR();
 	Vector2 DirectPadVector();
 	Vector2 XPadVector();
+
+	Vector2 KeyVector(KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT, KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN);
+	Vector2 KeyVector_L(KeyCode right = KeyCode::D, KeyCode left = KeyCode::A, KeyCode up = KeyCode::W, KeyCode down = KeyCode::S);
+	Vector2 KeyVector_R(KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT, KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN);
+
 private:
 	static const int MAX_KEY_NUM = 256;
 	

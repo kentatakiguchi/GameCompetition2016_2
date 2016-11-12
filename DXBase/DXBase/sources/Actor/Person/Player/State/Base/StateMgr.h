@@ -18,7 +18,7 @@ public:
 	// ステートの追加
 	void add(unsigned int state, const IStatePtr& scene);
 	// 現在のステート
-	unsigned int currentState();
+	bool currentState(unsigned int state = 0);
 private:
 	// コピー禁止
 	StateMgr(const StateMgr& other) = delete;

@@ -29,7 +29,6 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	addChild(body1);
 	addChild(body2);
 
-	connect(body1, body2);
 
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::STAND_BY, std::make_shared<PlayerState_StandBy>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::IDLE, std::make_shared<PlayerState_Idle>());
@@ -41,6 +40,9 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::DAMAGE, std::make_shared<PlayerState_Damage>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::SPLIT, std::make_shared<PlayerState_Split>());
 	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::STAND_BY));
+
+	connect(body1, body2);
+
 }
 
 Player::~Player(){}
@@ -103,6 +105,7 @@ void Player::setBody(PlayerBodyPtr main, PlayerBodyPtr sub){
 
 void Player::connect(PlayerBodyPtr main, PlayerBodyPtr sub){
 	addChild(std::make_shared<PlayerConnector>(world_, main, sub));
+	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 }
 
 void Player::split_body(){

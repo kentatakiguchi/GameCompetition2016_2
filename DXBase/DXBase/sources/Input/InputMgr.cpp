@@ -90,8 +90,10 @@ void InputMgr::RegistKeyCode(){
 	ButtonName[Buttons::BUTTON_CIRCLE] = PAD_INPUT_3;
 	ButtonName[Buttons::BUTTON_CROSS] = PAD_INPUT_2;
 	ButtonName[Buttons::BUTTON_START] = PAD_INPUT_10;
-	ButtonName[Buttons::BUTTON_L] = PAD_INPUT_5;
-	ButtonName[Buttons::BUTTON_R] = PAD_INPUT_6;
+	ButtonName[Buttons::BUTTON_L1] = PAD_INPUT_7;
+	ButtonName[Buttons::BUTTON_R1] = PAD_INPUT_8;
+	ButtonName[Buttons::BUTTON_L2] = PAD_INPUT_5;
+	ButtonName[Buttons::BUTTON_R2] = PAD_INPUT_6;
 	ButtonName[Buttons::BUTTON_UP] = PAD_INPUT_UP;
 	ButtonName[Buttons::BUTTON_DOWN] = PAD_INPUT_DOWN;
 	ButtonName[Buttons::BUTTON_RIGHT] = PAD_INPUT_RIGHT;
@@ -146,26 +148,12 @@ bool InputMgr::IsButtonUp(Buttons handle)
 	}
 }
 
-bool InputMgr::IsMoving(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
-	if (IsKeyDown(up) || IsKeyDown(down) || IsKeyDown(right) || IsKeyDown(left)) {
-		return true;
-	}
-	return false;
-}
-
-bool InputMgr::IsStoped(KeyCode up, KeyCode down, KeyCode right, KeyCode left){
-	if (!IsKeyOn(up) && !IsKeyOn(down) && !IsKeyOn(right) && !IsKeyOn(left)) {
-		return true;
-	}
-	return false;
-}
-
 Vector2 InputMgr::AnalogPadVectorL()
 {
 	int horizontal;
 	int vertical;
 	GetJoypadAnalogInput(&horizontal, &vertical, DX_INPUT_PAD1);
-	return Vector2(horizontal, vertical);
+	return Vector2(horizontal, vertical) / 1000;
 
 }
 Vector2 InputMgr::AnalogPadVectorR()
@@ -179,7 +167,7 @@ Vector2 InputMgr::AnalogPadVectorR()
 	horizontal = joy.Z;
 	vertical = joy.Rz;
 
-	return Vector2(horizontal, vertical);
+	return Vector2(horizontal, vertical) / 1000;
 }
 Vector2 InputMgr::DirectPadVector() {
 	DINPUT_JOYSTATE joy;
@@ -238,3 +226,28 @@ Vector2 InputMgr::XPadVector()
 	float vertical = joy.ThumbLY;
 	return Vector2(horizontal, vertical);
 }
+
+
+
+Vector2 InputMgr::KeyVector(KeyCode right, KeyCode left, KeyCode up, KeyCode down){
+	Vector2 input = Vector2::Zero;
+	if (IsKeyOn(right) && IsKeyOn(left))input.x = 0;
+	else if (IsKeyOn(right))input.x = 1;
+	else if (IsKeyOn(left))	input.x = -1;
+	if (IsKeyOn(up) && IsKeyOn(down))input.y = 0;
+	else if (IsKeyOn(up))	input.y = -1;
+	else if (IsKeyOn(down))	input.y = 1;
+	return input;
+}
+
+// âEóp
+Vector2 InputMgr::KeyVector_L(KeyCode right, KeyCode left, KeyCode up, KeyCode down) {
+	return KeyVector(right, left, up, down);
+}
+
+// ç∂óp
+Vector2 InputMgr::KeyVector_R(KeyCode right, KeyCode left, KeyCode up, KeyCode down){
+	return KeyVector(right, left, up, down);
+}
+
+

@@ -17,6 +17,7 @@ void PlayerState_Single_Idle::end(){
 }
 
 void PlayerState_Single_Idle::move(Actor & actor, float deltaTime){
-	player_body_->move_hor(player_body_->get_keys().right, player_body_->get_keys().left);
+	Vector2 vector = InputMgr::GetInstance().KeyVector(player_body_->get_keys().right, player_body_->get_keys().left);
+	player_body_->move(vector.Horizontal());
 	player_body_->gravity();
 }

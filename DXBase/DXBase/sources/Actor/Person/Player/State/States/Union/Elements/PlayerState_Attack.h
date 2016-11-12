@@ -11,10 +11,6 @@ public:
 	virtual void update(Actor & actor, float deltaTime) override;
 
 	virtual void end() override;
-//private:
-//	float gsEasingInExpo(float t);
-//	float gsEasingOutExpo(float t);
-
 private:
 	Vector2 dir_;
 	float dump_;

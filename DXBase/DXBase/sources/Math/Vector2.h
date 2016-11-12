@@ -16,6 +16,10 @@ struct Vector2 {
 	float LengthSquared() const;
 	// 単位ベクトルを作成します
 	Vector2& Normalize();
+	//	値の水平方向のみ返します
+	Vector2& Horizontal();
+	//	値の垂直方向のみ返します
+	Vector2& Vertical();
 
 	// 指定ベクトルから単位ベクトルを作成します
 	static Vector2 Normalize(const Vector2& value);

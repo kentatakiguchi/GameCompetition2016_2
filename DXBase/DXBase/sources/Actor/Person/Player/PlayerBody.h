@@ -40,14 +40,14 @@ public:
 	virtual void onDraw() const override;
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onCollide(Actor& other) override;
-	void changeMotion(float deltaTime);
-	void move(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
-	void move_ver(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
-	void move_hor(KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
+	void init_state();
+	void move(Vector2 vector);	
+	
 	void sprit_move(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 	void chase();
 	void gravity();
 	void acc_gravity();
+
 	void hold_gravity();
 	void circleClamp();
 	void launch(Vector2 dir);
@@ -58,6 +58,7 @@ public:
 	float distance();
 	void target(std::shared_ptr<PlayerBody> target);
 	bool isOnFloor();
+	bool isDead();
 	void single_action(float deltaTime);
 	SingleKeys get_keys();
 
@@ -82,6 +83,8 @@ private:
 	StateMgr stateMgr_;
 	// ï™ó£éûÇÃÉLÅ[
 	SingleKeys keys_;
+
+	float dead_limit_;
 };
 
 

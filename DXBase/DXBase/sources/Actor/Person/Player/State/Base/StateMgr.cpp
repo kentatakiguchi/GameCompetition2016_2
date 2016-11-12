@@ -30,7 +30,7 @@ void StateMgr::add(unsigned int state, const IStatePtr& scene) {
 }
 
 // 現在のステート
-unsigned int StateMgr::currentState() {
-	return currentStateName_;
+bool StateMgr::currentState(unsigned int state) {
+	return currentStateName_ == state;
 }
 

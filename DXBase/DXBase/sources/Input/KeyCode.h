@@ -1,6 +1,7 @@
 #pragma once
 
 enum KeyCode {
+	NONE,
 	UP,
 	DOWN,
 	RIGHT,
@@ -45,8 +46,10 @@ enum Buttons {
 	BUTTON_CIRCLE,
 	BUTTON_CROSS,
 	BUTTON_START,
-	BUTTON_L,
-	BUTTON_R,
+	BUTTON_L1,
+	BUTTON_R1,
+	BUTTON_L2,
+	BUTTON_R2,
 
 
 

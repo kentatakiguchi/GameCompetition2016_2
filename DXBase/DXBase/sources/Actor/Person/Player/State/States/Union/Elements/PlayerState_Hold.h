@@ -13,4 +13,8 @@ public:
 	virtual void end() override;
 private:
 	void move();
+
+private:
+	void key_update();
+	void pad_update();
 }; 

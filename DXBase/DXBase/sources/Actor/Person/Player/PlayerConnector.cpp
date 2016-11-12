@@ -49,7 +49,7 @@ void PlayerConnector::onDraw() const{
 
 	Vector3 main = Vector3(main_->getPosition().x, main_->getPosition().y) * inv_;
 	Vector3 sub = Vector3(sub_->getPosition().x, sub_->getPosition().y) * inv_;
-	DrawShape::Oval(Vector2(main.x, main.y), Vector2(sub.x, sub.y), 8.0f * 5, PLAYER_MAX_NORMAL_LENGTH);
+	DrawShape::Oval(Vector2(main.x, main.y), Vector2(sub.x, sub.y), PLAYER_RADIUS * 2, PLAYER_MAX_NORMAL_LENGTH * 0.75f);
 	DrawFormatString(static_cast<int>(main.x), static_cast<int>(main.y), GetColor(255, 255, 255), "main");
 	DrawFormatString(static_cast<int>(sub.x), static_cast<int>(sub.y), GetColor(255, 255, 255), "sub");
 

@@ -31,7 +31,7 @@ void PlayerState_Attack::update(Actor & actor, float deltaTime) {
 
 	dir_ *= -dir_easeing_ + 1;
 
-	dir_.y += 0.001f * gra_easeing_;
+	dir_.y += 0.1f * gra_easeing_;
 	
 	main_body_->launch(dir_ * power_);
 
@@ -53,13 +53,6 @@ void PlayerState_Attack::end(){
 
 }
 
-//float PlayerState_Attack::gsEasingInExpo(float t){
-//	return (t == 0) ? 0.0f : std::pow(2.0f, 10.0f * (t - 1.0f));
-//}
-//
-//float PlayerState_Attack::gsEasingOutExpo(float t){
-//	return (t == 1.0f) ? 1.0f : (-std::pow(2.0f, -10.0f * t) + 1.0f);
-//}
 
 
 

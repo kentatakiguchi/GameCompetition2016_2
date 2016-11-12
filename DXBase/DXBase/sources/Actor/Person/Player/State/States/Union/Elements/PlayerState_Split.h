@@ -12,5 +12,5 @@ public:
 
 	virtual void end() override;
 private:
-	void move(Actor & actor, float deltaTime);
+	float time_;
 };

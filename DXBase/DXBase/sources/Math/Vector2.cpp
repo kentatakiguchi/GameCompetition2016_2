@@ -36,6 +36,16 @@ Vector2& Vector2::Normalize()
 	return *this;
 }
 
+Vector2 & Vector2::Horizontal(){
+	this->y *= 0;
+	return *this;
+}
+
+Vector2 & Vector2::Vertical() {
+	this->x *= 0;
+	return *this;
+}
+
 Vector2 Vector2::Normalize(const Vector2 & value)
 {
 	return Vector2(value).Normalize();
