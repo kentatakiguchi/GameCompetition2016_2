@@ -47,7 +47,7 @@ void BoundingCircle::draw(Matrix inv) const {
 
 bool BoundingCircle::intersects(BoundingBox & other)
 {
-	if (!other.enabled || !enabled)return false;
+	if (!enabled || !other.enabled)return false;
 
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 	//’[“_
@@ -75,8 +75,6 @@ bool BoundingCircle::intersects(BoundingBox & other)
 			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
 			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
-			OutputDebugString("sdasd");
-			OutputDebugString("\n");
 			return true;
 		}
 	}
@@ -138,6 +136,8 @@ bool BoundingCircle::intersects(BoundingBox & other)
 
 bool BoundingCircle::intersects(BoundingCircle& other)
 {
+	if (!enabled || !other.enabled)return false;
+
 	Vector2 AB = CreateVector(previousPosition_, position_);
 	Vector2 AC, AD, CD, CA, CB;
 
@@ -345,8 +345,6 @@ bool BoundingCircle::isIntersectThisRayToOtherLineSegment(BoundingSegment & othe
 		OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 	{
 		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
-		OutputDebugString("sdasd");
-		OutputDebugString("\n");
 		return true;
 	}
 

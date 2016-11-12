@@ -47,7 +47,7 @@ void TurnFloor::onUpdate(float deltaTime)
 {
 	defaultPos_ = position_ - (moveVelocity*CHIPSIZE*TURNRANGE);
 
-	moveCount_++;
+	moveCount_+=1*(ceilf(deltaTime));
 	if (moveCount_ % 360 == 0) {
 		moveCount_ = 0;
 	}
@@ -61,7 +61,7 @@ void TurnFloor::onUpdate(float deltaTime)
 
 void TurnFloor::onDraw() const
 {
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void TurnFloor::onCollide(Actor & other)

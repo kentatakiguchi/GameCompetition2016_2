@@ -3,7 +3,7 @@
 
 #include "../../Define.h"
 
-LoadingScene::LoadingScene():
+LoadingScene::LoadingScene(SceneDataKeeper* keeper):
 isEnd_(false){
 }
 
@@ -64,5 +64,5 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::Kataoka;
+	return Scene::GamePlay;
 }

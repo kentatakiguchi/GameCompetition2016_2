@@ -64,9 +64,38 @@ void BoundingBox::draw(Matrix inv) const {
 	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
 }
 
+void BoundingBox::draw(int spriteID, Matrix inv) const
+{
+	Vector3 pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+	Vector3 pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
+	Vector3 pos2 = Vector3(component_.point[2].x, component_.point[2].y) * inv;
+	Vector3 pos3 = Vector3(component_.point[3].x, component_.point[3].y) * inv;
+
+	DrawGraph(pos0.x, pos0.y, spriteID, TRUE);
+}
+
+void BoundingBox::draw(int spriteID, int rotation, Matrix inv) const
+{
+	Vector3 pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+	Vector3 pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
+	Vector3 pos2 = Vector3(component_.point[2].x, component_.point[2].y) * inv;
+	Vector3 pos3 = Vector3(component_.point[3].x, component_.point[3].y) * inv;
+
+	Vector2 centerMath1, centerMath2, center;
+
+	centerMath1.x = (pos0.x + pos1.x) / 2;
+	centerMath1.y = (pos0.y + pos1.y) / 2;
+	centerMath2.x = (pos2.x + pos3.x) / 2;
+	centerMath2.y = (pos2.y + pos3.y) / 2;
+	center = (centerMath1 + centerMath2) / 2;
+
+	DrawRotaGraph(center.x, center.y,1,(rotation*MathHelper::Pi/180), spriteID, TRUE);
+
+}
+
 bool BoundingBox::intersects(BoundingBox & other)
 {
-	if (!enabled)return false;
+	if (!enabled || !other.enabled)return false;
 
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 
@@ -85,8 +114,6 @@ bool BoundingBox::intersects(BoundingBox & other)
 			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
 			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
-			OutputDebugString("sdasd");
-			OutputDebugString("\n");
 			return true;
 		}
 	}
@@ -155,8 +182,8 @@ bool BoundingBox::intersects(BoundingBox & other)
 //}
 
 bool BoundingBox::intersects(BoundingCapsule & other) {
-	if (!enabled||!other.enabled)return false;
-	
+	if (!enabled || !other.enabled)return false;
+
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 
 	Vector2 AB = CreateVector(other.previousPosition_, other.position_);
@@ -175,8 +202,6 @@ bool BoundingBox::intersects(BoundingCapsule & other) {
 			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
 			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
-			OutputDebugString("sdasd");
-			OutputDebugString("\n");
 			return true;
 		}
 	}
@@ -342,7 +367,7 @@ bool BoundingBox::intersects(BoundingCapsule & other) {
 }
 bool BoundingBox::intersects(BoundingSegment & other)
 {
-	if (!enabled)return false;
+	if (!enabled || !other.enabled)return false;
 
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 
@@ -361,8 +386,6 @@ bool BoundingBox::intersects(BoundingSegment & other)
 			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
 			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
-			OutputDebugString("sdasd");
-			OutputDebugString("\n");
 			return true;
 		}
 	}
@@ -418,7 +441,7 @@ bool BoundingBox::intersects(BoundingSegment & other)
 
 bool BoundingBox::intersects(BoundingCircle & other)
 {
-	if (!other.enabled || !enabled)return false;
+	if (!enabled || !other.enabled)return false;
 
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 	//’[“_
@@ -446,8 +469,6 @@ bool BoundingBox::intersects(BoundingCircle & other)
 			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
 			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
-			OutputDebugString("sdasd");
-			OutputDebugString("\n");
 			return true;
 		}
 	}

@@ -6,6 +6,10 @@
 #include "Scene.h"
 
 #include "../../Game/Time.h"
+#include"../Base/SceneDataKeeper.h"
+#include"../../Renderer/FontManager.h"
+#include"../../Define.h"
+#include<vector>
 
 //シーン抽象インターフェース
 class IScene{
@@ -24,8 +28,19 @@ public:
 	virtual Scene next() const = 0;
 	//終了
 	virtual void end() = 0;
+	std::string getName() {
+		return name_;
+	}
+	void setName(std::string name) {
+		name_=name;
+	}
 public:
 	bool isEnd_;
+	SceneDataKeeper* keeper_;
+	std::string name_;
+	std::vector<std::string> changeTextList;
+	std::vector<std::vector<std::string>> listBase;
+	std::vector<Vector2> textPosList;
 };
 
 #endif

@@ -9,6 +9,8 @@ enum Scene {
 	Title,
 	GamePlay,
 	GameOver,
+	StageClear,
+	GameClear,
 	Kataoka,
 	Nagano,
 	Ending

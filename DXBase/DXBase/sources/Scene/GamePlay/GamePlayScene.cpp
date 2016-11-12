@@ -19,15 +19,21 @@
 
 static const Vector2 START_POS = Vector2(300, 400);
 
-GamePlayScene::GamePlayScene(){
+GamePlayScene::GamePlayScene(SceneDataKeeper* keeper):nextScene_(Scene::GameOver),isStopped_(false){
 	isEnd_ = false;
+	keeper_ = keeper;
+	name_="stage00";
+	deltaTime_ = 1 / 60.f;
+
 }
 
 GamePlayScene::~GamePlayScene(){
 }
 
 void GamePlayScene::start() {
-	// 描画先画面を裏画面にセット
+
+	deltaTime_ = Time::GetInstance().deltaTime();
+	isStopped_ = false;
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
 	//world_->addEventMessageListener(
@@ -43,7 +49,8 @@ void GamePlayScene::start() {
 	world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
 
 	MapGenerator gener = MapGenerator(world_.get());
-	gener.create("test.csv");
+	keeper_->getNextSceneName(name_);
+	gener.create("./resources/file/"+name_+".csv");
 
 	status_ = Status(10);
 
@@ -59,10 +66,15 @@ void GamePlayScene::start() {
 }
 
 void GamePlayScene::update() {
-	world_->update(Time::GetInstance().deltaTime());
-	backManager->Update(Time::GetInstance().deltaTime());
+	
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T)) {
+		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime(): deltaTime_ = 0;
+		isStopped_ = !isStopped_;
+	}
+	world_->update(deltaTime_);
+	backManager->Update(deltaTime_);
 
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN)) isEnd_ = true;
+	isStopped_ ? isEnd_=pause_.update(nextScene_) : isEnd_=move_.update(name_,nextScene_);
 }
 
 void GamePlayScene::draw() const {
@@ -70,10 +82,8 @@ void GamePlayScene::draw() const {
 	//world描画
 	world_->draw();
 
-	DrawFormatString(550, 25, GetColor(255, 255, 255), "キャラ移動：WASDキー / 方向キー");
-	DrawFormatString(550, 50, GetColor(255, 255, 255), "吸着：L_Shift / R_Shift");
+	isStopped_ ? pause_.draw() : move_.draw();
 
-	DrawFormatString(550, 550, GetColor(255, 255, 255), "ENTERボタンでリザルトへ");
 }
 
 void GamePlayScene::end() {
@@ -84,6 +94,6 @@ bool GamePlayScene::isEnd() const {
 }
 
 Scene GamePlayScene::next() const {
-	return Scene::GameOver;
+	return nextScene_;
 }
 

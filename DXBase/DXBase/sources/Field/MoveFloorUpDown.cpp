@@ -45,19 +45,19 @@ void MoveFloorUpDown::set(Vector2 & pos)
 
 void MoveFloorUpDown::onUpdate(float deltaTime)
 {
-	moveCount_ += moveVelocity;
+	moveCount_ += moveVelocity*ceilf(deltaTime);
 	if (moveCount_<=0) {
 		moveVelocity = 1;
 	}
 	if (moveCount_>= CHIPSIZE*UPDOWNRANGE) {
 		moveVelocity = -1;
 	}
-	position_.y += moveVelocity;
+	position_.y += moveVelocity*ceilf(deltaTime);
 }
 
 void MoveFloorUpDown::onDraw() const
 {
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void MoveFloorUpDown::onCollide(Actor & other)

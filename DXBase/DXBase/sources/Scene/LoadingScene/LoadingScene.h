@@ -7,7 +7,7 @@ class World;
 
 class LoadingScene : public IScene {
 public:
-	LoadingScene();
+	LoadingScene(SceneDataKeeper* keeper);
 	~LoadingScene();
 	virtual void start() override;
 	virtual void update() override;

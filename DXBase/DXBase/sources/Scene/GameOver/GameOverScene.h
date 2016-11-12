@@ -5,7 +5,7 @@
 
 class GameOverScene : public IScene{
 public:
-	GameOverScene();
+	GameOverScene(SceneDataKeeper* keeper);
 	~GameOverScene();
 	virtual void start() override;
 	virtual void update() override;
@@ -15,6 +15,7 @@ public:
 	virtual Scene next() const override;
 private:
 	int id;
+	Scene nextScene_;
 };
 
 #endif

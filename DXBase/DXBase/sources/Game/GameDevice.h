@@ -3,6 +3,7 @@
 
 #include "DxLib.h"
 #include "../Scene/Base/SceneMgr.h"
+#include"../Scene/Base/SceneDataKeeper.h"
 
 class GameDevice{
 public:
@@ -18,6 +19,7 @@ private:
 	GameDevice& operator = (const GameDevice& other) = delete;
 private:
 	SceneMgr sceneMgr_;
+	SceneDataKeeper dataKeeper_;
 };
 
 #endif

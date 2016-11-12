@@ -22,7 +22,10 @@ enum class TextureID {
 	BACKGRAUND_TOP_TEX,
 	PUYO_TEST_TEX,
 	BOSS_GAUGE_TEX,
-	ENEMY_SAMPLE_TEX
+	ENEMY_SAMPLE_TEX,
+	CHIP1_TEX,
+	CHIP2_TEX
+
 };
 
 class ResourceLoader{

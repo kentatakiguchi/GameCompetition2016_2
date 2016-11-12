@@ -208,6 +208,60 @@ void CollisionBase::draw(Matrix inv) const
 	}
 }
 
+void CollisionBase::draw(int spriteID, Matrix inv) const
+{
+	switch (type_)
+	{
+	case BoxCol:
+		box_.draw(spriteID, inv);
+		break;
+	case CapsuleCol:
+		capsule_.draw(inv);
+		break;
+	case CircleCol:
+		circle_.draw(inv);
+		break;
+	case SegmentCol:
+		segment_.draw(inv);
+		break;
+	case NoneCol:
+		break;
+	default:
+		break;
+	}
+
+}
+void CollisionBase::draw(int spriteID,int rotation, Matrix inv) const
+{
+	switch (type_)
+	{
+	case BoxCol:
+	{	box_.draw(spriteID, rotation, inv);
+		break;
+	}
+	case CapsuleCol:
+	{	capsule_.draw(inv);
+		break;
+	}
+	case CircleCol:
+	{	circle_.draw(inv);
+		break;
+	}
+	case SegmentCol:
+	{		segment_.draw(inv);
+		break;
+	}
+	case NoneCol:
+	{	Vector3 pos = Vector3(position_.x, position_.y)*inv;
+		DrawTurnGraph(pos.x, pos.y, spriteID, rotation);
+		break;
+	}
+	default:
+		break;
+	}
+
+}
+
 void CollisionBase::transform(Vector2 & topLeft, Vector2 & topRight, Vector2 & bottomLeft, Vector2 & bottomRight)
 {
 	box_= box_.transform(topLeft,topRight,bottomLeft,bottomRight);

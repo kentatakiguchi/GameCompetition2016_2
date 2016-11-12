@@ -37,6 +37,8 @@ public:
 	virtual void update(Vector2 position) {}
 	virtual void draw() const {}
 	virtual void draw(Matrix inv) const {}
+	virtual void draw(int spriteID, Matrix inv) const {}
+	virtual void draw(int spriteID,int rotation,Matrix inv) const {}
 	virtual void debug() const {}
 public:
 	Vector2 position_;

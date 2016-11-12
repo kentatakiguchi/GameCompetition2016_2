@@ -5,12 +5,14 @@
 #include "../../Actor/Person/Player/Status/Status.h"
 #include <memory>
 #include "../../Math/Math.h"
+#include"PauseScreen.h"
+#include"MoveScreen.h"
 
 class World;
 class BackGraundManager;
 class GamePlayScene : public IScene{
 public:
-	GamePlayScene();
+	GamePlayScene(SceneDataKeeper* keeper);
 	~GamePlayScene();
 	virtual void start() override;
 	virtual void update() override;
@@ -26,6 +28,15 @@ private:
 	Status status_;
 
 	BackGraundManager* backManager;
+
+	Scene nextScene_;
+
+	float deltaTime_;
+
+	bool isStopped_;
+
+	PauseScreen pause_;
+	MoveScreen move_;
 };
 
 #endif

@@ -45,19 +45,19 @@ void MoveFloorRightLeft::set(Vector2 & pos)
 
 void MoveFloorRightLeft::onUpdate(float deltaTime)
 {
-	moveCount_ += moveVelocity;
+	moveCount_ += moveVelocity*ceilf(deltaTime);
 	if (moveCount_ <= 0) {
 		moveVelocity = 1;
 	}
 	if (moveCount_ >= CHIPSIZE*RIGHTLEFTRANGE) {
 		moveVelocity = -1;
 	}
-	position_.x += moveVelocity;
+	position_.x += moveVelocity*ceilf(deltaTime);
 }
 
 void MoveFloorRightLeft::onDraw() const
 {
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void MoveFloorRightLeft::onCollide(Actor & other)

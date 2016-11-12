@@ -11,6 +11,7 @@ public:
 	MovelessFloor() {}
 	//マップチップの生成
 	MovelessFloor(IWorld* world, Vector2& position);
+	MovelessFloor(int spriteID,IWorld* world, Vector2& position);
 	MovelessFloor(std::shared_ptr<MovelessFloor> chip, IWorld* world, Vector2& position);
 	MovelessFloor(MovelessFloor& chip, IWorld* world, Vector2& position);
 	void set(Vector2& pos);
@@ -21,6 +22,8 @@ private:
 	void onUpdate(float deltaTime);
 	void onDraw() const override;
 	void onCollide(Actor& other);
+private:
+	int spriteID_;
 };
 
 #endif // !MAPCHIP_H_

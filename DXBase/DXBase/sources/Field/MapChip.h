@@ -22,6 +22,8 @@ private:
 	void onUpdate(float deltaTime);
 	void onDraw() const override;
 	void onCollide(Actor& other);
+protected:
+	int rotate_;
 };
 
 #endif // !MAPCHIP_H_

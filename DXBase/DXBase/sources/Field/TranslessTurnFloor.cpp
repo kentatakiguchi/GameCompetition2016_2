@@ -45,7 +45,7 @@ void TranslessTurnFloor::set(Vector2 & pos)
 
 void TranslessTurnFloor::onUpdate(float deltaTime)
 {
-	moveCount_++;
+	moveCount_+=1*ceilf(deltaTime);
 	if (moveCount_ % 360 == 0) {
 		moveCount_ = 0;
 	}
@@ -55,7 +55,7 @@ void TranslessTurnFloor::onUpdate(float deltaTime)
 
 void TranslessTurnFloor::onDraw() const
 {
-	body_.draw();
+	body_.draw(inv_);
 }
 
 void TranslessTurnFloor::onCollide(Actor & other)
