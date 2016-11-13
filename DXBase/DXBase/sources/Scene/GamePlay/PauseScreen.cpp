@@ -2,6 +2,7 @@
 #include"../../Input/InputMgr.h"
 #include"../../Renderer/FontManager.h"
 #include"../../Define.h"
+#include"../../ResourceLoader/ResourceLoader.h"
 
 const static int FONT_SIZE = 64;
 
@@ -13,9 +14,8 @@ PauseScreen::PauseScreen()
 	std::vector<std::string> list1;
 	list1.push_back("Tボタンでゲームに戻る");
 	list1.push_back("ENTERボタンでタイトルへ");
-	list1.push_back("ENTERボタン");
 	listBase[0] = list1;
-	textPosList.push_back(Vector2(200, 200));
+	textPosList.push_back(Vector2(200, 800));
 	changeTextList.clear();
 
 }
@@ -31,6 +31,8 @@ bool PauseScreen::update(Scene& next)
 
 void PauseScreen::draw() const
 {
+	DrawGraph(0, 0,ResourceLoader::GetInstance().getTextureID(TextureID::PAUSE_BACK_TEX), TRUE);
+
 	int strLen, strWidth, center, count, heightPoint;
 	count = 0;
 	heightPoint = 0;

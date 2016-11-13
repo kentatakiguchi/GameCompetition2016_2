@@ -16,3 +16,8 @@
 51:WallTurnEnemy
 52:FlyingEnemy
 53:WallMoveEnemy
+
+100～109:SegmentFloor(線分、右寄せ)
+110～119:SegmentFloor(線分、左寄せ)
+
+*MapGeneratorは左上から行毎に処理して行くため、同じ線分の番号を3つ以上配置した場合、高い2点が繋がれる

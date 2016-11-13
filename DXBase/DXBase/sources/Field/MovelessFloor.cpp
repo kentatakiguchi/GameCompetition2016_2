@@ -55,6 +55,7 @@ void MovelessFloor::set(Vector2 & pos)
 
 void MovelessFloor::onUpdate(float deltaTime)
 {
+
 }
 
 void MovelessFloor::onDraw() const

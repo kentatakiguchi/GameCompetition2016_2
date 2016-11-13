@@ -46,4 +46,5 @@ private:
 	//キーコンフィグ用キーデータ
 	std::unordered_map<KeyCode, unsigned int> KeyName;
 	std::unordered_map<Buttons, unsigned int> ButtonName;
+	std::unordered_map<Buttons, KeyCode> ConnectInputName;
 };

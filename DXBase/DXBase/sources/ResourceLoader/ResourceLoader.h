@@ -24,8 +24,8 @@ enum class TextureID {
 	BOSS_GAUGE_TEX,
 	ENEMY_SAMPLE_TEX,
 	CHIP1_TEX,
-	CHIP2_TEX
-
+	CHIP2_TEX,
+	PAUSE_BACK_TEX
 };
 
 class ResourceLoader{

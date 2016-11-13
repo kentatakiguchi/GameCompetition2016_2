@@ -20,8 +20,9 @@ int InputMgr::GetHitKeyFrameAll()
 	GetHitKeyStateAll(GetHitKeyStateAll_Key);
 
 	for (int i = 0; i < MAX_KEY_NUM; i++) {
+		previous_key_state[i] = current_key_state[i];
+
 		if (GetHitKeyStateAll_Key[i] != 0) {
-			previous_key_state[i] = current_key_state[i];
 			current_key_state[i]++;
 		}
 		else current_key_state[i] = 0;
@@ -98,6 +99,16 @@ void InputMgr::RegistKeyCode(){
 	ButtonName[Buttons::BUTTON_DOWN] = PAD_INPUT_DOWN;
 	ButtonName[Buttons::BUTTON_RIGHT] = PAD_INPUT_RIGHT;
 	ButtonName[Buttons::BUTTON_LEFT] = PAD_INPUT_LEFT;
+	//ボタンとキーボードの関連付け
+	ConnectInputName[BUTTON_L1] = KeyCode::L;
+	ConnectInputName[BUTTON_R1] = KeyCode::R;
+	ConnectInputName[BUTTON_CIRCLE] = KeyCode::Z;
+	ConnectInputName[BUTTON_CROSS] = KeyCode::X;
+	ConnectInputName[BUTTON_START] = KeyCode::RETURN;
+	ConnectInputName[BUTTON_UP] = KeyCode::UP;
+	ConnectInputName[BUTTON_DOWN] = KeyCode::DOWN;
+	ConnectInputName[BUTTON_RIGHT] = KeyCode::RIGHT;
+	ConnectInputName[BUTTON_LEFT] = KeyCode::LEFT;
 }
 
 bool InputMgr::IsKeyDown(KeyCode handle)
@@ -124,7 +135,7 @@ bool InputMgr::IsButtonDown(Buttons handle)
 		return true;
 	}
 	else {
-		return false;
+		return IsKeyDown(ConnectInputName[handle]);
 	}
 }
 
@@ -134,7 +145,7 @@ bool InputMgr::IsButtonOn(Buttons handle)
 		return true;
 	}
 	else {
-		return false;
+		return IsKeyOn(ConnectInputName[handle]);
 	}
 }
 
@@ -144,7 +155,7 @@ bool InputMgr::IsButtonUp(Buttons handle)
 		return true;
 	}
 	else {
-		return false;
+		return IsKeyUp(ConnectInputName[handle]);
 	}
 }
 
