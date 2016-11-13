@@ -3,6 +3,7 @@
 
 #include "JumpAttack.h"
 
+// ３連続ジャンプ攻撃クラス
 class ThreeJumpAttack : public JumpAttack {
 public:
 	ThreeJumpAttack();

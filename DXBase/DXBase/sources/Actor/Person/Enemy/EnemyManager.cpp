@@ -154,7 +154,6 @@ Vector2 EnemyManager::cliffMove(bool isFloor)
 	// °‚É“–‚½‚Á‚Ä‚¢‚È‚©‚Á‚½‚ç•ûŒü“]Š·
 	/*if (!isFloor)
 		distance_ *= -1;*/
-
 	// ‰¼
 	/*boxMoveCount += deltaTimer_ / 2.0f;
 	if ((int)boxMoveCount % 2 == 0)

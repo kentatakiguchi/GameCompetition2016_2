@@ -10,7 +10,7 @@
 #include "../../Field/MapGenerator.h"
 #include "../../ResourceLoader/ResourceLoader.h"
 
-const Vector2 START_POS = Vector2(300, 400);
+const Vector2 START_POS = Vector2(300, 1000);
 
 YajimaScene::YajimaScene() : 
 	id(0)
@@ -40,7 +40,7 @@ void YajimaScene::start()
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(50, 205)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), START_POS + Vector2(-50, 200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<PendulumEnemy>(world_.get(), START_POS + Vector3(105, 5, 0)));
-	world_->addActor(ActorGroup::Enemy, std::make_shared<BaseBoss>(world_.get(), START_POS + Vector2(324, -32), 128.0f / 2.0f));
+	world_->addActor(ActorGroup::Enemy, std::make_shared<BaseBoss>(world_.get(), START_POS + Vector2(1000,50), 128.0f / 2.0f));
 
 	MapGenerator gener = MapGenerator(world_.get());
 	gener.create("resources/file/bossStage01.csv");
@@ -68,5 +68,5 @@ bool YajimaScene::isEnd() const
 
 Scene YajimaScene::next() const
 {
-	return Scene::Title;
+	return Scene::GameOver;
 }

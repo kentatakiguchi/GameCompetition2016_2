@@ -10,6 +10,9 @@
 #include "BossManager.h"
 
 // class BossManager;
+class FloorSearchPoint;
+class BossEntry;
+class BossHeart;
 
 class BaseBoss : public Actor {
 protected:
@@ -77,19 +80,27 @@ protected:
 private:
 	// デルタタイム(最大値1)の設定
 	void setTimer(float deltaTime);
+	// ボスマネージャーのステータスの設定
+	void setBMStatus();
 
 protected:
 	int dp_;					// ひるむまでの耐久値
 	int initDp_;				// ひるむまでの耐久値(初期値)
 	int hp_;					// 体力
+	// int initHp_;				// 体力(初期値)
 	float stateTimer_;			// 状態の時間
 	float timer_;				// 現在の時間(最大値 1)
 	float deltaTimer_;			// 現在の時間(補間)
 
 	std::string stateString_;	// 状態の文字列（デバッグ用）
 
-	// BossManager* bossManager_;	// ボスマネージャー
-	BossManager bossManager_;
+	FloorSearchPoint* fspObj_;	// 床捜索オブジェクト
+	BossEntry* entryObj_;		// ボス入口オブジェクト
+	BossHeart* heartObj_;		// ボス心臓オブジェクト
+	BossManager bossManager_;	// ボスマネージャー
+	// 攻撃状態のコンテナ
+	typedef std::vector<AttackState> AttackStateContainer;
+	AttackStateContainer asContainer_;
 
 private:
 	Vector2 playerPastPosition_;
@@ -97,6 +108,11 @@ private:
 
 	State state_;				// 状態
 	AttackState attackState_;	// 攻撃状態
+
+	// クランプ用の位置(仮)
+	const Vector2 FIELD_SIZE = Vector2(
+		SCREEN_SIZE.x - CHIPSIZE - body_.GetCircle().getRadius(), 
+		SCREEN_SIZE.y - CHIPSIZE - body_.GetCircle().getRadius());
 };
 
 #endif

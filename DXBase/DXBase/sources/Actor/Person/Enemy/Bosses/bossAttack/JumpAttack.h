@@ -3,16 +3,17 @@
 
 #include "BossAttack.h"
 
+// ジャンプ攻撃クラス
 class JumpAttack : public BossAttack {
 public:
 	JumpAttack();
 	JumpAttack(const Vector2& position);	
 	// 攻撃
 	virtual void attack(float deltaTime) override;
-	// ジャンプ
+	// ジャンプ攻撃
 	void jump(float deltaTime);
-	// 移動した位置を取得します
-	Vector2 getMovePosition() override;
+	//// 移動した位置を取得します
+	//Vector2 getMovePosition() override;
 	// 攻撃行動のリフレッシュを行います
 	virtual void Refresh() override;
 
@@ -22,7 +23,8 @@ protected:
 	float jumpPower_;		// ジャンプ力
 	float recastTimer_;		// 再行動するまでの時間
 	float initRecastTimer_;	// 再行動するまでの時間(初期値)
-	bool isJumpEnd_;		// ジャンプが終了したか
+	bool isJump_;			// ジャンプをしたか
+	bool isJumpEnd_;		// ジャンプ攻撃が終了したか
 };
 
 #endif

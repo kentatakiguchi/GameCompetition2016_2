@@ -46,49 +46,49 @@ void WallMoveEnemy::onUpdate(float deltaTime)
 	//position_ += world_->MoveActor();
 }
 
-void WallMoveEnemy::onDraw() const
-{
-	auto stateChar = stateString_.c_str();
-	// 敵の表示
-	DrawGraph(
-		position_.x - scale_ / 2.0f, position_.y - scale_ / 2.0f,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
-	// 文字の表示
-	/*DrawString(
-		position_.x - scale_, position_.y - 20 - scale_,
-		stateChar, GetColor(255, 255, 255));*/
-
-	//// デバッグ
-	//auto addPos = Vector2::Zero;
-	//for (int i = 0; i != fspScaleContainer_.size(); i++) {
-	//	addPos.y += 25.0f;
-	//	DrawFormatString(
-	//		25, 75 + addPos.y, GetColor(255, 255, 255),
-	//		"ボックスと触れているか(%d):%d",
-	//		i,
-	//		isGCont[i]);
-	//}
-	//DrawFormatString(
-	//	25, 350, GetColor(255, 255, 255),
-	//	"ボックスと触れているかの合計値:%d",
-	//	result_);
-	//DrawFormatString(
-	//	25, 375, GetColor(255, 255, 255),
-	//	"ボックスに一瞬触れたか:%d",
-	//	(int)isBlockCollideBegin_);
-	//DrawFormatString(
-	//	25, 400, GetColor(255, 255, 255),
-	//	"ボックスに触れているか:%d",
-	//	(int)isBlockCollideEnter_);
-
-	/*DrawFormatString(25, 25, GetColor(255, 255, 255), "body x:%d,y:%d", (int)body_.GetBox().component_.point[0].x, (int)body_.GetBox().component_.point[0].y);
-	DrawFormatString(25, 50, GetColor(255, 255, 255), "pos  x:%d,y:%d", (int)position_.x, (int)position_.y);
-	DrawFormatString(25, 75, GetColor(255, 255, 255), "プレイヤーとの距離:%d", (int)distance_);*/
-
-	//char lengthChar = static_cast<char>(enemyManager_.getPlayerLength());
-	//DrawString(position_.x + 50, position_.y - 20, &lengthChar, GetColor(255, 255, 255));
-	body_.draw();
-}
+//void WallMoveEnemy::onDraw() const
+//{
+//	auto stateChar = stateString_.c_str();
+//	// 敵の表示
+//	DrawGraph(
+//		position_.x - scale_ / 2.0f, position_.y - scale_ / 2.0f,
+//		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
+//	// 文字の表示
+//	/*DrawString(
+//		position_.x - scale_, position_.y - 20 - scale_,
+//		stateChar, GetColor(255, 255, 255));*/
+//
+//	//// デバッグ
+//	//auto addPos = Vector2::Zero;
+//	//for (int i = 0; i != fspScaleContainer_.size(); i++) {
+//	//	addPos.y += 25.0f;
+//	//	DrawFormatString(
+//	//		25, 75 + addPos.y, GetColor(255, 255, 255),
+//	//		"ボックスと触れているか(%d):%d",
+//	//		i,
+//	//		isGCont[i]);
+//	//}
+//	//DrawFormatString(
+//	//	25, 350, GetColor(255, 255, 255),
+//	//	"ボックスと触れているかの合計値:%d",
+//	//	result_);
+//	//DrawFormatString(
+//	//	25, 375, GetColor(255, 255, 255),
+//	//	"ボックスに一瞬触れたか:%d",
+//	//	(int)isBlockCollideBegin_);
+//	//DrawFormatString(
+//	//	25, 400, GetColor(255, 255, 255),
+//	//	"ボックスに触れているか:%d",
+//	//	(int)isBlockCollideEnter_);
+//
+//	/*DrawFormatString(25, 25, GetColor(255, 255, 255), "body x:%d,y:%d", (int)body_.GetBox().component_.point[0].x, (int)body_.GetBox().component_.point[0].y);
+//	DrawFormatString(25, 50, GetColor(255, 255, 255), "pos  x:%d,y:%d", (int)position_.x, (int)position_.y);
+//	DrawFormatString(25, 75, GetColor(255, 255, 255), "プレイヤーとの距離:%d", (int)distance_);*/
+//
+//	//char lengthChar = static_cast<char>(enemyManager_.getPlayerLength());
+//	//DrawString(position_.x + 50, position_.y - 20, &lengthChar, GetColor(255, 255, 255));
+//	body_.draw();
+//}
 
 void WallMoveEnemy::onCollide(Actor & actor)
 {

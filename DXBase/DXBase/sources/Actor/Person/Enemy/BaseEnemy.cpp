@@ -35,16 +35,22 @@ BaseEnemy::BaseEnemy(IWorld * world, const Vector2& position, const float bodySc
 	fspScript(nullptr),
 	wsScript(nullptr),
 	pricleObj_(nullptr),
-	enemyManager_(EnemyManager(position))
+	enemyManager_(EnemyManager(position)),
+	isTestGround_(false),
+	testTop(0.0f),
+	testBottom(0.0f),
+	testRight(0.0f),
+	testLeft(0.0f),
+	test_t(0.0f)
 {
 	//Initialize();
 
 	// rayオブジェクトの追加
-	auto player = world_->findActor("Player");
-	//ray_ = CollisionBase(position_, vec);
+	// auto player = world_->findActor("PlayerBody1");
+	auto player = world_->findActor("PlayerBody1");
 	auto ray = std::make_shared<PlayerSearchObj>(
 		world_, position_, player->getPosition());
-	world_->addActor(ActorGroup::Effect, ray);
+	world_->addActor(ActorGroup::EnemyBullet, ray);
 	psObj_ = &*ray;
 }
 
@@ -71,7 +77,7 @@ void BaseEnemy::Initialize()
 	auto wsObj = std::make_shared<FloorSearchPoint>(
 		world_, position_, 
 		Vector2(-scale_ / 2.0f, 0.0f),
-		Vector2(2.0f, scale_- 4.0f));
+		Vector2(2.0f, scale_- 30.0f));
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsScript = &*wsObj;
 }
@@ -116,6 +122,15 @@ void BaseEnemy::onDraw() const
 	/*DrawFormatString(25, 25, GetColor(255, 255, 255), "body x:%d,y:%d", (int)body_.GetBox().component_.point[0].x, (int)body_.GetBox().component_.point[0].y);
 	DrawFormatString(25, 50, GetColor(255, 255, 255), "pos  x:%d,y:%d", (int)position_.x, (int)position_.y);
 	DrawFormatString(25, 75, GetColor(255, 255, 255), "プレイヤーとの距離:%d", (int)distance_);*/
+	DrawFormatString(25, 150, GetColor(255, 255, 255),
+		"ブロックとの位置=>上:%d 下:%d", 
+		(int)testTop, (int)testBottom);
+	DrawFormatString(25, 200, GetColor(255, 255, 255),
+		"ブロックとの位置=>右:%d 左:%d",
+		(int)testRight, (int)testLeft);
+	DrawFormatString(25, 250, GetColor(255, 255, 255),
+		"ブロックとのt:%d",
+		(int)test_t);
 
 	//char lengthChar = static_cast<char>(enemyManager_.getPlayerLength());
 	//DrawString(position_.x + 50, position_.y - 20, &lengthChar, GetColor(255, 255, 255));
@@ -144,6 +159,175 @@ void BaseEnemy::onCollide(Actor & actor)
 			isBlockCollideBegin_ = true;
 		else isBlockCollideBegin_ = false;
 		isBlockCollideEnter_ = true;
+		body_.enabled(false);
+		return;
+
+		//// 相手側の当たり判定が四角形以外なら行わない(てきとう判定)
+		//if (actor.body_.GetBox().getWidth() == 0) return;
+		// 正方形同士の計算
+		// 自分自身の1f前の位置を取得
+		auto pos = body_.GetBox().previousPosition_;
+		// 相手側の四角形の4点を取得
+		auto topLeft = actor.getBody().GetBox().component_.point[0];
+		auto topRight = actor.getBody().GetBox().component_.point[1];
+		auto bottomLeft = actor.getBody().GetBox().component_.point[2];
+		auto bottomRight = actor.getBody().GetBox().component_.point[3];
+		// 各辺に対する位置の外積を計算する
+		// 縦方向のベクトル(H)を求める
+		auto top = Vector2::Cross(
+			(topLeft - topRight).Normalize(), (pos - topRight));
+		auto bottom = Vector2::Cross(
+			(bottomRight - bottomLeft).Normalize(), (pos - bottomLeft));
+		auto right = Vector2::Cross(
+			(topRight - bottomRight).Normalize(), (pos - bottomRight));
+		auto left = Vector2::Cross(
+			(bottomLeft - topLeft).Normalize(), (pos - topLeft));
+
+		testTop = top * 100;
+		testBottom = bottom * 100;
+		testRight = right * 100;
+		testLeft = left * 100;
+		// Y軸上で衝突した場合
+		//if (left <= 0 && right <= 0) {
+		//	// top > 0 なら上に補間 bottom > 0 なら下に補間する
+		//	if (top > 0)
+		//		position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;
+		//	if (bottom > 0)
+		//		position_.y = bottomRight.y + body_.GetBox().getHeight() / 2.0f;
+		//}	// X軸上で衝突した場合
+		//if (top <= 0 && bottom <= 0) {
+		//	// left > 0 なら右に補間 right > 0 なら左に補間する
+		//	if (left > 0)
+		//		position_.x = bottomLeft.x - body_.GetBox().getWidth() / 2.0f;
+		//	if (right > 0)
+		//		position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;
+		//}
+
+		// 中心から線分に下した点とp1までの距離比
+		/*Vector2 other_v = actor.body_.GetBox().component_.point[3] - 
+			actor.body_.GetBox().component_.point[2];
+		Vector2 left_v1 = body_.GetBox().component_.point[2] -
+			actor.body_.GetBox().component_.point[2];
+		float left_t = Vector2::Dot(other_v, left_v1) /
+			Vector2::Dot(other_v, other_v);*/
+
+		// 
+		//Vector2 right_v1 = body_.GetBox().component_.point[3] -
+		//	actor.body_.GetBox().component_.point[2];
+		//// 中心から線分に下した点とp1までの距離比
+		//float right_t = Vector2::Dot(other_v, right_v1) /
+		//	Vector2::Dot(other_v, other_v);
+
+		//if (left <= 0 && right <= 0) {
+		//	// top > 0 なら上に補間 bottom > 0 なら下に補間する
+		//	
+		//}
+
+		/*if (top > 0)
+			position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;
+		else
+			position_.y = bottomRight.y + body_.GetBox().getHeight() / 2.0f;*/
+		// 当たったブロックの大きさ
+		// top < actor.body_.GetBox().getWidth
+
+		// 上に補間
+		//if (top > 0 && 
+		//	(-body_.GetBox().getWidth() < right && 
+		//	-body_.GetBox().getWidth() < left))
+		//	position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;
+		//// 右に補間
+		//if (right >= actor.body_.GetBox().getWidth() &&
+		//	top < actor.body_.GetBox().getHeight())
+		//	position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;
+		//// 左に補間
+		//if (left >= actor.body_.GetBox().getWidth() &&
+		//	top < actor.body_.GetBox().getHeight())
+		//	position_.x = bottomLeft.x - body_.GetBox().getWidth() / 2.0f;
+
+		// 上
+		//if (top >= 32 && left > -64) {
+		//	/*if(left >= -body_.GetBox().getWidth() && 
+		//		right >= -body_.GetBox().getWidth())
+		//		position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;*/
+		//	position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;
+		//}
+		//if (right >= 0) {
+		//	if (top < 32) {
+		//		if(bottom < 0)
+		//		position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;
+		//	}
+		//	else {
+		//		if (bottom > -64 && bottom < -63)
+		//		position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;
+		//	}
+		//		
+		//}
+		//if (left >= 0) {
+		//	if(top < 32)
+		//		position_.x = bottomLeft.x - body_.GetBox().getWidth() / 2.0f;
+		//}
+
+		//else {
+		//	// 左に補間
+		//	/*if (left >= -64)
+		//		position_.x = bottomLeft.x - body_.GetBox().getWidth() / 2.0f;*/
+		//	// 右に補間
+		//	// top == 32 で衝突しない
+		//	/*if (right >= 0)
+		//		position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;*/
+		//}
+
+		// 右に補間する
+		/*if (left_t > 0 && right >= 0)
+			position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;*/
+
+		// 上に補間
+		//if (top > 0)
+		//	position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;
+		//// 左に補間
+		//if (left_t >= 0 && left >= 0)
+		//	position_.x = bottomLeft.x - body_.GetBox().getWidth() / 2.0f;
+
+		//test_t = right_t * 100;
+
+		/*Vector2 otherCenter = actor.body_.GetBox().position_;
+		Vector2 thisCenter = body_.GetBox().position_;*/
+
+		//Vector2 otherCenter = actor.body_.GetBox().component_.point[3] / 2.0f;
+		//Vector2 thisCenter = body_.GetBox().component_.point[3] / 2.0f;
+		//// 方向
+		//Vector2 dir = thisCenter - otherCenter;
+
+		//if (std::abs(dir.x) >std::abs(dir.y))
+		//{
+		//	if (dir.x > 0)
+		//	{
+		//		position_.x = actor.position_.x + body_.GetBox().getWidth();
+		//		//position.X = gameObj.getRectangle().Right;
+		//	}
+		//	else
+		//	{
+		//		position_.x = actor.position_.x - body_.GetBox().getWidth() / 2.0f;
+		//		//position.X = gameObj.getRectangle().Left - this.width;
+		//	}
+		//}
+		//else
+		//{
+		//	if (dir.y > 0)
+		//	{
+		//		position_.y = actor.position_.y + body_.GetBox().getHeight();
+		//		//position.Y = gameObj.getRectangle().Bottom;
+		//	}
+		//	else
+		//	{
+		//		position_.y = actor.position_.y - body_.GetBox().getHeight() / 2.0f;
+		//		//position.Y = gameObj.getRectangle().Top - this.hight;
+		//	}
+		//}
+		
+
+		isTestGround_ = true;
+
 		body_.enabled(false);
 		return;
 	}
@@ -353,7 +537,8 @@ int BaseEnemy::getScale()
 void BaseEnemy::updateState(float deltaTime)
 {
 	// プレイヤーの捜索
-	player_ = world_->findActor("Player");
+	// player_ = world_->findActor("Player");
+	player_ = world_->findActor("PlayerBody1");
 	// プレイヤーが取得できれば、エネミーマネージャーに位置を入れる
 	if (player_ != nullptr) {
 		enemyManager_.setEMPosition(position_, player_->getPosition(), direction_);
@@ -380,6 +565,7 @@ void BaseEnemy::updateSearchObjct()
 {
 	// 接地していないなら重力加算
 	if (!fspScript->isGround() && isUseGravity_)
+	// if (!isTestGround_)
 		position_.y += GRAVITY_ * deltaTimer_;
 	// 床の位置に補正する
 	if (fspScript->isGround())

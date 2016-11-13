@@ -38,6 +38,14 @@ void WeakEnemy::attack()
 // õ“G‚Ìs“®‚Å‚·
 void WeakEnemy::searchMove()
 {
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L))
+		position_.x += 4.0f * deltaTimer_;
+	else if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
+		position_.x += -4.0f * deltaTimer_;
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::I))
+		position_.y += -4.0f * deltaTimer_;
+	else if (InputMgr::GetInstance().IsKeyDown(KeyCode::K))
+		position_.y += 4.0f * deltaTimer_;
 	//BaseEnemy::searchMove();
 	// ’Êí‚Ì‘¬“x‚É–ß‚·
 	//speed_ = initSpeed_;

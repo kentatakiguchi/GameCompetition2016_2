@@ -8,6 +8,7 @@
 
 // class BossAttack;
 
+// ボスマネージャー 
 class BossManager {
 public:
 	BossManager();
@@ -15,21 +16,31 @@ public:
 	BossManager(const Vector2& position);
 	// 指定した番号の攻撃行動を行います
 	void attackMove(const float number, const float deltaTime);
-	// 行動のリフレッシュを行います
-	void moveRefresh();
+	// 攻撃のリフレッシュを行います
+	void attackRefresh();
 	// 行動によって移動した位置を返します
 	Vector2 getMovePosition();
 	// 攻撃が終了したかを返します
 	bool isAttackEnd();
 
 public:
+	// ボスの位置を設定します
+	void setPosition(const Vector2& position);
+	// プレイヤーの位置を設定します
+	void setPlayerPosition(const Vector2& position);
+	// 攻撃前の位置を決定します
+	void prevPosition();
 	// 指定したオブジェクトとの方向を単位ベクトルで取得します
 	Vector2 getDirection(const Vector2& otherPosition);
 	// プレイヤーとの方向を単位ベクトルで取得します
 	Vector2 getPlayerDirection();
+	// プレイヤーが接地しているかを設定します
+	void setIsGround(bool isGround);
 
 private:
-	int attackNumber_;		// 攻撃番号
+	int attackNumber_;			// 攻撃番号
+	Vector2 bossPosition_;		// ボスの位置
+	Vector2 playerPosition_;	// プレイヤーの位置
 	//float timer_;			// 時間
 	//bool isAttackEnd_;		// 攻撃が終了しているか
 

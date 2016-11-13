@@ -8,7 +8,7 @@ class WallMoveEnemy : public BaseEnemy {
 public:
 	WallMoveEnemy(IWorld * world, const Vector2& position);
 	void onUpdate(float deltaTime) override;
-	void onDraw() const;
+	//void onDraw() const;
 	void onCollide(Actor& actor) override;
 	void onMessage(EventMessage event, void*) override;
 private:

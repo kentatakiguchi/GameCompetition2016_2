@@ -13,35 +13,15 @@ PlayerSearchObj::PlayerSearchObj(IWorld * world, const Vector2& enemyPosition, c
 			)
 		),
 	enemyPosition_(enemyPosition),
-	playerPosition_(playerPosition)
+	playerPosition_(playerPosition),
+	blockPosition_(Vector2::Zero)
 {
 }
 
 void PlayerSearchObj::onUpdate(float deltaTime)
 {
-	/*auto pos = Vector2(
-		std::abs(enemyPosition_.x + playerPosition_.x) / 2,
-		std::abs(enemyPosition_.y + playerPosition_.y) / 2
-		);*/
-	//position_ = pos;
-	//body_.GetSegment().translate(pos);
-	//body_.GetSegment().transform(enemyPosition_, playerPosition_);
-	/*auto pos = Vector2(
-		std::abs(.x),
-		std::abs(body_.setSegmentPoint(enemyPosition_, playerPosition_).y)
-		);*/
-
-	// position = 始点の位置
-	position_ = enemyPosition_;
-	//body_.setSegmentPoint(const_cast<Vector2&>(Vector2::Zero), playerPosition_ - enemyPosition_);
-	/*position_ = Vector2::Zero;
-	body_.setSegmentPoint(enemyPosition_, playerPosition_);*/
-
-	/*position_ = enemyPosition_;
-	body_.setSegmentPoint(enemyPosition_, playerPosition_);*/
-
-	//position_ = Vector2::Zero;
-	//samplePos_ = body_.setSegmentPoint(const_cast<Vector2&>(Vector2::Zero), playerPosition_);
+	position_ = body_.setSegmentPoint(
+		position_, enemyPosition_, playerPosition_);
 }
 
 void PlayerSearchObj::onDraw() const
@@ -56,6 +36,11 @@ void PlayerSearchObj::onDraw() const
 
 void PlayerSearchObj::onCollide(Actor & actor)
 {
+	// 床に当たっていたら、位置を代入
+	if (actor.getName() == "MovelessFloor") {
+		blockPosition_ = actor.position_;
+		return;
+	}
 }
 
 // 敵とプレイヤーの位置を設定します
@@ -63,4 +48,15 @@ void PlayerSearchObj::setPosition(const Vector2 & enemyPosition, const Vector2 &
 {
 	enemyPosition_ = enemyPosition;
 	playerPosition_ = playerPosition;
+}
+
+// プレイヤーが見えているかを返します
+bool PlayerSearchObj::isPlayerLook()
+{
+	auto blockLen = (enemyPosition_ - blockPosition_).Length();
+	auto playerLen = (enemyPosition_ - playerPosition_).Length();
+	// プレイヤーとの距離との距離が短かったら、trueを返す
+	if (playerLen < blockLen)
+		return true;
+	return false;
 }
