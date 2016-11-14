@@ -27,10 +27,10 @@ void PlayerSearchObj::onUpdate(float deltaTime)
 void PlayerSearchObj::onDraw() const
 {
 	// body_.setSegmentPoint(enemyPosition_, playerPosition_)
-	DrawFormatString(25, 75, GetColor(255, 255, 255),
+	/*DrawFormatString(25, 75, GetColor(255, 255, 255),
 		"ƒvƒŒƒCƒ„[‚Æ‚Ìü•ª:X%d, Y%d",
 		(int)position_.x,
-		(int)position_.y);
+		(int)position_.y);*/
 	body_.draw(inv_);
 }
 

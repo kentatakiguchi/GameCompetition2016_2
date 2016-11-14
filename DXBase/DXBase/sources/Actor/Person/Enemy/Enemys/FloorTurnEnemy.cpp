@@ -37,17 +37,18 @@ FloorTurnEnemy::FloorTurnEnemy(IWorld * world, const Vector2 & position) :
 void FloorTurnEnemy::onUpdate(float deltaTime)
 {
 	// 崖捜索オブジェクトの更新
-	fspObj_->setDirection(direction_);
-	fspObj_->setPosition(position_);
+	//fspObj_->setDirection(direction_);
+	//fspObj_->setPosition(position_);
 
 	BaseEnemy::onUpdate(deltaTime);
 	// if (!fspObj_->isGround() && fspScript->isGround())
-	if (!fspObj_->isGround() && fspScript->isGround()) {
+
+	if (!fspObj_->isGround() && isGround_) {
 		direction_.x *= -1;
 	}
 	// 崖捜索オブジェクトの更新
-	//fspObj_->setDirection(direction_);
-	// fspObj_->setPosition(position_);
+	fspObj_->setDirection(direction_);
+	fspObj_->setPosition(position_);
 	// トゲの更新
 	pricleObj_->setDirection(direction_);
 	pricleObj_->setEnemyPosition(position_);
@@ -75,7 +76,7 @@ void FloorTurnEnemy::searchMove()
 	speed_ = initSpeed_;
 	position_ +=
 		enemyManager_.cliffMove(false)
-		* speed_; // *direction_.x;
+		* speed_ * deltaTimer_ *direction_.x;
 	pricleObj_->setAddPosition(Vector2::Up * -(scale_ + 1.0f));
 	// 崖移動(仮)
 	//position_ += enemyManager_.cliffMove(true) * speed_;

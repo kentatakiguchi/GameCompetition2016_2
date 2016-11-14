@@ -162,10 +162,8 @@ protected:
 	// 重力加速度
 	const float GRAVITY_ = 9.8f;
 
-	bool isTestGround_;
-
 	// デバッグ
-	float testTop, testBottom, testRight, testLeft, test_t;
+	int handle_;
 };
 
 #endif
