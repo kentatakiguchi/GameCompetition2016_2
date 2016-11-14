@@ -17,6 +17,7 @@
 #include"GameOverPoint.h"
 #include"CollidelessFloor.h"
 #include"SegmentFloor.h"
+#include"SticklessFloor.h"
 #include"../Actor/Person/Enemy/ImportEnemys.h"
 #include"../ResourceLoader/ResourceLoader.h"
 
@@ -37,15 +38,6 @@ public:
 		ResourceLoader::GetInstance().loadTexture(TextureID::CHIP2_TEX, "./resources/sprite/chip2.png");
 
 		//world_->addActor(ActorGroup::Field, std::make_shared<MapChip>(world_, Vector2(rowN*CHIPSIZE, colN*CHIPSIZE)));
-		chips[1] = std::make_shared<MovelessFloor>(world_, Vector2(0, 0));
-		chips[2] = std::make_shared<MoveFloorUpDown>(world_, Vector2(0, 0));
-		chips[3] = std::make_shared<MoveFloorRightLeft>(world_, Vector2(0, 0));
-		chips[4] = std::make_shared<TurnFloor>(world_, Vector2(0, 0));
-		chips[5] = std::make_shared<NavChip>(world_, Vector2(0, 0));
-		chips[6] = std::make_shared<TranslessTurnFloor>(world_, Vector2(0, 0));
-		chips[11] = std::make_shared<StageClearPoint>(world_, Vector2(0, 0));
-		chips[12] = std::make_shared<GameOverPoint>(world_, Vector2(0, 0));
-		chips[15] = std::make_shared<CollidelessFloor>(world_, Vector2(0, 0));
 
 
 		segmentChecker[100] = false;
@@ -90,6 +82,10 @@ public:
 				if (reader_.geti(rowN, colN) == 8) {
 					world_->addActor(ActorGroup::Field, std::make_shared<GameOverPoint>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
+				if (reader_.geti(rowN, colN) == 9) {
+					world_->addActor(ActorGroup::Field, std::make_shared<SticklessFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+
 				if (reader_.geti(rowN, colN) == 20) {
 					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(

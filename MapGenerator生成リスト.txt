@@ -6,7 +6,7 @@
 6:TranslessTurnFloor(その場回転)
 7:StageClearPoint(ステージクリア用)
 8:GameOverPoint:(ゲームオーバー用)
-
+9:SticklessFloor(くっつき無効)
 20:MovelessFloor(chip1.pngを割り当て)
 21:MovelessFloor(chip2.pngを割り当て)
 
