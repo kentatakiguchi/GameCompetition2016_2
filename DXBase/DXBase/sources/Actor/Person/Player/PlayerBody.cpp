@@ -4,24 +4,30 @@
 
 //#include "State/States/State_Dammy.h"
 #include "State/States/Single/Elements/PlayerState_Single_StandBy.h"
+#include "State/States/Single/Elements/PlayerState_Single_LeanBack.h"
 #include "State/States/Single/Elements/PlayerState_Single_Idle.h"
 #include "State/States/Single/Elements/PlayerState_Single_Jump.h"
+
+#include "PlayerBodyCollider.h"
 
 PlayerBody::PlayerBody(){}
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
 	Actor(world, name, position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS)),
-	is_single_(false){
+	is_single_(false),
+	dead_limit_(0){
 	keys_ = SingleKeys();
 	if (name == "PlayerBody2")keys_ = SingleKeys(KeyCode::W, KeyCode::S, KeyCode::D, KeyCode::A);
 
 	stateMgr_.add((unsigned int)PlayerState_Enum_Single::STAND_BY, std::make_shared<PlayerState_Single_StandBy>());
+	stateMgr_.add((unsigned int)PlayerState_Enum_Single::LEAN_BACK, std::make_shared<PlayerState_Single_LeanBack>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Single::IDLE, std::make_shared<PlayerState_Single_Idle>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Single::JUMP, std::make_shared<PlayerState_Single_Jump>());
-	//stateMgr_.add((unsigned int)PlayerState_Enum_Single::MOVE, std::make_shared<PlayerState_Single_Idle>());
 	init_state();
 
-	other_ = "";
+	auto collider = std::make_shared<PlayerBodyCollider>(world_, name_, (PlayerBodyPtr)this);
+	world_->addActor(ActorGroup::Player_AttackRange, collider);
+	collider_ = collider;
 }
 
 PlayerBody::~PlayerBody(){}
@@ -30,14 +36,20 @@ void PlayerBody::onUpdate(float deltaTime){
 	position_ += input_ * PLAYER_SPEED  + launch_ + gravity_ * deltaTime * static_cast<float>(GetRefreshRate());
 	velocity_ = position_ - body_.GetCircle().previousPosition_;
 
-	isOnFloor_ = false;
+	opponent_ = HitOpponent::NONE;
+
+	draw_pos_ = Vector3(position_.x, position_.y) * inv_;
 }
 
 void PlayerBody::onDraw() const{
 	body_.draw(inv_);
+
+	SetFontSize(32);
+	DrawFormatString(draw_pos_.x, draw_pos_.y, GetColor(255,255,255), "%f", dead_limit_);
 }
 
 void PlayerBody::onLateUpdate(float deltaTime){
+	collider_->pos_update();
 	input_ = Vector2::Zero;
 	gravity_ = Vector2::Zero;
 	launch_ = Vector2::Zero;
@@ -45,63 +57,51 @@ void PlayerBody::onLateUpdate(float deltaTime){
 
 void PlayerBody::onCollide(Actor & other){
 	
-	if (other.getName() == "MovelessFloor") {
+	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor") {
 		auto pos = body_.GetCircle().previousPosition_;
 
 		auto t_left =  other.getBody().GetBox().component_.point[0];
 		auto t_right = other.getBody().GetBox().component_.point[1];
 		auto b_left = other.getBody().GetBox().component_.point[2];
 		auto b_right = other.getBody().GetBox().component_.point[3];
-
-		auto m_top = (t_left + t_right) / 2;
-		auto m_bot = (b_left + b_right) / 2;
-		auto m_left = (t_left + b_left) / 2;
-		auto m_right = (t_right + b_right) / 2;
+		
+		auto center = t_left + other.getBody().GetBox().getSize() / 2;
 
 		auto top    = Vector2::Cross((t_left - t_right).Normalize(), (pos - t_right));
 		auto right  = Vector2::Cross((t_right - b_right).Normalize(), (pos - b_right));
 		auto bottom = Vector2::Cross((b_right - b_left).Normalize(), (pos - b_left));
 		auto left = Vector2::Cross((b_left - t_left).Normalize(), (pos - t_left));
-		auto up_down = Vector2::Cross(m_left - m_right, (pos - m_right));
-		auto right_left = Vector2::Cross(m_top - m_bot, (pos - m_bot));
+
+		opponent_ = HitOpponent::FLOOR_HIT;
 
 		if (top >= 0 && left <= 0 && right <= 0) {
-			position_.y = t_left.y - (body_.GetCircle().component_.radius + 5);
+			position_.y = t_left.y - PLAYER_RADIUS;
+			opponent_ = HitOpponent::FLOOR_TOP;
 		}
 		if (bottom >= 0 && left <= 0 && right <= 0) {
-			position_.y = b_right.y + (body_.GetCircle().component_.radius + 5);
+			position_.y = b_right.y + PLAYER_RADIUS;
 		}
 		if (right >= 0 && top <= 0 && bottom <= 0) {
-			position_.x = t_right.x + (body_.GetCircle().component_.radius + 5);
+			position_.x = t_right.x + PLAYER_RADIUS;
 		}
 		if (left >= 0 && top <= 0 && bottom <= 0) {
-			position_.x = b_left.x - (body_.GetCircle().component_.radius + 5);
+			position_.x = b_left.x - PLAYER_RADIUS;
 		}
-
-		isOnFloor_ = true;
+		if (left <= 0 && right <= 0 && top <= 0 && bottom <= 0) {
+			position_ = center + (pos - center).Normalize() * (t_left - center).Length();
+		}
 	}
-	if (other.getName() == "NavChip" && !isOnFloor_) {
-		auto pos = body_.GetCircle().previousPosition_;
-
-		auto box = other.getBody().GetBox();
-		Vector2 center = box.component_.point[0] + Vector2(box.getWidth(), box.getHeight()) / 2;
-		oppenent_pos_ = center;		
-		DrawPixel(center.x, center.y, GetColor(0, 255, 0));
-		//if(Vector2::Distance(pos, oppenent_pos_) <= 12)opponent_ = Opponent::FLOOR;
-	}
-
 	if (other.getName() == "BaseEnemy") {
-		opponent_ = Opponent::ENEMY;
+		opponent_ = HitOpponent::ENEMY;
 	}
 
-	if (other.getName() == "PlayerBody2")/* ||
-		(name_ == "PlayerBody2" && other.getName() == "PlayerBody1")*/ {
-		/*if()*/ opponent_ = Opponent::PARTNER;
+	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
+		(getName() == "PlayerBody2" && other.getName() == "PlayerBody1Collider")) {
+		if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::IDLE) ||
+			stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::JUMP)) {
+			hit_partner_ = HitOpponent::PARTNER;
+		}
 	}
-
-	//if (this == nullptr)return;
-	other_ = other.getName().c_str();
-
 }
 
 void PlayerBody::init_state(){
@@ -111,6 +111,10 @@ void PlayerBody::init_state(){
 void PlayerBody::move(Vector2 vector){
 	if (distance() >= PLAYER_MAX_STRETCH_LENGTH && stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::STAND_BY)) return;
 	
+	input_ = vector;
+}
+
+void PlayerBody::move_hold(Vector2 vector){
 	input_ = vector;
 }
 
@@ -125,14 +129,14 @@ void PlayerBody::sprit_move(KeyCode up, KeyCode down, KeyCode right, KeyCode lef
 }
 
 void PlayerBody::chase() {
-	if (target_ == nullptr || Vector2::Distance(Vector2::Zero, input_) > 0)return;
+	if (partner_ == nullptr || Vector2::Distance(Vector2::Zero, input_) > 0)return;
 	if (distance() <= PLAYER_MAX_NORMAL_LENGTH) return;
-	auto vec = Vector2::Normalize(position_ - target_->getPosition()) * PLAYER_MAX_NORMAL_LENGTH;
-	position_ = Vector2::Lerp(position_, target_->getPosition() + vec, 0.3f);
+	auto vec = Vector2::Normalize(position_ - partner_->getPosition()) * PLAYER_MAX_NORMAL_LENGTH;
+	position_ = Vector2::Lerp(position_, partner_->getPosition() + vec, 0.3f);
 }
 
 void PlayerBody::gravity(){
-	if (isOnFloor_)gravity_ = Vector2(0, 9.8f);
+	if (opponent_ == HitOpponent::FLOOR_TOP)gravity_ = Vector2(0, 9.8f);
 	else gravity_ = Vector2(0, 9.8f);
 }
 
@@ -140,15 +144,26 @@ void PlayerBody::acc_gravity(){
 
 }
 
+bool PlayerBody::able_to_hold(){
+	return	collider_->opponent() == HitOpponent::FLOOR_HIT;
+}
+
+bool PlayerBody::able_to_jump() {
+	return opponent_ == HitOpponent::FLOOR_TOP;
+}
+
+bool PlayerBody::is_hit(){
+	return opponent_ == HitOpponent::FLOOR_TOP || opponent_ == HitOpponent::FLOOR_HIT;
+}
+
 void PlayerBody::hold_gravity(){
-	if (Vector2::Distance(Vector2::Zero, input_) > 0)return;
-	gravity();
+	if (Vector2::Distance(Vector2::Zero, input_) <= 0)gravity();
 }
 
 void PlayerBody::circleClamp() {
 	if (distance() > PLAYER_MAX_STRETCH_LENGTH) {
-		Vector2	vec = Vector2::Normalize(position_ - target_->getPosition());
-		position_ = target_->getPosition() + vec * PLAYER_MAX_STRETCH_LENGTH;
+		Vector2	vec = Vector2::Normalize(position_ - partner_->getPosition());
+		position_ = partner_->getPosition() + vec * PLAYER_MAX_STRETCH_LENGTH;
 	}
 }
 
@@ -156,37 +171,44 @@ void PlayerBody::launch(Vector2 dir){
 	launch_ = dir;
 }
 
-PlayerBody::Opponent PlayerBody::hitOpponent(){
+HitOpponent PlayerBody::hitOpponent(){
 	return opponent_;
 }
 
+HitOpponent PlayerBody::hit_partner(){
+	return hit_partner_;
+}
+
 void PlayerBody::reset_opponent(){
-	opponent_ = Opponent::NONE;
+	opponent_ = HitOpponent::NONE;
+}
+
+void PlayerBody::reset_partner(){
+	hit_partner_ = HitOpponent::NONE;
 }
 
 void PlayerBody::reset_velocity(){
 	input_ = Vector2::Zero;
 }
 
-void PlayerBody::pre_vector(){
-	last_pos_ = position_;
-}
-
 float PlayerBody::distance(){
-	return Vector2::Distance(position_, target_->getPosition());
+	return Vector2::Distance(position_, partner_->getPosition());
 }
 
-void PlayerBody::target(std::shared_ptr<PlayerBody> target){
-	target_ = target;
+void PlayerBody::set_partner(PlayerBodyPtr partner){
+	partner_ = partner;
 }
 
-bool PlayerBody::isOnFloor()
-{
-	return isOnFloor_;
+PlayerBodyPtr PlayerBody::get_partner(){
+	return partner_;
 }
 
 bool PlayerBody::isDead(){
 	return dead_limit_ >= PLAYER_DEAD_LIMIT;
+}
+
+bool PlayerBody::isInv(){
+	return dead_limit_ <= PLAYER_INV_TIME;
 }
 
 void PlayerBody::single_action(float deltaTime){
@@ -195,6 +217,20 @@ void PlayerBody::single_action(float deltaTime){
 
 PlayerBody::SingleKeys PlayerBody::get_keys(){
 	return keys_;
+}
+
+Vector2 PlayerBody::get_partner_vector(){
+	return (partner_->getPosition() - position_).Horizontal().Normalize();
+}
+
+void PlayerBody::reset_dead_limit(){
+	dead_limit_ = 0;
+}
+
+void PlayerBody::count_dead_limit(float deltaTime) {
+	if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY) ||
+		stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::LEAN_BACK))return;
+		dead_limit_ += deltaTime;
 }
 
 

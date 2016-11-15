@@ -20,9 +20,13 @@ public:
 	virtual StateElement next() const override;
 protected:
 	// プレイヤーの左右比較(右側を返す)
-	PlayerBodyPtr compareMax(PlayerBodyPtr p1, PlayerBodyPtr p2);
+	PlayerBodyPtr compareMax_H(PlayerBodyPtr p1, PlayerBodyPtr p2);
 	// プレイヤーの左右比較(左側を返す)
-	PlayerBodyPtr compareMin(PlayerBodyPtr p1, PlayerBodyPtr p2);
+	PlayerBodyPtr compareMin_H(PlayerBodyPtr p1, PlayerBodyPtr p2);
+	// プレイヤーの上下比較(上側を返す)
+	PlayerBodyPtr compareMin_V(PlayerBodyPtr p1, PlayerBodyPtr p2);
+	// 同じ座標
+	bool compare_pos(PlayerBodyPtr p1, PlayerBodyPtr p2);
 protected:
 	// ステートの要素
 	StateElement element_;

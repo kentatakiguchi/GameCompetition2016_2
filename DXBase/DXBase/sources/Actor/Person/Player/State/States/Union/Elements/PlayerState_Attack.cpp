@@ -40,18 +40,66 @@ void PlayerState_Attack::update(Actor & actor, float deltaTime) {
 	main_body_->gravity();
 	sub_body_->gravity();
 
-	if (main_body_->isOnFloor() ||	sub_body_->isOnFloor()) {
-		power_ = 0;
+	if (main_body_->is_hit() ||	sub_body_->is_hit()) power_ = 0;
+
+	if (main_body_->is_hit() &&	sub_body_->is_hit()) {
+		change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 	}
 
-	if (main_body_->isOnFloor() &&	sub_body_->isOnFloor()) {
-		change((unsigned int)PlayerState_Enum_Union::IDLE);
+	if (compare_H() == 0) {
+
 	}
+	else if (compare_H() == 1) {
+		if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+		if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && sub_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+	}
+	else if (compare_H() == 2) {
+		if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && sub_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+
+		if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+		
+	}
+
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 }
 
 void PlayerState_Attack::end(){
 
 }
+
+int PlayerState_Attack::compare_V(){
+	// 同じ
+	if (main_body_->getPosition().y == sub_body_->getPosition().y) {
+		return 0;
+	}
+	// メインが↑
+	else if (main_body_->getPosition().y > sub_body_->getPosition().y) {
+		return 1;
+	}
+	// メインが↓
+	else if (main_body_->getPosition().y < sub_body_->getPosition().y) {
+		return 2;
+	}
+	return -1;
+}
+
+int PlayerState_Attack::compare_H(){
+	// 同じ
+	if (main_body_->getPosition().x == sub_body_->getPosition().x) {
+		return 0;
+	}
+	// メインが→
+	else if (main_body_->getPosition().x > sub_body_->getPosition().x) {
+		return 1;
+	}
+	// メインが←
+	else if (main_body_->getPosition().x < sub_body_->getPosition().x) {
+		return 2;
+	}
+	return -1;
+}
+
 
 
 

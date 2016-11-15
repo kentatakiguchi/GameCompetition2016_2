@@ -26,7 +26,7 @@ void PlayerState_Single_Jump::update(Actor & actor, float deltaTime){
 	Vector2 vector = InputMgr::GetInstance().KeyVector(player_body_->get_keys().right, player_body_->get_keys().left);
 	player_body_->move(vector.Horizontal());
 
-	if (player_body_->isOnFloor()) change((unsigned int)PlayerState_Enum_Single::IDLE);
+	if (player_body_->able_to_jump()) change((unsigned int)PlayerState_Enum_Single::IDLE);
 }
 
 void PlayerState_Single_Jump::end(){}

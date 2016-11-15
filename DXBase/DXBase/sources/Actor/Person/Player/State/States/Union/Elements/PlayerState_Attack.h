@@ -12,6 +12,9 @@ public:
 
 	virtual void end() override;
 private:
+	int compare_V();
+	int compare_H();
+private:
 	Vector2 dir_;
 	float dump_;
 	float power_;

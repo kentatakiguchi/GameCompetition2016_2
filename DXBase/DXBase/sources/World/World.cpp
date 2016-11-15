@@ -89,7 +89,9 @@ void World::addEventMessageListener(
 
 Vector2 World::MoveActor()
 {
-	PlayerBody* player = dynamic_cast<PlayerBody*>(findActor("PlayerBody1").get());
+	auto actor = findActor("PlayerBody1").get();
+	if (actor == nullptr)return Vector2::Zero;
+	PlayerBody* player = dynamic_cast<PlayerBody*>(actor);
 	return player->GetVelo();
 }
 

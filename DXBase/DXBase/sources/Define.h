@@ -47,15 +47,21 @@ const static Vector2	PLAYER_SCREEN_POSITION = Vector2(SCREEN_SIZE.x * 0.5f, SCRE
 // プレイヤーの移動速度
 const static float		PLAYER_SPEED = 10.0f;
 // プレイヤーの本体の半径
-const static float		PLAYER_RADIUS = CHIPSIZE * 0.4f;
+const static float		PLAYER_RADIUS = CHIPSIZE * 0.5f;
+// プレイヤーの本体の衝突の半径
+const static float		PLAYER_COLLIDER_RADIUS = PLAYER_RADIUS * 1.25f;
 // プレイヤーの通常の長さ
 const static float		PLAYER_MAX_NORMAL_LENGTH = CHIPSIZE * 2;
 // プレイヤーが伸びた場合の最大値
 const static float		PLAYER_MAX_STRETCH_LENGTH = CHIPSIZE * 4;
 // プレイヤーの発射速度
-const static float		PLAYER_LAUNCH_POWER = 200.0f;
+const static float		PLAYER_LAUNCH_POWER = 150.0f;
 // プレイヤーのジャンプ速度
 const static float		PLAYER_JUMP_POWER = 30.0f;
+// プレイヤーの仰け反り速度
+const static float		PLAYER_LEANBACK_POWER = 10.0f;
+// プレイヤーの無敵時間
+const static float		PLAYER_INV_TIME = 3.0f;
 // プレイヤーの死亡までの時間
 const static float		PLAYER_DEAD_LIMIT = 5.0f;
 

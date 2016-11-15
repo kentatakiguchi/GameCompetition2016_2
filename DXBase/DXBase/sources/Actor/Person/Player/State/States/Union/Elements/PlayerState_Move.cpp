@@ -6,9 +6,10 @@ void PlayerState_Move::unique_init(Actor & actor){
 }
 
 void PlayerState_Move::update(Actor & actor, float deltaTime){
-	move(actor, deltaTime);
 	key_update();
 	//pad_update();	
+
+	move(actor, deltaTime);
 }
 
 void PlayerState_Move::end(){ }

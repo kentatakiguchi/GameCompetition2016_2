@@ -9,7 +9,7 @@ void PlayerState_Damage::unique_init(Actor & actor){
 
 void PlayerState_Damage::update(Actor & actor, float deltaTime){
 	if (actor.getAnim().isAnimEnd()) {
-		change((unsigned int)PlayerState_Enum_Union::IDLE);
+		change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 	}
 }
 

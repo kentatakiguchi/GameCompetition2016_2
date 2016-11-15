@@ -28,8 +28,8 @@ void PlayerState_Union::common_init(Actor & actor, ActionType type){
 
 	player_->setBody(main_body_, sub_body_);
 
-	main_body_->target(sub_body_);
-	sub_body_->target(main_body_);
+	main_body_->set_partner(sub_body_);
+	sub_body_->set_partner(main_body_);
 }
 
 // ステートの変更処理
@@ -49,16 +49,25 @@ IState::StateElement PlayerState_Union::next() const{
 }
 
 // プレイヤーの左右比較(右側を返す)
-PlayerBodyPtr PlayerState_Union::compareMax(PlayerBodyPtr p1, PlayerBodyPtr p2){
-	if (p1->getPosition().x >= p2->getPosition().x) return p1;
-	else return p2;
+PlayerBodyPtr PlayerState_Union::compareMax_H(PlayerBodyPtr p1, PlayerBodyPtr p2){
+	if (p1->getPosition().x > p2->getPosition().x) return p1;
+	else if (p1->getPosition().x < p2->getPosition().x) return p2;
+	else return compareMin_V(p1, p2);
 	return nullptr;
 }
 
 // プレイヤーの左右比較(左側を返す)
-PlayerBodyPtr PlayerState_Union::compareMin(PlayerBodyPtr p1, PlayerBodyPtr p2){
-	if (p1->getPosition().x <= p2->getPosition().x) return p1;
+PlayerBodyPtr PlayerState_Union::compareMin_H(PlayerBodyPtr p1, PlayerBodyPtr p2){
+	if (p1->getPosition().x < p2->getPosition().x) return p1;
+	else if (p1->getPosition().x > p2->getPosition().x) return p2;
+	else return compareMin_V(p1, p2);
+	return nullptr;
+}
+
+PlayerBodyPtr PlayerState_Union::compareMin_V(PlayerBodyPtr p1, PlayerBodyPtr p2){
+	if (p1->getPosition().y >= p2->getPosition().y) return p1;
 	else return p2;
 	return nullptr;
 }
+
 

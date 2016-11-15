@@ -27,6 +27,9 @@ public:
 		Vector2 lengthVectMain = CreateVector(lengthVectHeight1,lengthVectHeight2);
 		return lengthVectMain.Length();
 	}
+	Vector2 getSize() {
+		return Vector2(getWidth(), getHeight());
+	}
 	//使用しない
 	virtual bool intersects(BoundingSphere& other) override{ return false; }
 	//使用しない

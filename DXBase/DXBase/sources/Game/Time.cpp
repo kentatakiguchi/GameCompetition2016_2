@@ -28,3 +28,11 @@ float Time::deltaTime(){
 	return m_DeltaTime;
 }
 
+float Time::refreshRate(){
+	return static_cast<float>(GetRefreshRate());
+}
+
+float Time::correctionTime(){
+	return m_DeltaTime * static_cast<float>(GetRefreshRate());
+}
+

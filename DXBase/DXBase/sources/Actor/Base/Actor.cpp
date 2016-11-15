@@ -101,7 +101,7 @@ Matrix Actor::getPose() const {
 Matrix Actor::inv() {
 	if (world_ == nullptr) return Matrix::Identity;
 	auto player = world_->findActor("PlayerBody1");
-
+	if(player == nullptr)return Matrix::Identity;
 	//Vector2 spring = Spring(Vector2(300, 400),velo);
 	resInv_ = Matrix::Invert(player->getPose()) * Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
 

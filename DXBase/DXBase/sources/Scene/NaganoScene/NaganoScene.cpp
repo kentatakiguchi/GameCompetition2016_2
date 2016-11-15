@@ -5,6 +5,8 @@
 #include "../../Field/Field.h"
 #include "../../Actor/Base/ActorGroup.h"
 #include "../../Actor/Person/Player/Player.h"
+//#include "../../Actor/Person/Enemy/Enemy.h"
+//#include "../../Actor/Person/Enemy/EnemySpawner.h"
 #include "../../ResourceLoader/ResourceLoader.h"
 
 #include "../../Actor/Person/Enemy/Enemys/FloorTurnEnemy.h"
@@ -12,7 +14,6 @@
 #include "../../Field/MapGenerator.h"
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
 #include "../../Actor/TestPlayer/TestPlayer.h"
-
 #include <memory>
 #include <random>
 

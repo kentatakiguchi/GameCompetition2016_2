@@ -190,8 +190,11 @@
     <ClInclude Include="sources\Actor\Person\Enemy\ImportEnemys.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\PlayerSearchObj.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\States\Enemy_IdleState.h" />
+    <ClInclude Include="sources\Actor\Person\Player\HitOpponent.h" />
     <ClInclude Include="sources\Actor\Person\Player\Player.h" />
+    <ClInclude Include="sources\Actor\Person\Player\PlayerBase.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody.h" />
+    <ClInclude Include="sources\Actor\Person\Player\PlayerBodyCollider.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody_Point.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerConnector.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerPtr.h" />
@@ -200,7 +203,9 @@
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IStatePtr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\PlayerStatePtr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\StateMgr.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\PlayerStatePtr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\PlayerState_Enum.h" />
@@ -233,7 +238,9 @@
     <ClInclude Include="sources\Field\MoveFloorUpDown.h" />
     <ClInclude Include="sources\Field\MovelessFloor.h" />
     <ClInclude Include="sources\Field\NavChip.h" />
+    <ClInclude Include="sources\Field\SegmentFloor.h" />
     <ClInclude Include="sources\Field\StageClearPoint.h" />
+    <ClInclude Include="sources\Field\SticklessFloor.h" />
     <ClInclude Include="sources\Field\TranslessTurnFloor.h" />
     <ClInclude Include="sources\Field\TurnFloor.h" />
     <ClInclude Include="sources\FileReader\CsvReader.h" />
@@ -315,11 +322,15 @@
     <ClCompile Include="sources\Actor\Person\Enemy\FloorSearchPoint.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\PlayerSearchObj.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Player.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\PlayerBase.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerBody.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\PlayerBodyCollider.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerBody_Point.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerConnector.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Jump.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_StandBy.cpp" />
@@ -345,7 +356,9 @@
     <ClCompile Include="sources\Field\MoveFloorUpDown.cpp" />
     <ClCompile Include="sources\Field\MovelessFloor.cpp" />
     <ClCompile Include="sources\Field\NavChip.cpp" />
+    <ClCompile Include="sources\Field\SegmentFloor.cpp" />
     <ClCompile Include="sources\Field\StageClearPoint.cpp" />
+    <ClCompile Include="sources\Field\SticklessFloor.cpp" />
     <ClCompile Include="sources\Field\TranslessTurnFloor.cpp" />
     <ClCompile Include="sources\Field\TurnFloor.cpp" />
     <ClCompile Include="sources\FileReader\CsvReader.cpp" />

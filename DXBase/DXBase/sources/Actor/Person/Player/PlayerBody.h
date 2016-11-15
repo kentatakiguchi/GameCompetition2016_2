@@ -5,18 +5,10 @@
 //#include "EventMessage.h"
 #include "State/Base/StateMgr.h"
 #include "PlayerPtr.h"
+#include "HitOpponent.h"
 
 // プレーヤー
 class PlayerBody : public Actor {
-public:
-	enum class Opponent {
-		NONE,
-		//FLOOR,
-		ITEM,
-		PARTNER,
-		ENEMY,
-		TEST
-	};
 public:
 	struct SingleKeys {
 	public:
@@ -41,26 +33,38 @@ public:
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onCollide(Actor& other) override;
 	void init_state();
-	void move(Vector2 vector);	
-	
+	void move(Vector2 vector);
+	void move_hold(Vector2 vector);
+
 	void sprit_move(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
 	void chase();
 	void gravity();
 	void acc_gravity();
 
+	bool able_to_hold();
+	bool able_to_jump();
+	bool is_hit();
+
 	void hold_gravity();
 	void circleClamp();
 	void launch(Vector2 dir);
-	Opponent hitOpponent();
+	HitOpponent hitOpponent();
+	HitOpponent hit_partner();
 	void reset_opponent();
+	void reset_partner();
 	void reset_velocity();
-	void pre_vector();
 	float distance();
-	void target(std::shared_ptr<PlayerBody> target);
-	bool isOnFloor();
+	void set_partner(PlayerBodyPtr partner);
+	PlayerBodyPtr get_partner();
 	bool isDead();
+	bool isInv();
 	void single_action(float deltaTime);
 	SingleKeys get_keys();
+
+	Vector2 get_partner_vector();
+
+	void reset_dead_limit();
+	void count_dead_limit(float deltaTime);
 
 	Vector2 GetVelo() {
 		return Vector2(velocity_.x, velocity_.y);
@@ -71,13 +75,12 @@ private:
 	Vector2 gravity_;
 	Vector2 launch_;
 	Vector2 last_pos_;
-	PlayerBodyPtr target_;
-	Opponent opponent_;
-	bool isOnFloor_;
+	PlayerBodyPtr partner_;
+	HitOpponent opponent_;
+	HitOpponent hit_partner_;
 	Vector2 oppenent_pos_;
 
 	float jump_power_;
-	const char* other_;
 	// 単独状態か否か
 	bool is_single_;
 	StateMgr stateMgr_;
@@ -85,6 +88,10 @@ private:
 	SingleKeys keys_;
 
 	float dead_limit_;
+
+	PlayerBodyCollPtr collider_;
+
+	Vector3 draw_pos_;
 };
 
 

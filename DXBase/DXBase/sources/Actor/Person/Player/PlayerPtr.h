@@ -10,3 +10,7 @@ using PlayerBodyPtr = std::shared_ptr<PlayerBody>;
 
 class PlayerConnector;
 using PlayerCntrPtr = std::shared_ptr<PlayerConnector>;
+
+class PlayerBodyCollider;
+using PlayerBodyCollPtr = std::shared_ptr<PlayerBodyCollider>;
+

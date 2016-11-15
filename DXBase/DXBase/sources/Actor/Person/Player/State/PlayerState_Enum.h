@@ -13,8 +13,10 @@ enum class PlayerState_Enum_Union {
 	SPLIT,
 	ATTACK, 
 	ATTACK2,
-	DAMAGE
+	DAMAGE,
+	DEAD
 };
+
 
 // プレイヤーのステート一覧
 enum class PlayerState_Enum_Single {
@@ -29,5 +31,6 @@ enum class PlayerState_Enum_Single {
 	SPLIT,
 	ATTACK,
 	ATTACK2,
-	DAMAGE
+	DAMAGE,
+	LEAN_BACK
 };

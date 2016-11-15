@@ -18,7 +18,6 @@ public:
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
-	void changeMotion(float deltaTime);
 	void setBody(PlayerBodyPtr main, PlayerBodyPtr sub);
 	void connect(PlayerBodyPtr main, PlayerBodyPtr sub);
 	void split_body();
