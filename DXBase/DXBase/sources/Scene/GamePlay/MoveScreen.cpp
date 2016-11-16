@@ -16,7 +16,7 @@ MoveScreen::MoveScreen()
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list2;
 	list2.push_back("ENTERボタンでリザルトへ");
-	list2.push_back("Aボタンでステージクリア");
+	list2.push_back("Yボタンでステージクリア");
 	list2.push_back("Tボタンでポーズ");
 	listBase[1] = list2;
 	textPosList.push_back(Vector2(200, 500));
@@ -31,7 +31,7 @@ bool MoveScreen::update(std::string name,Scene & next)
 		next = Scene::GameOver;
 		return true;
 	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::A))
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::Y))
 	{
 		if (name != "stage03")
 		{

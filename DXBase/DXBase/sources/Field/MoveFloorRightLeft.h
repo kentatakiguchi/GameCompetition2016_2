@@ -5,7 +5,7 @@
 #include"../Define.h"
 #include"MapChip.h"
 
-const static float RIGHTLEFTRANGE = 2;
+
 
 class MoveFloorRightLeft :public MapChip {
 public:

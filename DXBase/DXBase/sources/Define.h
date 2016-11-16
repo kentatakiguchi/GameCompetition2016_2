@@ -34,6 +34,9 @@ const static float CHIPSIZE = 96;
 
 const static float TURNLESS_FLOOR_SIZE = 2;
 
+const static float RIGHTLEFTRANGE = 3;
+
+const static float UPDOWNRANGE = 3;
 
 
 /*** ‰i–ì ***/

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef MOVELESS_FLOOR_H_
-#define MOVELESS_FLOOR_H_
 #include"../Actor/Base/Actor.h"
 #include"MapChip.h"
 #include"../Define.h"
@@ -26,4 +24,3 @@ private:
 	int spriteID_;
 };
 
-#endif // !MAPCHIP_H_

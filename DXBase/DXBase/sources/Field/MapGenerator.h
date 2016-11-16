@@ -8,7 +8,9 @@
 #include"../World/IWorldPtr.h"
 #include<map>
 #include"MoveFloorUpDown.h"
+#include"MoveFloorCenterUpDown.h"
 #include"MoveFloorRightLeft.h"
+#include"MoveFloorCenterRightLeft.h"
 #include"TurnFloor.h"
 #include"MovelessFloor.h"
 #include"NavChip.h"
@@ -18,6 +20,7 @@
 #include"CollidelessFloor.h"
 #include"SegmentFloor.h"
 #include"SticklessFloor.h"
+#include"BossAreaFloor.h"
 #include"../Actor/Person/Enemy/ImportEnemys.h"
 #include"../ResourceLoader/ResourceLoader.h"
 
@@ -40,8 +43,9 @@ public:
 		//world_->addActor(ActorGroup::Field, std::make_shared<MapChip>(world_, Vector2(rowN*CHIPSIZE, colN*CHIPSIZE)));
 
 
-		segmentChecker[100] = false;
-		segmentChecker[101] = false;
+		for (int i = 0; i < 20; i++) {
+			segmentChecker[100 + i] = false;
+		}
 
 	}
 	//ファイル名(拡張子まで書く事)から、マップを生成する fileName:マップ用の.csv 0:生成しない 1:MapChipを生成
@@ -64,8 +68,14 @@ public:
 				if (reader_.geti(rowN, colN) == 2) {
 					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorUpDown>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
+				if (reader_.geti(rowN, colN) == 11) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorCenterUpDown>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
 				if (reader_.geti(rowN, colN) == 3) {
 					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorRightLeft>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 12) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorCenterRightLeft>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
 				if (reader_.geti(rowN, colN) == 4) {
 					world_->addActor(ActorGroup::Field, std::make_shared<TurnFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
@@ -84,6 +94,9 @@ public:
 				}
 				if (reader_.geti(rowN, colN) == 9) {
 					world_->addActor(ActorGroup::Field, std::make_shared<SticklessFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 10) {
+					world_->addActor(ActorGroup::Field, std::make_shared<BossAreaFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
 
 				if (reader_.geti(rowN, colN) == 20) {

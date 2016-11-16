@@ -1,11 +1,8 @@
 #pragma once
-#ifndef MOVE_FLOOR_UP_DOWN_H_
-#define MOVE_FLOOR_UP_DOWN_H_
 #include"../Actor/Base/Actor.h"
 #include"../Define.h"
 #include"MapChip.h"
 
-const static float UPDOWNRANGE = 2;
 
 class MoveFloorUpDown :public MapChip {
 public:
@@ -31,6 +28,5 @@ private:
 	float moveVelocity;
 };
 
-#endif // !MAPCHIP_H_
 
 

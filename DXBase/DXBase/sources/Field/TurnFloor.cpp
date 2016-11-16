@@ -45,7 +45,7 @@ void TurnFloor::set(Vector2 & pos)
 
 void TurnFloor::onUpdate(float deltaTime)
 {
-	defaultPos_ = position_ - (moveVelocity*CHIPSIZE*TURNRANGE);
+	defaultPos_ = position_- (moveVelocity*CHIPSIZE*TURNRANGE)+Vector2(CHIPSIZE*2,CHIPSIZE*2);
 
 	moveCount_+=1*(ceilf(deltaTime));
 	if (moveCount_ % 360 == 0) {
@@ -55,7 +55,7 @@ void TurnFloor::onUpdate(float deltaTime)
 	moveVelocity.x = cos(moveCount_*MathHelper::Pi/180);
 	moveVelocity.y = sin(moveCount_*MathHelper::Pi / 180);
 
-	position_ = defaultPos_ + (moveVelocity*CHIPSIZE*TURNRANGE);
+	position_ = defaultPos_ + (moveVelocity*CHIPSIZE*TURNRANGE)- Vector2(CHIPSIZE * 2, CHIPSIZE * 2);
 
 }
 
