@@ -51,28 +51,57 @@ void KataokaScene::update()
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::S))
 		pos.y -= 100.0f*Time::GetInstance().deltaTime();
 	
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::UP))
-		scale.y += 10.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::DOWN))
-		scale.y -= 10.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::LEFT))
-		scale.x += 10.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::RIGHT))
-		scale.x -= 10.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::UP))
+	//	scale.y += 10.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::DOWN))
+	//	scale.y -= 10.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::LEFT))
+	//	scale.x += 10.0f*Time::GetInstance().deltaTime();
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::RIGHT))
+	//	scale.x -= 10.0f*Time::GetInstance().deltaTime();
 
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::G))
 		rotate += 100.0f*Time::GetInstance().deltaTime();
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::F))
 		rotate -= 100.0f*Time::GetInstance().deltaTime();
 
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T))
+	{
+		puyo->PuyoAddPower(Vector2::Zero, Vector2(4, -4));
+	}
+
+
 	//テスト用
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::H))
 	{
-		puyo->PuyoAddPowerDx(Vector2(0,128), Vector2(3, -3));
+		for (int i = 0; i <= 8; i++)
+		{
+			puyo->PuyoAddPowerDx(Vector2(256, i*16), Vector2(4, 0));
+		}
 	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::J))
+	{	
+		for (int i = 0; i <= 3; i++)
+		{
+			for (int j = 0; j <= 3; j++)
+			{
+				puyo->PuyoAddPowerDx(Vector2(j*16, i * 16), Vector2(-4, -4));
+			}
+		}
+	}
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::I))
 	{
-		puyo->PuyoAddPower(Vector2(128, 128), Vector2(2, -2));
+		for (int i = 0; i <= 16; i++)
+		{
+			puyo->PuyoAddPowerDx(Vector2(i * 16,0), Vector2(0, -4));
+		}
+	}
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))
+	{
+		for (int i = 0; i <= 16; i++)
+		{
+			puyo->PuyoAddPowerDx(Vector2(i * 16, 128), Vector2(0, 4));
+		}
 	}
 	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::K))
 	//{

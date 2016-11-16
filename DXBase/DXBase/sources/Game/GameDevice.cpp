@@ -22,7 +22,7 @@ void GameDevice::start(){
 	sceneMgr_.add(Scene::GameOver, std::make_shared<GameOverScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GameClear, std::make_shared<GameClearScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::StageClear, std::make_shared<StageClearScene>(&dataKeeper_));
-	//sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>());
+	sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>());
 	//sceneMgr_.add(Scene::Nagano, std::make_shared<NaganoScene>());
 	sceneMgr_.change(Scene::Loading);
 

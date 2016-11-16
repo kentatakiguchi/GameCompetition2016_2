@@ -19,11 +19,13 @@ struct SpringState {
 	float resNum=0.0f;                                  //補間用現在
 	float num = 0.0f;
 	float power = 0.0f;                            //加える力
+	float maxPower = 0.0f;
 	float time=0.0f;						       //経過時間
 	float vibrationTime = 0.0f;                    //振動するまでの時間
 	float vibrationTimer = 0.0f;                   //振動するまでのカウント
 	Vector2 position=Vector2::Zero;		           //振動する中心座標
 	Vector2 velocity = Vector2(1, 1);              //振動している方向と大きさ
+	bool PowerFlag = true;                         //振動してる種類フラグ
 
 };
 
