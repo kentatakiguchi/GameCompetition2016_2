@@ -14,6 +14,8 @@ enum class ModelID {
 };
 
 enum class TextureID {
+	PLAYER_PUYOTA,
+	PLAYER_PUYOMI,
 	BACKGRAUND1_TEX,
 	BACKGRAUND2_TEX,
 	BACKGRAUND3_TEX,
@@ -25,7 +27,7 @@ enum class TextureID {
 	ENEMY_SAMPLE_TEX,
 	CHIP1_TEX,
 	CHIP2_TEX,
-	PAUSE_BACK_TEX
+	PAUSE_BACK_TEX	
 };
 
 class ResourceLoader{

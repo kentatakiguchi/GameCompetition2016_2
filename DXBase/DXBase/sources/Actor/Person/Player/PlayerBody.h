@@ -7,6 +7,8 @@
 #include "PlayerPtr.h"
 #include "HitOpponent.h"
 
+#include "../../../Animation/Animation2D.h"
+
 // ÉvÉåÅ[ÉÑÅ[
 class PlayerBody : public Actor {
 public:
@@ -50,8 +52,10 @@ public:
 	void launch(Vector2 dir);
 	HitOpponent hitOpponent();
 	HitOpponent hit_partner();
+	HitOpponent hit_enemy();
 	void reset_opponent();
 	void reset_partner();
+	void reset_enemy();
 	void reset_velocity();
 	float distance();
 	void set_partner(PlayerBodyPtr partner);
@@ -62,7 +66,8 @@ public:
 	SingleKeys get_keys();
 
 	Vector2 get_partner_vector();
-
+	void create_attack_collider_();
+	void delete_attack_collider_();
 	void reset_dead_limit();
 	void count_dead_limit(float deltaTime);
 
@@ -78,6 +83,7 @@ private:
 	PlayerBodyPtr partner_;
 	HitOpponent opponent_;
 	HitOpponent hit_partner_;
+	HitOpponent hit_enemy_;
 	Vector2 oppenent_pos_;
 
 	float jump_power_;
@@ -90,8 +96,11 @@ private:
 	float dead_limit_;
 
 	PlayerBodyCollPtr collider_;
+	PlayerBodyCollPtr attack_collider_;
 
 	Vector3 draw_pos_;
+
+	Animation2D animation_;
 };
 
 

@@ -44,6 +44,10 @@ public:
 	virtual Vector2 MoveActor() override;
 	//unsigned int fieldHandle();
 	virtual Vector2 ScroolStopFlag() override;
+	//クリア条件
+	virtual bool is_clear()override;
+	virtual void clear(bool clear)override;
+
 	// コピー禁止
 	World(const World& other) = delete;
 	World& operator = (const World& other) = delete;
@@ -58,6 +62,8 @@ private:
 	FieldPtr		field_;
 	// イベントリスナー
 	std::function<void(EventMessage, void*)> listener_;
+
+	bool is_clear_;
 };
 
 #endif

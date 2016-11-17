@@ -43,6 +43,8 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/Test2.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_GAUGE_TEX, "./resources/sprite/BossGauge.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::PAUSE_BACK_TEX, "./resources/sprite/pauseBack.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_PUYOTA, "./resources/sprite/actor/player/ball.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_PUYOMI, "./resources/sprite/actor/player/ball.png");
 	//ResourceLoader::GetInstance().loadModel(ModelID::SKYDOME, "./resources/model/skydome/skydome.mqo");
 
 }

@@ -6,7 +6,8 @@
 #include"../Actor/Person/Player/PlayerBody.h"
 // コンストラクタ
 World::World() :
-	listener_([](EventMessage, void*) {}) {
+	listener_([](EventMessage, void*) {}),
+	is_clear_(false){
 }
 
 // 更新
@@ -107,6 +108,14 @@ Vector2 World::ScroolStopFlag()
 	flag = Vector2::Clamp(flag, Vector2::Zero, Vector2(1, 1));
 	return flag;
 
+}
+
+bool World::is_clear(){
+	return is_clear_;
+}
+
+void World::clear(bool clear){
+	is_clear_ = clear;
 }
 
 

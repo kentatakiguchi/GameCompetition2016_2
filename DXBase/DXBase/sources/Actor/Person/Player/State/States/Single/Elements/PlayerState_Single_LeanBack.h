@@ -13,7 +13,6 @@ public:
 	virtual void end() override;
 private:
 	void move();
-
 private:
 	Vector2 dir_;
 	float power_;

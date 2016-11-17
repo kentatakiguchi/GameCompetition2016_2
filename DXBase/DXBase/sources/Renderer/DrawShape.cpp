@@ -28,7 +28,7 @@ void DrawShape::Oval(const Vector2 & main_pos, const Vector2 & sub_pos, const fl
 		Vector3 pos_p = Vector3(x, y) * Matrix::CreateFromAxisAngle(Vector3::Forward, angle) + Vector3(center.x, center.y);
 		Vector3 pos_n = Vector3(x, -y) * Matrix::CreateFromAxisAngle(Vector3::Forward, angle) + Vector3(center.x, center.y);
 
-		DrawPixel(pos_p.x, pos_p.y, GetColor(0, 255, 0));
-		DrawPixel(pos_n.x, pos_n.y, GetColor(0, 255, 0));
+		DrawPixel(pos_p.x, pos_p.y, GetColor(0, 255, 255));
+		DrawPixel(pos_n.x, pos_n.y, GetColor(0, 255, 255));
 	}
 }

@@ -23,12 +23,29 @@ void PlayerState_Single_Jump::update(Actor & actor, float deltaTime){
 
 	player_body_->launch(dir_ * power_);
 
-	Vector2 vector = InputMgr::GetInstance().KeyVector(player_body_->get_keys().right, player_body_->get_keys().left);
-	player_body_->move(vector.Horizontal());
+
+
+	//key_update();
+
+	pad_update();
+
+	move();
 
 	if (player_body_->able_to_jump()) change((unsigned int)PlayerState_Enum_Single::IDLE);
 }
 
 void PlayerState_Single_Jump::end(){}
 
-void PlayerState_Single_Jump::move(Actor & actor, float deltaTime){}
+void PlayerState_Single_Jump::move(){}
+
+void PlayerState_Single_Jump::key_update(){
+	Vector2 vector = InputMgr::GetInstance().KeyVector(player_body_->get_keys().right, player_body_->get_keys().left);
+	player_body_->move(vector.Horizontal());
+}
+
+void PlayerState_Single_Jump::pad_update(){
+	Vector2 vector = Vector2::Zero;
+	if (player_body_->get_keys().right == KeyCode::RIGHT)vector = InputMgr::GetInstance().AnalogPadVectorR();
+	if (player_body_->get_keys().right == KeyCode::D)vector = InputMgr::GetInstance().AnalogPadVectorL();
+	player_body_->move(vector.Horizontal());
+}

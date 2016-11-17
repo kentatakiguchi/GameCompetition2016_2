@@ -6,8 +6,8 @@ void PlayerState_Move::unique_init(Actor & actor){
 }
 
 void PlayerState_Move::update(Actor & actor, float deltaTime){
-	key_update();
-	//pad_update();	
+	//key_update();
+	pad_update();	
 
 	move(actor, deltaTime);
 }
@@ -34,14 +34,14 @@ void PlayerState_Move::key_update(){
 }
 
 void PlayerState_Move::pad_update(){
-	main_body_->move(InputMgr::GetInstance().AnalogPadVectorL());
-	sub_body_->move(InputMgr::GetInstance().AnalogPadVectorR());
+	main_body_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal());
+	sub_body_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal());
 
 	if (InputMgr::GetInstance().AnalogPadVectorL().Length() <= 0 &&	InputMgr::GetInstance().AnalogPadVectorR().Length() <= 0) {
 		change((unsigned int)PlayerState_Enum_Union::IDLE);
 	}
 
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R2)) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L2)) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1)) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1)) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 }
 

@@ -12,7 +12,11 @@ public:
 
 	virtual void end() override;
 private:
-	void move(Actor & actor, float deltaTime);
+	void move();
+private:
+	void key_update();
+	void pad_update();
+
 private:
 	Vector2 dir_;
 	float dump_;

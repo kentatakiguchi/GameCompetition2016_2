@@ -29,6 +29,7 @@ public:
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
 	void create_point(int point_num = 0);
+	float distance();
 private:
 	BezierCurve bezier_;
 	
@@ -38,4 +39,7 @@ private:
 
 	PuyoTextureK* puyo;
 
+	Vector2 pos;
+	Vector2 scale;
+	float rotate;
 };

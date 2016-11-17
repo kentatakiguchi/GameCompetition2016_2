@@ -20,7 +20,7 @@ public:
 	virtual void onCollide(Actor& other) override;
 	void setBody(PlayerBodyPtr main, PlayerBodyPtr sub);
 	void connect(PlayerBodyPtr main, PlayerBodyPtr sub);
-	void split_body();
+	void split_body(PlayerBodyPtr main, PlayerBodyPtr sub);
 	PlayerBodyPtr getMainBody();
 	PlayerBodyPtr getSubBody();
 

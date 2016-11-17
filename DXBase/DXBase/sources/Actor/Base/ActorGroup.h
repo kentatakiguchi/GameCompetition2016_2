@@ -3,6 +3,7 @@
 
 enum class ActorGroup {
 	Player,				// プレーヤ
+	Player_Collider,		// プレーヤ
 	Player_AttackRange,		// プレーヤ弾
 	Enemy,				// 敵
 	Enemy_AttackRange,		// プレーヤ弾

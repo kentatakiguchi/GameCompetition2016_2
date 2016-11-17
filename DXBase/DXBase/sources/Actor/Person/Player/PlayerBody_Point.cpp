@@ -16,7 +16,7 @@ void PlayerBody_Point::onUpdate(float deltaTime){
 }
 
 void PlayerBody_Point::onDraw() const{
-	body_.draw(inv_);
+	//body_.draw(inv_);
 }
 
 void PlayerBody_Point::onLateUpdate(float deltaTime){

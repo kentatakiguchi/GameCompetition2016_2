@@ -26,8 +26,12 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	init_state();
 
 	auto collider = std::make_shared<PlayerBodyCollider>(world_, name_, (PlayerBodyPtr)this);
-	world_->addActor(ActorGroup::Player_AttackRange, collider);
+	world_->addActor(ActorGroup::Player_Collider, collider);
 	collider_ = collider;
+
+
+	// グラフィックのロード
+	animation_ = Animation2D(ResourceLoader::GetInstance().getTextureID(TextureID::PLAYER_PUYOTA), 3, 3);
 }
 
 PlayerBody::~PlayerBody(){}
@@ -39,6 +43,9 @@ void PlayerBody::onUpdate(float deltaTime){
 	opponent_ = HitOpponent::NONE;
 
 	draw_pos_ = Vector3(position_.x, position_.y) * inv_;
+
+	animation_.update(deltaTime);
+
 }
 
 void PlayerBody::onDraw() const{
@@ -46,6 +53,8 @@ void PlayerBody::onDraw() const{
 
 	SetFontSize(32);
 	DrawFormatString(draw_pos_.x, draw_pos_.y, GetColor(255,255,255), "%f", dead_limit_);
+
+	animation_.draw(Vector2(draw_pos_.x, draw_pos_.y), Vector2::One * 48, 2);
 }
 
 void PlayerBody::onLateUpdate(float deltaTime){
@@ -57,7 +66,7 @@ void PlayerBody::onLateUpdate(float deltaTime){
 
 void PlayerBody::onCollide(Actor & other){
 	
-	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor") {
+	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" || other.getName() == "GameOverPoint") {
 		auto pos = body_.GetCircle().previousPosition_;
 
 		auto t_left =  other.getBody().GetBox().component_.point[0];
@@ -91,10 +100,12 @@ void PlayerBody::onCollide(Actor & other){
 			position_ = center + (pos - center).Normalize() * (t_left - center).Length();
 		}
 	}
-	if (other.getName() == "BaseEnemy") {
-		opponent_ = HitOpponent::ENEMY;
+	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
+		hit_enemy_ = HitOpponent::ENEMY;
 	}
-
+	if (other.getName() == "StageClearPoint") {
+		hit_enemy_ = HitOpponent::CLEAR;
+	}
 	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
 		(getName() == "PlayerBody2" && other.getName() == "PlayerBody1Collider")) {
 		if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::IDLE) ||
@@ -179,12 +190,23 @@ HitOpponent PlayerBody::hit_partner(){
 	return hit_partner_;
 }
 
+HitOpponent PlayerBody::hit_enemy()
+{
+	return hit_enemy_;
+}
+
 void PlayerBody::reset_opponent(){
 	opponent_ = HitOpponent::NONE;
 }
 
 void PlayerBody::reset_partner(){
 	hit_partner_ = HitOpponent::NONE;
+}
+
+void PlayerBody::reset_enemy()
+{
+	hit_enemy_ = HitOpponent::NONE;
+
 }
 
 void PlayerBody::reset_velocity(){
@@ -221,6 +243,16 @@ PlayerBody::SingleKeys PlayerBody::get_keys(){
 
 Vector2 PlayerBody::get_partner_vector(){
 	return (partner_->getPosition() - position_).Horizontal().Normalize();
+}
+
+void PlayerBody::create_attack_collider_(){
+	//auto collider = std::make_shared<PlayerBodyCollider>(world_, std::string("PlayerAttack"), (PlayerBodyPtr)this);
+	//world_->addActor(ActorGroup::Player_AttackRange, collider);
+	//attack_collider_ = collider;
+}
+
+void PlayerBody::delete_attack_collider_(){
+	//attack_collider_->dead();
 }
 
 void PlayerBody::reset_dead_limit(){

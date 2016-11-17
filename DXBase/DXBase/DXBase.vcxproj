@@ -230,10 +230,13 @@
     <ClInclude Include="sources\AquaLib\AquaLib.h" />
     <ClInclude Include="sources\AquaLib\A_Utility.h" />
     <ClInclude Include="sources\Define.h" />
+    <ClInclude Include="sources\Field\BossAreaFloor.h" />
     <ClInclude Include="sources\Field\CollidelessFloor.h" />
     <ClInclude Include="sources\Field\GameOverPoint.h" />
     <ClInclude Include="sources\Field\MapChip.h" />
     <ClInclude Include="sources\Field\MapGenerator.h" />
+    <ClInclude Include="sources\Field\MoveFloorCenterRightLeft.h" />
+    <ClInclude Include="sources\Field\MoveFloorCenterUpDown.h" />
     <ClInclude Include="sources\Field\MoveFloorRightLeft.h" />
     <ClInclude Include="sources\Field\MoveFloorUpDown.h" />
     <ClInclude Include="sources\Field\MovelessFloor.h" />
@@ -349,9 +352,12 @@
     <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
     <ClCompile Include="sources\Animation\Animation.cpp" />
     <ClCompile Include="sources\Animation\Animation2D.cpp" />
+    <ClCompile Include="sources\Field\BossAreaFloor.cpp" />
     <ClCompile Include="sources\Field\CollidelessFloor.cpp" />
     <ClCompile Include="sources\Field\GameOverPoint.cpp" />
     <ClCompile Include="sources\Field\MapChip.cpp" />
+    <ClCompile Include="sources\Field\MoveFloorCenterRightLeft.cpp" />
+    <ClCompile Include="sources\Field\MoveFloorCenterUpDown.cpp" />
     <ClCompile Include="sources\Field\MoveFloorRightLeft.cpp" />
     <ClCompile Include="sources\Field\MoveFloorUpDown.cpp" />
     <ClCompile Include="sources\Field\MovelessFloor.cpp" />

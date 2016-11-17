@@ -18,10 +18,6 @@ void PlayerState_Split::update(Actor & actor, float deltaTime){
 	main_body_->count_dead_limit(deltaTime);
 	sub_body_->count_dead_limit(deltaTime);
 
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::O)) {
-		change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
-	}
-
 	if (main_body_->isDead() && sub_body_->isDead())change(StateElement((unsigned int)PlayerState_Enum_Union::DEAD));
 }
 

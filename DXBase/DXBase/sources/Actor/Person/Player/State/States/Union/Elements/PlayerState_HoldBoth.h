@@ -11,4 +11,7 @@ public:
 	virtual void update(Actor & actor, float deltaTime) override;
 
 	virtual void end() override;
+private:
+	void key_update();
+	void pad_update();
 };

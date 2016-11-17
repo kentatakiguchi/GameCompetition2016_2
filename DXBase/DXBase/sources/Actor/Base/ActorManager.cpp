@@ -11,6 +11,7 @@ ActorManager::ActorManager() {
 // ‰Šú‰»
 void ActorManager::initialize() {
 	actors_[ActorGroup::Player] = std::make_shared<Actor>("PlayerManager");
+	actors_[ActorGroup::Player_Collider] = std::make_shared<Actor>();
 	actors_[ActorGroup::Player_AttackRange] = std::make_shared<Actor>();
 	actors_[ActorGroup::Enemy] = std::make_shared<Actor>("EnemyManager");
 	actors_[ActorGroup::Enemy_AttackRange] = std::make_shared<Actor>();
@@ -23,6 +24,7 @@ void ActorManager::initialize() {
 	root_.clearChildren();
 	root_.addChild(actors_[ActorGroup::Effect]);
 	root_.addChild(actors_[ActorGroup::EnemyBullet]);
+	root_.addChild(actors_[ActorGroup::Player_Collider]);
 	root_.addChild(actors_[ActorGroup::Player_AttackRange]);
 	root_.addChild(actors_[ActorGroup::Enemy]);
 	root_.addChild(actors_[ActorGroup::Enemy_AttackRange]);
@@ -72,8 +74,8 @@ void ActorManager::handleMessage(EventMessage message, void* param) {
 // Õ“Ë”»’è
 void ActorManager::collide() {
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy]);
-	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Player_AttackRange]);
-	actors_[ActorGroup::Player_AttackRange]->collideChildren(*actors_[ActorGroup::Field]);
+	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Player_Collider]);
+	actors_[ActorGroup::Player_Collider]->collideChildren(*actors_[ActorGroup::Field]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy_AttackRange]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Field]);
 	actors_[ActorGroup::Enemy]->collideChildren(*actors_[ActorGroup::Field]);

@@ -15,7 +15,10 @@ PlayerConnector::PlayerConnector(IWorld * world, PlayerBodyPtr main, PlayerBodyP
 
 	create_point(3);
 
-	puyo = new PuyoTextureK(TextureID::PUYO_TEST_TEX, position_, Vector2::One, 0);
+	pos = Vector2::Zero;
+	scale = Vector2(2, 1);
+	rotate = 0;
+	puyo = new PuyoTextureK(TextureID::PUYO_TEST_TEX, pos, scale, rotate);
 }
 
 PlayerConnector::~PlayerConnector(){
@@ -25,7 +28,12 @@ PlayerConnector::~PlayerConnector(){
 void PlayerConnector::onUpdate(float deltaTime){
 	position_ = (main_->getPosition() + sub_->getPosition()) / 2;
 	puyo->PuyoUpdate();
-	puyo->SetPosition(position_, Vector2::One, 0);
+
+
+
+	Vector3 tmp = Vector3(position_.x, position_.y) * inv_;
+	pos = Vector2(tmp.x, tmp.y) - Vector2::One * distance();
+	puyo->SetPosition(pos, scale, rotate);
 
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::X)) {
 		dead();
@@ -44,7 +52,7 @@ void PlayerConnector::onDraw() const{
 	//puyo->PuyoDraw();
 
 	body_.draw();
-	bezier_.draw(100, inv_);
+	//bezier_.draw(100, inv_);
 
 
 	Vector3 main = Vector3(main_->getPosition().x, main_->getPosition().y) * inv_;
@@ -66,4 +74,8 @@ void PlayerConnector::create_point(int point_num) {
 	for (int i = 0; i < point_num; i++) {
 		addChild(std::make_shared<PlayerBody_Point>(world_, "Body_Point", point_num + 1, i + 1, main_, sub_));
 	}
+}
+
+float PlayerConnector::distance(){
+	return (main_->getPosition() - position_).Length();
 }

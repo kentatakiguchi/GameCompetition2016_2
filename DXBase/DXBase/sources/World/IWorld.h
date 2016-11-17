@@ -25,6 +25,9 @@ public:
 
 	virtual Vector2 MoveActor() = 0;
 	virtual Vector2 ScroolStopFlag() = 0;
+	virtual bool is_clear() = 0;
+	virtual void clear(bool clear) = 0;
+
 	// メッセージの送信
 	virtual void sendMessage(EventMessage message, void* param = nullptr) = 0;
 };

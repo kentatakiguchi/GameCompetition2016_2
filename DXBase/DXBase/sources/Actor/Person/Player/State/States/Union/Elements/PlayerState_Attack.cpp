@@ -20,6 +20,8 @@ void PlayerState_Attack::unique_init(Actor & actor){
 	dir_easeing_ = 0;
 	gra_easeing_ = 0;
 	main_body_->launch(dir_ * power_);
+
+	main_body_->create_attack_collider_();
 }
 
 void PlayerState_Attack::update(Actor & actor, float deltaTime) {
@@ -46,6 +48,17 @@ void PlayerState_Attack::update(Actor & actor, float deltaTime) {
 		change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 	}
 
+	//key_update();
+
+	pad_update();
+}
+
+void PlayerState_Attack::end(){
+	main_body_->delete_attack_collider_();
+
+}
+
+void PlayerState_Attack::key_update() {
 	if (compare_H() == 0) {
 
 	}
@@ -57,14 +70,31 @@ void PlayerState_Attack::update(Actor & actor, float deltaTime) {
 		if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && sub_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 
 		if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
-		
+
 	}
 
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+
 }
 
-void PlayerState_Attack::end(){
+void PlayerState_Attack::pad_update() {
+	if (compare_H() == 0) {
+
+	}
+	else if (compare_H() == 1) {
+		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1) && sub_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+	}
+	else if (compare_H() == 2) {
+		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1) && sub_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+
+		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+
+	}
+
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1) && main_body_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 
 }
 

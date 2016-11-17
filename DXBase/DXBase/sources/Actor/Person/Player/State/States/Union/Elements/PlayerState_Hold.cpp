@@ -17,9 +17,9 @@ void PlayerState_Hold::unique_init(Actor & actor){
 
 void PlayerState_Hold::update(Actor & actor, float deltaTime) {
 
-	key_update();
+	//key_update();
 
-	//pad_update();
+	pad_update();
 
 	move();
 }
@@ -58,6 +58,15 @@ void PlayerState_Hold::key_update(){
 }
 
 void PlayerState_Hold::pad_update(){
+	Vector2 vector = Vector2::Zero;
+
+	if (element_.action_type_ == ActionType::Right) {
+		sub_body_->move_hold(InputMgr::GetInstance().AnalogPadVectorL());
+	}
+	if (element_.action_type_ == ActionType::Left) {
+		sub_body_->move_hold(InputMgr::GetInstance().AnalogPadVectorR());
+	}
+
 	if (element_.action_type_ == ActionType::Left)sub_body_->move(InputMgr::GetInstance().AnalogPadVectorR());
 	if (element_.action_type_ == ActionType::Right)sub_body_->move(InputMgr::GetInstance().AnalogPadVectorL());
 

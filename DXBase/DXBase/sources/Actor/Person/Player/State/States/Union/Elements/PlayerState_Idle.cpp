@@ -11,8 +11,8 @@ void PlayerState_Idle::unique_init(Actor & actor){
 }
 
 void PlayerState_Idle::update(Actor & actor, float deltaTime) {
-	key_update();
-	//pad_update();
+	//key_update();
+	pad_update();
 
 	main_body_->gravity();
 	sub_body_->gravity();

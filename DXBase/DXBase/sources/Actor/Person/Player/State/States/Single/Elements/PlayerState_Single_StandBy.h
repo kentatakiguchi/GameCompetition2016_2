@@ -11,5 +11,6 @@ public:
 	virtual void update(Actor & actor, float deltaTime) override;
 
 	virtual void end() override;
+
 };
 
