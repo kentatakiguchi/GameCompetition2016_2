@@ -10,7 +10,7 @@ class FloorSearchPoint;
 
 class EnemyManager{
 public:
-	EnemyManager(const Vector2 position);
+	EnemyManager(const Vector2 position, const Vector2& direction = Vector2(-1.0f, -1.0f));
 	~EnemyManager();
 	// XV
 	void update(float deltaTime);

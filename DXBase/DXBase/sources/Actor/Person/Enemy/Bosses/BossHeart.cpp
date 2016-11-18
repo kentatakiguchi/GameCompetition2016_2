@@ -5,8 +5,11 @@ BossHeart::BossHeart(
 	const int hp, const int bossHp) :
 	Actor(world, "BossEntry", position, 
 		CollisionBase(const_cast<Vector2&>(position), 10.0f)),
-	hp_(hp),
+	stateCount_(3),
+	initStateCount_(stateCount_),
+	hp_(hp * stateCount_),
 	initHp_(hp_),
+	prevHp_(bossHp_),
 	bossHp_(bossHp),
 	timer_(0.0f),
 	isEntered_(false),
@@ -16,14 +19,15 @@ BossHeart::BossHeart(
 
 void BossHeart::onUpdate(float deltaTime)
 {
+	// 追い出しをfalseにする
 	isLetOut_ = false;
+	// 前回の体力を更新
+	prevHp_ = hp_;
 	// 体内に入っていないなら、返す(もしもの判定)
 	if (!isEntered_) return;
 	timer_ += deltaTime;
-	// 一定時間経過後に戻す
+	// ５秒経過後に追い出しをしたことにする
 	if (timer_ < 5.0f) return;
-	// プレイヤーの位置を戻す
-
 	// 初期化
 	initStatus();
 }
@@ -54,16 +58,23 @@ void BossHeart::onCollide(Actor & actor)
 {
 	// 体内に入っていないなら、返す(もしもの判定)
 	if (!isEntered_) return;
-	// if (isLetOut_) return;
 	auto actorName = actor.getName();
 	if (actorName == "PlayerBody2" || actorName == "PlayerBody1") {
 		hp_--;
-		// 体力が無くなったら、ボスの体力を減らす
-		if (hp_ <= 0) {
+		// 初期体力と過去の体力が同一なら、すぐに返す
+		auto initHp = initHp_ / initStateCount_;
+		if (prevHp_ == initHp * stateCount_) return;
+		// 余りが 100 ならボスの体力を削る
+		// 現在の体力の余りが前回の体力の余りより少ない場合
+		if ((int)(hp_ / initHp) < (int)(prevHp_ / initHp)) {
+			// 体力の補正
+			hp_ += prevHp_ - hp_;
+		}
+		// 体力が状態が変わる節目(100の倍数)なら、ボスの体力を削る
+		if (hp_ % initHp == 0) {
+			// 体力が無くなったら、ボスの体力を減らす
 			bossHp_--;
-			// プレイヤーを外に出す
-
-			hp_ = initHp_;
+			stateCount_--;
 			initStatus();
 		}
 	}
@@ -71,6 +82,12 @@ void BossHeart::onCollide(Actor & actor)
 
 void BossHeart::onMessage(EventMessage event, void *)
 {
+}
+
+// 心臓の体力を返します
+int BossHeart::getHeartHp()
+{
+	return hp_;
 }
 
 // ボスの体力を返します

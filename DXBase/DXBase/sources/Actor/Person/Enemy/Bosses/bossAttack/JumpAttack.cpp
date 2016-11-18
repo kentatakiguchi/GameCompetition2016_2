@@ -16,7 +16,7 @@ JumpAttack::JumpAttack(const Vector2& position) :
 	BossAttack(position),
 	speed_(2.0f),
 	degrees_(60.0f),
-	jumpPower_(1.0f), 
+	jumpPower_(15.0f), 
 	recastTimer_(0.5f),
 	initRecastTimer_(recastTimer_),
 	isJump_(false),
@@ -53,7 +53,7 @@ void JumpAttack::jump(float deltaTime)
 		-std::cos(degrees_) * speed_ * direction_.x * (deltaTime * 60.0f), 0.0f);
 	// std::sin(degrees_) * -speed_);
 	position_ += addPos;
-	position_.y += (-jumpPower_ + timer_) * 9.8f * (deltaTime * 60.0f);
+	position_.y += (-jumpPower_ / 10 + timer_) * 9.8f * (deltaTime * 60.0f);
 	// ƒWƒƒƒ“ƒv‚ð‚µ‚½
 	isJump_ = true;
 }

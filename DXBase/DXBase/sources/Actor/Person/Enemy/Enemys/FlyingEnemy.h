@@ -5,24 +5,31 @@
 
 class FloorSearchPoint;
 
+// ハネクリボーエネミークラス
 class FlyingEnemy : public BaseEnemy {
 public:
-	FlyingEnemy(IWorld * world, const Vector2& position);
-	void onUpdate(float deltaTime) override;
+	FlyingEnemy(
+		IWorld * world,
+		const Vector2& position,
+		float Down = 1.0f);
+	void beginUpdate(float deltaTime) override;
+	void update(float deltaTime) override;
 	void onCollide(Actor& actor) override;
 	void onMessage(EventMessage event, void*) override;
 
 private:
 	// プレイヤーを発見した時の行動です
-	void discovery();
+	void discovery() override;
 	// 攻撃行動です
-	void attack();
+	void attack() override;
 	// 索敵時の行動です
-	void searchMove();
+	void searchMove() override;
+	// プレイヤーの追跡行動です
+	void chase() override;
 	// 追跡時の行動です
-	void chaseMove();
-	// 
-	void lostMove();
+	void chaseMove() override;
+	// 敵を見失った時の行動です
+	void lostMove() override;
 
 private:
 	float direTimer_;			// 方向転換する時間

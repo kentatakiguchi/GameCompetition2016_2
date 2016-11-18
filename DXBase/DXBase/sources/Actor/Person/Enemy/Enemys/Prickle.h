@@ -6,9 +6,14 @@
 #include "../../../../World/IWorld.h"
 #include "../../../../Math/Math.h"
 
+// トゲクラス (エネミーの所持している武器)
 class Prickle : public Actor {
 public:
-	Prickle(IWorld* world, const Vector2& enemyPosition, const Vector2& addPosition, const Vector2& bodyScale);
+	Prickle(
+		IWorld* world,
+		const Vector2& enemyPosition
+		, const Vector2& addPosition,
+		const Vector2& bodyScale);
 	void onUpdate(float deltaTime) override;
 	void onDraw() const override;
 	void onCollide(Actor& actor) override;

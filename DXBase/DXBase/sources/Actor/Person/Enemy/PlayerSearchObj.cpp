@@ -2,7 +2,10 @@
 #include "../../Base/ActorGroup.h"
 #include"../../Body/CollisionBase.h"
 
-PlayerSearchObj::PlayerSearchObj(IWorld * world, const Vector2& enemyPosition, const Vector2& playerPosition) :
+PlayerSearchObj::PlayerSearchObj(
+	IWorld * world,
+	const Vector2& enemyPosition,
+	const Vector2& playerPosition) :
 	Actor(world, "BaseEnemy",
 		Vector2(
 			std::abs(enemyPosition.x + playerPosition.x) / 2,

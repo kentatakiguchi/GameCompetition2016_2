@@ -25,11 +25,6 @@ void WeakEnemy::onMessage(EventMessage event, void *)
 {
 }
 
-void WeakEnemy::idel()
-{
-	BaseEnemy::idle();
-}
-
 void WeakEnemy::attack()
 {
 	BaseEnemy::attack();
