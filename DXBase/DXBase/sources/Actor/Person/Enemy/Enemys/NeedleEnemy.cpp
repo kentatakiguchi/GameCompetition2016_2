@@ -5,11 +5,12 @@
 NeedleEnemy::NeedleEnemy(
 	IWorld * world,
 	const Vector2 & position,
-	const Vector2& direction) :
+	const float degress) :
 	BaseEnemy(world, position, CHIPSIZE)
 {
-	// 上下左右を向くようにする
-	direction_ = direction;
+	// 上向き => 90 + degreesにする degrees = 0 =>　上向き
+	// そこから時計周りに角度を加算する
+	degress_ = degress;
 }
 
 void NeedleEnemy::update(float deltaTime){}

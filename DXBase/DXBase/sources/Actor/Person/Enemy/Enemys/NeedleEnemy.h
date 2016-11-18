@@ -9,7 +9,7 @@ public:
 	NeedleEnemy(
 		IWorld * world,
 		const Vector2& position,
-		const Vector2& direction);
+		const float degress);
 	void update(float deltaTime) override;
 	void onDraw() const;
 	void onCollide(Actor& actor) override;
@@ -18,6 +18,9 @@ public:
 private:
 	// ë“ã@èÛë‘Ç≈Ç∑
 	void idel();
+
+private:
+	float degress_;
 };
 
 #endif
