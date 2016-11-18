@@ -23,11 +23,6 @@ public:
 	void split_body(PlayerBodyPtr main, PlayerBodyPtr sub);
 	PlayerBodyPtr getMainBody();
 	PlayerBodyPtr getSubBody();
-
-	Vector2 GetSpringVelo()
-	{
-		return veloPlus;
-	}
 private:
 	StateMgr stateMgr_;
 
