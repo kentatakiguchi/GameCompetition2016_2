@@ -70,5 +70,5 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::GamePlay;
+	return Scene::Title;
 }

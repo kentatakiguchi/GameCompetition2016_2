@@ -5,21 +5,22 @@
 MoveScreen::MoveScreen()
 {
 	int listNum = 0;
-	listBase.push_back(changeTextList);
-	std::vector<std::string> list1;
-	list1.push_back("キャラ移動：WASDキー / 方向キー");
-	list1.push_back("吸着：L_Shift / R_Shift");
-	listBase[0] = list1;
-	textPosList.push_back(Vector2(200, 200));
-	changeTextList.clear();
+	//listBase.push_back(changeTextList);
+	//std::vector<std::string> list1;
+	//list1.push_back("キャラ移動：WASDキー / 方向キー");
+	//list1.push_back("吸着：L_Shift / R_Shift");
+	//listBase[listNum] = list1;
+	//textPosList.push_back(Vector2(200, 200));
+	//changeTextList.clear();
+	//listNum++;
 
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list2;
 	list2.push_back("ENTERボタンでリザルトへ");
 	list2.push_back("Yボタンでステージクリア");
 	list2.push_back("Tボタンでポーズ");
-	listBase[1] = list2;
-	textPosList.push_back(Vector2(200, 500));
+	listBase[listNum] = list2;
+	textPosList.push_back(Vector2(300, 100));
 	changeTextList.clear();
 
 }
@@ -56,7 +57,8 @@ void MoveScreen::draw() const
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			center = SCREEN_SIZE.x / 2;
-			DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			//center - (strWidth / 2) 中心
+			DrawStringToHandle(textPosList.at(count).x-(strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			heightPoint++;
 		}
 		count++;

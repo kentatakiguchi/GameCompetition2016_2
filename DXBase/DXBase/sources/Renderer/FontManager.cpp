@@ -11,6 +11,9 @@ FontManager::FontManager()
 	size = 50;
 	fontData_[GamePlayFont] = CreateFontToHandle(NULL, size, 1);
 	fontSize_[GamePlayFont] = size;
+	size = 30;
+	fontData_[MoveScreenFont] = CreateFontToHandle(NULL, size, 1);
+	fontSize_[MoveScreenFont] = size;
 }
 
 FontManager & FontManager::GetInstance()

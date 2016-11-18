@@ -77,7 +77,7 @@ public:
 				if (reader_.geti(rowN, colN) == 0) continue;
 
 				if (reader_.geti(rowN, colN) == 1) {//テンプレートを使って複数種類生成出来るようにする
-				//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+													//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
 				if (reader_.geti(rowN, colN) == 2) {
@@ -144,7 +144,7 @@ public:
 					if (segmentChecker[reader_.geti(rowN, colN)]) {
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
-						SetSegmentPoint(rowN, colN, startPoint, endPoint,TT);
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
 						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
 					}
 					else {
@@ -204,7 +204,335 @@ public:
 					if (segmentChecker[reader_.geti(rowN, colN)]) {
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
-						SetSegmentPoint(rowN, colN, startPoint, endPoint,TT);
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 106) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 107) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 108) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 109) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 110) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+					//if (segmentChecker[reader_.geti(rowN, colN)]) {
+					//	segmentChecker[reader_.geti(rowN, colN)] = false;
+					//	world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, segmentStartPoints[reader_.geti(rowN, colN)], Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					//}
+					//else {
+					//	segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+					//	segmentChecker[reader_.geti(rowN, colN)] = true;
+					//}
+				}
+				if (reader_.geti(rowN, colN) == 111) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 112) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 113) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 114) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 115) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 116) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 117) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 118) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 119) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+
+			}
+		}
+	}
+	void create(std::string fileName,int colDef,int rowDef)
+	{
+		reader_.load(fileName);
+		for (int rowN = rowDef; rowN < (reader_.rows()-(rowDef-1)); rowN++)
+		{
+			for (int colN = colDef; colN < (reader_.columns(rowN)-(colDef-1)); colN++)
+			{
+
+				typeid(chips[(reader_.geti(rowN, colN))]).raw_name();
+
+				if (reader_.geti(rowN, colN) == 0) continue;
+
+				if (reader_.geti(rowN, colN) == 1) {//テンプレートを使って複数種類生成出来るようにする
+													//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 2) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorUpDown>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 11) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorCenterUpDown>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 3) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorRightLeft>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 12) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorCenterRightLeft>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 4) {
+					world_->addActor(ActorGroup::Field, std::make_shared<TurnFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 6) {
+					world_->addActor(ActorGroup::Field, std::make_shared<TranslessTurnFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 7) {
+					world_->addActor(ActorGroup::Field, std::make_shared<StageClearPoint>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 8) {
+					world_->addActor(ActorGroup::Field, std::make_shared<GameOverPoint>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 9) {
+					world_->addActor(ActorGroup::Field, std::make_shared<SticklessFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 10) {
+					world_->addActor(ActorGroup::Field, std::make_shared<BossAreaFloor>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+
+				if (reader_.geti(rowN, colN) == 20) {
+					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						ResourceLoader::GetInstance().getTextureID(TextureID::CHIP1_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 21) {
+					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						ResourceLoader::GetInstance().getTextureID(TextureID::CHIP2_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 30) {
+					world_->addActor(ActorGroup::Field, std::make_shared<CollidelessFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::CHIP2_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 50) {
+					// クリボーエネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 52) {
+					// ゴルドエネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 54) {
+					// ハネクリボーエネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<FlyingEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 56) {
+					// 壁移動エネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+				}
+				if (reader_.geti(rowN, colN) == 100) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 101) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 102) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 103) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 104) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+					}
+					else {
+						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+						segmentChecker[reader_.geti(rowN, colN)] = true;
+					}
+				}
+				if (reader_.geti(rowN, colN) == 105) {
+					if (segmentChecker[reader_.geti(rowN, colN)]) {
+						segmentChecker[reader_.geti(rowN, colN)] = false;
+						Vector2 startPoint, endPoint;
+						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
 						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
 					}
 					else {
