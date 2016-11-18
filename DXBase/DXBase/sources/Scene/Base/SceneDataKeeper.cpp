@@ -52,3 +52,16 @@ int SceneDataKeeper::getPlayerHP() const
 {
 	return hp_;
 }
+
+int SceneDataKeeper::getInt()
+{
+	for (int i = 1; i < 4; i++) {
+		if (previousSceneName_.find(std::to_string(i)) != std::string::npos) {
+			int myi;
+			int plus = 1;
+			if (i == 3) plus = -2;
+			myi = i + plus;
+			return myi;
+		}
+	}
+}

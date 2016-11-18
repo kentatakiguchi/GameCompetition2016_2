@@ -70,16 +70,30 @@ void GamePlayScene::start() {
 void GamePlayScene::update() {
 
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T)) {
-		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime(): deltaTime_ = 0;
+		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 	}
 	world_->update(deltaTime_);
 	backManager->Update(deltaTime_);
 
-	isStopped_ ? isEnd_=pause_.update(nextScene_) : isEnd_=move_.update(name_,nextScene_);
+	isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
 
 	auto player = world_->findActor("Player");
 	isEnd_ = player == nullptr || world_->is_clear();
+	if (player == nullptr) {
+		nextScene_ = Scene::GameOver;
+	}
+	if (world_->is_clear()) {
+
+		if (name_ != "stage03")
+		{
+			nextScene_ = Scene::StageClear;
+		}
+		else
+		{
+			nextScene_ = Scene::GameClear;
+		}
+	}
 }
 
 void GamePlayScene::draw() const {
@@ -94,7 +108,8 @@ void GamePlayScene::draw() const {
 void GamePlayScene::end() {
 }
 
-bool GamePlayScene::isEnd() const {
+bool GamePlayScene::isEnd() const{
+
 	return isEnd_;
 }
 

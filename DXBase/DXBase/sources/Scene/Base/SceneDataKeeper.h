@@ -15,6 +15,7 @@ public:
 	std::string getSceneName()const;
 	void setPlayerHP(int hp);
 	int getPlayerHP() const;
+	int getInt();
 private:
 	std::string previousSceneName_;
 	int hp_;
