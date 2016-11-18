@@ -18,10 +18,6 @@ public:
 	{
 		return mVelo;
 	}
-	Vector2 GetSpringVelo()
-	{
-		return veloPlus;
-	}
 private:
 	Vector2 prePosition;						// ˆÚ“®‘O‚ÌÀ•W	
 	Vector2 curPosition;						// ˆÚ“®Œã‚ÌÀ•W

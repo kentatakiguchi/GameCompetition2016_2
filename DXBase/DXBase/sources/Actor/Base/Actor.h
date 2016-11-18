@@ -111,12 +111,8 @@ public:
 	}
 
 private:
-	void ActorMove();
 	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness=0.1f, float friction=0.5f, float mass=2.0f)const;
 
-private:
-	//1だったらtrue,0だったらfalse
-	Vector2 moveFlag;
 public:
 	// ワールド
 	IWorld*				world_;
@@ -141,17 +137,17 @@ public:
 
 	Matrix inv_;
 	Matrix resInv_;
-	//範囲外にいるから背景がうごくフラグ
-	bool outPlayerFlag;
-	//ポジションに足す用速度
-	Vector2 veloPlus;
+	//補正された速度
+	Vector2 mVelo;
 private:
 	// 子アクター
 	std::forward_list<ActorPtr> children_;
 	//補正用速度
 	Vector2 velo;
-	//補正用ポジション
-	Vector2 resPos;
+	//1フレーム前
+	Vector2 mPrePos;
+	//1フレーム後
+	Vector2 mCurPos;
 };
 
 #endif

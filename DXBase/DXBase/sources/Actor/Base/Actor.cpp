@@ -13,12 +13,12 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, co
 	dead_(false),
 	animation_(-1),
 	alpha_(0.0f),
-	outPlayerFlag(false),
-	resPos(Vector2::Zero),
-	veloPlus(Vector2::Zero),
 	velo(Vector2::Zero),
 	resInv_(Matrix::Identity),
-	inv_(Matrix::Identity){
+	inv_(Matrix::Identity),
+	mPrePos(Vector2::Zero),
+	mCurPos(Vector2::Zero),
+	mVelo(Vector2::Zero){
 	body_.setPosition({ position_.x, position_.y });
 }
 
@@ -102,13 +102,21 @@ Matrix Actor::inv() {
 	if (world_ == nullptr) return Matrix::Identity;
 	auto player = world_->findActor("PlayerBody1");
 	if(player == nullptr)return Matrix::Identity;
-	//Vector2 spring = Spring(Vector2(300, 400),velo);
-	resInv_ = Matrix::Invert(player->getPose()) * Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
-
+	//1フレーム前の座標
+	mPrePos = Vector2(inv_.Translation().x, inv_.Translation().y);
+	//行くべき位置を設定(matrix版)
+	resInv_ = Matrix::Invert(player->getPose()) *
+		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
+	//行くべき位置を設定
 	Vector2 resPos = Vector2(resInv_.Translation().x, resInv_.Translation().y);
 	Vector2 pos = Vector2(inv_.Translation().x, inv_.Translation().y);
 	Spring(pos, resPos, velo);
+	//補正された移動マトリックス代入
 	inv_ = Matrix::CreateTranslation(Vector3(pos.x, pos.y));
+	//1フレーム後の座標
+	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);
+	//移動量を計算
+	mVelo = mPrePos - mCurPos;
 }
 
 // 子の検索
@@ -238,47 +246,6 @@ void Actor::onCollide(Actor&) {
 bool Actor::isCollide(Actor& other) {
 	return body_.intersects(other.body_);
 }
-//アクターを全部プレイヤーと同期させる
-void Actor::ActorMove()
-{
-	//フラグ初期化
-	moveFlag = Vector2::Zero;
-	//worldを持ってなかったらリターン
-	if (world_ == nullptr) return;
-	//プレイヤーの座標を取得
-	Vector2 player =
-		Vector2(world_->findActor("PlayerBody1")->getPosition().x, world_->findActor("PlayerBody1")->getPosition().y);
-	//プレイヤーで一定の範囲外に行ったら今の速度と逆の速度を足してあげる
-	if (getName() != "ScroolStopPoint")
-	{
-		//x軸
-		if ((int)player.x != 800 / 2 /*&& world_->ScroolStopFlag().x == FALSE*/)
-		{
-			resPos.x =- world_->MoveActor().x;
-			//x軸移動してます
-			moveFlag.x = 1;
-		}
-		//Y軸
-		if ((int)player.y != 600 / 2 /*&& world_->ScroolStopFlag().y == FALSE*/)
-		{
-			resPos.y =- world_->MoveActor().y;
-			//y軸移動してます
-			moveFlag.y = 1;
-		}
-	}
-	//ストップスクロール以外
-	//if (getName() == "ScroolStopPoint")
-	//{
-	//	//強制的にスクロール
-	//	resPos.x = world_->MoveActor().x;
-	//	resPos.y = world_->MoveActor().y;
-	//}
-	//補間処理
-	MathHelper::Spring(veloPlus.x, resPos.x, velo.x, 0.1f, 0.5f, 2.0f);
-	MathHelper::Spring(veloPlus.y, resPos.y, velo.y, 0.1f, 0.5f, 2.0f);
-	position_ += veloPlus;
-}
-
 void Actor::Spring(Vector2& pos ,Vector2& resPos, Vector2& velo,float stiffness, float friction, float mass)const
 {
 	// バネの伸び具合を計算

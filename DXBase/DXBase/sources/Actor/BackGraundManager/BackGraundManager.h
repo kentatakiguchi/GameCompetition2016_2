@@ -3,6 +3,7 @@
 #include <list>
 #include "../../Math/Vector2.h"
 #include "../../World/IWorld.h"
+#include "../../Field/MovelessFloor.h"
 class TestPlayer;
 class Player;
 
@@ -14,10 +15,6 @@ struct BackGraundState
 	Vector2 size = Vector2::Zero;
 	//2つ画像を張るための座標
 	std::list<Vector2> positions;
-	//補正関係
-	Vector2 resVelo = Vector2::Zero;
-	Vector2 springVelo = Vector2::Zero;
-	Vector2 velocity = Vector2::Zero;
 };
 
 class BackGraundManager
@@ -42,8 +39,8 @@ public:
 private:
 	//ワールド
 	IWorld* mWorld;
-	//プレイヤー
-	Player* mPlayer;
+	//ブロック
+	MovelessFloor* mFloor;
 	//地上が表示されているか？
 	bool stageFlag;
 	//地上の背景
@@ -52,7 +49,4 @@ private:
 	BackGraundState upBackStates;
 	//地面の背景
 	BackGraundState downBackStates;
-	//補正関係
-	Vector2 restPos;
-	Vector2 velo;
 };

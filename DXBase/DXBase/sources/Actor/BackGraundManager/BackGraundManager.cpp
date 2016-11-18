@@ -13,6 +13,7 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 	backStates.clear();
 	////プレイヤー変換
 	//mPlayer = dynamic_cast<PlayerBody*>(world->findActor("Player").get());
+	mFloor = dynamic_cast<MovelessFloor*>(world->findActor("MovelessFloor").get());
 }
 
 BackGraundManager::~BackGraundManager()
@@ -88,11 +89,8 @@ void BackGraundManager::Update(float deltatime)
 	{
 		for (auto& j : i.positions)
 		{
-			//奥に行くほど遅くする
-			i.resVelo = -mWorld->MoveActor()*(1.0f / layerNum);
-			Spring(i.velocity, i.resVelo, i.springVelo);
 			//プレイヤーベクトル加算
-			j += i.velocity;
+			j += -mFloor->mVelo*(1.0f / layerNum);
 			//地面テクスチャサイズ
 			Vector2 size = i.size;
 			//x軸のループ
@@ -114,11 +112,8 @@ void BackGraundManager::Update(float deltatime)
 	//空系
 	for (auto& i : upBackStates.positions)
 	{
-		//一番奥の速度と一緒にする
-		upBackStates.resVelo = -mWorld->MoveActor()*(1.0f / backStates.size());
-		Spring(upBackStates.velocity, upBackStates.resVelo, upBackStates.springVelo);
 		//プレイヤー速度加算
-		i += upBackStates.velocity;
+		i += -mFloor->mVelo*(1.0f / backStates.size());
 		//x軸のループ
 		if (i.x <= -size.x)
 			i.x = size.x + size.x + i.x;
@@ -133,11 +128,8 @@ void BackGraundManager::Update(float deltatime)
 	//地下系
 	for (auto& i : downBackStates.positions)
 	{
-		//一番手前の速度と一緒
-		downBackStates.resVelo = -mWorld->MoveActor();
-		Spring(downBackStates.velocity, downBackStates.resVelo, downBackStates.springVelo);
 		//プレイヤー速度加算
-		i += downBackStates.velocity;
+		i += -mFloor->mVelo;
 		//x軸のループ
 		if (i.x <= -size.x)
 			i.x = size.x + size.x + i.x;
