@@ -182,6 +182,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\EnemyManager.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FlyingEnemy.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Enemys\NeedleEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\Prickle.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WallMoveEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="sources\Scene\Base\SceneDataKeeper.h" />
     <ClInclude Include="sources\Scene\Base\SceneMgr.h" />
     <ClInclude Include="sources\Scene\Base\SceneNull.h" />
+    <ClInclude Include="sources\Scene\BossStage\BossStage.h" />
     <ClInclude Include="sources\Scene\GameClear\GameClearScene.h" />
     <ClInclude Include="sources\Scene\GameOver\GameOverScene.h" />
     <ClInclude Include="sources\Scene\GamePlay\GamePlayScene.h" />
@@ -318,6 +320,7 @@
     <ClCompile Include="sources\Actor\Person\Enemy\EnemyManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FlyingEnemy.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Enemys\NeedleEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\Prickle.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WallMoveEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WallTurnEnemy.cpp" />
@@ -387,6 +390,7 @@
     <ClCompile Include="sources\Scene\Base\SceneDataKeeper.cpp" />
     <ClCompile Include="sources\Scene\Base\SceneMgr.cpp" />
     <ClCompile Include="sources\Scene\Base\SceneNull.cpp" />
+    <ClCompile Include="sources\Scene\BossStage\BossStage.cpp" />
     <ClCompile Include="sources\Scene\GameClear\GameClearScene.cpp" />
     <ClCompile Include="sources\Scene\GameOver\GameOverScene.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\GamePlayScene.cpp" />

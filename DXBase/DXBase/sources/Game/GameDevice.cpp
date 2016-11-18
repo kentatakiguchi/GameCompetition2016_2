@@ -8,6 +8,7 @@
 #include "../Scene/NaganoScene/NaganoScene.h"
 #include "../Scene/StageClear/StageClearScene.h"
 #include "../Scene/GameClear/GameClearScene.h"
+#include "../Scene/BossStage/BossStage.h"
 
 GameDevice::GameDevice():dataKeeper_(),sceneMgr_(&dataKeeper_){}
 
@@ -22,6 +23,7 @@ void GameDevice::start(){
 	sceneMgr_.add(Scene::GameOver, std::make_shared<GameOverScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GameClear, std::make_shared<GameClearScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::StageClear, std::make_shared<StageClearScene>(&dataKeeper_));
+	sceneMgr_.add(Scene::BossStage01, std::make_shared<BossStage>(&dataKeeper_));
 	sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>());
 	//sceneMgr_.add(Scene::Nagano, std::make_shared<NaganoScene>());
 	sceneMgr_.change(Scene::Loading);

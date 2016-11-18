@@ -11,6 +11,7 @@ enum Scene {
 	GameOver,
 	StageClear,
 	GameClear,
+	BossStage01,
 	Kataoka,
 	Nagano,
 	Ending
