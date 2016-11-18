@@ -129,7 +129,9 @@ void BaseEnemy::onDraw() const
 	/*DrawFormatString(25, 25, GetColor(255, 255, 255), "body x:%d,y:%d", (int)body_.GetBox().component_.point[0].x, (int)body_.GetBox().component_.point[0].y);
 	DrawFormatString(25, 50, GetColor(255, 255, 255), "pos  x:%d,y:%d", (int)position_.x, (int)position_.y);
 	DrawFormatString(25, 75, GetColor(255, 255, 255), "プレイヤーとの距離:%d", (int)distance_);*/
-
+	DrawFormatStringToHandle(
+		50, 50, GetColor(255, 255, 255),
+		handle_, getName().c_str());
 	/*DrawFormatStringToHandle(50, 50, GetColor(255, 255, 255),
 		handle_, "ブロックとの位置=>上:%d 下:%d", (int)testTop, (int)testBottom);
 	DrawFormatStringToHandle(50, 100, GetColor(255, 255, 255),
@@ -152,7 +154,6 @@ void BaseEnemy::onDraw() const
 
 void BaseEnemy::onCollide(Actor & actor)
 {
-	name_ = actor.getName();
 	auto actorName = actor.getName();
 	// プレイヤー関連のオブジェクトに当たっているなら
 	// actorName != "Player_AttackRange"
@@ -180,6 +181,8 @@ void BaseEnemy::onCollide(Actor & actor)
 	if ((actorName == "PlayerBody2" || actorName == "PlayerBody1") &&
 		!isInvincible_) {
 		// ダメージ
+		// groundClamp(actor);
+		circleClamp(actor);
 		/*hp_ -= 10;
 		if (hp_ <= 0) changeState(State::Dead, ENEMY_DEAD);
 		else changeState(State::Damage, ENEMY_DAMAGE);*/
@@ -495,4 +498,23 @@ void BaseEnemy::groundClamp(Actor& actor)
 		if (right > 0)
 			position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;
 	}
+}
+
+// 円と衝突したときに位置に補正します
+void BaseEnemy::circleClamp(Actor & actor)
+{
+	// 当たった円とのベクトルを計算して、位置を補間します
+	// 当たったオブジェクトが円でない場合(てきとう)
+	if (actor.getBody().GetCapsule().getRadius() == 0) return;
+	// 過去の位置を取得
+	auto pos = body_.GetBox().previousPosition_;
+	auto direction = actor.getPosition() - pos;
+	// 矩形の補間
+	auto lerpVelo = Vector2(
+		(actor.getBody().GetCircle().getRadius() +
+			body_.GetBox().getWidth() / 2.0f) * direction.Normalize().x,
+		(actor.getBody().GetCircle().getRadius() +
+			body_.GetBox().getHeight() / 2.0f) * direction.Normalize().y
+		);
+	position_ += lerpVelo;
 }

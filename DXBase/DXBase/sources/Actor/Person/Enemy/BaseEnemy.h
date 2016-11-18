@@ -124,8 +124,10 @@ protected:
 	void updateSearchObjct();
 	// 衝突関連の更新
 	void updateCollide();
-	//地面の位置に補正します
+	// 地面の位置に補正します
 	void groundClamp(Actor& actor);
+	// 円と衝突したときに位置に補正します
+	void circleClamp(Actor& actor);
 
 protected:
 	// メンバ変数
