@@ -40,6 +40,7 @@ void BoundingBox::draw() const {
 	DrawLine(component_.point[1].x, component_.point[1].y, component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0));
 	DrawLine(component_.point[0].x, component_.point[0].y, component_.point[2].x, component_.point[2].y, GetColor(255, 0, 0));
 	DrawLine(component_.point[2].x, component_.point[2].y, component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0));
+	
 
 	//DrawBox(component_.point[0].x, component_.point[0].y,
 	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);
@@ -53,6 +54,8 @@ void BoundingBox::draw(Matrix inv) const {
 	Vector3 pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
 	Vector3 pos2 = Vector3(component_.point[2].x, component_.point[2].y) * inv;
 	Vector3 pos3 = Vector3(component_.point[3].x, component_.point[3].y) * inv;
+
+	DrawBox(pos0.x, pos0.y, pos3.x, pos3.y, GetColor(255, 255, 255), TRUE);
 
 	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
 	DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));
@@ -90,6 +93,12 @@ void BoundingBox::draw(int spriteID, int rotation, Matrix inv) const
 	center = (centerMath1 + centerMath2) / 2;
 
 	DrawRotaGraph(center.x, center.y,1,(rotation*MathHelper::Pi/180), spriteID, TRUE);
+
+	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
+	DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));
+	DrawLine(pos0.x, pos0.y, pos2.x, pos2.y, GetColor(255, 0, 0));
+	DrawLine(pos2.x, pos2.y, pos3.x, pos3.y, GetColor(255, 0, 0));
+
 
 }
 

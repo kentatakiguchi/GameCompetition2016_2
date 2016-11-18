@@ -50,12 +50,13 @@ void TranslessTurnFloor::onUpdate(float deltaTime)
 		moveCount_ = 0;
 	}
 	body_.RotateBox(moveCount_);
-
+	rotate_ = moveCount_;
 }
 
 void TranslessTurnFloor::onDraw() const
 {
-	body_.draw(inv_);
+	
+	body_.draw(ResourceLoader::GetInstance().getTextureID(TextureID::CHIP3_TEX), rotate_, inv_);
 }
 
 void TranslessTurnFloor::onCollide(Actor & other)

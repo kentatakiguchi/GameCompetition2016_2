@@ -84,6 +84,7 @@ void GamePlayScene::update() {
 	if (player == nullptr) {
 		nextScene_ = Scene::GameOver;
 	}
+
 	if (world_->is_clear()) {
 
 		if (name_ != "stage03")
@@ -95,8 +96,9 @@ void GamePlayScene::update() {
 			nextScene_ = Scene::GameClear;
 		}
 	}
-	isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
-
+	if (!isEnd_) {
+		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
+	}
 }
 
 void GamePlayScene::draw() const {

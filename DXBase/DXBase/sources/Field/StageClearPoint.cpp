@@ -46,7 +46,7 @@ void StageClearPoint::onUpdate(float deltaTime)
 
 void StageClearPoint::onDraw() const
 {
-	body_.draw(inv_);
+	body_.draw(ResourceLoader::GetInstance().getTextureID(TextureID::CHIP4_TEX),0,inv_);
 }
 
 void StageClearPoint::onCollide(Actor & other)

@@ -63,6 +63,8 @@ public:
 	BoundingCircle GetCircle() const;
 	//線分判定を取得/線分判定以外を利用している場合、動作しない線分判定を返す return:自身の線分判定(BoundingSegment)
 	BoundingSegment GetSegment() const;
+
+	Vector2 GetColliderVelocity();
 	//判定を利用するかどうかを変更する
 	void enabled(bool change);
 private:

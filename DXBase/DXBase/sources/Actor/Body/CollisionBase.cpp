@@ -459,6 +459,12 @@ BoundingSegment CollisionBase::GetSegment() const
 	return segment_;
 }
 
+Vector2 CollisionBase::GetColliderVelocity()
+{
+	Vector2 getVect = position_ - previousPosition_;
+	return getVect;
+}
+
 void CollisionBase::enabled(bool change)
 {
 	switch (type_)

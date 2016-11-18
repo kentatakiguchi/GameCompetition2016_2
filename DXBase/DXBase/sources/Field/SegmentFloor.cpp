@@ -2,25 +2,25 @@
 #include"../Input/InputMgr.h"
 
 SegmentFloor::SegmentFloor(IWorld * world, Vector2 & startPosition,Vector2& endPosition) :spriteID_(-1),
-MapChip(world, Vector2(((startPosition.x+endPosition.x)/2), ((startPosition.y + endPosition.y) / 2)), "SegmentFloor", CollisionBase(startPosition,endPosition))
+MapChip(world, Vector2(((startPosition.x+endPosition.x)/2), ((startPosition.y + endPosition.y) / 2)), "SegmentCollider", CollisionBase(startPosition,endPosition))
 {
 	rotate_ = 0;
 }
 
 SegmentFloor::SegmentFloor(int spriteID, IWorld * world, Vector2 & startPosition, Vector2& endPosition) :spriteID_(spriteID),
-MapChip(world, Vector2(((startPosition.x + endPosition.x) / 2), ((startPosition.y + endPosition.y) / 2)), "SegmentFloor", CollisionBase(startPosition, endPosition))
+MapChip(world, Vector2(((startPosition.x + endPosition.x) / 2), ((startPosition.y + endPosition.y) / 2)), "SegmentCollider", CollisionBase(startPosition, endPosition))
 {
 	rotate_ = 0;
 }
 
 SegmentFloor::SegmentFloor(std::shared_ptr<SegmentFloor> chip, IWorld * world, Vector2 & startPosition, Vector2& endPosition) :spriteID_(-1),
-MapChip(world, Vector2(((startPosition.x + endPosition.x) / 2), ((startPosition.y + endPosition.y) / 2)), "SegmentFloor", CollisionBase(startPosition, endPosition))
+MapChip(world, Vector2(((startPosition.x + endPosition.x) / 2), ((startPosition.y + endPosition.y) / 2)), "SegmentCollider", CollisionBase(startPosition, endPosition))
 {
 	rotate_ = 0;
 }
 
 SegmentFloor::SegmentFloor(SegmentFloor & chip, IWorld * world, Vector2 & startPosition, Vector2& endPosition) :spriteID_(-1),
-MapChip(world, Vector2(((startPosition.x + endPosition.x) / 2), ((startPosition.y + endPosition.y) / 2)), "SegmentFloor", CollisionBase(startPosition, endPosition))
+MapChip(world, Vector2(((startPosition.x + endPosition.x) / 2), ((startPosition.y + endPosition.y) / 2)), "SegmentCollider", CollisionBase(startPosition, endPosition))
 {
 	rotate_ = 0;
 }

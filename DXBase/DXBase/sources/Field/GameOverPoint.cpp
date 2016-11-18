@@ -46,7 +46,7 @@ void GameOverPoint::onUpdate(float deltaTime)
 
 void GameOverPoint::onDraw() const
 {
-	body_.draw(inv_);
+	body_.draw(ResourceLoader::GetInstance().getTextureID(TextureID::CHIP1_TEX), 0, inv_);
 }
 
 void GameOverPoint::onCollide(Actor & other)

@@ -3,6 +3,7 @@
 #define MAPCHIP_H_
 #include"../Actor/Base/Actor.h"
 #include"../Define.h"
+#include"../ResourceLoader/ResourceLoader.h"
 
 class MapChip :public Actor{
 public:

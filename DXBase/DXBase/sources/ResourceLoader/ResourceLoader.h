@@ -30,7 +30,9 @@ enum class TextureID {
 	ENEMY_WEAPON_TEX,
 	CHIP1_TEX,
 	CHIP2_TEX,
-	PAUSE_BACK_TEX	
+	CHIP3_TEX,
+	CHIP4_TEX,
+	PAUSE_BACK_TEX
 };
 
 class ResourceLoader{
