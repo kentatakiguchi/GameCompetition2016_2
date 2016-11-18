@@ -44,7 +44,8 @@ const static float UPDOWNRANGE = 3;
 
 
 /* プレイヤーパラメータ系統 */
-
+//プレイヤーのデフォルトの開始位置
+static const Vector2 START_POS = Vector2(700, 1500);
 // プレイヤーの表示位置
 const static Vector2	PLAYER_SCREEN_POSITION = Vector2(SCREEN_SIZE.x * 0.5f, SCREEN_SIZE.y * 0.75f);
 // プレイヤーの移動速度

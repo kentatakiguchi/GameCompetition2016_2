@@ -159,6 +159,14 @@ bool InputMgr::IsButtonUp(Buttons handle)
 	}
 }
 
+bool InputMgr::isConnectGamePad()
+{
+	if (GetJoypadNum() != 0) {
+		return true;
+	}
+	return false;
+}
+
 Vector2 InputMgr::AnalogPadVectorL()
 {
 	int horizontal;

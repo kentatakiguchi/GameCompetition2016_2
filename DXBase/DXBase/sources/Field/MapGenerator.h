@@ -48,8 +48,18 @@ public:
 		}
 
 	}
-	Vector2 findStartPoint() {
-
+	Vector2 findStartPoint(std::string fileName) {
+		reader_.load(fileName);
+		for (int rowN = 0; rowN < reader_.rows(); rowN++)
+		{
+			for (int colN = 0; colN < reader_.columns(rowN); colN++)
+			{
+				if (reader_.geti(rowN, colN) == 999) {
+					return Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+				}
+			}
+		}
+		return START_POS;
 	}
 	//ファイル名(拡張子まで書く事)から、マップを生成する fileName:マップ用の.csv 0:生成しない 1:MapChipを生成
 	void create(std::string fileName)

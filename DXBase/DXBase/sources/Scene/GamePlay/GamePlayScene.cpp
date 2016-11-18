@@ -17,7 +17,6 @@
 #include <memory>
 #include <random>
 
-static const Vector2 START_POS = Vector2(400, 400);
 
 GamePlayScene::GamePlayScene(SceneDataKeeper* keeper):nextScene_(Scene::GameOver),isStopped_(false){
 	isEnd_ = false;
@@ -36,6 +35,11 @@ void GamePlayScene::start() {
 	isStopped_ = false;
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
+
+	MapGenerator gener = MapGenerator(world_.get());
+	keeper_->getNextSceneName(name_);
+
+
 	//world_->addEventMessageListener(
 	//	[=](EventMessage msg, void* param) {
 	//	handleMessage(msg, param);
@@ -44,13 +48,12 @@ void GamePlayScene::start() {
 	//world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
 	world_->addCamera(std::make_shared<Camera>(world_.get()));
 	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
-	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), START_POS));
+	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), gener.findStartPoint("./resources/file/" + name_ + ".csv")));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
 
-	MapGenerator gener = MapGenerator(world_.get());
-	keeper_->getNextSceneName(name_);
 	gener.create("./resources/file/"+name_+".csv");
+
 
 	status_ = Status(10);
 
@@ -76,8 +79,6 @@ void GamePlayScene::update() {
 	world_->update(deltaTime_);
 	backManager->Update(deltaTime_);
 
-	isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
-
 	auto player = world_->findActor("Player");
 	isEnd_ = player == nullptr || world_->is_clear();
 	if (player == nullptr) {
@@ -94,6 +95,8 @@ void GamePlayScene::update() {
 			nextScene_ = Scene::GameClear;
 		}
 	}
+	isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
+
 }
 
 void GamePlayScene::draw() const {

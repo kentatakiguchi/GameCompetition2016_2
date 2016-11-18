@@ -25,7 +25,7 @@ public:
 	bool IsButtonDown(Buttons handle);
 	bool IsButtonOn(Buttons handle);
 	bool IsButtonUp(Buttons handle);
-
+	bool isConnectGamePad();
 	Vector2 AnalogPadVectorL();
 	Vector2 AnalogPadVectorR();
 	Vector2 DirectPadVector();

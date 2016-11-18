@@ -1,3 +1,5 @@
+999:プレイヤーの初期位置
+0:生成しない
 1:MovelessFloor(動作無し、スプライト表示無し)
 2:MoveFloorUpDown(上下移動)
 3:MoveFloorRightLeft(左右移動)
@@ -13,9 +15,9 @@
 30:CollidelessFloor:(判定無し、chip2.pngを割り当て)
 
 50:FloorTurnEnemy
-51:WallTurnEnemy
-52:FlyingEnemy
-53:WallMoveEnemy
+52:WallTurnEnemy
+54:FlyingEnemy
+56:WallMoveEnemy
 
 100～109:SegmentFloor(線分、右寄せ)
 110～119:SegmentFloor(線分、左寄せ)
