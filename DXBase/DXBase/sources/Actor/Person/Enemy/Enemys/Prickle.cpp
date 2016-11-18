@@ -3,7 +3,11 @@
 #include "../../../Base/ActorGroup.h"
 #include"../../../Body/CollisionBase.h"
 
-Prickle::Prickle(IWorld * world, const Vector2& enemyPosition, const Vector2& addPosition, const Vector2& bodyScale) :
+Prickle::Prickle(
+	IWorld * world,
+	const Vector2& enemyPosition,
+	const Vector2& addPosition,
+	const Vector2& bodyScale) :
 	Actor(world, "Prickle", enemyPosition + addPosition, CollisionBase(
 		Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
 		Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
@@ -27,6 +31,13 @@ void Prickle::onUpdate(float deltaTime)
 
 void Prickle::onDraw() const
 {
+	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
+	vec3Pos = vec3Pos * inv_;
+	// ƒgƒQ‚Ì•\Ž¦
+	DrawGraph(
+		vec3Pos.x - body_.GetBox().getWidth() / 2.0f,
+		vec3Pos.y - body_.GetBox().getHeight() / 2.0f,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_WEAPON_TEX), 0);
 	body_.draw(inv_);
 }
 

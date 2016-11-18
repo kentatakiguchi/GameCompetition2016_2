@@ -7,18 +7,23 @@
 #include "BossEntry.h"
 #include "BossHeart.h"
 #include "../FloorSearchPoint.h"
+// ボスの体力表示
+#include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
 
 // ボスクラス(ベース予定)
 BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodyScale) :
 	Actor(world, "BaseBoss", position,
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
-	dp_(20),
+	dp_(100),
 	initDp_(dp_),
 	hp_(3),
+	flinchCount_(0),
 	// initHp_(hp_),
 	stateTimer_(0.0f),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
+	isGround_(false),
+	isSceneEnd_(false),
 	stateString_("待機"),
 	// bossManager_(nullptr),
 	playerPastPosition_(Vector2::Zero),
@@ -28,6 +33,7 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	fspObj_(nullptr),
 	entryObj_(nullptr),
 	heartObj_(nullptr),
+	bossGaugeUI_(nullptr),
 	bossManager_(BossManager(position))
 {
 	// コンテナに追加(攻撃順に追加する)
@@ -52,10 +58,16 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	world_->addActor(ActorGroup::Enemy, entryObj);
 	entryObj_ = &*entryObj;
 	// ボス心臓オブジェクト
+	auto heartHP = 100;
 	auto heartObj = std::make_shared<BossHeart>(
-		world_, Vector2(position_.x + 128.0f, position_.y -32.0f), 10, hp_);
+		world_, Vector2(position_.x + 128.0f, position_.y -32.0f), heartHP, hp_);
 	world_->addActor(ActorGroup::Enemy, heartObj);
 	heartObj_ = &*heartObj;
+	// ボスの体力ゲージ
+	auto bossUI = std::make_shared<BossGaugeUI>(world_, Vector2::Zero);
+	world_->addUIActor(bossUI);
+	bossGaugeUI_ = bossUI.get();
+	bossGaugeUI_->SetHp(heartObj_->getHeartHp() * hp_);
 }
 
 BaseBoss::~BaseBoss()
@@ -67,10 +79,11 @@ void BaseBoss::onUpdate(float deltaTime)
 	// 補間タイマ(最大値１)の更新
 	setTimer(deltaTime);
 
-	//
+	// 体力の更新
 	hp_ = heartObj_->getBossHp();
+	bossGaugeUI_->SetHp(heartObj_->getHeartHp());
 
-
+	entryObj_->setBossPosition(position_);
 	// 状態の更新
 	updateState(deltaTime);
 	// 位置をクランプする
@@ -80,25 +93,28 @@ void BaseBoss::onUpdate(float deltaTime)
 			fspObj_->getFloorPosition().y - CHIPSIZE);
 		bossManager_.setIsGround(fspObj_->isGround());
 	}*/
-	position_.x = MathHelper::Clamp(position_.x,
+	/*position_.x = MathHelper::Clamp(position_.x,
 		CHIPSIZE + body_.GetCircle().getRadius(),
 		FIELD_SIZE.x);
 	position_.y = MathHelper::Clamp(position_.y,
 		CHIPSIZE + body_.GetCircle().getRadius(),
-		FIELD_SIZE.y);
+		FIELD_SIZE.y);*/
 	// 接地(仮)
-	if (position_.y < FIELD_SIZE.y) {
-		bossManager_.setIsGround(false);
-		// position_.y += 9.8f * (deltaTimer_ * 60.0f);
-	}
-	else if (position_.y == FIELD_SIZE.y)
-		bossManager_.setIsGround(true);
+	bossManager_.setIsGround(isGround_);
+	//if (position_.y < FIELD_SIZE.y) {
+	//	bossManager_.setIsGround(false);
+	//	// position_.y += 9.8f * (deltaTimer_ * 60.0f);
+	//}
+	//else if (position_.y == FIELD_SIZE.y)
+	//	bossManager_.setIsGround(true);
 
 	// bossManager_.setIsGround(fspObj_->isGround());
 	fspObj_->setPosition(position_);
-	entryObj_->setBossPosition(position_);
+	/*entryObj_->setBossPosition(position_);*/
 	// entryObj_->setDirection(direction_);
 	//position_.y = MathHelper::Clamp(position_.y, -1000, 500.0f);
+
+	isGround_ = false;
 }
 
 void BaseBoss::onDraw() const
@@ -107,6 +123,11 @@ void BaseBoss::onDraw() const
 	auto stateChar = stateString_.c_str();
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
+	// ボスの表示
+	DrawGraph(
+		vec3Pos.x - body_.GetCircle().getRadius(),
+		vec3Pos.y - body_.GetCircle().getRadius(),
+		ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_TEX), 1);
 	// 敵の表示
 	/*DrawGraph(
 		position_.x - scale_ / 2.0f, position_.y - scale_ / 2.0f,
@@ -128,9 +149,22 @@ void BaseBoss::onDraw() const
 
 void BaseBoss::onCollide(Actor & actor)
 {
-	// プレイヤーに当たったら、耐久値を下げる
-	if (state_ == State::Flinch || state_ == State::Dead) return;
 	auto actorName = actor.getName();
+	// マップのブロックに当たったら、処理を行う
+	if (actorName == "MovelessFloor") {
+		// 位置の補間
+		groundClamp(actor);
+		return;
+	}
+	// 空中に浮かぶ床に当たったら、ひるみカウントを加算する
+	if (actorName == "何とかFloor") {
+		// 位置の補間
+		groundClamp(actor);
+		return;
+	}
+	// 特定の状態ではプレイヤーに触れても何も起こらないようにする
+	if (state_ == State::Flinch || state_ == State::Dead) return;
+	// プレイヤーに当たったら、耐久値を下げる
 	if (actorName == "PlayerBody2" || actorName == "PlayerBody1") {
 		auto damage = 10;
 		dp_ -= damage;
@@ -148,6 +182,12 @@ void BaseBoss::onCollide(Actor & actor)
 
 void BaseBoss::onMessage(EventMessage event, void *)
 {
+}
+
+// シーンを終了させるかを返します
+bool BaseBoss::isSceneEnd()
+{
+	return isSceneEnd_;
 }
 
 void BaseBoss::updateState(float deltaTime)
@@ -190,6 +230,16 @@ void BaseBoss::idel(float deltaTime)
 	stateString_ = "待機状態";
 	// プレイヤーが取得できていれば、エネミーマネージャーに位置などを入れる
 	setBMStatus();
+	// デバッグ
+	/*auto deltaTimer = deltaTime * 60.0f;
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L))
+		position_.x += 4.0f * deltaTimer;
+	else if (InputMgr::GetInstance().IsKeyOn(KeyCode::J))
+		position_.x += -4.0f * deltaTimer;
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::I))
+		position_.y += -4.0f * deltaTimer;
+	else if (InputMgr::GetInstance().IsKeyOn(KeyCode::K))
+		position_.y += 4.0f * deltaTimer;*/
 	// 一定時間経過で攻撃状態に遷移
 	if (stateTimer_ >= 5.0f) {
 		// 残り体力で攻撃状態を変える
@@ -199,7 +249,7 @@ void BaseBoss::idel(float deltaTime)
 		return;
 	}
 	// 重力
-	if (position_.y < SCREEN_SIZE.y - CHIPSIZE - body_.GetCircle().getRadius()) {
+	if (!isGround_) {
 		position_.y += 9.8f * (1.0f);// * 60.0f);
 	}
 }
@@ -256,6 +306,9 @@ void BaseBoss::flinch(float deltaTime)
 void BaseBoss::deadMove(float deltaTime)
 {
 	stateString_ = "死亡";
+	// 死亡から一定時間経過なら、シーンを終了させる
+	if (stateTimer_ >= 3.0f)
+		isSceneEnd_ = true;
 	//dead();
 }
 
@@ -301,5 +354,64 @@ void BaseBoss::setBMStatus()
 		// direction.y = -1.0f;
 		direction.y = 1.0f;
 		entryObj_->setDirection(direction);
+	}
+}
+
+//地面の位置に補正します
+void BaseBoss::groundClamp(Actor& actor)
+{
+	if (actor.body_.GetBox().getWidth() == 0) return;
+	// 正方形同士の計算
+	// 自分自身の1f前の中心位置を取得
+	auto pos = body_.GetCircle().previousPosition_;
+	// 相手側の四角形の4点を取得
+	auto topLeft = actor.getBody().GetBox().component_.point[0];
+	auto topRight = actor.getBody().GetBox().component_.point[1];
+	auto bottomLeft = actor.getBody().GetBox().component_.point[2];
+	auto bottomRight = actor.getBody().GetBox().component_.point[3];
+	// 外積を使って、縦の長さを計算する
+	auto top = Vector2::Cross(
+		(topLeft - topRight).Normalize(), (pos - topRight));
+	auto bottom = Vector2::Cross(
+		(bottomRight - bottomLeft).Normalize(), (pos - bottomLeft));
+	auto right = Vector2::Cross(
+		(topRight - bottomRight).Normalize(), (pos - bottomRight));
+	auto left = Vector2::Cross(
+		(bottomLeft - topLeft).Normalize(), (pos - topLeft));
+
+	/*if (top >= 0 && left <= 0 && right <= 0) {
+		position_.y = t_left.y - (body_.GetCircle().component_.radius + 5);
+	}
+	if (bottom >= 0 && left <= 0 && right <= 0) {
+		position_.y = b_right.y + (body_.GetCircle().component_.radius + 5);
+	}
+	if (right >= 0 && top <= 0 && bottom <= 0) {
+		position_.x = t_right.x + (body_.GetCircle().component_.radius + 5);
+	}
+	if (left >= 0 && top <= 0 && bottom <= 0) {
+		position_.x = b_left.x - (body_.GetCircle().component_.radius + 5);
+	}*/
+	// Y方向に位置を補間する
+	if (left < body_.GetCircle().getRadius() &&
+		right < body_.GetCircle().getRadius()) {
+		// 上に補間
+		if (top > 0) {
+			position_.y = topLeft.y - body_.GetCircle().getRadius();
+			// 接地
+			isGround_ = true;
+		}
+		// 下に補間
+		if (bottom > 0)
+			position_.y = bottomRight.y + body_.GetCircle().getRadius();
+	}
+	// X方向に位置を補間する
+	if (top < body_.GetCircle().getRadius() &&
+		bottom < body_.GetCircle().getRadius()) {
+		// 左に補間
+		if (left > 0)
+			position_.x = bottomLeft.x - body_.GetCircle().getRadius();
+		// 右に補間
+		if (right > 0)
+			position_.x = topRight.x + body_.GetCircle().getRadius();
 	}
 }

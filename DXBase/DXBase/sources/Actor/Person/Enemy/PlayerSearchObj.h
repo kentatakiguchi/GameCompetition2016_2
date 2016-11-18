@@ -7,7 +7,10 @@
 
 class PlayerSearchObj : public Actor {
 public:
-	PlayerSearchObj(IWorld* world, const Vector2& enemyPosition, const Vector2& playerPosition);
+	PlayerSearchObj(
+		IWorld* world,
+		const Vector2& enemyPosition,
+		const Vector2& playerPosition);
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& actor) override;

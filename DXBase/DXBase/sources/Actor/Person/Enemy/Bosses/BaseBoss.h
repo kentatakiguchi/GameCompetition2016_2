@@ -13,6 +13,7 @@
 class FloorSearchPoint;
 class BossEntry;
 class BossHeart;
+class BossGaugeUI;
 
 class BaseBoss : public Actor {
 protected:
@@ -52,6 +53,10 @@ public:
 	virtual void onCollide(Actor& actor) override;
 	virtual void onMessage(EventMessage event, void*) override;
 
+public:
+	// シーンを終了させるかを返します
+	bool isSceneEnd();
+
 protected:
 	// 状態の更新
 	void updateState(float deltaTime);
@@ -82,15 +87,21 @@ private:
 	void setTimer(float deltaTime);
 	// ボスマネージャーのステータスの設定
 	void setBMStatus();
+	//地面の位置に補正します
+	void groundClamp(Actor& actor);
 
 protected:
 	int dp_;					// ひるむまでの耐久値
 	int initDp_;				// ひるむまでの耐久値(初期値)
 	int hp_;					// 体力
+	int flinchCount_;			// ひるむまでの回数
 	// int initHp_;				// 体力(初期値)
 	float stateTimer_;			// 状態の時間
 	float timer_;				// 現在の時間(最大値 1)
 	float deltaTimer_;			// 現在の時間(補間)
+
+	bool isGround_;				// 接地しているか
+	bool isSceneEnd_;			// シーンを終了させるか
 
 	std::string stateString_;	// 状態の文字列（デバッグ用）
 
@@ -108,6 +119,8 @@ private:
 
 	State state_;				// 状態
 	AttackState attackState_;	// 攻撃状態
+
+	BossGaugeUI* bossGaugeUI_;	// ボスの体力
 
 	// クランプ用の位置(仮)
 	const Vector2 FIELD_SIZE = Vector2(

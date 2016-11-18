@@ -17,6 +17,8 @@ public:
 	void onMessage(EventMessage event, void*) override;
 
 public:
+	// 心臓の体力を返します
+	int getHeartHp();
 	// ボスの体力を返します
 	int getBossHp();
 	// プレイヤーが体内に入ったかを設定します
@@ -29,12 +31,15 @@ private:
 	void initStatus();
 
 private:
-	int hp_;			// 体力
-	int initHp_;		// 体力(初期値)
-	int bossHp_;		// ボスの体力
-	float timer_;		// 時間
-	bool isEntered_;	// プレイヤーが入ってきたか
-	bool isLetOut_;		// プレイヤーを追い出したか
+	int stateCount_;		// 状態の個数
+	int initStateCount_;	// 状態の個数(初期値)
+	int hp_;				// 体力
+	int initHp_;			// 体力(初期値)
+	int prevHp_;			// 体力(前回の体力)
+	int bossHp_;			// ボスの体力
+	float timer_;			// 時間
+	bool isEntered_;		// プレイヤーが入ってきたか
+	bool isLetOut_;			// プレイヤーを追い出したか
 };
 
 #endif

@@ -5,24 +5,26 @@
 
 class FloorSearchPoint;
 
+// ゴルドエネミークラス
 class WallTrunEnemy : public BaseEnemy {
 public:
-	WallTrunEnemy(IWorld * world, const Vector2& position);
-	void onUpdate(float deltaTime) override;
+	WallTrunEnemy(
+		IWorld * world, 
+		const Vector2& position,
+		const Vector2& direction = Vector2(0.0f, -1.0f));
+	void update(float deltaTime) override;
 	void onCollide(Actor& actor) override;
 	void onMessage(EventMessage event, void*) override;
 
 private:
-	// 待機状態です
-	void idel();
 	// 索敵移動です
-	void search();
+	void search() override;
 	// 攻撃行動です
-	void attack();
+	void attack() override;
 	// 索敵時の行動です
-	void searchMove();
+	void searchMove() override;
 	// 追跡時の行動です
-	void chaseMove();
+	void chaseMove() override;
 
 private:
 	FloorSearchPoint* wsObj_;

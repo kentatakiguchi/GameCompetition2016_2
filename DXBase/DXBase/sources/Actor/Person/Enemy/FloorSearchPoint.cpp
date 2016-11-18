@@ -21,7 +21,6 @@ FloorSearchPoint::FloorSearchPoint(
 	isFloor_(false),
 	isGround_(false),
 	direction_(1.0f, 1.0f),
-	scale_(bodyScale),
 	enemyPosition_(enemyPosition),
 	addPosition_(addPosition),
 	floorPosition_(Vector2::Zero)
@@ -39,7 +38,6 @@ FloorSearchPoint::FloorSearchPoint(
 	isFloor_(false),
 	isGround_(false),
 	direction_(1.0f, 1.0f),
-	scale_(Vector2(radius, radius)),
 	enemyPosition_(enemyPosition),
 	addPosition_(addPosition),
 	floorPosition_(Vector2::Zero)
@@ -48,12 +46,6 @@ FloorSearchPoint::FloorSearchPoint(
 
 void FloorSearchPoint::onUpdate(float deltaTime)
 {
-	/*auto pos = position_;
-	auto pointPos = Vector2(
-		pointPosition_.x * direction_.x,
-		pointPosition_.y * direction_.y);*/
-	//position_ = pos + pointPos;
-
 	auto addPos = Vector2(
 		addPosition_.x * direction_.x,
 		addPosition_.y * direction_.y);
@@ -74,8 +66,9 @@ void FloorSearchPoint::onCollide(Actor & actor)
 	if (actor.getName() == "MovelessFloor") {
 		turnCount_ = 0;
 		isGround_ = true;
+		isFloor_ = true;
 		// 位置をブロックの上面に修正する
-		clampPosition(position_, actor.position_);
+		// clampPosition(position_, actor.position_);
 		return;
 	}
 	//// 振り向き回数を加算
@@ -88,7 +81,6 @@ void FloorSearchPoint::onCollide(Actor & actor)
 	//// 方向の変更
 	//direction_ *= -1;
 	//position_.x *= -1;
-	isFloor_ = true;
 }
 
 void FloorSearchPoint::onMessage(EventMessage event, void *)
@@ -108,14 +100,6 @@ void FloorSearchPoint::setDirection(const Vector2& direction)
 	direction_ = direction;
 }
 
-// 敵の大きさを入れます
-void FloorSearchPoint::setEnemyScale(const Vector2& scale)
-{
-	//enemyScale_ = scale;
-	position_.x += scale.x;
-	position_.y += scale.y;
-}
-
 // 床と当たったかを返します
 bool FloorSearchPoint::isFloor()
 {
@@ -124,8 +108,6 @@ bool FloorSearchPoint::isFloor()
 
 bool FloorSearchPoint::isGround()
 {
-	// ここに計算式を追加する
-
 	return isGround_;
 }
 
@@ -133,14 +115,4 @@ bool FloorSearchPoint::isGround()
 Vector2 FloorSearchPoint::getFloorPosition()
 {
 	return floorPosition_;
-}
-
-// 床との位置をクランプします
-void FloorSearchPoint::clampPosition(const Vector2& thisPosition, const Vector2& otherPosition)
-{
-	// 床との位置を計算　負の値の場合、床の下にいる
-	auto posY = otherPosition.y - thisPosition.y - CHIPSIZE; //blockScale;
-	//// 半径を加算した位置にする
-	if (posY < 0)
-		floorPosition_ = position_ + Vector2::Up * posY;
 }

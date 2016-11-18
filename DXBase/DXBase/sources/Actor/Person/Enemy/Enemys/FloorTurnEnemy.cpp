@@ -3,46 +3,44 @@
 #include "../FloorSearchPoint.h"
 #include "Prickle.h"
 
-FloorTurnEnemy::FloorTurnEnemy(IWorld * world, const Vector2 & position) :
+FloorTurnEnemy::FloorTurnEnemy(
+	IWorld * world, 
+	const Vector2 & position,
+	float right) :
 	BaseEnemy(world, position, 64.0f),
 	fspObj_(nullptr)
 {
+	direction_ = Vector2(-right, 1.0f);
 	BaseEnemy::Initialize();
 
 	// 崖捜索オブジェクトの追加
 	auto fsObj = std::make_shared<FloorSearchPoint>(
 		world_, 
 		position_,
-		Vector2(-(scale_ / 2.0f + 1.0f), scale_ / 2.0f), 
-		Vector2(16.0f, 16.0f));
-	/*auto fsObj = std::make_shared<FloorSearchPoint>(
-		world_,
-		position_,
-		Vector2(-(scale_ / 2.0f + 1.0f), scale_ / 2.0f + 3.0f),
-		2.0f);*/
-	// ワールドに追加
+		Vector2((scale_ / 2.0f + 1.0f), scale_ / 2.0f), 
+		Vector2(30.0f, 30.0f));
 	world_->addActor(ActorGroup::Enemy, fsObj);
 	fspObj_ = &*fsObj;
-
 	// トゲオブジェクトの生成
 	auto pricleObj = std::make_shared<Prickle>(
 		world_,
-		Vector2::Zero,
+		position_,
 		Vector2::Up * -(scale_+ 1.0f), 
 		Vector2(64.0f, 64.0f));
 	world_->addActor(ActorGroup::Enemy_AttackRange, pricleObj);
 	pricleObj_ = &*pricleObj;
 }
 
-void FloorTurnEnemy::onUpdate(float deltaTime)
+void FloorTurnEnemy::beginUpdate(float deltaTime)
 {
 	// 崖捜索オブジェクトの更新
 	//fspObj_->setDirection(direction_);
 	//fspObj_->setPosition(position_);
+}
 
-	BaseEnemy::onUpdate(deltaTime);
-	// if (!fspObj_->isGround() && fspScript->isGround())
-
+void FloorTurnEnemy::update(float deltaTime)
+{
+	// 床捜索オブジェクトが何も触れていなくて、接地している場合
 	if (!fspObj_->isGround() && isGround_) {
 		direction_.x *= -1;
 	}
@@ -63,8 +61,12 @@ void FloorTurnEnemy::onMessage(EventMessage event, void *)
 {
 }
 
-void FloorTurnEnemy::idel()
+// 所持しているオブジェクトの位置を設定します
+void FloorTurnEnemy::setObjPosition()
 {
+	BaseEnemy::setObjPosition();
+	fspObj_->setPosition(position_);
+	pricleObj_->setEnemyPosition(position_);
 }
 
 void FloorTurnEnemy::attack()
@@ -73,13 +75,12 @@ void FloorTurnEnemy::attack()
 
 void FloorTurnEnemy::searchMove()
 {
-	speed_ = initSpeed_;
-	position_ +=
+	// 崖移動
+	/*position_ +=
 		enemyManager_.cliffMove(false)
-		* speed_ * deltaTimer_ *direction_.x;
+		* speed_ * deltaTimer_ *direction_.x;*/
+	position_ += direction_.x * speed_ * deltaTimer_;
 	pricleObj_->setAddPosition(Vector2::Up * -(scale_ + 1.0f));
-	// 崖移動(仮)
-	//position_ += enemyManager_.cliffMove(true) * speed_;
 }
 
 void FloorTurnEnemy::chaseMove()
@@ -90,9 +91,11 @@ void FloorTurnEnemy::chaseMove()
 	//// プレイヤーの軸付近に来たら止まる
 	//if (std::abs(distance) < speed) return;
 	// プレイヤーとの位置で、速度を補正する
-	if (std::abs(distance) < speed)
-		speed = std::abs(distance);
+	/*if (std::abs(distance) < speed)
+		speed = std::abs(distance);*/
 	// 追跡
-	position_ += enemyManager_.getPlayerDirection().x * -speed * deltaTimer_;
-	pricleObj_->setAddPosition(Vector2::Right * -(scale_ + 1.0f));
+	// プレイヤーとのX軸が同一の場合おかしくなる
+	direction_.x = -enemyManager_.getPlayerDirection().x;
+	position_.x += enemyManager_.getPlayerDirection().x * -speed * deltaTimer_;
+	pricleObj_->setAddPosition(Vector2((scale_ + 1.0f), 0.0f));
 }

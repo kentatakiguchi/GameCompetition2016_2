@@ -5,7 +5,11 @@
 #include "FloorSearchPoint.h"
 #include "PlayerSearchObj.h"
 
-BaseEnemy::BaseEnemy(IWorld * world, const Vector2& position, const float bodyScale) :
+BaseEnemy::BaseEnemy(
+	IWorld * world,
+	const Vector2& position,
+	const float bodyScale,
+	const Vector2& direction) :
 	Actor(world, "BaseEnemy", position,
 		CollisionBase(
 			Vector2(position.x + bodyScale / 2.0f, position.y + bodyScale / 2.0f),
@@ -18,9 +22,12 @@ BaseEnemy::BaseEnemy(IWorld * world, const Vector2& position, const float bodySc
 	speed_(1.0f),
 	initSpeed_(speed_),
 	scale_(bodyScale),
-	direction_(Vector2(1.0f, 1.0f)),
+	direction_(direction),
 	isMove_(false),
 	isBlockCollideBegin_(false),
+	isBlockCollideEnter_(false),
+	isBlockCollidePrevEnter_(false),
+	isBlockCollideExit_(false),
 	isGround_(false),
 	isUseGravity_(true),
 	isInvincible_(false),
@@ -35,7 +42,7 @@ BaseEnemy::BaseEnemy(IWorld * world, const Vector2& position, const float bodySc
 	fspScript(nullptr),
 	wsScript(nullptr),
 	pricleObj_(nullptr),
-	enemyManager_(EnemyManager(position)),
+	enemyManager_(EnemyManager(position, direction)),
 	handle_(0)
 {
 	//Initialize();
@@ -73,7 +80,7 @@ void BaseEnemy::Initialize()
 		world_, Vector2(-scale_ / 2.0f, 0.0f), position_);*/
 	auto wsObj = std::make_shared<FloorSearchPoint>(
 		world_, position_, 
-		Vector2(-scale_ / 2.0f, 0.0f),
+		Vector2(scale_ / 2.0f, 0.0f),
 		Vector2(2.0f, scale_- 30.0f));
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsScript = &*wsObj;
@@ -81,6 +88,8 @@ void BaseEnemy::Initialize()
 
 void BaseEnemy::onUpdate(float deltaTime)
 {
+	// 子供用のupdate(親のupdate前に行います)
+	beginUpdate(deltaTime);
 	// デルタタイムの値を設定する
 	setDeltaTime(deltaTime);
 	// エネミーマネージャーの更新
@@ -89,12 +98,12 @@ void BaseEnemy::onUpdate(float deltaTime)
 	updateState(deltaTime);
 	// 捜索オブジェクトの更新
 	updateSearchObjct();
-	// ブロックから離れたら、接地しない
-	if (isBlockCollideExit_)
-		isGround_ = false;
-	// 衝突判定後のboolがtureなら、falseに変える
-	if (!isBlockCollideExit_) return;
-	isBlockCollideExit_ = false;
+	// 子のupdateの前の処理
+	// ここで子のupdateを呼ばないと変になることがある
+	update(deltaTime);
+	// 子のupdateが終わった後の処理
+	// 衝突関連の更新
+	updateCollide();
 
 	// アニメーションの変更
 	//animation_.change(motion_);
@@ -127,6 +136,8 @@ void BaseEnemy::onDraw() const
 		handle_, "ブロックとの位置=>右:%d 左:%d", (int)testRight, (int)testLeft);
 	DrawFormatStringToHandle(50, 150, GetColor(255, 255, 255),
 		handle_, "当たっているブロックの数:%d", collideCount_);*/
+	/*DrawFormatStringToHandle(50, 150, GetColor(255, 255, 255),
+		handle_, "接地しているか:%d", (int)isGround_);*/
 	/*DrawFormatString(25, 200, GetColor(255, 255, 255),
 		"ブロックとの位置=>右:%d 左:%d",
 		(int)testRight, (int)testLeft);*/
@@ -141,69 +152,25 @@ void BaseEnemy::onDraw() const
 
 void BaseEnemy::onCollide(Actor & actor)
 {
+	name_ = actor.getName();
 	auto actorName = actor.getName();
 	// プレイヤー関連のオブジェクトに当たっているなら
 	// actorName != "Player_AttackRange"
 	// if (actorName != "Player") return;
 
-	// 名無しなら,boolを衝突後のものにする
-	if (actorName == "") {
-		isBlockCollideExit_ = true;
-		isBlockCollideEnter_ = false;
-		body_.enabled(false);
-		return;
-	}
 	// マップのブロックに当たったら、処理を行う
 	if (actorName == "MovelessFloor") {
-		// Enterがfalseなら、beginをtrueにする
-		// 逆ならば、beginをfalseに変える
-		if(!isBlockCollideEnter_)
-			isBlockCollideBegin_ = true;
-		else isBlockCollideBegin_ = false;
+		// 位置の補間
+		groundClamp(actor);
+		// 所持しているオブジェクトの位置も再設定する
+		setObjPosition();
+		// 衝突中にtrueを入れる
 		isBlockCollideEnter_ = true;
-		// 相手側の当たり判定が四角形以外なら行わない(てきとう判定)
-		if (actor.body_.GetBox().getWidth() == 0) return;
-		// 正方形同士の計算
-		// 自分自身の1f前の中心位置を取得
-		auto pos = body_.GetBox().previousPosition_;
-		// 相手側の四角形の4点を取得
-		auto topLeft = actor.getBody().GetBox().component_.point[0];
-		auto topRight = actor.getBody().GetBox().component_.point[1];
-		auto bottomLeft = actor.getBody().GetBox().component_.point[2];
-		auto bottomRight = actor.getBody().GetBox().component_.point[3];
-		// 外積を使って、縦の長さを計算する
-		auto top = Vector2::Cross(
-			(topLeft - topRight).Normalize(), (pos - topRight));
-		auto bottom = Vector2::Cross(
-			(bottomRight - bottomLeft).Normalize(), (pos - bottomLeft));
-		auto right = Vector2::Cross(
-			(topRight - bottomRight).Normalize(), (pos - bottomRight));
-		auto left = Vector2::Cross(
-			(bottomLeft - topLeft).Normalize(), (pos - topLeft));
-
-		// Y方向に位置を補間する
-		if (left < body_.GetBox().getWidth() / 2.0f && 
-			right < body_.GetBox().getWidth() / 2.0f) {
-			// 上に補間
-			if (top > 0) {
-				position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;
-				// 接地
-				isGround_ = true;
-			}
-			// 下に補間
-			if (bottom > 0)
-				position_.y = bottomRight.y + body_.GetBox().getHeight() / 2.0f;
-		}
-		// X方向に位置を補間する
-		if (top < body_.GetBox().getHeight() / 2.0f && 
-			bottom < body_.GetBox().getHeight() / 2.0f) {
-			// 左に補間
-			if (left > 0)
-				position_.x = bottomLeft.x - body_.GetBox().getWidth() / 2.0f;
-			// 右に補間
-			if (right > 0)
-				position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;
-		}
+		// 過去の衝突中がfalseで、、過去と現在の衝突中が違うなら場合
+		// 衝突直後になる
+		if (!isBlockCollidePrevEnter_ &&
+			isBlockCollidePrevEnter_ != isBlockCollideEnter_)
+			isBlockCollideBegin_ = true;
 		// 判定を一回のみにするので消す
 		//body_.enabled(false);
 		return;
@@ -222,24 +189,27 @@ void BaseEnemy::onCollide(Actor & actor)
 		/*body_.enabled(false);
 		return;*/
 	}
-	//// ダメージ
-	//// hp_ -= player->GetAP(); とか
-	//hp_ -= 10;
-	//if (hp_ <= 0) changeState(State::Dead, ENEMY_DEAD);
-	//else changeState(State::Damage, ENEMY_DAMAGE);
-	//body_.enabled(false);
 }
 
 void BaseEnemy::onMessage(EventMessage event, void *)
 {
 }
 
+// 子供用のupdate(親のupdate前に行います)
+void BaseEnemy::beginUpdate(float deltaTime){}
+
+// 子供用のupdate
+void BaseEnemy::update(float deltaTime){}
+
 // 待機状態です
 void BaseEnemy::idle()
 {
 	stateString_ = "待機";
-	// if (enemyManager_.getPlayerLength() < 100) changeState(State::Search, ENEMY_WALK);
-	changeState(State::Search, ENEMY_WALK);
+	// プレイヤーとの距離を計算して、
+	// スクリーンの幅の半分 + 敵の大きさよりちいさいなら動く
+	if (enemyManager_.getPlayerLength() < 
+		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
+		changeState(State::Search, ENEMY_WALK);
 }
 // 索敵移動です(デフォルト)
 void BaseEnemy::search()
@@ -247,6 +217,7 @@ void BaseEnemy::search()
 	// プレイヤーの捜索
 	findPlayer();
 	stateString_ = "捜索";
+	// 初期速度に戻す
 	speed_ = initSpeed_;
 	// 捜索行動
 	searchMove();
@@ -262,15 +233,11 @@ void BaseEnemy::search()
 void BaseEnemy::discovery()
 {
 	isUseGravity_ = false;
-	// プレイヤーの捜索
-	//findPlayer();
 	stateString_ = "発見";
 	// ジャンプモーション
 	position_.y += (-0.5f + stateTimer_) * GRAVITY_ * deltaTimer_;
-	// 位置を補正
-	groundClamp();
-	// 補正されたら、追跡に移行
-	if (position_.y >= fspScript->getFloorPosition().y) {
+	// ジャンプ後に床に接地したら追跡状態に遷移
+	if (isGround_ && stateTimer_ >= 0.2f) {
 		changeState(State::Chase, ENEMY_WALK);
 		isUseGravity_ = true;
 	}
@@ -282,23 +249,12 @@ void BaseEnemy::chase()
 	// プレイヤーの捜索
 	findPlayer();
 	stateString_ = "追跡";
+	// 移動速度を倍速にする
 	speed_ = initSpeed_ * 1.5f;
 	// 追跡行動
 	chaseMove();
 	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 30.0f)
 		changeState(State::Search, ENEMY_WALK);
-	// 前方に移動(仮)
-	//auto distance = position_ - player_->getPosition();
-	////auto direction = 1.0f;
-	//if (distance.x < 0)
-	//	directionX_ = -1;
-	//else if(distance.x > 0) directionX_ = 1;
-	//else directionX_ = 0;
-
-	//// 水平方向に移動
-	//position_ += position_.Left * -speed_ * getPlayerDirection().x;
-	//// 移動
-	//position_ += BaseEnemy::getPlayerNormalizeDirection() * -speed_;
 }
 
 //void BaseEnemy::shortDistanceAttack()
@@ -336,7 +292,7 @@ void BaseEnemy::deadMove()
 {
 	//if (stateTimer_ >= 3.0f) dead();
 	stateString_ = "死亡";
-	//dead();
+	dead();
 }
 
 // プレイヤーを見失ったときの行動です
@@ -350,6 +306,14 @@ void BaseEnemy::changeState(State state, unsigned int motion)
 	state_ = state;
 	stateTimer_ = 0.0f;
 	motion_ = motion;
+}
+
+// 所持しているオブジェクトの位置を設定します
+void BaseEnemy::setObjPosition()
+{
+	if (fspScript == nullptr) return;
+	fspScript->setPosition(position_);
+	wsScript->setPosition(position_);
 }
 
 // プレイヤーを捜索します
@@ -435,6 +399,11 @@ void BaseEnemy::updateState(float deltaTime)
 	case State::Dead: deadMove(); break;
 	}
 
+	// スクリーンの幅の半分 + 敵の大きさより大きいなら待機状態にする
+	if (enemyManager_.getPlayerLength() >=
+		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
+		changeState(State::Idel, ENEMY_IDLE);
+
 	stateTimer_ += deltaTime;
 }
 
@@ -445,23 +414,85 @@ void BaseEnemy::updateSearchObjct()
 	//if (!fspScript->isGround() && isUseGravity_)
 	if (!isGround_ && isUseGravity_)
 		position_.y += GRAVITY_ * deltaTimer_;
-	// 床の位置に補正する
-	/*if (fspScript->isGround())
-		groundClamp();*/
-	// 壁に当たったら方向転換(X)
-	if (wsScript->isGround())
-		direction_.x *= -1.0f;
-	// 捜索オブジェクトにプレイヤーの方向を入れる
-	wsScript->setDirection(direction_);
-	// 各捜索オブジェクトに位置を入れる
-	fspScript->setPosition(position_);
-	wsScript->setPosition(position_);
+	if (fspScript != nullptr) {
+		// 壁に当たったら方向転換(X)
+		if (wsScript->isGround())
+			direction_.x *= -1.0f;
+		// 捜索オブジェクトにプレイヤーの方向を入れる
+		wsScript->setDirection(direction_);
+		// 各捜索オブジェクトに位置を入れる
+		fspScript->setPosition(position_);
+		wsScript->setPosition(position_);
+	}
+}
+
+// 衝突関連の更新
+void BaseEnemy::updateCollide()
+{
+	// bool系列
+	// 接地をfalseにする
+	isGround_ = false;
+
+	// 最初に衝突直後と衝突後の判定をfalseにする
+	isBlockCollideBegin_ = false;
+	isBlockCollideExit_ = false;
+	// 過去の衝突中がtureで、過去と現在の衝突中が違うなら場合
+	// 衝突後になる
+	if (isBlockCollidePrevEnter_ &&
+		isBlockCollidePrevEnter_ != isBlockCollideEnter_) {
+		// 衝突後の判定
+		isBlockCollideBegin_ = false;
+		isBlockCollideExit_ = true;
+	}
+	// 過去の衝突中に、現在の衝突中を入れる
+	isBlockCollidePrevEnter_ = isBlockCollideEnter_;
+	// ブロックに当たっていればtrueになるので、falseを入れる
+	isBlockCollideEnter_ = false;
 }
 
 //地面の位置に補正します
-void BaseEnemy::groundClamp()
+void BaseEnemy::groundClamp(Actor& actor)
 {
-	position_.y = MathHelper::Clamp(position_.y,
-		fspScript->getFloorPosition().y - 100.0f,
-		fspScript->getFloorPosition().y);
+	if (actor.body_.GetBox().getWidth() == 0) return;
+	// 正方形同士の計算
+	// 自分自身の1f前の中心位置を取得
+	auto pos = body_.GetBox().previousPosition_;
+	// 相手側の四角形の4点を取得
+	auto topLeft = actor.getBody().GetBox().component_.point[0];
+	auto topRight = actor.getBody().GetBox().component_.point[1];
+	auto bottomLeft = actor.getBody().GetBox().component_.point[2];
+	auto bottomRight = actor.getBody().GetBox().component_.point[3];
+	// 外積を使って、縦の長さを計算する
+	auto top = Vector2::Cross(
+		(topLeft - topRight).Normalize(), (pos - topRight));
+	auto bottom = Vector2::Cross(
+		(bottomRight - bottomLeft).Normalize(), (pos - bottomLeft));
+	auto right = Vector2::Cross(
+		(topRight - bottomRight).Normalize(), (pos - bottomRight));
+	auto left = Vector2::Cross(
+		(bottomLeft - topLeft).Normalize(), (pos - topLeft));
+
+	// Y方向に位置を補間する
+	if (left < body_.GetBox().getWidth() / 2.0f &&
+		right < body_.GetBox().getWidth() / 2.0f) {
+		// 上に補間
+		if (top > 0) {
+			position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;
+			// 接地
+			isGround_ = true;
+		}
+		// 下に補間
+		if (bottom > 0)
+			position_.y = bottomRight.y + body_.GetBox().getHeight() / 2.0f;
+	}
+	// X方向に位置を補間する
+	if (top < body_.GetBox().getHeight() / 2.0f &&
+		bottom < body_.GetBox().getHeight() / 2.0f) {
+		// 左に補間
+		if (left > 0)
+			position_.x = bottomLeft.x - body_.GetBox().getWidth() / 2.0f;
+		// 右に補間
+		if (right > 0)
+			position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;
+	}
 }

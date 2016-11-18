@@ -51,7 +51,11 @@ protected:
 
 public:
 	// 短形
-	BaseEnemy(IWorld* world, const Vector2&  position, const float bodyScale);
+	BaseEnemy(
+		IWorld* world,
+		const Vector2&  position,
+		const float bodyScale,
+		const Vector2& direction = Vector2(1.0f, 1.0f));
 	~BaseEnemy();
 	void Initialize();
 	virtual void onUpdate(float deltaTime) override;
@@ -60,6 +64,10 @@ public:
 	virtual void onMessage(EventMessage event, void*) override;
 
 protected:
+	// 子供用のupdate(親のupdate前に行います)
+	virtual void beginUpdate(float deltaTime);
+	// 子供用のupdate
+	virtual void update(float deltaTime);
 	// 待機状態です
 	void idle();
 	// 索敵移動です
@@ -84,6 +92,8 @@ protected:
 	virtual void lostMove();
 	// 状態の変更を行います
 	void changeState(State state, unsigned int motion);
+	// 所持しているオブジェクトの位置を設定します
+	virtual void setObjPosition();
 	//// 敵の死亡状態の変更を行います
 	//void changeDeadState(EnemyDeadState state);
 	// プレイヤーを捜索します
@@ -112,8 +122,10 @@ protected:
 	void updateState(float deltaTime);
 	// 捜索オブジェクト関連の更新
 	void updateSearchObjct();
+	// 衝突関連の更新
+	void updateCollide();
 	//地面の位置に補正します
-	void groundClamp();
+	void groundClamp(Actor& actor);
 
 protected:
 	// メンバ変数
@@ -132,6 +144,7 @@ protected:
 	bool isMove_;					// 動くか
 	bool isBlockCollideBegin_;		// ブロックと当たっているか(初回時)
 	bool isBlockCollideEnter_;		// ブロックと当たっているか(衝突中)
+	bool isBlockCollidePrevEnter_;	// ブロックと当たっているか(過去の衝突中)
 	bool isBlockCollideExit_;		// ブロックと当たっているか(衝突後)
 	bool isGround_;					// 接地しているか trueで接地しています
 	bool isUseGravity_;				// 重力を使うか trueで重力を追加します

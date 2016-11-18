@@ -19,7 +19,7 @@ const static int		WINDOW_MODE = TRUE;
 //‹£‡‚ª‹N‚±‚é‰Â”\«‚ª‚‚¢‚Ì‚Åˆµ‚¢‚É‚Í’ˆÓ
 
 /*** –î“ˆ ***/
-
+const static Vector2	BOSSBODY_POSITION = Vector2(SCREEN_SIZE.x - 96 * 3, SCREEN_SIZE.y + 96 * 10);
 
 
 

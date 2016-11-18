@@ -4,26 +4,30 @@
 #include "../BaseEnemy.h"
 #include <vector> // デバッグ
 
+// 壁移動エネミークラス
 class WallMoveEnemy : public BaseEnemy {
 public:
-	WallMoveEnemy(IWorld * world, const Vector2& position);
+	WallMoveEnemy(
+		IWorld * world,
+		const Vector2& position,
+		const Vector2& direction = Vector2(-1.0f, -1.0f));
 	void onUpdate(float deltaTime) override;
-	//void onDraw() const;
+	void onDraw() const override;
 	void onCollide(Actor& actor) override;
 	void onMessage(EventMessage event, void*) override;
 private:
 	// 索敵移動です
-	void search();
+	void search() override;
 	// 索敵時の行動です
-	void searchMove();
+	void searchMove() override;
 	// 壁捜索オブジェクトの位置を追加
 	void addWSPPosition();
 	// 壁捜索オブジェクトの大きさを追加
 	void addWSPScale();
 
 private:
-	Vector2 addScale_;
-
+	Vector2 addScale_;	// 追加の大きさ
+	// 床に触れているかのコンテナ
 	typedef std::vector<bool> IsGroundContainer;
 	IsGroundContainer isGCont;
 

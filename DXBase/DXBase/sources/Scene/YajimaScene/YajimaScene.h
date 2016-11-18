@@ -6,6 +6,8 @@
 
 class World;
 
+class BaseBoss;
+
 class YajimaScene : public IScene {
 public:
 	YajimaScene();
@@ -19,10 +21,11 @@ public:
 
 private:
 	using WorldPtr = std::shared_ptr<World>;
-	// ワールド
-	WorldPtr	world_;
+	WorldPtr	world_;	// ワールド
 
 	int id;
+
+	BaseBoss* boss_;	// ボス
 };
 
 #endif
