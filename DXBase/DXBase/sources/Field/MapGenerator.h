@@ -48,6 +48,9 @@ public:
 		}
 
 	}
+	Vector2 findStartPoint() {
+
+	}
 	//ファイル名(拡張子まで書く事)から、マップを生成する fileName:マップ用の.csv 0:生成しない 1:MapChipを生成
 	void create(std::string fileName)
 	{
@@ -116,15 +119,15 @@ public:
 					// クリボーエネミー
 					world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
-				if (reader_.geti(rowN, colN) == 51) {
+				if (reader_.geti(rowN, colN) == 52) {
 					// ゴルドエネミー
 					world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
-				if (reader_.geti(rowN, colN) == 52) {
+				if (reader_.geti(rowN, colN) == 54) {
 					// ハネクリボーエネミー
 					world_->addActor(ActorGroup::Enemy, std::make_shared<FlyingEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
-				if (reader_.geti(rowN, colN) == 53) {
+				if (reader_.geti(rowN, colN) == 56) {
 					// 壁移動エネミー
 					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 				}
