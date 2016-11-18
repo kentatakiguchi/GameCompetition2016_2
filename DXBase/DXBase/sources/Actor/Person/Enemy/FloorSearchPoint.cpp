@@ -62,8 +62,11 @@ void FloorSearchPoint::onDraw() const
 
 void FloorSearchPoint::onCollide(Actor & actor)
 {
+	auto actorName = actor.getName();
+	// プレイヤー関連のオブジェクトに当たっているなら
+	auto getFloorName = strstr(actorName.c_str(), "Floor");
 	// 床に当たっていた、振り向き回数をリセット
-	if (actor.getName() == "MovelessFloor") {
+	if (getFloorName != NULL) {
 		turnCount_ = 0;
 		isGround_ = true;
 		isFloor_ = true;

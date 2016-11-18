@@ -21,6 +21,7 @@ FloorTurnEnemy::FloorTurnEnemy(
 		Vector2(30.0f, 30.0f));
 	world_->addActor(ActorGroup::Enemy, fsObj);
 	fspObj_ = &*fsObj;
+	objContainer_.push_back(fspObj_);
 	// トゲオブジェクトの生成
 	auto pricleObj = std::make_shared<Prickle>(
 		world_,
@@ -29,6 +30,7 @@ FloorTurnEnemy::FloorTurnEnemy(
 		Vector2(64.0f, 64.0f));
 	world_->addActor(ActorGroup::Enemy_AttackRange, pricleObj);
 	pricleObj_ = &*pricleObj;
+	objContainer_.push_back(pricleObj_);
 }
 
 void FloorTurnEnemy::beginUpdate(float deltaTime)

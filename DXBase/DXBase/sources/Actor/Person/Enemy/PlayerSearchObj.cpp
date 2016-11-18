@@ -39,8 +39,11 @@ void PlayerSearchObj::onDraw() const
 
 void PlayerSearchObj::onCollide(Actor & actor)
 {
+	auto actorName = actor.getName();
+	// プレイヤー関連のオブジェクトに当たっているなら
+	auto getFloorName = strstr(actorName.c_str(), "Floor");
 	// 床に当たっていたら、位置を代入
-	if (actor.getName() == "MovelessFloor") {
+	if (getFloorName != NULL) {
 		blockPosition_ = actor.position_;
 		return;
 	}

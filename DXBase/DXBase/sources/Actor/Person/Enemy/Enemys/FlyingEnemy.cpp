@@ -25,6 +25,7 @@ FlyingEnemy::FlyingEnemy(
 	// ワールドに追加
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsObj_ = &*wsObj;
+	objContainer_.push_back(wsObj_);
 	// トゲオブジェクトの生成
 	auto pricleObj = std::make_shared<Prickle>(
 		world_,
@@ -33,6 +34,7 @@ FlyingEnemy::FlyingEnemy(
 		Vector2(64.0f, 64.0f));
 	world_->addActor(ActorGroup::Enemy_AttackRange, pricleObj);
 	pricleObj_ = &*pricleObj;
+	objContainer_.push_back(pricleObj_);
 	pricleObj_->setDirection(direction_);
 }
 

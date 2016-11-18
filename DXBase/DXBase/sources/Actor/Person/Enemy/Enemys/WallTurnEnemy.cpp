@@ -26,6 +26,7 @@ WallTrunEnemy::WallTrunEnemy(
 	// ƒ[ƒ‹ƒh‚É’Ç‰Á
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsObj_ = &*wsObj;
+	objContainer_.push_back(wsObj_);
 }
 
 void WallTrunEnemy::update(float deltaTime)
