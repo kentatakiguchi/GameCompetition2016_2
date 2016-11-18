@@ -11,7 +11,7 @@
 #include "../../ResourceLoader/ResourceLoader.h"
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
 
-const Vector2 START_POS = Vector2(300, 900);
+//const Vector2 START_POS = Vector2(300, 900);
 
 BossStage::BossStage(SceneDataKeeper* keeper) : 
 	nextScene_(Scene::Title), 
@@ -38,9 +38,9 @@ void BossStage::start()
 	world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
 	//world_->addCamera(std::make_shared<Camera>(world_.get()));
 	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
-	world_->addActor(
+	/*world_->addActor(
 		ActorGroup::Player,
-		std::make_shared<Player>(world_.get(), START_POS));
+		std::make_shared<Player>(world_.get(), START_POS));*/
 	// É{ÉX
 	auto boss = std::make_shared<BaseBoss>(
 		world_.get(), START_POS + Vector2(1000, 50), 128.0f / 2.0f);

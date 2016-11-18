@@ -174,6 +174,9 @@ protected:
 	// 捜索オブジェクトの大きさコンテナ
 	typedef std::vector<Vector2> FSPScaleContainer;
 	FSPScaleContainer fspScaleContainer_;
+	// 所持しているオブジェクトのコンテナ
+	typedef std::list<Actor*> ObjContainer;
+	ObjContainer objContainer_;
 	// 重力加速度
 	const float GRAVITY_ = 9.8f;
 

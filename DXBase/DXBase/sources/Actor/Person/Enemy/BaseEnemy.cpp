@@ -54,12 +54,16 @@ BaseEnemy::BaseEnemy(
 		world_, position_, player->getPosition());
 	world_->addActor(ActorGroup::EnemyBullet, ray);
 	psObj_ = &*ray;
+	objContainer_.push_back(psObj_);
 
 	handle_ = CreateFontToHandle("ＭＳ 明朝", 40, 10, DX_FONTTYPE_NORMAL);
 }
 
 BaseEnemy::~BaseEnemy()
 {
+	fspPositionContainer_.clear();
+	fspScaleContainer_.clear();
+	objContainer_.clear();
 }
 
 void BaseEnemy::Initialize()
@@ -74,6 +78,7 @@ void BaseEnemy::Initialize()
 	// ワールドに追加
 	world_->addActor(ActorGroup::Enemy, fsObj);
 	fspScript = &*fsObj;
+	objContainer_.push_back(fspScript);
 	fspScript->setPosition(position_);
 	// 壁捜索オブジェクト
 	/*auto wsObj = std::make_shared<FloorSearchPoint>(
@@ -84,6 +89,7 @@ void BaseEnemy::Initialize()
 		Vector2(2.0f, scale_- 30.0f));
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsScript = &*wsObj;
+	objContainer_.push_back(wsScript);
 }
 
 void BaseEnemy::onUpdate(float deltaTime)
@@ -158,9 +164,11 @@ void BaseEnemy::onCollide(Actor & actor)
 	// プレイヤー関連のオブジェクトに当たっているなら
 	// actorName != "Player_AttackRange"
 	// if (actorName != "Player") return;
+	auto getFloorName = strstr(actorName.c_str(), "Floor");
 
 	// マップのブロックに当たったら、処理を行う
-	if (actorName == "MovelessFloor") {
+	// actorName == "MovelessFloor
+	if (getFloorName != NULL) {
 		// 位置の補間
 		groundClamp(actor);
 		// 所持しているオブジェクトの位置も再設定する
@@ -224,8 +232,10 @@ void BaseEnemy::search()
 	speed_ = initSpeed_;
 	// 捜索行動
 	searchMove();
-	// 一定距離内なら追跡する
-	if (enemyManager_.getPlayerLength() <= discoveryLenght_) {
+	// 一定距離内で、プレイヤーとの間にブロックがなかったら
+	// 追跡する
+	if (enemyManager_.getPlayerLength() <= discoveryLenght_ && 
+		psObj_->isPlayerLook()) {
 		changeState(State::Discovery, ENEMY_DISCOVERY);
 		discoveryPosition_ = position_;
 	}
@@ -256,7 +266,10 @@ void BaseEnemy::chase()
 	speed_ = initSpeed_ * 1.5f;
 	// 追跡行動
 	chaseMove();
-	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 30.0f)
+	// プレイヤーが追跡距離外か、プレイヤーの間にブロックがあるなら、
+	// 捜索状態に遷移
+	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 30.0f &&
+		!psObj_->isPlayerLook())
 		changeState(State::Search, ENEMY_WALK);
 }
 
@@ -295,6 +308,11 @@ void BaseEnemy::deadMove()
 {
 	//if (stateTimer_ >= 3.0f) dead();
 	stateString_ = "死亡";
+	// 所持しているオブジェクトの削除
+	for (auto i = objContainer_.begin(); i != objContainer_.end(); i++) {
+		auto a = *i;
+		a->dead();
+	}
 	dead();
 }
 
@@ -359,6 +377,7 @@ void BaseEnemy::createFSP()
 		wspContainer_[i]->setPosition(position_ + fspPositionContainer_[i]);*/
 		// エネミーマネージャーに追加
 		enemyManager_.addFSP(fspScript);
+		objContainer_.push_back(fspScript);
 	}
 }
 
