@@ -4,7 +4,7 @@
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
 #include "State/Base/StateMgr.h"
-#include "PlayerPtr.h"
+#include "PlayerStruct.h"
 #include "HitOpponent.h"
 
 #include "../../../Animation/Animation2D.h"
@@ -80,6 +80,7 @@ private:
 	Vector2 gravity_;
 	Vector2 launch_;
 	Vector2 last_pos_;
+	Vector2 other_velocity_;
 	PlayerBodyPtr partner_;
 	HitOpponent opponent_;
 	HitOpponent hit_partner_;

@@ -19,10 +19,10 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	keys_ = SingleKeys();
 	if (name == "PlayerBody2")keys_ = SingleKeys(KeyCode::W, KeyCode::S, KeyCode::D, KeyCode::A);
 
-	stateMgr_.add((unsigned int)PlayerState_Enum_Single::STAND_BY, std::make_shared<PlayerState_Single_StandBy>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Single::LEAN_BACK, std::make_shared<PlayerState_Single_LeanBack>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Single::IDLE, std::make_shared<PlayerState_Single_Idle>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Single::JUMP, std::make_shared<PlayerState_Single_Jump>());
+	stateMgr_.add((unsigned int)PlayerState_Enum_Single::STAND_BY, std::make_shared<PlayerState_Single_StandBy>(std::shared_ptr<PlayerBody>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Single::LEAN_BACK, std::make_shared<PlayerState_Single_LeanBack>(std::shared_ptr<PlayerBody>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Single::IDLE, std::make_shared<PlayerState_Single_Idle>(std::shared_ptr<PlayerBody>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Single::JUMP, std::make_shared<PlayerState_Single_Jump>(std::shared_ptr<PlayerBody>(this)));
 	init_state();
 
 	auto collider = std::make_shared<PlayerBodyCollider>(world_, name_, (PlayerBodyPtr)this);
@@ -37,7 +37,7 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 PlayerBody::~PlayerBody(){}
 
 void PlayerBody::onUpdate(float deltaTime){
-	position_ += input_ * PLAYER_SPEED  + launch_ + gravity_ * deltaTime * static_cast<float>(GetRefreshRate());
+	position_ += (input_ * PLAYER_SPEED  + launch_ + gravity_ + other_velocity_) * deltaTime * static_cast<float>(GetRefreshRate());
 	velocity_ = position_ - body_.GetCircle().previousPosition_;
 
 	opponent_ = HitOpponent::NONE;
@@ -66,7 +66,9 @@ void PlayerBody::onLateUpdate(float deltaTime){
 
 void PlayerBody::onCollide(Actor & other){
 	
-	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" || other.getName() == "GameOverPoint") {
+	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" || 
+		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" || 
+		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor") {
 		auto pos = body_.GetCircle().previousPosition_;
 
 		auto t_left =  other.getBody().GetBox().component_.point[0];
@@ -97,15 +99,19 @@ void PlayerBody::onCollide(Actor & other){
 			position_.x = b_left.x - PLAYER_RADIUS;
 		}
 		if (left <= 0 && right <= 0 && top <= 0 && bottom <= 0) {
-			position_ = center + (pos - center).Normalize() * (t_left - center).Length();
+			Vector2 vec = (pos - center).Normalize();
+			position_ = center + vec * (t_left - center).Length();
+			if(vec.Length() <= 0) position_ = center + Vector2::Down * (t_left - center).Length();
+
 		}
-	}
-	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
-		hit_enemy_ = HitOpponent::ENEMY;
 	}
 	if (other.getName() == "StageClearPoint") {
 		hit_enemy_ = HitOpponent::CLEAR;
 	}
+	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
+		hit_enemy_ = HitOpponent::ENEMY;
+	}
+
 	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
 		(getName() == "PlayerBody2" && other.getName() == "PlayerBody1Collider")) {
 		if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::IDLE) ||
@@ -116,7 +122,7 @@ void PlayerBody::onCollide(Actor & other){
 }
 
 void PlayerBody::init_state(){
-	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
+	stateMgr_.changeState(IState::StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
 }
 
 void PlayerBody::move(Vector2 vector){
@@ -234,7 +240,7 @@ bool PlayerBody::isInv(){
 }
 
 void PlayerBody::single_action(float deltaTime){
-	stateMgr_.action(*this, deltaTime);
+	stateMgr_.action(deltaTime);
 }
 
 PlayerBody::SingleKeys PlayerBody::get_keys(){

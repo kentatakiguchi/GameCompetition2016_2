@@ -4,11 +4,11 @@
 
 class PlayerState_Dead : public PlayerState_Union {
 public:
-	PlayerState_Dead();
+	PlayerState_Dead(const PlayerPtr& player);
 
-	virtual void unique_init(Actor & actor) override;
+	virtual void unique_init() override;
 
-	virtual void update(Actor & actor, float deltaTime) override;
+	virtual void update(float deltaTime) override;
 
 	virtual void end() override;
 };

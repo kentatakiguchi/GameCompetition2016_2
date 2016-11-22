@@ -1,12 +1,11 @@
 #include "PlayerState_StandBy.h"
 
-PlayerState_StandBy::PlayerState_StandBy(){}
+PlayerState_StandBy::PlayerState_StandBy(const PlayerPtr& player) : PlayerState_Union(player) {}
 
-void PlayerState_StandBy::unique_init(Actor & actor){}
+void PlayerState_StandBy::unique_init(){}
 
-void PlayerState_StandBy::update(Actor & actor, float deltaTime){
-	main_body_->gravity();
-	sub_body_->gravity();
+void PlayerState_StandBy::update(float deltaTime){
+	player_->body_gravity();
 
 	change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 }

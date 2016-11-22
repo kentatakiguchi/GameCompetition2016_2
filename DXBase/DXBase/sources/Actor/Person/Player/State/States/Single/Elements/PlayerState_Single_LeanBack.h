@@ -4,11 +4,11 @@
 
 class PlayerState_Single_LeanBack : public PlayerState_Single {
 public:
-	PlayerState_Single_LeanBack();
+	PlayerState_Single_LeanBack(const PlayerBodyPtr& player_body);
 
-	virtual void unique_init(Actor & actor) override;
+	virtual void unique_init() override;
 
-	virtual void update(Actor & actor, float deltaTime) override;
+	virtual void update(float deltaTime) override;
 
 	virtual void end() override;
 private:

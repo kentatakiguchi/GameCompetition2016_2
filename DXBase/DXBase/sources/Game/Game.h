@@ -34,6 +34,8 @@ public:
 			InputMgr::GetInstance().GetHitKeyFrameAll();			
 			update();
 			draw();
+
+			Time::GetInstance().draw_fps();
 			// — ‰æ–Ê‚Ì“à—e‚ð•\‰æ–Ê‚É”½‰f‚³‚¹‚é
 			ScreenFlip();
 

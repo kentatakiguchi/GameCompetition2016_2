@@ -216,9 +216,6 @@
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody_Point.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\PlayerPtr.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Field\MoveFloorRightLeft.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -433,6 +430,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\NeedleEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\PlayerStruct.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

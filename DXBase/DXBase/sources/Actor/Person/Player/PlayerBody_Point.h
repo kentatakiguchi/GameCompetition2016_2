@@ -3,7 +3,7 @@
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
-#include "PlayerPtr.h"
+#include "PlayerStruct.h"
 
 #include "Player.h"
 

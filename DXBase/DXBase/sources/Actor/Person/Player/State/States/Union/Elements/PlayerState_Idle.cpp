@@ -2,28 +2,20 @@
 
 #include <algorithm>
 
-PlayerState_Idle::PlayerState_Idle(){
+PlayerState_Idle::PlayerState_Idle(const PlayerPtr& player) : PlayerState_Union(player) {}
+
+void PlayerState_Idle::unique_init(){
 }
 
-void PlayerState_Idle::unique_init(Actor & actor){
-	main_body_->init_state();
-	sub_body_->init_state();
+void PlayerState_Idle::update(float deltaTime) {
+	InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
+
+	player_->body_chase();
+	player_->body_clamp();
+	player_->body_gravity();
 }
 
-void PlayerState_Idle::update(Actor & actor, float deltaTime) {
-	//key_update();
-	pad_update();
-
-	main_body_->gravity();
-	sub_body_->gravity();
-	main_body_->chase();
-	sub_body_->chase();
-	main_body_->circleClamp();
-	sub_body_->circleClamp();
-}
-
-void PlayerState_Idle::end(){
-}
+void PlayerState_Idle::end(){}
 
 void PlayerState_Idle::key_update(){
 	if (InputMgr::GetInstance().KeyVector_L().Length() > 0 || InputMgr::GetInstance().KeyVector_R().Length() > 0) {
@@ -39,10 +31,6 @@ void PlayerState_Idle::pad_update(){
 		change(StateElement((unsigned int)PlayerState_Enum_Union::MOVE));
 	}
 
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1)) {
-		change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
-	}
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1)) {
-		change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
-	}
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1)) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1)) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 }

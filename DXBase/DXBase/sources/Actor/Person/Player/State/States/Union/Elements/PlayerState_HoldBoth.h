@@ -4,11 +4,11 @@
 
 class PlayerState_HoldBoth : public PlayerState_Union {
 public:
-	PlayerState_HoldBoth();
+	PlayerState_HoldBoth(const PlayerPtr& player);
 
-	virtual void unique_init(Actor & actor) override;
+	virtual void unique_init() override;
 
-	virtual void update(Actor & actor, float deltaTime) override;
+	virtual void update(float deltaTime) override;
 
 	virtual void end() override;
 private:

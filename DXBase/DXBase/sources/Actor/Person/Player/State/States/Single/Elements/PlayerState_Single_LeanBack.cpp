@@ -1,9 +1,8 @@
 #include "PlayerState_Single_LeanBack.h"
 
-PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(){
-}
+PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(const PlayerBodyPtr& player_body) : PlayerState_Single(player_body){}
 
-void PlayerState_Single_LeanBack::unique_init(Actor & actor){
+void PlayerState_Single_LeanBack::unique_init(){
 	player_body_->reset_opponent();
 
 	dir_ = Vector2(player_body_->get_partner_vector().x, 1) * -1;
@@ -11,7 +10,7 @@ void PlayerState_Single_LeanBack::unique_init(Actor & actor){
 	player_body_->launch(dir_ * power_);
 }
 
-void PlayerState_Single_LeanBack::update(Actor & actor, float deltaTime){
+void PlayerState_Single_LeanBack::update(float deltaTime){
 
 	dir_.y += 0.2f;
 

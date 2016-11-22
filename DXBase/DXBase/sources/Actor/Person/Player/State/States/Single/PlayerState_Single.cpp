@@ -1,19 +1,19 @@
 #include "PlayerState_Single.h"
 
 // コンストラクタ
-PlayerState_Single::PlayerState_Single() :
+PlayerState_Single::PlayerState_Single(const PlayerBodyPtr& player_body) :
+	player_body_(player_body),
 	element_(-1),
 	timer_(0),
 	isEnd_(false) {
 }
 
 // 全てのステートに共通する初期化処理
-void PlayerState_Single::common_init(Actor & actor, ActionType type) {
+void PlayerState_Single::common_init(ActionType type) {
 	element_ = StateElement(-1, type);
 	timer_ = 0;
 	isEnd_ = false;
 
-	player_body_ = dynamic_cast<PlayerBody*>(&actor);
 	//main_body_ = player_->getMainBody();
 	//sub_body_ = player_->getSubBody();
 

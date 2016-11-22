@@ -20,68 +20,43 @@
 
 Player::Player(IWorld * world, const Vector2 & position) :
 	Actor(world, "Player", position, CollisionBase(Vector2(0, 0), Vector2(0, 0), 8.0f)){
-	// ÉÇÉfÉãÇÃì«Ç›çûÇ›
-	//modelHandle_ = MV1DuplicateModel(ResourceLoader::GetInstance().getModelID(ModelID::PLAYER));
-	//animation_ = Animation(modelHandle_);
-	
-	auto body1 = std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ + Vector2(PLAYER_MAX_NORMAL_LENGTH / 2, 0));
-	auto body2 = std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ - Vector2(PLAYER_MAX_NORMAL_LENGTH / 2, 0));
+
+	auto body1 = std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ - Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
+	auto body2 = std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ + Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
 
 	addChild(body1);
 	addChild(body2);
 
+	struct_ = PlayerStruct(body1, body2, nullptr);
 
-	stateMgr_.add((unsigned int)PlayerState_Enum_Union::STAND_BY, std::make_shared<PlayerState_StandBy>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Union::IDLE, std::make_shared<PlayerState_Idle>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Union::MOVE, std::make_shared<PlayerState_Move>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Union::HOLD, std::make_shared<PlayerState_Hold>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Union::HOLD_BOTH, std::make_shared<PlayerState_HoldBoth>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Union::ATTACK, std::make_shared<PlayerState_Attack>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Union::SPLIT, std::make_shared<PlayerState_Split>());
-	stateMgr_.add((unsigned int)PlayerState_Enum_Union::DEAD, std::make_shared<PlayerState_Dead>());
-	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::STAND_BY));
+	set_body();
 
-	connect(body1, body2);
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::STAND_BY, std::make_shared<PlayerState_StandBy>(std::shared_ptr<Player>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::IDLE, std::make_shared<PlayerState_Idle>(std::shared_ptr<Player>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::MOVE, std::make_shared<PlayerState_Move>(std::shared_ptr<Player>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::HOLD, std::make_shared<PlayerState_Hold>(std::shared_ptr<Player>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::HOLD_BOTH, std::make_shared<PlayerState_HoldBoth>(std::shared_ptr<Player>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::ATTACK, std::make_shared<PlayerState_Attack>(std::shared_ptr<Player>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::SPLIT, std::make_shared<PlayerState_Split>(std::shared_ptr<Player>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::DEAD, std::make_shared<PlayerState_Dead>(std::shared_ptr<Player>(this)));
+	stateMgr_.changeState(IState::StateElement((unsigned int)PlayerState_Enum_Union::STAND_BY));
 
+	connect();
 }
 
 Player::~Player(){}
 
 void Player::onUpdate(float deltaTime) {
 
-	stateMgr_.action(*this, deltaTime);
+	stateMgr_.action(deltaTime);
 
-	//position_ = (main_->getPosition() + sub_->getPosition()) / 2;
-	//body_.RotateCapsule(main_->getPosition() - position_, sub_->getPosition() - position_, body_.GetCapsule().component_.radius);
+	if (is_damaged()) split();
 
-	if (main_->hit_enemy() == HitOpponent::ENEMY ||
-		sub_->hit_enemy() == HitOpponent::ENEMY ||
-		InputMgr::GetInstance().IsKeyDown(KeyCode::P)) {
-		split_body(main_, sub_);
-	}
+	if (is_connectable()) connect();
 
-	if (main_->hit_partner() == HitOpponent::PARTNER ||
-		sub_->hit_partner() == HitOpponent::PARTNER ||
-		InputMgr::GetInstance().IsKeyDown(KeyCode::C)) {
+	if (is_dead()) dead();
 
-		if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::SPLIT)) {
-			connect(main_, sub_);
-		}
-	}
-
-	// êVÇµÇ¢ç¿ïWÇï€ë∂Ç∑ÇÈ
-	//position_ = Vector3::Lerp(position_, curPosition, 0.8f);
-
-	if ((main_->isDead() && sub_->isDead()) ||
-		main_->hitOpponent() == HitOpponent::ENEMY && !main_->isInv() ||
-		sub_->hitOpponent() == HitOpponent::ENEMY && !sub_->isInv()) {
-		dead();
-	}
-
-	if (main_->hit_enemy() == HitOpponent::CLEAR ||
-		sub_->hit_enemy() == HitOpponent::CLEAR) {
-		world_->clear(true);
-	}
+	if (is_cleared()) world_->clear(true);
 }
 
 void Player::onLateUpdate(float deltaTime){
@@ -89,42 +64,95 @@ void Player::onLateUpdate(float deltaTime){
 
 void Player::onDraw() const {
 	//DrawFormatString(25, 25, GetColor(255, 255, 255), "%d", stateMgr_.currentState());
-
-	//DrawFormatString(100, 25, GetColor(255, 255, 255), "%d", );
-
-	//body_.draw(/*inv()*/);
 }
 
 void Player::onCollide(Actor & other){}
 
-void Player::setBody(PlayerBodyPtr main, PlayerBodyPtr sub){
-	main_ = main;	
-	sub_ = sub;
+PlayerStruct& Player::getStruct(){
+	return struct_;
 }
 
-void Player::connect(PlayerBodyPtr main, PlayerBodyPtr sub){
-	addChild(std::make_shared<PlayerConnector>(world_, main, sub));
-	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
-	main->reset_partner();
-	sub->reset_partner();
+void Player::body_chase(){
+	struct_.butty()->chase();
+	struct_.retty()->chase();
 }
 
-void Player::split_body(PlayerBodyPtr main, PlayerBodyPtr sub){
-	main->reset_enemy();
-	sub->reset_enemy();
+void Player::body_clamp(){
+	struct_.butty()->circleClamp();
+	struct_.retty()->circleClamp();
+}
+
+void Player::body_gravity(){	
+	struct_.butty()->gravity();
+	struct_.retty()->gravity();
+}
+
+void Player::set_body(){
+	struct_.butty()->set_partner(struct_.retty());
+	struct_.retty()->set_partner(struct_.butty());
+}
+
+//PlayerBodyPtr Player::getMainBody() {
+//	return main_;
+//}
+//
+//PlayerBodyPtr Player::getSubBody() {
+//	return sub_;
+//}
+//
+//PlayerCntrPtr Player::getConnector(){
+//	return cntr_;
+//}
+
+void Player::connect(){
+	auto cntr = std::make_shared<PlayerConnector>(world_, struct_.butty(), struct_.retty());
+	addChild(cntr);
+	struct_.set_cntr(cntr);
+	stateMgr_.changeState(IState::StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
+}
+
+void Player::split(){
 	if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::SPLIT))return;
-	auto cntr = findCildren((const std::string)"PlayerConnector");
-	if (cntr == nullptr)return;
-	cntr->dead();
-	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::SPLIT));
+	struct_.cntr()->dead();
+	stateMgr_.changeState(IState::StateElement((unsigned int)PlayerState_Enum_Union::SPLIT));
 }
 
-PlayerBodyPtr Player::getMainBody() {
-	return main_;
+bool Player::is_connectable(){
+	bool is_split_state = stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::SPLIT);
+	bool is_main_target_partner = struct_.butty()->hit_partner() == HitOpponent::PARTNER;
+	bool is_sub_target_partner = struct_.retty()->hit_partner() == HitOpponent::PARTNER;
+	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::C);
+	
+	return is_split_state && (is_main_target_partner || is_sub_target_partner || for_debug);
 }
-PlayerBodyPtr Player::getSubBody(){
-	return sub_;
+
+bool Player::is_damaged(){
+	bool is_main_target_enemy = struct_.butty()->hit_enemy() == HitOpponent::ENEMY;
+	bool is_sub_target_enemy = struct_.retty()->hit_enemy() == HitOpponent::ENEMY;
+	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
+			
+	return is_main_target_enemy || is_sub_target_enemy || for_debug;
 }
+
+bool Player::is_cleared(){
+	bool is_main_target_partner = struct_.butty()->hit_enemy() == HitOpponent::CLEAR;
+	bool is_sub_target_partner = struct_.retty()->hit_enemy() == HitOpponent::CLEAR;
+	return is_main_target_partner || is_sub_target_partner;
+}
+
+bool Player::is_dead(){
+	bool is_main_dead = struct_.butty()->isDead();
+	bool is_main_target_enemy = struct_.butty()->hit_enemy() == HitOpponent::ENEMY;
+	bool is_main_invincible = struct_.butty()->isInv();
+
+	bool is_sub_dead = struct_.retty()->isDead();
+	bool is_sub_target_enemy = struct_.retty()->hit_enemy() == HitOpponent::ENEMY;
+	bool is_sub_invincible = struct_.retty()->isInv();
+
+	return (is_main_dead && is_sub_dead) || (is_main_target_enemy && !is_main_invincible) || (is_sub_target_enemy && !is_sub_invincible);
+}
+
+
 
 
 

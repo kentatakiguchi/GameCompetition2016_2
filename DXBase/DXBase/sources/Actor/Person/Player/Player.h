@@ -7,6 +7,8 @@
 #include "PlayerBody.h"
 #include "PlayerConnector.h"
 
+#include "PlayerStruct.h"
+
 // プレーヤー
 class Player : public Actor {
 public:
@@ -18,16 +20,26 @@ public:
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
-	void setBody(PlayerBodyPtr main, PlayerBodyPtr sub);
-	void connect(PlayerBodyPtr main, PlayerBodyPtr sub);
-	void split_body(PlayerBodyPtr main, PlayerBodyPtr sub);
-	PlayerBodyPtr getMainBody();
-	PlayerBodyPtr getSubBody();
+	PlayerStruct& getStruct();
+	void set_body();
+	void body_chase();
+	void body_clamp();
+	void body_gravity();
+private:
+	// 接続処理
+	void connect();
+	// 分離処理
+	void split();
+	// 接続可能かどうか
+	bool is_connectable();
+	// ダメージを受けたかどうか
+	bool is_damaged();
+	// クリアしたかどうか
+	bool is_cleared();
+	// 死亡したかどうか
+	bool is_dead();
 private:
 	StateMgr stateMgr_;
-
-	PlayerBodyPtr main_;
-	PlayerBodyPtr sub_;
-	PlayerCntrPtr cntr_;
+	PlayerStruct struct_;
 };
 

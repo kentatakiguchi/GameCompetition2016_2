@@ -1,16 +1,14 @@
 #include "PlayerState_HoldBoth.h"
 
-PlayerState_HoldBoth::PlayerState_HoldBoth() {}
+PlayerState_HoldBoth::PlayerState_HoldBoth(const PlayerPtr& player) : PlayerState_Union(player) {}
 
-void PlayerState_HoldBoth::unique_init(Actor & actor) {
+void PlayerState_HoldBoth::unique_init() {
 
 }
 
-void PlayerState_HoldBoth::update(Actor & actor, float deltaTime) {
+void PlayerState_HoldBoth::update(float deltaTime) {
 
-	//key_update();
-
-	pad_update();
+	InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
 }
 
 void PlayerState_HoldBoth::end() {

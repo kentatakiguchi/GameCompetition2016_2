@@ -16,7 +16,9 @@ void PlayerBodyCollider::onDraw() const{
 }
 
 void PlayerBodyCollider::onCollide(Actor & other) {
-	if (other.getName() == "MovelessFloor") {
+	if (other.getName() == "MovelessFloor" ||
+		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
+		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor") {
 		opponent_ = HitOpponent::FLOOR_HIT;
 	}
 }

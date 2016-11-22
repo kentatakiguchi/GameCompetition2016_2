@@ -1,8 +1,8 @@
 #include "PlayerState_Single_Jump.h"
 
-PlayerState_Single_Jump::PlayerState_Single_Jump(){}
+PlayerState_Single_Jump::PlayerState_Single_Jump(const PlayerBodyPtr& player_body) : PlayerState_Single(player_body) {}
 
-void PlayerState_Single_Jump::unique_init(Actor & actor){
+void PlayerState_Single_Jump::unique_init(){
 	player_body_->reset_velocity();
 	player_body_->reset_opponent();
 
@@ -14,7 +14,7 @@ void PlayerState_Single_Jump::unique_init(Actor & actor){
 	player_body_->launch(dir_ * power_);
 }
 
-void PlayerState_Single_Jump::update(Actor & actor, float deltaTime){
+void PlayerState_Single_Jump::update(float deltaTime){
 	timer_ += deltaTime;
 
 	//gra_easeing_ = EasingInExpo(timer_);
@@ -25,9 +25,7 @@ void PlayerState_Single_Jump::update(Actor & actor, float deltaTime){
 
 
 
-	//key_update();
-
-	pad_update();
+	InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
 
 	move();
 

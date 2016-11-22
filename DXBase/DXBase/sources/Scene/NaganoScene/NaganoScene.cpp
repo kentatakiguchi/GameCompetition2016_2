@@ -17,7 +17,7 @@
 #include <memory>
 #include <random>
 
-static const Vector2 START_POS = Vector2(300, 400);
+//static const Vector2 START_POS = Vector2(300, 400);
 
 NaganoScene::NaganoScene() {
 	isEnd_ = false;

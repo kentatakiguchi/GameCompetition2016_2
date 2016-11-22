@@ -1,16 +1,13 @@
 #include "PlayerState_Single_Idle.h"
 
-PlayerState_Single_Idle::PlayerState_Single_Idle(){
+PlayerState_Single_Idle::PlayerState_Single_Idle(const PlayerBodyPtr& player_body) : PlayerState_Single(player_body) {}
+
+void PlayerState_Single_Idle::unique_init(){
 }
 
-void PlayerState_Single_Idle::unique_init(Actor & actor){
-}
-
-void PlayerState_Single_Idle::update(Actor & actor, float deltaTime){
+void PlayerState_Single_Idle::update(float deltaTime){
 	
-	//key_update();
-
-	pad_update();
+	InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
 
 	move();
 
@@ -40,10 +37,10 @@ void PlayerState_Single_Idle::pad_update(){
 
 
 	if (player_body_->get_keys().right == KeyCode::RIGHT) {
-		if (InputMgr::GetInstance().AnalogPadVectorR().y < 0)change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
+		if (InputMgr::GetInstance().AnalogPadVectorR().y <= -1)change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
 	}
 	if (player_body_->get_keys().right == KeyCode::D) {
-		if (InputMgr::GetInstance().AnalogPadVectorL().y < 0)change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
+		if (InputMgr::GetInstance().AnalogPadVectorL().y <= -1)change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
 	}
 
 }

@@ -198,7 +198,7 @@
     <ClInclude Include="sources\Actor\Person\Player\PlayerBodyCollider.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerBody_Point.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerConnector.h" />
-    <ClInclude Include="sources\Actor\Person\Player\PlayerPtr.h" />
+    <ClInclude Include="sources\Actor\Person\Player\PlayerStruct.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\ActionType.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IState.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IStatePtr.h" />
