@@ -32,7 +32,7 @@ const static Vector2	BOSSBODY_POSITION = Vector2(SCREEN_SIZE.x - 96 * 3, SCREEN_
 
 const static float CHIPSIZE = 96;
 
-const static float TURNLESS_FLOOR_SIZE = 2;
+const static float TURNLESS_FLOOR_SIZE = 1;
 
 const static float RIGHTLEFTRANGE = 3;
 

@@ -3,9 +3,9 @@
 MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(IWorld * world, Vector2 & position) :
 	MapChip(world, Vector2(position.x, position.y), "MoveFloorRightLeft", CollisionBase(
 		Vector2{ position.x,position.y },
-		Vector2{ position.x - (CHIPSIZE * 2),position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
-		Vector2{ position.x - (CHIPSIZE * 2),position.y - (CHIPSIZE) }))
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
 	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*RIGHTLEFTRANGE)
 {
 }
@@ -13,9 +13,9 @@ MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(IWorld * world, Vector2 & pos
 MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(std::shared_ptr<MoveFloorCenterRightLeft> chip, IWorld * world, Vector2 & position) :
 	MapChip(world, Vector2(position.x, position.y), "MoveFloorRightLeft", CollisionBase(
 		Vector2{ position.x ,position.y },
-		Vector2{ position.x - (CHIPSIZE * 2),position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
-		Vector2{ position.x - (CHIPSIZE * 2),position.y - (CHIPSIZE) }
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }
 		))
 	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*RIGHTLEFTRANGE)
 {
@@ -24,9 +24,9 @@ MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(std::shared_ptr<MoveFloorCent
 MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(MoveFloorCenterRightLeft & chip, IWorld * world, Vector2 & position) :
 	MapChip(world, Vector2(position.x, position.y), "MoveFloorRightLeft", CollisionBase(
 		Vector2{ position.x ,position.y },
-		Vector2{ position.x - (CHIPSIZE * 2),position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
 		Vector2{ position.x,position.y - (CHIPSIZE) },
-		Vector2{ position.x - (CHIPSIZE * 2),position.y - (CHIPSIZE) }
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }
 		))
 	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*RIGHTLEFTRANGE)
 {
@@ -38,9 +38,9 @@ void MoveFloorCenterRightLeft::set(Vector2 & pos)
 	defaultPos_ = pos;
 	body_ = CollisionBase(
 		Vector2{ pos.x ,pos.y },
-		Vector2{ pos.x + (CHIPSIZE * 2),pos.y },
+		Vector2{ pos.x + (CHIPSIZE),pos.y },
 		Vector2{ pos.x ,pos.y + (CHIPSIZE) },
-		Vector2{ pos.x + (CHIPSIZE * 2),pos.y + (CHIPSIZE) });
+		Vector2{ pos.x + (CHIPSIZE),pos.y + (CHIPSIZE) });
 }
 
 void MoveFloorCenterRightLeft::onUpdate(float deltaTime)
