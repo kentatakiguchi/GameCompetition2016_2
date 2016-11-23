@@ -12,9 +12,9 @@ public:
 	StateMgr();
 public:
 	// 更新処理
-	void action(float deltaTime) ;
+	void action(Actor& actor, float deltaTime) ;
 	// ステートの変更処理
-	void changeState(IState::StateElement element);
+	void changeState(Actor& actor, IState::StateElement element);
 	// ステートの追加
 	void add(unsigned int state, const IStatePtr& scene);
 	// 現在のステート

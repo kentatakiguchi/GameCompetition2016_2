@@ -4,7 +4,7 @@
 
 class PlayerState_Single_LeanBack : public PlayerState_Single {
 public:
-	PlayerState_Single_LeanBack(const PlayerBodyPtr& player_body);
+	PlayerState_Single_LeanBack();
 
 	virtual void unique_init() override;
 

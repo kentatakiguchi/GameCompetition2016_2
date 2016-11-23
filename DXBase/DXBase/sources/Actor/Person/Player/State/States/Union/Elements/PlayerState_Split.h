@@ -4,7 +4,7 @@
 
 class PlayerState_Split : public PlayerState_Union {
 public:
-	PlayerState_Split(const PlayerPtr& player);
+	PlayerState_Split();
 
 	virtual void unique_init() override;
 

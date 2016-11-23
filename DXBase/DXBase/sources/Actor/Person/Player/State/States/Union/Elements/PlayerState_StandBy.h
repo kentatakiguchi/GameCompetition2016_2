@@ -4,7 +4,7 @@
 
 class PlayerState_StandBy : public PlayerState_Union {
 public:
-	PlayerState_StandBy(const PlayerPtr& player);
+	PlayerState_StandBy();
 
 	virtual void unique_init() override;
 

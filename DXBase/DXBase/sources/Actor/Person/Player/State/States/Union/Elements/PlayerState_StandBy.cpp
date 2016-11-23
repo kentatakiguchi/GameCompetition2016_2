@@ -1,6 +1,6 @@
 #include "PlayerState_StandBy.h"
 
-PlayerState_StandBy::PlayerState_StandBy(const PlayerPtr& player) : PlayerState_Union(player) {}
+PlayerState_StandBy::PlayerState_StandBy() {}
 
 void PlayerState_StandBy::unique_init(){}
 

@@ -4,7 +4,7 @@
 
 class PlayerState_Dead : public PlayerState_Union {
 public:
-	PlayerState_Dead(const PlayerPtr& player);
+	PlayerState_Dead();
 
 	virtual void unique_init() override;
 

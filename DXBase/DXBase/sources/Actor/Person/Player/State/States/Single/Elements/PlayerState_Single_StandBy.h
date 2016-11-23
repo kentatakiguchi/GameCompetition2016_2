@@ -4,7 +4,7 @@
 
 class PlayerState_Single_StandBy : public PlayerState_Single {
 public:
-	PlayerState_Single_StandBy(const PlayerBodyPtr& player_body);
+	PlayerState_Single_StandBy();
 
 	virtual void unique_init() override;
 

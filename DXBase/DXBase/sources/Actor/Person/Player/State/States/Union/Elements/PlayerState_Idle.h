@@ -4,7 +4,7 @@
 
 class PlayerState_Idle : public PlayerState_Union {
 public:
-	PlayerState_Idle(const PlayerPtr& player);
+	PlayerState_Idle();
 
 	virtual void unique_init() override;
 

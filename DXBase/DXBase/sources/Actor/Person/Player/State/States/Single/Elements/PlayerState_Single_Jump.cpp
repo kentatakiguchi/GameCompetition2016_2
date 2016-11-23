@@ -1,6 +1,6 @@
 #include "PlayerState_Single_Jump.h"
 
-PlayerState_Single_Jump::PlayerState_Single_Jump(const PlayerBodyPtr& player_body) : PlayerState_Single(player_body) {}
+PlayerState_Single_Jump::PlayerState_Single_Jump() {}
 
 void PlayerState_Single_Jump::unique_init(){
 	player_body_->reset_velocity();

@@ -1,6 +1,6 @@
 #include "PlayerState_Move.h"
 
-PlayerState_Move::PlayerState_Move(const PlayerPtr& player) : PlayerState_Union(player){}
+PlayerState_Move::PlayerState_Move(){}
 
 void PlayerState_Move::unique_init(){
 }
@@ -19,8 +19,8 @@ void PlayerState_Move::move(float deltaTime) {
 }
 
 void PlayerState_Move::key_update(){
-	struct_.butty()->move(InputMgr::GetInstance().KeyVector_R().Horizontal());
-	struct_.retty()->move(InputMgr::GetInstance().KeyVector_L().Horizontal());
+	butty_->move(InputMgr::GetInstance().KeyVector_R().Horizontal());
+	retty_->move(InputMgr::GetInstance().KeyVector_L().Horizontal());
 
 	if (InputMgr::GetInstance().KeyVector_L().Length() <= 0 && InputMgr::GetInstance().KeyVector_R().Length() <= 0) {
 		change((unsigned int)PlayerState_Enum_Union::IDLE);
@@ -31,8 +31,8 @@ void PlayerState_Move::key_update(){
 }
 
 void PlayerState_Move::pad_update(){
-	struct_.butty()->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal());
-	struct_.retty()->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal());
+	butty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal());
+	retty_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal());
 
 	if (InputMgr::GetInstance().AnalogPadVectorL().Length() <= 0 &&	InputMgr::GetInstance().AnalogPadVectorR().Length() <= 0) {
 		change((unsigned int)PlayerState_Enum_Union::IDLE);

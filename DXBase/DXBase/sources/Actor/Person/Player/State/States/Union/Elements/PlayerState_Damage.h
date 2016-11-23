@@ -4,7 +4,7 @@
 
 class PlayerState_Damage : public PlayerState_Union {
 public:
-	PlayerState_Damage(const PlayerPtr& player);
+	PlayerState_Damage();
 
 	virtual void unique_init() override;
 

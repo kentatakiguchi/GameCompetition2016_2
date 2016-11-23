@@ -1,21 +1,22 @@
 #include "PlayerState_Union.h"
 
 // コンストラクタ
-PlayerState_Union::PlayerState_Union(const PlayerPtr& player) : 
-	player_(player),
-	struct_(player->getStruct()),
+PlayerState_Union::PlayerState_Union() : 
 	element_(-1),
 	timer_(0),
 	isEnd_(false){
 }
 
 // 全てのステートに共通する初期化処理
-void PlayerState_Union::common_init(ActionType type){
+void PlayerState_Union::common_init(Actor& actor, ActionType type){
 	element_ = StateElement(-1, type);
 	timer_ = 0;
 	isEnd_ = false;
 
-	//auto player = std::dynamic_pointer_cast<Player>(actor);
+	player_ = dynamic_cast<Player*>(&actor);
+	butty_ = player_->blue_body();
+	retty_ = player_->red_body();
+	cntr_ = player_->connector();
 	//struct_ = ;
 
 
@@ -35,6 +36,7 @@ void PlayerState_Union::common_init(ActionType type){
 
 	//main_body_->set_partner(sub_body_);
 	//sub_body_->set_partner(main_body_);
+
 }
 
 // ステートの変更処理

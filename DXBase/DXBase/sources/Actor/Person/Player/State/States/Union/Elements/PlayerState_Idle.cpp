@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-PlayerState_Idle::PlayerState_Idle(const PlayerPtr& player) : PlayerState_Union(player) {}
+PlayerState_Idle::PlayerState_Idle() {}
 
 void PlayerState_Idle::unique_init(){
 }

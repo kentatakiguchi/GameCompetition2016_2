@@ -1,6 +1,6 @@
 #include "PlayerState_HoldBoth.h"
 
-PlayerState_HoldBoth::PlayerState_HoldBoth(const PlayerPtr& player) : PlayerState_Union(player) {}
+PlayerState_HoldBoth::PlayerState_HoldBoth() {}
 
 void PlayerState_HoldBoth::unique_init() {
 

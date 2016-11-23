@@ -1,6 +1,6 @@
 #include "PlayerState_Hold.h"
 
-PlayerState_Hold::PlayerState_Hold(const PlayerPtr& player) : PlayerState_Union(player) {}
+PlayerState_Hold::PlayerState_Hold() {}
 
 void PlayerState_Hold::unique_init(){
 
@@ -11,7 +11,7 @@ void PlayerState_Hold::unique_init(){
 
 	//player_->setBody(main_body_, sub_body_);
 
-	if (!struct_.butty()->able_to_hold())change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
+	if (!butty_->able_to_hold())change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 }
 
 void PlayerState_Hold::update(float deltaTime) {
@@ -26,39 +26,39 @@ void PlayerState_Hold::end(){
 
 void PlayerState_Hold::move(){
 	if (element_.action_type_ == ActionType::Right) {
-		struct_.retty()->hold_gravity();
-		struct_.retty()->circleClamp();
+		retty_->hold_gravity();
+		retty_->circleClamp();
 	}
 	if (element_.action_type_ == ActionType::Left) {
-		struct_.butty()->hold_gravity();
-		struct_.butty()->circleClamp();
+		butty_->hold_gravity();
+		butty_->circleClamp();
 	}
 }
 
 void PlayerState_Hold::key_update(){
 	if (element_.action_type_ == ActionType::Right) {
-		struct_.retty()->move_hold(InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S));
+		retty_->move_hold(InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S));
 	}
 	if (element_.action_type_ == ActionType::Left) {
-		struct_.butty()->move_hold(InputMgr::GetInstance().KeyVector());
+		butty_->move_hold(InputMgr::GetInstance().KeyVector());
 	}
 
 
 	if (InputMgr::GetInstance().IsKeyUp(KeyCode::R_SHIFT) && element_.action_type_ == ActionType::Right) {
-		if (struct_.retty()->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.9f)change(StateElement((unsigned int)PlayerState_Enum_Union::ATTACK, ActionType::Right));
+		if (retty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.9f)change(StateElement((unsigned int)PlayerState_Enum_Union::ATTACK, ActionType::Right));
 		else change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 	}
 	if (InputMgr::GetInstance().IsKeyUp(KeyCode::L_SHIFT) && element_.action_type_ == ActionType::Left) {
-		if (struct_.butty()->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.9f)change(StateElement((unsigned int)PlayerState_Enum_Union::ATTACK, ActionType::Left));
+		if (butty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.9f)change(StateElement((unsigned int)PlayerState_Enum_Union::ATTACK, ActionType::Left));
 		else change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 	}
 
 
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && element_.action_type_ == ActionType::Left) {
-		if (struct_.retty()->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD_BOTH));
+		if (retty_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD_BOTH));
 	}
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && element_.action_type_ == ActionType::Right) {
-		if (struct_.butty()->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD_BOTH));
+		if (butty_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD_BOTH));
 	}
 
 
@@ -90,27 +90,27 @@ void PlayerState_Hold::key_update(){
 
 void PlayerState_Hold::pad_update(){
 	if (element_.action_type_ == ActionType::Right) {
-		struct_.retty()->move_hold(InputMgr::GetInstance().AnalogPadVectorL());
+		retty_->move_hold(InputMgr::GetInstance().AnalogPadVectorL());
 	}
 	if (element_.action_type_ == ActionType::Left) {
-		struct_.butty()->move_hold(InputMgr::GetInstance().AnalogPadVectorR());
+		butty_->move_hold(InputMgr::GetInstance().AnalogPadVectorR());
 	}
 
 	if (InputMgr::GetInstance().IsButtonUp(Buttons::BUTTON_R1) && element_.action_type_ == ActionType::Right) {
-		if (struct_.retty()->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.9f)change(StateElement((unsigned int)PlayerState_Enum_Union::ATTACK, ActionType::Right));
+		if (retty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.9f)change(StateElement((unsigned int)PlayerState_Enum_Union::ATTACK, ActionType::Right));
 		else change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 	}
 	if (InputMgr::GetInstance().IsButtonUp(Buttons::BUTTON_L1) && element_.action_type_ == ActionType::Left) {
-		if (struct_.butty()->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.9f)change(StateElement((unsigned int)PlayerState_Enum_Union::ATTACK, ActionType::Left));
+		if (butty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.9f)change(StateElement((unsigned int)PlayerState_Enum_Union::ATTACK, ActionType::Left));
 		else change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 	}
 
 
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1) && element_.action_type_ == ActionType::Left) {
-		if (struct_.retty()->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD_BOTH));
+		if (retty_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD_BOTH));
 	}
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1) && element_.action_type_ == ActionType::Right) {
-		if (struct_.butty()->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD_BOTH));
+		if (butty_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD_BOTH));
 	}
 
 	//Vector2 vector = Vector2::Zero;

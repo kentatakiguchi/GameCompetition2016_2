@@ -1,31 +1,31 @@
 #include "PlayerState_Split.h"
 
-PlayerState_Split::PlayerState_Split(const PlayerPtr& player) : PlayerState_Union(player) {}
+PlayerState_Split::PlayerState_Split() {}
 
 void PlayerState_Split::unique_init(){
-	struct_.butty()->reset_enemy();
-	struct_.retty()->reset_enemy();
-
-	struct_.butty()->reset_dead_limit();
-	struct_.retty()->reset_dead_limit();
+	butty_->reset_enemy();
+	retty_->reset_enemy();
+		 
+	butty_->reset_dead_limit();
+	retty_->reset_dead_limit();
 }
 
 void PlayerState_Split::update(float deltaTime){
 	time_ += deltaTime;
 
-	struct_.butty()->single_action(deltaTime);
-	struct_.retty()->single_action(deltaTime);
+	butty_->single_action(deltaTime);
+	retty_->single_action(deltaTime);
+		 
+	butty_->count_dead_limit(deltaTime);
+	retty_->count_dead_limit(deltaTime);
 
-	struct_.butty()->count_dead_limit(deltaTime);
-	struct_.retty()->count_dead_limit(deltaTime);
-
-	if (struct_.butty()->isDead() && struct_.retty()->isDead())change(StateElement((unsigned int)PlayerState_Enum_Union::DEAD));
+	if (butty_->isDead() && retty_->isDead())change(StateElement((unsigned int)PlayerState_Enum_Union::DEAD));
 }
 
 void PlayerState_Split::end(){
-	struct_.butty()->init_state();
-	struct_.retty()->init_state();
-	struct_.butty()->reset_partner();
-	struct_.retty()->reset_partner();
+	butty_->init_state();
+	retty_->init_state();
+	butty_->reset_partner();
+	retty_->reset_partner();
 }
 

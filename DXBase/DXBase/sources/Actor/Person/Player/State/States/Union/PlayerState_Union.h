@@ -11,9 +11,9 @@
 class PlayerState_Union : public IState {
 public:
 	// コンストラクタ
-	PlayerState_Union(const PlayerPtr& player);
+	PlayerState_Union();
 	// 全てのステートに共通する初期化処理
-	virtual void common_init(ActionType type) override;
+	virtual void common_init(Actor& actor, ActionType type) override;
 	// ステートの変更処理
 	virtual void change(StateElement element) override;
 	// ステートが終了したか否か
@@ -35,9 +35,13 @@ protected:
 	// ステートが終了したか否か
 	bool isEnd_;
 	// プレイヤーポインタ
-	PlayerPtr player_;
-	// プレイヤー構造
-	PlayerStruct& struct_;
+	Player* player_;
+	// プレイヤーポインタ
+	PlayerBodyPtr butty_;
+	// プレイヤーポインタ
+	PlayerBodyPtr retty_;
+	// プレイヤーポインタ
+	PlayerCntrPtr cntr_;
 	// タイマー
 	float timer_;
 };

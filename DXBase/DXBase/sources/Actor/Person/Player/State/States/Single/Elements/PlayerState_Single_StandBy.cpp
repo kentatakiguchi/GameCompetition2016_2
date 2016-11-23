@@ -1,6 +1,6 @@
 #include "PlayerState_Single_StandBy.h"
 
-PlayerState_Single_StandBy::PlayerState_Single_StandBy(const PlayerBodyPtr& player_body) : PlayerState_Single(player_body) {}
+PlayerState_Single_StandBy::PlayerState_Single_StandBy() {}
 
 void PlayerState_Single_StandBy::unique_init(){}
 

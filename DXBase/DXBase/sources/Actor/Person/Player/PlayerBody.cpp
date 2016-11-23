@@ -19,10 +19,10 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	keys_ = SingleKeys();
 	if (name == "PlayerBody2")keys_ = SingleKeys(KeyCode::W, KeyCode::S, KeyCode::D, KeyCode::A);
 
-	stateMgr_.add((unsigned int)PlayerState_Enum_Single::STAND_BY, std::make_shared<PlayerState_Single_StandBy>(std::shared_ptr<PlayerBody>(this)));
-	stateMgr_.add((unsigned int)PlayerState_Enum_Single::LEAN_BACK, std::make_shared<PlayerState_Single_LeanBack>(std::shared_ptr<PlayerBody>(this)));
-	stateMgr_.add((unsigned int)PlayerState_Enum_Single::IDLE, std::make_shared<PlayerState_Single_Idle>(std::shared_ptr<PlayerBody>(this)));
-	stateMgr_.add((unsigned int)PlayerState_Enum_Single::JUMP, std::make_shared<PlayerState_Single_Jump>(std::shared_ptr<PlayerBody>(this)));
+	stateMgr_.add((unsigned int)PlayerState_Enum_Single::STAND_BY, std::make_shared<PlayerState_Single_StandBy>());
+	stateMgr_.add((unsigned int)PlayerState_Enum_Single::LEAN_BACK, std::make_shared<PlayerState_Single_LeanBack>());
+	stateMgr_.add((unsigned int)PlayerState_Enum_Single::IDLE, std::make_shared<PlayerState_Single_Idle>());
+	stateMgr_.add((unsigned int)PlayerState_Enum_Single::JUMP, std::make_shared<PlayerState_Single_Jump>());
 	init_state();
 
 	auto collider = std::make_shared<PlayerBodyCollider>(world_, name_, (PlayerBodyPtr)this);
@@ -122,7 +122,7 @@ void PlayerBody::onCollide(Actor & other){
 }
 
 void PlayerBody::init_state(){
-	stateMgr_.changeState(IState::StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
+	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
 }
 
 void PlayerBody::move(Vector2 vector){
@@ -240,7 +240,7 @@ bool PlayerBody::isInv(){
 }
 
 void PlayerBody::single_action(float deltaTime){
-	stateMgr_.action(deltaTime);
+	stateMgr_.action(*this, deltaTime);
 }
 
 PlayerBody::SingleKeys PlayerBody::get_keys(){

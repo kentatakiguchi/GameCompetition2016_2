@@ -4,7 +4,7 @@
 
 class PlayerState_Single_Idle : public PlayerState_Single {
 public:
-	PlayerState_Single_Idle(const PlayerBodyPtr& player_body);
+	PlayerState_Single_Idle();
 
 	virtual void unique_init() override;
 

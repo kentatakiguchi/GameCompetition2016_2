@@ -11,11 +11,11 @@ class IState {
 public:
 	// ステートの要素
 	struct StateElement {
-		unsigned int state_;
+		int state_;
 		ActionType action_type_;
 
 		// コンストラクタ
-		StateElement(unsigned int state, ActionType action_type = ActionType::None){
+		StateElement(int state, ActionType action_type = ActionType::None){
 			state_ = state;
 			action_type_ = action_type;
 		}
@@ -25,7 +25,7 @@ public:
 	// 仮想デストラクタ
 	virtual ~IState() {}
 	// 全状態共通の初期化
-	virtual void common_init(ActionType type = ActionType::None) = 0;
+	virtual void common_init(Actor& actor, ActionType type = ActionType::None) = 0;
 	// 各状態独自の初期化
 	virtual void unique_init() = 0;
 	// 更新処理

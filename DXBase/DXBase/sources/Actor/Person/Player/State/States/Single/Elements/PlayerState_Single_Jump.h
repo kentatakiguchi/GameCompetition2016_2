@@ -4,7 +4,7 @@
 
 class PlayerState_Single_Jump : public PlayerState_Single {
 public:
-	PlayerState_Single_Jump(const PlayerBodyPtr& player_body);
+	PlayerState_Single_Jump();
 
 	virtual void unique_init() override;
 

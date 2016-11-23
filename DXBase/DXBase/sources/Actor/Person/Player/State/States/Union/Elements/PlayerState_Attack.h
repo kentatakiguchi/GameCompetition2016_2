@@ -4,7 +4,7 @@
 
 class PlayerState_Attack : public PlayerState_Union {
 public:
-	PlayerState_Attack(const PlayerPtr& player);
+	PlayerState_Attack();
 
 	virtual void unique_init() override;
 

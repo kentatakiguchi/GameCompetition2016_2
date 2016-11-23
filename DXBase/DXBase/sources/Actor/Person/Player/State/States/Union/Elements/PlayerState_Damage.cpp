@@ -1,6 +1,6 @@
 #include "PlayerState_Damage.h"
 
-PlayerState_Damage::PlayerState_Damage(const PlayerPtr& player) : PlayerState_Union(player) {}
+PlayerState_Damage::PlayerState_Damage() {}
 
 void PlayerState_Damage::unique_init(){
 	//actor.setMotion(6);

@@ -1,6 +1,6 @@
 #include "PlayerState_Single_LeanBack.h"
 
-PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(const PlayerBodyPtr& player_body) : PlayerState_Single(player_body){}
+PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(){}
 
 void PlayerState_Single_LeanBack::unique_init(){
 	player_body_->reset_opponent();

@@ -20,7 +20,10 @@ public:
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
-	PlayerStruct& getStruct();
+	PlayerBodyPtr blue_body();
+	PlayerBodyPtr red_body();
+	PlayerCntrPtr connector();
+
 	void set_body();
 	void body_chase();
 	void body_clamp();
@@ -40,6 +43,11 @@ private:
 	bool is_dead();
 private:
 	StateMgr stateMgr_;
-	PlayerStruct struct_;
+	// mainとなる部位
+	PlayerBodyPtr retty_;
+	// sub となる部位
+	PlayerBodyPtr butty_;
+	// コネクター
+	PlayerCntrPtr cntr_;
 };
 

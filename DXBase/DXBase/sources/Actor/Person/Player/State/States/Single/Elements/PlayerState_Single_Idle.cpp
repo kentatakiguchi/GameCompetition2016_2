@@ -1,6 +1,6 @@
 #include "PlayerState_Single_Idle.h"
 
-PlayerState_Single_Idle::PlayerState_Single_Idle(const PlayerBodyPtr& player_body) : PlayerState_Single(player_body) {}
+PlayerState_Single_Idle::PlayerState_Single_Idle() {}
 
 void PlayerState_Single_Idle::unique_init(){
 }
