@@ -26,16 +26,26 @@ void PlayerState_Move::key_update(){
 		change((unsigned int)PlayerState_Enum_Union::IDLE);
 	}
 
+	if (InputMgr::GetInstance().KeyVector_R().y <= Vector2::Down.y &&
+		InputMgr::GetInstance().KeyVector_L().y <= Vector2::Down.y) {
+		change(StateElement((unsigned int)PlayerState_Enum_Union::JUMP));
+	}
+
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT)) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT)) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 }
 
 void PlayerState_Move::pad_update(){
-	butty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal());
-	retty_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal());
+	butty_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal());
+	retty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal());
 
 	if (InputMgr::GetInstance().AnalogPadVectorL().Length() <= 0 &&	InputMgr::GetInstance().AnalogPadVectorR().Length() <= 0) {
 		change((unsigned int)PlayerState_Enum_Union::IDLE);
+	}
+
+	if (InputMgr::GetInstance().AnalogPadVectorR().y <= Vector2::Down.y &&
+		InputMgr::GetInstance().AnalogPadVectorL().y <= Vector2::Down.y) {
+		change(StateElement((unsigned int)PlayerState_Enum_Union::JUMP));
 	}
 
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1)) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));

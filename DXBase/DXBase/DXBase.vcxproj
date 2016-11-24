@@ -207,6 +207,7 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\PlayerStatePtr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\PlayerState_Enum.h" />
@@ -337,6 +338,7 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Jump.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_StandBy.cpp" />

@@ -80,7 +80,6 @@ private:
 	Vector2 gravity_;
 	Vector2 launch_;
 	Vector2 last_pos_;
-	Vector2 other_velocity_;
 	PlayerBodyPtr partner_;
 	HitOpponent opponent_;
 	HitOpponent hit_partner_;

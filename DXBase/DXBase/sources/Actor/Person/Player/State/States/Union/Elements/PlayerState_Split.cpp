@@ -3,9 +3,6 @@
 PlayerState_Split::PlayerState_Split() {}
 
 void PlayerState_Split::unique_init(){
-	butty_->reset_enemy();
-	retty_->reset_enemy();
-		 
 	butty_->reset_dead_limit();
 	retty_->reset_dead_limit();
 }
@@ -25,6 +22,9 @@ void PlayerState_Split::update(float deltaTime){
 void PlayerState_Split::end(){
 	butty_->init_state();
 	retty_->init_state();
+	retty_->reset_enemy();
+	butty_->reset_enemy();
+
 	butty_->reset_partner();
 	retty_->reset_partner();
 }

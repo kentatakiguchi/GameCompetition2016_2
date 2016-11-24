@@ -19,9 +19,9 @@ public:
 	void update(float deltaTime);
 	// •`‰æ
 	// À•W,(²),(Šg‘å—¦),(‰ñ“]Šp“x(“x”–@)),
-	void draw(Vector2 position, Vector2 origin = Vector2::Zero, float scale = 1, float degree = 0) const;
+	void draw(Vector2 position, Vector2 origin = Vector2::Zero, float scale = 1, float degree = 0, Vector3 color = Vector3(255, 255, 255)) const;
 	// À•W,²,Šg‘å—¦,‰ñ“]Šp“x(“x”–@),
-	void draw(Vector2 position, Vector2 origin, Vector2 scale, float degree) const;
+	void draw(Vector2 position, Vector2 origin, Vector2 scale, float degree, Vector3 color = Vector3(255, 255, 255)) const;
 private:
 	Vector2 getSize();
 private:

@@ -7,6 +7,7 @@
 #include "State/States/Union/Elements/PlayerState_StandBy.h"
 #include "State/States/Union/Elements/PlayerState_Idle.h"
 #include "State/States/Union/Elements/PlayerState_Move.h"
+#include "State/States/Union/Elements/PlayerState_Jump.h"
 #include "State/States/Union/Elements/PlayerState_Hold.h"
 #include "State/States/Union/Elements/PlayerState_HoldBoth.h"
 #include "State/States/Union/Elements/PlayerState_Attack.h"
@@ -21,8 +22,8 @@
 Player::Player(IWorld * world, const Vector2 & position) :
 	Actor(world, "Player", position, CollisionBase(Vector2(0, 0), Vector2(0, 0), 8.0f)){
 
-	auto body1 = std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ - Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
-	auto body2 = std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ + Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
+	auto body1 = std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ + Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
+	auto body2 = std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ - Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
 
 	addChild(body1);
 	addChild(body2);
@@ -35,6 +36,7 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::STAND_BY, std::make_shared<PlayerState_StandBy>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::IDLE, std::make_shared<PlayerState_Idle>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::MOVE, std::make_shared<PlayerState_Move>());
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::JUMP, std::make_shared<PlayerState_Jump>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::HOLD, std::make_shared<PlayerState_Hold>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::HOLD_BOTH, std::make_shared<PlayerState_HoldBoth>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::ATTACK, std::make_shared<PlayerState_Attack>());
@@ -51,8 +53,9 @@ void Player::onUpdate(float deltaTime) {
 
 	stateMgr_.action(*this, deltaTime);
 
-	if (is_damaged()) split();
-
+	if (is_damaged()) {
+		split();
+	}
 	if (is_connectable()) connect();
 
 	if (is_dead()) dead();
@@ -109,7 +112,6 @@ void Player::connect(){
 }
 
 void Player::split(){
-	if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::SPLIT))return;
 	cntr_->dead();
 	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::SPLIT));
 }
@@ -124,11 +126,12 @@ bool Player::is_connectable(){
 }
 
 bool Player::is_damaged(){
+	bool is_split_state = stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::SPLIT);
 	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
 	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
 	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
 			
-	return is_main_target_enemy || is_sub_target_enemy || for_debug;
+	return !is_split_state && (is_main_target_enemy || is_sub_target_enemy || for_debug);
 }
 
 bool Player::is_cleared(){

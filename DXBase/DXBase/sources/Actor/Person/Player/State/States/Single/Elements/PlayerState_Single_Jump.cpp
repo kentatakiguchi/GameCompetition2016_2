@@ -6,10 +6,8 @@ void PlayerState_Single_Jump::unique_init(){
 	player_body_->reset_velocity();
 	player_body_->reset_opponent();
 
-	dump_ = 0;
 	dir_ = Vector2::Down;
 	power_ = PLAYER_JUMP_POWER;
-	dir_easeing_ = 0;
 	gra_easeing_ = 0;
 	player_body_->launch(dir_ * power_);
 }
@@ -18,17 +16,12 @@ void PlayerState_Single_Jump::update(float deltaTime){
 	timer_ += deltaTime;
 
 	//gra_easeing_ = EasingInExpo(timer_);
-
 	dir_.y += 0.1f/* * gra_easeing_*/;
 
 	player_body_->launch(dir_ * power_);
 
-
-
 	InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
-
 	move();
-
 	if (player_body_->able_to_jump()) change((unsigned int)PlayerState_Enum_Single::IDLE);
 }
 

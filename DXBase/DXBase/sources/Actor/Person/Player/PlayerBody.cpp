@@ -37,7 +37,7 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 PlayerBody::~PlayerBody(){}
 
 void PlayerBody::onUpdate(float deltaTime){
-	position_ += (input_ * PLAYER_SPEED  + launch_ + gravity_ + other_velocity_) * deltaTime * static_cast<float>(GetRefreshRate());
+	position_ += (input_ * PLAYER_SPEED  + launch_ + gravity_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
 	velocity_ = position_ - body_.GetCircle().previousPosition_;
 
 	opponent_ = HitOpponent::NONE;
@@ -45,7 +45,6 @@ void PlayerBody::onUpdate(float deltaTime){
 	draw_pos_ = Vector3(position_.x, position_.y) * inv_;
 
 	animation_.update(deltaTime);
-
 }
 
 void PlayerBody::onDraw() const{
@@ -54,7 +53,10 @@ void PlayerBody::onDraw() const{
 	SetFontSize(32);
 	DrawFormatString(draw_pos_.x, draw_pos_.y, GetColor(255,255,255), "%f", dead_limit_);
 
-	animation_.draw(Vector2(draw_pos_.x, draw_pos_.y), Vector2::One * 48, 2);
+	Vector3 color = Vector3::Zero;
+	if (name_ == "PlayerBody1")color = Vector3(0, 0, 255);
+	if (name_ == "PlayerBody2")color = Vector3(255, 0, 0);
+	animation_.draw(Vector2(draw_pos_.x, draw_pos_.y), Vector2::One * 48, 2, 0, color);
 }
 
 void PlayerBody::onLateUpdate(float deltaTime){
@@ -102,14 +104,15 @@ void PlayerBody::onCollide(Actor & other){
 			Vector2 vec = (pos - center).Normalize();
 			position_ = center + vec * (t_left - center).Length();
 			if(vec.Length() <= 0) position_ = center + Vector2::Down * (t_left - center).Length();
-
 		}
 	}
 	if (other.getName() == "StageClearPoint") {
 		hit_enemy_ = HitOpponent::CLEAR;
 	}
 	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
-		hit_enemy_ = HitOpponent::ENEMY;
+		if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) {
+			hit_enemy_ = HitOpponent::ENEMY;
+		}
 	}
 
 	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
@@ -209,8 +212,7 @@ void PlayerBody::reset_partner(){
 	hit_partner_ = HitOpponent::NONE;
 }
 
-void PlayerBody::reset_enemy()
-{
+void PlayerBody::reset_enemy(){
 	hit_enemy_ = HitOpponent::NONE;
 
 }

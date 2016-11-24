@@ -18,8 +18,11 @@ public:
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
 	void pos_update();
+	Vector2 other_velocity();
 	HitOpponent opponent();
 private:
 	PlayerBodyPtr parent_;
 	HitOpponent opponent_;
+	Vector2 other_velocity_;
+
 };

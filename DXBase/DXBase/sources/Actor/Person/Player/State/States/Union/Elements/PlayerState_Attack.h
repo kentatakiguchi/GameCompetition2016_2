@@ -15,9 +15,6 @@ private:
 	void key_update();
 	void pad_update();
 private:
-	int compare_V();
-	int compare_H();
-private:
 	Vector2 dir_;
 	float dump_;
 	float power_;

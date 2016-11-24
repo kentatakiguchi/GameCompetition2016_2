@@ -22,8 +22,7 @@ void PlayerState_Single_Idle::move(){
 }
 
 void PlayerState_Single_Idle::key_update(){
-	Vector2 vector = InputMgr::GetInstance().KeyVector(player_body_->get_keys().right, player_body_->get_keys().left);
-	player_body_->move(vector.Horizontal());
+	player_body_->move(InputMgr::GetInstance().KeyVector(player_body_->get_keys().right, player_body_->get_keys().left).Horizontal());
 
 	if (InputMgr::GetInstance().IsKeyDown(player_body_->get_keys().up))change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
 
