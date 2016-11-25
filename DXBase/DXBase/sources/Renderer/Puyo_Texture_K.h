@@ -41,6 +41,9 @@ public:
 	void PuyoAddPower(Vector2 pos,Vector2 velo);
 	//力を加え続ける頂点（周りににも）(pos:テクスチャから見た力を加える座標,velo:揺らす方向と大きさ)※毎フレーム呼ぶこと
 	void PuyoAddPowerDx(Vector2 pos, Vector2 velo);
+	//片岡に聞いてください
+	void PuyoAddPowerEx(Vector2 pos,Vector2 velo,float power);
+
 	void PuyoUpdate();
 	void PuyoDraw();
 private:
@@ -48,6 +51,8 @@ private:
 	void PuyoGraphVertex();
 	void PuyoVertexSet();
 	void PuyoVertexSetInit();
+	//これは違う
+	void PuyoAddPowerDxSub(int x,int y,Vector2 velo,float power);
 
 private:
 

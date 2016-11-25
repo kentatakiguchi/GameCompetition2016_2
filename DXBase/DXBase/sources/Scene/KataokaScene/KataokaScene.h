@@ -36,6 +36,9 @@ private:
 	Vector2 pos;
 	Vector2 scale;
 	float rotate;
+
+
+	float power;
 };
 
 #endif

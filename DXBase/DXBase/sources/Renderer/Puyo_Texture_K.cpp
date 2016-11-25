@@ -25,12 +25,12 @@ PuyoTextureK::PuyoTextureK(TextureID tex, Vector2 pos, Vector2 scale, float rota
 
 
 	time = 0.0f;
-	
-	test = Vector2(0,0);
+
+	test = Vector2(0, 0);
 	tesTimer = 0.0f;
 	tesNum = 100.0f;
 	testVelo = 0.0f;
-	testRes = 0.0f;
+	testRes = 200.0f;
 }
 
 PuyoTextureK::~PuyoTextureK()
@@ -54,62 +54,37 @@ void PuyoTextureK::PuyoUpdate()
 			//回転とスケールのマトリクスを作成
 			Matrix mat;
 			mat =
-				Matrix::CreateTranslation(Vector3(pos.x, pos.y, 0.0f))*
-				Matrix::CreateScale(Vector3(mScale.x, mScale.y, 0.0f))*
-				Matrix::CreateRotationZ(mRotate);
+				Matrix::CreateTranslation(Vector3(pos.x - textureSize.x / 2, pos.y - textureSize.y / 2, 0.0f))*
+				Matrix::CreateRotationZ(mRotate)*
+				Matrix::CreateTranslation(Vector3(textureSize.x / 2, textureSize.y / 2, 0.0f));
+
+
+			//Matrix veloMat = Matrix::CreateTranslation(Vector3(commonVertexH[x][y].velocity.x, commonVertexH[x][y].velocity.y, 0))*
+			//	Matrix::CreateRotationZ(mRotate);
+
 			//全頂点の時間を進める(振動が伝わる時間も配慮)
 			commonVertexH[x][y].vibrationTimer += 1.0f*Time::GetInstance().deltaTime();
 			//正規化
 			commonVertexH[x][y].velocity = commonVertexH[x][y].velocity.Normalize();
 			//numをClamp
-			if(!commonVertexH[x][y].PowerFlag)
-			commonVertexH[x][y].num=MathHelper::Clamp(commonVertexH[x][y].num, -commonVertexH[x][y].maxPower, commonVertexH[x][y].maxPower);
-			if (commonVertexH[x][y].vibrationTimer >= commonVertexH[x][y].vibrationTime&&commonVertexH[x][y].power!=0) {
-				commonVertexH[x][y].num += commonVertexH[x][y].power;
-				commonVertexH[x][y].power = 0.0f;
-			}
-				commonVertexH[x][y].time += 1000.0f*Time::GetInstance().deltaTime();
-				MathHelper::Spring(commonVertexH[x][y].num, commonVertexH[x][y].resNum, commonVertexH[x][y].veloNum, 0.25f, 0.5f, 2.0f);
+			//if(!commonVertexH[x][y].PowerFlag)
+			//commonVertexH[x][y].num=MathHelper::Clamp(commonVertexH[x][y].num, -commonVertexH[x][y].maxPower, commonVertexH[x][y].maxPower);
+			//if (commonVertexH[x][y].vibrationTimer >= commonVertexH[x][y].vibrationTime&&commonVertexH[x][y].power!=0) {
+			//	commonVertexH[x][y].num += commonVertexH[x][y].power;
+			//	commonVertexH[x][y].power = 0.0f;
+			//}
+			commonVertexH[x][y].time += 1000.0f*Time::GetInstance().deltaTime();
+			MathHelper::Spring(commonVertexH[x][y].num, commonVertexH[x][y].resNum, commonVertexH[x][y].veloNum, 0.25f, 0.5f, 2.0f);
 			commonVertexH[x][y].position.x =
 				(MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
-				commonVertexH[x][y].velocity.x+mat.Translation().x-textureSize.x/2;
+				commonVertexH[x][y].velocity.x + mat.Translation().x - textureSize.x / 2;
 			commonVertexH[x][y].position.y =
 				(MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
-				commonVertexH[x][y].velocity.y+ mat.Translation().y-textureSize.y/2;
+				commonVertexH[x][y].velocity.y + mat.Translation().y - textureSize.y / 2;
 		}
 	}
 	//頂点情報を毎フレーム更新
 	PuyoVertexSet();
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::Q))
-		tesNum += 100.0f;
-	tesTimer += 1000.0f*Time::GetInstance().deltaTime();
-
-	
-	MathHelper::Spring(tesNum, testRes, testVelo, 0.1f, 0.5f, 2.0f);
-	test.x = MathHelper::Sin(tesTimer)*tesNum;
-
-	//timer += Time::GetInstance().deltaTime();
-	//float omega0= 5.0f;
-	//float K = 1.0f;
-	//float f = 100.0f;
-	//float omega = 10.0f;/*std::sqrtf(spring_constant_ / mass_);*/
-
-	//float A = f / (std::powf(omega0, 2) -
-	//	std::powf(omega, 2) + std::powf(2 * omega*K, 2));
-
-	//float aa = std::powf(6, 2);
-
-	//float tan = (2 * omega*K) / (std::powf(omega0, 2)) 
-	//	- std::powf(omega, 2);
-
-	//float del = std::atanf(tan);
-
-	//test.x = A*std::cosf(omega*timer - del);
-
-	//time_ += 5.0f*Time::GetInstance().deltaTime();
-
-	//position_.x = 200 + amplitude_ * std::pow(e_ ,-p_ * time_) * std::sin(angular_freq_ * time_ + phase_.x);
-	//position_.y = 200 + amplitude_ * std::pow(e_, -p_ * time_) * std::sin(angular_freq_ * time_ + phase_.y);
 }
 
 void PuyoTextureK::PuyoDraw()
@@ -125,7 +100,7 @@ void PuyoTextureK::PuyoDraw()
 				vp.RightTopPos.x, vp.RightTopPos.y,
 				vp.RightDownPos.x, vp.RightDownPos.y,
 				vp.LeftDownPos.x, vp.LeftDownPos.y,
-				spriteIndexsH[x][y],TRUE);
+				spriteIndexsH[x][y], TRUE);
 		}
 	}
 
@@ -136,8 +111,8 @@ void PuyoTextureK::PuyoDraw()
 			DrawCircle(commonVertexH[x][y].position.x + mPosition.x, commonVertexH[x][y].position.y + mPosition.y, 1, GetColor(255, 255, 255));
 		}
 	}
-	DrawCircle(test.x+100, test.y+100, 10, GetColor(255, 255, 0));
-	DrawFormatString(500,128, GetColor(255, 255, 255), "座標:%f,%f",test.x,test.y);
+	DrawCircle(test.x + 100, test.y + 100, 10, GetColor(255, 255, 0));
+	//DrawFormatString(500,128, GetColor(255, 255, 255), "座標:%f,%f",test.x,test.y);
 }
 
 void PuyoTextureK::PuyoGraphSplit()
@@ -202,7 +177,7 @@ void PuyoTextureK::PuyoAddPower(Vector2 pos, Vector2 velo)
 	float AmplitudeVib = 1.0f;
 	float count = 0;
 
-	Vector2 sevePos=Vector2(999,999);
+	Vector2 sevePos = Vector2(999, 999);
 	int x_ = 0;
 	int y_ = 0;
 	//設定された一番近い配列の場所を調べる
@@ -248,7 +223,7 @@ void PuyoTextureK::PuyoAddPower(Vector2 pos, Vector2 velo)
 				commonVertexH[x + x_][y_ - y].velocity += velo;
 				commonVertexH[x + x_][y_ - y].resNum = 0.0f;
 				//commonVertexH[x + x_][y_ - y].num += 20.0f / AmplitudeVib;
-				commonVertexH[x + x_][y_ - y].power = 100.0f/AmplitudeVib;
+				commonVertexH[x + x_][y_ - y].power = 100.0f / AmplitudeVib;
 				commonVertexH[x + x_][y_ - y].PowerFlag = true;
 			}
 			if ((x_ - x) <= 16 && (y_ - y) <= 16 &&
@@ -259,7 +234,7 @@ void PuyoTextureK::PuyoAddPower(Vector2 pos, Vector2 velo)
 				commonVertexH[x_ - x][y_ - y].velocity += velo;
 				commonVertexH[x_ - x][y_ - y].resNum = 0.0f;
 				//commonVertexH[x_ - x][y_ - y].num += 20.0f / AmplitudeVib;
-				commonVertexH[x_ - x][y_ - y].power = 100.0f/AmplitudeVib;
+				commonVertexH[x_ - x][y_ - y].power = 100.0f / AmplitudeVib;
 				commonVertexH[x_ - x][y_ - y].PowerFlag = true;
 			}
 			if ((x_ - x) <= 16 && (y_ + y) <= 16 &&
@@ -269,7 +244,7 @@ void PuyoTextureK::PuyoAddPower(Vector2 pos, Vector2 velo)
 				commonVertexH[x_ - x][y_ + y].vibrationTimer = 0.0f;
 				commonVertexH[x_ - x][y_ + y].vibrationTime = AmplitudeVib / 100.0f;
 				commonVertexH[x_ - x][y_ + y].velocity += velo;
-				commonVertexH[x_ - x][y_ + y].resNum=0.0f;
+				commonVertexH[x_ - x][y_ + y].resNum = 0.0f;
 				//commonVertexH[x_ - x][y_ + y].num += 20.0f/AmplitudeVib;
 				commonVertexH[x_ - x][y_ + y].power = 100.0f / AmplitudeVib;
 				commonVertexH[x_ - x][y_ + y].PowerFlag = true;
@@ -277,6 +252,11 @@ void PuyoTextureK::PuyoAddPower(Vector2 pos, Vector2 velo)
 		}
 	}
 }
+
+
+
+
+
 
 void PuyoTextureK::PuyoAddPowerDx(Vector2 pos, Vector2 velo)
 {
@@ -302,17 +282,17 @@ void PuyoTextureK::PuyoAddPowerDx(Vector2 pos, Vector2 velo)
 		}
 	}
 
-	for (int y = 0; y < loopY/2; y++)
+	for (int y = 0; y < loopY / 2; y++)
 	{
 		AmplitudeVib = y + 1;
 		count = 0;
-		for (int x = 0; x < loopX/2; x++)
+		for (int x = 0; x < loopX / 2; x++)
 		{
 			if (count >= AmplitudeVib)
 				AmplitudeVib++;
 			count++;
 
-			if ((x + x_) <= 16 && (y + y_) <= 16 &&
+			if ((x + x_) <= 17 && (y + y_) <= 17 &&
 				(x + x_) >= 0 && (y + y_) >= 0)
 			{
 				commonVertexH[x + x_][y + y_].vibrationTimer = 0.0f;
@@ -320,12 +300,12 @@ void PuyoTextureK::PuyoAddPowerDx(Vector2 pos, Vector2 velo)
 				commonVertexH[x + x_][y + y_].time = 0.0f;
 				commonVertexH[x + x_][y + y_].velocity += velo;
 				commonVertexH[x + x_][y + y_].resNum = 0.0f;
-				commonVertexH[x + x_][y + y_].maxPower = (velo.Length()*40);
-				commonVertexH[x + x_][y + y_].num += velo.Length()/AmplitudeVib;
+				commonVertexH[x + x_][y + y_].maxPower = (velo.Length() * 40);
+				commonVertexH[x + x_][y + y_].num += velo.Length();
 				commonVertexH[x + x_][y + y_].PowerFlag = false;
 				commonVertexH[x + x_][y + y_].power = 0.0f;
 			}
-			if ((x + x_) <= 16 && (y_ - y) <= 16 &&
+			if ((x + x_) <= 17 && (y_ - y) <= 17 &&
 				(x + x_) >= 0 && (y_ - y) >= 0)
 			{
 				commonVertexH[x + x_][y_ - y].vibrationTimer = 0.0f;
@@ -333,12 +313,12 @@ void PuyoTextureK::PuyoAddPowerDx(Vector2 pos, Vector2 velo)
 				commonVertexH[x + x_][y_ - y].time = 0.0f;
 				commonVertexH[x + x_][y_ - y].velocity += velo;
 				commonVertexH[x + x_][y_ - y].resNum = 0.0f;
-				commonVertexH[x + x_][y_ - y].maxPower = (velo.Length()*40);
-				commonVertexH[x + x_][y_ - y].num += velo.Length() / AmplitudeVib;
+				commonVertexH[x + x_][y_ - y].maxPower = (velo.Length() * 40);
+				commonVertexH[x + x_][y_ - y].num += velo.Length();
 				commonVertexH[x + x_][y_ - y].PowerFlag = false;
 				commonVertexH[x + x_][y_ - y].power = 0.0f;
 			}
-			if ((x_ - x) <= 16 && (y_ - y) <= 16 &&
+			if ((x_ - x) <= 17 && (y_ - y) <= 17 &&
 				(x_ - x) >= 0 && (y_ - y) >= 0)
 			{
 				commonVertexH[x_ - x][y_ - y].vibrationTimer = 0.0f;
@@ -347,7 +327,7 @@ void PuyoTextureK::PuyoAddPowerDx(Vector2 pos, Vector2 velo)
 				commonVertexH[x_ - x][y_ - y].velocity += velo;
 				commonVertexH[x_ - x][y_ - y].resNum = 0.0f;
 				commonVertexH[x_ - x][y_ - y].maxPower = (velo.Length()*40.0f);
-				commonVertexH[x_ - x][y_ - y].num += velo.Length() / AmplitudeVib;
+				commonVertexH[x_ - x][y_ - y].num += velo.Length();
 				commonVertexH[x_ - x][y_ - y].PowerFlag = false;
 				commonVertexH[x_ - x][y_ - y].power = 0.0f;
 			}
@@ -360,10 +340,69 @@ void PuyoTextureK::PuyoAddPowerDx(Vector2 pos, Vector2 velo)
 				commonVertexH[x_ - x][y_ + y].velocity += velo;
 				commonVertexH[x_ - x][y_ + y].resNum = 0.0f;
 				commonVertexH[x_ - x][y_ + y].maxPower = (velo.Length()*40.0f);
-				commonVertexH[x_ - x][y_ + y].num += velo.Length() / AmplitudeVib;
+				commonVertexH[x_ - x][y_ + y].num += velo.Length();
 				commonVertexH[x_ - x][y_ + y].PowerFlag = false;
 				commonVertexH[x_ - x][y_ + y].power = 0.0f;
 			}
 		}
 	}
+}
+
+void PuyoTextureK::PuyoAddPowerEx(Vector2 vec, Vector2 velo,float power)
+{
+	int x_ = 0;
+	int y_ = 0;
+	Vector2 kakeru = vec*500.0f;
+	Vector2 texCen = Vector2(textureSize.x / 2, textureSize.y / 2);
+	Vector2 vecc = kakeru + texCen;
+	Vector2 sevePos = Vector2(9999, 9999);
+
+	//設定された一番近い配列の場所を調べる
+	for (int y = 0; y <= loopY; y++)
+	{
+		for (int x = 0; x <= loopX; x++)
+		{
+			if (Vector2::Distance(commonVertexHNoMove[x][y].position, vecc) <= Vector2::Distance(sevePos, vecc))
+			{
+				sevePos = commonVertexHNoMove[x][y].position;
+				x_ = x;
+				y_ = y;
+			}
+		}
+	}
+	for (int y = -10; y <= 10; y++)
+	{
+		for (int x = -10; x <= 10; x++)
+		{
+			if(x_ + x<=loopX&& y_ + y<=loopY&&y_ + y>=0&& x_ + x>=0)
+				PuyoAddPowerDxSub(x_+x, y_+y, velo, power);
+		}
+	}
+	//PuyoAddPowerDxSub(x_, y_, velo, power);
+	DrawFormatString(500, 128, GetColor(255, 255, 255), "velo:%f,%f", velo.x, velo.y);
+}
+//仕様変更版
+void PuyoTextureK::PuyoAddPowerDxSub(int x_, int y_, Vector2 velo,float power)
+{
+	Vector2 pos = commonVertexHNoMove[x_][y_].position;
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))
+	//{
+	//	testRes -= 50.0f*Time::GetInstance().deltaTime();
+	//}
+	for (int y = 0; y <= loopY; y++)
+	{
+		for (int x = 0; x <= loopX; x++)
+		{
+			float dis = Vector2::Distance(pos, commonVertexHNoMove[x][y].position);
+			commonVertexH[x][y].time = 0.0f;
+			if (dis <= 200.0f)
+			{
+				dis++;
+				commonVertexH[x][y].resNum = 0.0f;
+				commonVertexH[x][y].num += (power/(dis/10.1f))*Time::GetInstance().deltaTime();
+ 				commonVertexH[x][y].velocity = velo;
+			}
+		}
+	}
+
 }
