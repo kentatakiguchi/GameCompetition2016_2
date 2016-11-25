@@ -6,20 +6,22 @@ NeedleEnemy::NeedleEnemy(
 	IWorld * world,
 	const Vector2 & position,
 	const float degrees) :
-	BaseEnemy(world, position, CHIPSIZE),
+	Actor(world, "BaseEnemy", position,
+		CollisionBase(
+			Vector2(position.x + CHIPSIZE / 2.0f, position.y + CHIPSIZE / 2.0f),
+			Vector2(position.x - CHIPSIZE / 2.0f, position.y + CHIPSIZE / 2.0f),
+			Vector2(position.x + CHIPSIZE / 2.0f, position.y - CHIPSIZE / 2.0f),
+			Vector2(position.x - CHIPSIZE / 2.0f, position.y - CHIPSIZE / 2.0f)
+			)),
 	degrees_(degrees)
-{
-	// d—Í‚ğg‚í‚È‚¢
-	isUseGravity_ = false;
-}
+{}
 
-void NeedleEnemy::update(float deltaTime){}
+void NeedleEnemy::onUpdate(float deltaTime){}
 
 void NeedleEnemy::onDraw() const
 {
 	// j‚Ì‰æ‘œ‚Ì•ûŒü‚ğ•Ï‚¦‚é
 	// direction_
-	auto stateChar = stateString_.c_str();
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
 	// j‚Ì•\¦
@@ -33,6 +35,3 @@ void NeedleEnemy::onDraw() const
 void NeedleEnemy::onCollide(Actor &){}
 
 void NeedleEnemy::onMessage(EventMessage event, void *){}
-
-// “®‚©‚È‚¢‚Ì‚Å‰½‚à‚µ‚È‚¢
-void NeedleEnemy::idel(){}
