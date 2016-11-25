@@ -8,6 +8,7 @@
 #include "PlayerConnector.h"
 
 #include "PlayerStruct.h"
+#include "../../../Renderer/Puyo_Texture_K.h"
 
 // プレーヤー
 class Player : public Actor {
@@ -49,5 +50,9 @@ private:
 	PlayerBodyPtr butty_;
 	// コネクター
 	PlayerCntrPtr cntr_;
+	//ぷよテクスチャ
+	PuyoTextureK* mPuyo;
+	//ひっぱる力
+	float mPower;
 };
 
