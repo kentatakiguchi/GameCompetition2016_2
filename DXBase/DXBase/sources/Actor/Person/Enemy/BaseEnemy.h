@@ -143,6 +143,7 @@ protected:
 	float playerLostLenght_;		// プレイヤーを見失う距離
 	Vector2 direction_;				// 方向
 
+	bool isPlayer_;					// プレイヤーが存在するのか
 	bool isMove_;					// 動くか
 	bool isBlockCollideBegin_;		// ブロックと当たっているか(初回時)
 	bool isBlockCollideEnter_;		// ブロックと当たっているか(衝突中)

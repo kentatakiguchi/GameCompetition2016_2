@@ -34,8 +34,10 @@ public:
 	Vector2 getDirection(const Vector2& otherPosition);
 	// プレイヤーとの方向を単位ベクトルで取得します
 	Vector2 getPlayerDirection();
-	// プレイヤーが接地しているかを設定します
+	// ボスが接地しているかを設定します
 	void setIsGround(bool isGround);
+	// ボスが壁の下側に当たったかを設定します
+	void setIsBottom(bool isBottom);
 
 private:
 	int attackNumber_;			// 攻撃番号

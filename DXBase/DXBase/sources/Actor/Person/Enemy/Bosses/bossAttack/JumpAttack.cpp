@@ -5,6 +5,7 @@ JumpAttack::JumpAttack() :
 	speed_(0.0f),
 	degrees_(0.0f),
 	jumpPower_(0.0f),
+	initJumpPower_(jumpPower_),
 	recastTimer_(0.0f),
 	initRecastTimer_(recastTimer_),
 	isJump_(true),
@@ -16,7 +17,8 @@ JumpAttack::JumpAttack(const Vector2& position) :
 	BossAttack(position),
 	speed_(2.0f),
 	degrees_(60.0f),
-	jumpPower_(15.0f), 
+	jumpPower_(15.0f),
+	initJumpPower_(jumpPower_),
 	recastTimer_(0.5f),
 	initRecastTimer_(recastTimer_),
 	isJump_(false),
@@ -35,6 +37,7 @@ void JumpAttack::attack(float deltaTime)
 		recastTimer_ -= deltaTime;
 		// リキャスト時間が 0 になったら、ジャンプ攻撃終了
 		if (recastTimer_ > 0.0f) return;
+		jumpPower_ = initJumpPower_;
 		isJump_ = false;
 		isJumpEnd_ = true;
 		timer_ = 0.0f;
@@ -48,12 +51,16 @@ void JumpAttack::attack(float deltaTime)
 // ジャンプ攻撃
 void JumpAttack::jump(float deltaTime)
 {
+	if (isBottom_)
+		jumpPower_ = 0;
 	// 移動
 	auto addPos = Vector2(
-		-std::cos(degrees_) * speed_ * direction_.x * (deltaTime * 60.0f), 0.0f);
-	// std::sin(degrees_) * -speed_);
+		-std::cos(degrees_) * speed_ * direction_.x * (deltaTime * 60.0f),
+		(-jumpPower_ / 10 + timer_) * 9.8f * (deltaTime * 60.0f));
 	position_ += addPos;
-	position_.y += (-jumpPower_ / 10 + timer_) * 9.8f * (deltaTime * 60.0f);
+	// std::sin(degrees_) * -speed_);
+	//position_ += addPos;
+	/*position_.y += (-jumpPower_ / 10 + timer_) * 9.8f * (deltaTime * 60.0f);*/
 	// ジャンプをした
 	isJump_ = true;
 }
@@ -70,5 +77,6 @@ void JumpAttack::Refresh()
 	BossAttack::Refresh();
 	isJump_ = false;
 	isJumpEnd_ = false;
+	jumpPower_ = initJumpPower_;
 	recastTimer_ = initRecastTimer_;
 }

@@ -74,10 +74,16 @@ EnemyManager::EnemyManager(const Vector2 position, const Vector2& direction) :
 	/*wspDirectionMap_[812] = Vector2(direction.x, 0.0f);
 	wspDirectionMap_[822] = Vector2(direction.x, 0.0f);*/
 	// 3‚Â“–‚½‚é(•Ó) 10 22 35 49
-	wspDirectionMap_[1003] = Vector2(1.0f, 0.0f);
-	wspDirectionMap_[2203] = Vector2(0.0f, -1.0f);
-	wspDirectionMap_[3503] = Vector2(0.0f, 1.0f);
-	wspDirectionMap_[4903] = Vector2(-1.0f, 0.0f);
+	// X‚ÉˆÚ“®—Ê‚ª‚ ‚é
+	wspDirectionMap_[1013] = Vector2(-direction.x, 0.0f);
+	wspDirectionMap_[2213] = Vector2(0.0f, direction.y);
+	wspDirectionMap_[3513] = Vector2(0.0f, -direction.y);
+	wspDirectionMap_[4913] = Vector2(direction.x, 0.0f);
+	// Y‚ÉˆÚ“®—Ê‚ª‚ ‚é
+	wspDirectionMap_[1023] = Vector2(-direction.x, 0.0f);
+	wspDirectionMap_[2223] = Vector2(0.0f, direction.y);
+	wspDirectionMap_[3523] = Vector2(0.0f, -direction.y);
+	wspDirectionMap_[4923] = Vector2(direction.x, 0.0f);
 	/*wspDirectionMap_[1003] = Vector2(-direction.x, 0.0f);
 	wspDirectionMap_[2203] = Vector2(0.0f, direction.y);
 	wspDirectionMap_[3503] = Vector2(0.0f, -direction.y);
@@ -140,9 +146,19 @@ EnemyManager::EnemyManager(const Vector2 position, const Vector2& direction) :
 	wspDirectionMap_[3824] = Vector2(direction.x, 0.0f);
 	wspDirectionMap_[3924] = Vector2(-direction.x, 0.0f);
 	wspDirectionMap_[5224] = Vector2(direction.x, 0.0f);*/
-	// 5“_“–‚½‚é
-	wspDirectionMap_[5515] = Vector2(0.0f, -1.0f);
+	// 5“_“–‚½‚é(‹÷) 30 40 58 65
+	// X ‚ÉˆÚ“®—Ê‚ª‚ ‚éê‡
+	wspDirectionMap_[3015] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[4015] = Vector2(0.0f, 1.0f);
+	wspDirectionMap_[5815] = Vector2(0.0f, -1.0f);
+	wspDirectionMap_[6515] = Vector2(0.0f, -1.0f);
+	//wspDirectionMap_[5515] = Vector2(0.0f, -1.0f);
 	/*wspDirectionMap_[5515] = Vector2(0.0f, direction.y);*/
+	// Y ‚ÉˆÚ“®—Ê‚ª‚ ‚éê‡
+	wspDirectionMap_[3025] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[4025] = Vector2(-1.0f, 0.0f);
+	wspDirectionMap_[5825] = Vector2(1.0f, 0.0f);
+	wspDirectionMap_[6525] = Vector2(-1.0f, 0.0f);
 	// 1‚Â‚Ì‚İ“–‚½‚ç‚È‚¢ 74 70 66 60
 	wspDirectionMap_[7417] = Vector2(0.0f, -1.0f);
 	wspDirectionMap_[7017] = Vector2(-1.0f, 0.0f);

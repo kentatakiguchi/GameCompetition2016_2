@@ -2,10 +2,11 @@
 #define BOSS_STAGE_H_
 
 #include "../Base/IScene.h"
+#include "../../Actor/Person/Player/Status/Status.h"
 #include <memory>
 #include "../../Math/Math.h"
-//#include"PauseScreen.h"
-//#include"MoveScreen.h"
+#include"../GamePlay/PauseScreen.h"
+#include"../GamePlay/MoveScreen.h"
 
 class World;
 class BackGraundManager;
@@ -27,7 +28,7 @@ private:
 	// ワールド
 	WorldPtr	world_;
 
-	// Status status_;
+	Status status_;
 
 	BackGraundManager* backManager;
 	BaseBoss* boss_;				// ボス
@@ -38,8 +39,8 @@ private:
 
 	bool isStopped_;
 
-	/*PauseScreen pause_;
-	MoveScreen move_;*/
+	PauseScreen pause_;
+	MoveScreen move_;
 };
 
 #endif

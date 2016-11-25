@@ -38,6 +38,9 @@ void Prickle::onDraw() const
 		vec3Pos.x - body_.GetBox().getWidth() / 2.0f,
 		vec3Pos.y - body_.GetBox().getHeight() / 2.0f,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_WEAPON_TEX), 0);
+	// ƒgƒQ‚Ì•\Ž¦
+	// DrawRotaGraph(position_.x, position_.y, 1.0f, MathHelper::ToRadians())
+
 	body_.draw(inv_);
 }
 

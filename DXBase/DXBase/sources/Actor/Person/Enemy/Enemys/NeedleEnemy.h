@@ -9,7 +9,7 @@ public:
 	NeedleEnemy(
 		IWorld * world,
 		const Vector2& position,
-		const float degress);
+		const float degrees = 0.0f);
 	void update(float deltaTime) override;
 	void onDraw() const;
 	void onCollide(Actor& actor) override;
@@ -20,7 +20,7 @@ private:
 	void idel();
 
 private:
-	float degress_;
+	float degrees_;
 };
 
 #endif

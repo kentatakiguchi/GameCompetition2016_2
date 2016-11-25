@@ -21,6 +21,7 @@ protected:
 	float speed_;			// 速度
 	float degrees_;			// 角度
 	float jumpPower_;		// ジャンプ力
+	float initJumpPower_;	// ジャンプ力(初期化)
 	float recastTimer_;		// 再行動するまでの時間
 	float initRecastTimer_;	// 再行動するまでの時間(初期値)
 	bool isJump_;			// ジャンプをしたか

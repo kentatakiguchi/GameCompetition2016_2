@@ -5,12 +5,12 @@
 NeedleEnemy::NeedleEnemy(
 	IWorld * world,
 	const Vector2 & position,
-	const float degress) :
-	BaseEnemy(world, position, CHIPSIZE)
+	const float degrees) :
+	BaseEnemy(world, position, CHIPSIZE),
+	degrees_(degrees)
 {
-	// 上向き => 90 + degreesにする degrees = 0 =>　上向き
-	// そこから時計周りに角度を加算する
-	degress_ = degress;
+	// 重力を使わない
+	isUseGravity_ = false;
 }
 
 void NeedleEnemy::update(float deltaTime){}
@@ -23,9 +23,11 @@ void NeedleEnemy::onDraw() const
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
 	// 針の表示
-	DrawGraph(
+	/*DrawGraph(
 		vec3Pos.x - scale_ / 2.0f, vec3Pos.y - scale_ / 2.0f,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 0);
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 0);*/
+	DrawRotaGraph(vec3Pos.x, vec3Pos.y, 1.0f, MathHelper::ToRadians(degrees_),
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
 }
 
 void NeedleEnemy::onCollide(Actor &){}

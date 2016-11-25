@@ -29,11 +29,14 @@ public:
 	void setDirection(const Vector2& direction);
 	// 床に触れているかを設定します
 	void setIsGround(bool isGround);
+	// 壁の下側に当たったかを設定します
+	void setIsBottom(bool isBottom);
 
 protected:
 	float timer_;		// 時間
 	bool isAttackEnd_;	// 攻撃が終わったか
 	bool isGround_;		// ボスが床に触れているのか
+	bool isBottom_;		// 壁の下側に当たったか
 	Vector2 position_;	// 位置
 	Vector2 direction_;	// プレイヤーとの方向
 };

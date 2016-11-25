@@ -106,3 +106,9 @@ void BossManager::setIsGround(bool isGround)
 {
 	bossAttackContainer_[attackNumber_]->setIsGround(isGround);
 }
+
+// ƒ{ƒX‚ª•Ç‚Ì‰º‘¤‚É“–‚½‚Á‚½‚©‚ðÝ’è‚µ‚Ü‚·
+void BossManager::setIsBottom(bool isBottom)
+{
+	bossAttackContainer_[attackNumber_]->setIsBottom(isBottom);
+}

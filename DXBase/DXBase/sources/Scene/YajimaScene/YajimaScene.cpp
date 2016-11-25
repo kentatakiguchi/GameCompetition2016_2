@@ -40,7 +40,6 @@ void YajimaScene::start()
 	//world_->addActor(ActorGroup::Player, std::make_shared<WeakEnemy>(world_.get(), START_POS + Vector3(50, -105, 0)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(50, 205)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), START_POS + Vector2(-50, 200)));
-	//world_->addActor(ActorGroup::Enemy, std::make_shared<PendulumEnemy>(world_.get(), START_POS + Vector3(105, 5, 0)));
 	auto boss = std::make_shared<BaseBoss>(
 		world_.get(), START_POS + Vector2(1000, 50), 128.0f / 2.0f);
 	world_->addActor(ActorGroup::Enemy, boss);

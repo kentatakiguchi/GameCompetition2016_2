@@ -13,8 +13,8 @@
 
 //const Vector2 START_POS = Vector2(300, 900);
 
-BossStage::BossStage(SceneDataKeeper* keeper) : 
-	nextScene_(Scene::Title), 
+BossStage::BossStage(SceneDataKeeper* keeper) :
+	nextScene_(Scene::GameOver),
 	isStopped_(false),
 	boss_(nullptr){
 	isEnd_ = false;
@@ -27,32 +27,50 @@ BossStage::~BossStage()
 {
 }
 
-void BossStage::start()
-{
+void BossStage::start() {
+
 	deltaTime_ = Time::GetInstance().deltaTime();
 	isStopped_ = false;
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
 
-	world_ = std::make_shared<World>();
-	world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
-	//world_->addCamera(std::make_shared<Camera>(world_.get()));
-	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
-	/*world_->addActor(
-		ActorGroup::Player,
-		std::make_shared<Player>(world_.get(), START_POS));*/
-	// ボス
-	auto boss = std::make_shared<BaseBoss>(
-		world_.get(), START_POS + Vector2(1000, 50), 128.0f / 2.0f);
-	world_->addActor(ActorGroup::Enemy, boss);
-	boss_ = boss.get();
-
 	MapGenerator gener = MapGenerator(world_.get());
-	/*keeper_->getNextSceneName(name_);
-	auto csvName = "resources/file/" + name_ + ".csv";*/
-	gener.create("resources/file/bossStage01.csv");
+	//keeper_->getNextSceneName(name_);
 
-	// status_ = Status(10);
+
+	//world_->addEventMessageListener(
+	//	[=](EventMessage msg, void* param) {
+	//	handleMessage(msg, param);
+	//}
+	//);
+	//world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
+	world_->addCamera(std::make_shared<Camera>(world_.get()));
+	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
+	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), 
+		gener.findStartPoint("./resources/file/" + name_ + ".csv")));
+	auto boss = std::make_shared<BaseBoss>(
+		world_.get(), Vector2(1000, 200), 128.0f / 2.0f);
+	world_->addActor(ActorGroup::Enemy, boss);
+	/*world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(
+		world_.get(), Vector2(150, 200), Vector2::One));*/
+
+	//auto posY = 200;
+	//auto degrees = 0.0f;
+	/*for (int i = 0; i != 4; i++) {
+		world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(
+			world_.get(), Vector2(CHIPSIZE * 2, posY), degrees));
+		posY += CHIPSIZE;
+		degrees += 90.0f;
+	}*/
+	boss_ = boss.get();
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
+	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
+
+	gener.create("./resources/file/" + name_ + ".csv");
+	gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
+
+
+	status_ = Status(10);
 
 	backManager = new BackGraundManager(world_.get());
 	//先にセットされたテクスチャほど奥に描写される
@@ -63,10 +81,12 @@ void BossStage::start()
 
 	backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 	backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
+
+	world_->clear(false);
 }
 
-void BossStage::update()
-{
+void BossStage::update() {
+
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T)) {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
@@ -74,32 +94,45 @@ void BossStage::update()
 	world_->update(deltaTime_);
 	backManager->Update(deltaTime_);
 
-	if (boss_->isSceneEnd()) {
-		isEnd_ = true;
-		return;
+	auto player = world_->findActor("Player");
+	isEnd_ = player == nullptr || world_->is_clear();
+	if (player == nullptr) {
+		nextScene_ = Scene::GameOver;
 	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN)) isEnd_ = true;
-	// isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
+
+	if (world_->is_clear()) {
+
+		if (name_ != "stage03")
+		{
+			nextScene_ = Scene::StageClear;
+		}
+		else
+		{
+			nextScene_ = Scene::GameClear;
+		}
+	}
+	if (!isEnd_) {
+		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
+	}
 }
 
-void BossStage::draw() const
-{
+void BossStage::draw() const {
 	backManager->Draw();
+	//world描画
 	world_->draw();
 
-	// isStopped_ ? pause_.draw() : move_.draw();
+	isStopped_ ? pause_.draw() : move_.draw();
+
 }
 
-void BossStage::end()
-{
+void BossStage::end() {
 }
 
-bool BossStage::isEnd() const
-{
+bool BossStage::isEnd() const {
+
 	return isEnd_;
 }
 
-Scene BossStage::next() const
-{
+Scene BossStage::next() const {
 	return nextScene_;
 }

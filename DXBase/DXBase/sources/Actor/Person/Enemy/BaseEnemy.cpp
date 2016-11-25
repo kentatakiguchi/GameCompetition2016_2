@@ -23,6 +23,7 @@ BaseEnemy::BaseEnemy(
 	initSpeed_(speed_),
 	scale_(bodyScale),
 	direction_(direction),
+	isPlayer_(false),
 	isMove_(false),
 	isBlockCollideBegin_(false),
 	isBlockCollideEnter_(false),
@@ -50,12 +51,15 @@ BaseEnemy::BaseEnemy(
 	// rayオブジェクトの追加
 	// auto player = world_->findActor("PlayerBody1");
 	auto player = world_->findActor("PlayerBody1");
-	auto ray = std::make_shared<PlayerSearchObj>(
-		world_, position_, player->getPosition());
-	world_->addActor(ActorGroup::EnemyBullet, ray);
-	psObj_ = &*ray;
-	objContainer_.push_back(psObj_);
-
+	if (player != nullptr) {
+		auto ray = std::make_shared<PlayerSearchObj>(
+			world_, position_, player->getPosition());
+		world_->addActor(ActorGroup::EnemyBullet, ray);
+		psObj_ = &*ray;
+		objContainer_.push_back(psObj_);
+		isPlayer_ = true;
+	}
+	// フォントハンドルの追加
 	handle_ = CreateFontToHandle("ＭＳ 明朝", 40, 10, DX_FONTTYPE_NORMAL);
 }
 
@@ -162,12 +166,8 @@ void BaseEnemy::onCollide(Actor & actor)
 {
 	auto actorName = actor.getName();
 	// プレイヤー関連のオブジェクトに当たっているなら
-	// actorName != "Player_AttackRange"
-	// if (actorName != "Player") return;
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
-
 	// マップのブロックに当たったら、処理を行う
-	// actorName == "MovelessFloor
 	if (getFloorName != NULL) {
 		// 位置の補間
 		groundClamp(actor);
@@ -186,6 +186,7 @@ void BaseEnemy::onCollide(Actor & actor)
 	}
 
 	// プレイヤーに当たらない？
+	// PlayerのActorGroupが変わるので、 Player_AttackRangeに当たるようにする
 	if ((actorName == "PlayerBody2" || actorName == "PlayerBody1") &&
 		!isInvincible_) {
 		// ダメージ
@@ -232,6 +233,8 @@ void BaseEnemy::search()
 	speed_ = initSpeed_;
 	// 捜索行動
 	searchMove();
+	// プレイヤーが存在しなければ、捜索と待機状態以外は行わない
+	if (!isPlayer_) return;
 	// 一定距離内で、プレイヤーとの間にブロックがなかったら
 	// 追跡する
 	if (enemyManager_.getPlayerLength() <= discoveryLenght_ && 
@@ -343,6 +346,7 @@ void BaseEnemy::findPlayer()
 	// プレイヤーがいなければ待機状態
 	if (player_ == nullptr) {
 		changeState(State::Idel, ENEMY_IDLE);
+		isPlayer_ = false;
 		return;
 	}
 }

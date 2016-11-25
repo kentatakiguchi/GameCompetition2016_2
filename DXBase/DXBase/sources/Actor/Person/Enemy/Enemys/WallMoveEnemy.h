@@ -31,7 +31,7 @@ private:
 	typedef std::vector<bool> IsGroundContainer;
 	IsGroundContainer isGCont;
 
-	int result_;	// デバッグ
+	// int result_;	// デバッグ
 };
 
 #endif

@@ -4,6 +4,7 @@ BossAttack::BossAttack() :
 	timer_(0.0f),
 	isAttackEnd_(true),
 	isGround_(false),
+	isBottom_(false),
 	position_(Vector2::Zero),
 	direction_(Vector2::Zero)
 {
@@ -71,4 +72,10 @@ void BossAttack::setDirection(const Vector2 & direction)
 void BossAttack::setIsGround(bool isGround)
 {
 	isGround_ = isGround;
+}
+
+// ï«ÇÃâ∫ë§Ç…ìñÇΩÇ¡ÇΩÇ©Çê›íËÇµÇ‹Ç∑
+void BossAttack::setIsBottom(bool isBottom)
+{
+	isBottom_ = isBottom;
 }

@@ -87,6 +87,8 @@ private:
 	void setTimer(float deltaTime);
 	// ボスマネージャーのステータスの設定
 	void setBMStatus();
+	// 指定した値のダメージ量を加算します
+	void damage(const int damage);
 	//地面の位置に補正します
 	void groundClamp(Actor& actor);
 
@@ -101,6 +103,9 @@ protected:
 	float deltaTimer_;			// 現在の時間(補間)
 
 	bool isGround_;				// 接地しているか
+	bool isBottomHit_;			// 壁の下側に当たったか
+	bool isBodyHit_;			// プレイヤー本体に当たるか
+	bool isAttackHit_;			// プレイヤーの攻撃に当たるか
 	bool isSceneEnd_;			// シーンを終了させるか
 
 	std::string stateString_;	// 状態の文字列（デバッグ用）
@@ -122,10 +127,18 @@ private:
 
 	BossGaugeUI* bossGaugeUI_;	// ボスの体力
 
+	float top_, bottom_, right_, left_;
+
+	int handle_;
+
 	// クランプ用の位置(仮)
 	const Vector2 FIELD_SIZE = Vector2(
 		SCREEN_SIZE.x - CHIPSIZE - body_.GetCircle().getRadius(), 
 		SCREEN_SIZE.y - CHIPSIZE - body_.GetCircle().getRadius());
+
+	// クランプ用の位置コンテナ
+	typedef std::list<Vector2> ClampContainer;
+	ClampContainer clampList_;
 };
 
 #endif

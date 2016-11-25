@@ -23,7 +23,10 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	timer_(0.0f),
 	deltaTimer_(0.0f),
 	isGround_(false),
-	isSceneEnd_(false),
+	isBottomHit_(false),
+	isBodyHit_(false),
+	isAttackHit_(true),
+	isSceneEnd_(true),
 	stateString_("待機"),
 	// bossManager_(nullptr),
 	playerPastPosition_(Vector2::Zero),
@@ -34,7 +37,9 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	entryObj_(nullptr),
 	heartObj_(nullptr),
 	bossGaugeUI_(nullptr),
-	bossManager_(BossManager(position))
+	bossManager_(BossManager(position)),
+	top_(0.0f), bottom_(0.0f), right_(0.0f), left_(0.0f),
+	handle_(CreateFontToHandle("ＭＳ 明朝", 40, 10, DX_FONTTYPE_NORMAL))
 {
 	// コンテナに追加(攻撃順に追加する)
 	asContainer_.push_back(AttackState::JumpAttack);
@@ -76,6 +81,9 @@ BaseBoss::~BaseBoss()
 
 void BaseBoss::onUpdate(float deltaTime)
 {
+
+	clampList_.clear();
+
 	// 補間タイマ(最大値１)の更新
 	setTimer(deltaTime);
 
@@ -86,35 +94,18 @@ void BaseBoss::onUpdate(float deltaTime)
 	entryObj_->setBossPosition(position_);
 	// 状態の更新
 	updateState(deltaTime);
-	// 位置をクランプする
-	/*if (fspObj_->isGround()) {
-		position_.y = MathHelper::Clamp(position_.y,
-			fspObj_->getFloorPosition().y - 100.0f,
-			fspObj_->getFloorPosition().y - CHIPSIZE);
-		bossManager_.setIsGround(fspObj_->isGround());
-	}*/
-	/*position_.x = MathHelper::Clamp(position_.x,
-		CHIPSIZE + body_.GetCircle().getRadius(),
-		FIELD_SIZE.x);
-	position_.y = MathHelper::Clamp(position_.y,
-		CHIPSIZE + body_.GetCircle().getRadius(),
-		FIELD_SIZE.y);*/
 	// 接地(仮)
 	bossManager_.setIsGround(isGround_);
-	//if (position_.y < FIELD_SIZE.y) {
-	//	bossManager_.setIsGround(false);
-	//	// position_.y += 9.8f * (deltaTimer_ * 60.0f);
-	//}
-	//else if (position_.y == FIELD_SIZE.y)
-	//	bossManager_.setIsGround(true);
+	bossManager_.setIsBottom(isBottomHit_);
 
-	// bossManager_.setIsGround(fspObj_->isGround());
 	fspObj_->setPosition(position_);
 	/*entryObj_->setBossPosition(position_);*/
 	// entryObj_->setDirection(direction_);
 	//position_.y = MathHelper::Clamp(position_.y, -1000, 500.0f);
 
+	// bool系
 	isGround_ = false;
+	isBottomHit_ = false;
 }
 
 void BaseBoss::onDraw() const
@@ -132,6 +123,10 @@ void BaseBoss::onDraw() const
 	/*DrawGraph(
 		position_.x - scale_ / 2.0f, position_.y - scale_ / 2.0f,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);*/
+	DrawFormatStringToHandle(50, 300, GetColor(255, 255, 255),
+		handle_, "ブロックとの位置=>上:%d 下:%d", (int)top_, (int)bottom_);
+	DrawFormatStringToHandle(50, 350, GetColor(255, 255, 255),
+		handle_, "ブロックとの位置=>右:%d 左:%d", (int)right_, (int)left_);
 	// 状態の表示
 	DrawString(
 		vec3Pos.x, vec3Pos.y - 100,
@@ -150,6 +145,10 @@ void BaseBoss::onDraw() const
 void BaseBoss::onCollide(Actor & actor)
 {
 	auto actorName = actor.getName();
+
+	// ブロックの下側にぶつかったら、落ちるようにする?
+	// プログラムを書いて、コメントアウトする
+
 	// マップのブロックに当たったら、処理を行う
 	if (actorName == "MovelessFloor") {
 		// 位置の補間
@@ -157,26 +156,31 @@ void BaseBoss::onCollide(Actor & actor)
 		return;
 	}
 	// 空中に浮かぶ床に当たったら、ひるみカウントを加算する
-	if (actorName == "何とかFloor") {
+	if (actorName == "BossAreaFloor") {
 		// 位置の補間
+		if (state_ == State::Attack)
+			flinchCount_++;
 		groundClamp(actor);
 		return;
 	}
 	// 特定の状態ではプレイヤーに触れても何も起こらないようにする
 	if (state_ == State::Flinch || state_ == State::Dead) return;
-	// プレイヤーに当たったら、耐久値を下げる
-	if (actorName == "PlayerBody2" || actorName == "PlayerBody1") {
-		auto damage = 10;
-		dp_ -= damage;
-		// 耐久値が0になったら、ひるむ
-		if (dp_ <= 0) {
-			changeState(State::Flinch, BOSS_FLINCH);
-			setBMStatus();
-			body_.enabled(false);
-			return;
-		}
-		// もしものためのreturn
+	// プレイヤーの攻撃範囲に当たった場合の処理
+	if (actorName == "Player_AttackCollider") {
+		// プレイヤーの攻撃に当たらない場合は返す
+		if (!isAttackHit_) return;
+		// ダメージ処理
+		damage(3);
 		return;
+	}
+	// プレイヤー本体に当たった場合の処理
+	if (actorName == "PlayerBody2" || actorName == "PlayerBody1") {
+		// プレイヤーに当たらない場合は返す
+		if (!isBodyHit_) return;
+		// ダメージ処理
+		damage(1);
+		// もしものためのreturn
+		//return;
 	}
 }
 
@@ -230,16 +234,20 @@ void BaseBoss::idel(float deltaTime)
 	stateString_ = "待機状態";
 	// プレイヤーが取得できていれば、エネミーマネージャーに位置などを入れる
 	setBMStatus();
+
+
 	// デバッグ
-	/*auto deltaTimer = deltaTime * 60.0f;
+	auto speed = 4.0f;
+	auto deltaTimer = deltaTime * 60.0f;
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L))
-		position_.x += 4.0f * deltaTimer;
+		position_.x += speed * deltaTimer;
 	else if (InputMgr::GetInstance().IsKeyOn(KeyCode::J))
-		position_.x += -4.0f * deltaTimer;
+		position_.x += -speed * deltaTimer;
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::I))
-		position_.y += -4.0f * deltaTimer;
+		position_.y += -speed * deltaTimer;
 	else if (InputMgr::GetInstance().IsKeyOn(KeyCode::K))
-		position_.y += 4.0f * deltaTimer;*/
+		position_.y += speed * deltaTimer;
+
 	// 一定時間経過で攻撃状態に遷移
 	if (stateTimer_ >= 5.0f) {
 		// 残り体力で攻撃状態を変える
@@ -315,18 +323,23 @@ void BaseBoss::deadMove(float deltaTime)
 void BaseBoss::jumpAttack(float deltaTime)
 {
 	stateString_ = "ジャンプ攻撃";
+	// プレイヤー本体に当たらない
+	//isBodyHit_ = false;
 	// ジャンプ攻撃
 	bossManager_.attackMove(ATTACK_JUMPATTACK_NUMBER, deltaTime);
 	position_ = bossManager_.getMovePosition();
 	// ジャンプ攻撃が終わったら、待機状態にする
 	if (bossManager_.isAttackEnd()) {
 		changeState(State::Idel, BOSS_IDLE);
+		//isBodyHit_ = true;
 		bossManager_.attackRefresh();
 	}
 }
 
 void BaseBoss::wallAttack(float deltaTime)
 {
+	/*isBodyHit_ = false;
+	isAttackHit_ = false;*/
 	stateString_ = "壁攻撃";
 	// bossManager_.wallAttack(deltaTime);
 }
@@ -357,12 +370,28 @@ void BaseBoss::setBMStatus()
 	}
 }
 
+// 指定した値のダメージ量を加算します
+void BaseBoss::damage(const int damage)
+{
+	dp_ -= damage;
+	// 耐久値が0になったら、ひるむ
+	if (dp_ <= 0) {
+		changeState(State::Flinch, BOSS_FLINCH);
+		// 衝突するかどうかの bool を全てtrueにする
+		isBodyHit_ = true;
+		isAttackHit_ = true;
+		setBMStatus();
+		body_.enabled(false);
+	}
+}
+
 //地面の位置に補正します
 void BaseBoss::groundClamp(Actor& actor)
 {
 	if (actor.body_.GetBox().getWidth() == 0) return;
-	// 正方形同士の計算
+	// 新円と正方形の衝突判定
 	// 自分自身の1f前の中心位置を取得
+	auto isHit = false;
 	auto pos = body_.GetCircle().previousPosition_;
 	// 相手側の四角形の4点を取得
 	auto topLeft = actor.getBody().GetBox().component_.point[0];
@@ -379,39 +408,118 @@ void BaseBoss::groundClamp(Actor& actor)
 	auto left = Vector2::Cross(
 		(bottomLeft - topLeft).Normalize(), (pos - topLeft));
 
-	/*if (top >= 0 && left <= 0 && right <= 0) {
-		position_.y = t_left.y - (body_.GetCircle().component_.radius + 5);
-	}
-	if (bottom >= 0 && left <= 0 && right <= 0) {
-		position_.y = b_right.y + (body_.GetCircle().component_.radius + 5);
-	}
-	if (right >= 0 && top <= 0 && bottom <= 0) {
-		position_.x = t_right.x + (body_.GetCircle().component_.radius + 5);
-	}
-	if (left >= 0 && top <= 0 && bottom <= 0) {
-		position_.x = b_left.x - (body_.GetCircle().component_.radius + 5);
-	}*/
+	top_ = top;
+	bottom_ = bottom;
+	right_ = right;
+	left_ = left;
+	// 過去の位置
 	// Y方向に位置を補間する
-	if (left < body_.GetCircle().getRadius() &&
-		right < body_.GetCircle().getRadius()) {
+	if (left < 0 &&
+		right < 0) {
 		// 上に補間
-		if (top > 0) {
+		if (top > -actor.getBody().GetBox().getHeight() / 3) {
+			position_.y = topLeft.y - body_.GetCircle().getRadius();
+			// 接地
+			isGround_ = true;
+			isHit = true;
+		}
+		// 下に補間
+		if (bottom > -actor.getBody().GetBox().getHeight() / 3) {
+			position_.y = bottomRight.y + body_.GetCircle().getRadius();
+			// ブロックの下側に当たった
+			isBottomHit_ = true;
+			isHit = true;
+		}
+	}
+	// X方向に位置を補間する
+	if (top < 0 &&
+		bottom < 0) {
+		// 左に補間
+		if (left > 0) {
+			position_.x = bottomLeft.x - body_.GetCircle().getRadius();
+			isHit = true;
+		}
+		// 右に補間
+		if (right > 0) {
+			position_.x = topRight.x + body_.GetCircle().getRadius();
+			isHit = true;
+		}
+	}
+
+	if (isHit) return;
+	// 現在の判定
+	pos = position_;
+	// 外積を使って、縦の長さを計算する
+	top = Vector2::Cross(
+		(topLeft - topRight).Normalize(), (pos - topRight));
+	bottom = Vector2::Cross(
+		(bottomRight - bottomLeft).Normalize(), (pos - bottomLeft));
+	right = Vector2::Cross(
+		(topRight - bottomRight).Normalize(), (pos - bottomRight));
+	left = Vector2::Cross(
+		(bottomLeft - topLeft).Normalize(), (pos - topLeft));
+	// Y方向に位置を補間する
+	if (left < 0 &&
+		right < 0) {
+		// 上に補間
+		if (top > -actor.getBody().GetBox().getHeight() / 2.0f + 1.0f) {
 			position_.y = topLeft.y - body_.GetCircle().getRadius();
 			// 接地
 			isGround_ = true;
 		}
 		// 下に補間
-		if (bottom > 0)
+		if (bottom > -actor.getBody().GetBox().getHeight() / 2.0f + 1.0f) {
 			position_.y = bottomRight.y + body_.GetCircle().getRadius();
+			// ブロックの下側に当たった
+			isBottomHit_ = true;
+		}
 	}
 	// X方向に位置を補間する
-	if (top < body_.GetCircle().getRadius() &&
-		bottom < body_.GetCircle().getRadius()) {
+	if (top < 0 &&
+		bottom < 0) {
 		// 左に補間
-		if (left > 0)
+		if (left > -actor.getBody().GetBox().getWidth() / 2.0f + 1.0f)
 			position_.x = bottomLeft.x - body_.GetCircle().getRadius();
 		// 右に補間
-		if (right > 0)
+		if (right > -actor.getBody().GetBox().getWidth() / 2.0f + 1.0f)
 			position_.x = topRight.x + body_.GetCircle().getRadius();
 	}
+
+	// 60
+	// 160
+	//// 左に補間
+	//if (left > -14)
+	//	position_.x = bottomLeft.x - body_.GetCircle().getRadius();
+	//// 右に補間
+	//if (right > -body_.GetCircle().getRadius())
+	//	position_.x = topRight.x + body_.GetCircle().getRadius();
+
+	/*if (top >= 0 && left <= 0 && right <= 0) {
+		position_.y = t_left.y - PLAYER_RADIUS;
+	}
+	if (bottom >= 0 && left <= 0 && right <= 0) {
+		position_.y = b_right.y + PLAYER_RADIUS;
+	}
+	if (right >= 0 && top <= 0 && bottom <= 0) {
+		position_.x = t_right.x + PLAYER_RADIUS;
+	}
+	if (left >= 0 && top <= 0 && bottom <= 0) {
+		position_.x = b_left.x - PLAYER_RADIUS;
+	}
+	if (left <= 0 && right <= 0 && top <= 0 && bottom <= 0) {
+		position_ = center + (pos - center).Normalize() * (t_left - center).Length();
+	}*/
+
+	//float r2 = body_.GetCircle().getRadius() * body_.GetCircle().getRadius();
+	//Vector2 topV = topRight - topLeft;
+	//Vector2 v1 = position_ - topLeft;
+	//float t = Vector2::Dot(topV, v1) / Vector2::Dot(topV, topV);
+	//Vector2 vn =t * topV;
+	//// Vector2 vn = v1 - t * v;
+	////if (0 < t && t < 1 && vn.LengthSquared() <= r2) {
+	////	// pc = p1 + v * t + r * Vector2.Normalize(vn); // 中心を移動
+	////	position_ = topLeft + topV * t + body_.GetCircle().getRadius() *
+	////		Vector2::Normalize(vn);
+	////}
+	//top_ = vn.Length();
 }

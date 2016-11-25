@@ -7,8 +7,8 @@ WallMoveEnemy::WallMoveEnemy(
 	const Vector2 & position,
 	const Vector2& direction) :
 	BaseEnemy(world, position, 64.0f, direction),
-	addScale_(14.0f, 14.0f),
-	result_(0)
+	addScale_(4.0f, 4.0f)
+	//result_(0)
 {
 	direction_ = direction;
 	// 壁捜索オブジェクトの各ステータスの追加
@@ -39,8 +39,8 @@ void WallMoveEnemy::onUpdate(float deltaTime)
 		// 壁に当たっているかのコンテナに追加
 		isGCont[i] = enemyManager_.getWSPObj(i)->isGround();
 	}
-	// デバッグ表示のためのリザルト
-	result_ = enemyManager_.eachWSPObj();
+	//// デバッグ表示のためのリザルト
+	//result_ = enemyManager_.eachWSPObj();
 }
 
 void WallMoveEnemy::onDraw() const
@@ -51,24 +51,14 @@ void WallMoveEnemy::onDraw() const
 	DrawGraph(
 		vec3Pos.x - scale_ / 2.0f, vec3Pos.y - scale_ / 2.0f,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
-	// 文字の表示
-	/*DrawString(
-		position_.x - scale_, position_.y - 20 - scale_,
-		stateChar, GetColor(255, 255, 255));*/
-
 	//// デバッグ
-	auto addPos = Vector2::Zero;
+	/*auto addPos = Vector2::Zero;
 	for (int i = 0; i != fspScaleContainer_.size(); i++) {
 		addPos.y += 50.0f;
 		DrawFormatStringToHandle(50, 50 + addPos.y, GetColor(255, 255, 255),
 			handle_, "ボックスと触れているか(%d):%d",
 			i, isGCont[i]);
-		/*DrawFormatString(
-			25, 75 + addPos.y, GetColor(255, 255, 255),
-			"ボックスと触れているか(%d):%d",
-			i,
-			isGCont[i]);*/
-	}
+	}*/
 	//DrawFormatString(
 	//	25, 350, GetColor(255, 255, 255),
 	//	"ボックスと触れているかの合計値:%d",
@@ -110,98 +100,64 @@ void WallMoveEnemy::search()
 
 void WallMoveEnemy::searchMove()
 {
+	// 方向を入れる
+	direction_ = enemyManager_.getWallDirection();
 	// 壁移動
-	position_ += enemyManager_.getWallDirection() * speed_ * deltaTimer_;
+	position_ += direction_ * speed_ * deltaTimer_;
 }
 
 void WallMoveEnemy::addWSPPosition()
 {
 	// 位置の追加
-	auto addPos = 5;
+	auto addPos = -1;
 	// 0
 	fspPositionContainer_.push_back(
 		Vector2(-(scale_ / 2.0f + addScale_.x / 2.0f) - addPos,
 			-(scale_ / 2.0f + addScale_.y / 2.0f) - addPos));
 	// 1
-	/*fspPositionContainer_.push_back(
-		Vector2(0.0f, -(scale_ / 2.0f + addScale_.y / 2.0f)));*/
 	fspPositionContainer_.push_back(
-		Vector2(0.0f, -(scale_ / 2.0f + addScale_.y / 2.0f) + addPos));
+		Vector2(0.0f, -(scale_ / 2.0f + addScale_.y / 2.0f) + -addPos));
 	// 2
 	fspPositionContainer_.push_back(
 		Vector2(scale_ / 2.0f + addScale_.x / 2.0f + addPos,
 			-(scale_ / 2.0f + addScale_.y / 2.0f) - addPos));
 	// 3
-	/*fspPositionContainer_.push_back(
-		Vector2(-(scale_ / 2.0f + addScale_.x / 2.0f), 0.0f));*/
 	fspPositionContainer_.push_back(
-		Vector2(-(scale_ / 2.0f + addScale_.x / 2.0f) + addPos, 0.0f));
+		Vector2(-(scale_ / 2.0f + addScale_.x / 2.0f) + -addPos, 0.0f));
 	// 4
-	/*fspPositionContainer_.push_back(
-		Vector2(scale_ / 2.0f + addScale_.x / 2.0f, 0.0f));*/
 	fspPositionContainer_.push_back(
-		Vector2(scale_ / 2.0f + addScale_.x / 2.0f - addPos, 0.0f));
+		Vector2(scale_ / 2.0f + addScale_.x / 2.0f - -addPos, 0.0f));
 	// 5
 	fspPositionContainer_.push_back(
 		Vector2(
 			-(scale_ / 2.0f + addScale_.x / 2.0f) - addPos,
 			scale_ / 2.0f + addScale_.y / 2.0f + addPos));
 	// 6
-	/*fspPositionContainer_.push_back(
-		Vector2(0.0f, scale_ / 2.0f + addScale_.y / 2.0f));*/
 	fspPositionContainer_.push_back(
-		Vector2(0.0f, scale_ / 2.0f + addScale_.y / 2.0f -addPos));
+		Vector2(0.0f, scale_ / 2.0f + addScale_.y / 2.0f - -addPos));
 	// 7
 	fspPositionContainer_.push_back(
 		Vector2(scale_ / 2.0f + addScale_.x / 2.0f + addPos,
 			scale_ / 2.0f + addScale_.y / 2.0f + addPos));
-	//// 0
-	//fspPositionContainer_.push_back(
-	//	Vector2(-(scale_ / 2.0f + addScale_.x / 2.0f) - add,
-	//		-(scale_ / 2.0f + addScale_.y / 2.0f) - add));
-	//// 1
-	//fspPositionContainer_.push_back(
-	//	Vector2(0.0f, -(scale_ / 2.0f + addScale_.y / 2.0f) - add));
-	//// 2
-	//fspPositionContainer_.push_back(
-	//	Vector2(scale_ / 2.0f + addScale_.x / 2.0f + add,
-	//		-(scale_ / 2.0f +addScale_.y / 2.0f) -add));
-	//// 3
-	//fspPositionContainer_.push_back(
-	//	Vector2(-(scale_ / 2.0f + addScale_.x / 2.0f) -add, 0.0f));
-	//// 4
-	//fspPositionContainer_.push_back(
-	//	Vector2(scale_ / 2.0f + addScale_.x / 2.0f +add, 0.0f));
-	//// 5
-	//fspPositionContainer_.push_back(
-	//	Vector2(
-	//		-(scale_ / 2.0f + addScale_.x / 2.0f) - add,
-	//		scale_ / 2.0f + addScale_.y / 2.0f +add));
-	//// 6
-	//fspPositionContainer_.push_back(
-	//	Vector2(0.0f, scale_ / 2.0f + addScale_.y / 2.0f +add));
-	//// 7
-	//fspPositionContainer_.push_back(
-	//	Vector2(scale_ / 2.0f + addScale_.x / 2.0f +add,
-	//		scale_ / 2.0f + addScale_.y / 2.0f +add));
 }
 
 void WallMoveEnemy::addWSPScale()
 {
+	auto addScale = 0;
 	// 0
 	fspScaleContainer_.push_back(addScale_);
 	// 1
-	fspScaleContainer_.push_back(Vector2(scale_, addScale_.y));
+	fspScaleContainer_.push_back(Vector2(scale_ +  addScale, addScale_.y));
 	// 2
 	fspScaleContainer_.push_back(addScale_);
 	// 3
-	fspScaleContainer_.push_back(Vector2(addScale_.x, scale_));
+	fspScaleContainer_.push_back(Vector2(addScale_.x, scale_ + addScale));
 	// 4
-	fspScaleContainer_.push_back(Vector2(addScale_.x, scale_));
+	fspScaleContainer_.push_back(Vector2(addScale_.x, scale_ + addScale));
 	// 5
 	fspScaleContainer_.push_back(addScale_);
 	// 6
-	fspScaleContainer_.push_back(Vector2(scale_, addScale_.y));
+	fspScaleContainer_.push_back(Vector2(scale_ + addScale, addScale_.y));
 	// 7
 	fspScaleContainer_.push_back(addScale_);
 }
