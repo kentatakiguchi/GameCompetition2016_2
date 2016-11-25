@@ -29,7 +29,7 @@ public:
 	void body_chase();
 	void body_clamp();
 	void body_gravity();
-private:
+public:
 	// Ú‘±ˆ—
 	void connect();
 	// •ª—£ˆ—

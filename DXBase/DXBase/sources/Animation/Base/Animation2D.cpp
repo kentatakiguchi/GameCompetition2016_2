@@ -25,7 +25,7 @@ void Animation2D::registSprite() {
 	}
 }
 
-void Animation2D::change(int anim_num, float speed) {
+void Animation2D::change_param(int anim_num, float speed) {
 	//Ä¶‘¬“x‚ğ•ÏX
 	speed_ = speed;
 

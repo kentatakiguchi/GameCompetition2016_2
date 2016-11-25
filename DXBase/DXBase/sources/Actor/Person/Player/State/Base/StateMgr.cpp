@@ -17,6 +17,8 @@ void StateMgr::action(Actor& actor, float deltaTime) {
 void StateMgr::changeState(Actor& actor, IState::StateElement element) {
 	// 前ステートの終了処理
 	currentState_->end();
+	// 要素の格納
+	action_type_ = element.action_type_;
 	// 次のステート名を代入
 	currentStateName_ = element.state_;
 	// 実行ステートを変更
@@ -35,5 +37,9 @@ void StateMgr::add(unsigned int state, const IStatePtr& scene) {
 // 現在のステート
 bool StateMgr::currentState(unsigned int state) {
 	return currentStateName_ == state;
+}
+
+bool StateMgr::currentActionType(ActionType action_type){
+	return action_type_ == action_type;
 }
 

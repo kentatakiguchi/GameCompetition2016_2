@@ -6,7 +6,7 @@
 #include "ActorPtr.h"
 #include "../../Input/InputMgr.h"
 #include "../../Math/Math.h"
-#include "../../Animation/Animation.h"
+#include "../../Animation/Base/Animation.h"
 #include "../../Define.h"
 #include "../../Math/Vector2.h"
 #include "../../World/IWorld.h"

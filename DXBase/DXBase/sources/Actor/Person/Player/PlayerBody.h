@@ -7,7 +7,7 @@
 #include "PlayerStruct.h"
 #include "HitOpponent.h"
 
-#include "../../../Animation/Animation2D.h"
+#include "../../../Animation/Base/Animation2D.h"
 
 // ÉvÉåÅ[ÉÑÅ[
 class PlayerBody : public Actor {
@@ -59,6 +59,7 @@ public:
 	void reset_velocity();
 	float distance();
 	void set_partner(PlayerBodyPtr partner);
+	void set_hold_point();
 	PlayerBodyPtr get_partner();
 	bool isDead();
 	bool isInv();

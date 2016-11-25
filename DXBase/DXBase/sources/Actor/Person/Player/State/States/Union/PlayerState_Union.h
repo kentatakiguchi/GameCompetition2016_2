@@ -20,15 +20,11 @@ public:
 	virtual bool isEnd() override;
 	// 次のステートの要素
 	virtual StateElement next() const override;
-//protected:
-	//// プレイヤーの左右比較(右側を返す)
-	//PlayerBodyPtr compareMax_H(PlayerBodyPtr p1, PlayerBodyPtr p2);
-	//// プレイヤーの左右比較(左側を返す)
-	//PlayerBodyPtr compareMin_H(PlayerBodyPtr p1, PlayerBodyPtr p2);
-	//// プレイヤーの上下比較(上側を返す)
-	//PlayerBodyPtr compareMin_V(PlayerBodyPtr p1, PlayerBodyPtr p2);
-	//// 同じ座標
-	//bool compare_pos(PlayerBodyPtr p1, PlayerBodyPtr p2);
+protected:
+	bool holdable_keyR();
+	bool holdable_keyL();
+	bool holdable_padR();
+	bool holdable_padL();
 protected:
 	// ステートの要素
 	StateElement element_;

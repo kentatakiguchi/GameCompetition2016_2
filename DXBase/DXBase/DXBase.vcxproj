@@ -227,8 +227,9 @@
     <ClInclude Include="sources\Actor\ScroolStop\ScroolStop.h" />
     <ClInclude Include="sources\Actor\TestPlayer\TestPlayer.h" />
     <ClInclude Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.h" />
-    <ClInclude Include="sources\Animation\Animation.h" />
-    <ClInclude Include="sources\Animation\Animation2D.h" />
+    <ClInclude Include="sources\Animation\Base\Animation.h" />
+    <ClInclude Include="sources\Animation\Base\Animation2D.h" />
+    <ClInclude Include="sources\Animation\Player\PlayerAnimation2D.h" />
     <ClInclude Include="sources\AquaLib\AquaLib.h" />
     <ClInclude Include="sources\AquaLib\A_Utility.h" />
     <ClInclude Include="sources\Define.h" />
@@ -355,8 +356,9 @@
     <ClCompile Include="sources\Actor\ScroolStop\ScroolStop.cpp" />
     <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
     <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
-    <ClCompile Include="sources\Animation\Animation.cpp" />
-    <ClCompile Include="sources\Animation\Animation2D.cpp" />
+    <ClCompile Include="sources\Animation\Base\Animation.cpp" />
+    <ClCompile Include="sources\Animation\Base\Animation2D.cpp" />
+    <ClCompile Include="sources\Animation\Player\PlayerAnimation2D.cpp" />
     <ClCompile Include="sources\Field\BossAreaFloor.cpp" />
     <ClCompile Include="sources\Field\CollidelessFloor.cpp" />
     <ClCompile Include="sources\Field\GameOverPoint.cpp" />

@@ -12,7 +12,7 @@
 #include "../Body/BoundingCircle.h"
 #include "../Body/BoundingSegment.h"
 #include"..//Body/CollisionBase.h"
-#include "../../Animation/Animation.h"
+#include "../../Animation/Base/Animation.h"
 #include "../../Define.h"
 #include <string>
 #include <memory>

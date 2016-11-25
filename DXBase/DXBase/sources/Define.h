@@ -53,7 +53,7 @@ const static float		PLAYER_SPEED = 10.0f;
 // プレイヤーの本体の半径
 const static float		PLAYER_RADIUS = CHIPSIZE * 0.5f;
 // プレイヤーの本体の衝突の半径
-const static float		PLAYER_COLLIDER_RADIUS = PLAYER_RADIUS * 1.25f;
+const static float		PLAYER_COLLIDER_RADIUS = PLAYER_RADIUS * 1.5f;
 // プレイヤーの通常の長さ
 const static float		PLAYER_MAX_NORMAL_LENGTH = CHIPSIZE * 2;
 // プレイヤーが伸びた場合の最大値

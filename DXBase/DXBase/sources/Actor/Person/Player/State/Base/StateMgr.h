@@ -19,6 +19,8 @@ public:
 	void add(unsigned int state, const IStatePtr& scene);
 	// 現在のステート
 	bool currentState(unsigned int state = 0);
+	// 現在のステート
+	bool currentActionType(ActionType action_type = ActionType::None);
 private:
 	// コピー禁止
 	StateMgr(const StateMgr& other) = delete;
@@ -30,4 +32,6 @@ private:
 	IStatePtr currentState_;
 	// 現在のステート名
 	unsigned int currentStateName_;
+
+	ActionType action_type_;
 };

@@ -55,26 +55,21 @@ IState::StateElement PlayerState_Union::next() const{
 	return element_;
 }
 
-//// プレイヤーの左右比較(右側を返す)
-//PlayerBodyPtr PlayerState_Union::compareMax_H(PlayerBodyPtr p1, PlayerBodyPtr p2){
-//	if (p1->getPosition().x > p2->getPosition().x) return p1;
-//	else if (p1->getPosition().x < p2->getPosition().x) return p2;
-//	else return compareMin_V(p1, p2);
-//	return nullptr;
-//}
-//
-//// プレイヤーの左右比較(左側を返す)
-//PlayerBodyPtr PlayerState_Union::compareMin_H(PlayerBodyPtr p1, PlayerBodyPtr p2){
-//	if (p1->getPosition().x < p2->getPosition().x) return p1;
-//	else if (p1->getPosition().x > p2->getPosition().x) return p2;
-//	else return compareMin_V(p1, p2);
-//	return nullptr;
-//}
-//
-//PlayerBodyPtr PlayerState_Union::compareMin_V(PlayerBodyPtr p1, PlayerBodyPtr p2){
-//	if (p1->getPosition().y >= p2->getPosition().y) return p1;
-//	else return p2;
-//	return nullptr;
-//}
+bool PlayerState_Union::holdable_keyR(){
+	return InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && butty_->able_to_hold();
+}
+
+bool PlayerState_Union::holdable_keyL() {
+	return InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && retty_->able_to_hold();
+}
+
+bool PlayerState_Union::holdable_padR() {
+	return InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1) && butty_->able_to_hold();
+}
+
+bool PlayerState_Union::holdable_padL() {
+	return InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1) && retty_->able_to_hold();
+}
+
 
 

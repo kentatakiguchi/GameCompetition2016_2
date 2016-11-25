@@ -51,7 +51,7 @@ void PlayerBody::onDraw() const{
 	body_.draw(inv_);
 
 	SetFontSize(32);
-	DrawFormatString(draw_pos_.x, draw_pos_.y, GetColor(255,255,255), "%f", dead_limit_);
+	DrawFormatString(draw_pos_.x + 30, draw_pos_.y, GetColor(255,255,255), "%f", dead_limit_);
 
 	Vector3 color = Vector3::Zero;
 	if (name_ == "PlayerBody1")color = Vector3(0, 0, 255);
@@ -112,6 +112,7 @@ void PlayerBody::onCollide(Actor & other){
 	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
 		if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) {
 			hit_enemy_ = HitOpponent::ENEMY;
+			dead_limit_ = 0;
 		}
 	}
 
@@ -227,6 +228,11 @@ float PlayerBody::distance(){
 
 void PlayerBody::set_partner(PlayerBodyPtr partner){
 	partner_ = partner;
+}
+
+void PlayerBody::set_hold_point(){
+	position_ = collider_->other_position() + (position_ - collider_->other_position()).Normalize() + CHIPSIZE / 2 ;
+	collider_->reset_pos();
 }
 
 PlayerBodyPtr PlayerBody::get_partner(){

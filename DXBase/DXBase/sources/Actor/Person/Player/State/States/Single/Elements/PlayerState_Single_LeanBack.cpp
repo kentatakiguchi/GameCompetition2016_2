@@ -3,6 +3,7 @@
 PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(){}
 
 void PlayerState_Single_LeanBack::unique_init(){
+
 	player_body_->reset_opponent();
 
 	dir_ = Vector2(player_body_->get_partner_vector().x, 1) * -1;
@@ -22,6 +23,7 @@ void PlayerState_Single_LeanBack::update(float deltaTime){
 }
 
 void PlayerState_Single_LeanBack::end(){
+	player_body_->reset_enemy();
 }
 
 void PlayerState_Single_LeanBack::move(){

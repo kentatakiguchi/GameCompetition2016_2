@@ -90,14 +90,16 @@ void Player::onUpdate(float deltaTime) {
 	}
 
 
+	/*******‚Ç‚¿‚ç‚ðHOLD‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©*******/
+	/*ActionType‚Å”»’f‰Â”\*/
+	if (stateMgr_.currentActionType(ActionType::Right)) {
 
-	if (is_damaged()) {
-		split();
 	}
+	/**********************/
+
+	if (is_damaged()) split();
 	if (is_connectable()) connect();
-
-	if (is_dead()) dead();
-
+	if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::DEAD)) dead();
 	if (is_cleared()) world_->clear(true);
 }
 

@@ -33,7 +33,7 @@ void PlayerState_Attack::update(float deltaTime) {
 	timer_ += deltaTime;
 	//timer_ = std::min<float>(timer_ + deltaTime, 60);
 
-	dir_easeing_ = EasingOutExpo(timer_ * 0.075f);
+	dir_easeing_ = EasingOutExpo(timer_ * 0.01f);
 	gra_easeing_ = EasingInExpo(timer_ * 0.2f);
 
 	dir_ *= -dir_easeing_ + 1;
@@ -70,24 +70,24 @@ void PlayerState_Attack::end(){
 }
 
 void PlayerState_Attack::key_update() {
-	if (dir_easeing_ >= 0.25f) {
+	if (dir_easeing_ >= 0.15f) {
 		butty_->move(InputMgr::GetInstance().KeyVector_R().Horizontal() / 2);
 		retty_->move(InputMgr::GetInstance().KeyVector_L().Horizontal() / 2);
 	}
 
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && butty_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && retty_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+	if (holdable_keyR()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+	if (holdable_keyL()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 
 }
 
 void PlayerState_Attack::pad_update() {
-	if (dir_easeing_ >= 0.25f) {
+	if (dir_easeing_ >= 0.15f) {
 		butty_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal() / 2);
 		retty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal() / 2);
 	}
 
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1) && butty_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1) && retty_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+	if (holdable_padR()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
+	if (holdable_padL()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 
 }
 

@@ -3,7 +3,7 @@
 #include <DxLib.h>
 
 #include <vector>
-#include "../Math/Math.h"
+#include "../../Math/Math.h"
 
 class Animation2D {
 public:
@@ -14,7 +14,7 @@ public:
 	// 画像を分割し配列に格納
 	void registSprite();
 	// アニメーションの変更(速度のみ変更も可能)
-	void change(int anim_num, float speed = 1.0f);
+	void change_param(int anim_num, float speed = 1.0f);
 	// 更新処理
 	void update(float deltaTime);
 	// 描画
@@ -24,7 +24,7 @@ public:
 	void draw(Vector2 position, Vector2 origin, Vector2 scale, float degree, Vector3 color = Vector3(255, 255, 255)) const;
 private:
 	Vector2 getSize();
-private:
+protected:
 	//分割前の画像id
 	int id_;
 	//現在のアニメーション
@@ -39,4 +39,6 @@ private:
 	float speed_;
 	//分割後のid格納用多次元配列
 	std::vector<std::vector<int>> sprites_;
+
+	
 };
