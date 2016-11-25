@@ -57,11 +57,11 @@ private:
 private:
 
 	//頂点情報
-	VertexPos  spriteVertexH[32][32];
+	VertexPos  spriteVertexH[40][40];
 	//インデックス情報
-	int  spriteIndexsH[32][32];
+	int  spriteIndexsH[40][40];
 	//共通の頂点情報
-	SpringState commonVertexH[32][32];
+	SpringState commonVertexH[40][40];
 	//共通の頂点情報（移動しないよ）
 	SpringState commonVertexHNoMove[32][32];
 	//元のテクスチャ情報

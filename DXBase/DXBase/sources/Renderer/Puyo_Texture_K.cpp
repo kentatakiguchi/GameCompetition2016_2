@@ -74,7 +74,7 @@ void PuyoTextureK::PuyoUpdate()
 			//	commonVertexH[x][y].power = 0.0f;
 			//}
 			commonVertexH[x][y].time += 1000.0f*Time::GetInstance().deltaTime();
-			MathHelper::Spring(commonVertexH[x][y].num, commonVertexH[x][y].resNum, commonVertexH[x][y].veloNum, 0.25f, 0.5f, 2.0f);
+			MathHelper::Spring(commonVertexH[x][y].num, commonVertexH[x][y].resNum, commonVertexH[x][y].veloNum, 0.2f, 0.5f, 1.5f);
 			commonVertexH[x][y].position.x =
 				(MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
 				commonVertexH[x][y].velocity.x + mat.Translation().x - textureSize.x / 2;
@@ -83,6 +83,7 @@ void PuyoTextureK::PuyoUpdate()
 				commonVertexH[x][y].velocity.y + mat.Translation().y - textureSize.y / 2;
 		}
 	}
+
 	//頂点情報を毎フレーム更新
 	PuyoVertexSet();
 }
@@ -108,10 +109,10 @@ void PuyoTextureK::PuyoDraw()
 	{
 		for (int x = 0; x <= loopX; x++)
 		{
-			DrawCircle(commonVertexH[x][y].position.x + mPosition.x, commonVertexH[x][y].position.y + mPosition.y, 1, GetColor(255, 255, 255));
+			DrawCircle(commonVertexH[x][y].position.x + mPosition.x, commonVertexH[x][y].position.y + mPosition.y, 2, GetColor(0, 0, 255));
 		}
 	}
-	DrawCircle(test.x + 100, test.y + 100, 10, GetColor(255, 255, 0));
+	//DrawCircle(test.x + 100, test.y + 100, 10, GetColor(255, 255, 0));
 	//DrawFormatString(500,128, GetColor(255, 255, 255), "座標:%f,%f",test.x,test.y);
 }
 
@@ -352,14 +353,14 @@ void PuyoTextureK::PuyoAddPowerEx(Vector2 vec, Vector2 velo,float power)
 {
 	int x_ = 0;
 	int y_ = 0;
-	Vector2 kakeru = vec*500.0f;
+	Vector2 kakeru = vec*110.0f;
+	{
 	Vector2 texCen = Vector2(textureSize.x / 2, textureSize.y / 2);
 	Vector2 vecc = kakeru + texCen;
 	Vector2 sevePos = Vector2(9999, 9999);
 
 	//設定された一番近い配列の場所を調べる
 	for (int y = 0; y <= loopY; y++)
-	{
 		for (int x = 0; x <= loopX; x++)
 		{
 			if (Vector2::Distance(commonVertexHNoMove[x][y].position, vecc) <= Vector2::Distance(sevePos, vecc))
@@ -370,14 +371,15 @@ void PuyoTextureK::PuyoAddPowerEx(Vector2 vec, Vector2 velo,float power)
 			}
 		}
 	}
-	for (int y = -10; y <= 10; y++)
+	for (int y = -8; y <= 8; y++)
 	{
-		for (int x = -10; x <= 10; x++)
+		for (int x = -8; x <= 8; x++)
 		{
 			if(x_ + x<=loopX&& y_ + y<=loopY&&y_ + y>=0&& x_ + x>=0)
 				PuyoAddPowerDxSub(x_+x, y_+y, velo, power);
 		}
 	}
+	//DrawCircle(commonVertexH[x_][y_].position.x + mPosition.x, commonVertexH[x_][y_].position.y + mPosition.y, 5, GetColor(255, 0, 0));
 	//PuyoAddPowerDxSub(x_, y_, velo, power);
 	DrawFormatString(500, 128, GetColor(255, 255, 255), "velo:%f,%f", velo.x, velo.y);
 }
@@ -395,11 +397,11 @@ void PuyoTextureK::PuyoAddPowerDxSub(int x_, int y_, Vector2 velo,float power)
 		{
 			float dis = Vector2::Distance(pos, commonVertexHNoMove[x][y].position);
 			commonVertexH[x][y].time = 0.0f;
-			if (dis <= 200.0f)
+			if (dis <= 140.0f)
 			{
 				dis++;
 				commonVertexH[x][y].resNum = 0.0f;
-				commonVertexH[x][y].num += (power/(dis/10.1f))*Time::GetInstance().deltaTime();
+				commonVertexH[x][y].num += (power*20.0f)/dis*Time::GetInstance().deltaTime();
  				commonVertexH[x][y].velocity = velo;
 			}
 		}

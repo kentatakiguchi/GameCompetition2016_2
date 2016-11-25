@@ -50,7 +50,9 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	mPuyo = new PuyoTextureK(TextureID::PUYO_TEST_TEX, position, 1, 0);
 }
 
-Player::~Player(){}
+Player::~Player(){
+	delete mPuyo;
+}
 
 void Player::onUpdate(float deltaTime) {
 
@@ -72,13 +74,16 @@ void Player::onUpdate(float deltaTime) {
 	//Vector2 point2 = main_->getPosition() + vec1;
 
 	DrawCircle(vec1.x, vec1.y, 30, GetColor(255, 255, 255));
-	mPower = vec1.Length()*2.0f;
-	if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
+	mPower = vec1.Length();
+	if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)||
+		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD_BOTH)) {
 		//mPuyo->PuyoAddPowerEx(vec1, vec1*3.0f);
 		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower);
 		mPuyo->SetPosition(posVec2 + vec2, 1.0f, 0.0f);
 		//mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, power);
 	}
+	//mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower);
+	//mPuyo->SetPosition(posVec2 + vec2, 1.0f, 0.0f);
 	else
 	{
 		mPuyo->SetPosition(posVec2, 1.0f, 0.0f);
@@ -101,6 +106,7 @@ void Player::onLateUpdate(float deltaTime){
 
 void Player::onDraw() const {
 	//DrawFormatString(25, 25, GetColor(255, 255, 255), "%d", stateMgr_.currentState());
+	mPuyo->PuyoDraw();
 }
 
 void Player::onCollide(Actor & other){}
