@@ -5,13 +5,10 @@
 class PlayerState_HoldBoth : public PlayerState_Union {
 public:
 	PlayerState_HoldBoth();
-
-	virtual void unique_init() override;
-
-	virtual void update(float deltaTime) override;
-
-	virtual void end() override;
 private:
-	void key_update();
-	void pad_update();
+	virtual void unique_init() override;
+	virtual void update(float deltaTime) override;
+	virtual void end() override;
+	virtual void key_input() override;
+	virtual void pad_input() override;
 };

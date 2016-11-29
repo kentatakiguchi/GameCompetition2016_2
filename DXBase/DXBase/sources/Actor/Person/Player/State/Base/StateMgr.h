@@ -21,6 +21,8 @@ public:
 	bool currentState(unsigned int state = 0);
 	// 現在のステート
 	bool currentActionType(ActionType action_type = ActionType::None);
+	// 現在の状態の要素
+	IState::StateElement currentElement();
 private:
 	// コピー禁止
 	StateMgr(const StateMgr& other) = delete;
@@ -30,8 +32,6 @@ private:
 	std::unordered_map<unsigned int, IStatePtr> states_;
 	// 現在のステート
 	IStatePtr currentState_;
-	// 現在のステート名
-	unsigned int currentStateName_;
-
-	ActionType action_type_;
+	// 現在の要素
+	IState::StateElement element_;
 };

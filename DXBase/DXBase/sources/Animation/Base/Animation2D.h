@@ -2,6 +2,7 @@
 
 #include <DxLib.h>
 
+#include <unordered_map>
 #include <vector>
 #include "../../Math/Math.h"
 
@@ -9,10 +10,6 @@ class Animation2D {
 public:
 	// コンストラクタ
 	Animation2D();
-	// コンストラクタ(画像id,横の分割数,縦の分割数)
-	Animation2D(int id, int row, int column);
-	// 画像を分割し配列に格納
-	void registSprite();
 	// アニメーションの変更(速度のみ変更も可能)
 	void change_param(int anim_num, float speed = 1.0f);
 	// 更新処理
@@ -38,7 +35,7 @@ protected:
 	//アニメーションの再生速度
 	float speed_;
 	//分割後のid格納用多次元配列
-	std::vector<std::vector<int>> sprites_;
+	std::unordered_map<int, std::vector<int>> sprites_;
 
 	
 };

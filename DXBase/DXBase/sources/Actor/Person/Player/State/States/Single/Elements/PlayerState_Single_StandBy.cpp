@@ -8,5 +8,4 @@ void PlayerState_Single_StandBy::update(float deltaTime){
 	change(StateElement((unsigned int)PlayerState_Enum_Single::LEAN_BACK));
 }
 
-void PlayerState_Single_StandBy::end(){
-}
+void PlayerState_Single_StandBy::end(){}

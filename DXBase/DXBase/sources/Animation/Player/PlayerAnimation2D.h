@@ -13,7 +13,7 @@ enum class PlayerAnimID {
 	COUNT
 };
 
-class PlayerAnimation2D : Animation2D{
+class PlayerAnimation2D : public Animation2D{
 public:
 	// コンストラクタ
 	PlayerAnimation2D();

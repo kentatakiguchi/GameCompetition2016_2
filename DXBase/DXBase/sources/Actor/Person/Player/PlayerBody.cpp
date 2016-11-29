@@ -25,13 +25,14 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	stateMgr_.add((unsigned int)PlayerState_Enum_Single::JUMP, std::make_shared<PlayerState_Single_Jump>());
 	init_state();
 
-	auto collider = std::make_shared<PlayerBodyCollider>(world_, name_, (PlayerBodyPtr)this);
+	auto collider = std::make_shared<PlayerBodyCollider>(world_, name_);
 	world_->addActor(ActorGroup::Player_Collider, collider);
 	collider_ = collider;
 
-
 	// グラフィックのロード
-	animation_ = Animation2D(ResourceLoader::GetInstance().getTextureID(TextureID::PLAYER_PUYOTA), 3, 3);
+	animation_ = PlayerAnimation2D();
+	animation_.add(PlayerAnimID::IDLE, ResourceLoader::GetInstance().getTextureID(TextureID::PLAYER_BUTTY_IDLE), 320, 12, 6, 11);
+	animation_.change(PlayerAnimID::IDLE);
 }
 
 PlayerBody::~PlayerBody(){}
@@ -42,7 +43,7 @@ void PlayerBody::onUpdate(float deltaTime){
 
 	opponent_ = HitOpponent::NONE;
 
-	draw_pos_ = Vector3(position_.x, position_.y) * inv_;
+	draw_pos_ = position_ * inv_;
 
 	animation_.update(deltaTime);
 }
@@ -51,16 +52,17 @@ void PlayerBody::onDraw() const{
 	body_.draw(inv_);
 
 	SetFontSize(32);
-	DrawFormatString(draw_pos_.x + 30, draw_pos_.y, GetColor(255,255,255), "%f", dead_limit_);
+	DrawFormatString(static_cast<int>(draw_pos_.x) + 30, static_cast<int>(draw_pos_.y), GetColor(255,255,255), "%f", dead_limit_);
 
 	Vector3 color = Vector3::Zero;
 	if (name_ == "PlayerBody1")color = Vector3(0, 0, 255);
 	if (name_ == "PlayerBody2")color = Vector3(255, 0, 0);
-	animation_.draw(Vector2(draw_pos_.x, draw_pos_.y), Vector2::One * 48, 2, 0, color);
+	//animation_.draw(draw_pos_, Vector2::One * 160, 0.5f, 0, color);
 }
 
 void PlayerBody::onLateUpdate(float deltaTime){
-	collider_->pos_update();
+	collider_->pos_update(position_);
+	if(attack_collider_ != nullptr)attack_collider_->pos_update(position_);
 	input_ = Vector2::Zero;
 	gravity_ = Vector2::Zero;
 	launch_ = Vector2::Zero;
@@ -181,10 +183,11 @@ void PlayerBody::hold_gravity(){
 	if (Vector2::Distance(Vector2::Zero, input_) <= 0)gravity();
 }
 
-void PlayerBody::circleClamp() {
-	if (distance() > PLAYER_MAX_STRETCH_LENGTH) {
-		Vector2	vec = Vector2::Normalize(position_ - partner_->getPosition());
-		position_ = partner_->getPosition() + vec * PLAYER_MAX_STRETCH_LENGTH;
+void PlayerBody::circleClamp(Vector2 target) {
+	float distance = (target - position_).Length();
+	if (distance > PLAYER_MAX_STRETCH_LENGTH / PLAYER_CNTR_DIV_NUM) {
+		Vector2	vec = Vector2::Normalize(position_ - target);
+		position_ = target + vec * PLAYER_MAX_STRETCH_LENGTH / PLAYER_CNTR_DIV_NUM;
 	}
 }
 
@@ -260,13 +263,13 @@ Vector2 PlayerBody::get_partner_vector(){
 }
 
 void PlayerBody::create_attack_collider_(){
-	//auto collider = std::make_shared<PlayerBodyCollider>(world_, std::string("PlayerAttack"), (PlayerBodyPtr)this);
-	//world_->addActor(ActorGroup::Player_AttackRange, collider);
-	//attack_collider_ = collider;
+	auto collider = std::make_shared<PlayerBodyCollider>(world_, std::string("PlayerAttack"));
+	world_->addActor(ActorGroup::Player_Collider, collider);
+	attack_collider_ = collider;
 }
 
 void PlayerBody::delete_attack_collider_(){
-	//attack_collider_->dead();
+	attack_collider_->dead();
 }
 
 void PlayerBody::reset_dead_limit(){

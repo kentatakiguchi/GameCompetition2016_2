@@ -6,25 +6,12 @@ void PlayerState_Hold::unique_init(){
 }
 
 void PlayerState_Hold::update(float deltaTime) {
-	InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
 	move();
 }
 
-void PlayerState_Hold::end(){
-}
+void PlayerState_Hold::end(){}
 
-void PlayerState_Hold::move(){
-	if (element_.action_type_ == ActionType::Right) {
-		retty_->hold_gravity();
-		retty_->circleClamp();
-	}
-	if (element_.action_type_ == ActionType::Left) {
-		butty_->hold_gravity();
-		butty_->circleClamp();
-	}
-}
-
-void PlayerState_Hold::key_update(){
+void PlayerState_Hold::key_input(){
 	if (element_.action_type_ == ActionType::Right) {
 		retty_->move_hold(InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S));
 	}
@@ -49,7 +36,7 @@ void PlayerState_Hold::key_update(){
 	}
 }
 
-void PlayerState_Hold::pad_update(){
+void PlayerState_Hold::pad_input(){
 	if (element_.action_type_ == ActionType::Right) {
 		retty_->move_hold(InputMgr::GetInstance().AnalogPadVectorL());
 	}
@@ -73,3 +60,16 @@ void PlayerState_Hold::pad_update(){
 		if (retty_->able_to_hold()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD_BOTH));
 	}
 }
+
+void PlayerState_Hold::move(){
+	if (element_.action_type_ == ActionType::Right) {
+		retty_->hold_gravity();
+		retty_->circleClamp(cntr_->base_point(ActionType::Left));
+
+	}
+	if (element_.action_type_ == ActionType::Left) {
+		butty_->hold_gravity();
+		butty_->circleClamp(cntr_->base_point(ActionType::Right));
+	}
+}
+

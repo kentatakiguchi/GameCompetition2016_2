@@ -14,7 +14,7 @@ enum class ModelID {
 };
 
 enum class TextureID {
-	PLAYER_PUYOTA,
+	PLAYER_BUTTY_IDLE,
 	PLAYER_PUYOMI,
 	BACKGRAUND1_TEX,
 	BACKGRAUND2_TEX,

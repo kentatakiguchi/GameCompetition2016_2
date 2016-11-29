@@ -1,4 +1,5 @@
 #include "Matrix.h"
+#include "Vector2.h"
 #include "Vector3.h"
 #include "Quaternion.h"
 #include "MathHelper.h"
@@ -423,3 +424,9 @@ Matrix operator/(Matrix m, float s){
 Vector3 operator*(const Vector3& v, const Matrix & m){
 	return Vector3::Transform(v, m);
 }
+
+Vector2 operator*(const Vector2& v, const Matrix & m) {
+	Vector3 tmp = Vector3::Transform(Vector3(v.x, v.y), m);
+	return Vector2(tmp.x, tmp.y);
+}
+

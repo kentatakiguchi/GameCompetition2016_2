@@ -40,6 +40,8 @@ struct Vector2 {
 	//	値を指定された範囲内に制限します
 	static Vector2 Clamp(const Vector2& value1, const Vector2& min, const Vector2& max);
 
+	//バネの補正
+	static void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness, float friction, float mass);
 	//Dxlib用変換関数
 	static VECTOR Vector2ToVECTOR(const Vector2& v);
 

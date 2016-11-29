@@ -1,8 +1,7 @@
 #include "PlayerBodyCollider.h"
 
-PlayerBodyCollider::PlayerBodyCollider(IWorld * world, std::string& name, PlayerBodyPtr parent)	:
-	Actor(world, name + "Collider", Vector2::Zero, CollisionBase(Vector2(0, 0), PLAYER_COLLIDER_RADIUS)),
-	parent_(parent){
+PlayerBodyCollider::PlayerBodyCollider(IWorld * world, std::string& name):
+	Actor(world, name + "Collider", Vector2::Zero, CollisionBase(Vector2(0, 0), PLAYER_COLLIDER_RADIUS)){
 }
 
 PlayerBodyCollider::~PlayerBodyCollider(){}
@@ -10,11 +9,10 @@ PlayerBodyCollider::~PlayerBodyCollider(){}
 void PlayerBodyCollider::onUpdate(float deltaTime){
 	opponent_ = HitOpponent::NONE;
 
-	//other_velocity_ = Vector2::Zero;
+	other_velocity_ = Vector2::Zero;
 }
 
 void PlayerBodyCollider::onDraw() const{
-	body_.draw(inv_);
 }
 
 void PlayerBodyCollider::onCollide(Actor & other) {
@@ -27,8 +25,8 @@ void PlayerBodyCollider::onCollide(Actor & other) {
 	}
 }
 
-void PlayerBodyCollider::pos_update(){
-	position_ = parent_->getPosition();
+void PlayerBodyCollider::pos_update(Vector2 parent_pos){
+	position_ = parent_pos;
 }
 
 void PlayerBodyCollider::reset_pos(){

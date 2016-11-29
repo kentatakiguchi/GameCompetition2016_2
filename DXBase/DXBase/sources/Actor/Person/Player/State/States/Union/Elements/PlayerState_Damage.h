@@ -5,10 +5,8 @@
 class PlayerState_Damage : public PlayerState_Union {
 public:
 	PlayerState_Damage();
-
+private:
 	virtual void unique_init() override;
-
 	virtual void update(float deltaTime) override;
-
 	virtual void end() override;
 };

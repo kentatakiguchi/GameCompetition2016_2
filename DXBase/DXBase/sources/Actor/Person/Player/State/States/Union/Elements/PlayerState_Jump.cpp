@@ -19,6 +19,8 @@ void PlayerState_Jump::unique_init(){
 }
 
 void PlayerState_Jump::update(float deltaTime){
+	//InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
+
 	timer_ += deltaTime;
 
 	//gra_easeing_ = EasingInExpo(timer_);
@@ -27,21 +29,18 @@ void PlayerState_Jump::update(float deltaTime){
 	butty_->launch(dir_ * power_);
 	retty_->launch(dir_ * power_);
 
-	InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
-
-	if (butty_->able_to_jump() && retty_->able_to_jump()) change((unsigned int)PlayerState_Enum_Union::IDLE);
+	if (butty_->able_to_jump() || retty_->able_to_jump()) change((unsigned int)PlayerState_Enum_Union::IDLE);
 }
 
-void PlayerState_Jump::end(){
+void PlayerState_Jump::end(){}
 
-}
-
-void PlayerState_Jump::key_update(){
+void PlayerState_Jump::key_input(){
 	butty_->move(InputMgr::GetInstance().KeyVector_R().Horizontal() / 2);
 	retty_->move(InputMgr::GetInstance().KeyVector_L().Horizontal() / 2);
 }
 
-void PlayerState_Jump::pad_update(){
+void PlayerState_Jump::pad_input(){
 	butty_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal() / 2);
 	retty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal() / 2);
 }
+

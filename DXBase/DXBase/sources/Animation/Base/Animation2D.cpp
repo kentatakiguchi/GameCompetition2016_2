@@ -4,27 +4,6 @@ using namespace std;
 
 Animation2D::Animation2D() {}
 
-Animation2D::Animation2D(int id, int row, int column) :
-	id_(id), anim_num_(0), row_(row), column_(column), timer_(0), speed_(1) {
-	registSprite();
-}
-
-void Animation2D::registSprite() {
-	//分割前の画像サイズ
-	Vector2 size = getSize();
-	//分割した際の個々の画像サイズ
-	Vector2 divSize = Vector2(size.x / row_, size.y / column_);
-	//配列の確保
-	sprites_ = vector<vector<int>>(column_, vector<int>(row_));
-	//分割後のidを格納
-	for (int i = 0; i < column_; ++i) {
-		for (int j = 0; j < row_; ++j) {
-			Vector2 src = Vector2(size.x / row_ * j, size.y / column_ * i);
-			sprites_[i][j] = DerivationGraph(src.x, src.y, divSize.x, divSize.y, id_);
-		}
-	}
-}
-
 void Animation2D::change_param(int anim_num, float speed) {
 	//再生速度を変更
 	speed_ = speed;
@@ -38,8 +17,10 @@ void Animation2D::change_param(int anim_num, float speed) {
 }
 
 void Animation2D::update(float deltaTime) {
+	std::vector<int> anim = sprites_[anim_num_];
+	id_ = anim[static_cast<int>(timer_) % sprites_[anim_num_].size()];
 	//更新処理
-	timer_ += deltaTime * speed_ * 10 / row_;
+	timer_ += deltaTime * speed_ * 60 / sprites_[anim_num_].size() * 10;
 }
 
 void Animation2D::draw(Vector2 position, Vector2 origin, float scale, float degree, Vector3 color) const{
@@ -50,7 +31,7 @@ void Animation2D::draw(Vector2 position, Vector2 origin, Vector2 scale, float de
 	SetDrawBright(color.x, color.y, color.z);
 	//度数法→弧度法に変換
 	float radian = MathHelper::ToRadians(degree);
-	DrawRotaGraph3(position.x, position.y, origin.x, origin.y, static_cast<float>(scale.x), static_cast<float>(scale.y), radian,  sprites_[anim_num_][static_cast<int>(timer_) % row_], TRUE);
+	DrawRotaGraph3(position.x, position.y, origin.x, origin.y, static_cast<float>(scale.x), static_cast<float>(scale.y), radian, id_, TRUE);
 	SetDrawBright(255, 255, 255);
 }
 

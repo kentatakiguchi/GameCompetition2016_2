@@ -5,11 +5,9 @@
 class PlayerState_Single_LeanBack : public PlayerState_Single {
 public:
 	PlayerState_Single_LeanBack();
-
+private:
 	virtual void unique_init() override;
-
 	virtual void update(float deltaTime) override;
-
 	virtual void end() override;
 private:
 	void move();

@@ -28,6 +28,8 @@ public:
 	virtual void common_init(Actor& actor, ActionType type = ActionType::None) = 0;
 	// 各状態独自の初期化
 	virtual void unique_init() = 0;
+	// 入力処理
+	virtual void input() = 0;
 	// 更新処理
 	virtual void update(float deltaTime) = 0;
 	// 状態の変更

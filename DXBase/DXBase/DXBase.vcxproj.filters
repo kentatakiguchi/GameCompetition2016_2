@@ -207,9 +207,6 @@
     <ClInclude Include="sources\Field\NavChip.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\PlayerBody_Point.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Field\MoveFloorRightLeft.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -393,9 +390,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\PlayerBase.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\HitOpponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -426,9 +420,6 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\NeedleEnemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\PlayerStruct.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -439,6 +430,18 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Animation\Player\PlayerAnimation2D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\PlayerBodyPoint.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\PlayerPtr.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -570,9 +573,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Field\NavChip.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\PlayerBody_Point.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Field\MoveFloorRightLeft.cpp">
@@ -731,9 +731,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\PlayerBase.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\PlayerBodyCollider.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -771,6 +768,15 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Animation\Player\PlayerAnimation2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\PlayerBodyPoint.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

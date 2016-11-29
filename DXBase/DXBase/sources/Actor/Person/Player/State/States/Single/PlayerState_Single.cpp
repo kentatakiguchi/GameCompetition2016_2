@@ -3,6 +3,7 @@
 // コンストラクタ
 PlayerState_Single::PlayerState_Single() :
 	element_(-1),
+	next_element_(-1),
 	timer_(0),
 	isEnd_(false) {
 }
@@ -15,28 +16,15 @@ void PlayerState_Single::common_init(Actor& actor, ActionType type) {
 
 	//player_body_ = std::dynamic_pointer_cast<PlayerBody>(actor);
 	player_body_ = dynamic_cast<PlayerBody*>(&actor);
+}
 
-	//main_body_ = player_->getMainBody();
-	//sub_body_ = player_->getSubBody();
-
-	//// いずれかのBodyがnullでない場合return
-	//if (main_body_ != nullptr || sub_body_ != nullptr)return;
-
-	//auto body1_ = std::static_pointer_cast<PlayerBody>(actor.findCildren((const std::string)"PlayerBody1"));
-	//auto body2_ = std::static_pointer_cast<PlayerBody>(actor.findCildren((const std::string)"PlayerBody2"));
-
-	//main_body_ = body1_;
-	//sub_body_ = body2_;
-
-	//player_->setBody(main_body_, sub_body_);
-
-	//main_body_->target(sub_body_);
-	//sub_body_->target(main_body_);
+void PlayerState_Single::input(){
+	InputMgr::GetInstance().isConnectGamePad() ? pad_input() : key_input();
 }
 
 // ステートの変更処理
 void PlayerState_Single::change(StateElement element) {
-	element_ = element;
+	next_element_ = element;
 	isEnd_ = true;
 }
 
@@ -47,5 +35,10 @@ bool PlayerState_Single::isEnd() {
 
 // 次のステートの要素
 IState::StateElement PlayerState_Single::next() const {
-	return element_;
+	return next_element_;
 }
+
+void PlayerState_Single::key_input(){}
+
+void PlayerState_Single::pad_input(){}
+

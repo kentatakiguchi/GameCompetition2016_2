@@ -7,15 +7,12 @@ void PlayerState_HoldBoth::unique_init() {
 }
 
 void PlayerState_HoldBoth::update(float deltaTime) {
-
-	InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
 }
 
-void PlayerState_HoldBoth::end() {
+void PlayerState_HoldBoth::end() {}
 
-}
+void PlayerState_HoldBoth::key_input(){
 
-void PlayerState_HoldBoth::key_update(){
 	if (InputMgr::GetInstance().IsKeyUp(KeyCode::R_SHIFT)) {
 		change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 	}
@@ -24,7 +21,8 @@ void PlayerState_HoldBoth::key_update(){
 	}
 }
 
-void PlayerState_HoldBoth::pad_update(){
+void PlayerState_HoldBoth::pad_input(){
+
 	if (InputMgr::GetInstance().IsButtonUp(Buttons::BUTTON_R1)) {
 		change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
 	}
@@ -32,3 +30,4 @@ void PlayerState_HoldBoth::pad_update(){
 		change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
 	}
 }
+

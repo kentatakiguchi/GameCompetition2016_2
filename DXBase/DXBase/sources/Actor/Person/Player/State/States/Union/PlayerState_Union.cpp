@@ -3,6 +3,7 @@
 // コンストラクタ
 PlayerState_Union::PlayerState_Union() : 
 	element_(-1),
+	next_element_(-1),
 	timer_(0),
 	isEnd_(false){
 }
@@ -17,31 +18,15 @@ void PlayerState_Union::common_init(Actor& actor, ActionType type){
 	butty_ = player_->blue_body();
 	retty_ = player_->red_body();
 	cntr_ = player_->connector();
-	//struct_ = ;
+}
 
-
-	//main_body_ = player_->getMainBody();
-	//sub_body_ = player_->getSubBody();
-
-	// いずれかのBodyがnullでない場合return
-	//if (main_body_ != nullptr || sub_body_ != nullptr)return;
-
-	//auto body1_ = std::static_pointer_cast<PlayerBody>(actor.findCildren((const std::string)"PlayerBody1"));
-	//auto body2_ = std::static_pointer_cast<PlayerBody>(actor.findCildren((const std::string)"PlayerBody2"));
-
-	//main_body_ = body1_;
-	//sub_body_ = body2_;
-
-	//player_->setBody(main_body_, sub_body_);
-
-	//main_body_->set_partner(sub_body_);
-	//sub_body_->set_partner(main_body_);
-
+void PlayerState_Union::input(){
+	InputMgr::GetInstance().isConnectGamePad() ? pad_input() : key_input();
 }
 
 // ステートの変更処理
 void PlayerState_Union::change(StateElement element){
-	element_ = element;
+	next_element_ = element;
 	isEnd_ = true;
 }
 
@@ -52,8 +37,12 @@ bool PlayerState_Union::isEnd(){
 
 // 次のステートの要素
 IState::StateElement PlayerState_Union::next() const{
-	return element_;
+	return next_element_;
 }
+
+void PlayerState_Union::key_input(){}
+
+void PlayerState_Union::pad_input(){}
 
 bool PlayerState_Union::holdable_keyR(){
 	return InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && butty_->able_to_hold();

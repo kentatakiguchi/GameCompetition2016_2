@@ -7,10 +7,12 @@
 #include "State/States/Union/Elements/PlayerState_StandBy.h"
 #include "State/States/Union/Elements/PlayerState_Idle.h"
 #include "State/States/Union/Elements/PlayerState_Move.h"
+#include "State/States/Union/Elements/PlayerState_MoveBoth.h"
 #include "State/States/Union/Elements/PlayerState_Jump.h"
 #include "State/States/Union/Elements/PlayerState_Hold.h"
 #include "State/States/Union/Elements/PlayerState_HoldBoth.h"
 #include "State/States/Union/Elements/PlayerState_Attack.h"
+#include "State/States/Union/Elements/PlayerState_Freeze.h"
 #include "State/States/Union/Elements/PlayerState_Damage.h"
 #include "State/States/Union/Elements/PlayerState_Split.h"
 #include "State/States/Union/Elements/PlayerState_Dead.h"
@@ -37,10 +39,12 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::STAND_BY, std::make_shared<PlayerState_StandBy>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::IDLE, std::make_shared<PlayerState_Idle>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::MOVE, std::make_shared<PlayerState_Move>());
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::MOVE_BOTH, std::make_shared<PlayerState_MoveBoth>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::JUMP, std::make_shared<PlayerState_Jump>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::HOLD, std::make_shared<PlayerState_Hold>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::HOLD_BOTH, std::make_shared<PlayerState_HoldBoth>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::ATTACK, std::make_shared<PlayerState_Attack>());
+	stateMgr_.add((unsigned int)PlayerState_Enum_Union::FREEZE, std::make_shared<PlayerState_Freeze>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::SPLIT, std::make_shared<PlayerState_Split>());
 	stateMgr_.add((unsigned int)PlayerState_Enum_Union::DEAD, std::make_shared<PlayerState_Dead>());
 	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::STAND_BY));
@@ -131,13 +135,17 @@ void Player::body_chase(){
 }
 
 void Player::body_clamp(){
-	butty_->circleClamp();
-	retty_->circleClamp();
+	butty_->circleClamp(cntr_->base_point(ActionType::Right));
+	retty_->circleClamp(cntr_->base_point(ActionType::Left));
 }
 
 void Player::body_gravity(){	
 	butty_->gravity();
 	retty_->gravity();
+}
+
+bool Player::action_type(ActionType type){
+	return stateMgr_.currentActionType(type);
 }
 
 void Player::set_body(){
@@ -153,6 +161,7 @@ void Player::connect(){
 }
 
 void Player::split(){
+	if (stateMgr_.currentState())return;
 	cntr_->dead();
 	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::SPLIT));
 }

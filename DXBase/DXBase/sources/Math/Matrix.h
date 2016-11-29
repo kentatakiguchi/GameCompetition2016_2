@@ -3,6 +3,7 @@
 
 #include "DxLib.h"
 
+struct Vector2;
 struct Vector3;
 struct Quaternion;
 
@@ -129,6 +130,7 @@ Matrix  operator * (Matrix m1, const Matrix& m2);
 Matrix  operator * (Matrix m, float s);
 Matrix  operator * (Matrix s, float m);
 Vector3 operator * (const Vector3& v, const Matrix& m);
+Vector2 operator * (const Vector2& v, const Matrix& m);
 
 // ２項演算子オーバーロード
 Matrix operator + (Matrix m1, const Matrix& m2);

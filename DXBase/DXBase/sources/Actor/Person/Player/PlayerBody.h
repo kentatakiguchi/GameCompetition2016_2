@@ -4,10 +4,10 @@
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
 #include "State/Base/StateMgr.h"
-#include "PlayerStruct.h"
+#include "PlayerPtr.h"
 #include "HitOpponent.h"
 
-#include "../../../Animation/Base/Animation2D.h"
+#include "../../../Animation/Player/PlayerAnimation2D.h"
 
 // ÉvÉåÅ[ÉÑÅ[
 class PlayerBody : public Actor {
@@ -48,7 +48,7 @@ public:
 	bool is_hit();
 
 	void hold_gravity();
-	void circleClamp();
+	void circleClamp(Vector2 target);
 	void launch(Vector2 dir);
 	HitOpponent hitOpponent();
 	HitOpponent hit_partner();
@@ -99,9 +99,9 @@ private:
 	PlayerBodyCollPtr collider_;
 	PlayerBodyCollPtr attack_collider_;
 
-	Vector3 draw_pos_;
+	Vector2 draw_pos_;
 
-	Animation2D animation_;
+	PlayerAnimation2D animation_;
 };
 
 

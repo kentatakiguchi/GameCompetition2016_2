@@ -7,7 +7,7 @@
 #include "PlayerBody.h"
 #include "PlayerConnector.h"
 
-#include "PlayerStruct.h"
+#include "PlayerPtr.h"
 #include "../../../Renderer/Puyo_Texture_K.h"
 
 // ƒvƒŒ[ƒ„[
@@ -29,6 +29,8 @@ public:
 	void body_chase();
 	void body_clamp();
 	void body_gravity();
+
+	bool action_type(ActionType type);
 public:
 	// Ú‘±ˆ—
 	void connect();

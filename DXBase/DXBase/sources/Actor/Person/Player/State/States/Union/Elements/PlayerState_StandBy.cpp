@@ -10,6 +10,4 @@ void PlayerState_StandBy::update(float deltaTime){
 	change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
 }
 
-void PlayerState_StandBy::end(){
-
-}
+void PlayerState_StandBy::end(){}
