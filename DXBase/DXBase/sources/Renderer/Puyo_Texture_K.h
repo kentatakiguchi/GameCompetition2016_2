@@ -19,14 +19,15 @@ struct SpringState {
 	float resNum=0.0f;                                  //補間用現在
 	float num = 0.0f;
 	float power = 0.0f;                            //加える力
-	float maxPower = 0.0f;
+	//float maxPower = 0.0f;
 	float time=0.0f;						       //経過時間
-	float vibrationTime = 0.0f;                    //振動するまでの時間
-	float vibrationTimer = 0.0f;                   //振動するまでのカウント
+	//float vibrationTime = 0.0f;                    //振動するまでの時間
+	//float vibrationTimer = 0.0f;                   //振動するまでのカウント
 	Vector2 position=Vector2::Zero;		           //振動する中心座標
 	Vector2 velocity = Vector2(1, 1);              //振動している方向と大きさ
 	bool PowerFlag = true;                         //振動してる種類フラグ
-
+	Vector2 springVelocity = Vector2::Zero;
+	Vector2 springResPos = Vector2::Zero;
 };
 
 
@@ -42,7 +43,7 @@ public:
 	//力を加え続ける頂点（周りににも）(pos:テクスチャから見た力を加える座標,velo:揺らす方向と大きさ)※毎フレーム呼ぶこと
 	void PuyoAddPowerDx(Vector2 pos, Vector2 velo);
 	//片岡に聞いてください
-	void PuyoAddPowerEx(Vector2 pos,Vector2 velo,float power);
+	void PuyoAddPowerEx(Vector2 pos,Vector2 velo,float power,float eikyo);
 
 	void PuyoUpdate();
 	void PuyoDraw();
@@ -52,16 +53,16 @@ private:
 	void PuyoVertexSet();
 	void PuyoVertexSetInit();
 	//これは違う
-	void PuyoAddPowerDxSub(int x,int y,Vector2 velo,float power);
+	void PuyoAddPowerDxSub(int x,int y,Vector2 velo,float power,float eikyo);
 
 private:
 
 	//頂点情報
-	VertexPos  spriteVertexH[40][40];
+	VertexPos  spriteVertexH[30][30];
 	//インデックス情報
-	int  spriteIndexsH[40][40];
+	int  spriteIndexsH[30][30];
 	//共通の頂点情報
-	SpringState commonVertexH[40][40];
+	SpringState commonVertexH[30][30];
 	//共通の頂点情報（移動しないよ）
 	SpringState commonVertexHNoMove[32][32];
 	//元のテクスチャ情報
