@@ -2,24 +2,17 @@
 #define _GAME_DEVICE_H_
 
 #include "DxLib.h"
-#include "../Scene/Base/SceneMgr.h"
-#include"../Scene/Base/SceneDataKeeper.h"
 
 class GameDevice{
 public:
-	GameDevice();
+	GameDevice(int width, int height, float rate, int windowFlag, float fps, int colorBitDepth = 32);
 	~GameDevice();
-	void start();
-	void update();
-	void draw();
-	void end();
+	//バッファをフリップ
+	void flip();
 private:
 	// コピー禁止
 	GameDevice(const GameDevice& other) = delete;
 	GameDevice& operator = (const GameDevice& other) = delete;
-private:
-	SceneMgr sceneMgr_;
-	SceneDataKeeper dataKeeper_;
 };
 
 #endif

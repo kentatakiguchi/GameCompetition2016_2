@@ -33,7 +33,7 @@ void GamePlayScene::start() {
 
 	deltaTime_ = Time::GetInstance().deltaTime();
 	isStopped_ = false;
-	SetDrawScreen(DX_SCREEN_BACK);
+	//SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
 
 	MapGenerator gener = MapGenerator(world_.get());

@@ -62,8 +62,6 @@ void Player::onUpdate(float deltaTime) {
 
 	stateMgr_.action(*this, deltaTime);
 
-	stateMgr_.action(*this, deltaTime);
-
 	mPuyo->PuyoUpdate();
 
 	float x = ((butty_->getPosition() + retty_->getPosition()) / 2).x;
@@ -154,7 +152,7 @@ void Player::set_body(){
 }
 
 void Player::connect(){
-	auto cntr = std::make_shared<PlayerConnector>(world_, butty_, retty_);
+	auto cntr = std::make_shared<PlayerConnector>(world_, position_, butty_, retty_);
 	addChild(cntr);
 	cntr_ = cntr;
 	stateMgr_.changeState(*this, IState::StateElement((unsigned int)PlayerState_Enum_Union::IDLE));

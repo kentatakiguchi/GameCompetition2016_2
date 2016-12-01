@@ -37,8 +37,8 @@ void PlayerState_Attack::update(float deltaTime) {
 	timer_ += deltaTime;
 	//timer_ = std::min<float>(timer_ + deltaTime, 60);
 
-	launch_dir_easeing_ = EasingOutExpo(timer_ * 0.01f);
-	chase_dir_easeing_ = EasingOutExpo(timer_ * 0.01f);
+	launch_dir_easeing_ = EasingOutExpo(timer_ * 0.1f);
+	chase_dir_easeing_ = EasingOutExpo(timer_ * 0.1f);
 	gra_easeing_ = EasingInExpo(timer_ * 0.2f);
 
 	launch_dir_ *= -launch_dir_easeing_ + 1;

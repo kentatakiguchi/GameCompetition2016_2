@@ -22,29 +22,26 @@ public:
 	};
 public:
 	PlayerConnector();
-	PlayerConnector(IWorld* world, PlayerBodyPtr butty, PlayerBodyPtr retty);
+	PlayerConnector(IWorld* world, const Vector2 & position, PlayerBodyPtr butty, PlayerBodyPtr retty);
 	~PlayerConnector();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
 	void create_point(int point_num = 0);
-	float distance();
 	Vector2 base_point(ActionType type);
-	Vector2 composed_vector(Vector2 point, int index);
-	Vector2 lerp_target(int index);
+
 	Vector2 target();
 	Vector2 comp();
+
+	Vector2 target_vector(int index);
+	Vector2 clamp_target(Vector2 pos, int index);
 private:
 	BezierCurve bezier_;
 	
 	PlayerBodyPtr butty_;
 	PlayerBodyPtr retty_;
 	std::vector<PlayerBodyPointPtr> points;
-
-	Vector2 pos;
-	Vector2 scale;
-	float rotate;
 
 	int base_index_;
 

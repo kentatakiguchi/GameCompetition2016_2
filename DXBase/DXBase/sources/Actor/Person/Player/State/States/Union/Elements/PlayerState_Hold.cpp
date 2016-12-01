@@ -13,10 +13,10 @@ void PlayerState_Hold::end(){}
 
 void PlayerState_Hold::key_input(){
 	if (element_.action_type_ == ActionType::Right) {
-		retty_->move_hold(InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S));
+		retty_->move_hold(InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S) * 2);
 	}
 	if (element_.action_type_ == ActionType::Left) {
-		butty_->move_hold(InputMgr::GetInstance().KeyVector());
+		butty_->move_hold(InputMgr::GetInstance().KeyVector() * 2);
 	}
 
 	if (InputMgr::GetInstance().IsKeyUp(KeyCode::R_SHIFT) && element_.action_type_ == ActionType::Right) {
@@ -38,10 +38,10 @@ void PlayerState_Hold::key_input(){
 
 void PlayerState_Hold::pad_input(){
 	if (element_.action_type_ == ActionType::Right) {
-		retty_->move_hold(InputMgr::GetInstance().AnalogPadVectorL());
+		retty_->move_hold(InputMgr::GetInstance().AnalogPadVectorL() * 2);
 	}
 	if (element_.action_type_ == ActionType::Left) {
-		butty_->move_hold(InputMgr::GetInstance().AnalogPadVectorR());
+		butty_->move_hold(InputMgr::GetInstance().AnalogPadVectorR() * 2);
 	}
 
 	if (InputMgr::GetInstance().IsButtonUp(Buttons::BUTTON_R1) && element_.action_type_ == ActionType::Right) {
@@ -62,14 +62,15 @@ void PlayerState_Hold::pad_input(){
 }
 
 void PlayerState_Hold::move(){
+	if (element_.action_type_ == ActionType::Left) {
+		butty_->hold_gravity();
+		butty_->circleClamp(cntr_->base_point(ActionType::Right));
+	}
 	if (element_.action_type_ == ActionType::Right) {
 		retty_->hold_gravity();
 		retty_->circleClamp(cntr_->base_point(ActionType::Left));
 
 	}
-	if (element_.action_type_ == ActionType::Left) {
-		butty_->hold_gravity();
-		butty_->circleClamp(cntr_->base_point(ActionType::Right));
-	}
+
 }
 

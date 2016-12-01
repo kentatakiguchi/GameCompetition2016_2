@@ -5,6 +5,8 @@
 
 //// スクリーンのサイズ倍率
 //const static float		SCREEN_RATE = 200;
+
+const static char*		WINDOW_NAME = "window";
 // スクリーンのサイズ
 const static Vector2	SCREEN_SIZE = Vector2(1920, 1080);
 // スクリーンのアスペクト比
@@ -71,7 +73,10 @@ const static float		PLAYER_DEAD_LIMIT = 5.0f;
 // プレイヤーの死亡までの時間
 const static float		PLAYER_FREEZE_TIME = 1.0f;
 // プレイヤーコネクタの分割数
-const static int		PLAYER_CNTR_DIV_NUM = 5;
+const static int		PLAYER_CNTR_DIV_NUM = 30;
+// プレイヤーコネクタの分割数
+const static float		PLAYER_CNTR_DIV_LENGTH = PLAYER_MAX_STRETCH_LENGTH / static_cast<float>(PLAYER_CNTR_DIV_NUM + 1);
+
 
 
 

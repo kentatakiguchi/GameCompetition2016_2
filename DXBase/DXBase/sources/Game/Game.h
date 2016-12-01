@@ -1,50 +1,30 @@
 #pragma once
 
 #include "DxLib.h"
-#include "Time.h"
+#include "GameDevice.h"
+
 #include "../Input/InputMgr.h"
 
 class Game{
 protected:
 	// コンストラクタ
-	Game(int width = 800, int height = 600, float rate = 1.0f, int window = TRUE, float fps = 60.0f):
+	Game(const char* windowName = "game", int width = 800, int height = 600, float rate = 1.0f, int window = TRUE, float fps = 60.0f):
 		width_(width), height_(height), rate_(rate), window_(window), fps_(fps) {
 	}
 
 public:
 	// 実行
 	int run() {
-		
-		SetGraphMode(width_, height_, 32);
-		SetWindowSizeExtendRate(rate_);
-
-		ChangeWindowMode(window_);
-
-		//DXLib初期化処理
-		if (DxLib_Init() == -1)return -1;//エラーが起きたら終了
-		SetDrawScreen(DX_SCREEN_BACK);
+		GameDevice device(width_, height_, rate_, window_, fps_);
 		start();
-
 		// キーが押されるまでループします
 		while (isRunning()){
-			// 画面をクリア
-			ClearDrawScreen();
-
-			Time::GetInstance().update();
-			InputMgr::GetInstance().GetHitKeyFrameAll();			
 			update();
 			draw();
-
-			Time::GetInstance().draw_fps();
-			// 裏画面の内容を表画面に反映させる
-			ScreenFlip();
-
+			device.flip();
 		}
-
 		end();
-
 		DxLib_End();	//DXLib使用終了処理
-
 		return 0;	//ソフト終了
 	}
 
