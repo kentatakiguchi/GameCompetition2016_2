@@ -7,7 +7,7 @@
 #include "BossEntry.h"
 #include "BossHeart.h"
 #include "../FloorSearchPoint.h"
-#include "Tornado.h"
+#include "bossAttack/importBossAttack.h"
 // ボスの体力表示
 #include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
 
@@ -41,14 +41,17 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	bossGaugeUI_(nullptr),
 	bossManager_(BossManager(position)),
 	top_(0.0f), bottom_(0.0f), right_(0.0f), left_(0.0f),
-	handle_(CreateFontToHandle("ＭＳ 明朝", 40, 10, DX_FONTTYPE_NORMAL))
+	handle_(CreateFontToHandle(NULL, 50, 10, DX_FONTTYPE_NORMAL))
 {
 	// コンテナに追加(攻撃順に追加する)
 	asContainer_.push_back(AttackState::JumpAttack);
 	asContainer_.push_back(AttackState::WallAttack);
-	
 	asContainer_.push_back(AttackState::SpeacialAttack);
 	// ボスマネージャー
+	// 攻撃コンテナに追加
+	bossManager_.addAttack(std::make_shared<ThreeJumpAttack>(position));
+	bossManager_.addAttack(std::make_shared<WallAttack>(position));
+	bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
 	/*auto manager = std::make_shared<BossManager>(position);
 	bossManager_ = &*manager;*/
 	// 床捜索オブジェクト
@@ -69,7 +72,7 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	// ボス心臓オブジェクト
 	auto heartHP = 100;
 	auto heartObj = std::make_shared<BossHeart>(
-		world_, Vector2(1080.0f, 0.0f), heartHP, hp_);
+		world_, Vector2(1080.0f, CHIPSIZE * 20), heartHP, hp_);
 	world_->addActor(ActorGroup::Enemy, heartObj);
 	heartObj_ = &*heartObj;
 	// ボスの体力ゲージ
@@ -77,10 +80,6 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	world_->addUIActor(bossUI);
 	bossGaugeUI_ = bossUI.get();
 	bossGaugeUI_->SetHp(heartObj_->getHeartHp() * hp_);
-
-	// ボスの竜巻攻撃(仮)
-	world_->addActor(ActorGroup::Enemy,
-		std::make_shared<Tornado>(world_, Vector2::Zero, CHIPSIZE));
 }
 
 BaseBoss::~BaseBoss()
@@ -89,6 +88,11 @@ BaseBoss::~BaseBoss()
 
 void BaseBoss::onUpdate(float deltaTime)
 {
+	// デバッグ
+	/*if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
+		changeState(State::Idel, BOSS_DEAD);
+	}*/
+
 	clampList_.clear();
 
 	// 補間タイマ(最大値１)の更新
@@ -97,6 +101,7 @@ void BaseBoss::onUpdate(float deltaTime)
 	// 体力の更新
 	hp_ = heartObj_->getBossHp();
 	bossGaugeUI_->SetHp(heartObj_->getHeartHp());
+	bossManager_.setHeartHP(heartObj_->getHeartHp());
 
 	entryObj_->setBossPosition(position_);
 	wspObj_->setPosition(position_);
@@ -106,10 +111,6 @@ void BaseBoss::onUpdate(float deltaTime)
 	// 接地(仮)
 	bossManager_.setIsGround(isGround_);
 	bossManager_.setIsBottom(isBottomHit_);
-
-	/*entryObj_->setBossPosition(position_);*/
-	// entryObj_->setDirection(direction_);
-	//position_.y = MathHelper::Clamp(position_.y, -1000, 500.0f);
 
 	// bool系
 	isGround_ = false;
@@ -131,10 +132,10 @@ void BaseBoss::onDraw() const
 	/*DrawGraph(
 		position_.x - scale_ / 2.0f, position_.y - scale_ / 2.0f,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);*/
-	DrawFormatStringToHandle(50, 300, GetColor(255, 255, 255),
+	/*DrawFormatStringToHandle(50, 300, GetColor(255, 255, 255),
 		handle_, "ブロックとの位置=>上:%d 下:%d", (int)top_, (int)bottom_);
 	DrawFormatStringToHandle(50, 350, GetColor(255, 255, 255),
-		handle_, "ブロックとの位置=>右:%d 左:%d", (int)right_, (int)left_);
+		handle_, "ブロックとの位置=>右:%d 左:%d", (int)right_, (int)left_);*/
 	// 状態の表示
 	DrawString(
 		vec3Pos.x, vec3Pos.y - 100,
@@ -167,8 +168,8 @@ void BaseBoss::onCollide(Actor & actor)
 	// 空中に浮かぶ床に当たったら、ひるみカウントを加算する
 	if (actorName == "BossAreaFloor") {
 		// 位置の補間
-		if (state_ == State::Attack)
-			flinchCount_++;
+		/*if (state_ == State::Attack)
+			flinchCount_++;*/
 		groundClamp(actor);
 		bossManager_.setFloorName(actorName.c_str());
 		return;
@@ -249,10 +250,6 @@ void BaseBoss::idel(float deltaTime)
 	isBodyHit_ = true;
 
 	// デバッグ
-	/*if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
-		changeState(State::Flinch, BOSS_DEAD);
-	}*/
-
 	//auto speed = 4.0f;
 	//auto deltaTimer = deltaTime * 60.0f;
 	/*if (InputMgr::GetInstance().IsKeyOn(KeyCode::L))
@@ -264,12 +261,14 @@ void BaseBoss::idel(float deltaTime)
 	else if (InputMgr::GetInstance().IsKeyOn(KeyCode::K))
 		position_.y += speed * deltaTimer;*/
 
+	bossManager_.changeAttackNumber(asContainer_.size() - hp_);
 	// 一定時間経過で攻撃状態に遷移
 	if (stateTimer_ >= 5.0f) {
 		// 残り体力で攻撃状態を変える
 		// initHp - hp
 		changeAttackState(
 			asContainer_[asContainer_.size() - hp_], BOSS_ATTACK);
+		//bossManager_.changeAttackNumber(asContainer_.size() - hp_);
 		return;
 	}
 	// 重力
@@ -302,6 +301,7 @@ void BaseBoss::flinch(float deltaTime)
 {
 	stateString_ = "ひるみ";
 	entryObj_->setIsEntry(true);
+	flinchCount_ = 0;
 	// 重力
 	if (position_.y < FIELD_SIZE.y) {
 		position_.y += 9.8f * (1.0f);// * 60.0f);
@@ -328,7 +328,7 @@ void BaseBoss::flinch(float deltaTime)
 	changeState(State::Idel, BOSS_IDLE);
 	entryObj_->setIsEntry(false);
 	dp_ = initDp_;
-	flinchCount_ = 3;
+	//flinchCount_ = 3;
 }
 
 void BaseBoss::deadMove(float deltaTime)
@@ -346,7 +346,7 @@ void BaseBoss::jumpAttack(float deltaTime)
 	// プレイヤー本体に当たらない
 	//isBodyHit_ = false;
 	// ジャンプ攻撃
-	bossManager_.attackMove(ATTACK_JUMPATTACK_NUMBER, deltaTime);
+	bossManager_.attackMove(deltaTime);
 	position_ = bossManager_.getMovePosition();
 	// ジャンプ攻撃が終わったら、待機状態にする
 	if (bossManager_.isAttackEnd()) {
@@ -358,10 +358,8 @@ void BaseBoss::jumpAttack(float deltaTime)
 
 void BaseBoss::wallAttack(float deltaTime)
 {
-	/*isBodyHit_ = false;
-	isAttackHit_ = false;*/
 	stateString_ = "壁攻撃";
-	bossManager_.attackMove(ATTACK_WALLATTACK_NUMBER, deltaTime);
+	bossManager_.attackMove(deltaTime);
 	position_ = bossManager_.getMovePosition();
 	// 攻撃動作中なら、壁捜索オブジェクトなどの判定をONにする
 	if (bossManager_.isAttackStart()) {
@@ -370,11 +368,13 @@ void BaseBoss::wallAttack(float deltaTime)
 	}
 	// ジャンプ攻撃が終わったら、待機状態にする
 	if (bossManager_.isAttackEnd()) {
-		flinchCount_ = 0;
-		if (flinchCount_ == 0)
+		//flinchCount_ = 0;
+		flinchCount_++;
+		//if (flinchCount_ == 0)
+		// 攻撃側のひるみ回数と以上なら、ひるみ状態に遷移
+		if(bossManager_.getFlinchCount() <= flinchCount_)
 			changeState(State::Flinch, BOSS_FLINCH);
 		else changeState(State::Idel, BOSS_IDLE);
-		//isBodyHit_ = true;
 		bossManager_.attackRefresh();
 	}
 }
@@ -382,10 +382,16 @@ void BaseBoss::wallAttack(float deltaTime)
 void BaseBoss::specialAttack(float deltaTime)
 {
 	stateString_ = "スペシャルな攻撃";
+	bossManager_.attackMove(deltaTime);
+	position_ = bossManager_.getMovePosition();
 	// bossManager_.specialAttack(deltaTime);
 	/*if (entryObj_->isBlock()) {
 
 	}*/
+	if (bossManager_.isAttackEnd()) {
+		changeState(State::Idel, BOSS_IDLE);
+		bossManager_.attackRefresh();
+	}
 }
 
 void BaseBoss::setTimer(float deltaTime)

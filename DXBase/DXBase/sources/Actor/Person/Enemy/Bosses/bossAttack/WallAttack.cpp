@@ -6,6 +6,8 @@ WallAttack::WallAttack() :
 	count_(0),
 	aSecond_(0),
 	speed_(0.0f),
+	isWallAttackEnd_(true),
+	//isFlinch_(false),
 	state_(State::FloorSearch),
 	prevPlayerDistance_(Vector2::Zero)
 {
@@ -16,6 +18,8 @@ WallAttack::WallAttack(const Vector2 & position) :
 	count_(0),
 	aSecond_(5),
 	speed_(4.0f),
+	isWallAttackEnd_(false),
+	//isFlinch_(true),
 	state_(State::FloorSearch),
 	prevPlayerDistance_(Vector2::One)
 {
@@ -23,16 +27,17 @@ WallAttack::WallAttack(const Vector2 & position) :
 	moveDirections_.clear();
 	// 壁移動時間コンテナに追加
 	moveTimes_.push_back(5);
-	moveTimes_.push_back(20);
-	moveTimes_.push_back(4);
 	moveTimes_.push_back(10);
-	moveTimes_.push_back(2);
+	moveTimes_.push_back(3);
+	moveTimes_.push_back(8);
+	moveTimes_.push_back(1);
 	moveTimes_.push_back(6);
 	// 方向コンテナに追加
-	moveDirections_.push_back(0);
-	moveDirections_.push_back(-1);
-	moveDirections_.push_back(0);
-	moveDirections_.push_back(1);
+	moveDirections_.push_back(0.0f);
+	moveDirections_.push_back(-1.0f);
+	moveDirections_.push_back(0.0f);
+	moveDirections_.push_back(1.0f);
+	moveDirections_.push_back(0.0f);
 	// 方向の設定
 	auto direction = Vector2(
 		moveDirections_[(count_ + 1) % 4],
@@ -55,6 +60,9 @@ void WallAttack::attack(float deltaTime)
 void WallAttack::Refresh()
 {
 	BossAttack::Refresh();
+	isWallAttackEnd_ = false;
+	/*if (flinchCount_ <= 0)
+		isFlinch_ = true;*/
 	changeState(State::FloorSearch);
 	count_ = 0;
 	auto direction = Vector2(
@@ -116,7 +124,7 @@ void WallAttack::wallMove(float deltaTime)
 
 	auto direction = Vector2(
 		moveDirections_[(count_ + 1) % 4],
-		moveDirections_[count_ % 4]
+		moveDirections_[(int)(count_ % 4)]
 		);
 	direction_ = direction;
 	// 仮
@@ -140,6 +148,7 @@ void WallAttack::wallAttack(float deltaTime)
 	if (floorName_ == "BossAreaFloor" || floorName_ == "MovelessFloor") {
 		isBodyHit_ = true;
 		isAttackHit_ = true;
+		isWallAttackEnd_ = true;
 		isAttackEnd_ = true;
 	}
 }
@@ -149,13 +158,18 @@ void WallAttack::setAttackSecond()
 {
 	// コンテナの要素数の指定
 	int aCount = 0;
-	auto hp = 50;
+	auto hp = (hp_ % 100) + 1;
+	flinchCount_ = 1;
 	// 体力が70未満の場合、カウントの値を変える
 	if (hp < 70) {
-		if (hp >= 30)
-			aCount = 1;
-		else if (hp <= 29)
+		if (hp >= 30) {
 			aCount = 2;
+			flinchCount_ = 2;
+		}
+		else if (hp < 30) {
+			aCount = 4;
+			flinchCount_ = 3;
+		}
 	}
 	// 乱数の取得
 	std::random_device random;

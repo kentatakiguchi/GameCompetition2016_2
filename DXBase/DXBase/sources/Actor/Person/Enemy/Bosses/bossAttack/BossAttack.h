@@ -26,6 +26,8 @@ public:
 	bool isAttackEnd();
 
 public:
+	// ボスの心臓の体力を設定します
+	void setHeartHP(const int hp);
 	// 位置を設定します
 	void setPosition(const Vector2& position);
 	// プレイヤーの位置を設定します
@@ -45,6 +47,8 @@ public:
 	void setIsBottom(bool isBottom);
 	// 触れている床の名前を設定します
 	void setFloorName(const char* name);
+	// ひるみカウントを返します
+	int getFlinchCount();
 	// 重力を使用するかを返します
 	bool IsUseGravity();
 	// プレイヤーの攻撃に当たるかを返します
@@ -53,6 +57,8 @@ public:
 	bool IsAttackHit();
 
 protected:
+	int hp_;					// 体力
+	int flinchCount_;			// ひるむまでの回数
 	float timer_;				// 時間
 	std::string floorName_;		// 床の名前
 	bool isAttackStart_;		// 攻撃を開始したか

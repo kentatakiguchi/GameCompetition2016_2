@@ -1,6 +1,8 @@
 #include "BossAttack.h"
 
-BossAttack::BossAttack() : 
+BossAttack::BossAttack() :
+	hp_(0),
+	flinchCount_(0),
 	timer_(0.0f),
 	floorName_(""),
 	isAttackStart_(false),
@@ -21,6 +23,8 @@ BossAttack::BossAttack() :
 }
 
 BossAttack::BossAttack(const Vector2 & position) : 
+	hp_(100),
+	flinchCount_(3),
 	timer_(0.0f),
 	floorName_("a"),
 	isAttackStart_(false),
@@ -30,7 +34,7 @@ BossAttack::BossAttack(const Vector2 & position) :
 	isWspHit_(false),
 	isPrevWspHit_(false),
 	position_(position),
-	direction_(Vector2::One),
+	direction_(Vector2::Left),
 	pPosition_(Vector2::One),
 	pDirection_(Vector2::One),
 	pNormDirection_(Vector2::One)
@@ -82,6 +86,12 @@ bool BossAttack::isAttackStart()
 bool BossAttack::isAttackEnd()
 {
 	return isAttackEnd_;
+}
+
+// ボスの心臓の体力を設定します
+void BossAttack::setHeartHP(const int hp)
+{
+	hp_ = hp;
 }
 
 // 位置を設定します
@@ -141,6 +151,12 @@ void BossAttack::setIsBottom(bool isBottom)
 void BossAttack::setFloorName(const char * name)
 {
 	floorName_ = name;
+}
+
+// ひるみカウントを返します
+int BossAttack::getFlinchCount()
+{
+	return flinchCount_;
 }
 
 // 重力を使用するかを返します

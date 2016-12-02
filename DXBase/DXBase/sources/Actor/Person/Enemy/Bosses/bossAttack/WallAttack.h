@@ -18,7 +18,7 @@ public:
 	WallAttack();
 	WallAttack(const Vector2& position);
 	// 攻撃
-	void attack(float deltaTime) override;
+	virtual void attack(float deltaTime) override;
 	// 攻撃行動のリフレッシュを行います
 	virtual void Refresh() override;
 
@@ -36,11 +36,14 @@ private:
 	// 状態の変更を行います
 	void changeState(State state);
 
-private:
+protected:
 	// int hp_;				// ボスの体力(心臓の体力)
 	int count_;				// 方向転換カウント
 	int aSecond_;			// 攻撃状態に遷移する秒数です
 	float speed_;			// 移動速度
+
+	bool isWallAttackEnd_;	// 壁攻撃が終わったか
+	//bool isFlinch_;			// ひるむか
 
 	State state_;			// 状態
 	// float stateTimer_;	// 状態の時間

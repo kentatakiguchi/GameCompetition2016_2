@@ -13,6 +13,7 @@
 #include "../Scene/StageClear/StageClearScene.h"
 #include "../Scene/GameClear/GameClearScene.h"
 #include "../Scene/BossStage/BossStage.h"
+#include "../Scene/SampleBossScene/SampleBossScene.h"
 
 MyGame::MyGame() : 
 	Game(WINDOW_NAME, SCREEN_SIZE.x, SCREEN_SIZE.y, WINDOW_RATE, WINDOW_MODE),

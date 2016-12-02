@@ -9,7 +9,7 @@ BossHeart::BossHeart(
 	initStateCount_(stateCount_),
 	hp_(hp * stateCount_),
 	initHp_(hp_),
-	prevHp_(bossHp_),
+	prevHp_(hp_),
 	bossHp_(bossHp),
 	timer_(0.0f),
 	isEntered_(false),
@@ -20,12 +20,15 @@ BossHeart::BossHeart(
 void BossHeart::onUpdate(float deltaTime)
 {
 	// デバッグ
-	/*if (InputMgr::GetInstance().IsKeyDown(KeyCode::N)) {
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::N)) {
 		hp_ -= 100;
 		bossHp_--;
 		stateCount_--;
 		initStatus();
-	}*/
+	}
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::B)) {
+		hp_ -= 50;
+	}
 
 	// 追い出しをfalseにする
 	isLetOut_ = false;

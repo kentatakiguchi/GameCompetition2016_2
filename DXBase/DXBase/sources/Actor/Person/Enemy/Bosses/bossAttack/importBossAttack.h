@@ -5,5 +5,7 @@
 #include "JumpAttack.h"
 #include "ThreeJumpAttack.h"
 #include "WallAttack.h"
+#include "PluralWallAttack.h"
+#include "DysonAttack.h"
 
 #endif

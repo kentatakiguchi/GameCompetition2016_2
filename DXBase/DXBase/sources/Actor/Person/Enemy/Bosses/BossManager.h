@@ -14,8 +14,12 @@ public:
 	BossManager();
 	// コンストラクタ
 	BossManager(const Vector2& position);
+	// 攻撃コンテナに攻撃を追加します
+	void addAttack(std::shared_ptr<BossAttack> attack);
+	// 攻撃の番号を変更します
+	void changeAttackNumber(const float number);
 	// 指定した番号の攻撃行動を行います
-	void attackMove(const float number, const float deltaTime);
+	void attackMove(const float deltaTime);
 	// 攻撃のリフレッシュを行います
 	void attackRefresh();
 	// 行動によって移動した位置を返します
@@ -28,8 +32,12 @@ public:
 	bool IsBodyHit();
 	// プレイヤーに当たるかを返します
 	bool IsAttackHit();
+	// ひるみカウントを返します
+	int getFlinchCount();
 
 public:
+	// ボスの心臓の体力を設定します
+	void setHeartHP(const int hp);
 	// ボスの位置を設定します
 	void setPosition(const Vector2& position);
 	// プレイヤーの位置を設定します

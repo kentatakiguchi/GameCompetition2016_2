@@ -34,7 +34,7 @@ void PlayerSearchObj::onDraw() const
 		"ƒvƒŒƒCƒ„[‚Æ‚Ìü•ª:X%d, Y%d",
 		(int)position_.x,
 		(int)position_.y);*/
-	body_.draw(inv_);
+	//body_.draw(inv_);
 }
 
 void PlayerSearchObj::onCollide(Actor & actor)

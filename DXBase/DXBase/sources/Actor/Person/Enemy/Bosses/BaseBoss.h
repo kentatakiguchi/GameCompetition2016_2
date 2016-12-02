@@ -66,7 +66,7 @@ protected:
 	// 攻撃状態の変更を行います
 	void changeAttackState(AttackState aState, unsigned int motion);
 	// 待機状態
-	void idel(float deltaTime);
+	virtual void idel(float deltaTime);
 	// 攻撃行動
 	void attack(float deltaTime);
 	// ひるみ状態
@@ -110,6 +110,7 @@ protected:
 	bool isSceneEnd_;			// シーンを終了させるか
 
 	std::string stateString_;	// 状態の文字列（デバッグ用）
+	int handle_;				// デバッグハンドル
 
 	FloorSearchPoint* wspObj_;	// 壁捜索オブジェクト
 	BossEntry* entryObj_;		// ボス入口オブジェクト
@@ -130,8 +131,6 @@ private:
 	BossGaugeUI* bossGaugeUI_;	// ボスの体力
 
 	float top_, bottom_, right_, left_;
-
-	int handle_;
 
 	// クランプ用の位置(仮)
 	const Vector2 FIELD_SIZE = Vector2(

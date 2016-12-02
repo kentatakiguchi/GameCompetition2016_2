@@ -1,6 +1,5 @@
 #include "BossManager.h"
 #include "bossAttack/BossAttack.h"
-#include "bossAttack/importBossAttack.h"
 
 BossManager::BossManager() : 
 	attackNumber_(0),
@@ -23,15 +22,29 @@ BossManager::BossManager(const Vector2 & position) :
 	// bossAttackContainer_.clear();
 	// 攻撃行動の追加
 	// bossAttackContainer_.push_back(std::make_shared<JumpAttack>(position));
-	bossAttackContainer_.push_back(std::make_shared<ThreeJumpAttack>(position));
-	bossAttackContainer_.push_back(std::make_shared<WallAttack>(position));
+	//bossAttackContainer_.push_back(std::make_shared<ThreeJumpAttack>(position));
+	//bossAttackContainer_.push_back(std::make_shared<WallAttack>(position));
+	////bossAttackContainer_.push_back(std::make_shared<PluralWallAttack>(position));
+	//bossAttackContainer_.push_back(std::make_shared<DysonAttack>(, position));
+}
+
+// 攻撃コンテナに攻撃を追加します
+void BossManager::addAttack(std::shared_ptr<BossAttack> attack)
+{
+	bossAttackContainer_.push_back(attack);
+}
+
+// 攻撃の番号を変更します
+void BossManager::changeAttackNumber(const float number)
+{
+	// 番号の変更
+	attackNumber_ = number;
 }
 
 // 指定した番号の攻撃行動を行います
-void BossManager::attackMove(const float number, const float deltaTime)
+void BossManager::attackMove(const float deltaTime)
 {
 	// 攻撃
-	attackNumber_ = number;
 	bossAttackContainer_[attackNumber_]->update(deltaTime);
 	// 攻撃が終わったらの処理を、値を返したときに行う
 }
@@ -70,6 +83,18 @@ bool BossManager::IsBodyHit()
 bool BossManager::IsAttackHit()
 {
 	return false;
+}
+
+// ひるみカウントを返します
+int BossManager::getFlinchCount()
+{
+	return bossAttackContainer_[attackNumber_]->getFlinchCount();
+}
+
+// ボスの心臓の体力を設定します
+void BossManager::setHeartHP(const int hp)
+{
+	bossAttackContainer_[attackNumber_]->setHeartHP(hp);
 }
 
 // ボスの位置を設定します
