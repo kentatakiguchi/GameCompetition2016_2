@@ -4,7 +4,7 @@ BossHeart::BossHeart(
 	IWorld * world, const Vector2 & position,
 	const int hp, const int bossHp) :
 	Actor(world, "BossEntry", position, 
-		CollisionBase(const_cast<Vector2&>(position), 10.0f)),
+		CollisionBase(const_cast<Vector2&>(position), 32.0f)),
 	stateCount_(3),
 	initStateCount_(stateCount_),
 	hp_(hp * stateCount_),
@@ -19,6 +19,14 @@ BossHeart::BossHeart(
 
 void BossHeart::onUpdate(float deltaTime)
 {
+	// デバッグ
+	/*if (InputMgr::GetInstance().IsKeyDown(KeyCode::N)) {
+		hp_ -= 100;
+		bossHp_--;
+		stateCount_--;
+		initStatus();
+	}*/
+
 	// 追い出しをfalseにする
 	isLetOut_ = false;
 	// 前回の体力を更新

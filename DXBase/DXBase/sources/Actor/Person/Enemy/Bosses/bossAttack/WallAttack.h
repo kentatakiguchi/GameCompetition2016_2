@@ -2,7 +2,9 @@
 #define WALL_ATTACK_H_
 
 #include "BossAttack.h"
+#include <vector>
 
+// 壁移動攻撃
 class WallAttack : public BossAttack {
 private:
 	enum class State {
@@ -14,7 +16,7 @@ private:
 
 public:
 	WallAttack();
-	WallAttack(const Vector2& position, const float heartHp);
+	WallAttack(const Vector2& position);
 	// 攻撃
 	void attack(float deltaTime) override;
 	// 攻撃行動のリフレッシュを行います
@@ -29,12 +31,26 @@ private:
 	void wallMove(float deltaTime);
 	// 壁攻撃状態です
 	void wallAttack(float deltaTime);
+	// 壁移動する時間を決定します
+	void setAttackSecond();
 	// 状態の変更を行います
 	void changeState(State state);
 
 private:
-	int hp_;		// ボスの体力(心臓の体力)
-	State state_;	// 状態
+	// int hp_;				// ボスの体力(心臓の体力)
+	int count_;				// 方向転換カウント
+	int aSecond_;			// 攻撃状態に遷移する秒数です
+	float speed_;			// 移動速度
+
+	State state_;			// 状態
+	// float stateTimer_;	// 状態の時間
+	Vector2 prevPlayerDistance_;
+	// 壁移動時間コンテナ
+	typedef std::vector<int> MoveTimeContainer;
+	MoveTimeContainer moveTimes_;
+	// 方向コンテナ
+	typedef std::vector<float> MoveDirectionContainer;
+	MoveDirectionContainer moveDirections_;
 };
 
 #endif

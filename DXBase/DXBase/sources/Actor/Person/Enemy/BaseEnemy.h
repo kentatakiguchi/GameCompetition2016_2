@@ -139,6 +139,7 @@ protected:
 	float speed_;					// 移動速度
 	float initSpeed_;				// 初期の移動速度
 	float scale_;					// 大きさ
+	float playerLength_;			// プレイヤーとの距離
 	float discoveryLenght_;			// プレイヤーに気づく距離
 	float playerLostLenght_;		// プレイヤーを見失う距離
 	Vector2 direction_;				// 方向
@@ -157,7 +158,6 @@ protected:
 	float stateTimer_;				// 状態タイマ
 	std::string stateString_;		// 状態の文字列（デバッグ用）
 	State state_;					// 状態
-	Vector2 target_;				// ターゲットの位置
 	Vector2 discoveryPosition_;		// 発見したときの位置
 
 	Animation2D animation_;			// アニメーション

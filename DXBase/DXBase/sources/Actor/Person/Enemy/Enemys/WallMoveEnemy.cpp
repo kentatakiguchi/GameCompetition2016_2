@@ -19,10 +19,6 @@ WallMoveEnemy::WallMoveEnemy(
 	// 重力を使わない かつ 無敵
 	isUseGravity_ = false;
 	isInvincible_ = true;
-
-	for (int i = 0; i != fspScaleContainer_.size(); i++) {
-		isGCont.push_back(enemyManager_.getWSPObj(i)->isGround());
-	}
 }
 
 void WallMoveEnemy::onUpdate(float deltaTime)
@@ -36,8 +32,6 @@ void WallMoveEnemy::onUpdate(float deltaTime)
 	// 壁捜索オブジェクトの位置更新
 	for (int i = 0; i != fspScaleContainer_.size(); i++) {
 		enemyManager_.getWSPObj(i)->setPosition(position_);
-		// 壁に当たっているかのコンテナに追加
-		isGCont[i] = enemyManager_.getWSPObj(i)->isGround();
 	}
 	//// デバッグ表示のためのリザルト
 	//result_ = enemyManager_.eachWSPObj();
@@ -52,13 +46,6 @@ void WallMoveEnemy::onDraw() const
 		vec3Pos.x - scale_ / 2.0f, vec3Pos.y - scale_ / 2.0f,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
 	//// デバッグ
-	/*auto addPos = Vector2::Zero;
-	for (int i = 0; i != fspScaleContainer_.size(); i++) {
-		addPos.y += 50.0f;
-		DrawFormatStringToHandle(50, 50 + addPos.y, GetColor(255, 255, 255),
-			handle_, "ボックスと触れているか(%d):%d",
-			i, isGCont[i]);
-	}*/
 	//DrawFormatString(
 	//	25, 350, GetColor(255, 255, 255),
 	//	"ボックスと触れているかの合計値:%d",

@@ -10,8 +10,10 @@ BossEntry::BossEntry(
 			const_cast<Vector2&>(position) + 
 			const_cast<Vector2&>(addPosition),
 			bodyScale)),
+	blockTimer_(0.0f),
 	isEntry_(false),
 	isEntered_(false),
+	isBlock_(false),
 	direction_(1.0f, -1.0f),
 	bossPosition_(position),
 	addPosition_(addPosition)
@@ -24,6 +26,13 @@ void BossEntry::onUpdate(float deltaTime)
 		addPosition_.x * direction_.x,
 		addPosition_.y * direction_.y);
 	position_ = bossPosition_ + addPos;
+
+	if (isBlock_)
+		blockTimer_ += deltaTime;
+	else blockTimer_ = 0.0f;
+
+	// bool系の更新
+	isBlock_ = false;
 }
 
 void BossEntry::onDraw() const
@@ -39,7 +48,12 @@ void BossEntry::onDraw() const
 
 void BossEntry::onCollide(Actor & actor)
 {
-	// 中に入れる状態のみ当たる
+	// プレイヤーをつないでいる線に当たったら(口が防がれたら)
+	if (actor.getName() == "BodyPoint") {
+		isBlock_ = true;
+	}
+
+	// 中に入れる状態のみ、プレイヤーの本体に当たる
 	if (!isEntry_) return;
 	if (actor.getName() == "PlayerBody1" || actor.getName() == "PlayerBody2") {
 		// プレイヤーの位置を変更

@@ -15,8 +15,8 @@
 
 BossStage::BossStage(SceneDataKeeper* keeper) :
 	nextScene_(Scene::GameOver),
-	isStopped_(false),
-	boss_(nullptr){
+	isStopped_(false){
+	//boss_(nullptr){
 	isEnd_ = false;
 	keeper_ = keeper;
 	name_ = "bossStage01";
@@ -48,26 +48,13 @@ void BossStage::start() {
 	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), 
 		gener.findStartPoint("./resources/file/" + name_ + ".csv")));
-	auto boss = std::make_shared<BaseBoss>(
+	/*auto boss = std::make_shared<BaseBoss>(
 		world_.get(), Vector2(1000, 200), 128.0f / 2.0f);
 	world_->addActor(ActorGroup::Enemy, boss);
-	/*world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(
-		world_.get(), Vector2(150, 200), Vector2::One));*/
-
-	//auto posY = 200;
-	//auto degrees = 0.0f;
-	/*for (int i = 0; i != 4; i++) {
-		world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(
-			world_.get(), Vector2(CHIPSIZE * 2, posY), degrees));
-		posY += CHIPSIZE;
-		degrees += 90.0f;
-	}*/
-	boss_ = boss.get();
-	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
-	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
+	boss_ = boss.get();*/
 
 	gener.create("./resources/file/" + name_ + ".csv");
-	gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
+	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
 
 
 	status_ = Status(10);

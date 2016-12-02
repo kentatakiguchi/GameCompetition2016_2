@@ -24,6 +24,7 @@ BossManager::BossManager(const Vector2 & position) :
 	// 攻撃行動の追加
 	// bossAttackContainer_.push_back(std::make_shared<JumpAttack>(position));
 	bossAttackContainer_.push_back(std::make_shared<ThreeJumpAttack>(position));
+	bossAttackContainer_.push_back(std::make_shared<WallAttack>(position));
 }
 
 // 指定した番号の攻撃行動を行います
@@ -47,10 +48,28 @@ Vector2 BossManager::getMovePosition()
 	return bossAttackContainer_[attackNumber_]->getMovePosition();
 }
 
+// 攻撃が開始したかを返します
+bool BossManager::isAttackStart()
+{
+	return bossAttackContainer_[attackNumber_]->isAttackStart();
+}
+
 // 攻撃が終了したかを返します
 bool BossManager::isAttackEnd()
 {
 	return bossAttackContainer_[attackNumber_]->isAttackEnd();
+}
+
+// プレイヤーの攻撃に当たるかを返します
+bool BossManager::IsBodyHit()
+{
+	return false;
+}
+
+// プレイヤーに当たるかを返します
+bool BossManager::IsAttackHit()
+{
+	return false;
 }
 
 // ボスの位置を設定します
@@ -63,6 +82,7 @@ void BossManager::setPosition(const Vector2& position)
 void BossManager::setPlayerPosition(const Vector2 & position)
 {
 	playerPosition_ = position;
+	bossAttackContainer_[attackNumber_]->setPlayerPosition(position);
 }
 
 // 攻撃前の位置を決定します
@@ -86,9 +106,9 @@ Vector2 BossManager::getDirection(const Vector2 & otherPosition)
 	else direction.x = 0;
 	// Y
 	if (distance.y < 0)
-		direction.y = 1;
-	else if (distance.y > 0)
 		direction.y = -1;
+	else if (distance.y > 0)
+		direction.y = 1;
 	else direction.y = 0;
 
 	return direction;
@@ -98,7 +118,23 @@ Vector2 BossManager::getPlayerDirection()
 {
 	// bossAttackに方向を設定する
 	auto direction = getDirection(playerPosition_);
-	bossAttackContainer_[attackNumber_]->setDirection(direction);
+	bossAttackContainer_[attackNumber_]->setPlayerDirection(direction);
+	return direction;
+}
+
+// 指定したオブジェクトとの方向を正規化ベクトルで取得します
+Vector2 BossManager::getNormalizeDirection(const Vector2 & otherPosition)
+{
+	auto distance = otherPosition - bossPosition_;
+	auto direction = distance.Normalize();
+	return direction;
+}
+
+// プレイヤーとの方向を正規化ベクトルで取得します
+Vector2 BossManager::getPlayerNormalizeDirection()
+{
+	auto direction = getNormalizeDirection(playerPosition_);
+	bossAttackContainer_[attackNumber_]->setPlayerNormalizeDirection(direction);
 	return direction;
 }
 
@@ -111,4 +147,27 @@ void BossManager::setIsGround(bool isGround)
 void BossManager::setIsBottom(bool isBottom)
 {
 	bossAttackContainer_[attackNumber_]->setIsBottom(isBottom);
+}
+
+// ボスが当たった床の名前を返します
+void BossManager::setFloorName(const char * name)
+{
+	bossAttackContainer_[attackNumber_]->setFloorName(name);
+}
+
+// 攻撃中に重力を使用するかを返します
+bool BossManager::IsUseGravity()
+{
+	return bossAttackContainer_[attackNumber_]->IsUseGravity();
+}
+
+// 壁捜索オブジェクトが当たったかを設定します
+void BossManager::setIsWallHit(bool isHit)
+{
+	bossAttackContainer_[attackNumber_]->setIsWallHit(isHit);
+}
+
+Vector2 BossManager::getWallMoveDirection()
+{
+	return bossAttackContainer_[attackNumber_]->getMoveDirection();
 }

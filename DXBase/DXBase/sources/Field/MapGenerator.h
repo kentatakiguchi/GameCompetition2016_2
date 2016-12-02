@@ -22,6 +22,7 @@
 #include"SticklessFloor.h"
 #include"BossAreaFloor.h"
 #include"../Actor/Person/Enemy/ImportEnemys.h"
+#include"../Actor/Person/Enemy/Bosses/ImportBosses.h"
 #include"../ResourceLoader/ResourceLoader.h"
 
 class MapGenerator {
@@ -143,7 +144,7 @@ public:
 				}
 				if (reader_.geti(rowN, colN) == 53) {
 					// ゴルドエネミー
-					world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2),  Vector2::Up));
+					world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2),  Vector2::Left));
 				}
 				if (reader_.geti(rowN, colN) == 54) {
 					// ハネクリボーエネミー
@@ -173,6 +174,15 @@ public:
 				if (reader_.geti(rowN, colN) == 61) {
 					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 270));
 				}
+				if (reader_.geti(rowN, colN) == 65) {
+					world_->addActor(ActorGroup::Enemy, std::make_shared<BaseBoss>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
+				}
+				if (reader_.geti(rowN, colN) == 66) {
+					world_->addActor(ActorGroup::Enemy, std::make_shared<BossBody>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
+				}
+				/*if (reader_.geti(rowN, colN) == 67) {
+					world_->addActor(ActorGroup::Enemy, std::make_shared<BossHeart>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
+				}*/
 				if (reader_.geti(rowN, colN) == 100) {
 					if (segmentChecker[reader_.geti(rowN, colN)]) {
 						segmentChecker[reader_.geti(rowN, colN)] = false;

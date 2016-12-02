@@ -15,6 +15,7 @@ class BossEntry;
 class BossHeart;
 class BossGaugeUI;
 
+// ボスクラス
 class BaseBoss : public Actor {
 protected:
 	// モーション番号
@@ -46,7 +47,7 @@ protected:
 	};
 
 public:
-	BaseBoss(IWorld* world, const Vector2&  position, const float bodyScale);
+	BaseBoss(IWorld* world, const Vector2&  position, const float bodyScale = 128.0f / 2.0f);
 	~BaseBoss();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
@@ -110,7 +111,7 @@ protected:
 
 	std::string stateString_;	// 状態の文字列（デバッグ用）
 
-	FloorSearchPoint* fspObj_;	// 床捜索オブジェクト
+	FloorSearchPoint* wspObj_;	// 壁捜索オブジェクト
 	BossEntry* entryObj_;		// ボス入口オブジェクト
 	BossHeart* heartObj_;		// ボス心臓オブジェクト
 	BossManager bossManager_;	// ボスマネージャー
@@ -119,7 +120,8 @@ protected:
 	AttackStateContainer asContainer_;
 
 private:
-	Vector2 playerPastPosition_;
+	Vector2 playerPastPosition_;	// プレイヤーの過去の位置
+	Vector2 direction_;				// 方向
 	ActorPtr player_;
 
 	State state_;				// 状態

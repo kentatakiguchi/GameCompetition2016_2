@@ -25,8 +25,11 @@ public:
 	void letOut();
 
 private:
+	float blockTimer_;		// 口がふせがれた時間
 	bool isEntry_;			// 体内に入れるか
 	bool isEntered_;		// 体内に入ったか
+	bool isBlock_;			// 口がふせがれたか
+	bool isFlinch_;			// 気絶するか
 	Vector2 direction_;		// 方向
 	Vector2 bossPosition_;	// ボスの位置
 	Vector2 addPosition_;	// 追加位置

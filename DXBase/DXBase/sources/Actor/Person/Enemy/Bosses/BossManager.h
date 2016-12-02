@@ -20,8 +20,14 @@ public:
 	void attackRefresh();
 	// 行動によって移動した位置を返します
 	Vector2 getMovePosition();
+	// 攻撃が開始したかを返します
+	bool isAttackStart();
 	// 攻撃が終了したかを返します
 	bool isAttackEnd();
+	// プレイヤーの攻撃に当たるかを返します
+	bool IsBodyHit();
+	// プレイヤーに当たるかを返します
+	bool IsAttackHit();
 
 public:
 	// ボスの位置を設定します
@@ -34,10 +40,22 @@ public:
 	Vector2 getDirection(const Vector2& otherPosition);
 	// プレイヤーとの方向を単位ベクトルで取得します
 	Vector2 getPlayerDirection();
+	// 指定したオブジェクトとの方向を正規化ベクトルで取得します
+	Vector2 getNormalizeDirection(const Vector2& otherPosition);
+	// プレイヤーとの方向を正規化ベクトルで取得します
+	Vector2 getPlayerNormalizeDirection();
 	// ボスが接地しているかを設定します
 	void setIsGround(bool isGround);
 	// ボスが壁の下側に当たったかを設定します
 	void setIsBottom(bool isBottom);
+	// ボスが当たった床の名前を返します
+	void setFloorName(const char* name);
+	// 攻撃中に重力を使用するかを返します
+	bool IsUseGravity();
+	// 壁捜索オブジェクトが当たったかを設定します
+	void setIsWallHit(bool isHit);
+	// 壁の移動方向
+	Vector2 getWallMoveDirection();
 
 private:
 	int attackNumber_;			// 攻撃番号

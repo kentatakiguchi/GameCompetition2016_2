@@ -8,7 +8,7 @@
 
 class FloorSearchPoint : public Actor {
 public:
-	// コンストラクタ(短形)
+	// コンストラクタ(矩形)
 	FloorSearchPoint(
 		IWorld* world, 
 		const Vector2& enemyPosition,

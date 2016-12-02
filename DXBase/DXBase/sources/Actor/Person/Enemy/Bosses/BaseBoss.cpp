@@ -7,6 +7,7 @@
 #include "BossEntry.h"
 #include "BossHeart.h"
 #include "../FloorSearchPoint.h"
+#include "Tornado.h"
 // ボスの体力表示
 #include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
 
@@ -14,26 +15,27 @@
 BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodyScale) :
 	Actor(world, "BaseBoss", position,
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
-	dp_(100),
+	dp_(30),
 	initDp_(dp_),
 	hp_(3),
-	flinchCount_(0),
+	flinchCount_(3),
 	// initHp_(hp_),
 	stateTimer_(0.0f),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
 	isGround_(false),
 	isBottomHit_(false),
-	isBodyHit_(false),
+	isBodyHit_(true),
 	isAttackHit_(true),
 	isSceneEnd_(true),
 	stateString_("待機"),
 	// bossManager_(nullptr),
 	playerPastPosition_(Vector2::Zero),
+	direction_(Vector2::One),
 	player_(nullptr),
 	state_(State::Idel),
 	attackState_(AttackState::JumpAttack),
-	fspObj_(nullptr),
+	wspObj_(nullptr),
 	entryObj_(nullptr),
 	heartObj_(nullptr),
 	bossGaugeUI_(nullptr),
@@ -44,17 +46,19 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	// コンテナに追加(攻撃順に追加する)
 	asContainer_.push_back(AttackState::JumpAttack);
 	asContainer_.push_back(AttackState::WallAttack);
+	
 	asContainer_.push_back(AttackState::SpeacialAttack);
 	// ボスマネージャー
 	/*auto manager = std::make_shared<BossManager>(position);
 	bossManager_ = &*manager;*/
 	// 床捜索オブジェクト
-	auto fspObj = std::make_shared<FloorSearchPoint>(
+	auto wspObj = std::make_shared<FloorSearchPoint>(
 		world_, position_,
-		Vector2(0.0f, bodyScale + 1.0f), 0.1f
-		);
-	world_->addActor(ActorGroup::Enemy, fspObj);
-	fspObj_ = &*fspObj;
+		Vector2(
+			body_.GetCircle().getRadius(),
+			body_.GetCircle().getRadius()), 10.0f);
+	world_->addActor(ActorGroup::Enemy, wspObj);
+	wspObj_ = &*wspObj;
 	// ボス入口オブジェクト
 	auto entryObj = std::make_shared<BossEntry>(
 		world_, position_, 
@@ -65,7 +69,7 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	// ボス心臓オブジェクト
 	auto heartHP = 100;
 	auto heartObj = std::make_shared<BossHeart>(
-		world_, Vector2(position_.x + 128.0f, position_.y -32.0f), heartHP, hp_);
+		world_, Vector2(1080.0f, 0.0f), heartHP, hp_);
 	world_->addActor(ActorGroup::Enemy, heartObj);
 	heartObj_ = &*heartObj;
 	// ボスの体力ゲージ
@@ -73,6 +77,10 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	world_->addUIActor(bossUI);
 	bossGaugeUI_ = bossUI.get();
 	bossGaugeUI_->SetHp(heartObj_->getHeartHp() * hp_);
+
+	// ボスの竜巻攻撃(仮)
+	world_->addActor(ActorGroup::Enemy,
+		std::make_shared<Tornado>(world_, Vector2::Zero, CHIPSIZE));
 }
 
 BaseBoss::~BaseBoss()
@@ -81,7 +89,6 @@ BaseBoss::~BaseBoss()
 
 void BaseBoss::onUpdate(float deltaTime)
 {
-
 	clampList_.clear();
 
 	// 補間タイマ(最大値１)の更新
@@ -92,13 +99,14 @@ void BaseBoss::onUpdate(float deltaTime)
 	bossGaugeUI_->SetHp(heartObj_->getHeartHp());
 
 	entryObj_->setBossPosition(position_);
+	wspObj_->setPosition(position_);
+	// wspObj_->setDirection(direction_);
 	// 状態の更新
 	updateState(deltaTime);
 	// 接地(仮)
 	bossManager_.setIsGround(isGround_);
 	bossManager_.setIsBottom(isBottomHit_);
 
-	fspObj_->setPosition(position_);
 	/*entryObj_->setBossPosition(position_);*/
 	// entryObj_->setDirection(direction_);
 	//position_.y = MathHelper::Clamp(position_.y, -1000, 500.0f);
@@ -153,6 +161,7 @@ void BaseBoss::onCollide(Actor & actor)
 	if (actorName == "MovelessFloor") {
 		// 位置の補間
 		groundClamp(actor);
+		bossManager_.setFloorName(actorName.c_str());
 		return;
 	}
 	// 空中に浮かぶ床に当たったら、ひるみカウントを加算する
@@ -161,6 +170,7 @@ void BaseBoss::onCollide(Actor & actor)
 		if (state_ == State::Attack)
 			flinchCount_++;
 		groundClamp(actor);
+		bossManager_.setFloorName(actorName.c_str());
 		return;
 	}
 	// 特定の状態ではプレイヤーに触れても何も起こらないようにする
@@ -234,19 +244,25 @@ void BaseBoss::idel(float deltaTime)
 	stateString_ = "待機状態";
 	// プレイヤーが取得できていれば、エネミーマネージャーに位置などを入れる
 	setBMStatus();
-
+	// 攻撃が当たるかの判定を入れる
+	isAttackHit_ = true;
+	isBodyHit_ = true;
 
 	// デバッグ
-	auto speed = 4.0f;
-	auto deltaTimer = deltaTime * 60.0f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L))
+	/*if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
+		changeState(State::Flinch, BOSS_DEAD);
+	}*/
+
+	//auto speed = 4.0f;
+	//auto deltaTimer = deltaTime * 60.0f;
+	/*if (InputMgr::GetInstance().IsKeyOn(KeyCode::L))
 		position_.x += speed * deltaTimer;
 	else if (InputMgr::GetInstance().IsKeyOn(KeyCode::J))
 		position_.x += -speed * deltaTimer;
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::I))
 		position_.y += -speed * deltaTimer;
 	else if (InputMgr::GetInstance().IsKeyOn(KeyCode::K))
-		position_.y += speed * deltaTimer;
+		position_.y += speed * deltaTimer;*/
 
 	// 一定時間経過で攻撃状態に遷移
 	if (stateTimer_ >= 5.0f) {
@@ -257,7 +273,7 @@ void BaseBoss::idel(float deltaTime)
 		return;
 	}
 	// 重力
-	if (!isGround_) {
+	if (!isGround_ && bossManager_.IsUseGravity()) {
 		position_.y += 9.8f * (1.0f);// * 60.0f);
 	}
 }
@@ -270,6 +286,9 @@ void BaseBoss::attack(float deltaTime)
 	case AttackState::WallAttack: wallAttack(deltaTime); break;
 	case AttackState::SpeacialAttack: specialAttack(deltaTime); break;
 	}
+	// 攻撃が当たるかの判定を入れる
+	isAttackHit_ = bossManager_.IsAttackHit();
+	isBodyHit_ = bossManager_.IsBodyHit();
 
 	// 攻撃が終了したら、待機状態に遷移
 	//if (bossManager_->isAttackEnd()) {
@@ -309,6 +328,7 @@ void BaseBoss::flinch(float deltaTime)
 	changeState(State::Idel, BOSS_IDLE);
 	entryObj_->setIsEntry(false);
 	dp_ = initDp_;
+	flinchCount_ = 3;
 }
 
 void BaseBoss::deadMove(float deltaTime)
@@ -341,13 +361,31 @@ void BaseBoss::wallAttack(float deltaTime)
 	/*isBodyHit_ = false;
 	isAttackHit_ = false;*/
 	stateString_ = "壁攻撃";
-	// bossManager_.wallAttack(deltaTime);
+	bossManager_.attackMove(ATTACK_WALLATTACK_NUMBER, deltaTime);
+	position_ = bossManager_.getMovePosition();
+	// 攻撃動作中なら、壁捜索オブジェクトなどの判定をONにする
+	if (bossManager_.isAttackStart()) {
+		setBMStatus();
+		bossManager_.getPlayerNormalizeDirection();
+	}
+	// ジャンプ攻撃が終わったら、待機状態にする
+	if (bossManager_.isAttackEnd()) {
+		flinchCount_ = 0;
+		if (flinchCount_ == 0)
+			changeState(State::Flinch, BOSS_FLINCH);
+		else changeState(State::Idel, BOSS_IDLE);
+		//isBodyHit_ = true;
+		bossManager_.attackRefresh();
+	}
 }
 
 void BaseBoss::specialAttack(float deltaTime)
 {
 	stateString_ = "スペシャルな攻撃";
 	// bossManager_.specialAttack(deltaTime);
+	/*if (entryObj_->isBlock()) {
+
+	}*/
 }
 
 void BaseBoss::setTimer(float deltaTime)
@@ -363,6 +401,17 @@ void BaseBoss::setBMStatus()
 		bossManager_.setPosition(position_);
 		// 方向を入れる
 		auto direction = bossManager_.getPlayerDirection();
+		//wspObj_->setDirection(direction);
+		// 壁に当たっている場合
+		bossManager_.setIsWallHit(wspObj_->isGround());
+		if (wspObj_->isGround()) {
+			wspObj_->setDirection(bossManager_.getWallMoveDirection());
+		}
+		wspObj_->setDirection(bossManager_.getWallMoveDirection());
+		/*if (wspObj_->isGround()) {
+			
+		}*/
+
 		// 戻す y = -1.0fに
 		// direction.y = -1.0f;
 		direction.y = 1.0f;
@@ -432,7 +481,7 @@ void BaseBoss::groundClamp(Actor& actor)
 		}
 	}
 	// X方向に位置を補間する
-	if (top < 0 &&
+	else if (top < 0 &&
 		bottom < 0) {
 		// 左に補間
 		if (left > 0) {
@@ -445,8 +494,10 @@ void BaseBoss::groundClamp(Actor& actor)
 			isHit = true;
 		}
 	}
-
+	bossManager_.setPosition(position_);
+	bossManager_.prevPosition();
 	if (isHit) return;
+
 	// 現在の判定
 	pos = position_;
 	// 外積を使って、縦の長さを計算する
@@ -462,13 +513,13 @@ void BaseBoss::groundClamp(Actor& actor)
 	if (left < 0 &&
 		right < 0) {
 		// 上に補間
-		if (top > -actor.getBody().GetBox().getHeight() / 2.0f + 1.0f) {
+		if (top > -actor.getBody().GetBox().getHeight() / 2.0f) {
 			position_.y = topLeft.y - body_.GetCircle().getRadius();
 			// 接地
 			isGround_ = true;
 		}
 		// 下に補間
-		if (bottom > -actor.getBody().GetBox().getHeight() / 2.0f + 1.0f) {
+		if (bottom > -actor.getBody().GetBox().getHeight() / 2.0f) {
 			position_.y = bottomRight.y + body_.GetCircle().getRadius();
 			// ブロックの下側に当たった
 			isBottomHit_ = true;
@@ -478,12 +529,14 @@ void BaseBoss::groundClamp(Actor& actor)
 	if (top < 0 &&
 		bottom < 0) {
 		// 左に補間
-		if (left > -actor.getBody().GetBox().getWidth() / 2.0f + 1.0f)
+		if (left > -actor.getBody().GetBox().getWidth() / 2.0f)
 			position_.x = bottomLeft.x - body_.GetCircle().getRadius();
 		// 右に補間
-		if (right > -actor.getBody().GetBox().getWidth() / 2.0f + 1.0f)
+		if (right > -actor.getBody().GetBox().getWidth() / 2.0f)
 			position_.x = topRight.x + body_.GetCircle().getRadius();
 	}
+	bossManager_.setPosition(position_);
+	bossManager_.prevPosition();
 
 	// 60
 	// 160

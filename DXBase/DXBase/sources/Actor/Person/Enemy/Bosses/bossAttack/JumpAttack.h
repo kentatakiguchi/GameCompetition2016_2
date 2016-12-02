@@ -26,6 +26,10 @@ protected:
 	float initRecastTimer_;	// 再行動するまでの時間(初期値)
 	bool isJump_;			// ジャンプをしたか
 	bool isJumpEnd_;		// ジャンプ攻撃が終了したか
+	bool isIdel_;			// ジャンプ後の待機状態か
+
+private:
+	Vector2 prevPlayerDistance_;
 };
 
 #endif

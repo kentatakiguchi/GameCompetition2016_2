@@ -10,7 +10,7 @@
 
 class World;
 class BackGraundManager;
-class BaseBoss;
+//class BaseBoss;
 
 class BossStage : public IScene {
 public:
@@ -31,7 +31,7 @@ private:
 	Status status_;
 
 	BackGraundManager* backManager;
-	BaseBoss* boss_;				// ボス
+	//BaseBoss* boss_;				// ボス
 
 	Scene nextScene_;
 

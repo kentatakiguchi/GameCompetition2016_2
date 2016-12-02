@@ -27,11 +27,6 @@ private:
 
 private:
 	Vector2 addScale_;	// 追加の大きさ
-	// 床に触れているかのコンテナ
-	typedef std::vector<bool> IsGroundContainer;
-	IsGroundContainer isGCont;
-
-	// int result_;	// デバッグ
 };
 
 #endif

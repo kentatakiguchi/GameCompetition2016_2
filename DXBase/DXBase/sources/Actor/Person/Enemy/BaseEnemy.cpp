@@ -23,6 +23,7 @@ BaseEnemy::BaseEnemy(
 	initSpeed_(speed_),
 	scale_(bodyScale),
 	direction_(direction),
+	playerLength_(0.0f),
 	isPlayer_(false),
 	isMove_(false),
 	isBlockCollideBegin_(false),
@@ -98,6 +99,10 @@ void BaseEnemy::Initialize()
 
 void BaseEnemy::onUpdate(float deltaTime)
 {
+	playerLength_ = enemyManager_.getPlayerLength();
+	if (playerLength_ >=
+		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
+		return;
 	// 子供用のupdate(親のupdate前に行います)
 	beginUpdate(deltaTime);
 	// デルタタイムの値を設定する
@@ -123,6 +128,9 @@ void BaseEnemy::onUpdate(float deltaTime)
 
 void BaseEnemy::onDraw() const
 {
+	if (playerLength_ >=
+		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
+		return;
 	auto stateChar = stateString_.c_str();
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
@@ -134,31 +142,7 @@ void BaseEnemy::onDraw() const
 	DrawString(
 		vec3Pos.x - scale_, vec3Pos.y - 20 - scale_,
 		stateChar, GetColor(255, 255, 255));
-
 	// デバッグ
-	/*DrawFormatString(25, 25, GetColor(255, 255, 255), "body x:%d,y:%d", (int)body_.GetBox().component_.point[0].x, (int)body_.GetBox().component_.point[0].y);
-	DrawFormatString(25, 50, GetColor(255, 255, 255), "pos  x:%d,y:%d", (int)position_.x, (int)position_.y);
-	DrawFormatString(25, 75, GetColor(255, 255, 255), "プレイヤーとの距離:%d", (int)distance_);*/
-	DrawFormatStringToHandle(
-		50, 50, GetColor(255, 255, 255),
-		handle_, getName().c_str());
-	/*DrawFormatStringToHandle(50, 50, GetColor(255, 255, 255),
-		handle_, "ブロックとの位置=>上:%d 下:%d", (int)testTop, (int)testBottom);
-	DrawFormatStringToHandle(50, 100, GetColor(255, 255, 255),
-		handle_, "ブロックとの位置=>右:%d 左:%d", (int)testRight, (int)testLeft);
-	DrawFormatStringToHandle(50, 150, GetColor(255, 255, 255),
-		handle_, "当たっているブロックの数:%d", collideCount_);*/
-	/*DrawFormatStringToHandle(50, 150, GetColor(255, 255, 255),
-		handle_, "接地しているか:%d", (int)isGround_);*/
-	/*DrawFormatString(25, 200, GetColor(255, 255, 255),
-		"ブロックとの位置=>右:%d 左:%d",
-		(int)testRight, (int)testLeft);*/
-	/*DrawFormatString(25, 250, GetColor(255, 255, 255),
-		"ブロックとのt:%d",
-		(int)test_t);*/
-
-	//char lengthChar = static_cast<char>(enemyManager_.getPlayerLength());
-	//DrawString(position_.x + 50, position_.y - 20, &lengthChar, GetColor(255, 255, 255));
 	body_.draw(inv_);
 }
 
@@ -187,7 +171,9 @@ void BaseEnemy::onCollide(Actor & actor)
 
 	// プレイヤーに当たらない？
 	// PlayerのActorGroupが変わるので、 Player_AttackRangeに当たるようにする
-	if ((actorName == "PlayerBody2" || actorName == "PlayerBody1") &&
+	if ((actorName == "PlayerBody2" ||
+		actorName == "PlayerBody1" || 
+		actorName == "Player_AttackCollide") &&
 		!isInvincible_) {
 		// ダメージ
 		// groundClamp(actor);
