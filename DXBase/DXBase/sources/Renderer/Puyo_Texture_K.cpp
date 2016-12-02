@@ -74,7 +74,7 @@ void PuyoTextureK::PuyoUpdate()
 			//	commonVertexH[x][y].power = 0.0f;
 			//}
 			commonVertexH[x][y].time += 1000.0f*Time::GetInstance().deltaTime();
-			MathHelper::Spring(commonVertexH[x][y].num, commonVertexH[x][y].resNum, commonVertexH[x][y].veloNum, 0.2f, 0.5f, 1.5f);
+			MathHelper::Spring(commonVertexH[x][y].num, commonVertexH[x][y].resNum, commonVertexH[x][y].veloNum, 0.15f, 0.5f, 1.5f);
 
 			commonVertexH[x][y].springResPos = 
 				Vector2((MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
@@ -389,6 +389,16 @@ void PuyoTextureK::PuyoAddPowerEx(Vector2 vec, Vector2 velo,float power,float ei
 	//DrawCircle(commonVertexH[x_][y_].position.x + mPosition.x, commonVertexH[x_][y_].position.y + mPosition.y, 5, GetColor(255, 0, 0));
 	//PuyoAddPowerDxSub(x_, y_, velo, power);
 	DrawFormatString(500, 128, GetColor(255, 255, 255), "velo:%f,%f", velo.x, velo.y);
+}
+void PuyoTextureK::PuyoTimerZero()
+{
+	for (int y = 0; y <= loopY; y++)
+	{
+		for (int x = 0; x <= loopX; x++)
+		{
+			commonVertexH[x][y].time = 0.0f;
+		}
+	}
 }
 //Žd—l•ÏX”Å
 void PuyoTextureK::PuyoAddPowerDxSub(int x_, int y_, Vector2 velo,float power,float eikyo)

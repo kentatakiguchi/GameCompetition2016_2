@@ -44,6 +44,8 @@ public:
 	void PuyoAddPowerDx(Vector2 pos, Vector2 velo);
 	//片岡に聞いてください
 	void PuyoAddPowerEx(Vector2 pos,Vector2 velo,float power,float eikyo);
+	//全タイマーをゼロにする(ぷよぷよOFF)
+	void PuyoTimerZero();
 
 	void PuyoUpdate();
 	void PuyoDraw();

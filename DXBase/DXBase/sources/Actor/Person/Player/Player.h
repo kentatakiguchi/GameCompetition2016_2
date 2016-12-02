@@ -60,5 +60,8 @@ private:
 	Vector2 mPuyoResPos;
 	Vector2 mPuyoPos;
 	Vector2 mPuyoVelo;
+	//‚Õ‚æ‚·‚éŽžŠÔ
+	float mPuyoTimer;
+	bool mPuyoFlag;
 };
 
