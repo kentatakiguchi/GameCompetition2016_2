@@ -41,7 +41,7 @@ struct Vector2 {
 	static Vector2 Clamp(const Vector2& value1, const Vector2& min, const Vector2& max);
 
 	//ÉoÉlÇÃï‚ê≥
-	static void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness, float friction, float mass);
+	static void Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness = 0.2f, float friction = 0.5f, float mass = 2.0f);	
 	//Dxlibópïœä∑ä÷êî
 	static VECTOR Vector2ToVECTOR(const Vector2& v);
 

@@ -56,5 +56,9 @@ private:
 	PuyoTextureK* mPuyo;
 	//‚Ð‚Á‚Ï‚é—Í
 	float mPower;
+	//•âŠÔ
+	Vector2 mPuyoResPos;
+	Vector2 mPuyoPos;
+	Vector2 mPuyoVelo;
 };
 

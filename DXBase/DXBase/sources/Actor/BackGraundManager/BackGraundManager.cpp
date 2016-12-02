@@ -7,10 +7,6 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 	stageFlag(true),
 	mWorld(world)
 {
-	//分からないから一応
-	for (auto& i : backStates)
-		i.positions.clear();
-	backStates.clear();
 	////プレイヤー変換
 	//mPlayer = dynamic_cast<PlayerBody*>(world->findActor("Player").get());
 	mFloor = dynamic_cast<MovelessFloor*>(world->findActor("MovelessFloor").get());
@@ -18,40 +14,81 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 
 BackGraundManager::~BackGraundManager()
 {
-	//分からないから一応
-	for (auto& i : backStates)
-		i.positions.clear();
-	backStates.clear();
 }
 
-void BackGraundManager::SetBackGraund(TextureID id)
+void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2)
 {
 	BackGraundState backState;
-	//idを追加
-	backState.id = ResourceLoader::GetInstance().getTextureID(id);
 	//サイズを追加
-	backState.size = ResourceLoader::GetInstance().GetTextureSize(id);
+	backState.size = ResourceLoader::GetInstance().GetTextureSize(id1);
 	Vector2 size = backState.size;
-	//ポジションを二つ入れる(2枚背景を張り付けるため)
-	backState.positions.push_back(Vector2::Zero);
-	backState.positions.push_back(Vector2(size.x, 0.0f));
+
+	IndexPos indexPos;
+	indexPos.index = ResourceLoader::GetInstance().getTextureID(id1);
+	indexPos.position = Vector2::Zero;
+	backState.indexPos.push_back(indexPos);
+	indexPos.index = ResourceLoader::GetInstance().getTextureID(id2);
+	indexPos.position = Vector2(size.x, 0.0f);
+	backState.indexPos.push_back(indexPos);
 	//入れる
 	backStates.push_back(backState);
 }
 
+void BackGraundManager::SetTateBackGraund(TextureID id1, TextureID id2)
+{
+	BackGraundState backState;
+	//サイズを追加
+	backState.size = ResourceLoader::GetInstance().GetTextureSize(id1);
+	Vector2 size = backState.size;
+
+	IndexPos indexPos;
+	indexPos.index = ResourceLoader::GetInstance().getTextureID(id1);
+	indexPos.position = Vector2::Zero;
+	backState.indexPos.push_back(indexPos);
+	indexPos.index = ResourceLoader::GetInstance().getTextureID(id2);
+	indexPos.position = Vector2(0.0f, -size.y);
+	backState.indexPos.push_back(indexPos);
+	//入れる
+	backStates.push_back(backState);
+}
+
+void BackGraundManager::SetTateYokoBackGraund(TextureID id)
+{
+	//サイズ取得
+	tateYokoState.size = ResourceLoader::GetInstance().GetTextureSize(id);
+	Vector2 size = tateYokoState.size;
+
+	IndexPos indexPos;
+	indexPos.index = ResourceLoader::GetInstance().getTextureID(id);
+
+	indexPos.position = Vector2(size.x, 0.0f);
+	tateYokoState.indexPos.push_back(indexPos);
+	indexPos.position = Vector2(-size.x, 0.0f);
+	tateYokoState.indexPos.push_back(indexPos);
+	indexPos.position = Vector2(size.x, size.y);
+	tateYokoState.indexPos.push_back(indexPos);
+	indexPos.position = Vector2(-size.x, size.y);
+	tateYokoState.indexPos.push_back(indexPos);
+
+}
+
 void BackGraundManager::SetUpBackGraund(TextureID id)
 {
-	//idを追加
-	upBackStates.id = ResourceLoader::GetInstance().getTextureID(id);
 	//サイズを追加
 	upBackStates.size = ResourceLoader::GetInstance().GetTextureSize(id);
 	Vector2 size = upBackStates.size;
-	//ポジションを4つ入れる(4枚背景を張り付けるため)
-	upBackStates.positions.push_back(Vector2(0, 0));
-	upBackStates.positions.push_back(Vector2(0, -size.y));
-	upBackStates.positions.push_back(Vector2(size.x, -size.y));
-	upBackStates.positions.push_back(Vector2(size.x, 0));
 
+	IndexPos indexPos;
+	indexPos.index = ResourceLoader::GetInstance().getTextureID(id);
+
+	indexPos.position = Vector2::Zero;
+	upBackStates.indexPos.push_back(indexPos);
+	indexPos.position = Vector2(0, -size.y);
+	upBackStates.indexPos.push_back(indexPos);
+	indexPos.position = Vector2(size.x, -size.y);
+	upBackStates.indexPos.push_back(indexPos);
+	indexPos.position = Vector2(size.x, 0);
+	upBackStates.indexPos.push_back(indexPos);
 }
 
 void BackGraundManager::SetDownBackGraund(TextureID id)
@@ -61,20 +98,23 @@ void BackGraundManager::SetDownBackGraund(TextureID id)
 	//サイズを追加
 	downBackStates.size = ResourceLoader::GetInstance().GetTextureSize(id);
 	Vector2 size = upBackStates.size;
-	//ポジションを4つ入れる(4枚背景を張り付けるため)
-	downBackStates.positions.push_back(Vector2(0, size.y));
-	downBackStates.positions.push_back(Vector2(0, size.y * 2));
-	downBackStates.positions.push_back(Vector2(size.x, size.y));
-	downBackStates.positions.push_back(Vector2(size.x, size.y * 2));
+
+	IndexPos indexPos;
+	indexPos.index = ResourceLoader::GetInstance().getTextureID(id);
+	indexPos.position = Vector2(Vector2(0, size.y));
+	downBackStates.indexPos.push_back(indexPos);
+	indexPos.position = Vector2(Vector2(0, size.y * 2));
+	downBackStates.indexPos.push_back(indexPos);
+	indexPos.position = Vector2(Vector2(size.x, size.y));
+	downBackStates.indexPos.push_back(indexPos);
+	indexPos.position = Vector2(Vector2(size.x, size.y * 2));
+	downBackStates.indexPos.push_back(indexPos);
+
+
 }
 
 void BackGraundManager::AllDeleteBackGraund()
 {
-	//list内をすべて削除
-	for (auto& i : backStates)
-		i.positions.clear();
-	backStates.clear();
-	upBackStates.positions.clear();
 }
 
 void BackGraundManager::Update(float deltatime)
@@ -87,19 +127,19 @@ void BackGraundManager::Update(float deltatime)
 	//コピーを使わないために＆を付けて参照する(for内でiの中身を弄る場合に使う)
 	for (auto& i : backStates)
 	{
-		for (auto& j : i.positions)
+		for (auto& j : i.indexPos)
 		{
 			//プレイヤーベクトル加算
-			j += -mFloor->mVelo*(1.0f / layerNum);
+			j.position += -mFloor->mVelo*(1.0f / layerNum);
 			//地面テクスチャサイズ
 			Vector2 size = i.size;
 			//x軸のループ
-			if (j.x <= -size.x)
-				j.x = size.x + i.size.x + j.x;
-			else if (j.x >= size.x)
-				j.x = -size.x - i.size.x + j.x;
+			if (j.position.x <= -size.x)
+				j.position.x = size.x + i.size.x + j.position.x;
+			else if (j.position.x >= size.x)
+				j.position.x = -size.x - i.size.x + j.position.x;
 			//地上が見えているか
-			if (j.y <= -size.y)
+			if (j.position.y <= -size.y)
 				stageFlag = false;
 			else
 				stageFlag = true;
@@ -110,61 +150,104 @@ void BackGraundManager::Update(float deltatime)
 	//地面テクスチャサイズ
 	Vector2 size = upBackStates.size;
 	//空系
-	for (auto& i : upBackStates.positions)
+	for (auto& i : upBackStates.indexPos)
 	{
 		//プレイヤー速度加算
-		i += -mFloor->mVelo*(1.0f / backStates.size());
+		i.position += -mFloor->mVelo*(1.0f / backStates.size());
 		//x軸のループ
-		if (i.x <= -size.x)
-			i.x = size.x + size.x + i.x;
-		else if (i.x >= size.x)
-			i.x = -size.x - size.x + i.x;
+		if (i.position.x <= -size.x)
+			i.position.x = size.x + size.x + i.position.x;
+		else if (i.position.x >= size.x)
+			i.position.x = -size.x - size.x + i.position.x;
 		//Y軸のループ
-		if (i.y <= -size.y)
-			i.y = size.y + size.y + i.y;
-		else if (i.y >= size.y)
-			i.y = -size.y - size.y + i.y;
+		if (i.position.y <= -size.y)
+			i.position.y = size.y + size.y + i.position.y;
+		else if (i.position.y >= size.y)
+			i.position.y = -size.y - size.y + i.position.y;
 	}
 	//地下系
-	for (auto& i : downBackStates.positions)
+	for (auto& i : downBackStates.indexPos)
 	{
 		//プレイヤー速度加算
-		i += -mFloor->mVelo;
+		i.position += -mFloor->mVelo;
 		//x軸のループ
-		if (i.x <= -size.x)
-			i.x = size.x + size.x + i.x;
-		else if (i.x >= size.x)
-			i.x = -size.x - size.x + i.x;
+		if (i.position.x <= -size.x)
+			i.position.x = size.x + size.x + i.position.x;
+		else if (i.position.x >= size.x)
+			i.position.x = -size.x - size.x + i.position.x;
 		//Y軸のループ(地上が見えていなかった場合)
 		if (!stageFlag)
 		{
-			if (i.y <= -size.y)
-				i.y = size.y + size.y + i.y;
-			else if (i.y >= size.y)
-				i.y = -size.y - size.y + i.y;
+			if (i.position.y <= -size.y)
+				i.position.y = size.y + size.y + i.position.y;
+			else if (i.position.y >= size.y)
+				i.position.y = -size.y - size.y + i.position.y;
 		}
+	}
+}
+
+void BackGraundManager::TateUpdate(float deltaTime)
+{
+	//要素内が何もなかったりプレイヤーがnullだったらリターン
+	if (backStates.empty()) return;
+	//背景階層の数を取得
+	float layerNum = backStates.size();
+	//地面系
+	//コピーを使わないために＆を付けて参照する(for内でiの中身を弄る場合に使う)
+	for (auto& i : backStates)
+	{
+		for (auto& j : i.indexPos)
+		{
+			//プレイヤーベクトル加算
+			j.position += -mFloor->mVelo*(1.0f / layerNum);
+			//地面テクスチャサイズ
+			Vector2 size = i.size;
+			//x軸のループ
+			if (j.position.y <= -size.y)
+				j.position.y = size.y + i.size.y + j.position.y;
+			else if (j.position.y >= size.y)
+				j.position.y = -size.y - i.size.y + j.position.y;
+		}
+		layerNum--;
+	}
+	//縦でのスクロールの場合横背景のx軸ループはない
+	for (auto& i : tateYokoState.indexPos)
+	{
+		Vector2 size = tateYokoState.size;
+		//プレイヤー速度加算
+		i.position += -mFloor->mVelo;
+		//Y軸のループ(地上が見えていなかった場合)
+		if (i.position.y <= -size.y)
+			i.position.y = size.y + size.y + i.position.y;
+		else if (i.position.y >= size.y)
+			i.position.y = -size.y - size.y + i.position.y;
 	}
 }
 
 void BackGraundManager::Draw() const
 {
 	//空の描写
-	for (auto i : upBackStates.positions)
+	for (auto i : upBackStates.indexPos)
 	{
-		DrawGraph(i.x, i.y, upBackStates.id, true);
+		DrawGraph(i.position.x, i.position.y, i.index, true);
 	}
 	//地上の描写
 	for (auto i : backStates)
 	{
-		for (auto j : i.positions)
+		for (auto j : i.indexPos)
 		{
-			DrawGraph(j.x, j.y, i.id, true);
+			DrawGraph(j.position.x, j.position.y, j.index, true);
 		}
 	}
 	//地下の描写
-	for (auto i : downBackStates.positions)
+	for (auto i : downBackStates.indexPos)
 	{
-		DrawGraph(i.x, i.y, downBackStates.id, true);
+		DrawGraph(i.position.x, i.position.y, i.index, true);
+	}
+	//縦横のスクロール
+	for (auto i : tateYokoState.indexPos)
+	{
+		DrawGraph(i.position.x, i.position.y, i.index, true);
 	}
 }
 

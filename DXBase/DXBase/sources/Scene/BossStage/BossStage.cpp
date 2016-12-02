@@ -74,10 +74,10 @@ void BossStage::start() {
 
 	backManager = new BackGraundManager(world_.get());
 	//先にセットされたテクスチャほど奥に描写される
-	backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX);
-	backManager->SetBackGraund(TextureID::BACKGRAUND3_TEX);
-	backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX);
-	backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX);
+	//backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX);
+	//backManager->SetBackGraund(TextureID::BACKGRAUND3_TEX);
+	//backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX);
+	//backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX);
 
 	backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 	backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
