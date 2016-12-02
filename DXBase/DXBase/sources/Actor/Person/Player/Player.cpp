@@ -25,7 +25,7 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	Actor(world, "Player", position, CollisionBase(Vector2(0, 0), Vector2(0, 0), 8.0f)),
 	mPower(0.0f),
 	mPuyoTimer(0.0f),
-	mPuyoFlag(false){
+	mPuyoFlag(false) {
 
 	auto body1 = std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ + Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
 	auto body2 = std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ - Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
@@ -159,7 +159,7 @@ void Player::onUpdate(float deltaTime) {
 	//	mPuyoResPos = Vector2::Zero;
 	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f);
 	//}
-
+	//¶‚Ì‚â‚Â‚ªˆø‚Á’£‚Á‚Ä‚é
 	if (stateMgr_.currentActionType(ActionType::Right) &&
 		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
 		mPuyoResPos = vec2*0.6f;
@@ -168,6 +168,7 @@ void Player::onUpdate(float deltaTime) {
 		mPuyoTimer = 0.0f;
 		mPuyoFlag = true;
 	}
+	//‰E‚Ì‚â‚Â‚ªˆø‚Á’£‚Á‚Ä‚é
 	else if (stateMgr_.currentActionType(ActionType::Left) &&
 		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
 		mPuyoResPos = vec1*0.6f;
@@ -176,31 +177,27 @@ void Player::onUpdate(float deltaTime) {
 		mPuyoTimer = 0.0f;
 		mPuyoFlag = true;
 	}
-	else if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD) &&
-		!stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD_BOTH))
+	//“¯Žž‰Ÿ‚µ
+	else if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD_BOTH))
+	{
+		mPuyoResPos = Vector2::Zero;
+		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f);
+		mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 170.0f);
+		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 170.0f);
+	}
+	//‰½‚à‚µ‚Ä‚¢‚È‚¢
+	else
 	{
 		mPuyoResPos = Vector2::Zero;
 		if (!mPuyoFlag) {
-			mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 10.0f, 170.0f);
-			mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 10.0f, 170.0f);
+			mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 150.0f);
+			mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 150.0f);
 		}
 		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f);
 	}
-	else /*if (stateMgr_.currentActionType(ActionType::Left) ||
-		stateMgr_.currentActionType(ActionType::Right))*/ {
-			mPuyoResPos = Vector2::Zero;
-			mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f);
-	}
-	//else
-	//{
-	//	mPuyoResPos = Vector2::Zero;
-	//	mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 5.0f, 150.0f);
-	//	mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 5.0f, 150.0f);
-	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f);
-	//}
 
 	Vector2::Spring(mPuyoPos, mPuyoResPos, mPuyoVelo, 0.2f);
-
+	//”ò‚ÔuŠÔ‚Í—Í‚ð‚Ç‚±‚à‰Á‚¦‚È‚¢
 	if (mPuyoFlag) {
 		mPuyoTimer += Time::GetInstance().deltaTime();
 		if (mPuyoTimer >= 0.5f) {
