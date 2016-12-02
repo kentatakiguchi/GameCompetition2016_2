@@ -21,25 +21,7 @@ PlayerConnector::~PlayerConnector() {
 void PlayerConnector::onUpdate(float deltaTime) {
 	position_ = (butty_->getPosition() + retty_->getPosition()) / 2;
 
-	auto player = std::dynamic_pointer_cast<Player>(world_->findActor("Player"));
-
-	if (player->action_type(ActionType::Right)) {
-		action_type_ = ActionType::Right;
-	}
-	if (player->action_type(ActionType::Left)) {
-		action_type_ = ActionType::Left;
-	}
-
-	if (action_type_ == ActionType::Right) {
-		for (int i = points.size() - 1; i >= 0; i--) {
-			points[i]->compose_pos();
-		}
-	}
-	if (action_type_ == ActionType::Left) {
-		for (int i = 0; i < points.size(); i++) {
-			points[i]->compose_pos();
-		}
-	}
+	points_update();
 }
 
 void PlayerConnector::onLateUpdate(float deltaTime) {}
@@ -61,6 +43,24 @@ void PlayerConnector::create_point(int point_num) {
 		auto point = std::make_shared<PlayerBodyPoint>(world_, position_, i/*, *this*/);
 		addChild(point);
 		points.push_back(point);
+	}
+}
+
+void PlayerConnector::points_update(){
+	auto player = std::dynamic_pointer_cast<Player>(world_->findActor("Player"));
+
+	if (player->action_type(ActionType::Right)) action_type_ = ActionType::Right;
+	if (player->action_type(ActionType::Left)) 	action_type_ = ActionType::Left;
+
+	if (action_type_ == ActionType::Right) {
+		for (int i = points.size() - 1; i >= 0; i--) {
+			points[i]->compose_pos();
+		}
+	}
+	if (action_type_ == ActionType::Left) {
+		for (int i = 0; i < points.size(); i++) {
+			points[i]->compose_pos();
+		}
 	}
 }
 

@@ -69,7 +69,6 @@ void PlayerState_Hold::move(){
 	if (element_.action_type_ == ActionType::Right) {
 		retty_->hold_gravity();
 		retty_->circleClamp(cntr_->base_point(ActionType::Left));
-
 	}
 
 }

@@ -29,6 +29,7 @@ public:
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
 	void create_point(int point_num = 0);
+	void points_update();
 	Vector2 base_point(ActionType type);
 
 	Vector2 target();

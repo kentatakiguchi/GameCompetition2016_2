@@ -18,7 +18,7 @@ void PlayerState_Jump::unique_init(){
 	retty_->launch(dir_ * power_);
 }
 
-void PlayerState_Jump::update(float deltaTime){
+void PlayerState_Jump::update(float deltaTime) {
 	//InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
 
 	timer_ += deltaTime;
@@ -29,7 +29,9 @@ void PlayerState_Jump::update(float deltaTime){
 	butty_->launch(dir_ * power_);
 	retty_->launch(dir_ * power_);
 
-	if (butty_->able_to_jump() || retty_->able_to_jump()) change((unsigned int)PlayerState_Enum_Union::IDLE);
+	if (butty_->able_to_jump() || retty_->able_to_jump()) {
+		change((unsigned int)PlayerState_Enum_Union::IDLE);
+	}
 }
 
 void PlayerState_Jump::end(){}

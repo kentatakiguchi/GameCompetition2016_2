@@ -31,8 +31,8 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 
 	// グラフィックのロード
 	animation_ = PlayerAnimation2D();
-	animation_.add(PlayerAnimID::IDLE, ResourceLoader::GetInstance().getTextureID(TextureID::PLAYER_BUTTY_IDLE), 320, 12, 6, 11);
-	animation_.change(PlayerAnimID::IDLE);
+	animation_.add(PlayerAnimID::IDLE, ResourceLoader::GetInstance().getTextureID(TextureID::PLAYER_BUTTY_IDLE), 256, 8, 4, 1);
+	animation_.change(PlayerAnimID::IDLE, 2.0f);
 }
 
 PlayerBody::~PlayerBody(){}
@@ -53,11 +53,11 @@ void PlayerBody::onDraw() const{
 
 	SetFontSize(32);
 	DrawFormatString(static_cast<int>(draw_pos_.x) + 30, static_cast<int>(draw_pos_.y), GetColor(255,255,255), "%f", dead_limit_);
-
+	
 	Vector3 color = Vector3::Zero;
-	if (name_ == "PlayerBody1")color = Vector3(0, 0, 255);
-	if (name_ == "PlayerBody2")color = Vector3(255, 0, 0);
-	//animation_.draw(draw_pos_, Vector2::One * 160, 0.5f, 0, color);
+	if (name_ == "PlayerBody1")color = Vector3(255, 255, 255);
+	if (name_ == "PlayerBody2")color = Vector3(255, 255, 255);
+	animation_.draw(draw_pos_, Vector2::One * 128, 0.5f, 0, color, ActionType::Right);
 }
 
 void PlayerBody::onLateUpdate(float deltaTime){

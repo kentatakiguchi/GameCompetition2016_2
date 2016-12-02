@@ -73,7 +73,7 @@ const static float		PLAYER_DEAD_LIMIT = 5.0f;
 // プレイヤーの死亡までの時間
 const static float		PLAYER_FREEZE_TIME = 1.0f;
 // プレイヤーコネクタの分割数
-const static int		PLAYER_CNTR_DIV_NUM = 30;
+const static int		PLAYER_CNTR_DIV_NUM = 50;
 // プレイヤーコネクタの分割数
 const static float		PLAYER_CNTR_DIV_LENGTH = PLAYER_MAX_STRETCH_LENGTH / static_cast<float>(PLAYER_CNTR_DIV_NUM + 1);
 

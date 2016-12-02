@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include "../../Math/Math.h"
+#include "../../Actor/Person/Player/State/Base/ActionType.h"
 
 class Animation2D {
 public:
@@ -16,9 +17,9 @@ public:
 	void update(float deltaTime);
 	// ï`âÊ
 	// ç¿ïW,(é≤),(ägëÂó¶),(âÒì]äpìx(ìxêîñ@)),
-	void draw(Vector2 position, Vector2 origin = Vector2::Zero, float scale = 1, float degree = 0, Vector3 color = Vector3(255, 255, 255)) const;
+	void draw(Vector2 position, Vector2 origin = Vector2::Zero, float scale = 1, float degree = 0, Vector3 color = Vector3(255, 255, 255), ActionType type = ActionType::Right) const;
 	// ç¿ïW,é≤,ägëÂó¶,âÒì]äpìx(ìxêîñ@),
-	void draw(Vector2 position, Vector2 origin, Vector2 scale, float degree, Vector3 color = Vector3(255, 255, 255)) const;
+	void draw(Vector2 position, Vector2 origin, Vector2 scale, float degree, Vector3 color = Vector3(255, 255, 255), ActionType type = ActionType::Right) const;
 private:
 	Vector2 getSize();
 protected:
@@ -36,6 +37,4 @@ protected:
 	float speed_;
 	//ï™äÑå„ÇÃidäiî[ópëΩéüå≥îzóÒ
 	std::unordered_map<int, std::vector<int>> sprites_;
-
-	
 };

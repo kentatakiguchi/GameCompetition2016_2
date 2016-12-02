@@ -23,15 +23,16 @@ void Animation2D::update(float deltaTime) {
 	timer_ += deltaTime * speed_ * 60 / sprites_[anim_num_].size() * 10;
 }
 
-void Animation2D::draw(Vector2 position, Vector2 origin, float scale, float degree, Vector3 color) const{
+void Animation2D::draw(Vector2 position, Vector2 origin, float scale, float degree, Vector3 color, ActionType type) const{
 	draw(position, origin, Vector2::One * scale, degree, color);
 }
 
-void Animation2D::draw(Vector2 position, Vector2 origin, Vector2 scale, float degree, Vector3 color) const {
+void Animation2D::draw(Vector2 position, Vector2 origin, Vector2 scale, float degree, Vector3 color, ActionType type) const {
 	SetDrawBright(color.x, color.y, color.z);
 	//度数法→弧度法に変換
 	float radian = MathHelper::ToRadians(degree);
-	DrawRotaGraph3(position.x, position.y, origin.x, origin.y, static_cast<float>(scale.x), static_cast<float>(scale.y), radian, id_, TRUE);
+	if (type == ActionType::Right)DrawRotaGraph3(position.x, position.y, origin.x, origin.y, static_cast<float>(scale.x), static_cast<float>(scale.y), radian, id_, TRUE, FALSE);
+	if (type == ActionType::Left) DrawRotaGraph3(position.x, position.y, origin.x, origin.y, static_cast<float>(scale.x), static_cast<float>(scale.y), radian, id_, TRUE, TRUE);
 	SetDrawBright(255, 255, 255);
 }
 

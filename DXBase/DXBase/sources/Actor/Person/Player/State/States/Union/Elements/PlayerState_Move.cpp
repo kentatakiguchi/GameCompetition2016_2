@@ -64,12 +64,13 @@ void PlayerState_Move::pad_input(){
 void PlayerState_Move::move(float deltaTime) {
 	if (element_.action_type_ == ActionType::Right) {
 		retty_->chase();
+		retty_->circleClamp(cntr_->base_point(ActionType::Left));
+
 	}
 	if (element_.action_type_ == ActionType::Left) {
 		butty_->chase();
+		butty_->circleClamp(cntr_->base_point(ActionType::Right));
 	}
-
-	player_->body_clamp();
 	player_->body_gravity();
 }
 

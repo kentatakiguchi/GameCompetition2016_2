@@ -8,15 +8,12 @@ void PlayerState_MoveBoth::unique_init()
 {
 }
 
-void PlayerState_MoveBoth::update(float deltaTime)
-{
+void PlayerState_MoveBoth::update(float deltaTime){
 	player_->body_clamp();
 	player_->body_gravity();
-
 }
 
-void PlayerState_MoveBoth::end()
-{
+void PlayerState_MoveBoth::end(){
 }
 
 void PlayerState_MoveBoth::key_input(){
