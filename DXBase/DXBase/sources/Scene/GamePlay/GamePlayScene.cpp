@@ -18,15 +18,15 @@
 #include <random>
 
 
-GamePlayScene::GamePlayScene(SceneDataKeeper* keeper):nextScene_(Scene::GameOver),isStopped_(false){
+GamePlayScene::GamePlayScene(SceneDataKeeper* keeper) :nextScene_(Scene::GameOver), isStopped_(false) {
 	isEnd_ = false;
 	keeper_ = keeper;
-	name_="stage00";
+	name_ = "stage00";
 	deltaTime_ = 1 / 60.f;
 
 }
 
-GamePlayScene::~GamePlayScene(){
+GamePlayScene::~GamePlayScene() {
 }
 
 void GamePlayScene::start() {
@@ -52,20 +52,31 @@ void GamePlayScene::start() {
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
 
-	gener.create("./resources/file/"+name_+".csv");
+	gener.create("./resources/file/" + name_ + ".csv");
 
 
 	status_ = Status(10);
 
 	backManager = new BackGraundManager(world_.get());
-	//先にセットされたテクスチャほど奥に描写される
-	backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX);
-	backManager->SetBackGraund(TextureID::BACKGRAUND3_TEX);
-	backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX);
-	backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX);
+	if (name_ != "stage03") {
+		//先にセットされたテクスチャほど奥に描写される
+		backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX, TextureID::BACKGRAUND42_TEX);
+		backManager->SetBackGraund(TextureID::BACKGRAUND3_TEX, TextureID::BACKGRAUND32_TEX);
+		backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX, TextureID::BACKGRAUND22_TEX);
+		backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX, TextureID::BACKGRAUND12_TEX);
 
-	backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
-	backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
+		backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
+		backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
+	}
+	else
+	{
+
+		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE41_TEX, TextureID::BACKGRAUND_TATE41_TEX);
+		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE31_TEX, TextureID::BACKGRAUND_TATE31_TEX);
+		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE21_TEX, TextureID::BACKGRAUND_TATE21_TEX);
+		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE11_TEX, TextureID::BACKGRAUND_TATE11_TEX);
+		backManager->SetTateYokoBackGraund(TextureID::BACKGRAUND_TATEYOKO_TEX);
+	}
 
 	world_->clear(false);
 }
@@ -77,7 +88,10 @@ void GamePlayScene::update() {
 		isStopped_ = !isStopped_;
 	}
 	world_->update(deltaTime_);
-	backManager->Update(deltaTime_);
+	if (name_ == "stage03")
+		backManager->TateUpdate(deltaTime_);
+	else
+		backManager->Update(deltaTime_);
 
 	auto player = world_->findActor("Player");
 	isEnd_ = player == nullptr || world_->is_clear();
@@ -111,9 +125,10 @@ void GamePlayScene::draw() const {
 }
 
 void GamePlayScene::end() {
+	delete backManager;
 }
 
-bool GamePlayScene::isEnd() const{
+bool GamePlayScene::isEnd() const {
 
 	return isEnd_;
 }

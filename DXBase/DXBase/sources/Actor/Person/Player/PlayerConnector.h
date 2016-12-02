@@ -36,6 +36,10 @@ public:
 
 	Vector2 target_vector(int index);
 	Vector2 clamp_target(Vector2 pos, int index);
+
+	Vector2 get_point(int index);
+	std::vector<Vector2> get_points();
+
 private:
 	BezierCurve bezier_;
 	
