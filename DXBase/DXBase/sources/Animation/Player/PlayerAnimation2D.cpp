@@ -24,3 +24,7 @@ void PlayerAnimation2D::change(PlayerAnimID anim_id, float speed){
 	change_param(static_cast<int>(anim_id), speed);
 }
 
+void PlayerAnimation2D::change_dir(ActionType type){
+	change_dir_type(static_cast<int>(PlayerAnimID::TURN), type);
+}
+

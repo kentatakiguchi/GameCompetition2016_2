@@ -17,5 +17,7 @@ public:
 	virtual Scene next() const override;
 
 private:
+	void load_player_res();
+private:
 	bool isEnd_;
 };

@@ -52,6 +52,9 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::CHANGE_SCENE_TEX, "./resources/sprite/ChangeS.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BLACK_BACK_TEX, "./resources/sprite/blackBack.png");
 
+
+	//プレイヤー関連のロード
+	load_player_res();
 }
 
 void LoadingScene::update(){
@@ -73,4 +76,30 @@ bool LoadingScene::isEnd() const{
 
 Scene LoadingScene::next() const{
 	return Scene::Title;
+}
+
+void LoadingScene::load_player_res(){
+	//butty
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_IDLE, "./resources/sprite/actor/player/butty/b_idle.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_MOVE, "./resources/sprite/actor/player/butty/b_move.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_HOLD, "./resources/sprite/actor/player/butty/b_hold.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_SWIM, "./resources/sprite/actor/player/butty/b_swim.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_SWIM_TURN, "./resources/sprite/actor/player/butty/b_swimturn.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_DEATH, "./resources/sprite/actor/player/butty/b_death.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_DAMAGE, "./resources/sprite/actor/player/butty/b_damage.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_DIV_IDLE, "./resources/sprite/actor/player/butty/b_division_idle.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_DIV_MOVE, "./resources/sprite/actor/player/butty/b_division_move.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_BUTTY_TURN, "./resources/sprite/actor/player/butty/b_turn.png");
+
+	//retty
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_IDLE,		"./resources/sprite/actor/player/retty/r_idle.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_MOVE,		"./resources/sprite/actor/player/retty/r_move.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_HOLD,		"./resources/sprite/actor/player/retty/r_hold.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_SWIM,		"./resources/sprite/actor/player/retty/r_swim.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_SWIM_TURN,"./resources/sprite/actor/player/retty/r_swimturn.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_DEATH,	"./resources/sprite/actor/player/retty/r_death.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_DAMAGE,	"./resources/sprite/actor/player/retty/r_damage.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_DIV_IDLE, "./resources/sprite/actor/player/retty/r_division_idle.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_DIV_MOVE, "./resources/sprite/actor/player/retty/r_division_move.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_TURN,		"./resources/sprite/actor/player/retty/r_turn.png");
 }

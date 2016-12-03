@@ -31,9 +31,6 @@ void PlayerConnector::onDraw() const {
 
 	//body_.draw();
 	//bezier_.draw(100, inv_);
-
-	DrawShape::Oval(butty_->getPosition() * inv_, retty_->getPosition() * inv_, PLAYER_RADIUS * 2, PLAYER_MAX_NORMAL_LENGTH * 0.75f);
-
 }
 
 void PlayerConnector::onCollide(Actor & other) {}
