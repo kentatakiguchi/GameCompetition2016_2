@@ -6,7 +6,9 @@
 enum Scene {
 	Null,
 	Loading,
+	MainMenu,
 	Title,
+	Credit,
 	GamePlay,
 	GameOver,
 	StageClear,
@@ -14,7 +16,9 @@ enum Scene {
 	BossStage01,
 	Kataoka,
 	Nagano,
-	Ending
+	Ending,
+	GameEnd,
+	Test
 };
 
 #endif

@@ -222,7 +222,7 @@ void CollisionBase::draw(int spriteID, Matrix inv) const
 		circle_.draw(inv);
 		break;
 	case SegmentCol:
-		segment_.draw(inv);
+		segment_.draw(spriteID,inv);
 		break;
 	case NoneCol:
 		break;

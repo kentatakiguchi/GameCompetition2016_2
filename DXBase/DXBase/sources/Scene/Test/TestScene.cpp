@@ -1,10 +1,13 @@
 #include "TestScene.h"
 #include"../../Scene/Test/TestChara.h"
+#include"../../Field/TurnFloor.h"
 
-TestScene::TestScene() :
-	id(0), a(nullptr, "a", Vector2(200, 200), CollisionBase(Vector2( 150,150 ),30.f)), b(nullptr, "a", { 300, 200 }, CollisionBase({ 250,150 }, { 350,150 }, { 250,250 }, { 350,250 })),
-	circle_(Vector2(50, 50), 30), circle2_(Vector2(150, 150), 30.0f), segment_({ 200,200 }, { 400,200 }), segment2_({ 200,200 }, { 400,200 }), box_({ 100,100 }, { 150,100 }, { 100,150 }, { 150,150 }), box2_({ 100,150 }, { 150,100 }, { 150,200 }, { 200,150 }), capsule_({ 250,400 }, { 200, 250 }, 30), capsule2_({ 200,250 }, { 100,350 }, 30)
+TestScene::TestScene(SceneDataKeeper* keeper) :
+	id(0)// a(nullptr, "a", Vector2(200, 200), CollisionBase(Vector2( 150,150 ),30.f)), b(nullptr, "a", { 300, 200 }, CollisionBase({ 250,150 }, { 350,150 }, { 250,250 }, { 350,250 })),
+	//circle_(Vector2(50, 50), 30), circle2_(Vector2(150, 150), 30.0f), segment_({ 200,200 }, { 400,200 }), segment2_({ 200,200 }, { 400,200 }), box_({ 100,100 }, { 150,100 }, { 100,150 }, { 150,150 }), box2_({ 100,150 }, { 150,100 }, { 150,200 }, { 200,150 }), capsule_({ 250,400 }, { 200, 250 }, 30), capsule2_({ 200,250 }, { 100,350 }, 30)
 {
+	keeper_ = keeper;
+
 	isEnd_ = false;
 }
 
@@ -75,7 +78,7 @@ void TestScene::end() {
 
 }
 
-bool TestScene::isEnd() const {
+bool TestScene::isEnd()const {
 	return isEnd_;
 }
 

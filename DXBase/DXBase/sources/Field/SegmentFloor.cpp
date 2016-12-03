@@ -41,7 +41,7 @@ void SegmentFloor::onUpdate(float deltaTime)
 
 void SegmentFloor::onDraw() const
 {
-	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
+	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, inv_);
 }
 
 void SegmentFloor::onCollide(Actor & other)

@@ -40,6 +40,7 @@ public:
 	//判定の表示(デバッグ用)
 	virtual void draw() const override;
 	virtual void draw(Matrix inv) const override;
+	virtual void draw(int spriteID,Matrix inv) const override;
 	//自身(Box)を移動する position:移動量(Vector2) return:移動した結果(BoundingBox)
 	BoundingSegment translate(const Vector2& position) const;
 	//自身(Box)を変形する topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2) return:変形した結果(BoundingBox)

@@ -14,6 +14,8 @@
 #include "../Scene/GameClear/GameClearScene.h"
 #include "../Scene/BossStage/BossStage.h"
 #include "../Scene/SampleBossScene/SampleBossScene.h"
+#include"../Scene/MainMenu/MainMenuScene.h"
+#include"../Scene/Credit/CreditScene.h"
 
 MyGame::MyGame() : 
 	Game(WINDOW_NAME, SCREEN_SIZE.x, SCREEN_SIZE.y, WINDOW_RATE, WINDOW_MODE),
@@ -32,6 +34,7 @@ void MyGame::start(){
 
 	sceneMgr_.add(Scene::Loading, std::make_shared<LoadingScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Title, std::make_shared<TitleScene>(&dataKeeper_));
+	sceneMgr_.add(Scene::MainMenu, std::make_shared<MainMenuScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GamePlay, std::make_shared<GamePlayScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GameOver, std::make_shared<GameOverScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GameClear, std::make_shared<GameClearScene>(&dataKeeper_));
@@ -39,6 +42,7 @@ void MyGame::start(){
 	sceneMgr_.add(Scene::BossStage01, std::make_shared<BossStage>(&dataKeeper_));
 	sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>());
 	//sceneMgr_.add(Scene::Nagano, std::make_shared<NaganoScene>());
+	sceneMgr_.add(Scene::Credit, std::make_shared<CreditScene>(&dataKeeper_));
 	sceneMgr_.change(Scene::Loading);
 
 	//前のゲームプレイシーンの内容を保存する専用のクラスを作る(ステージ番号、キャラクター情報等を保存)

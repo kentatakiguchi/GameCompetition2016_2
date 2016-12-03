@@ -19,6 +19,8 @@ public:
 
 	void RegistKeyCode();
 
+	bool IsPushButton();
+
 	bool IsKeyDown(KeyCode handle);
 	bool IsKeyOn(KeyCode handle);
 	bool IsKeyUp(KeyCode handle);

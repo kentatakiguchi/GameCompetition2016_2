@@ -40,6 +40,11 @@ const static float RIGHTLEFTRANGE = 3;
 
 const static float UPDOWNRANGE = 3;
 
+static const int FlashTempo = 3;
+
+static const float LRMoveSpeed = 1;
+
+static const float UDMoveSpeed = 1;
 
 /*** ‰i–ì ***/
 

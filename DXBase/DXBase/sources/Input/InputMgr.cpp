@@ -1,6 +1,8 @@
 #include "InputMgr.h"
 #include "DxLib.h"
 
+static const int MAX_BUTTON_NUM = 11;
+
 InputMgr::InputMgr(){
 	RegistKeyCode();
 }
@@ -109,6 +111,14 @@ void InputMgr::RegistKeyCode(){
 	ConnectInputName[BUTTON_DOWN] = KeyCode::DOWN;
 	ConnectInputName[BUTTON_RIGHT] = KeyCode::RIGHT;
 	ConnectInputName[BUTTON_LEFT] = KeyCode::LEFT;
+}
+bool InputMgr::IsPushButton(){
+	for (auto i : current_key_state) {
+		if(i != 0)return true;
+	}
+	for (auto i : ButtonName) {
+		if (current_button_state!=0)return true;
+	}
 }
 
 bool InputMgr::IsKeyDown(KeyCode handle)

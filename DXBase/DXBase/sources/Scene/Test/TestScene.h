@@ -9,13 +9,13 @@
 
 class TestScene : public IScene {
 public:
-	TestScene();
+	TestScene(SceneDataKeeper* keeper);
 	~TestScene();
 	virtual void start() override;
 	virtual void update() override;
 	virtual void draw() const override;
 	virtual void end() override;
-	virtual bool isEnd() const override;
+	virtual bool isEnd()const override;
 	virtual Scene next() const override;
 
 private:

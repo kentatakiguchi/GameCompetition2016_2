@@ -1,12 +1,14 @@
-#ifndef _TITLE_SCENE_H_
-#define _TITLE_SCENE_H_
+#pragma once
 
 #include "../Base/IScene.h"
+#include"../../Math/Vector2.h"
+#include"SceneChange.h"
+#include<map>
 
-class TitleScene : public IScene{
+class MainMenuScene : public IScene {
 public:
-	TitleScene(SceneDataKeeper* keeper);
-	~TitleScene();
+	MainMenuScene(SceneDataKeeper* keeper);
+	~MainMenuScene();
 	virtual void start() override;
 	virtual void update() override;
 	void slideText(int targettext);
@@ -17,17 +19,20 @@ public:
 	virtual Scene next() const override;
 
 private:
-	int id;	
+	int id;
+	int targetPoint;
 	int sinCount;
-	Vector2 textPos;
-	std::map<int,Vector2> shotPos;
-	std::map<int, int> defposlist;
+	std::map<int,Vector2> textPoses;
+	std::map<int,Scene> nextScene;
 	std::map<int, Vector2> lastPoses;
+
+	std::map<int, Vector2> shotPos;
+	std::map<int, int> defposlist;
 	std::map<int, Vector2> setPoses;
 	std::map<int, int> boundCou;
 	std::map<int, bool> isPoint;
 	std::map<int, bool> isShotArrive;
-	std::map<int,bool> isArrive;
+	std::map<int, bool> isArrive;
+
 };
 
-#endif

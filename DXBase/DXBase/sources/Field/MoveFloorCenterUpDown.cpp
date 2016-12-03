@@ -47,10 +47,10 @@ void MoveFloorCenterUpDown::onUpdate(float deltaTime)
 {
 	moveCount_ += moveVelocity*ceilf(deltaTime);
 	if (moveCount_ <= -(CHIPSIZE*UPDOWNRANGE)) {
-		moveVelocity = 1;
+		moveVelocity = UDMoveSpeed;
 	}
 	if (moveCount_ >= CHIPSIZE*UPDOWNRANGE) {
-		moveVelocity = -1;
+		moveVelocity = -UDMoveSpeed;
 	}
 	position_.y += moveVelocity*ceilf(deltaTime);
 }

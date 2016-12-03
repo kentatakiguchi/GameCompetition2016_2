@@ -44,12 +44,25 @@ void BoundingSegment::draw() const {
 
 void BoundingSegment::draw(Matrix inv) const {
 	//if (!enabled)return;
-	
+
 	Vector3 pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
 	Vector3 pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
 
 	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
 
+	//DrawBox(component_.point[0].x, component_.point[0].y,
+	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);
+	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
+}
+void BoundingSegment::draw(int spriteID, Matrix inv) const {
+	//if (!enabled)return;
+
+	Vector3 pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+	Vector3 pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
+
+	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
+
+	DrawModiGraph(pos0.x, pos0.y, pos1.x, pos1.y, pos1.x, pos1.y, pos1.x, pos0.y,  spriteID, TRUE);
 	//DrawBox(component_.point[0].x, component_.point[0].y,
 	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);
 	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;

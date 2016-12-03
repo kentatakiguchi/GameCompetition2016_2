@@ -47,10 +47,10 @@ void MoveFloorRightLeft::onUpdate(float deltaTime)
 {
 	moveCount_ += moveVelocity*ceilf(deltaTime);
 	if (moveCount_ <= 0) {
-		moveVelocity = 1;
+		moveVelocity = LRMoveSpeed;
 	}
 	if (moveCount_ >= CHIPSIZE*RIGHTLEFTRANGE) {
-		moveVelocity = -1;
+		moveVelocity = -LRMoveSpeed;
 	}
 	position_.x += moveVelocity*ceilf(deltaTime);
 }
