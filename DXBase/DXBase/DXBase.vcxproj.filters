@@ -468,6 +468,15 @@
     <ClInclude Include="sources\Scene\SampleBossScene\SampleBossScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Scene\Credit\CreditScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Scene\MainMenu\MainMenuScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Scene\MainMenu\SceneChange.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -822,6 +831,15 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Scene\SampleBossScene\SampleBossScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Scene\Credit\CreditScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Scene\MainMenu\MainMenuScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Scene\MainMenu\SceneChange.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

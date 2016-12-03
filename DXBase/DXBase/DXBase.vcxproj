@@ -288,6 +288,7 @@
     <ClInclude Include="sources\Scene\Base\SceneMgr.h" />
     <ClInclude Include="sources\Scene\Base\SceneNull.h" />
     <ClInclude Include="sources\Scene\BossStage\BossStage.h" />
+    <ClInclude Include="sources\Scene\Credit\CreditScene.h" />
     <ClInclude Include="sources\Scene\GameClear\GameClearScene.h" />
     <ClInclude Include="sources\Scene\GameOver\GameOverScene.h" />
     <ClInclude Include="sources\Scene\GamePlay\GamePlayScene.h" />
@@ -295,6 +296,8 @@
     <ClInclude Include="sources\Scene\GamePlay\PauseScreen.h" />
     <ClInclude Include="sources\Scene\KataokaScene\KataokaScene.h" />
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h" />
+    <ClInclude Include="sources\Scene\MainMenu\MainMenuScene.h" />
+    <ClInclude Include="sources\Scene\MainMenu\SceneChange.h" />
     <ClInclude Include="sources\Scene\NaganoScene\NaganoScene.h" />
     <ClInclude Include="sources\Scene\SampleBossScene\SampleBossScene.h" />
     <ClInclude Include="sources\Scene\StageClear\StageClearScene.h" />
@@ -411,6 +414,7 @@
     <ClCompile Include="sources\Scene\Base\SceneMgr.cpp" />
     <ClCompile Include="sources\Scene\Base\SceneNull.cpp" />
     <ClCompile Include="sources\Scene\BossStage\BossStage.cpp" />
+    <ClCompile Include="sources\Scene\Credit\CreditScene.cpp" />
     <ClCompile Include="sources\Scene\GameClear\GameClearScene.cpp" />
     <ClCompile Include="sources\Scene\GameOver\GameOverScene.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\GamePlayScene.cpp" />
@@ -418,6 +422,8 @@
     <ClCompile Include="sources\Scene\GamePlay\PauseScreen.cpp" />
     <ClCompile Include="sources\Scene\KataokaScene\KataokaScene.cpp" />
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp" />
+    <ClCompile Include="sources\Scene\MainMenu\MainMenuScene.cpp" />
+    <ClCompile Include="sources\Scene\MainMenu\SceneChange.cpp" />
     <ClCompile Include="sources\Scene\NaganoScene\NaganoScene.cpp" />
     <ClCompile Include="sources\Scene\SampleBossScene\SampleBossScene.cpp" />
     <ClCompile Include="sources\Scene\StageClear\StageClearScene.cpp" />
