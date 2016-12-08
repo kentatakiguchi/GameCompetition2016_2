@@ -4,15 +4,19 @@
 #include "../Input/InputMgr.h"
 #include "../Math/Matrix.h"
 #include "../Math/Vector3.h"
+#include "../Actor/Base/ActorGroup.h"
+#include "../Actor/Person/Player/PuyoCollision.h"
 //一応正方形で考える
-const int SplitSize = 16.0f;
+const int SplitSize = 32.0f;
 
-PuyoTextureK::PuyoTextureK(TextureID tex, Vector2 pos, Vector2 scale, float rotate) :
+PuyoTextureK::PuyoTextureK(IWorld* world, TextureID tex, Vector2 pos, Vector2 scale, float rotate) :
+	mWorld(world),
 	textureIndex(ResourceLoader::GetInstance().getTextureID(tex)),
 	textureSize(ResourceLoader::GetInstance().GetTextureSize(tex)),
 	mPosition(pos),
 	mScale(scale),
-	mRotate(rotate)
+	mRotate(rotate),
+	mCenter(Vector2::Zero)
 {
 	loopX = textureSize.x / SplitSize;
 	loopY = textureSize.y / SplitSize;
@@ -23,28 +27,33 @@ PuyoTextureK::PuyoTextureK(TextureID tex, Vector2 pos, Vector2 scale, float rota
 	//グラフィックに頂点を設定
 	PuyoGraphVertex();
 
-
+	for (int y = 0; y <= loopY; y++)
+	{
+		for (int x = 0; x <= loopX; x++)
+		{
+			mWorld->addActor(ActorGroup::PuyoVertex, std::make_shared<PuyoCollision>(mWorld, commonVertexH[x][y].position, Vector2(x, y), mPosition));
+		}
+	}
 	time = 0.0f;
 
-	test = Vector2(0, 0);
-	tesTimer = 0.0f;
-	tesNum = 100.0f;
-	testVelo = 0.0f;
-	testRes = 200.0f;
+
 }
 
 PuyoTextureK::~PuyoTextureK()
 {
 }
 
-void PuyoTextureK::SetPosition(Vector2 pos, Vector2 scale, float rotate)
+void PuyoTextureK::SetPosition(Vector2 pos, Vector2 scale, float rotate, Vector2 center)
 {
 	mPosition = pos;
 	mScale = scale;
 	mRotate = rotate;
+	mCenter = center;
 }
 void PuyoTextureK::PuyoUpdate()
 {
+
+
 	//頂点のバネ系を毎フレーム更新
 	for (int y = 0; y <= loopY; y++)
 	{
@@ -58,7 +67,7 @@ void PuyoTextureK::PuyoUpdate()
 				Matrix::CreateRotationZ(mRotate)*
 				Matrix::CreateTranslation(Vector3(textureSize.x / 2, textureSize.y / 2, 0.0f));
 
-
+			//commonVertexH[x][y].colWallVec = Vector2::Normalize(commonVertexH[x][y].colWallVec);
 			//Matrix veloMat = Matrix::CreateTranslation(Vector3(commonVertexH[x][y].velocity.x, commonVertexH[x][y].velocity.y, 0))*
 			//	Matrix::CreateRotationZ(mRotate);
 
@@ -76,12 +85,21 @@ void PuyoTextureK::PuyoUpdate()
 			commonVertexH[x][y].time += 1000.0f*Time::GetInstance().deltaTime();
 			MathHelper::Spring(commonVertexH[x][y].num, commonVertexH[x][y].resNum, commonVertexH[x][y].veloNum, 0.15f, 0.5f, 1.5f);
 
-			commonVertexH[x][y].springResPos = 
-				Vector2((MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
+			commonVertexHNoCol[x][y].position = Vector2((MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
 				commonVertexH[x][y].velocity.x + mat.Translation().x - textureSize.x / 2,
+
 				(MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
-				commonVertexH[x][y].velocity.y + mat.Translation().y - textureSize.y / 2);
-			Vector2::Spring(commonVertexH[x][y].position, commonVertexH[x][y].springResPos, commonVertexH[x][y].springVelocity,0.7f);
+				commonVertexH[x][y].velocity.y + mat.Translation().y - textureSize.y / 2) + mPosition;
+
+			commonVertexH[x][y].springResPos =
+				Vector2((MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
+					commonVertexH[x][y].velocity.x + mat.Translation().x - textureSize.x / 2,
+
+					(MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
+					commonVertexH[x][y].velocity.y + mat.Translation().y - textureSize.y / 2) + mPosition + commonVertexH[x][y].colWallVec; /*+ (commonVertexH[x][y].colWallVec*commonVertexH[x][y].colWallPower)*/;
+
+			Vector2::Spring(commonVertexH[x][y].position, commonVertexH[x][y].springResPos, commonVertexH[x][y].springVelocity, 0.7f);
+
 			//commonVertexH[x][y].position.x =
 			//	(MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
 			//	commonVertexH[x][y].velocity.x + mat.Translation().x - textureSize.x / 2;
@@ -90,6 +108,15 @@ void PuyoTextureK::PuyoUpdate()
 			//	commonVertexH[x][y].velocity.y + mat.Translation().y - textureSize.y / 2;
 		}
 	}
+
+	for (auto i : mWorld->findActors(ActorGroup::PuyoVertex)) {
+		PuyoCollision* puyoCol = dynamic_cast<PuyoCollision*>(i.get());
+		Vector2 hairetu = puyoCol->GetArrayState();
+		commonVertexH[(int)hairetu.x][(int)hairetu.y].colWallVec = puyoCol->GetVec();
+		puyoCol->SetPos(commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position, mCenter);
+
+	}
+
 
 	//頂点情報を毎フレーム更新
 	PuyoVertexSet();
@@ -112,15 +139,20 @@ void PuyoTextureK::PuyoDraw()
 		}
 	}
 
-	for (int y = 0; y <= loopY; y++)
-	{
-		for (int x = 0; x <= loopX; x++)
-		{
-			//DrawCircle(commonVertexH[x][y].position.x + mPosition.x, commonVertexH[x][y].position.y + mPosition.y, 2, GetColor(0, 0, 255));
-		}
-	}
+	//for (int y = 0; y <= loopY; y++)
+	//{
+	//	for (int x = 0; x <= loopX; x++)
+	//	{
+	//		DrawCircle(commonVertexH[x][y].position.x, commonVertexH[x][y].position.y, 3, GetColor(0, 0, 255));
+	//	}
+	//}
 	//DrawCircle(test.x + 100, test.y + 100, 10, GetColor(255, 255, 0));
 	//DrawFormatString(500,128, GetColor(255, 255, 255), "座標:%f,%f",test.x,test.y);
+
+
+	//for (auto i : mWorld->findActors(ActorGroup::PuyoVertex)) {
+	//	DrawCircle(i->getPosition().x,i->getPosition().y, 8, GetColor(0, 0, 255));
+	//}
 }
 
 void PuyoTextureK::PuyoGraphSplit()
@@ -145,7 +177,7 @@ void PuyoTextureK::PuyoGraphVertex()
 	{
 		for (int x = 0; x <= loopX; x++)
 		{
-			commonVertexH[x][y].position = Vector2(x*SplitSize, y*SplitSize);
+			commonVertexH[x][y].position = Vector2(x*SplitSize, y*SplitSize) + mPosition;
 		}
 	}
 	PuyoVertexSet();
@@ -159,10 +191,10 @@ void PuyoTextureK::PuyoVertexSet()
 		for (int x = 0; x < loopX; x++)
 		{
 			VertexPos vertex;
-			vertex.LeftTopPos = commonVertexH[x][y].position + mPosition;
-			vertex.LeftDownPos = commonVertexH[x][y + 1].position + mPosition;
-			vertex.RightTopPos = commonVertexH[x + 1][y].position + mPosition;
-			vertex.RightDownPos = commonVertexH[x + 1][y + 1].position + mPosition;
+			vertex.LeftTopPos = commonVertexH[x][y].position;
+			vertex.LeftDownPos = commonVertexH[x][y + 1].position;
+			vertex.RightTopPos = commonVertexH[x + 1][y].position;
+			vertex.RightDownPos = commonVertexH[x + 1][y + 1].position;
 			spriteVertexH[x][y] = vertex;
 		}
 	}
@@ -175,6 +207,14 @@ void PuyoTextureK::PuyoVertexSetInit()
 		for (int x = 0; x <= loopX; x++)
 		{
 			commonVertexHNoMove[x][y].position = Vector2(x*SplitSize, y*SplitSize);
+		}
+	}
+	//何も影響しない頂点を更新
+	for (int y = 0; y <= loopY; y++)
+	{
+		for (int x = 0; x <= loopX; x++)
+		{
+			commonVertexHNoCol[x][y].position = Vector2(x*SplitSize, y*SplitSize) + (mPosition );
 		}
 	}
 }
@@ -356,34 +396,34 @@ void PuyoTextureK::PuyoAddPowerDx(Vector2 pos, Vector2 velo)
 	//}
 }
 
-void PuyoTextureK::PuyoAddPowerEx(Vector2 vec, Vector2 velo,float power,float eikyo)
+void PuyoTextureK::PuyoAddPowerEx(Vector2 vec, Vector2 velo, float power, float eikyo)
 {
 	int x_ = 0;
 	int y_ = 0;
-	Vector2 kakeru = vec*110.0f;
+	Vector2 kakeru = vec*100.0f;
 	{
-	Vector2 texCen = Vector2(textureSize.x / 2, textureSize.y / 2);
-	Vector2 vecc = kakeru + texCen;
-	Vector2 sevePos = Vector2(9999, 9999);
+		Vector2 texCen = Vector2(textureSize.x / 2, textureSize.y / 2);
+		Vector2 vecc = kakeru + texCen;
+		Vector2 sevePos = Vector2(9999, 9999);
 
-	//設定された一番近い配列の場所を調べる
-	for (int y = 0; y <= loopY; y++)
-		for (int x = 0; x <= loopX; x++)
-		{
-			if (Vector2::Distance(commonVertexHNoMove[x][y].position, vecc) <= Vector2::Distance(sevePos, vecc))
+		//設定された一番近い配列の場所を調べる
+		for (int y = 0; y <= loopY; y++)
+			for (int x = 0; x <= loopX; x++)
 			{
-				sevePos = commonVertexHNoMove[x][y].position;
-				x_ = x;
-				y_ = y;
+				if (Vector2::Distance(commonVertexHNoMove[x][y].position, vecc) <= Vector2::Distance(sevePos, vecc))
+				{
+					sevePos = commonVertexHNoMove[x][y].position;
+					x_ = x;
+					y_ = y;
+				}
 			}
-		}
 	}
 	for (int y = -3; y <= 3; y++)
 	{
 		for (int x = -3; x <= 3; x++)
 		{
-			if(x_ + x<=loopX&& y_ + y<=loopY&&y_ + y>=0&& x_ + x>=0)
-				PuyoAddPowerDxSub(x_+x, y_+y, velo, power,eikyo);
+			if (x_ + x <= loopX&& y_ + y <= loopY&&y_ + y >= 0 && x_ + x >= 0)
+				PuyoAddPowerDxSub(x_ + x, y_ + y, velo, power, eikyo);
 		}
 	}
 	//DrawCircle(commonVertexH[x_][y_].position.x + mPosition.x, commonVertexH[x_][y_].position.y + mPosition.y, 5, GetColor(255, 0, 0));
@@ -401,7 +441,7 @@ void PuyoTextureK::PuyoTimerZero()
 	}
 }
 //仕様変更版
-void PuyoTextureK::PuyoAddPowerDxSub(int x_, int y_, Vector2 velo,float power,float eikyo)
+void PuyoTextureK::PuyoAddPowerDxSub(int x_, int y_, Vector2 velo, float power, float eikyo)
 {
 	Vector2 pos = commonVertexHNoMove[x_][y_].position;
 	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))
@@ -419,7 +459,7 @@ void PuyoTextureK::PuyoAddPowerDxSub(int x_, int y_, Vector2 velo,float power,fl
 				dis++;
 				commonVertexH[x][y].resNum = 0.0f;
 				commonVertexH[x][y].num += (power)*Time::GetInstance().deltaTime();
- 				commonVertexH[x][y].velocity += velo;
+				commonVertexH[x][y].velocity += velo;
 			}
 		}
 	}

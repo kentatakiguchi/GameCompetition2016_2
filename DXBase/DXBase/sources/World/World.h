@@ -5,6 +5,7 @@
 #include "../Actor/Base/ActorManager.h"
 #include "../Field/FieldPtr.h"
 #include <functional>
+#include <vector>
 
 enum class EventMessage;
 
@@ -31,6 +32,8 @@ public:
 	virtual void addUIActor(const ActorUIPtr& actor) override;
 	// アクターの検索
 	virtual ActorPtr findActor(const std::string& name) override;
+	//アクターの検索(list返し)
+	virtual std::forward_list<ActorPtr>findActors(const ActorGroup group) override;
 	// フィールドの取得
 	virtual FieldPtr getField() const override;
 	virtual unsigned int fieldHandle() const override;

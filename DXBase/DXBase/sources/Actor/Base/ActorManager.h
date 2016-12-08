@@ -26,6 +26,8 @@ public:
 	ActorPtr findActor(const std::string& name);
 	// メッセージ処理
 	void handleMessage(EventMessage message, void* param);
+	//アクターをグループで取得
+	std::forward_list<ActorPtr> GetActors(const ActorGroup group);
 	// コピー禁止
 	ActorManager(const ActorManager& other) = delete;
 	ActorManager& operator = (const ActorManager& other) = delete;

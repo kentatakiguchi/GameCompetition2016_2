@@ -73,7 +73,8 @@ public:
 	void removeChildren();
 	// 子を消去
 	void clearChildren();
-	
+	//子を取得
+	std::forward_list<ActorPtr> getChildren();
 	// モーションの設定
 	void setMotion(unsigned int motion);
 	// Transformの設定
@@ -148,6 +149,7 @@ private:
 	Vector2 mPrePos;
 	//1フレーム後
 	Vector2 mCurPos;
+
 };
 
 #endif

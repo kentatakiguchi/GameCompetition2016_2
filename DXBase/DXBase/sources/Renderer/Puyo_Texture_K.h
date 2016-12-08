@@ -1,8 +1,10 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include "../ResourceLoader/ResourceLoader.h"
 #include "../Math/Vector2.h"
 #include "../Math/Matrix.h"
+#include "../World/IWorld.h"
 
 struct VertexPos {
 	//左上
@@ -25,19 +27,21 @@ struct SpringState {
 	//float vibrationTimer = 0.0f;                   //振動するまでのカウント
 	Vector2 position=Vector2::Zero;		           //振動する中心座標
 	Vector2 velocity = Vector2(1, 1);              //振動している方向と大きさ
-	bool PowerFlag = true;                         //振動してる種類フラグ
+	//bool PowerFlag = true;                         //振動してる種類フラグ
 	Vector2 springVelocity = Vector2::Zero;
 	Vector2 springResPos = Vector2::Zero;
+	Vector2 colWallVec = Vector2::Zero;           //壁に当たっている方向
+	float colWallPower = 0.0f;                  //壁に当たっている量
 };
 
 
 class PuyoTextureK {
 public:
 	//揺らすテクスチャIDと座標と大きさと回転
-	PuyoTextureK(TextureID tex,Vector2 pos,Vector2 scale,float rotate);
+	PuyoTextureK(IWorld* world,TextureID tex,Vector2 pos,Vector2 scale,float rotate);
 	~PuyoTextureK();
 	//座標とスケールと回転をセットする
-	void SetPosition(Vector2 pos, Vector2 scale, float rotate);
+	void SetPosition(Vector2 pos, Vector2 scale, float rotate,Vector2 center);
 	//力を加える頂点(pos:テクスチャから見た力を加える座標,velo:揺らす方向と大きさ)
 	void PuyoAddPower(Vector2 pos,Vector2 velo);
 	//力を加え続ける頂点（周りににも）(pos:テクスチャから見た力を加える座標,velo:揺らす方向と大きさ)※毎フレーム呼ぶこと
@@ -58,7 +62,9 @@ private:
 	void PuyoAddPowerDxSub(int x,int y,Vector2 velo,float power,float eikyo);
 
 private:
-
+	IWorld* mWorld;
+	//あたり判定付き頂点情報
+	Actor commonVertexActor[30][30];
 	//頂点情報
 	VertexPos  spriteVertexH[30][30];
 	//インデックス情報
@@ -67,6 +73,8 @@ private:
 	SpringState commonVertexH[30][30];
 	//共通の頂点情報（移動しないよ）
 	SpringState commonVertexHNoMove[32][32];
+	//共通の頂点情報(あたり判定ないよ)
+	SpringState commonVertexHNoCol[32][32];
 	//元のテクスチャ情報
 	int textureIndex;
 	//元のテクスチャサイズ
@@ -80,14 +88,11 @@ private:
 	Vector2 mScale;
 	//画像の回転
 	float mRotate;
+	//ぶってぃとえってぃの中心
+	Vector2 mCenter;
 
 
 	float time;
 
-	float tesNum;
-	Vector2 test;
-	float tesTimer;
-	float testVelo;
-	float testRes;
 
 };

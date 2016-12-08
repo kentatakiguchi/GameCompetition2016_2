@@ -12,6 +12,7 @@ enum class ActorGroup {
 	Effect,				// エフェクト
 	BACKGRAUND,
 	SCROOLSTOP,
+	PuyoVertex,
 	Field				//ステージ
 };
 

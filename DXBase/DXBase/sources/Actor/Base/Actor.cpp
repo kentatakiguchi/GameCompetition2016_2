@@ -193,6 +193,11 @@ void Actor::clearChildren() {
 	children_.clear();
 }
 
+std::forward_list<ActorPtr> Actor::getChildren()
+{
+	return children_;
+}
+
 void Actor::setMotion(const unsigned int motion) {
 	motion_ = motion;
 }

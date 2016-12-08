@@ -66,6 +66,11 @@ void World::addUIActor(const ActorUIPtr & actor)
 ActorPtr World::findActor(const std::string& name) {
 	return actors_.findActor(name);
 }
+//アクター検索(list返し)
+std::forward_list<ActorPtr> World::findActors(const ActorGroup group)
+{
+	return actors_.GetActors(group);
+}
 
 // フィールドの取得
 FieldPtr World::getField() const {

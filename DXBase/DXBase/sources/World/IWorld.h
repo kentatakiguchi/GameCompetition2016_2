@@ -4,7 +4,7 @@
 #include "../Actor/Base/Actor.h"
 #include "../Field/FieldPtr.h"
 #include <string>
-
+#include <vector>
 enum class ActorGroup;
 enum class EventMessage;
 
@@ -22,7 +22,8 @@ public:
 	// フィールドの取得
 	virtual FieldPtr getField() const = 0;
 	virtual unsigned int fieldHandle() const = 0;
-
+	//アクターの検索(list返し)
+	virtual std::forward_list<ActorPtr> findActors(const ActorGroup group) = 0;
 	virtual Vector2 MoveActor() = 0;
 	virtual Vector2 ScroolStopFlag() = 0;
 	virtual bool is_clear() = 0;
