@@ -27,7 +27,7 @@ void KataokaScene::start()
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
-	puyo = new PuyoTextureK(TextureID::PUYO_TEST_TEX,pos,scale,rotate);
+	//puyo = new PuyoTextureK(TextureID::PUYO_TEST_TEX,pos,scale,rotate);
 	world_->addUIActor(std::make_shared<BossGaugeUI>(world_.get(), Vector2(500, 500)));
 	//backManager = new BackGraundManager(world_.get());
 	////先にセットされたテクスチャほど奥に描写される
@@ -114,7 +114,7 @@ void KataokaScene::update()
 	//	puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
 	//}
 
-	puyo->SetPosition(pos,scale,rotate);
+	//puyo->SetPosition(pos,scale,rotate);
 
 	world_->update(Time::GetInstance().deltaTime());
 	////背景update

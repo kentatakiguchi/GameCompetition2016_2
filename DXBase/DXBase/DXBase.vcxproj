@@ -205,6 +205,7 @@
     <ClInclude Include="sources\Actor\Person\Player\PlayerBodyPoint.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerConnector.h" />
     <ClInclude Include="sources\Actor\Person\Player\PlayerPtr.h" />
+    <ClInclude Include="sources\Actor\Person\Player\PuyoCollision.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\ActionType.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IState.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IStatePtr.h" />
@@ -352,6 +353,7 @@
     <ClCompile Include="sources\Actor\Person\Player\PlayerBodyCollider.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerBodyPoint.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerConnector.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\PuyoCollision.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.cpp" />

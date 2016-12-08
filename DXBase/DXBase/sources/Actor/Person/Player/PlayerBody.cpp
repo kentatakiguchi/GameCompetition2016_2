@@ -57,7 +57,7 @@ void PlayerBody::onDraw() const{
 	Vector3 color = Vector3::Zero;
 	if (name_ == "PlayerBody1")color = Vector3(255, 255, 255);
 	if (name_ == "PlayerBody2")color = Vector3(255, 255, 255);
-	animation_.draw(draw_pos_, Vector2::One * 128, 0.5f, 0, color, ActionType::Right);
+	animation_.draw(draw_pos_, Vector2::One * 128, 0.5f, 0, color/*, ActionType::Right*/);
 }
 
 void PlayerBody::onLateUpdate(float deltaTime){
