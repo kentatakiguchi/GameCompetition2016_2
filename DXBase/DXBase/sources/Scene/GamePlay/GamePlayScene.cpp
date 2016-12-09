@@ -68,8 +68,9 @@ void GamePlayScene::start() {
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_TEX, TextureID::BACKSTAGE1_6_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_1_TEX, TextureID::BACKSTAGE1_7_2_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_1_TEX, TextureID::BACKSTAGE1_8_2_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_9_TEX, TextureID::BACKSTAGE1_9_TEX,true);
 
 		//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 		//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
@@ -125,7 +126,7 @@ void GamePlayScene::draw() const {
 	backManager->Draw();
 	//world•`‰æ
 	world_->draw();
-
+	backManager->BackDraw();
 	isStopped_ ? pause_.draw() : move_.draw();
 
 }

@@ -40,10 +40,10 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_4_TEX, "./resources/sprite/BackGraund/Stage1-4.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_5_TEX, "./resources/sprite/BackGraund/Stage1-5.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_6_TEX, "./resources/sprite/BackGraund/Stage1-6.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_7_1_TEX, "./resources/sprite/BackGraund/Stage7-1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_7_2_TEX, "./resources/sprite/BackGraund/Stage7-2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_8_TEX, "./resources/sprite/BackGraund/Stage1-8.png");
-
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_7_TEX, "./resources/sprite/BackGraund/Stage1-7.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_8_1_TEX, "./resources/sprite/BackGraund/Stage1-8-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_8_2_TEX, "./resources/sprite/BackGraund/Stage1-8-2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_9_TEX, "./resources/sprite/BackGraund/Stage1-9.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_SAMPLE_TEX, "./resources/sprite/EnemySample.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_NEEDLE_TEX, "./resources/sprite/Needle.png");

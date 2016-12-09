@@ -16,13 +16,15 @@ BackGraundManager::~BackGraundManager()
 {
 }
 
-void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2)
+void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2,bool frontGraund)
 {
 	BackGraundState backState;
 	//サイズを追加
 	backState.size = ResourceLoader::GetInstance().GetTextureSize(id1);
 	Vector2 size = backState.size;
-
+	//手前に表示するか
+	backState.frontGraundFlag = frontGraund;
+	//ポジションと番号を設定
 	IndexPos indexPos;
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id1);
 	indexPos.position = Vector2::Zero;
@@ -236,6 +238,7 @@ void BackGraundManager::Draw() const
 	{
 		for (auto j : i.indexPos)
 		{
+			if(!i.frontGraundFlag)
 			DrawGraph(j.position.x, j.position.y, j.index, true);
 		}
 	}
@@ -248,6 +251,19 @@ void BackGraundManager::Draw() const
 	for (auto i : tateYokoState.indexPos)
 	{
 		DrawGraph(i.position.x, i.position.y, i.index, true);
+	}
+}
+
+void BackGraundManager::BackDraw() const
+{
+	//地上の描写
+	for (auto i : backStates)
+	{
+		for (auto j : i.indexPos)
+		{
+			if (i.frontGraundFlag)
+				DrawGraph(j.position.x, j.position.y, j.index, true);
+		}
 	}
 }
 

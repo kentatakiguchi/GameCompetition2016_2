@@ -17,6 +17,8 @@ struct BackGraundState
 {
 	//テクスチャid
 	int id = 0;
+	//Actorの前に表示するか
+	bool frontGraundFlag=false;
 	//テクスチャサイズ
 	Vector2 size = Vector2::Zero;
 	//2つ画像を張るための座標
@@ -30,7 +32,7 @@ public:
 	BackGraundManager(IWorld* world);
 	~BackGraundManager();
 	//背景を設定する（ロードしたテクスチャ限定）
-	void SetBackGraund(TextureID id1,TextureID id2);
+	void SetBackGraund(TextureID id1,TextureID id2,bool frontGraund=false);
 	//縦の背景を設定する（ロードしたテクスチャ限定）
 	void SetTateBackGraund(TextureID id1, TextureID id2);
 	//縦の横の背景を設定する(ロードしたテクスチャ限定)
@@ -49,6 +51,8 @@ public:
 	void TateUpdate(float deltaTime);
 
 	void Draw() const;
+
+	void BackDraw()const;
 
 	//バネ
 	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness=0.05f, float friction=0.5f, float mass=2.0f);
