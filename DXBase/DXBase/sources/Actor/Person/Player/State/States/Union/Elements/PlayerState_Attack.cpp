@@ -5,20 +5,17 @@
 PlayerState_Attack::PlayerState_Attack() {}
 
 void PlayerState_Attack::unique_init(){
-	butty_->reset_velocity();
-	retty_->reset_velocity();
-
 	butty_->reset_opponent();
 	retty_->reset_opponent();
 
-	if (element_.action_type_ == ActionType::Right) {
+	if (element_.type_ == ActionType::Right) {
 		launch_dir_ = Vector2::Normalize(retty_->getPosition() - butty_->getPosition());
 		chase_dir_ = Vector2::Normalize(retty_->getPosition() - butty_->getPosition());
 
 		//butty_->launch(dir_ * power_);
 		butty_->create_attack_collider_();
 	}
-	if (element_.action_type_ == ActionType::Left) {
+	if (element_.type_ == ActionType::Left) {
 		launch_dir_ = Vector2::Normalize(butty_->getPosition() - retty_->getPosition());
 		chase_dir_ = Vector2::Normalize(butty_->getPosition() - retty_->getPosition());
 		//retty_->launch(dir_ * power_);
@@ -47,7 +44,7 @@ void PlayerState_Attack::update(float deltaTime) {
 	chase_dir_ *= -chase_dir_easeing_ + 1;
 	chase_dir_.y += 0.1f * gra_easeing_;
 
-	if (element_.action_type_ == ActionType::Right) {
+	if (element_.type_ == ActionType::Right) {
 		butty_->launch(launch_dir_ * launch_power_);
 		retty_->launch(chase_dir_ * chase_power_);
 		retty_->chase();
@@ -55,7 +52,7 @@ void PlayerState_Attack::update(float deltaTime) {
 		if (butty_->is_hit()) launch_power_ = 0;
 		if (retty_->is_hit()) chase_power_ = 0;
 	}
-	if (element_.action_type_ == ActionType::Left) {
+	if (element_.type_ == ActionType::Left) {
 		retty_->launch(launch_dir_ * launch_power_);
 		butty_->launch(chase_dir_ * chase_power_);
 		butty_->chase();
@@ -74,10 +71,10 @@ void PlayerState_Attack::update(float deltaTime) {
 }
 
 void PlayerState_Attack::end(){
-	if (element_.action_type_ == ActionType::Right) {
+	if (element_.type_ == ActionType::Right) {
 		butty_->delete_attack_collider_();
 	}
-	if (element_.action_type_ == ActionType::Left) {
+	if (element_.type_ == ActionType::Left) {
 		retty_->delete_attack_collider_();
 	}
 }
@@ -112,9 +109,6 @@ void PlayerState_Attack::pad_input(){
 //void PlayerState_Attack::unique_init() {
 //	butty_->reset_velocity();
 //	retty_->reset_velocity();
-//
-//	butty_->reset_opponent();
-//	retty_->reset_opponent();
 //
 //	dump_ = 0;
 //	if (element_.action_type_ == ActionType::Right) {

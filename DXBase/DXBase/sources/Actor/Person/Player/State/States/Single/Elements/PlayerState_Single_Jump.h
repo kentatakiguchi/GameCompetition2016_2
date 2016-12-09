@@ -4,7 +4,7 @@
 
 class PlayerState_Single_Jump : public PlayerState_Single {
 public:
-	PlayerState_Single_Jump();
+	PlayerState_Single_Jump(const Keys& keys);
 private:
 	virtual void unique_init() override;
 	virtual void update(float deltaTime) override;

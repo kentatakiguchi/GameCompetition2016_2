@@ -15,8 +15,13 @@ void StateMgr::action(Actor& actor, float deltaTime) {
 	if (currentState_->isEnd()) changeState(actor, currentState_->next());
 }
 
+// ステートの追加
+void StateMgr::addState(const int& state, const IStatePtr& scene) {
+	states_[(unsigned int)state] = scene;
+}
+
 // ステートの変更処理
-void StateMgr::changeState(Actor& actor, IState::StateElement element) {
+void StateMgr::changeState(Actor& actor, const IState::StateElement& element) {
 	// 前ステートの終了処理
 	currentState_->end();
 	// 要素の格納
@@ -24,23 +29,18 @@ void StateMgr::changeState(Actor& actor, IState::StateElement element) {
 	// 実行ステートを変更
 	currentState_ = states_[element_.state_];
 	// 共通の初期化
-	currentState_->common_init(actor, element_.action_type_);
+	currentState_->common_init(actor, element_.type_);
 	// 固有の初期化
 	currentState_->unique_init();
 }
 
-// ステートの追加
-void StateMgr::add(unsigned int state, const IStatePtr& scene) {
-	states_[(unsigned int)state] = scene;
-}
-
 // 現在のステート
-bool StateMgr::currentState(unsigned int state) {
+bool StateMgr::currentState(const int& state) {
 	return element_.state_ == state;
 }
 
-bool StateMgr::currentActionType(ActionType action_type){
-	return element_.action_type_ == action_type;
+bool StateMgr::currentActionType(const ActionType& type){
+	return element_.type_ == type;
 }
 
 IState::StateElement StateMgr::currentElement(){

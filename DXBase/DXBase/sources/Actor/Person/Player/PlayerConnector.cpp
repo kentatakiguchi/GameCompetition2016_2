@@ -1,21 +1,21 @@
 #include "PlayerConnector.h"
 #include"../../Body/CollisionBase.h"
 
+
+#include "PlayerBody.h"
 #include "PlayerBodyPoint.h"
 #include "../../../Renderer/DrawShape.h"
 #include "../../../Game/Time.h"
-PlayerConnector::PlayerConnector() {}
 
 PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, PlayerBodyPtr butty, PlayerBodyPtr retty) :
-	Actor(world, "PlayerConnector", position, CollisionBase()),
-	action_type_(ActionType::Right),
+	Actor(world, "PlayerConnector", position, CollisionBase()), butty_(butty), retty_(retty),
 	mPower(0.0f),
 	mPuyoTimer(0.0f),
 	mPuyoFlag(false) {
-	butty_ = butty;
-	retty_ = retty;
-
 	create_point(PLAYER_CNTR_DIV_NUM);
+
+	stateMgr_.change(*this, PlayerState_Enum_Union::STAND_BY);
+
 	mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position, 1, 0);
 }
 
@@ -26,6 +26,12 @@ PlayerConnector::~PlayerConnector() {
 void PlayerConnector::onUpdate(float deltaTime) {
 	position_ = (butty_->getPosition() + retty_->getPosition()) / 2;
 
+	if (is_damaged()) {
+		butty_->init_state(PlayerState_Enum_Single::STAND_BY);
+		retty_->init_state(PlayerState_Enum_Single::STAND_BY);
+		dead();
+	}
+	if (is_cleared()) world_->clear(true);
 
 	//mPuyo->PuyoUpdate();
 
@@ -86,8 +92,6 @@ void PlayerConnector::onUpdate(float deltaTime) {
 	//		mPuyoFlag = false;
 	//	}
 	//}
-
-	points_update();
 }
 
 void PlayerConnector::onLateUpdate(float deltaTime) {}
@@ -101,89 +105,28 @@ void PlayerConnector::onDraw() const {
 
 void PlayerConnector::onCollide(Actor & other) {}
 
+PlayerBodyPtr PlayerConnector::blue_body() {
+	return butty_;
+}
+
+PlayerBodyPtr PlayerConnector::red_body() {
+	return retty_;
+}
+
+PlayerStateMgr_Union& PlayerConnector::state_mgr() {
+	return stateMgr_;
+}
+
+void PlayerConnector::state_action(float deltaTime) {
+	stateMgr_.action(*this, deltaTime);
+}
+
 void PlayerConnector::create_point(int point_num) {
 	for (int i = 0; i < point_num; i++) {
-		auto point = std::make_shared<PlayerBodyPoint>(world_, position_, i/*, *this*/);
+		auto point = std::make_shared<PlayerBodyPoint>(world_, position_, i);
 		addChild(point);
 		points.push_back(point);
 	}
-}
-
-void PlayerConnector::points_update(){
-	auto player = std::dynamic_pointer_cast<Player>(world_->findActor("Player"));
-
-	if (player->action_type(ActionType::Right)) action_type_ = ActionType::Right;
-	if (player->action_type(ActionType::Left)) 	action_type_ = ActionType::Left;
-
-	if (action_type_ == ActionType::Right) {
-		for (int i = points.size() - 1; i >= 0; i--) {
-			points[i]->compose_pos();
-		}
-	}
-	if (action_type_ == ActionType::Left) {
-		for (int i = 0; i < points.size(); i++) {
-			points[i]->compose_pos();
-		}
-	}
-}
-
-Vector2 PlayerConnector::base_point(ActionType type) {
-	if (type == ActionType::Right) return points[0]->getPosition();
-	if (type == ActionType::Left)  return points[points.size() - 1]->getPosition();
-	return Vector2::Zero;
-}
-
-Vector2 PlayerConnector::target() {
-	if (action_type_ == ActionType::Right) {
-		return butty_->getPosition();
-	}
-	else if (action_type_ == ActionType::Left) {
-		return retty_->getPosition();
-	}
-	return Vector2::Zero;
-}
-
-Vector2 PlayerConnector::comp() {
-	if (action_type_ == ActionType::Right) {
-		return retty_->getPosition() - butty_->getPosition();
-
-	}
-	else if (action_type_ == ActionType::Left) {
-		return butty_->getPosition() - retty_->getPosition();
-	}
-	return Vector2::Zero;
-}
-
-Vector2 PlayerConnector::target_vector(int index) {
-	float length = 0;
-	float cur_length = comp().Length();
-	(cur_length > PLAYER_MAX_STRETCH_LENGTH) ? length = PLAYER_CNTR_DIV_LENGTH : length = cur_length / static_cast<float>(PLAYER_CNTR_DIV_NUM + 1);
-
-	if (action_type_ == ActionType::Right) {
-		return butty_->getPosition() + (retty_->getPosition() - butty_->getPosition()).Normalize() * length * (index + 1);
-	}
-	else if (action_type_ == ActionType::Left) {
-		return retty_->getPosition() + (butty_->getPosition() - retty_->getPosition()).Normalize() * length * (points.size() - index);
-	}
-}
-
-Vector2 PlayerConnector::clamp_target(Vector2 pos, int index) {
-
-	Vector2 target = Vector2::Zero;
-	if (action_type_ == ActionType::Right) {
-		if (index == 0) target = butty_->getPosition();
-		else target = points[index - 1]->getPosition();
-	}
-
-	if (action_type_ == ActionType::Left) {
-		if (index == points.size() - 1) target = retty_->getPosition();
-		else target = points[index + 1]->getPosition();
-	}
-
-	Vector2 vec = pos - target;
-	if (vec.Length() <= PLAYER_CNTR_DIV_LENGTH) return pos;
-
-	return target + vec.Normalize() * PLAYER_CNTR_DIV_LENGTH;
 }
 
 std::vector<Vector2> PlayerConnector::get_points() {
@@ -194,7 +137,41 @@ std::vector<Vector2> PlayerConnector::get_points() {
 	return points_pos;
 }
 
+bool PlayerConnector::is_damaged() {
+	//bool is_split_state = stateMgr_.get_state(PlayerState_Enum_Union::SPLIT);
+	bool is_attack_state = stateMgr_.get_state(PlayerState_Enum_Union::ATTACK);
+	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
+	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
+	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
+
+	return /*!is_split_state && */!is_attack_state && (is_main_target_enemy || is_sub_target_enemy || for_debug);
+}
+
+bool PlayerConnector::is_cleared() {
+	bool is_main_target_partner = butty_->hit_enemy() == HitOpponent::CLEAR;
+	bool is_sub_target_partner = retty_->hit_enemy() == HitOpponent::CLEAR;
+	return is_main_target_partner || is_sub_target_partner;
+}
+
+bool PlayerConnector::is_dead() {
+	bool is_main_dead = butty_->dead_limit();
+	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
+	bool is_main_invincible = butty_->isInv();
+
+	bool is_sub_dead = retty_->dead_limit();
+	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
+	bool is_sub_invincible = retty_->isInv();
+
+	return (is_main_dead && is_sub_dead) || (is_main_target_enemy && !is_main_invincible) || (is_sub_target_enemy && !is_sub_invincible);
+}
+
 Vector2 PlayerConnector::get_point(int index) {
+	if (index == -1) {
+		return butty_->getPosition();
+	}
+	if (index == points.size()) {
+		return retty_->getPosition();
+	}
 	return points[index]->getPosition();
 }
 

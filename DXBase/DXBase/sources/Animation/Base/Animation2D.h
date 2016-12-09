@@ -11,21 +11,23 @@ class Animation2D {
 public:
 	// コンストラクタ
 	Animation2D();
-	// アニメーションの変更(速度のみ変更も可能)
-	void change_param(int anim_num, float speed = 1.0f);
-	// アニメーションの方向転換
-	void change_dir_type(int anim_num, ActionType type);
-	// アニメーションを元に戻す
-	void back_to_pre_motion();
-	// アニメーションの方向転換
-	bool end_anim();
 	// 更新処理
 	void update(float deltaTime);
 	// 描画
 	// 座標,(軸),(拡大率),(回転角度(度数法)),
-	void draw(Vector2 position, Vector2 origin = Vector2::Zero, float scale = 1, float degree = 0, Vector3 color = Vector3(255, 255, 255)) const;
+	void draw(const Vector2& position, const Vector2& origin = Vector2::Zero, const float& scale = 1, const float& degree = 0, const Vector3& color = Vector3(255, 255, 255)) const;
 	// 座標,軸,拡大率,回転角度(度数法),
-	void draw(Vector2 position, Vector2 origin, Vector2 scale, float degree, Vector3 color = Vector3(255, 255, 255)) const;
+	void draw(const Vector2& position, const Vector2& origin = Vector2::Zero, const Vector2& scale = Vector2::One, const float& degree = 0, const Vector3& color = Vector3(255, 255, 255)) const;
+protected:
+	void add_anim(const int& id, const int& res, const int& size, const int& row, const int& column, const int& surplus);
+	// アニメーションの変更(速度のみ変更も可能)
+	void change_param(const int& anim_num, const float& speed = 1.0f);
+	// アニメーションの方向転換
+	void change_dir_type(const int& anim_num, const ActionType& type);
+	// アニメーションを元に戻す
+	void back_to_pre_motion();
+	// アニメーションの方向転換
+	bool end_anim();
 protected:
 	//分割前の画像id
 	int id_;

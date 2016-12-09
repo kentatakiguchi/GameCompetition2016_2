@@ -1,7 +1,7 @@
 #include "PlayerState_Union.h"
 
 // コンストラクタ
-PlayerState_Union::PlayerState_Union() : 
+PlayerState_Union::PlayerState_Union() :
 	element_(-1),
 	next_element_(-1),
 	timer_(0),
@@ -9,15 +9,19 @@ PlayerState_Union::PlayerState_Union() :
 }
 
 // 全てのステートに共通する初期化処理
-void PlayerState_Union::common_init(Actor& actor, ActionType type){
+void PlayerState_Union::common_init(Actor& actor, const ActionType& type){
 	element_ = StateElement(-1, type);
 	timer_ = 0;
 	isEnd_ = false;
 
-	player_ = dynamic_cast<Player*>(&actor);
-	butty_ = player_->blue_body();
-	retty_ = player_->red_body();
-	cntr_ = player_->connector();
+	cntr_ = dynamic_cast<PlayerConnector*>(&actor);
+	butty_ = cntr_->blue_body();
+	retty_ = cntr_->red_body();
+
+	//player_ = dynamic_cast<Player*>(&actor);
+	//butty_ = player_->blue_body();
+	//retty_ = player_->red_body();
+	//cntr_ = player_->connector();
 }
 
 void PlayerState_Union::input(){
@@ -25,7 +29,7 @@ void PlayerState_Union::input(){
 }
 
 // ステートの変更処理
-void PlayerState_Union::change(StateElement element){
+void PlayerState_Union::change(const StateElement& element){
 	next_element_ = element;
 	isEnd_ = true;
 }

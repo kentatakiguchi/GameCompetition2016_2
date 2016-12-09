@@ -11,8 +11,7 @@ class TestChara :public Actor {
 public:
 	TestChara(IWorld* world, Vector2& position) :
 		Actor(world, "Player", Vector2(position.x, position.y), CollisionBase(
-			Vector2(0, 0),30.f))
-	{
+			Vector2(0, 0),30.f))	{
 	}
 private:
 	virtual void onUpdate(float deltaTime) {
@@ -76,7 +75,6 @@ private:
 	virtual void onDraw() const override {
 		body_.draw();
 		DrawFormatString(250, 100, GetColor(255, 255, 255), "%f:%f", position_.x, position_.y);
-
 	}
 	virtual void onCollide(Actor& other) {
 		Vector2 myCenter, segCenter, segPoint, targetPoint, targetVec;

@@ -10,13 +10,11 @@ enum class PlayerState_Enum_Union {
 	HOLD,
 	HOLD_BOTH,
 	JUMP,
-	SPLIT,
 	ATTACK, 
 	FREEZE,
 	DAMAGE,
 	DEAD
 };
-
 
 // プレイヤーのステート一覧
 enum class PlayerState_Enum_Single {

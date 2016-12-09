@@ -1,0 +1,10 @@
+idle 256 8 4 1
+move 256 8 4 1
+hold 256 8 4 1
+swim 256 8 4 1
+s_turn   256 8 2 5
+death    256 8 2 0
+damage   256 8 2 0
+div_idle 256 8 2 0
+div_move 256 8 2 1
+turn     256 8 2 5

@@ -3,9 +3,9 @@
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
-#include "State/Base/StateMgr.h"
-#include "PlayerBody.h"
-#include "PlayerConnector.h"
+#include "State/States/Union/PlayerStateMgr_Union.h"
+//#include "PlayerBody.h"
+//#include "PlayerConnector.h"
 
 #include "PlayerPtr.h"
 #include "../../../Renderer/Puyo_Texture_K.h"
@@ -26,31 +26,20 @@ public:
 	PlayerCntrPtr connector();
 
 	void set_body();
-	void body_chase();
-	void body_clamp();
-	void body_gravity();
-
-	bool action_type(ActionType type);
 public:
 	// 接続処理
 	void connect();
-	// 分離処理
-	void split();
 	// 接続可能かどうか
 	bool is_connectable();
-	// ダメージを受けたかどうか
-	bool is_damaged();
-	// クリアしたかどうか
-	bool is_cleared();
 	// 死亡したかどうか
 	bool is_dead();
 private:
-	StateMgr stateMgr_;
+	//PlayerStateMgr_Union stateMgr_;
 	// mainとなる部位
 	PlayerBodyPtr retty_;
 	// sub となる部位
 	PlayerBodyPtr butty_;
 	// コネクター
-	PlayerCntrPtr cntr_;
+	//PlayerCntrPtr cntr_;
 };
 

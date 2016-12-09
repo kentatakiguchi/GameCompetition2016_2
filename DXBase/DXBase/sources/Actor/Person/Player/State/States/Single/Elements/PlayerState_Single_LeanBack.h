@@ -4,13 +4,11 @@
 
 class PlayerState_Single_LeanBack : public PlayerState_Single {
 public:
-	PlayerState_Single_LeanBack();
+	PlayerState_Single_LeanBack(const Keys& keys);
 private:
 	virtual void unique_init() override;
 	virtual void update(float deltaTime) override;
 	virtual void end() override;
-private:
-	void move();
 private:
 	Vector2 dir_;
 	float power_;

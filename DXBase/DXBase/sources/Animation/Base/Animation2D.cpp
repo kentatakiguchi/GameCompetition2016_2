@@ -6,7 +6,17 @@ Animation2D::Animation2D() :
 	type_(ActionType::Right) {
 }
 
-void Animation2D::change_param(int anim_num, float speed) {
+void Animation2D::add_anim(const int & id, const int & res, const int & size, const int & row, const int & column, const int & surplus){
+	for (int i = 0; i < column; ++i) {
+		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
+			// 切り取る左上の座標
+			Vector2 src = Vector2(j, i) * size;
+			sprites_[id].push_back(DerivationGraph(src.x, src.y, size, size, res));
+		}
+	}
+}
+
+void Animation2D::change_param(const int& anim_num, const float& speed) {
 	//再生速度を変更
 	speed_ = speed;
 	//アニメーションが同じ場合はreturn
@@ -17,7 +27,7 @@ void Animation2D::change_param(int anim_num, float speed) {
 	timer_ = 0;
 }
 
-void Animation2D::change_dir_type(int anim_num, ActionType type){
+void Animation2D::change_dir_type(const int& anim_num, const ActionType& type){
 	if (type_ == type)return;
 	pre_anim_ = anim_num_;
 	pre_speed_ = speed_;
@@ -46,11 +56,11 @@ void Animation2D::update(float deltaTime) {
 	back_to_pre_motion();
 }
 
-void Animation2D::draw(Vector2 position, Vector2 origin, float scale, float degree, Vector3 color) const{
+void Animation2D::draw(const Vector2& position, const Vector2& origin, const float& scale, const float& degree, const Vector3& color) const{
 	draw(position, origin, Vector2::One * scale, degree, color);
 }
 
-void Animation2D::draw(Vector2 position, Vector2 origin, Vector2 scale, float degree, Vector3 color) const {
+void Animation2D::draw(const Vector2& position, const Vector2& origin, const Vector2& scale, const float& degree, const Vector3& color) const {
 	SetDrawBright(color.x, color.y, color.z);
 	//度数法→弧度法に変換
 	float radian = MathHelper::ToRadians(degree);

@@ -1,13 +1,12 @@
 #include "PlayerState_Jump.h"
 
-PlayerState_Jump::PlayerState_Jump()
-{
+#include <algorithm>
+
+PlayerState_Jump::PlayerState_Jump(){
+
 }
 
 void PlayerState_Jump::unique_init(){
-	butty_->reset_velocity();
-	retty_->reset_velocity();
-
 	butty_->reset_opponent();
 	retty_->reset_opponent();
 
@@ -19,12 +18,10 @@ void PlayerState_Jump::unique_init(){
 }
 
 void PlayerState_Jump::update(float deltaTime) {
-	//InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
-
-	timer_ += deltaTime;
+	timer_ = std::min<float>(timer_ + deltaTime, 60);
 
 	//gra_easeing_ = EasingInExpo(timer_);
-	dir_.y += 0.1f/* * gra_easeing_*/;
+	dir_.y = std::min<float>(dir_.y + 0.1f, 60 * 100)/* * gra_easeing_*/;
 
 	butty_->launch(dir_ * power_);
 	retty_->launch(dir_ * power_);

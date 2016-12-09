@@ -3,7 +3,7 @@
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
-#include "State/Base/StateMgr.h"
+#include "State/States/Single/PlayerStateMgr_Single.h"
 #include "PlayerPtr.h"
 #include "HitOpponent.h"
 
@@ -12,21 +12,6 @@
 // プレーヤー
 class PlayerBody : public Actor {
 public:
-	struct SingleKeys {
-	public:
-		KeyCode up;
-		KeyCode down;
-		KeyCode right;
-		KeyCode left;
-	public:
-		SingleKeys(KeyCode up_key = KeyCode::UP, KeyCode down_key = KeyCode::DOWN, KeyCode right_key = KeyCode::RIGHT, KeyCode left_key = KeyCode::LEFT) {
-			up = up_key;
-			down = down_key;
-			right = right_key;
-			left = left_key;
-		}
-	};
-public:
 	PlayerBody();
 	PlayerBody(IWorld* world, const std::string name, const Vector2& position);
 	~PlayerBody();
@@ -34,11 +19,10 @@ public:
 	virtual void onDraw() const override;
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onCollide(Actor& other) override;
-	void init_state();
-	void move(Vector2 vector);
-	void move_hold(Vector2 vector);
 
-	void sprit_move(KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN, KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT);
+	void init_state(PlayerState_Enum_Single state);
+	void move(Vector2 vector);
+
 	void chase();
 	void gravity();
 	void acc_gravity();
@@ -48,7 +32,7 @@ public:
 	bool is_hit();
 
 	void hold_gravity();
-	void circleClamp(Vector2 target);
+	void clamp();
 	void launch(Vector2 dir);
 	HitOpponent hitOpponent();
 	HitOpponent hit_partner();
@@ -56,52 +40,51 @@ public:
 	void reset_opponent();
 	void reset_partner();
 	void reset_enemy();
-	void reset_velocity();
 	float distance();
 	void set_partner(PlayerBodyPtr partner);
 	void set_hold_point();
-	PlayerBodyPtr get_partner();
-	bool isDead();
+	bool dead_limit();
 	bool isInv();
 	void single_action(float deltaTime);
-	SingleKeys get_keys();
-
 	Vector2 get_partner_vector();
 	void create_attack_collider_();
 	void delete_attack_collider_();
 	void reset_dead_limit();
 	void count_dead_limit(float deltaTime);
 
+	PlayerAnimation2D& animation();
+
 	Vector2 GetVelo() {
 		return Vector2(velocity_.x, velocity_.y);
 	}
 private:
+	PlayerStateMgr_Single stateMgr_;
+
 	Vector2 input_;
 	Vector2 velocity_;
 	Vector2 gravity_;
+	Vector2 slope_;
 	Vector2 launch_;
-	Vector2 last_pos_;
 	PlayerBodyPtr partner_;
 	HitOpponent opponent_;
 	HitOpponent hit_partner_;
 	HitOpponent hit_enemy_;
-	Vector2 oppenent_pos_;
 
 	float jump_power_;
-	// 単独状態か否か
-	bool is_single_;
-	StateMgr stateMgr_;
-	// 分離時のキー
-	SingleKeys keys_;
-
 	float dead_limit_;
 
 	PlayerBodyCollPtr collider_;
 	PlayerBodyCollPtr attack_collider_;
 
-	Vector2 draw_pos_;
-
 	PlayerAnimation2D animation_;
+
+	Vector2 v_;
+
+
+
+	float stiffness_;
+	float friction_;
+	float mass_;
 };
 
 

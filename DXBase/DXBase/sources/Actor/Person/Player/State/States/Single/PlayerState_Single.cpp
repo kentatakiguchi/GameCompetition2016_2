@@ -1,21 +1,21 @@
 #include "PlayerState_Single.h"
 
 // コンストラクタ
-PlayerState_Single::PlayerState_Single() :
+PlayerState_Single::PlayerState_Single(const Keys& keys) :
 	element_(-1),
 	next_element_(-1),
 	timer_(0),
-	isEnd_(false) {
+	isEnd_(false),
+	keys_(keys) {
 }
 
 // 全てのステートに共通する初期化処理
-void PlayerState_Single::common_init(Actor& actor, ActionType type) {
+void PlayerState_Single::common_init(Actor& actor, const ActionType& type) {
 	element_ = StateElement(-1, type);
 	timer_ = 0;
 	isEnd_ = false;
 
-	//player_body_ = std::dynamic_pointer_cast<PlayerBody>(actor);
-	player_body_ = dynamic_cast<PlayerBody*>(&actor);
+	body_ = dynamic_cast<PlayerBody*>(&actor);
 }
 
 void PlayerState_Single::input(){
@@ -23,7 +23,7 @@ void PlayerState_Single::input(){
 }
 
 // ステートの変更処理
-void PlayerState_Single::change(StateElement element) {
+void PlayerState_Single::change(const StateElement& element) {
 	next_element_ = element;
 	isEnd_ = true;
 }
@@ -36,6 +36,14 @@ bool PlayerState_Single::isEnd() {
 // 次のステートの要素
 IState::StateElement PlayerState_Single::next() const {
 	return next_element_;
+}
+
+bool PlayerState_Single::is_butty(){
+	return keys_.right == KeyCode::RIGHT;
+}
+
+bool PlayerState_Single::is_retty(){
+	return keys_.right == KeyCode::D;
 }
 
 void PlayerState_Single::key_input(){}

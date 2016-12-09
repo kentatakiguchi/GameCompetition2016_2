@@ -4,54 +4,41 @@
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
 #include "PlayerPtr.h"
-
-#include "../../../Math/BezierCurve.h"
+#include "State/States/Union/PlayerStateMgr_Union.h"
 #include "../../../Renderer/Puyo_Texture_K.h"
 
 #include "Player.h"
-#include "../../../Renderer/Puyo_Texture_K.h"
 
 // プレーヤー
 class PlayerConnector : public Actor {
 public:
-	enum class Opponent {
-		NONE,
-		FLOOR,
-		ITEM,
-		ENEMY,
-		TEST
-	};
-public:
-	PlayerConnector();
 	PlayerConnector(IWorld* world, const Vector2 & position, PlayerBodyPtr butty, PlayerBodyPtr retty);
 	~PlayerConnector();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
+	PlayerBodyPtr blue_body();
+	PlayerBodyPtr red_body();
+	PlayerStateMgr_Union& state_mgr();
+	void state_action(float deltaTime);
 	void create_point(int point_num = 0);
-	void points_update();
-	Vector2 base_point(ActionType type);
-
-	Vector2 target();
-	Vector2 comp();
-
-	Vector2 target_vector(int index);
-	Vector2 clamp_target(Vector2 pos, int index);
 
 	Vector2 get_point(int index);
 	std::vector<Vector2> get_points();
-
 private:
-	BezierCurve bezier_;
-	
+	// ダメージを受けたかどうか
+	bool is_damaged();
+	// クリアしたかどうか
+	bool is_cleared();
+	// 死亡したかどうか
+	bool is_dead();
+private:
+	PlayerStateMgr_Union stateMgr_;
+
 	PlayerBodyPtr butty_;
 	PlayerBodyPtr retty_;
 	std::vector<PlayerBodyPointPtr> points;
-
-	int base_index_;
-
-	ActionType action_type_;
 
 	//ぷよテクスチャ
 	PuyoTextureK* mPuyo;

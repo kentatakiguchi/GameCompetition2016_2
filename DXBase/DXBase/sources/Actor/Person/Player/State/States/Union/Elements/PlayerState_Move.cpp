@@ -12,13 +12,13 @@ void PlayerState_Move::update(float deltaTime){
 void PlayerState_Move::end(){ }
 
 void PlayerState_Move::key_input(){
-	if (element_.action_type_ == ActionType::Right) butty_->move(InputMgr::GetInstance().KeyVector_R().Horizontal());
-	if (element_.action_type_ == ActionType::Left)  retty_->move(InputMgr::GetInstance().KeyVector_L().Horizontal());
+	if (element_.type_ == ActionType::Right) butty_->move(InputMgr::GetInstance().KeyVector_R().Horizontal());
+	if (element_.type_ == ActionType::Left)  retty_->move(InputMgr::GetInstance().KeyVector_L().Horizontal());
 
-	if (element_.action_type_ == ActionType::Left  && InputMgr::GetInstance().KeyVector_R().Length() > 0) {
+	if (element_.type_ == ActionType::Left  && InputMgr::GetInstance().KeyVector_R().Length() > 0) {
 		change(StateElement((unsigned int)PlayerState_Enum_Union::MOVE_BOTH));
 	}
-	if (element_.action_type_ == ActionType::Right && InputMgr::GetInstance().KeyVector_L().Length() > 0) {
+	if (element_.type_ == ActionType::Right && InputMgr::GetInstance().KeyVector_L().Length() > 0) {
 		change(StateElement((unsigned int)PlayerState_Enum_Union::MOVE_BOTH));
 	}
 
@@ -37,13 +37,13 @@ void PlayerState_Move::key_input(){
 }
 
 void PlayerState_Move::pad_input(){
-	if (element_.action_type_ == ActionType::Right) butty_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal());
-	if (element_.action_type_ == ActionType::Left)  retty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal());
+	if (element_.type_ == ActionType::Right) butty_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal());
+	if (element_.type_ == ActionType::Left)  retty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal());
 
-	if (element_.action_type_ == ActionType::Left  && InputMgr::GetInstance().AnalogPadVectorR().Length() > 0) {
+	if (element_.type_ == ActionType::Left  && InputMgr::GetInstance().AnalogPadVectorR().Length() > 0) {
 		change(StateElement((unsigned int)PlayerState_Enum_Union::MOVE_BOTH));
 	}
-	if (element_.action_type_ == ActionType::Right && InputMgr::GetInstance().AnalogPadVectorL().Length() > 0) {
+	if (element_.type_ == ActionType::Right && InputMgr::GetInstance().AnalogPadVectorL().Length() > 0) {
 		change(StateElement((unsigned int)PlayerState_Enum_Union::MOVE_BOTH));
 	}
 
@@ -62,15 +62,18 @@ void PlayerState_Move::pad_input(){
 }
 
 void PlayerState_Move::move(float deltaTime) {
-	if (element_.action_type_ == ActionType::Right) {
+	if (element_.type_ == ActionType::Right) {
 		retty_->chase();
-		retty_->circleClamp(cntr_->base_point(ActionType::Left));
+		retty_->clamp();
+		//butty_->clamp();
 
 	}
-	if (element_.action_type_ == ActionType::Left) {
+	if (element_.type_ == ActionType::Left) {
 		butty_->chase();
-		butty_->circleClamp(cntr_->base_point(ActionType::Right));
+		butty_->clamp();
+		//retty_->clamp();
 	}
-	player_->body_gravity();
+	butty_->gravity();
+	retty_->gravity();
 }
 

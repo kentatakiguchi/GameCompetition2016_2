@@ -4,7 +4,7 @@
 
 class PlayerState_Single_StandBy : public PlayerState_Single {
 public:
-	PlayerState_Single_StandBy();
+	PlayerState_Single_StandBy(const Keys& keys);
 private:
 	virtual void unique_init() override;
 	virtual void update(float deltaTime) override;

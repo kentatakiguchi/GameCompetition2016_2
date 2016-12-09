@@ -4,12 +4,18 @@
 
 PlayerState_Idle::PlayerState_Idle() {}
 
-void PlayerState_Idle::unique_init(){}
+void PlayerState_Idle::unique_init(){
+	butty_->animation().change(PlayerAnimID::IDLE);
+	retty_->animation().change(PlayerAnimID::IDLE);
+}
 
 void PlayerState_Idle::update(float deltaTime) {
-	player_->body_chase();
-	//player_->body_clamp();
-	player_->body_gravity();
+	butty_->chase();
+	retty_->chase();
+	butty_->clamp();
+	retty_->clamp();
+	butty_->gravity();
+	retty_->gravity();
 }
 
 void PlayerState_Idle::end(){}

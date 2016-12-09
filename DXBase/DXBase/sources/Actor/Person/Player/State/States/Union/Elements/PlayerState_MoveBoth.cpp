@@ -9,8 +9,10 @@ void PlayerState_MoveBoth::unique_init()
 }
 
 void PlayerState_MoveBoth::update(float deltaTime){
-	player_->body_clamp();
-	player_->body_gravity();
+	butty_->clamp();
+	retty_->clamp();
+	butty_->gravity();
+	retty_->gravity();
 }
 
 void PlayerState_MoveBoth::end(){

@@ -39,9 +39,13 @@ struct Vector2 {
 	static Vector2 Max(const Vector2& vector1, const Vector2& vector2);
 	//	値を指定された範囲内に制限します
 	static Vector2 Clamp(const Vector2& value1, const Vector2& min, const Vector2& max);
+	//	指定された座標から一定の距離以内に制限します
+	static Vector2 ClampTarget(const Vector2& pos, const Vector2& target, float length);
 
 	//バネの補正
-	static void Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness = 0.2f, float friction = 0.5f, float mass = 2.0f);	
+	static void Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness = 0.2f, float friction = 0.5f, float mass = 2.0f);
+	//バネの補正
+	static Vector2 Spring_v(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness = 0.2f, float friction = 0.5f, float mass = 2.0f);
 	//Dxlib用変換関数
 	static VECTOR Vector2ToVECTOR(const Vector2& v);
 

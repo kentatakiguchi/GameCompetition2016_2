@@ -91,8 +91,13 @@ Vector2 Vector2::Clamp(const Vector2 & value1, const Vector2& min, const Vector2
 	return Vector2(MathHelper::Clamp(value1.x, min.x, max.x), MathHelper::Clamp(value1.y, min.y, max.y));
 }
 
-void Vector2::Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness, float friction, float mass)
-{
+Vector2 Vector2::ClampTarget(const Vector2& pos, const Vector2& target, float length){
+	Vector2 vec = pos - target;
+	if (vec.Length() > length) return target + vec.Normalize() * length;
+	return pos;
+}
+
+void Vector2::Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness, float friction, float mass){
 	// バネの伸び具合を計算
 	Vector2 stretch = (pos - resPos);
 	// バネの力を計算
@@ -103,6 +108,17 @@ void Vector2::Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stif
 	velo = friction * (velo + acceleration);
 	// 座標の更新
 	pos += velo;
+}
+
+Vector2 Vector2::Spring_v(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness, float friction, float mass){
+	// バネの伸び具合を計算
+	Vector2 stretch = (pos - resPos);
+	// バネの力を計算
+	Vector2 force = -stiffness * stretch;
+	// 加速度を追加
+	Vector2 acceleration = force / mass;
+	// 移動速度を計算
+	return friction * (velo + acceleration);
 }
 
 VECTOR Vector2::Vector2ToVECTOR(const Vector2 & v)
