@@ -105,6 +105,10 @@ void FlyingEnemy::search()
 		auto player = world_->findActor("PlayerBody1");
 		pastPosition = player->getPosition();
 		pricleObj_->setDirection(enemyManager_.getDirection(pastPosition));
+		// ‰ñ“]
+		if (enemyManager_.getDirection(pastPosition).x < 0)
+			TexDegress_ = 90;
+		else TexDegress_ = 270;
 	}
 }
 
@@ -198,11 +202,11 @@ void FlyingEnemy::addAnimation()
 	animation_.addAnimation(
 		ENEMY_WALK,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_FLYINGENEMY_WALK_TEX),
-		texSize_, 8, 2, 5);
+		texSize_, 8, 3, 3);
 	animation_.addAnimation(
 		ENEMY_ATTACK,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_FLYINGENEMY_ATTACK_TEX),
-		texSize_, 8, 3, 3);
+		texSize_, 8, 2, 5);
 	animation_.addAnimation(
 		ENEMY_DAMAGE,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_FLYINGENEMY_DAMAGE_TEX),

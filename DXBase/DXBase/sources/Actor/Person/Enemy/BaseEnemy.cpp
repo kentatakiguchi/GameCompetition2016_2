@@ -26,8 +26,10 @@ BaseEnemy::BaseEnemy(
 	scale_(bodyScale),
 	direction_(direction),
 	playerLength_(0.0f),
+	TexDegress_(0),
 	isPlayer_(false),
 	isMove_(false),
+	isScreen_(false),
 	isBlockCollideBegin_(false),
 	isBlockCollideEnter_(false),
 	isBlockCollidePrevEnter_(false),
@@ -35,7 +37,7 @@ BaseEnemy::BaseEnemy(
 	isGround_(false),
 	isUseGravity_(true),
 	isInvincible_(false),
-	discoveryLenght_(125),
+	discoveryLenght_(500),
 	stateTimer_(0.0f),
 	state_(State::Idel),
 	stateString_(""),
@@ -142,16 +144,11 @@ void BaseEnemy::onUpdate(float deltaTime)
 
 void BaseEnemy::onDraw() const
 {
-	if (playerLength_ >=
-		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
-		return;
+	if (!isScreen_) return;
+
 	auto stateChar = stateString_.c_str();
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
-	// 敵の表示
-	/*DrawGraph(
-		vec3Pos.x - scale_ / 2.0f, vec3Pos.y - scale_ / 2.0f,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);*/
 	// 文字の表示
 	DrawString(
 		vec3Pos.x - scale_, vec3Pos.y - 20 - scale_,
@@ -162,7 +159,7 @@ void BaseEnemy::onDraw() const
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
 		pos, Vector2::One * (body_.GetBox().getWidth() * 2) + addTexPosition_,
-		0.5f, 0);
+		0.5f, TexDegress_);
 }
 
 void BaseEnemy::onCollide(Actor & actor)
@@ -197,7 +194,6 @@ void BaseEnemy::onCollide(Actor & actor)
 		actorName == "Player_AttackCollide") &&
 		!isInvincible_) {
 		// ダメージ
-		// groundClamp(actor);
 		circleClamp(actor);
 		/*hp_ -= 10;
 		if (hp_ <= 0) changeState(State::Dead, ENEMY_DEAD);
@@ -205,14 +201,10 @@ void BaseEnemy::onCollide(Actor & actor)
 		changeState(State::Dead, ENEMY_DAMAGE);
 		isUseGravity_ = true;
 		return;
-		/*body_.enabled(false);
-		return;*/
 	}
 }
 
-void BaseEnemy::onMessage(EventMessage event, void *)
-{
-}
+void BaseEnemy::onMessage(EventMessage event, void *){}
 
 // 子供用のupdate(親のupdate前に行います)
 void BaseEnemy::beginUpdate(float deltaTime){}
@@ -226,8 +218,10 @@ void BaseEnemy::idle()
 	stateString_ = "待機";
 	// プレイヤーとの距離を計算して、
 	// スクリーンの幅の半分 + 敵の大きさよりちいさいなら動く
-	if (enemyManager_.getPlayerLength() < 
-		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
+	auto a = enemyManager_.getPlayerLength();
+	/*if (enemyManager_.getPlayerLength() < 
+		SCREEN_SIZE.x + body_.GetBox().getHeight())*/
+	if (isScreen())
 		changeState(State::Search, ENEMY_WALK);
 }
 // 索敵移動です(デフォルト)
@@ -279,22 +273,10 @@ void BaseEnemy::chase()
 	chaseMove();
 	// プレイヤーが追跡距離外か、プレイヤーの間にブロックがあるなら、
 	// 捜索状態に遷移
-	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 30.0f &&
+	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 100.0f &&
 		!psObj_->isPlayerLook())
 		changeState(State::Search, ENEMY_WALK);
 }
-
-//void BaseEnemy::shortDistanceAttack()
-//{
-//}
-//
-//void BaseEnemy::centerDistanceAttack()
-//{
-//}
-//
-//void BaseEnemy::longDistanceAttack()
-//{
-//}
 
 // 攻撃行動です
 void BaseEnemy::attack()
@@ -326,7 +308,8 @@ void BaseEnemy::deadMove()
 	}
 	// 死亡アニメーションオブジェクトの追加
 	/*world_->addActor(ActorGroup::Effect, std::make_shared<DeadEnemy>(
-		world_, position_, body_.GetBox().getSize()));*/
+		world_, position_, body_.GetBox().getSize(), ENEMY_DAMAGE, 1));*/
+	if (!animation_.isEndAnimation()) return;
 	dead();
 }
 
@@ -439,8 +422,9 @@ void BaseEnemy::updateState(float deltaTime)
 	}
 
 	// スクリーンの幅の半分 + 敵の大きさより大きいなら待機状態にする
-	if (enemyManager_.getPlayerLength() >=
-		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
+	/*if (enemyManager_.getPlayerLength() >=
+		SCREEN_SIZE.x + body_.GetBox().getHeight())*/
+	if(!isScreen())
 		changeState(State::Idel, ENEMY_WALK);
 
 	stateTimer_ += deltaTime;
@@ -576,3 +560,17 @@ void BaseEnemy::addAnimation()
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_EGGENEMY_DAMAGE_TEX),
 		texSize_, 8, 2);
 }
+
+// プレイヤーとのX方向とY方向を計算し、画面外にいるかを返します
+bool BaseEnemy::isScreen()
+{
+	if (std::abs(enemyManager_.getPlayerVector().x) <= (SCREEN_SIZE.x - SCREEN_SIZE.x / 10) + body_.GetBox().getWidth() &&
+		std::abs(enemyManager_.getPlayerVector().y) <= (SCREEN_SIZE.y - SCREEN_SIZE.x / 10) + body_.GetBox().getHeight()) {
+		isScreen_ = true;
+		return true;
+	}
+	isScreen_ = false;
+	// 画面外
+	return false;
+}
+

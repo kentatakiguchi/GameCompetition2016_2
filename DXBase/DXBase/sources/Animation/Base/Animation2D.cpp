@@ -3,7 +3,13 @@
 using namespace std;
 
 Animation2D::Animation2D() :
-	type_(ActionType::Right) {
+	type_(ActionType::Right),
+	anim_num_(-1),
+	frame_(-1),
+	pre_anim_(-1),
+	pre_speed_(1),
+	timer_(0),
+	speed_(1){
 }
 
 void Animation2D::add_anim(const int & id, const int & res, const int & size, const int & row, const int & column, const int & surplus){
@@ -44,7 +50,7 @@ void Animation2D::back_to_pre_motion(){
 }
 
 bool Animation2D::end_anim(){
-	return frame_ == sprites_[anim_num_].size();
+	return frame_ == sprites_[anim_num_].size() - 1;
 }
 
 void Animation2D::update(float deltaTime) {

@@ -284,6 +284,14 @@ float EnemyManager::getPlayerLength()
 	return getLength(playerPosition_);
 }
 
+// 敵からプレイヤーに伸ばしたベクトルを返します
+Vector2 EnemyManager::getPlayerVector()
+{
+	playerVector_ = playerPosition_ - enemyPosition_;
+	return Vector2(std::abs(playerVector_.x), std::abs(playerVector_.y));
+	//return Vector2::Zero;
+}
+
 // 指定したオブジェクトとの方向を単位ベクトルで取得します
 Vector2 EnemyManager::getDirection(const Vector2& otherPosition)
 {

@@ -33,13 +33,9 @@ protected:
 	int id_;
 	//現在のアニメーション
 	int anim_num_;
-	//
 	int frame_;
-
 	int pre_anim_;
-
 	int pre_speed_;
-
 	//アニメーションの再生時間
 	float timer_;
 	//アニメーションの再生速度

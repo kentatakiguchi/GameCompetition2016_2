@@ -26,6 +26,8 @@ public:
 	float getLength(const Vector2& otherPosition);
 	// プレイヤーとの距離を返します
 	float getPlayerLength();
+	// 敵からプレイヤーに伸ばしたベクトルを返します
+	Vector2 getPlayerVector();
 	// 指定したオブジェクトとの方向を単位ベクトルで取得します
 	Vector2 getDirection(const Vector2& otherPosition);
 	// プレイヤーとの方向を単位ベクトルで取得します
@@ -66,6 +68,8 @@ private:
 	Vector2 playerPosition_;	// プレイヤーの位置
 	Vector2 threadPosition_;	// 糸の位置
 	Vector2 enemyDirection_;
+
+	Vector2 playerVector_;
 
 	Vector2 wsDirection_;		// 壁移動時の方向
 

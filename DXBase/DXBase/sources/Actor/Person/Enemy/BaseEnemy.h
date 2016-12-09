@@ -42,9 +42,6 @@ protected:
 		Discovery,
 		Chase,
 		Lost,
-		/*PlayerShortDistance,
-		PlayerCenterDistance,
-		PlayerLongDistance,*/
 		attack,
 		Damage,
 		Dead,
@@ -52,7 +49,7 @@ protected:
 	};
 
 public:
-	// 短形
+	// 矩形
 	BaseEnemy(
 		IWorld* world,
 		const Vector2&  position,
@@ -78,12 +75,6 @@ protected:
 	virtual void discovery();
 	// プレイヤーの追跡行動です
 	virtual void chase();
-	//// プレイヤーとの距離が短いときの行動です
-	//virtual void shortDistanceAttack();
-	//// プレイヤーとの距離が中間の行動です
-	//virtual void centerDistanceAttack();
-	//// プレイヤーとの距離が長いときの行動です
-	//virtual void longDistanceAttack();
 	// 攻撃行動です
 	virtual void attack();
 	// 被弾行動です
@@ -132,6 +123,8 @@ protected:
 	void circleClamp(Actor& actor);
 	// アニメーションの追加を行います
 	virtual void addAnimation();
+	// プレイヤーとのX方向とY方向を計算し、画面外にいるかを返します
+	bool isScreen();
 
 protected:
 	// メンバ変数
@@ -147,10 +140,12 @@ protected:
 	float playerLength_;			// プレイヤーとの距離
 	float discoveryLenght_;			// プレイヤーに気づく距離
 	float playerLostLenght_;		// プレイヤーを見失う距離
+	float TexDegress_;				// テクスチャの角度
 	Vector2 direction_;				// 方向
 
 	bool isPlayer_;					// プレイヤーが存在するのか
 	bool isMove_;					// 動くか
+	bool isScreen_;					// 画面内にいるか
 	bool isBlockCollideBegin_;		// ブロックと当たっているか(初回時)
 	bool isBlockCollideEnter_;		// ブロックと当たっているか(衝突中)
 	bool isBlockCollidePrevEnter_;	// ブロックと当たっているか(過去の衝突中)
