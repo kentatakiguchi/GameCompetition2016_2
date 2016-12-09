@@ -6,6 +6,7 @@
 
 DysonAttack::DysonAttack() : 
 	BossAttack(Vector2::Zero),
+	addAngle_(0.0f),
 	world_(nullptr),
 	tornadoObj_(nullptr)
 {
@@ -13,9 +14,11 @@ DysonAttack::DysonAttack() :
 
 DysonAttack::DysonAttack(IWorld * world, const Vector2 & position) :
 	BossAttack(position),
+	addAngle_(2.0f),
 	world_(world),
 	tornadoObj_(nullptr)
 {
+	angle_ = 70.0f;
 	/*auto tornado = std::make_shared<Tornado>(
 		world_, Vector2(-1000.0f, 0.0f), Vector2(CHIPSIZE * 10, 32.0f * 3));
 	world_->addActor(ActorGroup::Enemy, tornado);
@@ -42,11 +45,19 @@ void DysonAttack::attack(float deltaTime)
 	if (isWspHit_ && isPrevWspHit_ != isWspHit_) {
 		direction_.x *= -1;
 	}
+	// äpìxÇ™àÍíËílÇí¥Ç¶ÇΩÇÁÅAâ¡éZï˚å¸ÇïœÇ¶ÇÈ
+	if (angle_ >= 90.0f + 40.0f || angle_ <= 90.0f - 40.0f)
+		addAngle_ *= -1;
+	// äpìxÇÃâ¡éZ
+	angle_ += addAngle_;
+	tornadoObj_->setAngle(angle_);
+
+	isPrevWspHit_ = isWspHit_;
 
 	position_.x += 4.0f * direction_.x * (deltaTime * 60.0f);
 
 	// àÍíËéûä‘åoâﬂÇ≈çUåÇèIóπ
-	if (timer_ <= 5.0f) return;
+	if (timer_ <= 7.0f) return;
 	tornadoObj_->dead();
 	tornadoObj_->initPosition();
 	isAttackEnd_ = true;

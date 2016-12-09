@@ -14,6 +14,18 @@ Tornado::Tornado(IWorld * world, const Vector2 & position, const Vector2& bodySc
 
 void Tornado::onUpdate(float deltaTime)
 {
+	//auto a = rotation_.;
+	//body_.
+
+	//body_.RotateBox(-45);
+
+	/*auto point = body_.GetBox().component_.point;
+	auto addPos = (0.0f, -100.0f);
+
+	body_.GetBox().transform(
+		point[1] + addPos, point[2] + addPos,
+		point[3] + addPos, point[4] + addPos);*/
+
 	//findPlayer();
 	//auto player = world_
 }
@@ -37,6 +49,12 @@ void Tornado::onMessage(EventMessage event, void *){}
 void Tornado::initPosition()
 {
 	position_ = initPosition_;
+}
+
+// 角度を変更します
+void Tornado::setAngle(int angle)
+{
+	body_.RotateBox(angle);
 }
 
 // プレイヤーを探します

@@ -14,6 +14,7 @@ BossAttack::BossAttack() :
 	isPrevWspHit_(false),
 	isBodyHit_(true),
 	isAttackHit_(true),
+	isMove_(true),
 	position_(Vector2::Zero),
 	direction_(Vector2::Zero),
 	pPosition_(Vector2::Zero),
@@ -26,6 +27,7 @@ BossAttack::BossAttack(const Vector2 & position) :
 	hp_(100),
 	flinchCount_(3),
 	timer_(0.0f),
+	angle_(0.0f),
 	floorName_("a"),
 	isAttackStart_(false),
 	isAttackEnd_(false),
@@ -33,6 +35,8 @@ BossAttack::BossAttack(const Vector2 & position) :
 	isUseGravity_(true),
 	isWspHit_(false),
 	isPrevWspHit_(false),
+	isAttackHit_(false),
+	isMove_(false),
 	position_(position),
 	direction_(Vector2::Left),
 	pPosition_(Vector2::One),
@@ -73,7 +77,7 @@ void BossAttack::Refresh()
 	isAttackStart_ = false;
 	isAttackEnd_ = false;
 	isUseGravity_ = true;
-	direction_ = Vector2::One;
+	//direction_ = Vector2::One;
 }
 
 // 攻撃が開始したかを返します
@@ -153,26 +157,38 @@ void BossAttack::setFloorName(const char * name)
 	floorName_ = name;
 }
 
+// 攻撃可能状態かを設定します
+void BossAttack::setIsMove(bool isMove)
+{
+	isMove_ = isMove;
+}
+
 // ひるみカウントを返します
 int BossAttack::getFlinchCount()
 {
 	return flinchCount_;
 }
 
+// 角度を返します
+float BossAttack::getAngle()
+{
+	return angle_;
+}
+
 // 重力を使用するかを返します
-bool BossAttack::IsUseGravity()
+bool BossAttack::isUseGravity()
 {
 	return isUseGravity_;
 }
 
 // プレイヤーの攻撃に当たるかを返します
-bool BossAttack::IsBodyHit()
+bool BossAttack::isBodyHit()
 {
 	return isBodyHit_;
 }
 
 // プレイヤーに当たるかを返します
-bool BossAttack::IsAttackHit()
+bool BossAttack::isAttackHit()
 {
 	return isAttackHit_;
 }

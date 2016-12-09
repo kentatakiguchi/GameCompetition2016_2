@@ -76,6 +76,7 @@ protected:
 
 // 攻撃行動
 protected:
+	//void initAttackState();
 	// ジャンプ攻撃
 	void jumpAttack(float deltaTime);
 	// 壁攻撃
@@ -98,10 +99,12 @@ protected:
 	int initDp_;				// ひるむまでの耐久値(初期値)
 	int hp_;					// 体力
 	int flinchCount_;			// ひるむまでの回数
+	int angleCount_;			// 振り向き回数
 	// int initHp_;				// 体力(初期値)
 	float stateTimer_;			// 状態の時間
 	float timer_;				// 現在の時間(最大値 1)
 	float deltaTimer_;			// 現在の時間(補間)
+	float angle_;				// 角度(時計周り)
 
 	bool isGround_;				// 接地しているか
 	bool isBottomHit_;			// 壁の下側に当たったか

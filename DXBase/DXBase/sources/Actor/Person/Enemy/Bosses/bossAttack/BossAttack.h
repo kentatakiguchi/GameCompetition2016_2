@@ -47,19 +47,24 @@ public:
 	void setIsBottom(bool isBottom);
 	// 触れている床の名前を設定します
 	void setFloorName(const char* name);
+	// 攻撃可能状態かを設定します
+	void setIsMove(bool isMove);
 	// ひるみカウントを返します
 	int getFlinchCount();
+	// 角度を返します
+	float getAngle();
 	// 重力を使用するかを返します
-	bool IsUseGravity();
+	bool isUseGravity();
 	// プレイヤーの攻撃に当たるかを返します
-	bool IsBodyHit();
+	bool isBodyHit();
 	// プレイヤーに当たるかを返します
-	bool IsAttackHit();
+	bool isAttackHit();
 
 protected:
 	int hp_;					// 体力
 	int flinchCount_;			// ひるむまでの回数
 	float timer_;				// 時間
+	float angle_;				// 角度
 	std::string floorName_;		// 床の名前
 	bool isAttackStart_;		// 攻撃を開始したか
 	bool isAttackEnd_;			// 攻撃が終了したか
@@ -70,6 +75,7 @@ protected:
 	bool isPrevWspHit_;			// 過去に壁捜索オブジェクトが当たったか
 	bool isBodyHit_;			// プレイヤー本体に当たるか
 	bool isAttackHit_;			// プレイヤーの攻撃に当たるか
+	bool isMove_;				// 動ける状態か
 	Vector2 position_;			// 位置
 	Vector2 direction_;			// 方向
 	Vector2 pPosition_;			// プレイヤーの位置

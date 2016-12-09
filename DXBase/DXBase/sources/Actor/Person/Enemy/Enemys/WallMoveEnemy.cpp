@@ -1,6 +1,5 @@
 #include "WallMoveEnemy.h"
 #include "../FloorSearchPoint.h"
-#include "../../../../ResourceLoader/ResourceLoader.h"
 
 WallMoveEnemy::WallMoveEnemy(
 	IWorld * world,
@@ -19,6 +18,10 @@ WallMoveEnemy::WallMoveEnemy(
 	// 重力を使わない かつ 無敵
 	isUseGravity_ = false;
 	isInvincible_ = true;
+	// アニメーションの追加
+	addTexPosition_ = Vector2::Zero;
+	addAnimation();
+	animation_.changeAnimation(ENEMY_WALK);
 }
 
 void WallMoveEnemy::onUpdate(float deltaTime)
@@ -27,6 +30,8 @@ void WallMoveEnemy::onUpdate(float deltaTime)
 	setDeltaTime(deltaTime);
 	// エネミーマネージャーの更新
 	enemyManager_.update(deltaTime);
+	// アニメーションの更新
+	animation_.update(deltaTime);
 	// 状態の更新
 	BaseEnemy::updateState(deltaTime);
 	// 壁捜索オブジェクトの位置更新
@@ -35,37 +40,6 @@ void WallMoveEnemy::onUpdate(float deltaTime)
 	}
 	//// デバッグ表示のためのリザルト
 	//result_ = enemyManager_.eachWSPObj();
-}
-
-void WallMoveEnemy::onDraw() const
-{
-	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-	vec3Pos = vec3Pos * inv_;
-	// 敵の表示
-	DrawGraph(
-		vec3Pos.x - scale_ / 2.0f, vec3Pos.y - scale_ / 2.0f,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
-	//// デバッグ
-	//DrawFormatString(
-	//	25, 350, GetColor(255, 255, 255),
-	//	"ボックスと触れているかの合計値:%d",
-	//	result_);
-	//DrawFormatString(
-	//	25, 375, GetColor(255, 255, 255),
-	//	"ボックスに一瞬触れたか:%d",
-	//	(int)isBlockCollideBegin_);
-	//DrawFormatString(
-	//	25, 400, GetColor(255, 255, 255),
-	//	"ボックスに触れているか:%d",
-	//	(int)isBlockCollideEnter_);
-
-	/*DrawFormatString(25, 25, GetColor(255, 255, 255), "body x:%d,y:%d", (int)body_.GetBox().component_.point[0].x, (int)body_.GetBox().component_.point[0].y);
-	DrawFormatString(25, 50, GetColor(255, 255, 255), "pos  x:%d,y:%d", (int)position_.x, (int)position_.y);
-	DrawFormatString(25, 75, GetColor(255, 255, 255), "プレイヤーとの距離:%d", (int)distance_);*/
-
-	//char lengthChar = static_cast<char>(enemyManager_.getPlayerLength());
-	//DrawString(position_.x + 50, position_.y - 20, &lengthChar, GetColor(255, 255, 255));
-	body_.draw(inv_);
 }
 
 void WallMoveEnemy::onCollide(Actor & actor)
@@ -147,4 +121,13 @@ void WallMoveEnemy::addWSPScale()
 	fspScaleContainer_.push_back(Vector2(scale_ + addScale, addScale_.y));
 	// 7
 	fspScaleContainer_.push_back(addScale_);
+}
+
+// アニメーションの追加を行います
+void WallMoveEnemy::addAnimation()
+{
+	animation_.addAnimation(
+		ENEMY_WALK,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_WALLMOVEENEMY_TEX),
+		texSize_, 8, 4, 1);
 }

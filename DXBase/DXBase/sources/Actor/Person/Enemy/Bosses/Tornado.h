@@ -18,6 +18,8 @@ public:
 public:
 	// 位置を初期化します
 	void initPosition();
+	// 角度を変更します
+	void setAngle(int angle);
 
 private:
 	// プレイヤーを探します

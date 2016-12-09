@@ -18,6 +18,8 @@ public:
 	void onMessage(EventMessage event, void*) override;
 
 private:
+	// 索敵移動です
+	void search() override;
 	// プレイヤーを発見した時の行動です
 	void discovery() override;
 	// 攻撃行動です
@@ -30,6 +32,8 @@ private:
 	void chaseMove() override;
 	// 敵を見失った時の行動です
 	void lostMove() override;
+	// アニメーションの追加を行います
+	void addAnimation() override;
 
 private:
 	float direTimer_;			// 方向転換する時間

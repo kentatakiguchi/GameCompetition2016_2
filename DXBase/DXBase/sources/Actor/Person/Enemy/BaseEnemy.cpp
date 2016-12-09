@@ -4,6 +4,7 @@
 #include"../../Body/CollisionBase.h"
 #include "FloorSearchPoint.h"
 #include "PlayerSearchObj.h"
+#include "DeadEnemy.h"
 
 BaseEnemy::BaseEnemy(
 	IWorld * world,
@@ -19,6 +20,7 @@ BaseEnemy::BaseEnemy(
 			)),
 	hp_(10),
 	ap_(0),
+	texSize_(256),
 	speed_(1.0f),
 	initSpeed_(speed_),
 	scale_(bodyScale),
@@ -38,13 +40,14 @@ BaseEnemy::BaseEnemy(
 	state_(State::Idel),
 	stateString_(""),
 	discoveryPosition_(Vector2::Zero),
-	animation_(),
+	addTexPosition_(Vector2(0.0f, 40.0f)),
 	player_(nullptr),
 	psObj_(nullptr),
 	fspScript(nullptr),
 	wsScript(nullptr),
 	pricleObj_(nullptr),
 	enemyManager_(EnemyManager(position, direction)),
+	animation_(EnemyAnimation2D()),
 	handle_(0)
 {
 	//Initialize();
@@ -60,6 +63,11 @@ BaseEnemy::BaseEnemy(
 		objContainer_.push_back(psObj_);
 		isPlayer_ = true;
 	}
+
+	//// アニメーションの追加
+	//addAnimation();
+	//animation_.changeAnimation(ENEMY_WALK);
+
 	// フォントハンドルの追加
 	handle_ = CreateFontToHandle("ＭＳ 明朝", 40, 10, DX_FONTTYPE_NORMAL);
 }
@@ -95,20 +103,26 @@ void BaseEnemy::Initialize()
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsScript = &*wsObj;
 	objContainer_.push_back(wsScript);
+	// アニメーションの追加
+	addAnimation();
+	animation_.changeAnimation(ENEMY_WALK);
 }
 
 void BaseEnemy::onUpdate(float deltaTime)
 {
+	/*enemyManager_.setEMPosition(position_, world_->findActor("PlayerBody01")->getPosition(), direction_);
 	playerLength_ = enemyManager_.getPlayerLength();
 	if (playerLength_ >=
 		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
-		return;
+		return;*/
 	// 子供用のupdate(親のupdate前に行います)
 	beginUpdate(deltaTime);
 	// デルタタイムの値を設定する
 	setDeltaTime(deltaTime);
 	// エネミーマネージャーの更新
 	enemyManager_.update(deltaTime);
+	// アニメーションの更新
+	animation_.update(deltaTime);
 	// 状態の更新
 	updateState(deltaTime);
 	// 捜索オブジェクトの更新
@@ -135,15 +149,20 @@ void BaseEnemy::onDraw() const
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
 	// 敵の表示
-	DrawGraph(
+	/*DrawGraph(
 		vec3Pos.x - scale_ / 2.0f, vec3Pos.y - scale_ / 2.0f,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);*/
 	// 文字の表示
 	DrawString(
 		vec3Pos.x - scale_, vec3Pos.y - 20 - scale_,
 		stateChar, GetColor(255, 255, 255));
 	// デバッグ
 	body_.draw(inv_);
+	// アニメーションの描画
+	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
+	animation_.draw(
+		pos, Vector2::One * (body_.GetBox().getWidth() * 2) + addTexPosition_,
+		0.5f, 0);
 }
 
 void BaseEnemy::onCollide(Actor & actor)
@@ -169,6 +188,8 @@ void BaseEnemy::onCollide(Actor & actor)
 		return;
 	}
 
+	// 死亡中は行わない
+	if (state_ == State::Dead) return;
 	// プレイヤーに当たらない？
 	// PlayerのActorGroupが変わるので、 Player_AttackRangeに当たるようにする
 	if ((actorName == "PlayerBody2" ||
@@ -181,7 +202,7 @@ void BaseEnemy::onCollide(Actor & actor)
 		/*hp_ -= 10;
 		if (hp_ <= 0) changeState(State::Dead, ENEMY_DEAD);
 		else changeState(State::Damage, ENEMY_DAMAGE);*/
-		changeState(State::Dead, ENEMY_DEAD);
+		changeState(State::Dead, ENEMY_DAMAGE);
 		isUseGravity_ = true;
 		return;
 		/*body_.enabled(false);
@@ -240,7 +261,8 @@ void BaseEnemy::discovery()
 	position_.y += (-0.5f + stateTimer_) * GRAVITY_ * deltaTimer_;
 	// ジャンプ後に床に接地したら追跡状態に遷移
 	if (isGround_ && stateTimer_ >= 0.2f) {
-		changeState(State::Chase, ENEMY_WALK);
+		changeState(State::Chase, ENEMY_ATTACK);
+		//animation_.turnAnimation(ENEMY_ATTACK);
 		isUseGravity_ = true;
 	}
 }
@@ -281,7 +303,7 @@ void BaseEnemy::attack()
 		ActorGroup::Enemy_AttackRange, std::make_shared<Enemy_AttackRange>(world_, position_));*/
 	stateString_ = "攻撃";
 	if (stateTimer_ >= 3.0f)
-		changeState(State::Search, ENEMY_IDLE);
+		changeState(State::Search, ENEMY_WALK);
 }
 
 // 被弾行動です
@@ -302,6 +324,9 @@ void BaseEnemy::deadMove()
 		auto a = *i;
 		a->dead();
 	}
+	// 死亡アニメーションオブジェクトの追加
+	/*world_->addActor(ActorGroup::Effect, std::make_shared<DeadEnemy>(
+		world_, position_, body_.GetBox().getSize()));*/
 	dead();
 }
 
@@ -316,6 +341,8 @@ void BaseEnemy::changeState(State state, unsigned int motion)
 	state_ = state;
 	stateTimer_ = 0.0f;
 	motion_ = motion;
+	// アニメーションの変更
+	animation_.changeAnimation(motion);
 }
 
 // 所持しているオブジェクトの位置を設定します
@@ -331,7 +358,7 @@ void BaseEnemy::findPlayer()
 {
 	// プレイヤーがいなければ待機状態
 	if (player_ == nullptr) {
-		changeState(State::Idel, ENEMY_IDLE);
+		changeState(State::Idel, ENEMY_WALK);
 		isPlayer_ = false;
 		return;
 	}
@@ -414,7 +441,7 @@ void BaseEnemy::updateState(float deltaTime)
 	// スクリーンの幅の半分 + 敵の大きさより大きいなら待機状態にする
 	if (enemyManager_.getPlayerLength() >=
 		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
-		changeState(State::Idel, ENEMY_IDLE);
+		changeState(State::Idel, ENEMY_WALK);
 
 	stateTimer_ += deltaTime;
 }
@@ -526,4 +553,26 @@ void BaseEnemy::circleClamp(Actor & actor)
 			body_.GetBox().getHeight() / 2.0f) * direction.Normalize().y
 		);
 	position_ += lerpVelo;
+}
+
+// テクスチャの追加を行います
+void BaseEnemy::addAnimation()
+{
+	// 敵の画像に合わせて調整
+	animation_.addAnimation(
+		ENEMY_WALK,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_EGGENEMY_WALK_TEX),
+		texSize_, 8, 4, 1);
+	animation_.addAnimation(
+		ENEMY_DISCOVERY,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_EGGENEMY_DISCORVER_TEX),
+		texSize_, 8, 2);
+	animation_.addAnimation(
+		ENEMY_ATTACK,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_EGGENEMY_ATTACK_TEX),
+		texSize_, 8, 2);
+	animation_.addAnimation(
+		ENEMY_DAMAGE,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_EGGENEMY_DAMAGE_TEX),
+		texSize_, 8, 2);
 }

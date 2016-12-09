@@ -91,6 +91,12 @@ int BossManager::getFlinchCount()
 	return bossAttackContainer_[attackNumber_]->getFlinchCount();
 }
 
+// 角度を返します
+float BossManager::getAngle()
+{
+	return bossAttackContainer_[attackNumber_]->getAngle();
+}
+
 // ボスの心臓の体力を設定します
 void BossManager::setHeartHP(const int hp)
 {
@@ -181,9 +187,15 @@ void BossManager::setFloorName(const char * name)
 }
 
 // 攻撃中に重力を使用するかを返します
-bool BossManager::IsUseGravity()
+bool BossManager::isUseGravity()
 {
-	return bossAttackContainer_[attackNumber_]->IsUseGravity();
+	return bossAttackContainer_[attackNumber_]->isUseGravity();
+}
+
+// 攻撃が可能な状態かを設定します
+void BossManager::setIsAttackMove(bool isMove)
+{
+	bossAttackContainer_[attackNumber_]->setIsMove(isMove);
 }
 
 // 壁捜索オブジェクトが当たったかを設定します

@@ -25,6 +25,8 @@ private:
 	void searchMove() override;
 	// 追跡時の行動です
 	void chaseMove() override;
+	// アニメーションの追加を行います
+	void addAnimation() override;
 
 private:
 	FloorSearchPoint* wsObj_;

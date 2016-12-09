@@ -6,7 +6,6 @@
 #include "../../Actor/Base/ActorGroup.h"
 #include "../../Actor/Person/Player/Player.h"
 #include "../../Actor/Person/Enemy/ImportEnemys.h"
-#include "../../Actor/Person/Enemy/Bosses/SampleBoss.h"
 
 #include "../../Field/MapGenerator.h"
 #include "../../ResourceLoader/ResourceLoader.h"
@@ -53,8 +52,6 @@ void BossStage::start() {
 		world_.get(), Vector2(1000, 200), 128.0f / 2.0f);
 	world_->addActor(ActorGroup::Enemy, boss);
 	boss_ = boss.get();*/
-	auto boss = std::make_shared<SampleBoss>(world_.get(), Vector2(1000, 200));
-	world_->addActor(ActorGroup::Enemy, boss);
 
 	gener.create("./resources/file/" + name_ + ".csv");
 	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);

@@ -185,6 +185,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ImportBosses.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\SampleBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Tornado.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\DeadEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\EnemyManager.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FlyingEnemy.h" />
@@ -238,6 +239,7 @@
     <ClInclude Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.h" />
     <ClInclude Include="sources\Animation\Base\Animation.h" />
     <ClInclude Include="sources\Animation\Base\Animation2D.h" />
+    <ClInclude Include="sources\Animation\Enemy\EnemyAnimation2D.h" />
     <ClInclude Include="sources\Animation\Player\PlayerAnimation2D.h" />
     <ClInclude Include="sources\AquaLib\AquaLib.h" />
     <ClInclude Include="sources\AquaLib\A_Utility.h" />
@@ -337,6 +339,7 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BossManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\SampleBoss.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Tornado.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\DeadEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\EnemyManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FlyingEnemy.cpp" />
@@ -379,6 +382,7 @@
     <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
     <ClCompile Include="sources\Animation\Base\Animation.cpp" />
     <ClCompile Include="sources\Animation\Base\Animation2D.cpp" />
+    <ClCompile Include="sources\Animation\Enemy\EnemyAnimation2D.cpp" />
     <ClCompile Include="sources\Animation\Player\PlayerAnimation2D.cpp" />
     <ClCompile Include="sources\Field\BossAreaFloor.cpp" />
     <ClCompile Include="sources\Field\CollidelessFloor.cpp" />

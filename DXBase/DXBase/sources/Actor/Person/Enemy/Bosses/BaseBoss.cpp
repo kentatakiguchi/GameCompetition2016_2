@@ -19,10 +19,12 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	initDp_(dp_),
 	hp_(3),
 	flinchCount_(3),
+	angleCount_(0),
 	// initHp_(hp_),
 	stateTimer_(0.0f),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
+	angle_(0.0f),
 	isGround_(false),
 	isBottomHit_(false),
 	isBodyHit_(true),
@@ -88,11 +90,6 @@ BaseBoss::~BaseBoss()
 
 void BaseBoss::onUpdate(float deltaTime)
 {
-	// デバッグ
-	/*if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
-		changeState(State::Idel, BOSS_DEAD);
-	}*/
-
 	clampList_.clear();
 
 	// 補間タイマ(最大値１)の更新
@@ -124,23 +121,15 @@ void BaseBoss::onDraw() const
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
 	// ボスの表示
-	DrawGraph(
-		vec3Pos.x - body_.GetCircle().getRadius(),
-		vec3Pos.y - body_.GetCircle().getRadius(),
+	DrawRotaGraph(
+		vec3Pos.x,
+		vec3Pos.y,
+		1.0f, MathHelper::ToRadians(angle_),
 		ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_TEX), 1);
-	// 敵の表示
-	/*DrawGraph(
-		position_.x - scale_ / 2.0f, position_.y - scale_ / 2.0f,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);*/
-	/*DrawFormatStringToHandle(50, 300, GetColor(255, 255, 255),
-		handle_, "ブロックとの位置=>上:%d 下:%d", (int)top_, (int)bottom_);
-	DrawFormatStringToHandle(50, 350, GetColor(255, 255, 255),
-		handle_, "ブロックとの位置=>右:%d 左:%d", (int)right_, (int)left_);*/
 	// 状態の表示
 	DrawString(
 		vec3Pos.x, vec3Pos.y - 100,
 		stateChar, GetColor(255, 255, 255));
-	// 体力の表示
 	// 体力の表示
 	DrawFormatString(
 		vec3Pos.x, vec3Pos.y - 150,
@@ -235,6 +224,7 @@ void BaseBoss::changeState(State state, unsigned int motion)
 void BaseBoss::changeAttackState(AttackState aState, unsigned int motion)
 {
 	// 攻撃状態に強制遷移する
+	//if (attackState_ == aState) return;
 	changeState(State::Attack, BOSS_ATTACK);
 	attackState_ = aState;
 	bossManager_.prevPosition();
@@ -249,18 +239,6 @@ void BaseBoss::idel(float deltaTime)
 	isAttackHit_ = true;
 	isBodyHit_ = true;
 
-	// デバッグ
-	//auto speed = 4.0f;
-	//auto deltaTimer = deltaTime * 60.0f;
-	/*if (InputMgr::GetInstance().IsKeyOn(KeyCode::L))
-		position_.x += speed * deltaTimer;
-	else if (InputMgr::GetInstance().IsKeyOn(KeyCode::J))
-		position_.x += -speed * deltaTimer;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::I))
-		position_.y += -speed * deltaTimer;
-	else if (InputMgr::GetInstance().IsKeyOn(KeyCode::K))
-		position_.y += speed * deltaTimer;*/
-
 	bossManager_.changeAttackNumber(asContainer_.size() - hp_);
 	// 一定時間経過で攻撃状態に遷移
 	if (stateTimer_ >= 5.0f) {
@@ -272,7 +250,7 @@ void BaseBoss::idel(float deltaTime)
 		return;
 	}
 	// 重力
-	if (!isGround_ && bossManager_.IsUseGravity()) {
+	if (!isGround_ && bossManager_.isUseGravity()) {
 		position_.y += 9.8f * (1.0f);// * 60.0f);
 	}
 }
@@ -381,16 +359,29 @@ void BaseBoss::wallAttack(float deltaTime)
 
 void BaseBoss::specialAttack(float deltaTime)
 {
+	// 口にプレイヤー同士をつなぐ線が当たり、
+	// ひるむ時間に達するまでに
+	// 口から離れたら、もう一度攻撃を行う
+
 	stateString_ = "スペシャルな攻撃";
 	bossManager_.attackMove(deltaTime);
 	position_ = bossManager_.getMovePosition();
+	// 角度の変更
+	angle_ = bossManager_.getAngle();
+
+	// 壁に当たっている場合
+	bossManager_.setIsWallHit(wspObj_->isGround());
+	wspObj_->setDirection(bossManager_.getWallMoveDirection());
 	// bossManager_.specialAttack(deltaTime);
 	/*if (entryObj_->isBlock()) {
 
 	}*/
+
 	if (bossManager_.isAttackEnd()) {
 		changeState(State::Idel, BOSS_IDLE);
 		bossManager_.attackRefresh();
+		angleCount_ = 0;
+		angle_ = 0.0f;
 	}
 }
 

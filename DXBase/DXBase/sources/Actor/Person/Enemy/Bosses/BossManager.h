@@ -34,6 +34,8 @@ public:
 	bool IsAttackHit();
 	// ひるみカウントを返します
 	int getFlinchCount();
+	// 角度を返します
+	float getAngle();
 
 public:
 	// ボスの心臓の体力を設定します
@@ -59,7 +61,9 @@ public:
 	// ボスが当たった床の名前を返します
 	void setFloorName(const char* name);
 	// 攻撃中に重力を使用するかを返します
-	bool IsUseGravity();
+	bool isUseGravity();
+	// 攻撃が可能な状態かを設定します
+	void setIsAttackMove(bool isMove);
 	// 壁捜索オブジェクトが当たったかを設定します
 	void setIsWallHit(bool isHit);
 	// 壁の移動方向

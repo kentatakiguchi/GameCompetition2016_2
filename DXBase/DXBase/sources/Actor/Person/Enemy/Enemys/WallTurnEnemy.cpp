@@ -27,6 +27,10 @@ WallTrunEnemy::WallTrunEnemy(
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsObj_ = &*wsObj;
 	objContainer_.push_back(wsObj_);
+	// アニメーションの追加
+	addTexPosition_ = Vector2::Zero;
+	addAnimation();
+	animation_.changeAnimation(ENEMY_WALK);
 }
 
 void WallTrunEnemy::update(float deltaTime)
@@ -66,4 +70,13 @@ void WallTrunEnemy::searchMove()
 
 void WallTrunEnemy::chaseMove()
 {
+}
+
+// アニメーションの追加を行います
+void WallTrunEnemy::addAnimation()
+{
+	animation_.addAnimation(
+		ENEMY_WALK,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLEENEMY_TEX),
+		texSize_, 8, 2, 0);
 }

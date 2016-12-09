@@ -7,6 +7,8 @@
 #include "../../../Math/Math.h"
 #include "../../../Define.h"
 #include "EnemyManager.h"
+#include "../../../ResourceLoader/ResourceLoader.h"
+#include "../../../Animation/Enemy/EnemyAnimation2D.h"
 #include <vector>
 
 class CollisionBase;
@@ -23,15 +25,15 @@ class PlayerSearchObj;
 
 class BaseEnemy : public Actor {
 protected:
-	// モーション番号(仮)
+	// アニメーションID
 	enum {
-		ENEMY_IDLE = 0,
-		ENEMY_WALK = 1,
-		ENEMY_DISCOVERY = 2,
-		ENEMY_LOST = 3,
-		ENEMY_ATTACK = 4,
-		ENEMY_DAMAGE = 5,
-		ENEMY_DEAD = 6,
+		//ENEMY_IDLE = 0,
+		ENEMY_WALK = 0,
+		ENEMY_DISCOVERY = 1,
+		//ENEMY_LOST = 3,
+		ENEMY_ATTACK = 2,
+		ENEMY_DAMAGE = 3,
+		//ENEMY_DEAD = 4,
 	};
 	// 状態列挙
 	enum class State {
@@ -128,6 +130,8 @@ protected:
 	void groundClamp(Actor& actor);
 	// 円と衝突したときに位置に補正します
 	void circleClamp(Actor& actor);
+	// アニメーションの追加を行います
+	virtual void addAnimation();
 
 protected:
 	// メンバ変数
@@ -136,6 +140,7 @@ protected:
 
 	int hp_;						// 体力
 	int ap_;						// アタックポイント
+	int texSize_;					// テクスチャを切り抜きする大きさ
 	float speed_;					// 移動速度
 	float initSpeed_;				// 初期の移動速度
 	float scale_;					// 大きさ
@@ -159,16 +164,18 @@ protected:
 	std::string stateString_;		// 状態の文字列（デバッグ用）
 	State state_;					// 状態
 	Vector2 discoveryPosition_;		// 発見したときの位置
+	Vector2 addTexPosition_;		// テクスチャの表示位置の追加
 
-	Animation2D animation_;			// アニメーション
 	ActorPtr player_;				// プレイヤー
 	//ActorPtr fsPoint_;				// 床捜索オブジェクト
-
 	EnemyManager enemyManager_;		// エネミーマネージャー
 	FloorSearchPoint* fspScript;	// 床捜索オブジェクト
 	FloorSearchPoint* wsScript;		// 壁捜索オブジェクト
 	Prickle* pricleObj_;			// トゲのオブジェクト
 	PlayerSearchObj* psObj_;		// 線分衝突判定用オブジェクト
+
+	EnemyAnimation2D animation_;	// アニメーション
+
 	// 捜索オブジェクトの位置コンテナ
 	typedef std::vector<Vector2> FSPPositionContainer;
 	FSPPositionContainer fspPositionContainer_;

@@ -2,6 +2,7 @@
 #include "../../../Base/ActorGroup.h"
 #include "../FloorSearchPoint.h"
 #include "Prickle.h"
+#include "../PlayerSearchObj.h"
 
 FlyingEnemy::FlyingEnemy(
 	IWorld * world,
@@ -36,6 +37,10 @@ FlyingEnemy::FlyingEnemy(
 	pricleObj_ = &*pricleObj;
 	objContainer_.push_back(pricleObj_);
 	pricleObj_->setDirection(direction_);
+	// アニメーションの追加
+	addTexPosition_ = Vector2::Zero;
+	addAnimation();
+	animation_.changeAnimation(ENEMY_WALK);
 }
 
 void FlyingEnemy::beginUpdate(float deltaTime)
@@ -78,13 +83,37 @@ void FlyingEnemy::onMessage(EventMessage event, void *)
 {
 }
 
+// 索敵移動です
+void FlyingEnemy::search()
+{
+	// プレイヤーの捜索
+	findPlayer();
+	stateString_ = "捜索";
+	// 初期速度に戻す
+	speed_ = initSpeed_;
+	// 捜索行動
+	searchMove();
+	// プレイヤーが存在しなければ、捜索と待機状態以外は行わない
+	if (!isPlayer_) return;
+	// 一定距離内で、プレイヤーとの間にブロックがなかったら
+	// 追跡する
+	if (enemyManager_.getPlayerLength() <= discoveryLenght_ &&
+		psObj_->isPlayerLook()) {
+		changeState(State::Chase, ENEMY_ATTACK);
+		discoveryPosition_ = position_;
+		// 過去の位置を入れる
+		auto player = world_->findActor("PlayerBody1");
+		pastPosition = player->getPosition();
+		pricleObj_->setDirection(enemyManager_.getDirection(pastPosition));
+	}
+}
+
 void FlyingEnemy::discovery()
 {
-	// auto player = world_->findActor("Player");
-	auto player = world_->findActor("PlayerBody1");
+	/*auto player = world_->findActor("PlayerBody1");
 	pastPosition = player->getPosition();
 	pricleObj_->setDirection(enemyManager_.getDirection(pastPosition));
-	changeState(State::Chase, ENEMY_WALK);
+	changeState(State::Chase, ENEMY_WALK);*/
 }
 
 void FlyingEnemy::attack()
@@ -132,7 +161,8 @@ void FlyingEnemy::chaseMove()
 	pricleObj_->setAddPosition(Vector2::Left * (scale_ + 1.0f));*/
 	// プレイヤーが床にいる場合、一定の距離内に居ることが難しいので、切り上げる
 	if (length <= 15) {
-		changeState(State::Lost, ENEMY_LOST);
+		//changeState(State::Lost, ENEMY_LOST);
+		changeState(State::Lost, ENEMY_WALK);
 		return;
 	}
 	// 接地していたら、yベクトルを 0 にする
@@ -160,4 +190,21 @@ void FlyingEnemy::lostMove()
 	if (lostTimer_ <= 8.0f) return;
 	lostTimer_ = 0.0f;
 	changeState(State::Search, ENEMY_WALK);
+}
+
+// アニメーションの追加を行います
+void FlyingEnemy::addAnimation()
+{
+	animation_.addAnimation(
+		ENEMY_WALK,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_FLYINGENEMY_WALK_TEX),
+		texSize_, 8, 2, 5);
+	animation_.addAnimation(
+		ENEMY_ATTACK,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_FLYINGENEMY_ATTACK_TEX),
+		texSize_, 8, 3, 3);
+	animation_.addAnimation(
+		ENEMY_DAMAGE,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_FLYINGENEMY_DAMAGE_TEX),
+		texSize_, 8, 3, 3);
 }

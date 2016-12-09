@@ -17,6 +17,8 @@ public:
 	void Refresh() override;
 
 private:
+	float addAngle_;		// 角度の加算量
+
 	IWorld* world_;			// ワールド
 
 	Tornado* tornadoObj_;	// 竜巻オブジェクト
