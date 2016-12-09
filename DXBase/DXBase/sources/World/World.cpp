@@ -7,8 +7,7 @@
 // コンストラクタ
 World::World() :
 	listener_([](EventMessage, void*) {}),
-	is_clear_(false),
-	scrool_(Vector2(1,1)){
+	is_clear_(false){
 }
 
 // 更新
@@ -124,12 +123,13 @@ void World::clear(bool clear){
 	is_clear_ = clear;
 }
 
-void World::SetScroolJudge(Vector2 scrool)
+void World::SetScroolJudge(Vector2 scroolJudge, Vector2 scroolStopPos)
 {
-	scrool_ = scrool;
+	scrool_.scroolJudge = scroolJudge;
+	scrool_.scroolStop = scroolStopPos;
 }
 
-Vector2 World::GetScroolJudge()
+ScroolJudge World::GetScroolJudge()
 {
 	return scrool_;
 }

@@ -9,6 +9,7 @@
 #include "../../../Renderer/Puyo_Texture_K.h"
 
 #include "Player.h"
+#include "../../../Renderer/Puyo_Texture_K.h"
 
 // プレーヤー
 class PlayerConnector : public Actor {
@@ -51,4 +52,16 @@ private:
 	int base_index_;
 
 	ActionType action_type_;
+
+	//ぷよテクスチャ
+	PuyoTextureK* mPuyo;
+	//ひっぱる力
+	float mPower;
+	//補間
+	Vector2 mPuyoResPos;
+	Vector2 mPuyoPos;
+	Vector2 mPuyoVelo;
+	//ぷよする時間
+	float mPuyoTimer;
+	bool mPuyoFlag;
 };

@@ -52,16 +52,5 @@ private:
 	PlayerBodyPtr butty_;
 	// コネクター
 	PlayerCntrPtr cntr_;
-	//ぷよテクスチャ
-	PuyoTextureK* mPuyo;
-	//ひっぱる力
-	float mPower;
-	//補間
-	Vector2 mPuyoResPos;
-	Vector2 mPuyoPos;
-	Vector2 mPuyoVelo;
-	//ぷよする時間
-	float mPuyoTimer;
-	bool mPuyoFlag;
 };
 

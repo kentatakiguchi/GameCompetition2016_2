@@ -3,6 +3,7 @@
 #include "../TestPlayer/TestPlayer.h"
 #include "../../Input/KeyCode.h"
 #include "../../Math/MathHelper.h"
+#include "../../Define.h"
 // コンストラクタ
 Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, const CollisionBase& body) :
 	world_(world),
@@ -18,7 +19,7 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, co
 	inv_(Matrix::Identity),
 	mPrePos(Vector2::Zero),
 	mCurPos(Vector2::Zero),
-	mVelo(Vector2::Zero){
+	mVelo(Vector2::Zero) {
 	body_.setPosition({ position_.x, position_.y });
 }
 
@@ -84,7 +85,7 @@ const std::string& Actor::getName() const {
 
 // 座標を返す
 Vector2 Actor::getPosition() const {
-	return Vector2(position_.x,position_.y);
+	return Vector2(position_.x, position_.y);
 }
 
 // 回転行列を返す
@@ -101,18 +102,31 @@ Matrix Actor::getPose() const {
 Matrix Actor::inv() {
 	if (world_ == nullptr) return Matrix::Identity;
 	auto player = world_->findActor("PlayerBody1");
-	if(player == nullptr)return Matrix::Identity;
+	if (player == nullptr)return Matrix::Identity;
+	ScroolJudge scrool = world_->GetScroolJudge();
 	//1フレーム前の座標
 	mPrePos = Vector2(inv_.Translation().x, inv_.Translation().y);
+	//スクロールストップ処理
+	Matrix playerMat;
+	playerMat = player->getPose();
+	float clampPosX = MathHelper::Clamp(playerMat.Translation().x, 0.0f, scrool.scroolStop.x);
+	float clampPosY = MathHelper::Clamp(playerMat.Translation().y, 0.0f, scrool.scroolStop.y);
+	playerMat.Translation(Vector3(clampPosX, clampPosY,0.0f));
+
 	//行くべき位置を設定(matrix版)
-	resInv_ = Matrix::Invert(player->getPose()) *
+	resInv_ = Matrix::Invert(playerMat) *
 		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
 	//行くべき位置を設定
 	Vector2 resPos = Vector2(resInv_.Translation().x, resInv_.Translation().y);
 	Vector2 pos = Vector2(inv_.Translation().x, inv_.Translation().y);
+
 	Spring(pos, resPos, velo);
 	//補正された移動マトリックス代入
-	inv_ = Matrix::CreateTranslation(Vector3(pos.x*world_->GetScroolJudge().x,pos.y*world_->GetScroolJudge().y,0.0f));
+	inv_ = Matrix::CreateTranslation(Vector3(
+		pos.x*scrool.scroolJudge.x,
+		pos.y*scrool.scroolJudge.y,
+		0.0f));
+
 	//1フレーム後の座標
 	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);
 	//移動量を計算
@@ -251,16 +265,16 @@ void Actor::onCollide(Actor&) {
 bool Actor::isCollide(Actor& other) {
 	return body_.intersects(other.body_);
 }
-void Actor::Spring(Vector2& pos ,Vector2& resPos, Vector2& velo,float stiffness, float friction, float mass)const
+void Actor::Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness, float friction, float mass)const
 {
 	// バネの伸び具合を計算
-	Vector2 stretch = (pos- resPos);
+	Vector2 stretch = (pos - resPos);
 	// バネの力を計算
 	Vector2 force = -stiffness * stretch;
 	// 加速度を追加
 	Vector2 acceleration = force / mass;
 	// 移動速度を計算
-	velo= friction * (velo + acceleration);
+	velo = friction * (velo + acceleration);
 
 	pos = pos + velo;
 }
