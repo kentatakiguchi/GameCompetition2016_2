@@ -7,7 +7,8 @@
 // コンストラクタ
 World::World() :
 	listener_([](EventMessage, void*) {}),
-	is_clear_(false){
+	is_clear_(false),
+	scrool_(Vector2(1,1)){
 }
 
 // 更新
@@ -121,6 +122,16 @@ bool World::is_clear(){
 
 void World::clear(bool clear){
 	is_clear_ = clear;
+}
+
+void World::SetScroolJudge(Vector2 scrool)
+{
+	scrool_ = scrool;
+}
+
+Vector2 World::GetScroolJudge()
+{
+	return scrool_;
 }
 
 

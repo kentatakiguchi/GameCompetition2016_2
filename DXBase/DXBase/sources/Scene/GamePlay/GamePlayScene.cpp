@@ -59,18 +59,24 @@ void GamePlayScene::start() {
 
 	backManager = new BackGraundManager(world_.get());
 	if (name_ != "stage03") {
+		if(name_=="stage01")
+		world_->SetScroolJudge(Vector2(1, 0));
 		//先にセットされたテクスチャほど奥に描写される
-		backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX, TextureID::BACKGRAUND42_TEX);
-		backManager->SetBackGraund(TextureID::BACKGRAUND3_TEX, TextureID::BACKGRAUND32_TEX);
-		backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX, TextureID::BACKGRAUND22_TEX);
-		backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX, TextureID::BACKGRAUND12_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_1_TEX, TextureID::BACKSTAGE1_2_2_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_3_1_TEX, TextureID::BACKSTAGE1_3_2_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_TEX, TextureID::BACKSTAGE1_6_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_1_TEX, TextureID::BACKSTAGE1_7_2_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX);
 
-		backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
-		backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
+		//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
+		//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 	}
 	else
 	{
-
+		world_->SetScroolJudge(Vector2(0, 1));
 		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE41_TEX, TextureID::BACKGRAUND_TATE41_TEX);
 		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE31_TEX, TextureID::BACKGRAUND_TATE31_TEX);
 		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE21_TEX, TextureID::BACKGRAUND_TATE21_TEX);

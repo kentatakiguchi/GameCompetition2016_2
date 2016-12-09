@@ -50,6 +50,8 @@ public:
 	//クリア条件
 	virtual bool is_clear()override;
 	virtual void clear(bool clear)override;
+	virtual void SetScroolJudge(Vector2 scrool = Vector2(1, 1)) override;
+	virtual Vector2 GetScroolJudge()override;
 
 	// コピー禁止
 	World(const World& other) = delete;
@@ -67,6 +69,8 @@ private:
 	std::function<void(EventMessage, void*)> listener_;
 
 	bool is_clear_;
+
+	Vector2 scrool_;
 };
 
 #endif

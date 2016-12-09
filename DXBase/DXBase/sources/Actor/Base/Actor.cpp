@@ -112,7 +112,7 @@ Matrix Actor::inv() {
 	Vector2 pos = Vector2(inv_.Translation().x, inv_.Translation().y);
 	Spring(pos, resPos, velo);
 	//補正された移動マトリックス代入
-	inv_ = Matrix::CreateTranslation(Vector3(pos.x, pos.y));
+	inv_ = Matrix::CreateTranslation(Vector3(pos.x*world_->GetScroolJudge().x,pos.y*world_->GetScroolJudge().y,0.0f));
 	//1フレーム後の座標
 	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);
 	//移動量を計算

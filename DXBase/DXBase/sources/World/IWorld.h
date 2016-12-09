@@ -29,6 +29,9 @@ public:
 	virtual bool is_clear() = 0;
 	virtual void clear(bool clear) = 0;
 
+	//縦スクロール横スクロールするかどうか(引数 軸ごとにスクロールする場合は1、しない場合は0)
+	virtual void SetScroolJudge(Vector2 scrool=Vector2(1,1))=0;
+	virtual Vector2 GetScroolJudge()=0;
 	// メッセージの送信
 	virtual void sendMessage(EventMessage message, void* param = nullptr) = 0;
 };
