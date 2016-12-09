@@ -33,6 +33,8 @@ private:
 	bool is_cleared();
 	// Ž€–S‚µ‚½‚©‚Ç‚¤‚©
 	bool is_dead();
+
+	void puyoUpdate();
 private:
 	PlayerStateMgr_Union stateMgr_;
 

@@ -32,72 +32,14 @@ void PlayerConnector::onUpdate(float deltaTime) {
 		dead();
 	}
 	if (is_cleared()) world_->clear(true);
-
-	//mPuyo->PuyoUpdate();
-
-	//float x = ((butty_->getPosition() + retty_->getPosition()) / 2).x;
-	//float y = ((butty_->getPosition() + retty_->getPosition()) / 2).y;
-	//Vector3 pos = Vector3(x, y, 0);
-	//Vector2 center = Vector2(x, y);
-
-	//pos = pos*inv_;
-
-	//Vector2 posVec2 = Vector2(pos.x, pos.y);
-
-	//Vector2 vec1 = butty_->getPosition() - Vector2(x, y);
-	//Vector2 vec2 = retty_->getPosition() - Vector2(x, y);
-	//mPower = vec1.Length();
-	////左のやつが引っ張ってる
-	//if (stateMgr_.currentActionType(ActionType::Right) &&
-	//	stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
-	//	mPuyoResPos = vec2*0.6f;
-	//	mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower*0.6f, 175.0f);
-	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
-	//	mPuyoTimer = 0.0f;
-	//	mPuyoFlag = true;
-	//}
-	////右のやつが引っ張ってる
-	//else if (stateMgr_.currentActionType(ActionType::Left) &&
-	//	stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
-	//	mPuyoResPos = vec1*0.6f;
-	//	mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower*0.6f, 175.0f);
-	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
-	//	mPuyoTimer = 0.0f;
-	//	mPuyoFlag = true;
-	//}
-	////同時押し
-	//else if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD_BOTH))
-	//{
-	//	mPuyoResPos = Vector2::Zero;
-	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
-	//	mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 200.0f);
-	//	mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 200.0f);
-	//}
-	////何もしていない
-	//else
-	//{
-	//	mPuyoResPos = Vector2::Zero;
-	//	if (!mPuyoFlag) {
-	//		mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 175.0f);
-	//		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 175.0f);
-	//	}
-	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
-	//}
-
-	//Vector2::Spring(mPuyoPos, mPuyoResPos, mPuyoVelo, 0.2f);
-	////飛ぶ瞬間は力をどこも加えない
-	//if (mPuyoFlag) {
-	//	mPuyoTimer += Time::GetInstance().deltaTime();
-	//	if (mPuyoTimer >= 0.5f) {
-	//		mPuyoFlag = false;
-	//	}
-	//}
+	//ぷよテクスチャUPdate
+	puyoUpdate();
 }
 
 void PlayerConnector::onLateUpdate(float deltaTime) {}
 
 void PlayerConnector::onDraw() const {
-	//mPuyo->PuyoDraw();
+	mPuyo->PuyoDraw();
 
 	//body_.draw();
 	//bezier_.draw(100, inv_);
@@ -163,6 +105,68 @@ bool PlayerConnector::is_dead() {
 	bool is_sub_invincible = retty_->isInv();
 
 	return (is_main_dead && is_sub_dead) || (is_main_target_enemy && !is_main_invincible) || (is_sub_target_enemy && !is_sub_invincible);
+}
+
+void PlayerConnector::puyoUpdate()
+{
+	float x = ((butty_->getPosition() + retty_->getPosition()) / 2).x;
+	float y = ((butty_->getPosition() + retty_->getPosition()) / 2).y;
+	Vector3 pos = Vector3(x, y, 0);
+	Vector2 center = points[(int)(points.size() / 2)]->getPosition();
+
+	pos = pos*inv_;
+
+	Vector2 posVec2 = Vector2(pos.x, pos.y);
+	Vector2 vec1 = butty_->getPosition() - Vector2(x, y);
+	Vector2 vec2 = retty_->getPosition() - Vector2(x, y);
+
+	mPower = vec1.Length();
+	//左のやつが引っ張ってる
+	if (stateMgr_.currentActionType(ActionType::Right) &&
+		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
+		mPuyoResPos = vec2*0.6f;
+		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower*0.6f, 175.0f);
+		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
+		mPuyoTimer = 0.0f;
+		mPuyoFlag = true;
+	}
+	//右のやつが引っ張ってる
+	else if (stateMgr_.currentActionType(ActionType::Left) &&
+		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
+		mPuyoResPos = vec1*0.6f;
+		mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower*0.6f, 175.0f);
+		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
+		mPuyoTimer = 0.0f;
+		mPuyoFlag = true;
+	}
+	//同時押し
+	else if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD_BOTH))
+	{
+		mPuyoResPos = Vector2::Zero;
+		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
+		mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 200.0f);
+		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 200.0f);
+	}
+	//何もしていない
+	else
+	{
+		mPuyoResPos = Vector2::Zero;
+		if (!mPuyoFlag) {
+			mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 175.0f);
+			mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 175.0f);
+		}
+		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
+	}
+
+	Vector2::Spring(mPuyoPos, mPuyoResPos, mPuyoVelo, 0.2f);
+	//飛ぶ瞬間は力をどこも加えない
+	if (mPuyoFlag) {
+		mPuyoTimer += Time::GetInstance().deltaTime();
+		if (mPuyoTimer >= 0.5f) {
+			mPuyoFlag = false;
+		}
+	}
+	mPuyo->PuyoUpdate();
 }
 
 Vector2 PlayerConnector::get_point(int index) {

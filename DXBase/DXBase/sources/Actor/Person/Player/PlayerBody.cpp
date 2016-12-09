@@ -84,7 +84,8 @@ void PlayerBody::onLateUpdate(float deltaTime) {
 void PlayerBody::onCollide(Actor & other) {
 	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
-		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor") {
+		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" ||
+		other.getName() == "Door") {
 		auto pos = body_.GetCircle().previousPosition_;
 
 		auto t_left = other.getBody().GetBox().component_.point[0];
