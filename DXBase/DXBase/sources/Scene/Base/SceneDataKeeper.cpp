@@ -1,6 +1,6 @@
 #include "SceneDataKeeper.h"
 
-SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage03"), hp_(0)
+SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage04"), hp_(0)
 {
 }
 
@@ -18,10 +18,10 @@ void SceneDataKeeper::setSceneName(std::string name)
 }
 void SceneDataKeeper::getNextSceneName(std::string& name)
 {
-	for (int i = 1; i < 4; i++) {
+	for (int i = 1; i < 5; i++) {
 		if (previousSceneName_.find(std::to_string(i)) != std::string::npos) {
 			int plus = 1;
-			if (i == 3) plus = -2;
+			if (i == 4) plus = -3;
 			name = "stage0" + std::to_string(i + plus);
 			return;
 		}
@@ -55,11 +55,11 @@ int SceneDataKeeper::getPlayerHP() const
 
 int SceneDataKeeper::getInt()
 {
-	for (int i = 1; i < 4; i++) {
+	for (int i = 1; i < 5; i++) {
 		if (previousSceneName_.find(std::to_string(i)) != std::string::npos) {
 			int myi;
 			int plus = 1;
-			if (i == 3) plus = -2;
+			if (i == 4) plus = -3;
 			myi = i + plus;
 			return myi;
 		}

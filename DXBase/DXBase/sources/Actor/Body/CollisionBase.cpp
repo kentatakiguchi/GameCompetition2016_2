@@ -180,6 +180,31 @@ void CollisionBase::RotateBox(int rotation)
 	//leng = (position_ - movePoint[3].Normalize()).Length();
 	//movePoint[3] = turn + Vector2(1, 1)*leng;
 }
+void CollisionBase::RotateFreeBox(int rotation)
+{
+	if (type_ != CollisionType::BoxCol) return;
+
+	for (int i = 0; i < 4; i++)
+	{
+		Vector2 thisVect;
+
+		thisVect = myvect[i];
+
+		//Vector2 vect;
+		//vect.x = (CHIPSIZE*TURNLESS_FLOOR_SIZE) / 2;
+		//vect.y = (CHIPSIZE) / 2;
+
+		//thisVect -= vect;
+
+
+		movePoint[i].x = thisVect.x * cosf(rotation * MathHelper::Pi / 180) - thisVect.y * sinf(rotation * MathHelper::Pi / 180);
+		movePoint[i].y = thisVect.x * sinf(rotation * MathHelper::Pi / 180) + thisVect.y * cosf(rotation * MathHelper::Pi / 180);
+
+		//movePoint[i] += vect;
+
+	}
+
+}
 void CollisionBase::update(Vector2 position)
 {
 	MovePos(position);

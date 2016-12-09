@@ -7,7 +7,9 @@ enum FontName {
 	LoadingFont,
 	TitleFont,
 	GamePlayFont,
-	MoveScreenFont
+	MoveScreenFont,
+	GameOverFont,
+	GameEndFont
 };
 
 class FontManager {

@@ -37,9 +37,10 @@ void GameOverScene::start() {
 void GameOverScene::update() {
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN))	
 	{
-		if (keeper_->getSceneName() == "stage01") keeper_->setSceneName("stage03");
+		if (keeper_->getSceneName() == "stage01") keeper_->setSceneName("stage04");
 		else if (keeper_->getSceneName() == "stage02") keeper_->setSceneName("stage01");
 		else if (keeper_->getSceneName() == "stage03") keeper_->setSceneName("stage02");
+		else if (keeper_->getSceneName() == "stage04") keeper_->setSceneName("stage03");
 
 		nextScene_ = Scene::GamePlay;
 

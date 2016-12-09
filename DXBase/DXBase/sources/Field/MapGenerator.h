@@ -64,10 +64,22 @@ public:
 		}
 		return START_POS;
 	}
+	//縦のセル数を返す
+	int GetRowSize() {
+		return rowSize;
+	}
+	//横のセル数を返す
+	int GetColumnSize() {
+		return colSize;
+	}
 	//ファイル名(拡張子まで書く事)から、マップを生成する fileName:マップ用の.csv 0:生成しない 1:MapChipを生成
 	void create(std::string fileName,int colDef=0,int rowDef=0)
 	{
 		reader_.load(fileName);
+
+		rowSize = reader_.rows();
+		colSize = reader_.columns();
+
 		int rowCountDef=rowDef-1;
 		int colCountDef=colDef-1;
 		
@@ -188,7 +200,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX),world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -200,7 +212,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -212,7 +224,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -224,7 +236,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -236,7 +248,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -248,7 +260,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -260,7 +272,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -272,7 +284,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -284,7 +296,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -296,7 +308,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -308,7 +320,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -328,7 +340,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -340,7 +352,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -352,7 +364,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -364,7 +376,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -376,7 +388,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -388,7 +400,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -400,7 +412,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -412,7 +424,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -424,7 +436,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, FF);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -436,7 +448,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -448,7 +460,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -460,7 +472,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -472,7 +484,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -484,7 +496,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -496,7 +508,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -508,7 +520,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -520,7 +532,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -532,7 +544,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -544,7 +556,7 @@ public:
 						segmentChecker[reader_.geti(rowN, colN)] = false;
 						Vector2 startPoint, endPoint;
 						SetSegmentPoint(rowN, colN, startPoint, endPoint, TT);
-						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(world_, startPoint, endPoint));
+						world_->addActor(ActorGroup::Field, std::make_shared<SegmentFloor>(ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX), world_, startPoint, endPoint));
 					}
 					else {
 						segmentStartPoints[reader_.geti(rowN, colN)] = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
@@ -586,6 +598,9 @@ private:
 	std::map<int,MapChip> chips;
 	std::map<int, bool> segmentChecker;
 	std::map<int, Vector2> segmentStartPoints;
+
+	int rowSize;
+	int colSize;
 };
 
 #endif // !MapGenerator

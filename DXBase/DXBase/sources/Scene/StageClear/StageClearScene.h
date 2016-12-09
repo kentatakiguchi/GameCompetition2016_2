@@ -16,6 +16,11 @@ public:
 	virtual Scene next() const override;
 private:
 	int id;
+	int targetPoint;
+	int sinCount;
+
+	std::map<int, Scene> nextScene;
+	std::map<int, Vector2> textPoses;
 };
 
 #endif

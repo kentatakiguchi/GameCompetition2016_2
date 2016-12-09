@@ -16,6 +16,8 @@
 #include "../Scene/SampleBossScene/SampleBossScene.h"
 #include"../Scene/MainMenu/MainMenuScene.h"
 #include"../Scene/Credit/CreditScene.h"
+#include"../Scene/Test/TestScene.h"
+#include"../Scene/GameEnd/GameEndScene.h"
 
 MyGame::MyGame() : 
 	Game(WINDOW_NAME, SCREEN_SIZE.x, SCREEN_SIZE.y, WINDOW_RATE, WINDOW_MODE),
@@ -43,6 +45,8 @@ void MyGame::start(){
 	sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>());
 	//sceneMgr_.add(Scene::Nagano, std::make_shared<NaganoScene>());
 	sceneMgr_.add(Scene::Credit, std::make_shared<CreditScene>(&dataKeeper_));
+	sceneMgr_.add(Scene::GameEnd, std::make_shared<GameEndScene>(&dataKeeper_));
+	sceneMgr_.add(Scene::Test, std::make_shared<TestScene>(&dataKeeper_));
 	sceneMgr_.change(Scene::Loading);
 
 	//前のゲームプレイシーンの内容を保存する専用のクラスを作る(ステージ番号、キャラクター情報等を保存)

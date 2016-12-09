@@ -32,6 +32,7 @@ public:
 	void RotateCapsule(Vector2 point1, Vector2 point2, float radius);
 	void RotateSegment(Vector2 point1, Vector2 point2);
 	void RotateBox(int rotation);
+	void RotateFreeBox(int rotation);
 	//デバッグ用の判定表示
 	void draw(Matrix inv = Matrix::Identity) const;
 	//スプライトのIDを渡す事で、対応したスプライトを表示する各判定のdrawを呼び出す(BOX以外は通常のdrawと同じ)

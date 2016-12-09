@@ -22,6 +22,9 @@ private:
 	int id;
 	int targetPoint;
 	int sinCount;
+	int alphaCou[2];
+	int alphadefSpeeds[2];
+
 	std::map<int,Vector2> textPoses;
 	std::map<int,Scene> nextScene;
 	std::map<int, Vector2> lastPoses;

@@ -110,7 +110,7 @@ void GamePlayScene::update() {
 
 	if (world_->is_clear()) {
 
-		if (name_ != "stage03")
+		if (name_ != "stage04")
 		{
 			nextScene_ = Scene::StageClear;
 		}
