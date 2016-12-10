@@ -85,6 +85,12 @@ bool BossManager::IsAttackHit()
 	return false;
 }
 
+// ‹¯‚Ş‚©‚ğ•Ô‚µ‚Ü‚·
+bool BossManager::isFlinch()
+{
+	return bossAttackContainer_[attackNumber_]->isFlinch();
+}
+
 // ‚Ğ‚é‚İƒJƒEƒ“ƒg‚ğ•Ô‚µ‚Ü‚·
 int BossManager::getFlinchCount()
 {

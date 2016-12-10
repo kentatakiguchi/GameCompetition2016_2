@@ -21,6 +21,7 @@ public:
 	int getHeartHp();
 	// ボスの体力を返します
 	int getBossHp();
+	void addBossHp(int hp);
 	// プレイヤーが体内に入ったかを設定します
 	void setIsEntered(bool isEntered);
 	// プレイヤーを追い出したかを返します

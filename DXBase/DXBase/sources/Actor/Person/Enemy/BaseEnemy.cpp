@@ -199,6 +199,10 @@ void BaseEnemy::onCollide(Actor & actor)
 		if (hp_ <= 0) changeState(State::Dead, ENEMY_DEAD);
 		else changeState(State::Damage, ENEMY_DAMAGE);*/
 		changeState(State::Dead, ENEMY_DAMAGE);
+		TexDegress_ = 0.0f;
+		//body_.GetBox().transform(0, 0, 0, 0);
+		//body_.GetBox().enabled// = false; // = false;
+		body_.enabled(false);
 		isUseGravity_ = true;
 		return;
 	}
@@ -308,7 +312,7 @@ void BaseEnemy::deadMove()
 	}
 	// 死亡アニメーションオブジェクトの追加
 	/*world_->addActor(ActorGroup::Effect, std::make_shared<DeadEnemy>(
-		world_, position_, body_.GetBox().getSize(), ENEMY_DAMAGE, 1));*/
+		world_, position_, body_.GetBox().getWidth()));*/
 	if (!animation_.isEndAnimation()) return;
 	dead();
 }

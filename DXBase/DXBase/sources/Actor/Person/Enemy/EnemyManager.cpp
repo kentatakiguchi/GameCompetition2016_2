@@ -321,12 +321,20 @@ Vector2 EnemyManager::getPlayerDirection()
 	return getDirection(playerPosition_);
 }
 
+// 指定したオブジェクトとの方向を、正規化されたベクトルで取得します
+Vector2 EnemyManager::getNormalizeDirection(const Vector2 & otherPosition)
+{
+	// 方向の計算
+	auto distance = otherPosition - enemyPosition_;
+	return Vector2::Normalize(distance);
+}
+
 // プレイヤーとの方向を正規化されたベクトルで取得します
 Vector2 EnemyManager::getPlayerNormalizeDirection()
 {
 	// 方向の計算
-	auto distance = enemyPosition_ - playerPosition_;
-	return distance.Normalize(distance);
+	//auto distance = playerPosition_ - enemyPosition_;
+	return getNormalizeDirection(playerPosition_);
 }
 
 //　敵自身とプレイヤーの位置を入れます

@@ -26,8 +26,11 @@ void BossHeart::onUpdate(float deltaTime)
 		stateCount_--;
 		initStatus();
 	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::B)) {
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
 		hp_ -= 50;
+		if (hp_ % 100 == 0) {
+			bossHp_ -= 1;
+		}
 	}
 
 	// 追い出しをfalseにする
@@ -105,6 +108,13 @@ int BossHeart::getHeartHp()
 int BossHeart::getBossHp()
 {
 	return bossHp_;
+}
+
+void BossHeart::addBossHp(int hp)
+{
+	hp_ += hp;
+	if (hp_ % 100 == 0)
+		bossHp_ -= 1;
 }
 
 // プレイヤーが体内に入ったかを設定します

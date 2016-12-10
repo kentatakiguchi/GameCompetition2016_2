@@ -11,7 +11,7 @@ FlyingEnemy::FlyingEnemy(
 	BaseEnemy(world, position, 64.0f),
 	direTimer_(0.0f),
 	lostTimer_(0.0f),
-	pastPosition(Vector2::Zero),
+	pastPosition_(Vector2::Zero),
 	wsObj_(nullptr)
 {
 	direction_ = Vector2(1.0f, Down);
@@ -54,34 +54,14 @@ void FlyingEnemy::update(float deltaTime)
 {
 	wsObj_->setDirection(direction_);
 	wsObj_->setPosition(position_);
+	/*if (InputMgr::GetInstance().IsKeyOn(KeyCode::L)) {
+		changeState(State::Dead, ENEMY_DAMAGE);
+		isUseGravity_ = true;
+		TexDegress_ = 0.0f;
+	}*/
 }
 
-//void FlyingEnemy::onDraw() const
-//{
-//	auto stateChar = stateString_.c_str();
-//	// 敵の表示
-//	DrawGraph(
-//		position_.x - scale_ / 2.0f, position_.y - scale_ / 2.0f,
-//		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_SAMPLE_TEX), 0);
-//	// 文字の表示
-//	DrawString(
-//		position_.x - scale_, position_.y - 20 - scale_,
-//		stateChar, GetColor(255, 255, 255));
-//
-//	// デバッグ
-//	DrawFormatString(
-//		25, 75, GetColor(255, 255, 255), 
-//		"プレイヤーとのX方向:%d", (int)(position_ - pastPosition).x);
-//}
-
-void FlyingEnemy::onCollide(Actor & actor)
-{
-	BaseEnemy::onCollide(actor);
-}
-
-void FlyingEnemy::onMessage(EventMessage event, void *)
-{
-}
+void FlyingEnemy::onMessage(EventMessage event, void *){}
 
 // 索敵移動です
 void FlyingEnemy::search()
@@ -103,10 +83,10 @@ void FlyingEnemy::search()
 		discoveryPosition_ = position_;
 		// 過去の位置を入れる
 		auto player = world_->findActor("PlayerBody1");
-		pastPosition = player->getPosition();
-		pricleObj_->setDirection(enemyManager_.getDirection(pastPosition));
+		pastPosition_ = player->getPosition();
+		pricleObj_->setDirection(enemyManager_.getDirection(pastPosition_));
 		// 回転
-		if (enemyManager_.getDirection(pastPosition).x < 0)
+		if (enemyManager_.getDirection(pastPosition_).x < 0)
 			TexDegress_ = 90;
 		else TexDegress_ = 270;
 	}
@@ -158,8 +138,8 @@ void FlyingEnemy::chaseMove()
 	// プレイヤーのいた方向に進む
 	// プレイヤーが居た位置との距離が０ならば、見失う
 	// pastPosition -= world_->MoveActor();
-	auto direction = enemyManager_.getDirection(pastPosition);
-	auto p_Direction = position_ - pastPosition;
+	auto direction = enemyManager_.getDirection(pastPosition_);
+	auto p_Direction = position_ - pastPosition_;
  	auto length = p_Direction.Length();
 	/*pricleObj_->setDirection(-direction);
 	pricleObj_->setAddPosition(Vector2::Left * (scale_ + 1.0f));*/
@@ -167,6 +147,7 @@ void FlyingEnemy::chaseMove()
 	if (length <= 15) {
 		//changeState(State::Lost, ENEMY_LOST);
 		changeState(State::Lost, ENEMY_WALK);
+		TexDegress_ = 0.0f;
 		return;
 	}
 	// 接地していたら、yベクトルを 0 にする
@@ -176,10 +157,11 @@ void FlyingEnemy::chaseMove()
 	if (length < speed_)
 		speed = length;
 	// プレイヤーの居た位置からの方向を設定
-	direction_ = enemyManager_.getDirection(pastPosition);
+	//direction_ = enemyManager_.getPlayerNormalizeDirection();
+	direction_ = enemyManager_.getNormalizeDirection(pastPosition_);
 	// プレイヤーの居た位置に進む
-	direction.y *= -1;
-	position_ += -direction.Normalize() * speed * deltaTimer_;
+	//direction.y *= -1;
+	position_ += direction_ * speed * deltaTimer_;
 	// トゲの設定
 	//pricleObj_->setDirection(direction);
 	pricleObj_->setAddPosition(Vector2::Left * (scale_ + 1.0f));

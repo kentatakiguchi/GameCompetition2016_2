@@ -41,14 +41,7 @@ void WallTrunEnemy::update(float deltaTime)
 	wsObj_->setPosition(position_);
 }
 
-void WallTrunEnemy::onCollide(Actor & actor)
-{
-	BaseEnemy::onCollide(actor);
-}
-
-void WallTrunEnemy::onMessage(EventMessage event, void *)
-{
-}
+void WallTrunEnemy::onMessage(EventMessage event, void *){}
 
 void WallTrunEnemy::search()
 {
@@ -59,18 +52,14 @@ void WallTrunEnemy::search()
 	searchMove();
 }
 
-void WallTrunEnemy::attack()
-{
-}
+void WallTrunEnemy::attack(){}
 
 void WallTrunEnemy::searchMove()
 {
 	position_ += direction_ * speed_ * deltaTimer_;
 }
 
-void WallTrunEnemy::chaseMove()
-{
-}
+void WallTrunEnemy::chaseMove(){}
 
 // アニメーションの追加を行います
 void WallTrunEnemy::addAnimation()

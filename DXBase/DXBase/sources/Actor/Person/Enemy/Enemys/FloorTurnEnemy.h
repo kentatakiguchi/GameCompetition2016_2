@@ -14,7 +14,6 @@ public:
 		float right = 1.0f);
 	void beginUpdate(float deltaTime) override;
 	void update(float deltaTime) override;
-	void onCollide(Actor& actor) override;
 	void onMessage(EventMessage event, void*) override;
 	// 所持しているオブジェクトの位置を設定します
 	void setObjPosition() override;

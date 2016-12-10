@@ -32,6 +32,8 @@ public:
 	bool IsBodyHit();
 	// プレイヤーに当たるかを返します
 	bool IsAttackHit();
+	// 怯むかを返します
+	bool isFlinch();
 	// ひるみカウントを返します
 	int getFlinchCount();
 	// 角度を返します

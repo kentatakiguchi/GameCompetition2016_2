@@ -4,20 +4,20 @@
 #include "../../Base/Actor.h"
 #include "../../../Animation/Enemy/EnemyAnimation2D.h"
 
+// 死亡エネミー(衝突判定のみ)
 class DeadEnemy :public Actor {
 public:
 	DeadEnemy(
 		IWorld* world,
 		const Vector2& position,
-		const Vector2& bodyScale,
-		const int id,
-		const int res,
-		const Vector2& direction = Vector2(1.0f, 1.0f));
+		const float bodyScale);
 	void onUpdate(float deltaTime) override;
-	void onDraw() const override;
 	void onCollide(Actor& actor) override;
 	void onMessage(EventMessage event, void*) override;
 
+
+
+private:
 	// 地面の位置に補正します
 	void groundClamp(Actor& actor);
 

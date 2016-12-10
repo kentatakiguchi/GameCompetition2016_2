@@ -90,6 +90,12 @@ bool BossEntry::isEntered()
 	return isEntered_;
 }
 
+// プレイヤーをつなぐ線に触れているかを返します
+bool BossEntry::isBlock()
+{
+	return isBlock_;
+}
+
 // プレイヤーがボスの体内に出たことにします
 void BossEntry::letOut()
 {

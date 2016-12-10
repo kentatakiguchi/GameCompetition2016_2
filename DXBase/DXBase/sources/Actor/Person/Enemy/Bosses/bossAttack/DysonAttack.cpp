@@ -3,12 +3,14 @@
 #include "./../../../../Base/ActorGroup.h"
 #include "../../../../../World/IWorld.h"
 #include "../Tornado.h"
+#include <random>	// C++11の機能
 
 DysonAttack::DysonAttack() : 
 	BossAttack(Vector2::Zero),
 	addAngle_(0.0f),
 	world_(nullptr),
-	tornadoObj_(nullptr)
+	tornadoObj_(nullptr),
+	state_(State::Attack)
 {
 }
 
@@ -16,7 +18,8 @@ DysonAttack::DysonAttack(IWorld * world, const Vector2 & position) :
 	BossAttack(position),
 	addAngle_(2.0f),
 	world_(world),
-	tornadoObj_(nullptr)
+	tornadoObj_(nullptr),
+	state_(State::Attack)
 {
 	angle_ = 70.0f;
 	/*auto tornado = std::make_shared<Tornado>(
@@ -27,10 +30,36 @@ DysonAttack::DysonAttack(IWorld * world, const Vector2 & position) :
 
 void DysonAttack::attack(float deltaTime)
 {
+	switch (state_)
+	{
+	case State::Attack: dysonAttack(deltaTime); break;
+	case State::Flinch: flinch(deltaTime); break;
+	case State::Fatigue: fatigue(deltaTime); break;
+	}
+}
+
+// 攻撃状態
+void DysonAttack::dysonAttack(float deltaTime)
+{
+	// 動けない状態なら、ひるみ状態に遷移
+	if (!isMove_) {
+		changeState(State::Flinch);
+		return;
+	}
+
 	// 岩の生成
-	/*if (timer_ <= 0.2f)
+	if ((int)(timer_ * 10) % 10 == 0) {
+		// 乱数の取得
+		std::random_device random;
+		// メルセンヌツイスター法 後で調べる
+		// 初期Seed値を渡す
+		std::mt19937 mt(random());
+		// 範囲の指定(int型)
+		std::uniform_int_distribution<> aSecond(CHIPSIZE * 2, CHIPSIZE * 18);
+		// Xの生成位置を入れる
 		world_->addActor(ActorGroup::Enemy,
-			std::make_shared<Rock>(world_, Vector2(200.0f, 200.0f)));*/
+			std::make_shared<Rock>(world_, Vector2(aSecond(mt), 200.0f)));
+	}
 	// ボスの竜巻攻撃(仮)
 	if (tornadoObj_ == nullptr) {
 		auto tornado = std::make_shared<Tornado>(
@@ -63,8 +92,40 @@ void DysonAttack::attack(float deltaTime)
 	isAttackEnd_ = true;
 }
 
+// 怯み状態
+void DysonAttack::flinch(float deltaTime)
+{
+	//isFlinch_ = true;
+	// プレイヤーをつなぐものに当たっていないなら、疲労状態に遷移
+	if (isMove_) {
+		changeState(State::Fatigue);
+		return;
+	}
+	// 触れ続けている間で一定時間経過したらひるむ
+	if (timer_ <= 5.0f) return;
+	isFlinch_ = true;
+	//isAttackEnd_ = true;
+}
+
+// 疲労状態
+void DysonAttack::fatigue(float deltaTime)
+{
+	if (timer_ <= 5.0f) return;
+	// 攻撃状態に遷移
+	changeState(State::Attack);
+}
+
+// 状態の変更を行います
+void DysonAttack::changeState(State state)
+{
+	state_ = state;
+	timer_ = 0.0f;
+}
+
 void DysonAttack::Refresh()
 {
 	BossAttack::Refresh();
+	isFlinch_ = false;
 	tornadoObj_ = nullptr;
+	state_ = State::Attack;
 }

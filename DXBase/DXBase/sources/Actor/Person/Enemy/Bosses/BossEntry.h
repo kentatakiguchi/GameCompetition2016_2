@@ -21,6 +21,8 @@ public:
 	void setIsEntry(bool isEntry);
 	// ボスの体内に入ったかを返します
 	bool isEntered();
+	// プレイヤーをつなぐ線に触れているかを返します
+	bool isBlock();
 	// プレイヤーがボスの体内に出たことにします
 	void letOut();
 

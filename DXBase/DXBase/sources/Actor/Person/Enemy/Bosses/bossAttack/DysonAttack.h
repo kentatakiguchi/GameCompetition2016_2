@@ -8,6 +8,13 @@ class Tornado;
 
 // 吸い込み攻撃
 class DysonAttack : public BossAttack {
+private:
+	enum class State {
+		Attack,
+		Flinch,
+		Fatigue
+	};
+
 public:
 	DysonAttack();
 	DysonAttack(IWorld* world, const Vector2& position);
@@ -17,11 +24,23 @@ public:
 	void Refresh() override;
 
 private:
+	// 攻撃状態
+	void dysonAttack(float deltaTime);
+	// 怯み状態
+	void flinch(float deltaTime);
+	// 疲労状態
+	void fatigue(float deltaTime);
+	// 状態の変更を行います
+	void changeState(State state);
+
+private:
 	float addAngle_;		// 角度の加算量
 
 	IWorld* world_;			// ワールド
 
 	Tornado* tornadoObj_;	// 竜巻オブジェクト
+
+	State state_;
 };
 
 #endif

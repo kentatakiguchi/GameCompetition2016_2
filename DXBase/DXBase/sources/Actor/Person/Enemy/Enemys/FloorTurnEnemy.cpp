@@ -54,14 +54,7 @@ void FloorTurnEnemy::update(float deltaTime)
 	pricleObj_->setEnemyPosition(position_);
 }
 
-void FloorTurnEnemy::onCollide(Actor & actor)
-{
-	BaseEnemy::onCollide(actor);
-}
-
-void FloorTurnEnemy::onMessage(EventMessage event, void *)
-{
-}
+void FloorTurnEnemy::onMessage(EventMessage event, void *){}
 
 // 所持しているオブジェクトの位置を設定します
 void FloorTurnEnemy::setObjPosition()
@@ -71,9 +64,7 @@ void FloorTurnEnemy::setObjPosition()
 	pricleObj_->setEnemyPosition(position_);
 }
 
-void FloorTurnEnemy::attack()
-{
-}
+void FloorTurnEnemy::attack(){}
 
 void FloorTurnEnemy::searchMove()
 {

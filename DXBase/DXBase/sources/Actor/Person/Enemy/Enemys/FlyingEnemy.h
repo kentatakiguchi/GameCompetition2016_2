@@ -14,7 +14,6 @@ public:
 		float Down = 1.0f);
 	void beginUpdate(float deltaTime) override;
 	void update(float deltaTime) override;
-	void onCollide(Actor& actor) override;
 	void onMessage(EventMessage event, void*) override;
 
 private:
@@ -38,7 +37,7 @@ private:
 private:
 	float direTimer_;			// 方向転換する時間
 	float lostTimer_;			// 見失った時間
-	Vector2 pastPosition;
+	Vector2 pastPosition_;
 	FloorSearchPoint* wsObj_;	// 壁捜索オブジェクト
 };
 

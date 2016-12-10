@@ -53,6 +53,8 @@ public:
 	int getFlinchCount();
 	// 角度を返します
 	float getAngle();
+	// 怯むかを返します
+	bool isFlinch();
 	// 重力を使用するかを返します
 	bool isUseGravity();
 	// プレイヤーの攻撃に当たるかを返します
@@ -76,6 +78,7 @@ protected:
 	bool isBodyHit_;			// プレイヤー本体に当たるか
 	bool isAttackHit_;			// プレイヤーの攻撃に当たるか
 	bool isMove_;				// 動ける状態か
+	bool isFlinch_;
 	Vector2 position_;			// 位置
 	Vector2 direction_;			// 方向
 	Vector2 pPosition_;			// プレイヤーの位置

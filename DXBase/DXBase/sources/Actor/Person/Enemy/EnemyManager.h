@@ -32,6 +32,8 @@ public:
 	Vector2 getDirection(const Vector2& otherPosition);
 	// プレイヤーとの方向を単位ベクトルで取得します
 	Vector2 getPlayerDirection();
+	// 指定したオブジェクトとの方向を、正規化されたベクトルで取得します
+	Vector2 getNormalizeDirection(const Vector2& otherPosition);
 	// プレイヤーとの方向を正規化されたベクトルで取得します
 	Vector2 getPlayerNormalizeDirection();
 	//　敵自身とプレイヤーの位置を入れます

@@ -14,7 +14,8 @@ BossAttack::BossAttack() :
 	isPrevWspHit_(false),
 	isBodyHit_(true),
 	isAttackHit_(true),
-	isMove_(true),
+	isMove_(false),
+	isFlinch_(true),
 	position_(Vector2::Zero),
 	direction_(Vector2::Zero),
 	pPosition_(Vector2::Zero),
@@ -36,7 +37,8 @@ BossAttack::BossAttack(const Vector2 & position) :
 	isWspHit_(false),
 	isPrevWspHit_(false),
 	isAttackHit_(false),
-	isMove_(false),
+	isMove_(true),
+	isFlinch_(false),
 	position_(position),
 	direction_(Vector2::Left),
 	pPosition_(Vector2::One),
@@ -173,6 +175,12 @@ int BossAttack::getFlinchCount()
 float BossAttack::getAngle()
 {
 	return angle_;
+}
+
+// ãØÇﬁÇ©Çï‘ÇµÇ‹Ç∑
+bool BossAttack::isFlinch()
+{
+	return isFlinch_;
 }
 
 // èdóÕÇégópÇ∑ÇÈÇ©Çï‘ÇµÇ‹Ç∑

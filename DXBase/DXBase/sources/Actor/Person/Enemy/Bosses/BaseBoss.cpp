@@ -94,7 +94,6 @@ void BaseBoss::onUpdate(float deltaTime)
 
 	// 補間タイマ(最大値１)の更新
 	setTimer(deltaTime);
-
 	// 体力の更新
 	hp_ = heartObj_->getBossHp();
 	bossGaugeUI_->SetHp(heartObj_->getHeartHp());
@@ -200,6 +199,9 @@ void BaseBoss::updateState(float deltaTime)
 	// player_ = world_->findActor("Player");
 	player_ = world_->findActor("PlayerBody1");
 
+	if (hp_ <= 0)
+		changeState(State::Dead, BOSS_DEAD);
+
 	switch (state_)
 	{
 	case State::Idel: idel(deltaTime); break;
@@ -285,11 +287,22 @@ void BaseBoss::flinch(float deltaTime)
 		position_.y += 9.8f * (1.0f);// * 60.0f);
 	}
 
+	//// 体内に入った場合、体力を減らす
+	//if (entryObj_->isEntered()) {
+	//	entryObj_->letOut();
+	//	entryObj_->setIsEntry(false);
+	//	heartObj_->addBossHp(-50);
+	//	changeState(State::Idel, BOSS_IDLE);
+	//}
+
 	// 体内に入っていたら、ハートに入ったことを知らせる
 	if (entryObj_->isEntered() && !heartObj_->isLetOut()) {
 		// プレイヤーが出てきたら、待機状態にする
+		//stateTimer_ = 5.0f;
 		stateTimer_ = 5.0f;
 		heartObj_->setIsEntered(true);
+		heartObj_->addBossHp(-50);
+		entryObj_->letOut();
 	}
 	// 体内に入ったら何かする
 	if (entryObj_->isEntered()) {
@@ -299,8 +312,10 @@ void BaseBoss::flinch(float deltaTime)
 		entryObj_->letOut();
 	}
 	// 体力が0になったら死亡
-	if (hp_ <= 0) 
+	if (hp_ <= 0) {
 		changeState(State::Dead, BOSS_DEAD);
+		return;
+	}
 	// 一定時間経過で待機状態に遷移
 	if (stateTimer_ < 5.0f) return;
 	changeState(State::Idel, BOSS_IDLE);
@@ -363,7 +378,17 @@ void BaseBoss::specialAttack(float deltaTime)
 	// ひるむ時間に達するまでに
 	// 口から離れたら、もう一度攻撃を行う
 
+	if (bossManager_.isFlinch()) {
+		changeState(State::Flinch, BOSS_FLINCH);
+		bossManager_.attackRefresh();
+		angleCount_ = 0;
+		angle_ = 0.0f;
+		return;
+	}
+
 	stateString_ = "スペシャルな攻撃";
+	// isBlock() == true => 塞がれている
+	bossManager_.setIsAttackMove(!entryObj_->isBlock());
 	bossManager_.attackMove(deltaTime);
 	position_ = bossManager_.getMovePosition();
 	// 角度の変更

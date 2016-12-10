@@ -6,28 +6,8 @@ WeakEnemy::WeakEnemy(IWorld * world, const Vector2& position) :
 	BaseEnemy::Initialize();
 }
 
-void WeakEnemy::onUpdate(float deltaTime)
-{
-	BaseEnemy::onUpdate(deltaTime);
-}
-
-void WeakEnemy::onDraw() const
-{
-	BaseEnemy::onDraw();
-}
-
-void WeakEnemy::onCollide(Actor & actor)
-{
-	BaseEnemy::onCollide(actor);
-}
-
 void WeakEnemy::onMessage(EventMessage event, void *)
 {
-}
-
-void WeakEnemy::attack()
-{
-	BaseEnemy::attack();
 }
 
 // õ“G‚Ìs“®‚Å‚·

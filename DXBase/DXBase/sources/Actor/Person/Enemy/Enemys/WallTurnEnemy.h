@@ -13,7 +13,6 @@ public:
 		const Vector2& position,
 		const Vector2& direction = Vector2(0.0f, -1.0f));
 	void update(float deltaTime) override;
-	void onCollide(Actor& actor) override;
 	void onMessage(EventMessage event, void*) override;
 
 private:

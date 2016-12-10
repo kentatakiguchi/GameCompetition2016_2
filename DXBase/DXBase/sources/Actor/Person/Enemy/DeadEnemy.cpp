@@ -4,16 +4,13 @@
 DeadEnemy::DeadEnemy(
 	IWorld * world,
 	const Vector2 & position,
-	const Vector2 & bodyScale,
-	const int id,
-	const int res,
-	const Vector2 & direction) : 
+	const float bodyScale) : 
 	Actor(world_, "DeadEnemy", position, 
 		CollisionBase(CollisionBase(
-			Vector2(position.x + bodyScale.x / 2.0f, position.y + bodyScale.y / 2.0f),
-			Vector2(position.x - bodyScale.x / 2.0f, position.y + bodyScale.y / 2.0f),
-			Vector2(position.x + bodyScale.x / 2.0f, position.y - bodyScale.y / 2.0f),
-			Vector2(position.x - bodyScale.x / 2.0f, position.y - bodyScale.y / 2.0f)
+			Vector2(position.x + bodyScale / 2.0f, position.y + bodyScale / 2.0f),
+			Vector2(position.x - bodyScale / 2.0f, position.y + bodyScale / 2.0f),
+			Vector2(position.x + bodyScale / 2.0f, position.y - bodyScale / 2.0f),
+			Vector2(position.x - bodyScale / 2.0f, position.y - bodyScale / 2.0f)
 			))),
 	timer_(0.0f),
 	isGround_(false),
@@ -33,19 +30,6 @@ void DeadEnemy::onUpdate(float deltaTime)
 	//timer_ += deltaTime;
 
 	isGround_ = false;
-}
-
-void DeadEnemy::onDraw() const
-{
-	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-	vec3Pos = vec3Pos * inv_;
-	// デバッグ
-	body_.draw(inv_);
-	// アニメーションの描画
-	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
-	/*animation_.draw(
-		pos, Vector2::One * (body_.GetBox().getWidth() * 2) + addTexPosition_,
-		0.5f, 0);*/
 }
 
 void DeadEnemy::onCollide(Actor & actor)
