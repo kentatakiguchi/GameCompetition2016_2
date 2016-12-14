@@ -31,7 +31,9 @@ PuyoTextureK::PuyoTextureK(IWorld* world, TextureID tex, Vector2 pos, Vector2 sc
 	{
 		for (int x = 0; x <= loopX; x++)
 		{
-			mWorld->addActor(ActorGroup::PuyoVertex, std::make_shared<PuyoCollision>(mWorld, commonVertexH[x][y].position, Vector2(x, y), mPosition));
+			ActorPtr puyo = std::make_shared<PuyoCollision>(mWorld, commonVertexH[x][y].position, Vector2(x, y), mPosition);
+			mWorld->addActor(ActorGroup::PuyoVertex,puyo );
+			puyoCols.push_back(puyo);
 		}
 	}
 	time = 0.0f;
@@ -41,7 +43,7 @@ PuyoTextureK::PuyoTextureK(IWorld* world, TextureID tex, Vector2 pos, Vector2 sc
 
 PuyoTextureK::~PuyoTextureK()
 {
-	for (auto& i : mWorld->findActors(ActorGroup::PuyoVertex)) {
+	for (auto& i : puyoCols) {
 		i->dead();
 	}
 }

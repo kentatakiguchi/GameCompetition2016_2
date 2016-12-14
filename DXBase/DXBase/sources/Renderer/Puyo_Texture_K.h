@@ -96,5 +96,7 @@ private:
 	Vector2 mPlayerPos2;
 	float time;
 
+	std::vector<ActorPtr> puyoCols;
+
 
 };

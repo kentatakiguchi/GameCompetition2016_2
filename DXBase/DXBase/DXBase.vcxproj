@@ -169,6 +169,7 @@
     <ClInclude Include="sources\Actor\Body\ShapeType.h" />
     <ClInclude Include="sources\Actor\Camera\Camera.h" />
     <ClInclude Include="sources\Actor\Collision\Collision.h" />
+    <ClInclude Include="sources\Actor\Doar\Door.h" />
     <ClInclude Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.h" />
     <ClInclude Include="sources\Actor\Light\Light.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\BaseEnemy.h" />
@@ -331,6 +332,7 @@
     <ClCompile Include="sources\Actor\Body\BoundingSegment.cpp" />
     <ClCompile Include="sources\Actor\Body\CollisionBase.cpp" />
     <ClCompile Include="sources\Actor\Camera\Camera.cpp" />
+    <ClCompile Include="sources\Actor\Doar\Door.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.cpp" />
     <ClCompile Include="sources\Actor\Light\Light.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\BaseEnemy.cpp" />

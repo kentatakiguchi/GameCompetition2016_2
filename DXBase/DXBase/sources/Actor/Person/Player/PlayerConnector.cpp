@@ -19,11 +19,11 @@ PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, Playe
 
 	stateMgr_.change(*this, PlayerState_Enum_Union::STAND_BY);
 
-	//mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position, 1, 0);
+	mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position, 1, 0);
 }
 
 PlayerConnector::~PlayerConnector() {
-	//delete mPuyo;
+	delete mPuyo;
 }
 
 void PlayerConnector::onUpdate(float deltaTime) {
@@ -35,11 +35,11 @@ void PlayerConnector::onUpdate(float deltaTime) {
 	}
 	if (is_cleared()) world_->clear(true);
 	//ぷよテクスチャUPdate
-	//puyoUpdate();
+	puyoUpdate();
 }
 
 void PlayerConnector::onDraw() const {
-	//mPuyo->PuyoDraw();
+	mPuyo->PuyoDraw();
 }
 
 PlayerBodyPtr PlayerConnector::blue_body() {
@@ -156,6 +156,7 @@ void PlayerConnector::puyoUpdate(){
 			mPuyoFlag = false;
 		}
 	}
+	mPuyo->PuyoPlayerPos(butty_->getPosition(), retty_->getPosition());
 	mPuyo->PuyoUpdate();
 }
 

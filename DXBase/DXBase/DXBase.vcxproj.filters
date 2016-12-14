@@ -507,6 +507,9 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\StatePath_Union.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\Doar\Door.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -891,6 +894,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerStateMgr_Union.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Doar\Door.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
