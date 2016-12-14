@@ -22,6 +22,10 @@ public:
 	Vector2 GetArrayState() {
 		return mArrayState;
 	}
+	//ポジションセット
+	void VecZero() {
+		mVec = Vector2::Zero;
+	}
 	Vector2 GetVec() {
 		return mVec;
 	}
@@ -46,7 +50,9 @@ private:
 	Vector2 mIntersections[4];
 	//最終的な交点たち
 	std::vector<Vector2> mIntersectionsVector;
-
+	//プレイヤーの座標
+	Vector2 mPlayerPos1;
+	Vector2 mPlayerPos2;
 
 	bool top;
 	bool right;

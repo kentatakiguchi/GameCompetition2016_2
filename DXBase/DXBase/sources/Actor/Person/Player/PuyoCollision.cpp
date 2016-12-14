@@ -9,16 +9,13 @@ PuyoCollision::PuyoCollision(IWorld * world, Vector2 & position, Vector2 arraySt
 	mVelo(Vector2::Zero),
 	mArrayState(arrayState),
 	mCenter(center),
-	mIsCol(false)
+	mIsCol(false),
+	mPlayerPos1(Vector2::Zero),
+	mPlayerPos2(Vector2::Zero)
 {
 	for (int i = 0; i < 3; i++) {
 		mIntersections[i] = Vector2::Zero;
 	}
-
-	top = false;
-	bot = false;
-	right = false;
-	left = false;
 }
 
 PuyoCollision::~PuyoCollision()
@@ -30,7 +27,7 @@ void PuyoCollision::onUpdate(float deltaTime)
 	//あたり判定更新
 	body_.setSegmentPoint(mCenter, mCenter, position_);
 	//当たっていない場合は交点は本来の位置へ
-	if (!mIsCol) {
+	if (!mIsCol){
 		mResIntersection = position_;
 		mVec = Vector2::Zero;
 		mIntersectionsVector.clear();
@@ -49,7 +46,7 @@ void PuyoCollision::onUpdate(float deltaTime)
 			mIntersectionsVector.clear();
 		}
 	}
-	Vector2::Spring(mIntersection, mResIntersection, mVelo,0.6f);
+	Vector2::Spring(mIntersection, mResIntersection, mVelo, 0.6f);
 	//フラグ初期化
 	mIsCol = false;
 }

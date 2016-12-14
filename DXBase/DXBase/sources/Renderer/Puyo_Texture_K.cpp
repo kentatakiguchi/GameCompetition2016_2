@@ -41,6 +41,9 @@ PuyoTextureK::PuyoTextureK(IWorld* world, TextureID tex, Vector2 pos, Vector2 sc
 
 PuyoTextureK::~PuyoTextureK()
 {
+	for (auto& i : mWorld->findActors(ActorGroup::PuyoVertex)) {
+		i->dead();
+	}
 }
 
 void PuyoTextureK::SetPosition(Vector2 pos, Vector2 scale, float rotate, Vector2 center)
@@ -50,9 +53,25 @@ void PuyoTextureK::SetPosition(Vector2 pos, Vector2 scale, float rotate, Vector2
 	mRotate = rotate;
 	mCenter = center;
 }
+void PuyoTextureK::PuyoPlayerPos(Vector2 pos1, Vector2 pos2)
+{
+	mPlayerPos1 = pos1;
+	mPlayerPos2 = pos2;
+}
 void PuyoTextureK::PuyoUpdate()
 {
 
+	for (auto& i : mWorld->findActors(ActorGroup::PuyoVertex)) {
+		PuyoCollision* puyoCol = dynamic_cast<PuyoCollision*>(i.get());
+		Vector2 hairetu = puyoCol->GetArrayState();
+		if (Vector2::Distance(mPlayerPos1, commonVertexHNoMove[(int)hairetu.x][(int)hairetu.y].position) <= 32.0f*3.0f ||
+			Vector2::Distance(mPlayerPos2, commonVertexHNoMove[(int)hairetu.x][(int)hairetu.y].position) <= 32.0f*3.0f) {
+			commonVertexH[(int)hairetu.x][(int)hairetu.y].colWallVec = 0.0f;
+		}
+		else
+			commonVertexH[(int)hairetu.x][(int)hairetu.y].colWallVec = puyoCol->GetVec();
+		puyoCol->SetPos(commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position, mCenter);
+	}
 
 	//頂点のバネ系を毎フレーム更新
 	for (int y = 0; y <= loopY; y++)
@@ -107,14 +126,6 @@ void PuyoTextureK::PuyoUpdate()
 			//	(MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
 			//	commonVertexH[x][y].velocity.y + mat.Translation().y - textureSize.y / 2;
 		}
-	}
-
-	for (auto i : mWorld->findActors(ActorGroup::PuyoVertex)) {
-		PuyoCollision* puyoCol = dynamic_cast<PuyoCollision*>(i.get());
-		Vector2 hairetu = puyoCol->GetArrayState();
-		commonVertexH[(int)hairetu.x][(int)hairetu.y].colWallVec = puyoCol->GetVec();
-		puyoCol->SetPos(commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position, mCenter);
-
 	}
 
 

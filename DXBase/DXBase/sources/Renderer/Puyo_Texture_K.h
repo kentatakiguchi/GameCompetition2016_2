@@ -50,7 +50,8 @@ public:
 	void PuyoAddPowerEx(Vector2 pos,Vector2 velo,float power,float eikyo);
 	//全タイマーをゼロにする(ぷよぷよOFF)
 	void PuyoTimerZero();
-
+	//主人公のポジションをセットする
+	void PuyoPlayerPos(Vector2 pos1, Vector2 pos2);
 	void PuyoUpdate();
 	void PuyoDraw();
 private:
@@ -90,8 +91,9 @@ private:
 	float mRotate;
 	//ぶってぃとえってぃの中心
 	Vector2 mCenter;
-
-
+	//ぷってぃとえってぃの座標
+	Vector2 mPlayerPos1;
+	Vector2 mPlayerPos2;
 	float time;
 
 
