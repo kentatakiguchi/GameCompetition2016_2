@@ -3,16 +3,10 @@
 using namespace std;
 
 Animation2D::Animation2D() :
-	type_(ActionType::Right),
-	anim_num_(-1),
-	frame_(-1),
-	pre_anim_(-1),
-	pre_speed_(1),
-	timer_(0),
-	speed_(1){
+	id_(-1), anim_num_(-1), frame_(0), pre_anim_(-1), pre_speed_(1), speed_(1), timer_(0), type_(ActionType::Right), type_stock_(ActionType::Right) {
 }
 
-void Animation2D::add_anim(const int & id, const int & res, const int & size, const int & row, const int & column, const int & surplus){
+void Animation2D::add_anim(const int & id, const int & res, const int & size, const int & row, const int & column, const int & surplus) {
 	for (int i = 0; i < column; ++i) {
 		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
 			// êÿÇËéÊÇÈç∂è„ÇÃç¿ïW
@@ -33,15 +27,16 @@ void Animation2D::change_param(const int& anim_num, const float& speed) {
 	timer_ = 0;
 }
 
-void Animation2D::change_dir_type(const int& anim_num, const ActionType& type){
-	if (type_ == type)return;
+void Animation2D::change_dir_type(const int& anim_num, const ActionType& type) {
+	if (type_stock_ == type)return;
+	if (pre_anim_ != -1)return;
 	pre_anim_ = anim_num_;
 	pre_speed_ = speed_;
 	type_stock_ = type;
-	change_param(anim_num, 1.0f);
+	change_param(anim_num, 2.0f);
 }
 
-void Animation2D::back_to_pre_motion(){
+void Animation2D::back_to_pre_motion() {
 	if (pre_anim_ != -1 && end_anim()) {
 		change_param(pre_anim_, pre_speed_);
 		pre_anim_ = -1;
@@ -49,20 +44,21 @@ void Animation2D::back_to_pre_motion(){
 	}
 }
 
-bool Animation2D::end_anim(){
+bool Animation2D::end_anim() {
 	return frame_ == sprites_[anim_num_].size() - 1;
 }
 
 void Animation2D::update(float deltaTime) {
+	back_to_pre_motion();
+
 	frame_ = static_cast<int>(timer_) % sprites_[anim_num_].size();
 	id_ = sprites_[anim_num_][frame_];
 	//çXêVèàóù
 	timer_ += deltaTime * speed_ * 60.0f / sprites_[anim_num_].size() * 10;
 
-	back_to_pre_motion();
 }
 
-void Animation2D::draw(const Vector2& position, const Vector2& origin, const float& scale, const float& degree, const Vector3& color) const{
+void Animation2D::draw(const Vector2& position, const Vector2& origin, const float& scale, const float& degree, const Vector3& color) const {
 	draw(position, origin, Vector2::One * scale, degree, color);
 }
 

@@ -2,25 +2,22 @@
 
 #include"../../Body/CollisionBase.h"
 
-#include "State/States/Single/Elements/PlayerState_Single_StandBy.h"
-#include "State/States/Single/Elements/PlayerState_Single_LeanBack.h"
-#include "State/States/Single/Elements/PlayerState_Single_Idle.h"
-#include "State/States/Single/Elements/PlayerState_Single_Jump.h"
-
 #include "PlayerBodyCollider.h"
 #include "PlayerConnector.h"
+
+#include "Effect/PlayerEffectObj.h"
 
 PlayerBody::PlayerBody() {}
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
 	Actor(world, name, position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS)),
 	dead_limit_(0),
-	stiffness_(2.0f),
+	stiffness_(3.0f),
 	friction_(0.1f),
 	mass_(0.8f),
 	stateMgr_(name) {
 
-	init_state(PlayerState_Enum_Single::STAND_BY);
+	change_state(PlayerState_Enum_Single::STAND_BY);
 
 	auto collider = std::make_shared<PlayerBodyCollider>(world_, name_);
 	world_->addActor(ActorGroup::Player_Collider, collider);
@@ -37,7 +34,7 @@ void PlayerBody::onUpdate(float deltaTime) {
 	position_ += (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
 	velocity_ = position_ - body_.GetCircle().previousPosition_;
 
-	slope_.Length() > 0 ? slope_ -= slope_ / 100 : slope_ = Vector2::Zero;
+	slope_.Length() > 0 ? slope_ -= slope_ / 20 : slope_ = Vector2::Zero;
 
 	opponent_ = HitOpponent::NONE;
 
@@ -51,7 +48,7 @@ void PlayerBody::onUpdate(float deltaTime) {
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))mass_ -= 0.01f;
 
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
-		stiffness_ = 2.0f;
+		stiffness_ = 3.0f;
 		friction_ = 0.1f;
 		mass_ = 0.8f;
 	}
@@ -133,16 +130,19 @@ void PlayerBody::onCollide(Actor & other) {
 
 	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
 		(getName() == "PlayerBody2" && other.getName() == "PlayerBody1Collider")) {
-		if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) || stateMgr_.get_state(PlayerState_Enum_Single::JUMP)) {
+		if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) || 
+			stateMgr_.get_state(PlayerState_Enum_Single::MOVE) || 
+			stateMgr_.get_state(PlayerState_Enum_Single::JUMP)) {
 			hit_partner_ = HitOpponent::PARTNER;
 		}
 	}
 
 	Vector2 myCenter, segCenter, segPoint, targetPoint, targetVec;
 	float posReset;
-	if (other.name_ == "SegmentCollider") {//線分はpositionを中心に取る
-										   //Vector2 myCenter = Vector2(previousPosition.x,previousPosition.y);
-										   //相手の線分の中心
+	if (other.name_ == "SegmentCollider") {
+		//線分はpositionを中心に取る
+		//Vector2 myCenter = Vector2(previousPosition.x,previousPosition.y);
+		//相手の線分の中心
 		segCenter = other.position_;
 		//自分の前の位置-相手の中心
 		myCenter = body_.GetCircle().previousPosition_ - segCenter;
@@ -170,7 +170,7 @@ void PlayerBody::onCollide(Actor & other) {
 	}
 }
 
-void PlayerBody::init_state(PlayerState_Enum_Single state) {
+void PlayerBody::change_state(PlayerState_Enum_Single state) {
 	stateMgr_.change(*this, state);
 }
 
@@ -182,6 +182,7 @@ void PlayerBody::chase() {
 	if (partner_ == nullptr || Vector2::Distance(Vector2::Zero, input_) > 0)return;
 	auto cntr = std::dynamic_pointer_cast<PlayerConnector>(world_->findActor("PlayerConnector"));
 	if (cntr == nullptr)return;
+	//if (cntr->length_sum() <= PLAYER_MAX_NORMAL_LENGTH)return;
 	if (name_ == "PlayerBody1"/* && (position_ - cntr->get_point(0)).Length() > PLAYER_MIN_DIV_LENGTH*/) {
 		Vector2::Spring(position_, cntr->get_point(0), v_, stiffness_, friction_, mass_);
 	}

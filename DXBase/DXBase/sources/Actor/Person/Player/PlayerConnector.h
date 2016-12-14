@@ -3,36 +3,39 @@
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
+
 #include "PlayerPtr.h"
 #include "State/States/Union/PlayerStateMgr_Union.h"
 #include "../../../Renderer/Puyo_Texture_K.h"
 
-#include "Player.h"
-
-// プレーヤー
+// プレーヤーコネクタ
 class PlayerConnector : public Actor {
 public:
+	// コンストラクタ
 	PlayerConnector(IWorld* world, const Vector2 & position, PlayerBodyPtr butty, PlayerBodyPtr retty);
+	// デストラクタ
 	~PlayerConnector();
+	// 更新処理
 	virtual void onUpdate(float deltaTime) override;
-	virtual void onLateUpdate(float deltaTime) override;
+	// 描画処理
 	virtual void onDraw() const override;
-	virtual void onCollide(Actor& other) override;
+	// body取得(青)
 	PlayerBodyPtr blue_body();
+	// body取得(赤)
 	PlayerBodyPtr red_body();
+	// 
 	PlayerStateMgr_Union& state_mgr();
-	void state_action(float deltaTime);
+
+	void state_update(float deltaTime);
 	void create_point(int point_num = 0);
+	float length_sum();
 
 	Vector2 get_point(int index);
-	std::vector<Vector2> get_points();
 private:
 	// ダメージを受けたかどうか
 	bool is_damaged();
 	// クリアしたかどうか
 	bool is_cleared();
-	// 死亡したかどうか
-	bool is_dead();
 
 	void puyoUpdate();
 private:

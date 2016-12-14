@@ -2,13 +2,13 @@
 
 PlayerState_StandBy::PlayerState_StandBy() {}
 
-void PlayerState_StandBy::unique_init(){}
+void PlayerState_StandBy::unique_init(){
+	butty_->change_state(PlayerState_Enum_Single::STAND_BY);
+	retty_->change_state(PlayerState_Enum_Single::STAND_BY);
 
-void PlayerState_StandBy::update(float deltaTime){
-	butty_->gravity();
-	retty_->gravity();
-
-	change(StateElement((unsigned int)PlayerState_Enum_Union::IDLE));
+	change(PlayerState_Enum_Union::IDLE);
 }
+
+void PlayerState_StandBy::update(float deltaTime){}
 
 void PlayerState_StandBy::end(){}

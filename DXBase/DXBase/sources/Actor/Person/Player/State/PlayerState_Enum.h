@@ -11,9 +11,7 @@ enum class PlayerState_Enum_Union {
 	HOLD_BOTH,
 	JUMP,
 	ATTACK, 
-	FREEZE,
-	DAMAGE,
-	DEAD
+	FREEZE
 };
 
 // プレイヤーのステート一覧
@@ -22,8 +20,7 @@ enum class PlayerState_Enum_Single {
 	STAND_BY,
 	IDLE,
 	MOVE,
-	HOLD,
 	JUMP,
-	DAMAGE,
+	DEAD,
 	LEAN_BACK
 };

@@ -168,6 +168,8 @@
     <ClInclude Include="sources\Actor\Body\CollisionBase.h" />
     <ClInclude Include="sources\Actor\Body\ShapeType.h" />
     <ClInclude Include="sources\Actor\Camera\Camera.h" />
+    <ClInclude Include="sources\Actor\Collision\Collision.h" />
+    <ClInclude Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.h" />
     <ClInclude Include="sources\Actor\Light\Light.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\BaseEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BaseBoss.h" />
@@ -212,12 +214,12 @@
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IStatePtr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\PlayerStatePtr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\StateMgr.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Dead.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Move.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\PlayerStateMgr_Single.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\StatePath_Single.h" />
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.h" />
@@ -228,7 +230,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Jump.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_StandBy.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Attack.h" />
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Damage.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.h" />
@@ -245,6 +246,7 @@
     <ClInclude Include="sources\Animation\Base\Animation2D.h" />
     <ClInclude Include="sources\Animation\Enemy\EnemyAnimation2D.h" />
     <ClInclude Include="sources\Animation\Player\PlayerAnimation2D.h" />
+    <ClInclude Include="sources\Animation\Player\PlayerEffect2D.h" />
     <ClInclude Include="sources\AquaLib\AquaLib.h" />
     <ClInclude Include="sources\AquaLib\A_Utility.h" />
     <ClInclude Include="sources\Define.h" />
@@ -297,6 +299,7 @@
     <ClInclude Include="sources\Scene\BossStage\BossStage.h" />
     <ClInclude Include="sources\Scene\Credit\CreditScene.h" />
     <ClInclude Include="sources\Scene\GameClear\GameClearScene.h" />
+    <ClInclude Include="sources\Scene\GameEnd\GameEndScene.h" />
     <ClInclude Include="sources\Scene\GameOver\GameOverScene.h" />
     <ClInclude Include="sources\Scene\GamePlay\GamePlayScene.h" />
     <ClInclude Include="sources\Scene\GamePlay\MoveScreen.h" />
@@ -328,6 +331,7 @@
     <ClCompile Include="sources\Actor\Body\BoundingSegment.cpp" />
     <ClCompile Include="sources\Actor\Body\CollisionBase.cpp" />
     <ClCompile Include="sources\Actor\Camera\Camera.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.cpp" />
     <ClCompile Include="sources\Actor\Light\Light.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\BaseEnemy.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BaseBoss.cpp" />
@@ -362,11 +366,11 @@
     <ClCompile Include="sources\Actor\Person\Player\PlayerConnector.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PuyoCollision.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Dead.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Move.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerStateMgr_Single.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.cpp" />
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.cpp" />
@@ -375,7 +379,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Jump.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_StandBy.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Attack.cpp" />
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Damage.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.cpp" />
@@ -390,6 +393,7 @@
     <ClCompile Include="sources\Animation\Base\Animation2D.cpp" />
     <ClCompile Include="sources\Animation\Enemy\EnemyAnimation2D.cpp" />
     <ClCompile Include="sources\Animation\Player\PlayerAnimation2D.cpp" />
+    <ClCompile Include="sources\Animation\Player\PlayerEffect2D.cpp" />
     <ClCompile Include="sources\Field\BossAreaFloor.cpp" />
     <ClCompile Include="sources\Field\CollidelessFloor.cpp" />
     <ClCompile Include="sources\Field\GameOverPoint.cpp" />
@@ -428,6 +432,7 @@
     <ClCompile Include="sources\Scene\BossStage\BossStage.cpp" />
     <ClCompile Include="sources\Scene\Credit\CreditScene.cpp" />
     <ClCompile Include="sources\Scene\GameClear\GameClearScene.cpp" />
+    <ClCompile Include="sources\Scene\GameEnd\GameEndScene.cpp" />
     <ClCompile Include="sources\Scene\GameOver\GameOverScene.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\GamePlayScene.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\MoveScreen.cpp" />

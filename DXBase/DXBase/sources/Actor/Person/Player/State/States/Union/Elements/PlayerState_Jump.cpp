@@ -2,9 +2,7 @@
 
 #include <algorithm>
 
-PlayerState_Jump::PlayerState_Jump(){
-
-}
+PlayerState_Jump::PlayerState_Jump(){}
 
 void PlayerState_Jump::unique_init(){
 	butty_->reset_opponent();
@@ -27,7 +25,7 @@ void PlayerState_Jump::update(float deltaTime) {
 	retty_->launch(dir_ * power_);
 
 	if (butty_->able_to_jump() || retty_->able_to_jump()) {
-		change((unsigned int)PlayerState_Enum_Union::IDLE);
+		change(PlayerState_Enum_Union::IDLE);
 	}
 }
 

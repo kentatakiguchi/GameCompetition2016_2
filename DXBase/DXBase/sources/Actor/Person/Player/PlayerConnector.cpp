@@ -1,10 +1,12 @@
 #include "PlayerConnector.h"
-#include"../../Body/CollisionBase.h"
 
+#include"../../Body/CollisionBase.h"
 
 #include "PlayerBody.h"
 #include "PlayerBodyPoint.h"
-#include "../../../Renderer/DrawShape.h"
+
+#include "../Player/Effect/PlayerEffectObj.h"
+
 #include "../../../Game/Time.h"
 
 PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, PlayerBodyPtr butty, PlayerBodyPtr retty) :
@@ -12,40 +14,33 @@ PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, Playe
 	mPower(0.0f),
 	mPuyoTimer(0.0f),
 	mPuyoFlag(false) {
+	// ポイントの生成
 	create_point(PLAYER_CNTR_DIV_NUM);
 
 	stateMgr_.change(*this, PlayerState_Enum_Union::STAND_BY);
 
-	mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position, 1, 0);
+	//mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position, 1, 0);
 }
 
 PlayerConnector::~PlayerConnector() {
-	delete mPuyo;
+	//delete mPuyo;
 }
 
 void PlayerConnector::onUpdate(float deltaTime) {
 	position_ = (butty_->getPosition() + retty_->getPosition()) / 2;
 
 	if (is_damaged()) {
-		butty_->init_state(PlayerState_Enum_Single::STAND_BY);
-		retty_->init_state(PlayerState_Enum_Single::STAND_BY);
+		world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_EXP, 5.0f));
 		dead();
 	}
 	if (is_cleared()) world_->clear(true);
 	//ぷよテクスチャUPdate
-	puyoUpdate();
+	//puyoUpdate();
 }
-
-void PlayerConnector::onLateUpdate(float deltaTime) {}
 
 void PlayerConnector::onDraw() const {
-	mPuyo->PuyoDraw();
-
-	//body_.draw();
-	//bezier_.draw(100, inv_);
+	//mPuyo->PuyoDraw();
 }
-
-void PlayerConnector::onCollide(Actor & other) {}
 
 PlayerBodyPtr PlayerConnector::blue_body() {
 	return butty_;
@@ -59,7 +54,7 @@ PlayerStateMgr_Union& PlayerConnector::state_mgr() {
 	return stateMgr_;
 }
 
-void PlayerConnector::state_action(float deltaTime) {
+void PlayerConnector::state_update(float deltaTime) {
 	stateMgr_.action(*this, deltaTime);
 }
 
@@ -71,12 +66,14 @@ void PlayerConnector::create_point(int point_num) {
 	}
 }
 
-std::vector<Vector2> PlayerConnector::get_points() {
-	std::vector<Vector2>points_pos = std::vector<Vector2>();
-	for (auto i : points) {
-		points_pos.push_back(i->getPosition());
+float PlayerConnector::length_sum(){
+	float sum = 0;
+	float len1 = Vector2::Distance(butty_->position_, get_point(0));
+	float len2 = Vector2::Distance(retty_->position_, get_point(points.size() - 1));
+	for (int i = 0; i < points.size() - 1; i++) {
+		sum += Vector2::Distance(points[i]->getPosition(), points[i + 1]->getPosition());
 	}
-	return points_pos;
+	return sum + len1 + len2;
 }
 
 bool PlayerConnector::is_damaged() {
@@ -95,20 +92,13 @@ bool PlayerConnector::is_cleared() {
 	return is_main_target_partner || is_sub_target_partner;
 }
 
-bool PlayerConnector::is_dead() {
-	bool is_main_dead = butty_->dead_limit();
-	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
-	bool is_main_invincible = butty_->isInv();
-
-	bool is_sub_dead = retty_->dead_limit();
-	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
-	bool is_sub_invincible = retty_->isInv();
-
-	return (is_main_dead && is_sub_dead) || (is_main_target_enemy && !is_main_invincible) || (is_sub_target_enemy && !is_sub_invincible);
+Vector2 PlayerConnector::get_point(int index) {
+	if (index == points.size()) return retty_->getPosition();
+	if (index == -1) return butty_->getPosition();
+	return points[index]->getPosition();
 }
 
-void PlayerConnector::puyoUpdate()
-{
+void PlayerConnector::puyoUpdate(){
 	float x = ((butty_->getPosition() + retty_->getPosition()) / 2).x;
 	float y = ((butty_->getPosition() + retty_->getPosition()) / 2).y;
 	Vector3 pos = Vector3(x, y, 0);
@@ -167,16 +157,6 @@ void PlayerConnector::puyoUpdate()
 		}
 	}
 	mPuyo->PuyoUpdate();
-}
-
-Vector2 PlayerConnector::get_point(int index) {
-	if (index == -1) {
-		return butty_->getPosition();
-	}
-	if (index == points.size()) {
-		return retty_->getPosition();
-	}
-	return points[index]->getPosition();
 }
 
 

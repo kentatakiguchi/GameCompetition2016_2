@@ -12,7 +12,6 @@ PlayerStateMgr_Union::PlayerStateMgr_Union(){
 	add(PlayerState_Enum_Union::HOLD_BOTH, std::make_shared<PlayerState_HoldBoth>());
 	add(PlayerState_Enum_Union::ATTACK, std::make_shared<PlayerState_Attack>());
 	add(PlayerState_Enum_Union::FREEZE, std::make_shared<PlayerState_Freeze>());
-	add(PlayerState_Enum_Union::DEAD, std::make_shared<PlayerState_Dead>());
 }
 
 void PlayerStateMgr_Union::add(const PlayerState_Enum_Union & id, const IStatePtr & state){

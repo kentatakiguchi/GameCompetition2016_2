@@ -5,6 +5,8 @@
 PlayerState_Attack::PlayerState_Attack() {}
 
 void PlayerState_Attack::unique_init(){
+	PlaySound("./resources/sounds/shot.mp3", DX_PLAYTYPE_BACK);
+
 	butty_->reset_opponent();
 	retty_->reset_opponent();
 
@@ -22,7 +24,7 @@ void PlayerState_Attack::unique_init(){
 		retty_->create_attack_collider_();
 	}
 	launch_power_ = PLAYER_LAUNCH_POWER;
-	chase_power_ = 75.0f;
+	chase_power_ = 80.0f;
 	launch_dir_easeing_ = 0;
 	chase_dir_easeing_ = 0;
 	gra_easeing_ = 0;
@@ -48,6 +50,7 @@ void PlayerState_Attack::update(float deltaTime) {
 		butty_->launch(launch_dir_ * launch_power_);
 		retty_->launch(chase_dir_ * chase_power_);
 		retty_->chase();
+		//retty_->clamp();
 
 		if (butty_->is_hit()) launch_power_ = 0;
 		if (retty_->is_hit()) chase_power_ = 0;
@@ -56,6 +59,7 @@ void PlayerState_Attack::update(float deltaTime) {
 		retty_->launch(launch_dir_ * launch_power_);
 		butty_->launch(chase_dir_ * chase_power_);
 		butty_->chase();
+		//butty_->clamp();
 
 		if (butty_->is_hit()) chase_power_ = 0;
 		if (retty_->is_hit()) launch_power_ = 0;
@@ -66,7 +70,7 @@ void PlayerState_Attack::update(float deltaTime) {
 
 
 	if (butty_->able_to_hold() && retty_->able_to_hold()) {
-		change(StateElement((unsigned int)PlayerState_Enum_Union::FREEZE));
+		change(PlayerState_Enum_Union::FREEZE);
 	}
 }
 
@@ -85,8 +89,8 @@ void PlayerState_Attack::key_input(){
 		retty_->move(InputMgr::GetInstance().KeyVector_L().Horizontal() / 2);
 	}
 
-	if (holdable_keyR()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
-	if (holdable_keyL()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+	if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
+	if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 
 }
 
@@ -96,8 +100,8 @@ void PlayerState_Attack::pad_input(){
 		retty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal() / 2);
 	}
 
-	if (holdable_padR()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Right));
-	if (holdable_padL()) change(StateElement((unsigned int)PlayerState_Enum_Union::HOLD, ActionType::Left));
+	if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
+	if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 }
 
 //#include "PlayerState_Attack.h"

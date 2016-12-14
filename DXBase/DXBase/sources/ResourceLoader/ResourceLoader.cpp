@@ -12,10 +12,12 @@ ResourceLoader & ResourceLoader::GetInstance() {
 }
 
 void ResourceLoader::loadModel(ModelID id, const char* file_name) {
+	//if (MV1LoadModel(file_name) == -1)DxLib_End();
 	models_[id] = MV1LoadModel(file_name);
 }
 
 void ResourceLoader::loadTexture(TextureID id, const char* file_name) {
+	//if (LoadGraph(file_name) == -1)DxLib_End();
 	textures_[id] = LoadGraph(file_name);
 }
 

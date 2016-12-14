@@ -5,3 +5,4 @@
 #include "Elements/PlayerState_Single_Idle.h"
 #include "Elements/PlayerState_Single_Move.h"
 #include "Elements/PlayerState_Single_Jump.h"
+#include "Elements/PlayerState_Single_Dead.h"

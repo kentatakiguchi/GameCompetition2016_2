@@ -225,30 +225,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\PlayerState_Enum.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Attack.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Damage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Move.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_StandBy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -384,9 +360,6 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\bossAttack\WallAttack.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\HitOpponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -417,9 +390,6 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\NeedleEnemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Animation\Base\Animation2D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -432,13 +402,7 @@
     <ClInclude Include="sources\Actor\Person\Player\PlayerBodyPoint.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\PlayerPtr.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Tornado.h">
@@ -490,6 +454,51 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Move.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Collision\Collision.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Animation\Player\PlayerEffect2D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Scene\GameEnd\GameEndScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Dead.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Attack.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Move.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\PlayerStateMgr_Union.h">
@@ -644,30 +653,6 @@
     <ClCompile Include="sources\Actor\Person\Enemy\PlayerSearchObj.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Attack.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Damage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Move.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Idle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -779,9 +764,6 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\bossAttack\WallAttack.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Dead.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\PlayerBodyCollider.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -809,9 +791,6 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\NeedleEnemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Animation\Base\Animation.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -822,12 +801,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\PlayerBodyPoint.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Tornado.cpp">
@@ -873,6 +846,48 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Move.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Animation\Player\PlayerEffect2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Scene\GameEnd\GameEndScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Dead.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Attack.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Move.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerStateMgr_Union.cpp">

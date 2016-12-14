@@ -12,7 +12,6 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, co
 	rotation_(Matrix::Identity),
 	body_(body),
 	dead_(false),
-	animation_(-1),
 	alpha_(0.0f),
 	velo(Vector2::Zero),
 	resInv_(Matrix::Identity),
@@ -29,8 +28,7 @@ Actor::Actor(const std::string& name) :
 	name_(name),
 	position_(0.0f, 0.0f),
 	rotation_(Matrix::Identity),
-	dead_(false),
-	animation_(-1) {
+	dead_(false) {
 
 }
 
@@ -221,12 +219,16 @@ void Actor::setTransform(Vector2 pos, Matrix rot) {
 	rotation_ = rot;
 }
 
-IWorld* Actor::getWorld() {
-	return world_;
+bool Actor::isOutOfRange()const{
+	auto player = world_->findActor("Player");
+	if (player == nullptr)return true;
+	float dis = Vector2::Distance(player->getPosition(), position_);
+	if (dis > SCREEN_SIZE.x)return true;
+	return false;
 }
 
-Animation Actor::getAnim() {
-	return animation_;
+IWorld* Actor::getWorld() {
+	return world_;
 }
 
 CollisionBase Actor::getBody()
@@ -257,7 +259,7 @@ void Actor::onDraw() const {
 
 // è’ìÀÇµÇΩ
 void Actor::onCollide(Actor&) {
-	body_.draw(inv_);
+	//body_.draw(inv_);
 	//dead();
 }
 

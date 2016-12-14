@@ -13,6 +13,8 @@ public:
 	Animation2D();
 	// 更新処理
 	void update(float deltaTime);
+	// アニメーションの終了フラグ
+	bool end_anim();
 	// 描画
 	// 座標,(軸),(拡大率),(回転角度(度数法)),
 	void draw(const Vector2& position, const Vector2& origin = Vector2::Zero, const float& scale = 1, const float& degree = 0, const Vector3& color = Vector3(255, 255, 255)) const;
@@ -26,8 +28,6 @@ protected:
 	void change_dir_type(const int& anim_num, const ActionType& type);
 	// アニメーションを元に戻す
 	void back_to_pre_motion();
-	// アニメーションの方向転換
-	bool end_anim();
 protected:
 	//分割前の画像id
 	int id_;

@@ -1,21 +1,40 @@
 #include "Player.h"
 
 #include"../../Body/CollisionBase.h"
-#include "../../../ResourceLoader/ResourceLoader.h"
 
-#include "State/States/Union/StatePath_Union.h"
-
+#include "PlayerBody.h"
 #include "PlayerConnector.h"
 
-#include "../../../Game/Time.h"
 #include <memory>
-#include <algorithm>
-#include "../../TestPlayer/TestPlayer.h"
 
+// コンストラクタ
 Player::Player(IWorld * world, const Vector2 & position) :
-	Actor(world, "Player", position, CollisionBase(Vector2(0, 0), Vector2(0, 0), 8.0f))
-{
+	Actor(world, "Player", position, CollisionBase()){
+	// bodyの生成
+	create_bodys();
+	// コネクタの生成
+	connect();
+}
 
+// デストラクタ
+Player::~Player() {}
+
+// 更新処理
+void Player::onUpdate(float deltaTime) {
+	// 座標を中心に固定
+	position_ = center();
+
+	// 指定stateの更新
+	update_state(deltaTime);
+}
+
+// body中心座標
+Vector2 Player::center() {
+	return (butty_->getPosition() + retty_->getPosition()) / 2;
+}
+
+// body生成
+void Player::create_bodys() {
 	auto body1 = std::make_shared<PlayerBody>(world_, "PlayerBody1", position_ + Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
 	auto body2 = std::make_shared<PlayerBody>(world_, "PlayerBody2", position_ - Vector2::Right * PLAYER_MAX_NORMAL_LENGTH / 2);
 
@@ -25,63 +44,34 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	butty_ = body1;
 	retty_ = body2;
 
-	set_body();
-
-	connect();
+	butty_->set_partner(retty_);
+	retty_->set_partner(butty_);
 }
 
-Player::~Player() {
-}
-
-void Player::onUpdate(float deltaTime) {
-	position_ = (butty_->getPosition() + retty_->getPosition()) / 2;
-
+// 指定stateの更新処理
+void Player::update_state(float deltaTime) {
 	auto cntr = findCildren(std::string("PlayerConnector"));
 	if (cntr == nullptr) {
 		butty_->single_action(deltaTime);
 		retty_->single_action(deltaTime);
 		if (is_connectable()) connect();
+		if (is_dead()) {
+			butty_->change_state(PlayerState_Enum_Single::DEAD);
+			retty_->change_state(PlayerState_Enum_Single::DEAD);
+		}
 	}
 	else {
-		auto tmp = std::dynamic_pointer_cast<PlayerConnector>(cntr);
-		if (tmp->state_mgr().get_state(PlayerState_Enum_Union::DEAD)) dead();
-		tmp->state_action(deltaTime);
+		std::dynamic_pointer_cast<PlayerConnector>(cntr)->state_update(deltaTime);
 	}
 }
 
-void Player::onLateUpdate(float deltaTime) {
-}
-
-void Player::onDraw() const {
-	//DrawFormatString(25, 25, GetColor(255, 255, 255), "%d", stateMgr_.currentState());
-}
-
-void Player::onCollide(Actor & other) {}
-
-PlayerBodyPtr Player::blue_body() {
-	return butty_;
-}
-
-PlayerBodyPtr Player::red_body() {
-	return retty_;
-}
-
-PlayerCntrPtr Player::connector() {
-	//auto tmp = findCildren(std::string("PlayerConnector"));
-	return  nullptr;
-}
-
-void Player::set_body() {
-	butty_->set_partner(retty_);
-	retty_->set_partner(butty_);
-}
-
+// 接続処理
 void Player::connect() {
-	auto cntr = std::make_shared<PlayerConnector>(world_, position_, butty_, retty_);
-	addChild(cntr);
-	//cntr_ = cntr;
+	PlaySound("./resources/sounds/puyon.mp3", DX_PLAYTYPE_BACK);
+	addChild(std::make_shared<PlayerConnector>(world_, position_, butty_, retty_));
 }
 
+// 接続可能かどうか
 bool Player::is_connectable() {
 	bool is_main_target_partner = butty_->hit_partner() == HitOpponent::PARTNER;
 	bool is_sub_target_partner = retty_->hit_partner() == HitOpponent::PARTNER;
@@ -90,6 +80,7 @@ bool Player::is_connectable() {
 	return (is_main_target_partner || is_sub_target_partner || for_debug);
 }
 
+// 死亡したかどうか
 bool Player::is_dead() {
 	bool is_main_dead = butty_->dead_limit();
 	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;

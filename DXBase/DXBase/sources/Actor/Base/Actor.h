@@ -12,7 +12,6 @@
 #include "../Body/BoundingCircle.h"
 #include "../Body/BoundingSegment.h"
 #include"..//Body/CollisionBase.h"
-#include "../../Animation/Base/Animation.h"
 #include "../../Define.h"
 #include <string>
 #include <memory>
@@ -79,10 +78,10 @@ public:
 	void setMotion(unsigned int motion);
 	// Transformの設定
 	void setTransform(Vector2 pos, Matrix rot);
+	// 範囲外
+	bool isOutOfRange()const ;
 	// Worldの取得
 	IWorld* getWorld();
-	// アニメーションの取得
-	Animation getAnim();
 	//Bodyの取得 return:CollisionBase
 	CollisionBase getBody();
 
@@ -129,8 +128,6 @@ public:
 	bool				dead_;
 	// モデルハンドル
 	unsigned int		modelHandle_;
-	
-	Animation			animation_;
 	// モーションID
 	unsigned int		motion_;
 

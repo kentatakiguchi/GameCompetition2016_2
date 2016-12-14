@@ -20,7 +20,7 @@ public:
 	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onCollide(Actor& other) override;
 
-	void init_state(PlayerState_Enum_Single state);
+	void change_state(PlayerState_Enum_Single state);
 	void move(Vector2 vector);
 
 	void chase();
@@ -54,11 +54,10 @@ public:
 
 	PlayerAnimation2D& animation();
 
-	Vector2 GetVelo() {
-		return Vector2(velocity_.x, velocity_.y);
-	}
+	Vector2 GetVelo() { return velocity_; }
 private:
 	PlayerStateMgr_Single stateMgr_;
+	PlayerAnimation2D animation_;
 
 	Vector2 input_;
 	Vector2 velocity_;
@@ -70,17 +69,12 @@ private:
 	HitOpponent hit_partner_;
 	HitOpponent hit_enemy_;
 
-	float jump_power_;
 	float dead_limit_;
 
 	PlayerBodyCollPtr collider_;
 	PlayerBodyCollPtr attack_collider_;
 
-	PlayerAnimation2D animation_;
-
 	Vector2 v_;
-
-
 
 	float stiffness_;
 	float friction_;

@@ -3,21 +3,24 @@
 PlayerState_Single_Move::PlayerState_Single_Move(const Keys& keys) : PlayerState_Single(keys) {
 }
 
-void PlayerState_Single_Move::unique_init(){}
+void PlayerState_Single_Move::unique_init(){
+	body_->animation().change(PlayerAnimID::DIV_MOVE);
+}
 
 void PlayerState_Single_Move::update(float deltaTime){
+	if (InputMgr::GetInstance().AnalogPadVectorR().x > 0 && is_butty()) body_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Right);
+	if (InputMgr::GetInstance().AnalogPadVectorR().x < 0 && is_butty()) body_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Left);
+	if (InputMgr::GetInstance().AnalogPadVectorL().x > 0 && is_retty()) body_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Right);
+	if (InputMgr::GetInstance().AnalogPadVectorL().x < 0 && is_retty()) body_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Left);
+
 	body_->count_dead_limit(deltaTime);
 }
 
 void PlayerState_Single_Move::end(){
-	//butty_->init_state();
-	//retty_->init_state();
-	//butty_->reset_enemy();
-	//retty_->reset_enemy();
-	//retty_->reset_dead_limit();
-	//butty_->reset_dead_limit();
-	//butty_->reset_partner();
-	//retty_->reset_partner();
+	//body_->init_state();
+	//body_->reset_enemy();
+	//body_->reset_dead_limit();
+	//body_->reset_partner();
 }
 
 void PlayerState_Single_Move::key_input(){

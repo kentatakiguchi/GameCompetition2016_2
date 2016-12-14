@@ -13,11 +13,5 @@ private:
 	virtual void pad_input() override;
 private:
 	void move();
-private:
-	Vector2 dir_;
-	float dump_;
-	float power_;
-
-	float gra_easeing_;
 };
 

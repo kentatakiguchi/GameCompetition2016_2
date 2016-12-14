@@ -3,30 +3,25 @@
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
-#include "State/States/Union/PlayerStateMgr_Union.h"
-//#include "PlayerBody.h"
-//#include "PlayerConnector.h"
 
 #include "PlayerPtr.h"
-#include "../../../Renderer/Puyo_Texture_K.h"
 
 // プレーヤー
 class Player : public Actor {
 public:
-	enum class MOTION {};
-public:
+	// コンストラクタ
 	Player(IWorld* world, const Vector2& position);
+	// デストラクタ
 	~Player();
+	// 更新処理
 	virtual void onUpdate(float deltaTime) override;
-	virtual void onLateUpdate(float deltaTime) override;
-	virtual void onDraw() const override;
-	virtual void onCollide(Actor& other) override;
-	PlayerBodyPtr blue_body();
-	PlayerBodyPtr red_body();
-	PlayerCntrPtr connector();
-
-	void set_body();
-public:
+private:
+	// body中心座標
+	Vector2 center();
+	// body生成
+	void create_bodys();
+	// 指定stateの更新処理
+	void update_state(float deltaTime);
 	// 接続処理
 	void connect();
 	// 接続可能かどうか
@@ -34,12 +29,9 @@ public:
 	// 死亡したかどうか
 	bool is_dead();
 private:
-	//PlayerStateMgr_Union stateMgr_;
-	// mainとなる部位
-	PlayerBodyPtr retty_;
-	// sub となる部位
+	// body(青)
 	PlayerBodyPtr butty_;
-	// コネクター
-	//PlayerCntrPtr cntr_;
+	// body(赤)
+	PlayerBodyPtr retty_;
 };
 

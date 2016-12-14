@@ -15,6 +15,7 @@ PlayerStateMgr_Single::PlayerStateMgr_Single(const std::string& name){
 	add(PlayerState_Enum_Single::IDLE, std::make_shared<PlayerState_Single_Idle>(keys));
 	add(PlayerState_Enum_Single::MOVE, std::make_shared<PlayerState_Single_Move>(keys));
 	add(PlayerState_Enum_Single::JUMP, std::make_shared<PlayerState_Single_Jump>(keys));
+	add(PlayerState_Enum_Single::DEAD, std::make_shared<PlayerState_Single_Jump>(keys));
 }
 
 void PlayerStateMgr_Single::add(const PlayerState_Enum_Single & id, const IStatePtr & state) {

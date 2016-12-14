@@ -3,6 +3,10 @@
 PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(const Keys& keys) : PlayerState_Single(keys) {}
 
 void PlayerState_Single_LeanBack::unique_init(){
+	body_->animation().change(PlayerAnimID::DAMAGE);
+
+	PlaySound("./resources/sounds/bunri.mp3" , DX_PLAYTYPE_BACK);
+
 	body_->reset_opponent();
 
 	dir_ = Vector2(body_->get_partner_vector().x, 1) * -1;

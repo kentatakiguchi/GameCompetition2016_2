@@ -4,23 +4,30 @@
 #include "../../../World/IWorld.h"
 //#include "EventMessage.h"
 
-// プレーヤー
+// プレーヤー連結用Body
 class PlayerBodyPoint : public Actor {
 public:
-	PlayerBodyPoint(IWorld* world, const Vector2 & position, const int& point_index);
+	// コンストラクタ
+	PlayerBodyPoint(IWorld* world, const Vector2 & position, const int& index);
+	// デストラクタ
 	~PlayerBodyPoint();
+	// 更新処理
 	virtual void onUpdate(float deltaTime) override;
+	// 描画処理
 	virtual void onDraw() const override;
-	virtual void onLateUpdate(float deltaTime) override;
+	// 衝突処理
 	virtual void onCollide(Actor& other) override;
+private:
+	// 引力更新処理
+	void attract_update(float deltaTime);
 	// 引力
 	void attraction(const int index, Vector2& velocity);
 private:
+	// 自身のindex番号
 	int index_;
-
-	Vector2 v1_;
-	Vector2 v2_;
-
+	// バネ補間速度
+	Vector2 v1_, v2_;
+	// テスト用バネ系変数
 	float stiffness_;
 	float friction_;
 	float mass_;

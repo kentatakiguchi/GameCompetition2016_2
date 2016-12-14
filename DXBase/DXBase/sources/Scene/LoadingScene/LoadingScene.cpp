@@ -124,5 +124,9 @@ void LoadingScene::load_player_res(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_DAMAGE,	"./resources/sprite/actor/player/retty/r_damage.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_DIV_IDLE, "./resources/sprite/actor/player/retty/r_division_idle.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_DIV_MOVE, "./resources/sprite/actor/player/retty/r_division_move.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_TURN,		"./resources/sprite/actor/player/retty/r_turn.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_RETTY_TURN, "./resources/sprite/actor/player/retty/r_turn.png");
+	
+	//エフェクト
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_EFFECT_SEP_MOVE, "./resources/sprite/actor/effect/Separation_move.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_EFFECT_SEP_EXP, "./resources/sprite/actor/effect/Separation.png");
 }
