@@ -3,6 +3,7 @@
 
 #include "../../../../../Math/Math.h"
 #include "../../../../../Define.h"
+#include "../BossAnimationNumber.h"
 #include <string>
 
 // ボス攻撃クラス(ベース)
@@ -18,6 +19,8 @@ public:
 	virtual void attack(float deltaTime);
 	// 移動した位置を取得します
 	Vector2 getMovePosition();
+	// 方向を取得します
+	Vector2 getDirection();
 	// 攻撃行動のリフレッシュを行います
 	virtual void Refresh();
 	// 攻撃が開始したかを返します
@@ -61,12 +64,19 @@ public:
 	bool isBodyHit();
 	// プレイヤーに当たるかを返します
 	bool isAttackHit();
+	// アニメーション番号を返します
+	BossAnimationNumber getAnimaNum();
+	// アニメーションの角度を返します
+	int getAnimeAngle();
+	// アニメーションがループするかを返します
+	bool isLoop();
 
 protected:
 	int hp_;					// 体力
 	int flinchCount_;			// ひるむまでの回数
 	float timer_;				// 時間
 	float angle_;				// 角度
+	float animeAngle_;			// アニメーションの角度
 	std::string floorName_;		// 床の名前
 	bool isAttackStart_;		// 攻撃を開始したか
 	bool isAttackEnd_;			// 攻撃が終了したか
@@ -78,12 +88,15 @@ protected:
 	bool isBodyHit_;			// プレイヤー本体に当たるか
 	bool isAttackHit_;			// プレイヤーの攻撃に当たるか
 	bool isMove_;				// 動ける状態か
-	bool isFlinch_;
+	bool isFlinch_;				// 怯むか
+	bool isAnimaLoop_;			// アニメーションをループさせるか
 	Vector2 position_;			// 位置
 	Vector2 direction_;			// 方向
 	Vector2 pPosition_;			// プレイヤーの位置
 	Vector2 pDirection_;		// プレイヤーとの方向
 	Vector2 pNormDirection_;	// プレイヤーとの方向
+
+	BossAnimationNumber animeNum_;
 };
 
 #endif

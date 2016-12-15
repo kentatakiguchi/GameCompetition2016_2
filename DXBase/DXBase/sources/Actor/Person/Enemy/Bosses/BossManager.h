@@ -24,6 +24,8 @@ public:
 	void attackRefresh();
 	// 行動によって移動した位置を返します
 	Vector2 getMovePosition();
+	// 攻撃方向を取得します
+	Vector2 getAttackDirection();
 	// 攻撃が開始したかを返します
 	bool isAttackStart();
 	// 攻撃が終了したかを返します
@@ -70,6 +72,12 @@ public:
 	void setIsWallHit(bool isHit);
 	// 壁の移動方向
 	Vector2 getWallMoveDirection();
+	// アニメーション番号を返します
+	BossAnimationNumber getAnimaNum();
+	// アニメーションの角度を返します
+	int getAnimeAngle();
+	// アニメーションがループするかを返します
+	bool isAnimeLoop();
 
 private:
 	int attackNumber_;			// 攻撃番号

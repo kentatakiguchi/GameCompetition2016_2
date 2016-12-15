@@ -31,10 +31,11 @@ private:
 	// 疲労状態
 	void fatigue(float deltaTime);
 	// 状態の変更を行います
-	void changeState(State state);
+	void changeState(State state, BossAnimationNumber num);
 
 private:
 	float addAngle_;		// 角度の加算量
+	bool isRockCreate_;		// 岩を生成したか 
 
 	IWorld* world_;			// ワールド
 

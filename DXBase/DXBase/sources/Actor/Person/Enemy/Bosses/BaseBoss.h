@@ -2,10 +2,11 @@
 #define BASE_BOSS_H_
 
 #include "../../../Base/Actor.h"
-#include "../../../../Animation/Base/Animation2D.h"
 #include "../../../../World/IWorld.h"
 #include "../../../../Math/Math.h"
 #include "../../../../Define.h"
+#include "../../../../Animation/Enemy/EnemyAnimation2D.h"
+#include "BossAnimationNumber.h"
 
 #include "BossManager.h"
 
@@ -47,7 +48,10 @@ protected:
 	};
 
 public:
-	BaseBoss(IWorld* world, const Vector2&  position, const float bodyScale = 128.0f / 2.0f);
+	BaseBoss(
+		IWorld* world,
+		const Vector2&  position,
+		const float bodyScale = 128.0f * 2 / 2.0f);
 	~BaseBoss();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
@@ -62,9 +66,9 @@ protected:
 	// 状態の更新
 	void updateState(float deltaTime);
 	// 状態の変更を行います
-	void changeState(State state, unsigned int motion);
+	void changeState(State state, BossAnimationNumber num);
 	// 攻撃状態の変更を行います
-	void changeAttackState(AttackState aState, unsigned int motion);
+	void changeAttackState(AttackState aState, BossAnimationNumber num);
 	// 待機状態
 	virtual void idel(float deltaTime);
 	// 攻撃行動
@@ -93,32 +97,34 @@ private:
 	void damage(const int damage);
 	//地面の位置に補正します
 	void groundClamp(Actor& actor);
+	// アニメーションの追加
+	void addAnimation();
 
 protected:
-	int dp_;					// ひるむまでの耐久値
-	int initDp_;				// ひるむまでの耐久値(初期値)
-	int hp_;					// 体力
-	int flinchCount_;			// ひるむまでの回数
-	int angleCount_;			// 振り向き回数
-	// int initHp_;				// 体力(初期値)
-	float stateTimer_;			// 状態の時間
-	float timer_;				// 現在の時間(最大値 1)
-	float deltaTimer_;			// 現在の時間(補間)
-	float angle_;				// 角度(時計周り)
+	int dp_;						// ひるむまでの耐久値
+	int initDp_;					// ひるむまでの耐久値(初期値)
+	int hp_;						// 体力
+	int flinchCount_;				// ひるむまでの回数
+	int angleCount_;				// 振り向き回数
+	// int initHp_;					// 体力(初期値)
+	float stateTimer_;				// 状態の時間
+	float timer_;					// 現在の時間(最大値 1)
+	float deltaTimer_;				// 現在の時間(補間)
+	float angle_;					// 角度(時計周り)
 
-	bool isGround_;				// 接地しているか
-	bool isBottomHit_;			// 壁の下側に当たったか
-	bool isBodyHit_;			// プレイヤー本体に当たるか
-	bool isAttackHit_;			// プレイヤーの攻撃に当たるか
-	bool isSceneEnd_;			// シーンを終了させるか
+	bool isGround_;					// 接地しているか
+	bool isBottomHit_;				// 壁の下側に当たったか
+	bool isBodyHit_;				// プレイヤー本体に当たるか
+	bool isAttackHit_;				// プレイヤーの攻撃に当たるか
+	bool isSceneEnd_;				// シーンを終了させるか
 
-	std::string stateString_;	// 状態の文字列（デバッグ用）
-	int handle_;				// デバッグハンドル
+	std::string stateString_;		// 状態の文字列（デバッグ用）
+	int handle_;					// デバッグハンドル
 
-	FloorSearchPoint* wspObj_;	// 壁捜索オブジェクト
-	BossEntry* entryObj_;		// ボス入口オブジェクト
-	BossHeart* heartObj_;		// ボス心臓オブジェクト
-	BossManager bossManager_;	// ボスマネージャー
+	FloorSearchPoint* wspObj_;		// 壁捜索オブジェクト
+	BossEntry* entryObj_;			// ボス入口オブジェクト
+	BossHeart* heartObj_;			// ボス心臓オブジェクト
+	BossManager bossManager_;		// ボスマネージャー
 	// 攻撃状態のコンテナ
 	typedef std::vector<AttackState> AttackStateContainer;
 	AttackStateContainer asContainer_;
@@ -128,10 +134,12 @@ private:
 	Vector2 direction_;				// 方向
 	ActorPtr player_;
 
-	State state_;				// 状態
-	AttackState attackState_;	// 攻撃状態
+	State state_;					// 状態
+	AttackState attackState_;		// 攻撃状態
+	BossAnimationNumber animeNum_;	// アニメーション番号
+	EnemyAnimation2D animation_;	// アニメーション
 
-	BossGaugeUI* bossGaugeUI_;	// ボスの体力
+	BossGaugeUI* bossGaugeUI_;		// ボスの体力
 
 	float top_, bottom_, right_, left_;
 

@@ -82,10 +82,10 @@ void FloorTurnEnemy::chaseMove()
 	auto speed = speed_;
 	auto distance = position_.x - player_->getPosition().x;
 	//// プレイヤーの軸付近に来たら止まる
-	//if (std::abs(distance) < speed) return;
+	if (std::abs(distance) < speed) return;
 	// プレイヤーとの位置で、速度を補正する
-	/*if (std::abs(distance) < speed)
-		speed = std::abs(distance);*/
+	if (std::abs(distance) < speed)
+		speed = std::abs(distance);
 	// 追跡
 	// プレイヤーとのX軸が同一の場合おかしくなる
 	direction_.x = -enemyManager_.getPlayerDirection().x;

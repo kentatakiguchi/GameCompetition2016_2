@@ -4,6 +4,7 @@ BossAttack::BossAttack() :
 	hp_(0),
 	flinchCount_(0),
 	timer_(0.0f),
+	animeAngle_(0.0f),
 	floorName_(""),
 	isAttackStart_(false),
 	isAttackEnd_(true),
@@ -16,19 +17,22 @@ BossAttack::BossAttack() :
 	isAttackHit_(true),
 	isMove_(false),
 	isFlinch_(true),
+	isAnimaLoop_(false),
 	position_(Vector2::Zero),
 	direction_(Vector2::Zero),
 	pPosition_(Vector2::Zero),
 	pDirection_(Vector2::Zero),
-	pNormDirection_(Vector2::Zero)
+	pNormDirection_(Vector2::Zero),
+	animeNum_(BossAnimationNumber::WAIT_NUMBER)
 {
 }
 
 BossAttack::BossAttack(const Vector2 & position) : 
 	hp_(100),
-	flinchCount_(3),
+	flinchCount_(1),
 	timer_(0.0f),
 	angle_(0.0f),
+	animeAngle_(0.0f),
 	floorName_("a"),
 	isAttackStart_(false),
 	isAttackEnd_(false),
@@ -39,11 +43,13 @@ BossAttack::BossAttack(const Vector2 & position) :
 	isAttackHit_(false),
 	isMove_(true),
 	isFlinch_(false),
+	isAnimaLoop_(true),
 	position_(position),
 	direction_(Vector2::Left),
 	pPosition_(Vector2::One),
 	pDirection_(Vector2::One),
-	pNormDirection_(Vector2::One)
+	pNormDirection_(Vector2::One),
+	animeNum_(BossAnimationNumber::WAIT_NUMBER)
 {
 }
 
@@ -72,13 +78,21 @@ Vector2 BossAttack::getMovePosition()
 	return position_;
 }
 
+// 方向を取得します
+Vector2 BossAttack::getDirection()
+{
+	return direction_;
+}
+
 // 攻撃行動のリフレッシュを行います
 void BossAttack::Refresh()
 {
 	timer_ = 0.0f;
+	animeAngle_ = 0.0f;
 	isAttackStart_ = false;
 	isAttackEnd_ = false;
 	isUseGravity_ = true;
+	isAnimaLoop_ = true;
 	//direction_ = Vector2::One;
 }
 
@@ -199,4 +213,22 @@ bool BossAttack::isBodyHit()
 bool BossAttack::isAttackHit()
 {
 	return isAttackHit_;
+}
+
+// アニメーション番号を返します
+BossAnimationNumber BossAttack::getAnimaNum()
+{
+	return animeNum_;
+}
+
+// アニメーションの角度を返します
+int BossAttack::getAnimeAngle()
+{
+	return animeAngle_;
+}
+
+// アニメーションがループするかを返します
+bool BossAttack::isLoop()
+{
+	return isAnimaLoop_;
 }

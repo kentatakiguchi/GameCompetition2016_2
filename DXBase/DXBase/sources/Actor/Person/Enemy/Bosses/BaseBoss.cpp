@@ -8,17 +8,21 @@
 #include "BossHeart.h"
 #include "../FloorSearchPoint.h"
 #include "bossAttack/importBossAttack.h"
+#include "Effect/ImportEffects.h"
 // ボスの体力表示
 #include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
 
 // ボスクラス(ベース予定)
-BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodyScale) :
+BaseBoss::BaseBoss(
+	IWorld * world,
+	const Vector2 & position,
+	const float bodyScale) :
 	Actor(world, "BaseBoss", position,
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
 	dp_(30),
 	initDp_(dp_),
 	hp_(3),
-	flinchCount_(3),
+	flinchCount_(0),
 	angleCount_(0),
 	// initHp_(hp_),
 	stateTimer_(0.0f),
@@ -37,6 +41,8 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	player_(nullptr),
 	state_(State::Idel),
 	attackState_(AttackState::JumpAttack),
+	animeNum_(BossAnimationNumber::WAIT_NUMBER),
+	animation_(EnemyAnimation2D()),
 	wspObj_(nullptr),
 	entryObj_(nullptr),
 	heartObj_(nullptr),
@@ -56,6 +62,12 @@ BaseBoss::BaseBoss(IWorld * world, const Vector2 & position, const float bodySca
 	bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
 	/*auto manager = std::make_shared<BossManager>(position);
 	bossManager_ = &*manager;*/
+
+	// アニメーションの追加
+	addAnimation();
+	animation_.changeAnimation(
+		static_cast<int>(BossAnimationNumber::WAIT_NUMBER));
+
 	// 床捜索オブジェクト
 	auto wspObj = std::make_shared<FloorSearchPoint>(
 		world_, position_,
@@ -98,6 +110,9 @@ void BaseBoss::onUpdate(float deltaTime)
 	hp_ = heartObj_->getBossHp();
 	bossGaugeUI_->SetHp(heartObj_->getHeartHp());
 	bossManager_.setHeartHP(heartObj_->getHeartHp());
+	// アニメーションの更新
+	//animation_.update(deltaTime);
+	animation_.onUpdate(deltaTime);
 
 	entryObj_->setBossPosition(position_);
 	wspObj_->setPosition(position_);
@@ -107,6 +122,12 @@ void BaseBoss::onUpdate(float deltaTime)
 	// 接地(仮)
 	bossManager_.setIsGround(isGround_);
 	bossManager_.setIsBottom(isBottomHit_);
+
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L)) {
+		/*world_->addActor(ActorGroup::EffectBack,
+			std::make_shared<AttackEffect>(world_, position_));*/
+		angle_ += 3.0f;
+	}
 
 	// bool系
 	isGround_ = false;
@@ -119,12 +140,6 @@ void BaseBoss::onDraw() const
 	auto stateChar = stateString_.c_str();
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
-	// ボスの表示
-	DrawRotaGraph(
-		vec3Pos.x,
-		vec3Pos.y,
-		1.0f, MathHelper::ToRadians(angle_),
-		ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_TEX), 1);
 	// 状態の表示
 	DrawString(
 		vec3Pos.x, vec3Pos.y - 100,
@@ -136,6 +151,12 @@ void BaseBoss::onDraw() const
 	DrawFormatString(
 		vec3Pos.x, vec3Pos.y - 175,
 		GetColor(255, 255, 255), "時間:%d", (int)stateTimer_);
+	// アニメーションの描画
+	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
+	animation_.draw(
+		pos - Vector2::Up * 10,
+		Vector2::One * (body_.GetCircle().getRadius()) + Vector2::Up * 20,
+		body_.GetCircle().getRadius() / (128 / 2), angle_);
 	body_.draw(inv_);
 }
 
@@ -145,7 +166,6 @@ void BaseBoss::onCollide(Actor & actor)
 
 	// ブロックの下側にぶつかったら、落ちるようにする?
 	// プログラムを書いて、コメントアウトする
-
 	// マップのブロックに当たったら、処理を行う
 	if (actorName == "MovelessFloor") {
 		// 位置の補間
@@ -200,7 +220,7 @@ void BaseBoss::updateState(float deltaTime)
 	player_ = world_->findActor("PlayerBody1");
 
 	if (hp_ <= 0)
-		changeState(State::Dead, BOSS_DEAD);
+		changeState(State::Dead, BossAnimationNumber::DEATH_NUMBER);
 
 	switch (state_)
 	{
@@ -215,19 +235,22 @@ void BaseBoss::updateState(float deltaTime)
 	//position_ = bossManager_->getMovePosition();
 }
 
-void BaseBoss::changeState(State state, unsigned int motion)
+void BaseBoss::changeState(State state, BossAnimationNumber num)
 {
 	// 同じ状態なら返す
 	if (state_ == state) return;
 	state_ = state;
 	stateTimer_ = 0.0f;
+	angle_ = 0.0f;
+	// アニメーションの変更
+	animation_.changeAnimation(static_cast<int>(num));
 }
 
-void BaseBoss::changeAttackState(AttackState aState, unsigned int motion)
+void BaseBoss::changeAttackState(AttackState aState, BossAnimationNumber num)
 {
 	// 攻撃状態に強制遷移する
 	//if (attackState_ == aState) return;
-	changeState(State::Attack, BOSS_ATTACK);
+	changeState(State::Attack, num);
 	attackState_ = aState;
 	bossManager_.prevPosition();
 }
@@ -240,6 +263,8 @@ void BaseBoss::idel(float deltaTime)
 	// 攻撃が当たるかの判定を入れる
 	isAttackHit_ = true;
 	isBodyHit_ = true;
+	// 画像の方向を合わせる
+	animation_.turnAnimation(motion_, direction_.x);
 
 	bossManager_.changeAttackNumber(asContainer_.size() - hp_);
 	// 一定時間経過で攻撃状態に遷移
@@ -247,7 +272,9 @@ void BaseBoss::idel(float deltaTime)
 		// 残り体力で攻撃状態を変える
 		// initHp - hp
 		changeAttackState(
-			asContainer_[asContainer_.size() - hp_], BOSS_ATTACK);
+			asContainer_[asContainer_.size() - hp_],
+			BossAnimationNumber::JUMP_UP_NUMBER);
+
 		//bossManager_.changeAttackNumber(asContainer_.size() - hp_);
 		return;
 	}
@@ -265,6 +292,12 @@ void BaseBoss::attack(float deltaTime)
 	case AttackState::WallAttack: wallAttack(deltaTime); break;
 	case AttackState::SpeacialAttack: specialAttack(deltaTime); break;
 	}
+	// 
+	animation_.setIsLoop(bossManager_.isAnimeLoop());
+
+	/*if(!bossManager_.isAttackEnd())
+		animation_.changeAnimation(
+		static_cast<int>(bossManager_.getAnimaNum()));*/
 	// 攻撃が当たるかの判定を入れる
 	isAttackHit_ = bossManager_.IsAttackHit();
 	isBodyHit_ = bossManager_.IsBodyHit();
@@ -282,6 +315,7 @@ void BaseBoss::flinch(float deltaTime)
 	stateString_ = "ひるみ";
 	entryObj_->setIsEntry(true);
 	flinchCount_ = 0;
+	animation_.setIsLoop(true);
 	// 重力
 	if (position_.y < FIELD_SIZE.y) {
 		position_.y += 9.8f * (1.0f);// * 60.0f);
@@ -313,12 +347,12 @@ void BaseBoss::flinch(float deltaTime)
 	}
 	// 体力が0になったら死亡
 	if (hp_ <= 0) {
-		changeState(State::Dead, BOSS_DEAD);
+		changeState(State::Dead, BossAnimationNumber::DEATH_NUMBER);
 		return;
 	}
 	// 一定時間経過で待機状態に遷移
 	if (stateTimer_ < 5.0f) return;
-	changeState(State::Idel, BOSS_IDLE);
+	changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
 	entryObj_->setIsEntry(false);
 	dp_ = initDp_;
 	//flinchCount_ = 3;
@@ -327,6 +361,11 @@ void BaseBoss::flinch(float deltaTime)
 void BaseBoss::deadMove(float deltaTime)
 {
 	stateString_ = "死亡";
+	animation_.setIsLoop(false);
+	if (animation_.isEndAnimation()) {
+		// アニメーションを停止させる
+		dead();
+	}
 	// 死亡から一定時間経過なら、シーンを終了させる
 	if (stateTimer_ >= 3.0f)
 		isSceneEnd_ = true;
@@ -340,10 +379,15 @@ void BaseBoss::jumpAttack(float deltaTime)
 	//isBodyHit_ = false;
 	// ジャンプ攻撃
 	bossManager_.attackMove(deltaTime);
+	bossManager_.setPlayerPosition(player_->getPosition());
 	position_ = bossManager_.getMovePosition();
+	// アニメーションの変更
+	animation_.changeAnimation(
+		static_cast<int>(bossManager_.getAnimaNum()));
+	animation_.turnAnimation(motion_, bossManager_.getAttackDirection().x);
 	// ジャンプ攻撃が終わったら、待機状態にする
 	if (bossManager_.isAttackEnd()) {
-		changeState(State::Idel, BOSS_IDLE);
+		changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
 		//isBodyHit_ = true;
 		bossManager_.attackRefresh();
 	}
@@ -354,6 +398,11 @@ void BaseBoss::wallAttack(float deltaTime)
 	stateString_ = "壁攻撃";
 	bossManager_.attackMove(deltaTime);
 	position_ = bossManager_.getMovePosition();
+	// アニメーションの変更
+	angle_ = bossManager_.getAnimeAngle();
+	animation_.changeAnimation(
+		static_cast<int>(bossManager_.getAnimaNum()));
+	animation_.turnAnimation(motion_, Vector2::Left.x);
 	// 攻撃動作中なら、壁捜索オブジェクトなどの判定をONにする
 	if (bossManager_.isAttackStart()) {
 		setBMStatus();
@@ -365,10 +414,17 @@ void BaseBoss::wallAttack(float deltaTime)
 		flinchCount_++;
 		//if (flinchCount_ == 0)
 		// 攻撃側のひるみ回数と以上なら、ひるみ状態に遷移
-		if(bossManager_.getFlinchCount() <= flinchCount_)
-			changeState(State::Flinch, BOSS_FLINCH);
-		else changeState(State::Idel, BOSS_IDLE);
-		bossManager_.attackRefresh();
+		if (bossManager_.getFlinchCount() <= flinchCount_) {
+			changeState(State::Flinch, BossAnimationNumber::PIYO_NUMBER);
+			bossManager_.attackRefresh();
+			flinchCount_ = 0;
+			return;
+		}
+		else {
+			changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
+			bossManager_.attackRefresh();
+			return;
+		}
 	}
 }
 
@@ -379,10 +435,10 @@ void BaseBoss::specialAttack(float deltaTime)
 	// 口から離れたら、もう一度攻撃を行う
 
 	if (bossManager_.isFlinch()) {
-		changeState(State::Flinch, BOSS_FLINCH);
+		changeState(State::Flinch, BossAnimationNumber::PIYO_NUMBER);
 		bossManager_.attackRefresh();
-		angleCount_ = 0;
-		angle_ = 0.0f;
+		//angleCount_ = 0;
+		//angle_ = 0.0f;
 		return;
 	}
 
@@ -392,21 +448,25 @@ void BaseBoss::specialAttack(float deltaTime)
 	bossManager_.attackMove(deltaTime);
 	position_ = bossManager_.getMovePosition();
 	// 角度の変更
-	angle_ = bossManager_.getAngle();
+	//angle_ = bossManager_.getAngle();
 
 	// 壁に当たっている場合
 	bossManager_.setIsWallHit(wspObj_->isGround());
 	wspObj_->setDirection(bossManager_.getWallMoveDirection());
+	// アニメーションの変更
+	animation_.changeAnimation(
+		static_cast<int>(bossManager_.getAnimaNum()));
+	animation_.turnAnimation(motion_, bossManager_.getAttackDirection().x);
 	// bossManager_.specialAttack(deltaTime);
 	/*if (entryObj_->isBlock()) {
 
 	}*/
 
 	if (bossManager_.isAttackEnd()) {
-		changeState(State::Idel, BOSS_IDLE);
+		changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
 		bossManager_.attackRefresh();
-		angleCount_ = 0;
-		angle_ = 0.0f;
+		//angleCount_ = 0;
+		//angle_ = 0.0f;
 	}
 }
 
@@ -423,6 +483,7 @@ void BaseBoss::setBMStatus()
 		bossManager_.setPosition(position_);
 		// 方向を入れる
 		auto direction = bossManager_.getPlayerDirection();
+		direction_ = direction;
 		//wspObj_->setDirection(direction);
 		// 壁に当たっている場合
 		bossManager_.setIsWallHit(wspObj_->isGround());
@@ -447,12 +508,15 @@ void BaseBoss::damage(const int damage)
 	dp_ -= damage;
 	// 耐久値が0になったら、ひるむ
 	if (dp_ <= 0) {
-		changeState(State::Flinch, BOSS_FLINCH);
+		changeState(State::Flinch, BossAnimationNumber::PIYO_NUMBER);
 		// 衝突するかどうかの bool を全てtrueにする
 		isBodyHit_ = true;
 		isAttackHit_ = true;
 		setBMStatus();
-		body_.enabled(false);
+		// 画像の方向を合わせる
+		animation_.turnAnimation(motion_, direction_.x);
+
+		//body_.enabled(false);
 	}
 }
 
@@ -597,4 +661,93 @@ void BaseBoss::groundClamp(Actor& actor)
 	////		Vector2::Normalize(vn);
 	////}
 	//top_ = vn.Length();
+}
+
+// テクスチャの追加を行います
+void BaseBoss::addAnimation()
+{
+	auto texSize = 256;
+	// 敵の画像に合わせて調整
+	// 待機
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::WAIT_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_WAIT_TEX),
+		texSize, 8, 4, 1);
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::WAIT_TURN_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_WAIT_TURN_TEX),
+		texSize, 8, 2);
+	// ジャンプ攻撃
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::JUMP_UP_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_JUMP_UP_TEX),
+		texSize, 8, 3, 3);
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::JUMP_DOWN_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_JUMP_DOWN_TEX),
+		texSize, 8, 4);
+	// 壁移動攻撃
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::WALLATTACK_DASH_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_WALLATTACK_DASH_TEX),
+		texSize, 8, 2, 5);
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::WALLATTACK_DASHJUMP_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_WALLATTACK_DASHJUMP_TEX),
+		texSize, 8, 2, 4);
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::WALLATTACK_DASHJUMP_STOP_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_WALLATTACK_DASHJUMP_STOP_TEX),
+		texSize, 8, 3, 3);
+	// 吸い込み攻撃
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::BREATH_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_BREATH_TEX),
+		texSize, 8, 4);
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::BREATH_TURN_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_BREATH_TURN_TEX),
+		texSize, 8, 2);
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::BREATH_DYSFUNCTION_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_BREATH_DYSFUNCTION_TEX),
+		texSize, 8, 4);
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::BREATH_LESS_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_BREATH_LESS_TEX),
+		texSize, 8, 4);
+	// 怯み
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::PIYO_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_PIYO_TEX),
+		texSize, 8, 4);
+	// ダメージ
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::DAMAGE_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_DAMAGE_TEX),
+		texSize, 7, 2, 2);
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::DAMAGE_BOKO_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_DAMAGE_BOKO_TEX),
+		texSize, 8, 4);
+	// 死亡
+	animation_.addAnimation(
+		static_cast<int>(BossAnimationNumber::DEATH_NUMBER),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::BOSS_DEATH_TEX),
+		texSize, 8, 4);
 }

@@ -61,6 +61,12 @@ Vector2 BossManager::getMovePosition()
 	return bossAttackContainer_[attackNumber_]->getMovePosition();
 }
 
+// 攻撃方向を取得します
+Vector2 BossManager::getAttackDirection()
+{
+	return bossAttackContainer_[attackNumber_]->getDirection();
+}
+
 // 攻撃が開始したかを返します
 bool BossManager::isAttackStart()
 {
@@ -213,4 +219,22 @@ void BossManager::setIsWallHit(bool isHit)
 Vector2 BossManager::getWallMoveDirection()
 {
 	return bossAttackContainer_[attackNumber_]->getMoveDirection();
+}
+
+// アニメーション番号を返します
+BossAnimationNumber BossManager::getAnimaNum()
+{
+	return bossAttackContainer_[attackNumber_]->getAnimaNum();
+}
+
+// アニメーションの角度を返します
+int BossManager::getAnimeAngle()
+{
+	return bossAttackContainer_[attackNumber_]->getAnimeAngle();
+}
+
+// アニメーションがループするかを返します
+bool BossManager::isAnimeLoop()
+{
+	return bossAttackContainer_[attackNumber_]->isLoop();
 }

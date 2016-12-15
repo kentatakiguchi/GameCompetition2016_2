@@ -9,6 +9,7 @@ JumpAttack::JumpAttack() :
 	recastTimer_(0.0f),
 	initRecastTimer_(recastTimer_),
 	isJump_(true),
+	isFirstJump_(true),
 	isJumpEnd_(true),
 	isIdel_(false),
 	prevPlayerDistance_(Vector2::Zero)
@@ -24,15 +25,29 @@ JumpAttack::JumpAttack(const Vector2& position) :
 	recastTimer_(0.5f),
 	initRecastTimer_(recastTimer_),
 	isJump_(false),
+	isFirstJump_(false),
 	isJumpEnd_(false),
 	isIdel_(false),
 	prevPlayerDistance_(Vector2::One)
 {
+	animeNum_ = BossAnimationNumber::JUMP_UP_NUMBER;
 }
 
 // 攻撃
 void JumpAttack::attack(float deltaTime)
 {
+	if (!isFirstJump_) {
+		// 方向の設定
+		auto distance = pPosition_ - position_;
+		// 方向の値を代入
+		// X
+		if (distance.x < 0)
+			pDirection_.x = -1;
+		else if (distance.x > 0)
+			pDirection_.x = 1;
+		direction_ = pDirection_;
+		isFirstJump_ = true;
+	}
 	// ジャンプ攻撃中に床に接地したら、リキャストに移行
 	// これだと、2巡目以降の２回目のジャンプの終了判定がすぐに行われる。
 	// あとで直す
@@ -59,13 +74,14 @@ void JumpAttack::attack(float deltaTime)
 		isJumpEnd_ = true;
 		timer_ = 0.0f;
 		// 方向の設定
-		auto distance = pPosition_ - position_;
+		auto distance = pPosition_.x - position_.x;
 		// 方向の値を代入
 		// X
-		if (distance.x < 0)
+		if (distance < 0)
 			pDirection_.x = -1;
-		else if (distance.x > 0)
+		else if (distance >= 0)
 			pDirection_.x = 1;
+		direction_ = pDirection_;
 		return;
 	}
 	// リキャスト状態でなければジャンプ攻撃
@@ -83,6 +99,11 @@ void JumpAttack::jump(float deltaTime)
 		-std::cos(degrees_) * speed_ * pDirection_.x * (deltaTime * 60.0f),
 		(-jumpPower_ / 10 + timer_) * 9.8f * (deltaTime * 60.0f));
 	position_ += addPos;
+	// 移動量が - なら上、+ なら下のアニメーションにする
+	if (addPos.y <= 0)
+		animeNum_ = BossAnimationNumber::JUMP_UP_NUMBER;
+	else
+		animeNum_ = BossAnimationNumber::JUMP_DOWN_NUMBER;
 	// std::sin(degrees_) * -speed_);
 	//position_ += addPos;
 	/*position_.y += (-jumpPower_ / 10 + timer_) * 9.8f * (deltaTime * 60.0f);*/
@@ -104,8 +125,10 @@ void JumpAttack::Refresh()
 {
 	BossAttack::Refresh();
 	isJump_ = false;
+	isFirstJump_ = false;
 	isJumpEnd_ = false;
 	isIdel_ = false;
 	jumpPower_ = initJumpPower_;
 	recastTimer_ = initRecastTimer_;
+	animeNum_ = BossAnimationNumber::JUMP_UP_NUMBER;
 }

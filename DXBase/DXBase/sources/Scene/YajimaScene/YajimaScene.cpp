@@ -41,7 +41,7 @@ void YajimaScene::start()
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(50, 205)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), START_POS + Vector2(-50, 200)));
 	auto boss = std::make_shared<BaseBoss>(
-		world_.get(), START_POS + Vector2(1000, 50), 128.0f / 2.0f);
+		world_.get(), START_POS + Vector2(1000, 50), 128.0f * 3 / 2.0f);
 	world_->addActor(ActorGroup::Enemy, boss);
 	boss_ = boss.get();
 

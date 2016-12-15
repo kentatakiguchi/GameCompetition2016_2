@@ -60,6 +60,7 @@ void WallAttack::attack(float deltaTime)
 void WallAttack::Refresh()
 {
 	BossAttack::Refresh();
+	flinchCount_ = 0;
 	isWallAttackEnd_ = false;
 	/*if (flinchCount_ <= 0)
 		isFlinch_ = true;*/
@@ -70,6 +71,7 @@ void WallAttack::Refresh()
 		moveDirections_[count_ % 4]
 		);
 	direction_ = direction;
+	animeNum_ = BossAnimationNumber::WAIT_NUMBER;
 }
 
 // 床捜索状態です
@@ -114,6 +116,7 @@ void WallAttack::wallMove(float deltaTime)
 	isAttackStart_ = true;
 	isBodyHit_ = false;
 	isAttackHit_ = false;
+	animeNum_ = BossAnimationNumber::WALLATTACK_DASH_NUMBER;
 	// 時計周りで移動
 	auto speed = speed_ * 3.0f;
 	//auto count = 0;
@@ -127,13 +130,20 @@ void WallAttack::wallMove(float deltaTime)
 		moveDirections_[(int)(count_ % 4)]
 		);
 	direction_ = direction;
+	animeAngle_ = (count_ * 90) % 360;
 	// 仮
 	auto pos = direction * speed * (deltaTime * 60.0f);
 	position_ += pos;
 
+	// 攻撃間近にアニメーションを変更する
+	if (timer_ >= aSecond_ - 0.2f) {
+		animeNum_ = BossAnimationNumber::WALLATTACK_DASHJUMP_STOP_NUMBER;
+		isAnimaLoop_ = false;
+	}
 	// 一定時間経過で、壁攻撃に遷移
 	if (timer_ >= aSecond_) {
 		changeState(State::WallAttack);
+		isAnimaLoop_ = true;
 		prevPlayerDistance_ = pNormDirection_;
 	}
 }
@@ -142,10 +152,14 @@ void WallAttack::wallMove(float deltaTime)
 void WallAttack::wallAttack(float deltaTime)
 {
 	auto speed = speed_ * 7.0f;
+	isAnimaLoop_ = false;
+	animeNum_ = BossAnimationNumber::WALLATTACK_DASHJUMP_NUMBER;
 	// プレイヤーの居た位置に向かって飛ぶ
 	position_ += prevPlayerDistance_ * speed;
 	//if (timer_ <= 0.2f) return;
 	if (floorName_ == "BossAreaFloor" || floorName_ == "MovelessFloor") {
+		//flinchCount_--;
+		isAnimaLoop_ = true;
 		isBodyHit_ = true;
 		isAttackHit_ = true;
 		isWallAttackEnd_ = true;
@@ -159,17 +173,25 @@ void WallAttack::setAttackSecond()
 	// コンテナの要素数の指定
 	int aCount = 0;
 	auto hp = (hp_ % 100) + 1;
-	flinchCount_ = 1;
-	// 体力が70未満の場合、カウントの値を変える
-	if (hp < 70) {
+	/*if (flinchCount_ <= 0) {
+		flinchCount_ = 1;
 		if (hp >= 30) {
-			aCount = 2;
 			flinchCount_ = 2;
 		}
 		else if (hp < 30) {
-			aCount = 4;
 			flinchCount_ = 3;
 		}
+	}*/
+	
+	flinchCount_ = 1;
+	// 体力が70未満の場合、カウントの値を変える
+	if (hp >= 30) {
+		aCount = 2;
+		flinchCount_ = 2;
+	}
+	else if (hp < 30) {
+		aCount = 4;
+		flinchCount_ = 3;
 	}
 	// 乱数の取得
 	std::random_device random;

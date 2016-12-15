@@ -1,6 +1,44 @@
 #include "EnemyAnimation2D.h"
 
-EnemyAnimation2D::EnemyAnimation2D(){}
+EnemyAnimation2D::EnemyAnimation2D() : 
+	prevFrame_(0),
+	isLoop_(true),
+	isStop_(false){}
+
+// 更新(自分のupdate)
+void EnemyAnimation2D::onUpdate(float deltaTime)
+{
+	back_to_pre_motion();
+	// アニメーションのタイムが一周したら、止める
+	if (isStop_)return;
+
+	// 更新
+	//update(deltaTime);
+
+	frame_ = static_cast<int>(timer_) % sprites_[anim_num_].size();
+	// ループしないなら
+	if (!isLoop_) {
+		// 過去のフレームが現在のフレームよりも大きいなら、
+		// フレームを最大値にする
+		/*if (prevFrame_ > frame_)
+			frame_ = sprites_[anim_num_].size();*/
+	}
+	id_ = sprites_[anim_num_][frame_];
+	timer_ += deltaTime * speed_ * 60.0f / sprites_[anim_num_].size() * 10;
+	// ループしないなら
+	if (!isLoop_) {
+		// アニメーションのタイムが一周したら、止める
+		if (timer_ >= sprites_[anim_num_].size() - 1) {
+			frame_ = sprites_[anim_num_].size() - 1;
+			timer_ = sprites_[anim_num_].size() - 1;
+			isStop_ = true;
+		}
+	}
+
+	// ループ時の更新
+	// フレームの更新
+	prevFrame_ = frame_;
+}
 
 // アニメーションの追加
 void EnemyAnimation2D::addAnimation(
@@ -18,8 +56,14 @@ void EnemyAnimation2D::addAnimation(
 	//		sprites_[id].push_back(id_);
 	//	}
 	//}
+	//type_ = ActionType::Left;
 	add_anim(static_cast<int>(id), res, size, row, column, surplus);
 
+}
+
+// アニメーションの追加(サイズのX, Y指定)
+void EnemyAnimation2D::addAnimation(int id, int res, Vector2 size, int row, int column, int surplus)
+{
 }
 
 // アニメーションの変更
@@ -36,12 +80,19 @@ bool EnemyAnimation2D::isEndAnimation()
 }
 
 // アニメーションのテクスチャを反転します
-void EnemyAnimation2D::turnAnimation(int id)
+void EnemyAnimation2D::turnAnimation(int id, int direction)
 {
 	// アクションタイプの取得
-	auto type = type_;
-	if (type_ == ActionType::Left)
-		type = ActionType::Left;
-	else type = ActionType::Right;
-	change_dir_type(id, type);
+	if (direction > 0)
+		type_ = ActionType::Left;
+	else type_ = ActionType::Right;
+	change_dir_type(id, type_);
+}
+
+// アニメーションをループさせるかを設定します
+void EnemyAnimation2D::setIsLoop(bool isLoop)
+{
+	isLoop_ = isLoop;
+	if (isLoop_)
+		isStop_ = false;
 }

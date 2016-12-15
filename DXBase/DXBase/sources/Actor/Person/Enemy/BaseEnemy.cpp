@@ -238,6 +238,8 @@ void BaseEnemy::search()
 	speed_ = initSpeed_;
 	// 捜索行動
 	searchMove();
+	// 画像の方向を合わせる
+	animation_.turnAnimation(motion_, direction_.x);
 	// プレイヤーが存在しなければ、捜索と待機状態以外は行わない
 	if (!isPlayer_) return;
 	// 一定距離内で、プレイヤーとの間にブロックがなかったら
@@ -275,6 +277,8 @@ void BaseEnemy::chase()
 	speed_ = initSpeed_ * 1.5f;
 	// 追跡行動
 	chaseMove();
+	// 画像の方向を合わせる
+	animation_.turnAnimation(motion_, direction_.x);
 	// プレイヤーが追跡距離外か、プレイヤーの間にブロックがあるなら、
 	// 捜索状態に遷移
 	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 100.0f &&
@@ -412,6 +416,7 @@ void BaseEnemy::updateState(float deltaTime)
 		enemyManager_.setEMPosition(position_, player_->getPosition(), direction_);
 		psObj_->setPosition(position_, player_->getPosition());
 	}
+
 	switch (state_)
 	{
 	case State::Idel: idle(); break;

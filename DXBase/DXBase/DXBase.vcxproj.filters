@@ -510,6 +510,21 @@
     <ClInclude Include="sources\Actor\Doar\Door.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossAnimationNumber.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\ImportEffects.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Scene\TeamLogoScene\TeamLogoScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -897,6 +912,15 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Doar\Door.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Scene\TeamLogoScene\TeamLogoScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

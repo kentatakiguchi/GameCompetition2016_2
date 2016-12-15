@@ -8,6 +8,7 @@
 DysonAttack::DysonAttack() : 
 	BossAttack(Vector2::Zero),
 	addAngle_(0.0f),
+	isRockCreate_(true),
 	world_(nullptr),
 	tornadoObj_(nullptr),
 	state_(State::Attack)
@@ -16,12 +17,14 @@ DysonAttack::DysonAttack() :
 
 DysonAttack::DysonAttack(IWorld * world, const Vector2 & position) :
 	BossAttack(position),
-	addAngle_(2.0f),
+	addAngle_(1.0f),
+	isRockCreate_(false),
 	world_(world),
 	tornadoObj_(nullptr),
 	state_(State::Attack)
 {
 	angle_ = 70.0f;
+	animeNum_ = BossAnimationNumber::BREATH_NUMBER;
 	/*auto tornado = std::make_shared<Tornado>(
 		world_, Vector2(-1000.0f, 0.0f), Vector2(CHIPSIZE * 10, 32.0f * 3));
 	world_->addActor(ActorGroup::Enemy, tornado);
@@ -43,12 +46,17 @@ void DysonAttack::dysonAttack(float deltaTime)
 {
 	// 動けない状態なら、ひるみ状態に遷移
 	if (!isMove_) {
-		changeState(State::Flinch);
+		changeState(State::Flinch, BossAnimationNumber::BREATH_DYSFUNCTION_NUMBER);
+		isAnimaLoop_ = false;
+		if (tornadoObj_ != nullptr) {
+			tornadoObj_->dead();
+			tornadoObj_ = nullptr;
+		}
 		return;
 	}
 
 	// 岩の生成
-	if ((int)(timer_ * 10) % 10 == 0) {
+	if ((int)(timer_ * 10) % 10 == 0 && !isRockCreate_) {
 		// 乱数の取得
 		std::random_device random;
 		// メルセンヌツイスター法 後で調べる
@@ -56,10 +64,16 @@ void DysonAttack::dysonAttack(float deltaTime)
 		std::mt19937 mt(random());
 		// 範囲の指定(int型)
 		std::uniform_int_distribution<> aSecond(CHIPSIZE * 2, CHIPSIZE * 18);
-		// Xの生成位置を入れる
-		world_->addActor(ActorGroup::Enemy,
-			std::make_shared<Rock>(world_, Vector2(aSecond(mt), 200.0f)));
+		// 岩の生成
+		for (int i = 0; i != 3; i++) {
+			// Xの生成位置を入れる
+			world_->addActor(ActorGroup::Enemy,
+				std::make_shared<Rock>(world_, Vector2(aSecond(mt), 200.0f)));
+		}
+		isRockCreate_ = true;
 	}
+	else if ((int)(timer_ * 10) % 10 == 1)
+		isRockCreate_ = false;
 	// ボスの竜巻攻撃(仮)
 	if (tornadoObj_ == nullptr) {
 		auto tornado = std::make_shared<Tornado>(
@@ -88,7 +102,7 @@ void DysonAttack::dysonAttack(float deltaTime)
 	// 一定時間経過で攻撃終了
 	if (timer_ <= 7.0f) return;
 	tornadoObj_->dead();
-	tornadoObj_->initPosition();
+	//tornadoObj_->initPosition();
 	isAttackEnd_ = true;
 }
 
@@ -98,7 +112,8 @@ void DysonAttack::flinch(float deltaTime)
 	//isFlinch_ = true;
 	// プレイヤーをつなぐものに当たっていないなら、疲労状態に遷移
 	if (isMove_) {
-		changeState(State::Fatigue);
+		changeState(State::Fatigue, BossAnimationNumber::BREATH_LESS_NUMBER);
+		isAnimaLoop_ = true;
 		return;
 	}
 	// 触れ続けている間で一定時間経過したらひるむ
@@ -112,14 +127,15 @@ void DysonAttack::fatigue(float deltaTime)
 {
 	if (timer_ <= 5.0f) return;
 	// 攻撃状態に遷移
-	changeState(State::Attack);
+	changeState(State::Attack, BossAnimationNumber::BREATH_NUMBER);
 }
 
 // 状態の変更を行います
-void DysonAttack::changeState(State state)
+void DysonAttack::changeState(State state, BossAnimationNumber num)
 {
 	state_ = state;
 	timer_ = 0.0f;
+	animeNum_ = num;
 }
 
 void DysonAttack::Refresh()
@@ -128,4 +144,5 @@ void DysonAttack::Refresh()
 	isFlinch_ = false;
 	tornadoObj_ = nullptr;
 	state_ = State::Attack;
+	animeNum_ = BossAnimationNumber::BREATH_NUMBER;
 }

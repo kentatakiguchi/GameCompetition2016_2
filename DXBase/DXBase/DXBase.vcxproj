@@ -170,6 +170,10 @@
     <ClInclude Include="sources\Actor\Camera\Camera.h" />
     <ClInclude Include="sources\Actor\Collision\Collision.h" />
     <ClInclude Include="sources\Actor\Doar\Door.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossAnimationNumber.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\ImportEffects.h" />
     <ClInclude Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.h" />
     <ClInclude Include="sources\Actor\Light\Light.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\BaseEnemy.h" />
@@ -312,6 +316,7 @@
     <ClInclude Include="sources\Scene\NaganoScene\NaganoScene.h" />
     <ClInclude Include="sources\Scene\SampleBossScene\SampleBossScene.h" />
     <ClInclude Include="sources\Scene\StageClear\StageClearScene.h" />
+    <ClInclude Include="sources\Scene\TeamLogoScene\TeamLogoScene.h" />
     <ClInclude Include="sources\Scene\Test\TestChara.h" />
     <ClInclude Include="sources\Scene\Test\TestScene.h" />
     <ClInclude Include="sources\Scene\Title\TitleScene.h" />
@@ -333,6 +338,8 @@
     <ClCompile Include="sources\Actor\Body\CollisionBase.cpp" />
     <ClCompile Include="sources\Actor\Camera\Camera.cpp" />
     <ClCompile Include="sources\Actor\Doar\Door.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.cpp" />
     <ClCompile Include="sources\Actor\Light\Light.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\BaseEnemy.cpp" />
@@ -446,6 +453,7 @@
     <ClCompile Include="sources\Scene\NaganoScene\NaganoScene.cpp" />
     <ClCompile Include="sources\Scene\SampleBossScene\SampleBossScene.cpp" />
     <ClCompile Include="sources\Scene\StageClear\StageClearScene.cpp" />
+    <ClCompile Include="sources\Scene\TeamLogoScene\TeamLogoScene.cpp" />
     <ClCompile Include="sources\Scene\Test\TestScene.cpp" />
     <ClCompile Include="sources\Scene\Title\TitleScene.cpp" />
     <ClCompile Include="sources\Scene\YajimaScene\YajimaScene.cpp" />

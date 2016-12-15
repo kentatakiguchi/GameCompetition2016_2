@@ -25,6 +25,7 @@ protected:
 	float recastTimer_;		// 再行動するまでの時間
 	float initRecastTimer_;	// 再行動するまでの時間(初期値)
 	bool isJump_;			// ジャンプをしたか
+	bool isFirstJump_;		// 最初のジャンプか
 	bool isJumpEnd_;		// ジャンプ攻撃が終了したか
 	bool isIdel_;			// ジャンプ後の待機状態か
 

@@ -18,6 +18,7 @@ void ActorManager::initialize() {
 	actors_[ActorGroup::EnemyBullet] = std::make_shared<Actor>();
 	actors_[ActorGroup::Enemy_Spawner] = std::make_shared<Actor>();
 	actors_[ActorGroup::Effect] = std::make_shared<Actor>();
+	actors_[ActorGroup::EffectBack] = std::make_shared<Actor>();
 	actors_[ActorGroup::BACKGRAUND] = std::make_shared<Actor>();
 	actors_[ActorGroup::Field] = std::make_shared<Actor>();
 	actors_[ActorGroup::SCROOLSTOP] = std::make_shared<Actor>("ScroolStop");
@@ -35,6 +36,7 @@ void ActorManager::initialize() {
 	root_.addChild(actors_[ActorGroup::Field]);
 	root_.addChild(actors_[ActorGroup::SCROOLSTOP]);
 	root_.addChild(actors_[ActorGroup::PuyoVertex]);
+	root_.addChild(actors_[ActorGroup::EffectBack]);
 	velo = Vector2::Zero;
 }
 
