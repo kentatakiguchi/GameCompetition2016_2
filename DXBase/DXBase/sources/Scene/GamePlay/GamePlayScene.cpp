@@ -36,7 +36,7 @@ void GamePlayScene::start() {
 
 	MapGenerator gener = MapGenerator(world_.get());
 	int stg=keeper_->getNextSceneName(name_);
-
+	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
 
 	//world_->addEventMessageListener(
 	//	[=](EventMessage msg, void* param) {
@@ -47,7 +47,7 @@ void GamePlayScene::start() {
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), gener.findStartPoint("./resources/file/" + name_ + ".csv")));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
-	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
+
 	gener.create("./resources/file/" + name_ + ".csv",0,0,stg);
 
 

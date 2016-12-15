@@ -134,6 +134,7 @@ void Actor::inv() {
 	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);
 	//移動量を計算
 	mVelo = mPrePos - mCurPos;
+	mVelo = Vector2(mVelo.x*scrool.scroolJudge.x, mVelo.y * scrool.scroolJudge.y);
 }
 Matrix Actor::InitializeInv(Vector2 position)
 {
@@ -152,7 +153,7 @@ Matrix Actor::InitializeInv(Vector2 position)
 	//1フレーム後の座標
 	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);
 	//移動量を計算
-	mVelo = mPrePos - mCurPos;
+	//mVelo = mPrePos - mCurPos;
 	return inv_;
 }
 
