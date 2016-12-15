@@ -16,14 +16,16 @@ BackGraundManager::~BackGraundManager()
 {
 }
 
-void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2,float heightY,bool frontGraund)
+void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2,float heightY,bool frontGraund,bool stage2)
 {
 	BackGraundState backState;
+	backState.stage2 = stage2;
 	//サイズを追加
 	backState.size = ResourceLoader::GetInstance().GetTextureSize(id1);
 	Vector2 size = backState.size;
 	//手前に表示するか
 	backState.frontGraundFlag = frontGraund;
+	
 	//ポジションと番号を設定
 	IndexPos indexPos;
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id1);
@@ -133,7 +135,10 @@ void BackGraundManager::Update(float deltatime)
 		for (auto& j : i.indexPos)
 		{
 			//プレイヤーベクトル加算
-			j.position -= Vector2((mFloor->mVelo*(1.0f / layerNum)).x, mFloor->mVelo.y);
+			if (i.stage2)
+				j.position -= Vector2((mFloor->mVelo*(1.0f / layerNum)).x, mFloor->mVelo.y);
+			else
+				j.position -= mFloor->mVelo*1.0f / layerNum;;
 			//地面テクスチャサイズ
 			Vector2 size = i.size;
 			//x軸のループ

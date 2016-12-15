@@ -68,9 +68,9 @@ void PuyoTextureK::PuyoUpdate()
 	for (auto& i : mWorld->findActors(ActorGroup::PuyoVertex)) {
 		PuyoCollision* puyoCol = dynamic_cast<PuyoCollision*>(i.get());
 		Vector2 hairetu = puyoCol->GetArrayState();
-		if ((Vector2::Distance(mPlayerPos1, commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position) <= 64.0f*2.5f ||
+		if (/*(Vector2::Distance(mPlayerPos1, commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position) <= 64.0f*2.5f ||
 			Vector2::Distance(mPlayerPos2, commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position) <= 64.0f*2.5f)&&
-			mIsHold) {
+			mIsHold*/false) {
 			commonVertexH[(int)hairetu.x][(int)hairetu.y].colWallVec = 0.0f;
 		}
 		else

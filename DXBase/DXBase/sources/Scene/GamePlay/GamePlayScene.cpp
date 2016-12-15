@@ -35,7 +35,7 @@ void GamePlayScene::start() {
 	world_ = std::make_shared<World>();
 
 	MapGenerator gener = MapGenerator(world_.get());
-	int stg=keeper_->getNextSceneName(name_);
+	int stg = keeper_->getNextSceneName(name_);
 	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
 
 	//world_->addEventMessageListener(
@@ -48,7 +48,7 @@ void GamePlayScene::start() {
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
 
-	gener.create("./resources/file/" + name_ + ".csv",0,0,stg);
+	gener.create("./resources/file/" + name_ + ".csv", 0, 0, stg);
 
 
 
@@ -56,12 +56,12 @@ void GamePlayScene::start() {
 	if (name_ == "stage01")
 		world_->SetScroolJudge(Vector2(1, 0), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, 1000.0f));
 	else if (name_ == "stage02")
-		world_->SetScroolJudge(Vector2(1, 1), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, csvSize.y*CHIPSIZE + SCREEN_SIZE.y / 2.0f));
+		world_->SetScroolJudge(Vector2(1, 1), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
 	else if (name_ == "stage03")
-		world_->SetScroolJudge(Vector2(0, 1), Vector2(SCREEN_SIZE.x / 2, SCREEN_SIZE.y*100.0f));
+		world_->SetScroolJudge(Vector2(0, 1), Vector2(SCREEN_SIZE.x / 2, csvSize.y*CHIPSIZE - SCREEN_SIZE.y / 2.0f));
 	else if (name_ == "stage04")
-		world_->SetScroolJudge(Vector2(1, 1), Vector2(99999, 99999));
-	else if (name_ == "test")
+		world_->SetScroolJudge(Vector2(1, 1),  Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
+	else if (name_ == "stage05")
 		world_->SetScroolJudge(Vector2(1, 1), Vector2(99999, 99999));
 	status_ = Status(10);
 
@@ -76,33 +76,36 @@ void GamePlayScene::start() {
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_TEX, TextureID::BACKSTAGE1_6_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_1_TEX, TextureID::BACKSTAGE1_8_2_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_9_TEX, TextureID::BACKSTAGE1_9_TEX, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_9_TEX, TextureID::BACKSTAGE1_9_TEX, 0.0f, true);
 
 		//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 		//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 	}
 	else if (name_ == "stage02")
 	{
-		float graundPos = csvSize.y*CHIPSIZE - SCREEN_SIZE.y;
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_3_TEX, TextureID::BACKSTAGE2_3_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_4_TEX, TextureID::BACKSTAGE2_4_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_5_TEX, TextureID::BACKSTAGE2_5_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_6_TEX, TextureID::BACKSTAGE2_6_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_7_TEX, TextureID::BACKSTAGE2_7_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_8_TEX, TextureID::BACKSTAGE2_8_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_9_TEX, TextureID::BACKSTAGE2_9_TEX, graundPos);
+		float graundPos = csvSize.y*CHIPSIZE -SCREEN_SIZE.y-(PLAYER_SCREEN_POSITION.y-SCREEN_SIZE.y);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX, graundPos, false, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX, graundPos, false, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_3_TEX, TextureID::BACKSTAGE2_3_TEX, graundPos, false, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_4_TEX, TextureID::BACKSTAGE2_4_TEX, graundPos, false, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_5_TEX, TextureID::BACKSTAGE2_5_TEX, graundPos, false, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_6_TEX, TextureID::BACKSTAGE2_6_TEX, graundPos, false, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_7_TEX, TextureID::BACKSTAGE2_7_TEX, graundPos, false, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_8_TEX, TextureID::BACKSTAGE2_8_TEX, graundPos, false, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_9_TEX, TextureID::BACKSTAGE2_9_TEX, graundPos, false, true);
 		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP_TEX, 2);
 	}
 	else if (name_ == "stage03")
 	{
-		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE41_TEX, TextureID::BACKGRAUND_TATE41_TEX);
-		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE31_TEX, TextureID::BACKGRAUND_TATE31_TEX);
-		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE21_TEX, TextureID::BACKGRAUND_TATE21_TEX);
-		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE11_TEX, TextureID::BACKGRAUND_TATE11_TEX);
+		backManager->SetTateBackGraund(TextureID::BACKSTAGE3_1_TEX, TextureID::BACKSTAGE3_1_TEX);
+		backManager->SetTateBackGraund(TextureID::BACKSTAGE3_2_TEX, TextureID::BACKSTAGE3_2_TEX);
+	}
+	else if (name_ == "stage04")
+	{
+		backManager->SetBackGraund(TextureID::BACKSTAGE4_1_TEX, TextureID::BACKSTAGE4_1_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE4_2_TEX, TextureID::BACKSTAGE4_2_TEX);
 
-		backManager->SetTateYokoBackGraund(TextureID::BACKGRAUND_TATEYOKO_TEX);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE4_1_TEX,2);
 	}
 
 	world_->clear(false);
@@ -140,7 +143,7 @@ void GamePlayScene::update() {
 
 		//if (name_ != "stage04")
 		//{
-			nextScene_ = Scene::StageClear;
+		nextScene_ = Scene::StageClear;
 		//}
 		//else
 		//{
@@ -156,13 +159,13 @@ void GamePlayScene::draw() const {
 	backManager->Draw();
 	//world•`‰æ
 	world_->draw();
-	backManager->BackDraw();
-	isStopped_ ? pause_.draw() : move_.draw();
 
+	isStopped_ ? pause_.draw() : move_.draw();
+	backManager->BackDraw();
 }
 
 void GamePlayScene::end() {
-	delete backManager; 
+	delete backManager;
 	StopSoundFile();
 }
 

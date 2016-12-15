@@ -25,6 +25,8 @@ struct BackGraundState
 	std::list<IndexPos> indexPos;
 	//レイヤー
 	int layer;
+	//stage2か
+	bool stage2;
 
 };
 
@@ -34,7 +36,7 @@ public:
 	BackGraundManager(IWorld* world);
 	~BackGraundManager();
 	//背景を設定する（ロードしたテクスチャ限定）
-	void SetBackGraund(TextureID id1,TextureID id2,float heightY=0.0f,bool frontGraund=false);
+	void SetBackGraund(TextureID id1,TextureID id2,float heightY=0.0f,bool frontGraund=false,bool stage2=false);
 	//縦の背景を設定する（ロードしたテクスチャ限定）
 	void SetTateBackGraund(TextureID id1, TextureID id2);
 	//縦の横の背景を設定する(ロードしたテクスチャ限定)
