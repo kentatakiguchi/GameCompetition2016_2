@@ -46,7 +46,7 @@ void GameOverScene::update() {
 		isEnd_ = true;
 
 	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::SPACE))
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))
 	{
 		nextScene_ = Scene::Title;
 		isEnd_ = true;

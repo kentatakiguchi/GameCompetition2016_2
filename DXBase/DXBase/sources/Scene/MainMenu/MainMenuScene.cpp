@@ -27,7 +27,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	defposlist[1] = 340;
 	defposlist[2] = 420;
 	defposlist[3] = 500;
-	defposlist[4] = 500;
+	defposlist[4] = 450;
 
 	nextScene[1] = GamePlay;
 	nextScene[2] = Credit;
@@ -202,7 +202,7 @@ void MainMenuScene::update() {
 		}
 		targetPoint = min(max(targetPoint, 1), 3);
 
-		if (InputMgr::GetInstance().IsKeyDown(KeyCode::SPACE))
+		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))
 		{
 			keeper_->setSceneName("stage04");
 			isEnd_ = true;
@@ -243,7 +243,7 @@ void MainMenuScene::update() {
 
 	}
 	else {
-		if (InputMgr::GetInstance().IsKeyDown(KeyCode::SPACE)) {
+		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE)) {
 			isTitle_ = false;
 		}
 	}

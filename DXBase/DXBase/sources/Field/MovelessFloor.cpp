@@ -55,11 +55,14 @@ void MovelessFloor::set(Vector2 & pos)
 
 void MovelessFloor::onUpdate(float deltaTime)
 {
+	
 
 }
 
 void MovelessFloor::onDraw() const
 {
+	if (isOutCamera())return;
+
 	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_,rotate_,inv_);
 }
 

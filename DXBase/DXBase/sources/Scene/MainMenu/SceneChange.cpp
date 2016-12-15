@@ -9,7 +9,7 @@ static const float SSlimePadd = 46;
 static const Vector2 SSlimeSize = Vector2(290, 130);
 static const int LineSize = 8;
 SceneChange::SceneChange():isMainMenu_(false),isEnd_(true),isSlimeMax_(true),slimeCount(0),timeCount(SdefTime),deltaTime_(0),slimesetline(0), switchCount(0), mt(random_()),
-rand256(0, 255), randR(50, 255), randG(50, 255), randB(50, 255),randL(0, LineSize-1),changeCount(0)
+rand256(0, 255), randR(100, 255), randG(100, 255), randB(0, 200),randL(0, LineSize-1),changeCount(0)
 {
 	spawnPoses[0][0] = (Vector2((SSlimeSize.x - SSlimePadd)*(-0.5), 0));
 	spawnPoses[0][1] = (Vector2((SSlimeSize.x - SSlimePadd) * 0.5, 0));

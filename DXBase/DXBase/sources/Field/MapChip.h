@@ -4,6 +4,7 @@
 #include"../Actor/Base/Actor.h"
 #include"../Define.h"
 #include"../ResourceLoader/ResourceLoader.h"
+#include"../World/World.h"
 
 class MapChip :public Actor{
 public:
@@ -16,6 +17,18 @@ public:
 	MapChip(std::shared_ptr<MapChip> chip, IWorld* world, Vector2& position);
 	MapChip(MapChip& chip,IWorld* world,Vector2& position);
 	virtual void set(Vector2& pos);
+	bool isOutCamera() const{
+		//Vector2 pos = ((world_->findActor("PlayerBody1")->position_ + world_->findActor("PlayerBody2")->position_) / 2) + Vector2(CHIPSIZE / 2, 0);
+		Vector2 pos = world_->findActor("PlayerBody1")->position_ + Vector2(CHIPSIZE / 2, 0);
+
+		if (pos.x - (15 * CHIPSIZE)>position_.x || pos.x + (15 * CHIPSIZE)<position_.x) {
+			return true;
+		}
+		else if (pos.y - (15 * CHIPSIZE)>position_.y || pos.y + (15 * CHIPSIZE)<position_.y) {
+			return true;
+		}
+		return false;
+	}
 	MapChip& operator = (std::shared_ptr<MapChip> other) {
 		return MapChip(other,world_, Vector2(0, 0));
 	};

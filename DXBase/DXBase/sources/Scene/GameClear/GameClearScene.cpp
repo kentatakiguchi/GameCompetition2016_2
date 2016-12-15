@@ -57,7 +57,7 @@ void GameClearScene::update() {
 	targetPoint = min(max(targetPoint, 1), 1);
 
 	
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::SPACE))	isEnd_ = true;
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))	isEnd_ = true;
 }
 
 void GameClearScene::draw() const {

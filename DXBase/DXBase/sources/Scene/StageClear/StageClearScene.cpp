@@ -58,23 +58,25 @@ void StageClearScene::update() {
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
 
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
-		targetPoint--;
-		sinCount = 0;
-	}
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_DOWN)) {
-		targetPoint++;
-		sinCount = 0;
-	}
-	targetPoint = min(max(targetPoint, 1), 2);
-
-
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::SPACE))
+	if (targetPoint != 3)
 	{
-		isEnd_ = true;
-		if (targetPoint == 1 && keeper_->getSceneName() == "stage04")targetPoint = 3;
+		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
+			targetPoint--;
+			sinCount = 0;
+		}
+		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_DOWN)) {
+			targetPoint++;
+			sinCount = 0;
+		}
+		targetPoint = min(max(targetPoint, 1), 2);
+
+
+		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))
+		{
+			isEnd_ = true;
+			if (targetPoint == 1 && keeper_->getSceneName() == "stage04")targetPoint = 3;
+		}
 	}
-	
 }
 
 void StageClearScene::draw() const {

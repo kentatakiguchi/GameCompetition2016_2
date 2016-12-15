@@ -104,7 +104,7 @@ void InputMgr::RegistKeyCode(){
 	//ボタンとキーボードの関連付け
 	ConnectInputName[BUTTON_L1] = KeyCode::L;
 	ConnectInputName[BUTTON_R1] = KeyCode::R;
-	ConnectInputName[BUTTON_CIRCLE] = KeyCode::Z;
+	ConnectInputName[BUTTON_CIRCLE] = KeyCode::SPACE;
 	ConnectInputName[BUTTON_CROSS] = KeyCode::X;
 	ConnectInputName[BUTTON_START] = KeyCode::RETURN;
 	ConnectInputName[BUTTON_UP] = KeyCode::UP;

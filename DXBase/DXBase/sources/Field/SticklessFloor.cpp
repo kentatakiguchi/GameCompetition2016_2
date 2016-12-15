@@ -60,6 +60,8 @@ void SticklessFloor::onUpdate(float deltaTime)
 
 void SticklessFloor::onDraw() const
 {
+	if (isOutCamera())return;
+
 	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
 }
 
