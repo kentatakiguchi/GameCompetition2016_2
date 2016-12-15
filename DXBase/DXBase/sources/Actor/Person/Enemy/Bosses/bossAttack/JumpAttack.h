@@ -7,7 +7,7 @@
 class JumpAttack : public BossAttack {
 public:
 	JumpAttack();
-	JumpAttack(const Vector2& position);	
+	JumpAttack(IWorld* world, const Vector2& position);
 	// UŒ‚
 	virtual void attack(float deltaTime) override;
 	// ƒWƒƒƒ“ƒvUŒ‚

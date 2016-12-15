@@ -4,13 +4,15 @@
 #include "../../../../../Math/Math.h"
 #include "../../../../../Define.h"
 #include "../BossAnimationNumber.h"
+#include "../../../../../World/IWorld.h"
+#include "./../../../../Base/ActorGroup.h"
 #include <string>
 
 // ボス攻撃クラス(ベース)
 class BossAttack {
 public:
 	BossAttack();
-	BossAttack(const Vector2& position);
+	BossAttack(IWorld* world, const Vector2& position);
 	// デストラクタ
 	virtual ~BossAttack();
 	// 更新
@@ -95,6 +97,8 @@ protected:
 	Vector2 pPosition_;			// プレイヤーの位置
 	Vector2 pDirection_;		// プレイヤーとの方向
 	Vector2 pNormDirection_;	// プレイヤーとの方向
+
+	IWorld* world_;
 
 	BossAnimationNumber animeNum_;
 };

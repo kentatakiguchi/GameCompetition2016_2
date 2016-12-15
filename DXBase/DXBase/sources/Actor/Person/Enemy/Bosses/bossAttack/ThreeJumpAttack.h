@@ -7,7 +7,7 @@
 class ThreeJumpAttack : public JumpAttack {
 public:
 	ThreeJumpAttack();
-	ThreeJumpAttack(const Vector2& position);
+	ThreeJumpAttack(IWorld* world, const Vector2& position);
 	// 攻撃
 	void attack(float deltaTime) override;
 	// 攻撃行動のリフレッシュを行います

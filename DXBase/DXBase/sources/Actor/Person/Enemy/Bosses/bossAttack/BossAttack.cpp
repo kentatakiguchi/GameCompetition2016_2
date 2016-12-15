@@ -27,7 +27,7 @@ BossAttack::BossAttack() :
 {
 }
 
-BossAttack::BossAttack(const Vector2 & position) : 
+BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
 	hp_(100),
 	flinchCount_(1),
 	timer_(0.0f),
@@ -49,6 +49,7 @@ BossAttack::BossAttack(const Vector2 & position) :
 	pPosition_(Vector2::One),
 	pDirection_(Vector2::One),
 	pNormDirection_(Vector2::One),
+	world_(world),
 	animeNum_(BossAnimationNumber::WAIT_NUMBER)
 {
 }

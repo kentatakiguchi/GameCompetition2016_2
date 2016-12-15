@@ -14,7 +14,7 @@ void EnemyAnimation2D::onUpdate(float deltaTime)
 
 	// 更新
 	//update(deltaTime);
-
+	if (anim_num_ > 100 || anim_num_ < -100) return;
 	frame_ = static_cast<int>(timer_) % sprites_[anim_num_].size();
 	// ループしないなら
 	if (!isLoop_) {
@@ -64,6 +64,13 @@ void EnemyAnimation2D::addAnimation(
 // アニメーションの追加(サイズのX, Y指定)
 void EnemyAnimation2D::addAnimation(int id, int res, Vector2 size, int row, int column, int surplus)
 {
+	for (int i = 0; i < column; ++i) {
+		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
+			// 切り取る左上の座標
+			Vector2 src = Vector2(j * size.x, i * size.y);
+			sprites_[id].push_back(DerivationGraph(src.x, src.y, size.x, size.y, res));
+		}
+	}
 }
 
 // アニメーションの変更

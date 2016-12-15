@@ -1,5 +1,6 @@
 #include "BossManager.h"
 #include "bossAttack/BossAttack.h"
+#include "../../../../World/IWorld.h"
 
 BossManager::BossManager() : 
 	attackNumber_(0),
@@ -11,7 +12,7 @@ BossManager::BossManager() :
 {
 }
 
-BossManager::BossManager(const Vector2 & position) : 
+BossManager::BossManager(IWorld* world, const Vector2 & position) :
 	attackNumber_(0), 
 	bossPosition_(position),
 	playerPosition_(Vector2::Zero)

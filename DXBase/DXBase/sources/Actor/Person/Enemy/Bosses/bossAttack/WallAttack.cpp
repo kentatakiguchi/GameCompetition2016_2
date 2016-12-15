@@ -1,10 +1,12 @@
 #include "WallAttack.h"
+#include "../Effect/ImportEffects.h"
 #include <random>	// C++11‚Ì‹@”\
 
 WallAttack::WallAttack() :
-	BossAttack(Vector2::Zero),
+	BossAttack(nullptr, Vector2::Zero),
 	count_(0),
 	aSecond_(0),
+	createCount_(0),
 	speed_(0.0f),
 	isWallAttackEnd_(true),
 	//isFlinch_(false),
@@ -13,8 +15,8 @@ WallAttack::WallAttack() :
 {
 }
 
-WallAttack::WallAttack(const Vector2 & position) :
-	BossAttack(position),
+WallAttack::WallAttack(IWorld* world, const Vector2 & position) :
+	BossAttack(world, position),
 	count_(0),
 	aSecond_(5),
 	speed_(4.0f),
@@ -61,6 +63,7 @@ void WallAttack::Refresh()
 {
 	BossAttack::Refresh();
 	flinchCount_ = 0;
+	createCount_ = 0;
 	isWallAttackEnd_ = false;
 	/*if (flinchCount_ <= 0)
 		isFlinch_ = true;*/
@@ -117,6 +120,12 @@ void WallAttack::wallMove(float deltaTime)
 	isBodyHit_ = false;
 	isAttackHit_ = false;
 	animeNum_ = BossAnimationNumber::WALLATTACK_DASH_NUMBER;
+
+	/*if (createCount_ % 2 == 0) {
+		world_->addActor(ActorGroup::EffectBack,
+			std::make_shared<DashEffect>(world_, position_));
+	}
+	createCount_++;*/
 	// ŽžŒvŽü‚è‚ÅˆÚ“®
 	auto speed = speed_ * 3.0f;
 	//auto count = 0;

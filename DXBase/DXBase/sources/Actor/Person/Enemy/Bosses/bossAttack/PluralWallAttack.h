@@ -6,7 +6,7 @@
 class PluralWallAttack : public WallAttack {
 public:
 	PluralWallAttack();
-	PluralWallAttack(const Vector2& position);
+	PluralWallAttack(IWorld* world, const Vector2& position);
 	// 攻撃
 	void attack(float deltaTime) override;
 	// 攻撃行動のリフレッシュを行います

@@ -33,15 +33,19 @@ void Prickle::onDraw() const
 {
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
+	body_.draw(inv_);
 	// ƒgƒQ‚Ì•\Ž¦
-	DrawGraph(
+	DrawExtendGraph(
 		vec3Pos.x - body_.GetBox().getWidth() / 2.0f,
 		vec3Pos.y - body_.GetBox().getHeight() / 2.0f,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_WEAPON_TEX), 0);
+		vec3Pos.x + body_.GetBox().getWidth() / 2.0f, vec3Pos.y + body_.GetBox().getHeight() / 2.0f,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
+	/*DrawGraph(
+		vec3Pos.x - body_.GetBox().getWidth() / 2.0f,
+		vec3Pos.y - body_.GetBox().getHeight() / 2.0f,
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);*/
 	// ƒgƒQ‚Ì•\Ž¦
 	// DrawRotaGraph(position_.x, position_.y, 1.0f, MathHelper::ToRadians())
-
-	body_.draw(inv_);
 }
 
 void Prickle::onCollide(Actor & actor)

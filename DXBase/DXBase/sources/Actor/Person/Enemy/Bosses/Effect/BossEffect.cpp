@@ -2,15 +2,17 @@
 
 BossEffect::BossEffect(
 	IWorld * world,
+	std::string name,
 	const Vector2 & position,
 	const int animeNum,
 	const TextureID id,
-	const Vector2  size,
+	const Vector2 texSize,
+	const Vector2 size,
 	const int surplus) :
-	Actor(world, "Effect", position, CollisionBase()),
+	Actor(world, name, position, CollisionBase()),
 	animation_(EnemyAnimation2D())
 {
-	auto texSize = 512;
+	//auto texSize = 512;
 	// 敵の画像に合わせて調整
 	// 待機
 	animation_.addAnimation(
@@ -20,7 +22,10 @@ BossEffect::BossEffect(
 	animation_.changeAnimation(static_cast<int>(animeNum));
 }
 
-BossEffect::~BossEffect(){}
+BossEffect::~BossEffect(){
+	// アニメーションをクリアする
+	//animation_.
+}
 
 void BossEffect::onUpdate(float deltaTime)
 {

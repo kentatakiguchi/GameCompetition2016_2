@@ -2,5 +2,8 @@
 #define IMPORT_EFFECT_H_
 
 #include "AttackEffect.h"
+#include "BokoEffect.h"
+#include "DashEffect.h"
+#include "PiyoriEffect.h"
 
 #endif

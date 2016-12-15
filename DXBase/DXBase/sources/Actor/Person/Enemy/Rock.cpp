@@ -28,10 +28,16 @@ void Rock::onDraw() const
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
 	// ‰æ‘œ‚Ì•\Ž¦
-	DrawGraph(
+	DrawExtendGraph(
 		vec3Pos.x - body_.GetCircle().getRadius(),
 		vec3Pos.y - body_.GetCircle().getRadius(),
-		ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_TEX), 1);
+		vec3Pos.x + body_.GetCircle().getRadius(), vec3Pos.y + body_.GetCircle().getRadius(),
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
+	/*DrawGraph(
+		vec3Pos.x - body_.GetCircle().getRadius(),
+		vec3Pos.y - body_.GetCircle().getRadius(),
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::ENEMY_NEEDLE_TEX), 1);*/
 
 	body_.draw(inv_);
 }

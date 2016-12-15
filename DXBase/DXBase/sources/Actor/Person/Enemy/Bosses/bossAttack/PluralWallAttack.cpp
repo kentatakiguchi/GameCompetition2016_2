@@ -1,15 +1,15 @@
 #include "PluralWallAttack.h"
 
 PluralWallAttack::PluralWallAttack() : 
-	WallAttack(Vector2::Zero),
+	WallAttack(nullptr, Vector2::Zero),
 	aCount_(0),
 	initACount_(aCount_),
 	idelTimer_(0.0f)
 {
 }
 
-PluralWallAttack::PluralWallAttack(const Vector2 & position) : 
-	WallAttack(position),
+PluralWallAttack::PluralWallAttack(IWorld* world, const Vector2 & position) :
+	WallAttack(world, position),
 	aCount_(1),
 	initACount_(aCount_),
 	idelTimer_(0.0f)

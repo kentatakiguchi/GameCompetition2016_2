@@ -1,13 +1,13 @@
 #include "ThreeJumpAttack.h"
 
 ThreeJumpAttack::ThreeJumpAttack() :
-	JumpAttack(Vector2::Zero),
+	JumpAttack(nullptr, Vector2::Zero),
 	jumpCount_(0),
 	initJumpCount_(jumpCount_)
 {}
 
-ThreeJumpAttack::ThreeJumpAttack(const Vector2 & position) : 
-	JumpAttack(position),
+ThreeJumpAttack::ThreeJumpAttack(IWorld* world, const Vector2 & position) :
+	JumpAttack(world, position),
 	jumpCount_(3),
 	initJumpCount_(jumpCount_)
 {}

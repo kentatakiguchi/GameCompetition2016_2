@@ -50,6 +50,7 @@ BaseEnemy::BaseEnemy(
 	pricleObj_(nullptr),
 	enemyManager_(EnemyManager(position, direction)),
 	animation_(EnemyAnimation2D()),
+	seHandle_(0),
 	handle_(0)
 {
 	//Initialize();
@@ -69,6 +70,9 @@ BaseEnemy::BaseEnemy(
 	//// アニメーションの追加
 	//addAnimation();
 	//animation_.changeAnimation(ENEMY_WALK);
+
+	// SEの追加
+	seHandle_ = LoadSoundMem("./resources/sounds/enemy/enemy_hakkenn.mp3");
 
 	// フォントハンドルの追加
 	handle_ = CreateFontToHandle("ＭＳ 明朝", 40, 10, DX_FONTTYPE_NORMAL);
@@ -247,6 +251,10 @@ void BaseEnemy::search()
 	if (enemyManager_.getPlayerLength() <= discoveryLenght_ && 
 		psObj_->isPlayerLook()) {
 		changeState(State::Discovery, ENEMY_DISCOVERY);
+		// 発見SEの再生
+		PlaySoundMem(seHandle_, DX_PLAYTYPE_BACK);
+		// DX_PLAYTYPE_NORMALだと、サウンド終了するまでに止まってしまう
+		//PlaySound("./resources/sounds/enemy/enemy_hakkenn.mp3", DX_PLAYTYPE_BACK);
 		discoveryPosition_ = position_;
 	}
 	//else if(enemyManager_.getPlayerLength() >= 100) changeState(State::Idel, ENEMY_IDLE);

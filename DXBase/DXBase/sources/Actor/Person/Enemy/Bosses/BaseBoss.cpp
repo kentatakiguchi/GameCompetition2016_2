@@ -19,15 +19,17 @@ BaseBoss::BaseBoss(
 	const float bodyScale) :
 	Actor(world, "BaseBoss", position,
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
-	dp_(30),
+	dp_(5),
 	initDp_(dp_),
 	hp_(3),
 	flinchCount_(0),
 	angleCount_(0),
+	starCreateCount_(0),
 	// initHp_(hp_),
 	stateTimer_(0.0f),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
+	damageTimer_(0.0f),
 	angle_(0.0f),
 	isGround_(false),
 	isBottomHit_(false),
@@ -47,7 +49,7 @@ BaseBoss::BaseBoss(
 	entryObj_(nullptr),
 	heartObj_(nullptr),
 	bossGaugeUI_(nullptr),
-	bossManager_(BossManager(position)),
+	bossManager_(BossManager(world, position)),
 	top_(0.0f), bottom_(0.0f), right_(0.0f), left_(0.0f),
 	handle_(CreateFontToHandle(NULL, 50, 10, DX_FONTTYPE_NORMAL))
 {
@@ -57,11 +59,13 @@ BaseBoss::BaseBoss(
 	asContainer_.push_back(AttackState::SpeacialAttack);
 	// ボスマネージャー
 	// 攻撃コンテナに追加
-	bossManager_.addAttack(std::make_shared<ThreeJumpAttack>(position));
-	bossManager_.addAttack(std::make_shared<WallAttack>(position));
+	bossManager_.addAttack(std::make_shared<ThreeJumpAttack>(world_, position));
+	bossManager_.addAttack(std::make_shared<WallAttack>(world_, position));
 	bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
 	/*auto manager = std::make_shared<BossManager>(position);
 	bossManager_ = &*manager;*/
+
+	stars_.clear();
 
 	// アニメーションの追加
 	addAnimation();
@@ -79,7 +83,7 @@ BaseBoss::BaseBoss(
 	// ボス入口オブジェクト
 	auto entryObj = std::make_shared<BossEntry>(
 		world_, position_, 
-		Vector2(bodyScale / 2.0f, bodyScale / 2.0f),
+		Vector2(bodyScale / 2.0f, -bodyScale / 2.0f),
 		bodyScale / 2.0f);
 	world_->addActor(ActorGroup::Enemy, entryObj);
 	entryObj_ = &*entryObj;
@@ -123,12 +127,10 @@ void BaseBoss::onUpdate(float deltaTime)
 	bossManager_.setIsGround(isGround_);
 	bossManager_.setIsBottom(isBottomHit_);
 
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L)) {
-		/*world_->addActor(ActorGroup::EffectBack,
-			std::make_shared<AttackEffect>(world_, position_));*/
-		angle_ += 3.0f;
+	if (damageTimer_ > 0) {
+		damageTimer_ -= deltaTime;
 	}
-
+	
 	// bool系
 	isGround_ = false;
 	isBottomHit_ = false;
@@ -184,12 +186,14 @@ void BaseBoss::onCollide(Actor & actor)
 	}
 	// 特定の状態ではプレイヤーに触れても何も起こらないようにする
 	if (state_ == State::Flinch || state_ == State::Dead) return;
+	if (damageTimer_ < 0) return;
 	// プレイヤーの攻撃範囲に当たった場合の処理
 	if (actorName == "Player_AttackCollider") {
 		// プレイヤーの攻撃に当たらない場合は返す
 		if (!isAttackHit_) return;
 		// ダメージ処理
 		damage(3);
+		damageTimer_ = 0.5f * 60.0f;
 		return;
 	}
 	// プレイヤー本体に当たった場合の処理
@@ -198,8 +202,9 @@ void BaseBoss::onCollide(Actor & actor)
 		if (!isBodyHit_) return;
 		// ダメージ処理
 		damage(1);
+		damageTimer_ = 0.5f * 60.0f;
 		// もしものためのreturn
-		//return;
+		return;
 	}
 }
 
@@ -316,6 +321,15 @@ void BaseBoss::flinch(float deltaTime)
 	entryObj_->setIsEntry(true);
 	flinchCount_ = 0;
 	animation_.setIsLoop(true);
+
+	if (starCreateCount_ % 50 == 0 && stars_.size() < 6){
+		auto addPos = Vector2(-80, 100);
+		auto star = std::make_shared<PiyoriEffect>(world_, position_ - addPos);
+		world_->addActor(ActorGroup::Effect, star);
+		stars_.push_back(star);
+	}
+	starCreateCount_++;
+
 	// 重力
 	if (position_.y < FIELD_SIZE.y) {
 		position_.y += 9.8f * (1.0f);// * 60.0f);
@@ -355,6 +369,13 @@ void BaseBoss::flinch(float deltaTime)
 	changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
 	entryObj_->setIsEntry(false);
 	dp_ = initDp_;
+	// スターの削除
+	for (auto i = stars_.begin(); i != stars_.end(); i++) {
+		auto star = *i;
+		star->dead();
+	}
+	stars_.clear();
+	starCreateCount_ = 0;
 	//flinchCount_ = 3;
 }
 

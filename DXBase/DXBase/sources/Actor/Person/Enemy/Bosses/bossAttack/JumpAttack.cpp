@@ -1,7 +1,8 @@
 #include "JumpAttack.h"
+#include "../Effect/ImportEffects.h"
 
 JumpAttack::JumpAttack() :
-	BossAttack(Vector2::Zero),
+	BossAttack(nullptr, Vector2::Zero),
 	speed_(0.0f),
 	degrees_(0.0f),
 	jumpPower_(0.0f),
@@ -16,8 +17,8 @@ JumpAttack::JumpAttack() :
 {
 }
 
-JumpAttack::JumpAttack(const Vector2& position) :
-	BossAttack(position),
+JumpAttack::JumpAttack(IWorld* world, const Vector2& position) :
+	BossAttack(world, position),
 	speed_(2.0f),
 	degrees_(60.0f),
 	jumpPower_(15.0f),
@@ -55,6 +56,9 @@ void JumpAttack::attack(float deltaTime)
 	if (isJump_ && isGround_ && timer_ > 0.3f) {
 		isIdel_ = true;
 		isBodyHit_ = true;
+		auto addPos = Vector2::Left * 70;
+		world_->addActor(ActorGroup::Effect,
+			std::make_shared<BokoEffect>(world_, position_ + addPos));
 		//recastTimer_ -= deltaTime;
 		//// リキャスト時間が 0 になったら、ジャンプ攻撃終了
 		//if (recastTimer_ > 0.0f) return;

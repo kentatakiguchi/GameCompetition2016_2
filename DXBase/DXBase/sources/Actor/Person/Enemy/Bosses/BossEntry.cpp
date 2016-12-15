@@ -1,4 +1,7 @@
 #include "BossEntry.h"
+#include "Effect/ImportEffects.h"
+#include "../../../../World/IWorld.h"
+#include "../../../Base/ActorGroup.h"
 
 BossEntry::BossEntry(
 	IWorld * world,
@@ -57,7 +60,9 @@ void BossEntry::onCollide(Actor & actor)
 	if (!isEntry_) return;
 	if (actor.getName() == "PlayerBody1" || actor.getName() == "PlayerBody2") {
 		// プレイヤーの位置を変更
-
+		//world_->addActor(ActorGroup::Effect, star);
+		world_->addActor(ActorGroup::Effect,
+			std::make_shared<BokoEffect>(world_, position_));
 		isEntered_ = true;
 	}
 }

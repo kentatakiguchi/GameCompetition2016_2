@@ -37,8 +37,6 @@ private:
 	float addAngle_;		// 角度の加算量
 	bool isRockCreate_;		// 岩を生成したか 
 
-	IWorld* world_;			// ワールド
-
 	Tornado* tornadoObj_;	// 竜巻オブジェクト
 
 	State state_;

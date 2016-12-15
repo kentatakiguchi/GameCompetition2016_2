@@ -183,6 +183,9 @@ protected:
 	// 重力加速度
 	const float GRAVITY_ = 9.8f;
 
+	// SE
+	int seHandle_;
+
 	// デバッグ
 	int handle_;
 };

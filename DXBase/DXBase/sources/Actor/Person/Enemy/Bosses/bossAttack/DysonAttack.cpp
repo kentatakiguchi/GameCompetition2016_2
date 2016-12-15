@@ -1,25 +1,21 @@
 #include "DysonAttack.h"
 #include "../../Rock.h"
-#include "./../../../../Base/ActorGroup.h"
-#include "../../../../../World/IWorld.h"
 #include "../Tornado.h"
 #include <random>	// C++11‚Ì‹@”\
 
 DysonAttack::DysonAttack() : 
-	BossAttack(Vector2::Zero),
+	BossAttack(nullptr, Vector2::Zero),
 	addAngle_(0.0f),
 	isRockCreate_(true),
-	world_(nullptr),
 	tornadoObj_(nullptr),
 	state_(State::Attack)
 {
 }
 
 DysonAttack::DysonAttack(IWorld * world, const Vector2 & position) :
-	BossAttack(position),
+	BossAttack(world, position),
 	addAngle_(1.0f),
 	isRockCreate_(false),
-	world_(world),
 	tornadoObj_(nullptr),
 	state_(State::Attack)
 {

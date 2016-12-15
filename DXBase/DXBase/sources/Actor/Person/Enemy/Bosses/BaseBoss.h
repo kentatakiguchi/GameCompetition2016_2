@@ -106,10 +106,12 @@ protected:
 	int hp_;						// 体力
 	int flinchCount_;				// ひるむまでの回数
 	int angleCount_;				// 振り向き回数
+	int starCreateCount_;
 	// int initHp_;					// 体力(初期値)
 	float stateTimer_;				// 状態の時間
 	float timer_;					// 現在の時間(最大値 1)
 	float deltaTimer_;				// 現在の時間(補間)
+	float damageTimer_;				// 次に被弾までの時間
 	float angle_;					// 角度(時計周り)
 
 	bool isGround_;					// 接地しているか
@@ -151,6 +153,9 @@ private:
 	// クランプ用の位置コンテナ
 	typedef std::list<Vector2> ClampContainer;
 	ClampContainer clampList_;
+
+	typedef std::list<ActorPtr> StarContainer;
+	StarContainer stars_;
 };
 
 #endif

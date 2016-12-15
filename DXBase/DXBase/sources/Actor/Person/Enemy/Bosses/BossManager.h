@@ -8,12 +8,14 @@
 
 // class BossAttack;
 
+class IWorld;
+
 // ボスマネージャー 
 class BossManager {
 public:
 	BossManager();
 	// コンストラクタ
-	BossManager(const Vector2& position);
+	BossManager(IWorld* world, const Vector2& position);
 	// 攻撃コンテナに攻撃を追加します
 	void addAttack(std::shared_ptr<BossAttack> attack);
 	// 攻撃の番号を変更します
