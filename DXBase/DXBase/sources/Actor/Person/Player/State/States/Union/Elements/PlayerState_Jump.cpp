@@ -19,7 +19,7 @@ void PlayerState_Jump::update(float deltaTime) {
 	timer_ = std::min<float>(timer_ + deltaTime, 60);
 
 	//gra_easeing_ = EasingInExpo(timer_);
-	dir_.y = std::min<float>(dir_.y + 0.1f, 60 * 100)/* * gra_easeing_*/;
+	dir_.y = std::min<float>(dir_.y + 0.1f, 1)/* * gra_easeing_*/;
 
 	butty_->launch(dir_ * power_);
 	retty_->launch(dir_ * power_);

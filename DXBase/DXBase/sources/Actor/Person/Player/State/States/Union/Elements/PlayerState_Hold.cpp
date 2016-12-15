@@ -12,11 +12,30 @@ void PlayerState_Hold::unique_init(){
 		butty_->animation().change(PlayerAnimID::SWIM);
 	}
 
-	PlaySound("./resources/sounds/nobi.mp3", DX_PLAYTYPE_LOOP);
+	//PlaySound("./resources/sounds/nobi.mp3", DX_PLAYTYPE_LOOP);
 
 }
 
 void PlayerState_Hold::update(float deltaTime) {
+	if (retty_->distance() < PLAYER_MAX_STRETCH_LENGTH * 0.4f) {
+		StopSound();
+		flag1_ = false;
+		flag2_ = false;
+	}
+	else if (retty_->distance() < PLAYER_MAX_STRETCH_LENGTH * 0.7f) {
+		flag2_ = false;
+		if (!flag1_) {
+			PlaySound("./resources/sounds/nobi.mp3", DX_PLAYTYPE_LOOP);
+			flag1_ = true;
+		}
+	}
+	else {
+		flag1_ = false;
+		if (!flag2_) {
+			PlaySound("./resources/sounds/nobi_full.mp3", DX_PLAYTYPE_LOOP);
+			flag2_ = true;
+		}
+	}
 	if (element_.type_ == ActionType::Right) {
 		if (InputMgr::GetInstance().AnalogPadVectorL().x > 0) retty_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Right);
 		if (InputMgr::GetInstance().AnalogPadVectorL().x < 0) retty_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Left);
@@ -86,5 +105,9 @@ void PlayerState_Hold::move(){
 		retty_->hold_gravity();
 		retty_->clamp();
 	}
+}
+
+void PlayerState_Hold::sound(const char * path){
+
 }
 

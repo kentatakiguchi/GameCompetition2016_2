@@ -35,6 +35,8 @@ Actor::Actor(const std::string& name) :
 
 // 更新
 void Actor::update(float deltaTime) {
+	//if (!isNearToPlayer())return;
+
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//移動update
@@ -43,6 +45,8 @@ void Actor::update(float deltaTime) {
 }
 
 void Actor::late_update(float deltaTime) {
+	//if (!isNearToPlayer())return;
+
 	body_.MovePos(Vector2(position_.x, position_.y));
 	inv();
 	onLateUpdate(deltaTime);
@@ -51,6 +55,8 @@ void Actor::late_update(float deltaTime) {
 
 // 描画
 void Actor::draw() const {
+	//if (!isNearToPlayer())return;
+
 	onDraw();
 	eachChildren([&](const Actor& child) { child.draw(); });
 }
@@ -181,6 +187,8 @@ ActorPtr Actor::findCildren(std::function<bool(const Actor&)> fn) {
 
 // 子の衝突判定
 void Actor::collideChildren(Actor& other) {
+	//if (!isNearToPlayer())return;
+
 	eachChildren(
 		[&](Actor& my) {
 		other.eachChildren([&](Actor& target) { my.collide(target); });
@@ -269,6 +277,15 @@ CollisionBase Actor::getBody()
 void Actor::handleMessage(EventMessage message, void* param) {
 	onMessage(message, param);
 	eachChildren([&](Actor& child) { child.handleMessage(message, param); });
+}
+
+bool Actor::isNearToPlayer() const {
+	if (world_ == nullptr) return false;
+	auto player = world_->findActor("Player");
+	if (player == nullptr) return false;
+	float distance = Vector2::Distance(player->getPosition(), position_);
+	return distance <= SCREEN_SIZE.x * 0.75f;
+	//return true;
 }
 
 // メッセージ処理

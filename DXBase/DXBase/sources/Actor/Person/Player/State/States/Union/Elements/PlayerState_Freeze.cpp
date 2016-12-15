@@ -3,7 +3,12 @@
 PlayerState_Freeze::PlayerState_Freeze(){}
 
 void PlayerState_Freeze::unique_init(){
+	butty_->animation().change(PlayerAnimID::IDLE);
+	retty_->animation().change(PlayerAnimID::IDLE);
+
 	timer_ = 0;
+
+	PlaySound("./resources/sounds/syoutotu.mp3", DX_PLAYTYPE_BACK);
 }
 
 void PlayerState_Freeze::update(float deltaTime){

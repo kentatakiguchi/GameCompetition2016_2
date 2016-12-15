@@ -12,6 +12,7 @@ PlayerBody::PlayerBody() {}
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
 	Actor(world, name, position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS)),
 	dead_limit_(0),
+	timer_(0),
 	stiffness_(3.0f),
 	friction_(0.1f),
 	mass_(0.8f),
@@ -39,6 +40,14 @@ void PlayerBody::onUpdate(float deltaTime) {
 	opponent_ = HitOpponent::NONE;
 
 	animation_.update(deltaTime);
+
+	if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::STAND_BY)) {
+		timer_ += deltaTime * 60;
+		if (timer_ >= 60) {
+			world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_MOVE, 5.0f));
+			timer_ = 0;
+		}
+	}
 
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::Z))stiffness_ += 0.01f;
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::X))stiffness_ -= 0.01f;
@@ -166,7 +175,7 @@ void PlayerBody::onCollide(Actor & other) {
 
 		Vector2 moves = position_ - body_.GetCircle().previousPosition_;
 
-		if (moves.y > 0)slope_ = SLIP_SPEED * ((segCenter + positionPoint) - (segCenter + targetPoint));
+		if (moves.y > 0)slope_ = SLIP_SPEED * ((segCenter + positionPoint) - (segCenter + targetPoint)).Normalize();
 	}
 }
 

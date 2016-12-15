@@ -13,4 +13,8 @@ private:
 	virtual void pad_input() override;
 private:
 	void move();
-}; 
+	void sound(const char* path);
+private:
+	bool flag1_;
+	bool flag2_;
+};

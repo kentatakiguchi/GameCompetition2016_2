@@ -1,8 +1,8 @@
 #include "PlayerEffectObj.h"
 
 // コンストラクタ
-PlayerEffectObj::PlayerEffectObj(IWorld* world, const Vector2& position, const PlayerEffectID & id, const float& speed):
-	Actor(world, "PlayerEffect", position, CollisionBase()){
+PlayerEffectObj::PlayerEffectObj(IWorld* world, const Vector2& position, const PlayerEffectID & id, const float& speed, const float& scale):
+	Actor(world, "PlayerEffect", position, CollisionBase()), scale_(scale){
 	effect_.change(id, speed);
 }
 
@@ -17,5 +17,5 @@ void PlayerEffectObj::onUpdate(float deltaTime){
 
 // 描画処理
 void PlayerEffectObj::onDraw() const{
-	effect_.draw(position_ * inv_, Vector2::One * 128, 3.0f);
+	effect_.draw_e(position_ * inv_, Vector2::One * 128, scale_);
 }

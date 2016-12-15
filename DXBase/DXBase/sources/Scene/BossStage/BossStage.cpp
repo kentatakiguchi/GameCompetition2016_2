@@ -17,7 +17,7 @@ BossStage::BossStage(SceneDataKeeper* keeper) :
 	//boss_(nullptr){
 	isEnd_ = false;
 	keeper_ = keeper;
-	name_ = "test";
+	name_ = "bossStage01";
 	deltaTime_ = 1 / 60.f;
 }
 

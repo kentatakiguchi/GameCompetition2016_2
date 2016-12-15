@@ -5,6 +5,8 @@
 PlayerState_Idle::PlayerState_Idle() {}
 
 void PlayerState_Idle::unique_init(){
+	StopSound();
+
 	butty_->animation().change(PlayerAnimID::IDLE);
 	retty_->animation().change(PlayerAnimID::IDLE);
 }

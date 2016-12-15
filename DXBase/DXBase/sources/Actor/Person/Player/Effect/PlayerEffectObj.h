@@ -9,7 +9,7 @@
 class PlayerEffectObj : public Actor {
 public:
 	// コンストラクタ
-	PlayerEffectObj(IWorld* world, const Vector2& position, const PlayerEffectID & id, const float& speed = 1.0f);
+	PlayerEffectObj(IWorld* world, const Vector2& position, const PlayerEffectID & id, const float& speed = 1.0f, const float& scale = 1.0f);
 	// デストラクタ
 	~PlayerEffectObj();
 	// 更新処理
@@ -19,4 +19,6 @@ public:
 private:
 	// エフェクトクラス
 	PlayerEffect2D effect_;
+	// 拡大率
+	float scale_;
 };

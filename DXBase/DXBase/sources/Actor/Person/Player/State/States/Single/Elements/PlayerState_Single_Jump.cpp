@@ -1,5 +1,7 @@
 #include "PlayerState_Single_Jump.h"
 
+#include <algorithm>
+
 PlayerState_Single_Jump::PlayerState_Single_Jump(const Keys& keys) : PlayerState_Single(keys) {}
 
 void PlayerState_Single_Jump::unique_init(){
@@ -14,10 +16,10 @@ void PlayerState_Single_Jump::unique_init(){
 void PlayerState_Single_Jump::update(float deltaTime){
 	body_->count_dead_limit(deltaTime);
 
-	timer_ += deltaTime;
+	//timer_ += deltaTime;
 
 	//gra_easeing_ = EasingInExpo(timer_);
-	dir_.y += 0.1f/* * gra_easeing_*/;
+	dir_.y = std::min<float>(dir_.y + 0.1f, 1)/* * gra_easeing_*/;
 
 	body_->launch(dir_ * power_);
 

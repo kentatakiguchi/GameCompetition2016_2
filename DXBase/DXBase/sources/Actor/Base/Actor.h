@@ -91,6 +91,8 @@ public:
 	// コピー禁止
 	Actor(const Actor& other) = delete;
 	Actor& operator = (const Actor& other) = delete;
+private:
+	bool isNearToPlayer() const;
 
 private:
 	// メッセージ処理

@@ -76,7 +76,7 @@ const static float		PLAYER_INV_TIME = 3.0f;
 // プレイヤーの死亡までの時間
 const static float		PLAYER_DEAD_LIMIT = 5.0f;
 // プレイヤーの死亡までの時間
-const static float		PLAYER_FREEZE_TIME = 1.0f;
+const static float		PLAYER_FREEZE_TIME = 0.5f;
 // プレイヤーコネクタの分割数
 const static int		PLAYER_CNTR_DIV_NUM = 7;
 // プレイヤーコネクタの分割数

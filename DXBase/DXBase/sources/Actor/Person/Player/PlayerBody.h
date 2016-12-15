@@ -70,7 +70,7 @@ private:
 	HitOpponent hit_enemy_;
 
 	float dead_limit_;
-
+	float timer_;
 	PlayerBodyCollPtr collider_;
 	PlayerBodyCollPtr attack_collider_;
 

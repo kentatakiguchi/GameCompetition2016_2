@@ -58,11 +58,12 @@ void Player::update_state(float deltaTime) {
 		if (is_dead()) {
 			butty_->change_state(PlayerState_Enum_Single::DEAD);
 			retty_->change_state(PlayerState_Enum_Single::DEAD);
+			if (butty_->isDead() && retty_->isDead()) {
+				dead();
+			}
 		}
 	}
-	else {
-		std::dynamic_pointer_cast<PlayerConnector>(cntr)->state_update(deltaTime);
-	}
+	else std::dynamic_pointer_cast<PlayerConnector>(cntr)->state_update(deltaTime);
 }
 
 // Ú‘±ˆ—
