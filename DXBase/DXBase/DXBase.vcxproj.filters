@@ -102,12 +102,6 @@
     <ClInclude Include="sources\Actor\Body\ShapeType.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Camera\Camera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Light\Light.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\States\Enemy_IdleState.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -507,9 +501,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\StatePath_Union.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Doar\Door.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossAnimationNumber.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -523,6 +514,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Scene\TeamLogoScene\TeamLogoScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Door\Door.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Field\ChipHeaders.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -573,12 +570,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Base\ActorManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Camera\Camera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Light\Light.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp">
@@ -911,9 +902,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerStateMgr_Union.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Doar\Door.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -921,6 +909,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Scene\TeamLogoScene\TeamLogoScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Door\Door.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

@@ -24,7 +24,7 @@
 #include"../Actor/Person/Enemy/ImportEnemys.h"
 #include"../Actor/Person/Enemy/Bosses/ImportBosses.h"
 #include"../ResourceLoader/ResourceLoader.h"
-#include"../Actor/Doar/Door.h"
+#include "../Actor/Door/Door.h"
 
 class MapGenerator {
 private:

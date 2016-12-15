@@ -1,7 +1,5 @@
 #include "GamePlayScene.h"
 #include "../../World/World.h"
-#include "../../Actor/Camera/Camera.h"
-#include "../../Actor/Light/Light.h"
 #include "../../Field/Field.h"
 #include "../../Actor/Base/ActorGroup.h"
 #include "../../Actor/Person/Player/Player.h"
@@ -46,23 +44,29 @@ void GamePlayScene::start() {
 	//}
 	//);
 	//world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
-	world_->addCamera(std::make_shared<Camera>(world_.get()));
-	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), gener.findStartPoint("./resources/file/" + name_ + ".csv")));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
-
+	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
 	gener.create("./resources/file/" + name_ + ".csv",0,0,stg);
 
 
+
+	Vector2 csvSize = Vector2(gener.GetColumnSize(), gener.GetRowSize());
+	if (name_ == "stage01")
+		world_->SetScroolJudge(Vector2(1, 0), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, 1000.0f));
+	else if (name_ == "stage02")
+		world_->SetScroolJudge(Vector2(1, 1), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, csvSize.y*CHIPSIZE + SCREEN_SIZE.y / 2.0f));
+	else if (name_ == "stage03")
+		world_->SetScroolJudge(Vector2(0, 1), Vector2(SCREEN_SIZE.x / 2, SCREEN_SIZE.y*100.0f));
+	else if (name_ == "stage04")
+		world_->SetScroolJudge(Vector2(1, 1), Vector2(99999, 99999));
+	else if (name_ == "test")
+		world_->SetScroolJudge(Vector2(1, 1), Vector2(99999, 99999));
 	status_ = Status(10);
 
 	backManager = new BackGraundManager(world_.get());
-	if (name_ != "stage03") {
-		if(name_=="stage01")
-		world_->SetScroolJudge(Vector2(1, 0),Vector2(9408 - SCREEN_SIZE.x / 2, 0));
-		else
-		world_->SetScroolJudge(Vector2(1, 1), Vector2(4416 - SCREEN_SIZE.x / 2, SCREEN_SIZE.y*10.0f));
+	if (name_ == "stage01") {
 		//先にセットされたテクスチャほど奥に描写される
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_1_TEX, TextureID::BACKSTAGE1_2_2_TEX);
@@ -72,18 +76,32 @@ void GamePlayScene::start() {
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_TEX, TextureID::BACKSTAGE1_6_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_1_TEX, TextureID::BACKSTAGE1_8_2_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_9_TEX, TextureID::BACKSTAGE1_9_TEX,true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_9_TEX, TextureID::BACKSTAGE1_9_TEX, true);
 
 		//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 		//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 	}
-	else
+	else if (name_ == "stage02")
 	{
-		world_->SetScroolJudge(Vector2(0, 1), Vector2(0, SCREEN_SIZE.y*10.0f));
+		float graundPos = csvSize.y*CHIPSIZE - SCREEN_SIZE.y;
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_3_TEX, TextureID::BACKSTAGE2_3_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_4_TEX, TextureID::BACKSTAGE2_4_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_5_TEX, TextureID::BACKSTAGE2_5_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_6_TEX, TextureID::BACKSTAGE2_6_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_7_TEX, TextureID::BACKSTAGE2_7_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_8_TEX, TextureID::BACKSTAGE2_8_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_9_TEX, TextureID::BACKSTAGE2_9_TEX, graundPos);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP_TEX, 2);
+	}
+	else if (name_ == "stage03")
+	{
 		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE41_TEX, TextureID::BACKGRAUND_TATE41_TEX);
 		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE31_TEX, TextureID::BACKGRAUND_TATE31_TEX);
 		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE21_TEX, TextureID::BACKGRAUND_TATE21_TEX);
 		backManager->SetTateBackGraund(TextureID::BACKGRAUND_TATE11_TEX, TextureID::BACKGRAUND_TATE11_TEX);
+
 		backManager->SetTateYokoBackGraund(TextureID::BACKGRAUND_TATEYOKO_TEX);
 	}
 
