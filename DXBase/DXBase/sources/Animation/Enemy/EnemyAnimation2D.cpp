@@ -14,8 +14,8 @@ void EnemyAnimation2D::onUpdate(float deltaTime)
 
 	// 更新
 	//update(deltaTime);
-	if (anim_num_ > 100 || anim_num_ < -100) return;
-	frame_ = static_cast<int>(timer_) % sprites_[anim_num_].size();
+	if (curr_anim_ > 100 || curr_anim_ < -100) return;
+	frame_ = static_cast<int>(timer_) % sprites_[curr_anim_].size();
 	// ループしないなら
 	if (!isLoop_) {
 		// 過去のフレームが現在のフレームよりも大きいなら、
@@ -23,14 +23,14 @@ void EnemyAnimation2D::onUpdate(float deltaTime)
 		/*if (prevFrame_ > frame_)
 			frame_ = sprites_[anim_num_].size();*/
 	}
-	id_ = sprites_[anim_num_][frame_];
-	timer_ += deltaTime * speed_ * 60.0f / sprites_[anim_num_].size() * 10;
+	id_ = sprites_[curr_anim_][frame_];
+	timer_ += deltaTime * curr_speed_ * 60.0f / sprites_[curr_anim_].size() * 10;
 	// ループしないなら
 	if (!isLoop_) {
 		// アニメーションのタイムが一周したら、止める
-		if (timer_ >= sprites_[anim_num_].size() - 1) {
-			frame_ = sprites_[anim_num_].size() - 1;
-			timer_ = sprites_[anim_num_].size() - 1;
+		if (timer_ >= sprites_[curr_anim_].size() - 1) {
+			frame_ = sprites_[curr_anim_].size() - 1;
+			timer_ = sprites_[curr_anim_].size() - 1;
 			isStop_ = true;
 		}
 	}

@@ -32,14 +32,16 @@ protected:
 	//分割前の画像id
 	int id_;
 	//現在のアニメーション
-	int anim_num_;
+	int curr_anim_;
+	int norm_anim_;
+	int turn_anim_;
+	int curr_speed_;
+	int norm_speed_;
+	int turn_speed_;
+
 	int frame_;
-	int pre_anim_;
-	int pre_speed_;
 	//アニメーションの再生時間
 	float timer_;
-	//アニメーションの再生速度
-	float speed_;
 	
 	ActionType type_stock_;
 	ActionType type_;

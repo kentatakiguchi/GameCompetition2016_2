@@ -3,7 +3,10 @@
 using namespace std;
 
 Animation2D::Animation2D() :
-	id_(-1), anim_num_(-1), frame_(0), pre_anim_(-1), pre_speed_(1), speed_(1), timer_(0), type_(ActionType::Right), type_stock_(ActionType::Right) {
+	id_(-1), frame_(0), timer_(0),
+	curr_anim_(-1), norm_anim_(-1), turn_anim_(-1), 
+	curr_speed_(1), norm_speed_(1), turn_speed_(2),
+	type_(ActionType::Right), type_stock_(ActionType::Right) {
 }
 
 void Animation2D::add_anim(const int & id, const int & res, const int & size, const int & row, const int & column, const int & surplus) {
@@ -18,43 +21,47 @@ void Animation2D::add_anim(const int & id, const int & res, const int & size, co
 
 void Animation2D::change_param(const int& anim_num, const float& speed) {
 	//再生速度を変更
-	speed_ = speed;
+	norm_speed_ = speed;
+	if (turn_anim_ == -1)curr_speed_ = norm_speed_;
 	//アニメーションが同じ場合はreturn
-	if (anim_num_ == anim_num)return;
+	if (norm_anim_ == anim_num)return;
 	//指定したアニメーションに変更
-	anim_num_ = anim_num;
+	norm_anim_ = anim_num;
+	if (turn_anim_ == -1)curr_anim_ = norm_anim_;
 	//再生時間をリセット
 	timer_ = 0;
 }
 
 void Animation2D::change_dir_type(const int& anim_num, const ActionType& type) {
 	if (type_stock_ == type)return;
-	if (pre_anim_ != -1)return;
-	pre_anim_ = anim_num_;
-	pre_speed_ = speed_;
+	if (turn_anim_ != -1)return;
+	turn_anim_ = anim_num;
+	curr_anim_ = turn_anim_;
+	turn_speed_ = 2.0f;
+	curr_speed_ = turn_speed_;
 	type_stock_ = type;
-	change_param(anim_num, 2.0f);
 }
 
 void Animation2D::back_to_pre_motion() {
-	if (pre_anim_ != -1 && end_anim()) {
-		change_param(pre_anim_, pre_speed_);
-		pre_anim_ = -1;
+	if (turn_anim_ != -1 && end_anim()) {
+		turn_anim_ = -1;
+		curr_anim_ = norm_anim_;
+		curr_speed_ = norm_speed_;
 		type_ = type_stock_;
 	}
 }
 
 bool Animation2D::end_anim() {
-	return frame_ == sprites_[anim_num_].size() - 1;
+	return frame_ >= sprites_[curr_anim_].size() - 2;
 }
 
 void Animation2D::update(float deltaTime) {
 	back_to_pre_motion();
 
-	frame_ = static_cast<int>(timer_) % sprites_[anim_num_].size();
-	id_ = sprites_[anim_num_][frame_];
+	frame_ = static_cast<int>(timer_) % sprites_[curr_anim_].size();
+	id_ = sprites_[curr_anim_][frame_];
 	//更新処理
-	timer_ += deltaTime * speed_ * 60.0f / sprites_[anim_num_].size() * 10;
+	timer_ += deltaTime * curr_speed_ * 60.0f / sprites_[curr_anim_].size() * 10;
 
 }
 

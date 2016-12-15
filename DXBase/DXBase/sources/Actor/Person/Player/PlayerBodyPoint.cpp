@@ -5,7 +5,7 @@
 // コンストラクタ
 PlayerBodyPoint::PlayerBodyPoint(IWorld * world, const Vector2 & position, const int& index) :
 	Actor(world, "BodyPoint" , position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS * 0.2f)), index_(index),
-	stiffness_(3.0f),
+	stiffness_(4.0f),
 	friction_(0.1f),
 	mass_(0.8f) {
 }
@@ -72,7 +72,7 @@ void PlayerBodyPoint::attract_update(float deltaTime){
 	v1_ = Vector2::Spring_v(position_, cntr->get_point(index_ + 1), v1_, stiffness_, friction_, mass_);
 	v2_ = Vector2::Spring_v(position_, cntr->get_point(index_ - 1), v2_, stiffness_, friction_, mass_);
 	//}
-	position_ += (v1_ + v2_ + Vector2(0, 9.8f) / 10) * deltaTime * 60;
+	position_ += (v1_ + v2_ + Vector2(0, 9.8f) / 5) * deltaTime * 60;
 
 	position_ = Vector2::ClampTarget(position_, cntr->get_point(index_ + 1), PLAYER_MAX_DIV_LENGTH);
 	position_ = Vector2::ClampTarget(position_, cntr->get_point(index_ - 1), PLAYER_MAX_DIV_LENGTH);

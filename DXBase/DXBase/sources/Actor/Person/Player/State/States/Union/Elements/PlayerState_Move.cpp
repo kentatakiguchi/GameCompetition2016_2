@@ -39,7 +39,22 @@ void PlayerState_Move::update(float deltaTime){
 	if (InputMgr::GetInstance().AnalogPadVectorL().x > 0) retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
 	if (InputMgr::GetInstance().AnalogPadVectorL().x < 0) retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
 
-
+	if (element_.type_ == ActionType::Right) {
+		if (butty_->getPosition().x > retty_->getPosition().x) {
+			retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
+		}
+		else {
+			retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
+		}
+	}
+	if (element_.type_ == ActionType::Left) {
+		if (butty_->getPosition().x > retty_->getPosition().x) {
+			butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
+		}
+		else {
+			butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
+		}
+	}
 	move(deltaTime);
 }
 

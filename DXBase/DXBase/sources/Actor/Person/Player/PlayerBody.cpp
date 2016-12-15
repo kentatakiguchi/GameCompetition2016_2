@@ -13,7 +13,7 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	Actor(world, name, position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS)),
 	dead_limit_(0),
 	timer_(0),
-	stiffness_(3.0f),
+	stiffness_(4.0f),
 	friction_(0.1f),
 	mass_(0.8f),
 	stateMgr_(name) {
@@ -69,9 +69,9 @@ void PlayerBody::onDraw() const {
 	SetFontSize(32);
 	DrawFormatString(static_cast<int>((position_ * inv_).x) + 30, static_cast<int>((position_ * inv_).y), GetColor(255, 255, 255), "%f", dead_limit_);
 
-	DrawFormatString(100, 900, GetColor(0, 0, 0), "çÑê´ : %f", stiffness_);
-	DrawFormatString(100, 950, GetColor(0, 0, 0), "ñÄéC : %f", friction_);
-	DrawFormatString(100, 1000, GetColor(0, 0, 0), "éøó  : %f", mass_);
+	//DrawFormatString(100, 900, GetColor(0, 0, 0), "çÑê´ : %f", stiffness_);
+	//DrawFormatString(100, 950, GetColor(0, 0, 0), "ñÄéC : %f", friction_);
+	//DrawFormatString(100, 1000, GetColor(0, 0, 0), "éøó  : %f", mass_);
 
 	Vector3 color = Vector3::Zero;
 	if (name_ == "PlayerBody1")color = Vector3(255, 255, 255);
