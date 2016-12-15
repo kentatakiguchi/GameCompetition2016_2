@@ -244,7 +244,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\State_Dammy.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\StatePath_Union.h" />
-    <ClInclude Include="sources\Actor\Person\Player\Status\Status.h" />
     <ClInclude Include="sources\Actor\ScroolStop\ScroolStop.h" />
     <ClInclude Include="sources\Actor\TestPlayer\TestPlayer.h" />
     <ClInclude Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.h" />
@@ -295,7 +294,6 @@
     <ClInclude Include="sources\Renderer\Puyo_Texture.h" />
     <ClInclude Include="sources\Renderer\Puyo_Texture_K.h" />
     <ClInclude Include="sources\Renderer\Renderer.h" />
-    <ClInclude Include="sources\ResourceID.h" />
     <ClInclude Include="sources\ResourceLoader\ResourceLoader.h" />
     <ClInclude Include="sources\Scene\Base\IScene.h" />
     <ClInclude Include="sources\Scene\Base\IScenePtr.h" />
@@ -315,7 +313,6 @@
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h" />
     <ClInclude Include="sources\Scene\MainMenu\MainMenuScene.h" />
     <ClInclude Include="sources\Scene\MainMenu\SceneChange.h" />
-    <ClInclude Include="sources\Scene\NaganoScene\NaganoScene.h" />
     <ClInclude Include="sources\Scene\SampleBossScene\SampleBossScene.h" />
     <ClInclude Include="sources\Scene\StageClear\StageClearScene.h" />
     <ClInclude Include="sources\Scene\TeamLogoScene\TeamLogoScene.h" />
@@ -397,7 +394,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Move.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Idle.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.cpp" />
-    <ClCompile Include="sources\Actor\Person\Player\Status\Status.cpp" />
     <ClCompile Include="sources\Actor\ScroolStop\ScroolStop.cpp" />
     <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
     <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
@@ -453,7 +449,6 @@
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp" />
     <ClCompile Include="sources\Scene\MainMenu\MainMenuScene.cpp" />
     <ClCompile Include="sources\Scene\MainMenu\SceneChange.cpp" />
-    <ClCompile Include="sources\Scene\NaganoScene\NaganoScene.cpp" />
     <ClCompile Include="sources\Scene\SampleBossScene\SampleBossScene.cpp" />
     <ClCompile Include="sources\Scene\StageClear\StageClearScene.cpp" />
     <ClCompile Include="sources\Scene\TeamLogoScene\TeamLogoScene.cpp" />

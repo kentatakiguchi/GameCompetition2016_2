@@ -14,6 +14,7 @@ void PlayerState_Single_Move::update(float deltaTime){
 	if (InputMgr::GetInstance().AnalogPadVectorL().x < 0 && is_retty()) body_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Left);
 
 	body_->count_dead_limit(deltaTime);
+	body_->gravity();
 }
 
 void PlayerState_Single_Move::end(){

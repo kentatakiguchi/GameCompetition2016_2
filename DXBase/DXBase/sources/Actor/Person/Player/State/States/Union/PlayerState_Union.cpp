@@ -60,11 +60,11 @@ bool PlayerState_Union::holdable_keyL() {
 }
 
 bool PlayerState_Union::move_keyR(){
-	return InputMgr::GetInstance().KeyVector_R().Length() > 0;
+	return InputMgr::GetInstance().KeyVector_R().Length() > 0/* && butty_->able_to_jump()*/;
 }
 
 bool PlayerState_Union::move_keyL(){
-	return InputMgr::GetInstance().KeyVector_L().Length() > 0;
+	return InputMgr::GetInstance().KeyVector_L().Length() > 0/* && retty_->able_to_jump()*/;
 }
 
 bool PlayerState_Union::jump_key(){
@@ -81,11 +81,11 @@ bool PlayerState_Union::holdable_padL() {
 }
 
 bool PlayerState_Union::move_padR() {
-	return InputMgr::GetInstance().AnalogPadVectorR().Length() > 0;
+	return InputMgr::GetInstance().AnalogPadVectorR().Length() > 0/* && butty_->able_to_jump()*/;
 }
 
 bool PlayerState_Union::move_padL() {
-	return InputMgr::GetInstance().AnalogPadVectorL().Length() > 0;
+	return InputMgr::GetInstance().AnalogPadVectorL().Length() > 0/* && retty_->able_to_jump()*/;
 }
 
 bool PlayerState_Union::jump_pad() {

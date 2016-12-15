@@ -44,7 +44,7 @@ void PlayerBody::onUpdate(float deltaTime) {
 	if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::STAND_BY)) {
 		timer_ += deltaTime * 60;
 		if (timer_ >= 60) {
-			world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_MOVE, 5.0f));
+			world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_MOVE, 5.0f, 0.5f));
 			timer_ = 0;
 		}
 	}

@@ -65,6 +65,10 @@ public:
 		}
 		return START_POS;
 	}
+	Vector2 GetCellSize() {
+		return Vector2(static_cast<float>(colSize), static_cast<float>(rowSize));
+	}
+
 	//ècÇÃÉZÉãêîÇï‘Ç∑
 	int GetRowSize() {
 		return rowSize;
@@ -645,10 +649,10 @@ public:
 		}
 	}
 private:
-	void SetSegmentPoint(float rowN, float colN, Vector2& startPoint, Vector2& endPoint,pointSetState state)
+	void SetSegmentPoint(int rowN, int colN, Vector2& startPoint, Vector2& endPoint,pointSetState state)
 	{
 		startPoint = segmentStartPoints[reader_.geti(rowN, colN)];
-		endPoint = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE);
+		endPoint = Vector2(static_cast<float>(colN), static_cast<float>(rowN)) * CHIPSIZE;
 
 		Vector2 startSet, endSet;
 
@@ -657,11 +661,11 @@ private:
 			
 		if (segmentStartPoints[reader_.geti(rowN, colN)].x < colN*CHIPSIZE) {
 			startPoint = segmentStartPoints[reader_.geti(rowN, colN)] + startSet;
-			endPoint = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + endSet;
+			endPoint = Vector2(static_cast<float>(colN), static_cast<float>(rowN)) * CHIPSIZE + endSet;
 		}
 		else if (segmentStartPoints[reader_.geti(rowN, colN)].x > colN*CHIPSIZE)
 		{
-			startPoint = Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + startSet;
+			startPoint = Vector2(static_cast<float>(colN), static_cast<float>(rowN)) * CHIPSIZE + startSet;
 			endPoint = segmentStartPoints[reader_.geti(rowN, colN)] + endSet;
 		}
 	}

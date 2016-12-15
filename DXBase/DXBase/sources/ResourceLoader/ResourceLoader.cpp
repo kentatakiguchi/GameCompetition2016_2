@@ -21,12 +21,20 @@ void ResourceLoader::loadTexture(TextureID id, const char* file_name) {
 	textures_[id] = LoadGraph(file_name);
 }
 
+void ResourceLoader::loadSound(SoundID id, const char * file_name){
+	sounds_[id] = LoadSoundMem(file_name);
+}
+
 int ResourceLoader::getModelID(ModelID id) {
 	return models_[id];
 }
 
 int ResourceLoader::getTextureID(TextureID id) {
 	return textures_[id];
+}
+
+int ResourceLoader::getSoundID(SoundID id){
+	return sounds_[id];
 }
 
 Vector2 ResourceLoader::GetTextureSize(TextureID id)

@@ -30,7 +30,7 @@ void PlayerConnector::onUpdate(float deltaTime) {
 	position_ = (butty_->getPosition() + retty_->getPosition()) / 2;
 
 	if (is_damaged()) {
-		world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_EXP, 5.0f));
+		world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_EXP, 5.0f, 3.0f));
 		dead();
 	}
 	if (is_cleared()) world_->clear(true);

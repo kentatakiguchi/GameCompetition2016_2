@@ -20,15 +20,14 @@ void TestScene::start() {
 
 	world_ = std::make_shared<World>();
 
-	float x = segment2_.getLength();
-	id = x;
+	id = static_cast<int>(segment2_.getLength());
 	MapGenerator gener = MapGenerator(world_.get());
 	gener.create("test.csv");
 	world_->addActor(ActorGroup::Player, std::make_shared<TestChara>(world_.get(),Vector2(0,0)));
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
-	// グラフィックのロード
-	id = LoadGraph("./resources/Player.png");
+	//// グラフィックのロード
+	//id = LoadGraph("./resources/Player.png");
 
 }
 
@@ -54,8 +53,8 @@ void TestScene::update() {
 	//	//		box_ = box_.translate({ 0,10 });
 	//}
 	world_->update(1);
-	DrawFormatString(a.position_.x, a.position_.y, GetColor(255, 255, 255), "a");
-	DrawFormatString(b.position_.x, b.position_.y, GetColor(255, 255, 255), "b");
+	DrawFormatString(static_cast<int>(a.position_.x), static_cast<int>(a.position_.y), GetColor(255, 255, 255), "a");
+	DrawFormatString(static_cast<int>(b.position_.x), static_cast<int>(b.position_.y), GetColor(255, 255, 255), "b");
 	//if (a.isCollide(b))
 	//{
 	//	DrawFormatString(250, 100, GetColor(255, 255, 255), "deta");

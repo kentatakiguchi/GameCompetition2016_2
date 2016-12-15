@@ -2,7 +2,6 @@
 #define _KATAOKA_SCENE_H_
 
 #include "../Base/IScene.h"
-#include "../../Actor/Person/Player/Status/Status.h"
 #include <memory>
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
 #include "../../Renderer/Puyo_Texture_K.h"
@@ -26,8 +25,6 @@ private:
 	WorldPtr	world_;
 
 	int id;
-
-	Status status_;
 
 	BackGraundManager* backManager;
 

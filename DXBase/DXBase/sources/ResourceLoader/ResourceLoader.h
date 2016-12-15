@@ -152,6 +152,20 @@ enum class TextureID {
 
 };
 
+enum class SoundID {
+	BGM_MENU,
+	BGM_STAGE_123,
+	BGM_STAGE_4,
+	BGM_STAGE_5,
+	SE_BUNRI,
+	SE_NOBI,
+	SE_NOBI_FULL,
+	SE_PUYON,
+	SE_SHOT,
+	SE_SYOUTOTU,
+	SE_HAKKEN
+};
+
 class ResourceLoader{
 private:
 	ResourceLoader();
@@ -161,14 +175,17 @@ public:
 
 	void loadModel(ModelID id, const char* file_name);
 	void loadTexture(TextureID id, const char* file_name);
+	void loadSound(SoundID id, const char* file_name);
 
 	int getModelID(ModelID id);
 	int getTextureID(TextureID id);
+	int getSoundID(SoundID id);
 	//テクスチャのサイズを取得する(引数:テクスチャハンドル,戻り値:Vector2)
 	Vector2 GetTextureSize(TextureID id);
 	void clearResources();
 private:
 	std::unordered_map<ModelID, int> models_;
 	std::unordered_map<TextureID, int> textures_;
+	std::unordered_map<SoundID, int> sounds_;
 
 };

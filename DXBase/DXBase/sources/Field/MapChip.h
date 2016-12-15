@@ -18,8 +18,10 @@ public:
 	MapChip(MapChip& chip,IWorld* world,Vector2& position);
 	virtual void set(Vector2& pos);
 	bool isOutCamera() const{
+		auto player = world_->findActor("PlayerBody1");
+		if (player == nullptr)return true;
 		//Vector2 pos = ((world_->findActor("PlayerBody1")->position_ + world_->findActor("PlayerBody2")->position_) / 2) + Vector2(CHIPSIZE / 2, 0);
-		Vector2 pos = world_->findActor("PlayerBody1")->position_ + Vector2(CHIPSIZE / 2, 0);
+		Vector2 pos = player->position_ + Vector2(CHIPSIZE / 2, 0);
 
 		if (pos.x - (15 * CHIPSIZE)>position_.x || pos.x + (15 * CHIPSIZE)<position_.x) {
 			return true;

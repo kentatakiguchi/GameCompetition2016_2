@@ -41,9 +41,6 @@ void SampleBossScene::start()
 	gener.create("./resources/file/" + name_ + ".csv");
 	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
 
-
-	status_ = Status(10);
-
 	backManager = new BackGraundManager(world_.get());
 	//先にセットされたテクスチャほど奥に描写される
 	//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);

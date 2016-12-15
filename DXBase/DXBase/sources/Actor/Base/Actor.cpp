@@ -284,7 +284,7 @@ bool Actor::isNearToPlayer() const {
 	auto player = world_->findActor("Player");
 	if (player == nullptr) return false;
 	float distance = Vector2::Distance(player->getPosition(), position_);
-	return distance <= SCREEN_SIZE.x * 0.75f;
+	return distance <= SCREEN_SIZE.x;
 	//return true;
 }
 

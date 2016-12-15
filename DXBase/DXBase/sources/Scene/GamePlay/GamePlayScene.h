@@ -2,7 +2,6 @@
 #define _GAME_PLAY_SCENE_H_
 
 #include "../Base/IScene.h"
-#include "../../Actor/Person/Player/Status/Status.h"
 #include <memory>
 #include "../../Math/Math.h"
 #include"PauseScreen.h"
@@ -24,8 +23,6 @@ private:
 	using WorldPtr = std::shared_ptr<World>;
 	// ƒ[ƒ‹ƒh
 	WorldPtr	world_;
-
-	Status status_;
 
 	BackGraundManager* backManager;
 

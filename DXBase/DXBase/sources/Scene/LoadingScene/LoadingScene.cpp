@@ -62,41 +62,7 @@ void LoadingScene::start(){
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE4_1_TEX, "./resources/sprite/BackGraund/Stage4-1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE4_2_TEX, "./resources/sprite/BackGraund/Stage4-2.png");
-
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_WALK_TEX, "./resources/sprite/actor/enemy/Enemy01_Walk.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_DISCORVER_TEX, "./resources/sprite/actor/enemy/Enemy01_discorver.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_ATTACK_TEX, "./resources/sprite/actor/enemy/Enemy01_Attack.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_ATTACKTURN_TEX, "./resources/sprite/actor/enemy/Enemy01_Attackturn.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_DAMAGE_TEX, "./resources/sprite/actor/enemy/Enemy01_damege.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_FLYINGENEMY_WALK_TEX, "./resources/sprite/actor/enemy/Enemy02_walk.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_FLYINGENEMY_ATTACK_TEX, "./resources/sprite/actor/enemy/Enemy02_attack.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_FLYINGENEMY_DAMAGE_TEX, "./resources/sprite/actor/enemy/Enemy02_damege.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_NEEDLEENEMY_TEX, "./resources/sprite/actor/enemy/Enemy03.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_WALLMOVEENEMY_TEX, "./resources/sprite/actor/enemy/Enemy04_Left.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_NEEDLE_TEX, "./resources/sprite/Needle.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_WEAPON_TEX, "./resources/sprite/EnemyWeapon.png");
-
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WAIT_TEX, "./resources/sprite/actor/boss/Boss_wait.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WAIT_TURN_TEX, "./resources/sprite/actor/boss/Boss_wait_turn.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_JUMP_UP_TEX, "./resources/sprite/actor/boss/Boss_jumpUP.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_JUMP_DOWN_TEX, "./resources/sprite/actor/boss/Boss_jumpDOWN.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WALLATTACK_DASH_TEX, "./resources/sprite/actor/boss/Boss_dash.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WALLATTACK_DASHJUMP_TEX, "./resources/sprite/actor/boss/Boss_dashjump.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WALLATTACK_DASHJUMP_STOP_TEX, "./resources/sprite/actor/boss/Boss_dashjump_stop.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_BREATH_TEX, "./resources/sprite/actor/boss/Boss_3_move.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_BREATH_TURN_TEX, "./resources/sprite/actor/boss/Boss_3_turn.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_BREATH_DYSFUNCTION_TEX, "./resources/sprite/actor/boss/Boss_3_dysfunction.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_BREATH_LESS_TEX, "./resources/sprite/actor/boss/Boss_3_breath_less.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_PIYO_TEX, "./resources/sprite/actor/boss/Boss_piyo.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_DAMAGE_TEX, "./resources/sprite/actor/boss/Boss_damege.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_DAMAGE_BOKO_TEX, "./resources/sprite/actor/boss/Boss_damage_boko.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_DEATH_TEX, "./resources/sprite/actor/boss/Boss_deth.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_EFFECT_ATTACK_TEX, "./resources/sprite/actor/boss/effect/boss_attack.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_EFFECT_BOKO_TEX, "./resources/sprite/actor/boss/effect/boss_boko.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_EFFECT_DASH_TEX, "./resources/sprite/actor/boss/effect/dash.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_EFFECT_PIYO_TEX, "./resources/sprite/actor/boss/effect/piyori.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_TEX, "./resources/sprite/Boss01.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_GAUGE_TEX, "./resources/sprite/BossGauge.png");
+	
 	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::PAUSE_BACK_TEX, "./resources/sprite/pauseBack.png");
 
@@ -123,6 +89,10 @@ void LoadingScene::start(){
 
 	//プレイヤー関連のロード
 	load_player_res();
+	load_enemy_res();
+	load_boss_res();
+	load_bgm_res();
+	load_se_res();
 }
 
 void LoadingScene::update(){
@@ -174,4 +144,63 @@ void LoadingScene::load_player_res(){
 	//エフェクト
 	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_EFFECT_SEP_MOVE, "./resources/sprite/actor/effect/Separation_move.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::PLAYER_EFFECT_SEP_EXP, "./resources/sprite/actor/effect/Separation.png");
+}
+
+void LoadingScene::load_enemy_res(){
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_WALK_TEX, "./resources/sprite/actor/enemy/Enemy01_Walk.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_DISCORVER_TEX, "./resources/sprite/actor/enemy/Enemy01_discorver.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_ATTACK_TEX, "./resources/sprite/actor/enemy/Enemy01_Attack.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_ATTACKTURN_TEX, "./resources/sprite/actor/enemy/Enemy01_Attackturn.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_EGGENEMY_DAMAGE_TEX, "./resources/sprite/actor/enemy/Enemy01_damege.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_FLYINGENEMY_WALK_TEX, "./resources/sprite/actor/enemy/Enemy02_walk.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_FLYINGENEMY_ATTACK_TEX, "./resources/sprite/actor/enemy/Enemy02_attack.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_FLYINGENEMY_DAMAGE_TEX, "./resources/sprite/actor/enemy/Enemy02_damege.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_NEEDLEENEMY_TEX, "./resources/sprite/actor/enemy/Enemy03.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_WALLMOVEENEMY_TEX, "./resources/sprite/actor/enemy/Enemy04_Left.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_NEEDLE_TEX, "./resources/sprite/Needle.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_WEAPON_TEX, "./resources/sprite/EnemyWeapon.png");
+}
+
+void LoadingScene::load_boss_res(){
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WAIT_TEX, "./resources/sprite/actor/boss/Boss_wait.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WAIT_TURN_TEX, "./resources/sprite/actor/boss/Boss_wait_turn.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_JUMP_UP_TEX, "./resources/sprite/actor/boss/Boss_jumpUP.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_JUMP_DOWN_TEX, "./resources/sprite/actor/boss/Boss_jumpDOWN.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WALLATTACK_DASH_TEX, "./resources/sprite/actor/boss/Boss_dash.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WALLATTACK_DASHJUMP_TEX, "./resources/sprite/actor/boss/Boss_dashjump.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_WALLATTACK_DASHJUMP_STOP_TEX, "./resources/sprite/actor/boss/Boss_dashjump_stop.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_BREATH_TEX, "./resources/sprite/actor/boss/Boss_3_move.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_BREATH_TURN_TEX, "./resources/sprite/actor/boss/Boss_3_turn.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_BREATH_DYSFUNCTION_TEX, "./resources/sprite/actor/boss/Boss_3_dysfunction.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_BREATH_LESS_TEX, "./resources/sprite/actor/boss/Boss_3_breath_less.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_PIYO_TEX, "./resources/sprite/actor/boss/Boss_piyo.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_DAMAGE_TEX, "./resources/sprite/actor/boss/Boss_damege.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_DAMAGE_BOKO_TEX, "./resources/sprite/actor/boss/Boss_damage_boko.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_DEATH_TEX, "./resources/sprite/actor/boss/Boss_deth.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_EFFECT_ATTACK_TEX, "./resources/sprite/actor/boss/effect/boss_attack.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_EFFECT_BOKO_TEX, "./resources/sprite/actor/boss/effect/boss_boko.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_EFFECT_DASH_TEX, "./resources/sprite/actor/boss/effect/dash.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_EFFECT_PIYO_TEX, "./resources/sprite/actor/boss/effect/piyori.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_TEX, "./resources/sprite/Boss01.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_GAUGE_TEX, "./resources/sprite/BossGauge.png");
+
+}
+
+void LoadingScene::load_bgm_res(){
+	ResourceLoader::GetInstance().loadSound(SoundID::BGM_MENU, "./resources/sounds/bgm/game_menuBGM.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::BGM_STAGE_123, "./resources/sounds/bgm/stage1,2,3_BGM.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::BGM_STAGE_4, "./resources/sounds/bgm/stage4_BGM.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::BGM_STAGE_5, "./resources/sounds/bgm/stage5_BGM.mp3");
+
+}
+
+void LoadingScene::load_se_res(){
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_BUNRI, "./resources/sounds/bunri.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_NOBI, "./resources/sounds/nobi.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_NOBI_FULL, "./resources/sounds/nobi_full.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_PUYON, "./resources/sounds/puyon.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_SHOT, "./resources/sounds/shot.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_SYOUTOTU, "./resources/sounds/syoutotu.mp3");
+
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_HAKKEN, "./resources/sounds/enemy_hakkenn.mp3");
 }

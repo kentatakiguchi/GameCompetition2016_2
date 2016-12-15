@@ -9,7 +9,6 @@
 #include "../Scene/GamePlay/GamePlayScene.h"
 #include "../Scene/GameOver/GameOverScene.h"
 #include "../Scene/KataokaScene/KataokaScene.h"
-#include "../Scene/NaganoScene/NaganoScene.h"
 #include "../Scene/StageClear/StageClearScene.h"
 #include "../Scene/GameClear/GameClearScene.h"
 #include "../Scene/BossStage/BossStage.h"
@@ -21,7 +20,7 @@
 #include"../Scene/GameEnd/GameEndScene.h"
 
 MyGame::MyGame() : 
-	Game(WINDOW_NAME, SCREEN_SIZE.x, SCREEN_SIZE.y, WINDOW_RATE, WINDOW_MODE),
+	Game(WINDOW_NAME, static_cast<int>(SCREEN_SIZE.x), static_cast<int>(SCREEN_SIZE.y), WINDOW_RATE, WINDOW_MODE),
 	dataKeeper_(), 
 	sceneMgr_(&dataKeeper_){
 }
@@ -44,7 +43,6 @@ void MyGame::start(){
 	sceneMgr_.add(Scene::StageClear, std::make_shared<StageClearScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::BossStage01, std::make_shared<BossStage>(&dataKeeper_));
 	sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>());
-	//sceneMgr_.add(Scene::Nagano, std::make_shared<NaganoScene>());
 	sceneMgr_.add(Scene::Credit, std::make_shared<CreditScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GameEnd, std::make_shared<GameEndScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Logo, std::make_shared<TeamLogoScene>(&dataKeeper_));

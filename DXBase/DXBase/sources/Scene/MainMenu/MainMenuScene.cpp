@@ -140,7 +140,9 @@ void MainMenuScene::start() {
 	//for (int i = 0; i < 3; i++) {
 	//	textPosList[i + 1].y = textPoses[i + 1].y;
 	//}
-	PlaySoundFile("./resources/file/game_menuBGM.mp3", DX_PLAYTYPE_LOOP);
+
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU), DX_PLAYTYPE_LOOP);
+	//PlaySoundFile("./resources/file/game_menuBGM.mp3", DX_PLAYTYPE_LOOP);
 }
 
 void MainMenuScene::update() {
@@ -357,7 +359,7 @@ void MainMenuScene::draw() const {
 
 }
 
-void MainMenuScene::end() { StopSoundFile(); }
+void MainMenuScene::end() { StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU)); }
 
 bool MainMenuScene::isEnd() const {
 	return isEnd_;

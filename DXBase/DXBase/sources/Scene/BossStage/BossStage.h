@@ -2,7 +2,6 @@
 #define BOSS_STAGE_H_
 
 #include "../Base/IScene.h"
-#include "../../Actor/Person/Player/Status/Status.h"
 #include <memory>
 #include "../../Math/Math.h"
 #include"../GamePlay/PauseScreen.h"
@@ -27,8 +26,6 @@ private:
 	using WorldPtr = std::shared_ptr<World>;
 	// ワールド
 	WorldPtr	world_;
-
-	Status status_;
 
 	BackGraundManager* backManager;
 	//BaseBoss* boss_;				// ボス

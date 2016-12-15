@@ -33,9 +33,6 @@
     <ClInclude Include="sources\Renderer\Renderer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\ResourceID.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\World\World.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -112,9 +109,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\Base\StateMgr.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\Status\Status.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\Player.h">
@@ -286,9 +280,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Scene\NaganoScene\NaganoScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Scene\Test\TestChara.h">
@@ -584,9 +575,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\Status\Status.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -720,9 +708,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Scene\NaganoScene\NaganoScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Scene\Test\TestScene.cpp">

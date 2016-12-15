@@ -52,7 +52,7 @@ void GamePlayScene::start() {
 
 
 
-	Vector2 csvSize = Vector2(gener.GetColumnSize(), gener.GetRowSize());
+	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	if (name_ == "stage01")
 		world_->SetScroolJudge(Vector2(1, 0), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, 1000.0f));
 	else if (name_ == "stage02")
@@ -63,7 +63,6 @@ void GamePlayScene::start() {
 		world_->SetScroolJudge(Vector2(1, 1),  Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
 	else if (name_ == "stage05")
 		world_->SetScroolJudge(Vector2(1, 1), Vector2(99999, 99999));
-	status_ = Status(10);
 
 	backManager = new BackGraundManager(world_.get());
 	if (name_ == "stage01") {
@@ -112,12 +111,12 @@ void GamePlayScene::start() {
 
 	if (name_ != "stage04")
 	{
-		PlaySoundFile("./resources/file/stage1,2,3_BGM.mp3", DX_PLAYTYPE_LOOP);
-
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
+		//PlaySoundFile("./resources/file/stage1,2,3_BGM.mp3", DX_PLAYTYPE_LOOP);
 	}
 	else {
-		PlaySoundFile("./resources/file/stage4_BGM.mp3", DX_PLAYTYPE_LOOP);
-
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4), DX_PLAYTYPE_LOOP);
+		//PlaySoundFile("./resources/file/stage4_BGM.mp3", DX_PLAYTYPE_LOOP);
 	}
 }
 
@@ -166,7 +165,15 @@ void GamePlayScene::draw() const {
 
 void GamePlayScene::end() {
 	delete backManager;
-	StopSoundFile();
+	if (name_ != "stage04")
+	{
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
+		//PlaySoundFile("./resources/file/stage1,2,3_BGM.mp3", DX_PLAYTYPE_LOOP);
+	}
+	else {
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4));
+		//PlaySoundFile("./resources/file/stage4_BGM.mp3", DX_PLAYTYPE_LOOP);
+	}
 }
 
 bool GamePlayScene::isEnd() const {

@@ -20,7 +20,7 @@ private:
 		if (InputMgr::GetInstance().IsKeyOn(KeyCode::Z))
 		{
 			mama++;
-			position_=body_.setSegmentPoint(position_,Vector2(10*mamama,10*mama),Vector2(30*mamama,30*mama));
+			position_ = body_.setSegmentPoint(position_, Vector2(mamama, mama) * 10, Vector2(mamama, mama) * 30);
 			
 		}
 		if (InputMgr::GetInstance().IsKeyOn(KeyCode::D))
@@ -117,8 +117,8 @@ private:
 
 	}
 private:
-	int mama = 1;
-	int mamama = 5;
+	float mama = 1.0f;
+	float mamama = 5.0f;
 	Vector2 previousPosition;
 	Vector2 speed_;
 };

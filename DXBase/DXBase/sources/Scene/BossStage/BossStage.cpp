@@ -54,9 +54,6 @@ void BossStage::start() {
 	gener.create("./resources/file/" + name_ + ".csv");
 	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
 
-
-	status_ = Status(10);
-
 	backManager = new BackGraundManager(world_.get());
 	//先にセットされたテクスチャほど奥に描写される
 	//backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX);
@@ -74,6 +71,7 @@ void BossStage::start() {
 	backManager->SetBackGraund(TextureID::BACKSTAGE1_8_1_TEX, TextureID::BACKSTAGE1_8_2_TEX, graundPos);
 	backManager->SetBackGraund(TextureID::BACKSTAGE1_9_TEX, TextureID::BACKSTAGE1_9_TEX, graundPos, true);
 
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
 
 	world_->clear(false);
 }
@@ -119,6 +117,7 @@ void BossStage::draw() const {
 }
 
 void BossStage::end() {
+	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
 }
 
 bool BossStage::isEnd() const {

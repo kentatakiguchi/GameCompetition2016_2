@@ -18,6 +18,10 @@ public:
 
 private:
 	void load_player_res();
+	void load_enemy_res();
+	void load_boss_res();
+	void load_bgm_res();
+	void load_se_res();
 private:
 	bool isEnd_;
 };
