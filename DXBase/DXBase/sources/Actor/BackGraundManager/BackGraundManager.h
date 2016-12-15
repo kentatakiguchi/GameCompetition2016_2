@@ -23,6 +23,8 @@ struct BackGraundState
 	Vector2 size = Vector2::Zero;
 	//2つ画像を張るための座標
 	std::list<IndexPos> indexPos;
+	//レイヤー
+	int layer;
 
 };
 
@@ -32,13 +34,13 @@ public:
 	BackGraundManager(IWorld* world);
 	~BackGraundManager();
 	//背景を設定する（ロードしたテクスチャ限定）
-	void SetBackGraund(TextureID id1,TextureID id2,bool frontGraund=false);
+	void SetBackGraund(TextureID id1,TextureID id2,float heightY=0.0f,bool frontGraund=false);
 	//縦の背景を設定する（ロードしたテクスチャ限定）
 	void SetTateBackGraund(TextureID id1, TextureID id2);
 	//縦の横の背景を設定する(ロードしたテクスチャ限定)
 	void SetTateYokoBackGraund(TextureID id1);
 	//背景（空）を設定する（ロードしたテクスチャ限定）
-	void SetUpBackGraund(TextureID id);
+	void SetUpBackGraund(TextureID id,int layer);
 	//地面を設定する(ロードしたテクスチャ限定)
 	void SetDownBackGraund(TextureID id);
 
@@ -61,7 +63,7 @@ private:
 	//ワールド
 	IWorld* mWorld;
 	//ブロック
-	MovelessFloor* mFloor;
+	Player* mFloor;
 	//地上が表示されているか？
 	bool stageFlag;
 	//地上の背景

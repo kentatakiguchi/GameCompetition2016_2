@@ -9,14 +9,14 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 {
 	////プレイヤー変換
 	//mPlayer = dynamic_cast<PlayerBody*>(world->findActor("Player").get());
-	mFloor = dynamic_cast<MovelessFloor*>(world->findActor("MovelessFloor").get());
+	mFloor = dynamic_cast<Player*>(world->findActor("Player").get());
 }
 
 BackGraundManager::~BackGraundManager()
 {
 }
 
-void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2,bool frontGraund)
+void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2,float heightY,bool frontGraund)
 {
 	BackGraundState backState;
 	//サイズを追加
@@ -27,10 +27,10 @@ void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2,bool frontGra
 	//ポジションと番号を設定
 	IndexPos indexPos;
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id1);
-	indexPos.position = Vector2::Zero;
+	indexPos.position = Vector2(0, heightY);
 	backState.indexPos.push_back(indexPos);
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id2);
-	indexPos.position = Vector2(size.x, 0.0f);
+	indexPos.position = Vector2(size.x,heightY);
 	backState.indexPos.push_back(indexPos);
 	//入れる
 	backStates.push_back(backState);
@@ -74,11 +74,12 @@ void BackGraundManager::SetTateYokoBackGraund(TextureID id)
 
 }
 
-void BackGraundManager::SetUpBackGraund(TextureID id)
+void BackGraundManager::SetUpBackGraund(TextureID id,int layer)
 {
 	//サイズを追加
 	upBackStates.size = ResourceLoader::GetInstance().GetTextureSize(id);
 	Vector2 size = upBackStates.size;
+	upBackStates.layer = layer;
 
 	IndexPos indexPos;
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id);
@@ -132,7 +133,7 @@ void BackGraundManager::Update(float deltatime)
 		for (auto& j : i.indexPos)
 		{
 			//プレイヤーベクトル加算
-			j.position += -mFloor->mVelo*(1.0f / layerNum);
+			j.position -= Vector2((mFloor->mVelo*(1.0f / layerNum)).x, mFloor->mVelo.y);
 			//地面テクスチャサイズ
 			Vector2 size = i.size;
 			//x軸のループ
@@ -155,17 +156,20 @@ void BackGraundManager::Update(float deltatime)
 	for (auto& i : upBackStates.indexPos)
 	{
 		//プレイヤー速度加算
-		i.position += -mFloor->mVelo*(1.0f / backStates.size());
+		i.position -= Vector2((mFloor->mVelo*(1.0f / upBackStates.layer)).x, mFloor->mVelo.y);
 		//x軸のループ
 		if (i.position.x <= -size.x)
 			i.position.x = size.x + size.x + i.position.x;
 		else if (i.position.x >= size.x)
 			i.position.x = -size.x - size.x + i.position.x;
-		//Y軸のループ
-		if (i.position.y <= -size.y)
-			i.position.y = size.y + size.y + i.position.y;
-		else if (i.position.y >= size.y)
-			i.position.y = -size.y - size.y + i.position.y;
+		if (stageFlag)
+		{
+			//Y軸のループ
+			if (i.position.y <= -size.y)
+				i.position.y = size.y + size.y + i.position.y;
+			else if (i.position.y >= size.y)
+				i.position.y = -size.y - size.y + i.position.y;
+		}
 	}
 	//地下系
 	for (auto& i : downBackStates.indexPos)

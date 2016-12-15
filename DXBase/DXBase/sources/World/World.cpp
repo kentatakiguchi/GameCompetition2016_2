@@ -93,28 +93,6 @@ void World::addEventMessageListener(
 	listener_ = listener;
 }
 
-Vector2 World::MoveActor()
-{
-	auto actor = findActor("PlayerBody1").get();
-	if (actor == nullptr)return Vector2::Zero;
-	PlayerBody* player = dynamic_cast<PlayerBody*>(actor);
-	return player->GetVelo();
-}
-
-Vector2 World::ScroolStopFlag()
-{
-	Vector2 flag;
-	auto ss = findActor("ScroolStop");
-	ss->eachChildren(
-		[&flag](Actor& scroolStop) {
-		flag += dynamic_cast<ScroolStop*>(&scroolStop)->GetSceneInFlag();
-	}
-	);
-	flag = Vector2::Clamp(flag, Vector2::Zero, Vector2(1, 1));
-	return flag;
-
-}
-
 bool World::is_clear(){
 	return is_clear_;
 }
@@ -133,5 +111,4 @@ ScroolJudge World::GetScroolJudge()
 {
 	return scrool_;
 }
-
 

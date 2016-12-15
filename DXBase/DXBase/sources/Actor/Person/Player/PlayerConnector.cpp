@@ -16,10 +16,10 @@ PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, Playe
 	mPuyoFlag(false) {
 	// ポイントの生成
 	create_point(PLAYER_CNTR_DIV_NUM);
-
 	stateMgr_.change(*this, PlayerState_Enum_Union::STAND_BY);
-
-	mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position, 1, 0);
+	Vector2 texSize = ResourceLoader::GetInstance().GetTextureSize(TextureID::PUYO_TEST_TEX);
+	inv();
+	mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position_*inv_, 1, 0);
 }
 
 PlayerConnector::~PlayerConnector() {
@@ -40,6 +40,7 @@ void PlayerConnector::onUpdate(float deltaTime) {
 
 void PlayerConnector::onDraw() const {
 	mPuyo->PuyoDraw();
+
 }
 
 PlayerBodyPtr PlayerConnector::blue_body() {
@@ -66,7 +67,7 @@ void PlayerConnector::create_point(int point_num) {
 	}
 }
 
-float PlayerConnector::length_sum(){
+float PlayerConnector::length_sum() {
 	float sum = 0;
 	float len1 = Vector2::Distance(butty_->position_, get_point(0));
 	float len2 = Vector2::Distance(retty_->position_, get_point(points.size() - 1));
@@ -98,7 +99,7 @@ Vector2 PlayerConnector::get_point(int index) {
 	return points[index]->getPosition();
 }
 
-void PlayerConnector::puyoUpdate(){
+void PlayerConnector::puyoUpdate() {
 	float x = ((butty_->getPosition() + retty_->getPosition()) / 2).x;
 	float y = ((butty_->getPosition() + retty_->getPosition()) / 2).y;
 	Vector3 pos = Vector3(x, y, 0);
@@ -114,8 +115,8 @@ void PlayerConnector::puyoUpdate(){
 	//左のやつが引っ張ってる
 	if (stateMgr_.currentActionType(ActionType::Right) &&
 		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
-		mPuyoResPos = vec2*0.6f;
-		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower*0.6f, 175.0f);
+		mPuyoResPos = vec2*0.3f;
+		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower*0.4f, 175.0f);
 		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
 		mPuyoTimer = 0.0f;
 		mPuyoFlag = true;
@@ -123,8 +124,8 @@ void PlayerConnector::puyoUpdate(){
 	//右のやつが引っ張ってる
 	else if (stateMgr_.currentActionType(ActionType::Left) &&
 		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
-		mPuyoResPos = vec1*0.6f;
-		mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower*0.6f, 175.0f);
+		mPuyoResPos = vec1*0.3f;
+		mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower*0.4f, 175.0f);
 		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
 		mPuyoTimer = 0.0f;
 		mPuyoFlag = true;
@@ -156,7 +157,8 @@ void PlayerConnector::puyoUpdate(){
 			mPuyoFlag = false;
 		}
 	}
-	mPuyo->PuyoPlayerPos(butty_->getPosition(), retty_->getPosition());
+	mPuyo->PuyoPlayerPos(butty_->getPosition()*inv_, retty_->getPosition()*inv_,
+		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD));
 	mPuyo->PuyoUpdate();
 }
 

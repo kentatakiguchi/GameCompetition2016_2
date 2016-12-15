@@ -1,7 +1,5 @@
 #include "NaganoScene.h"
 #include "../../World/World.h"
-#include "../../Actor/Camera/Camera.h"
-#include "../../Actor/Light/Light.h"
 #include "../../Field/Field.h"
 #include "../../Actor/Base/ActorGroup.h"
 #include "../../Actor/Person/Player/Player.h"
@@ -54,8 +52,8 @@ void NaganoScene::start() {
 	//backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX);
 	//backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX);
 
-	backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
-	backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
+	//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
+	//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 
 
 

@@ -13,10 +13,12 @@ PuyoTextureK::PuyoTextureK(IWorld* world, TextureID tex, Vector2 pos, Vector2 sc
 	mWorld(world),
 	textureIndex(ResourceLoader::GetInstance().getTextureID(tex)),
 	textureSize(ResourceLoader::GetInstance().GetTextureSize(tex)),
-	mPosition(pos),
+	mPosition(pos-textureSize/2),
 	mScale(scale),
 	mRotate(rotate),
-	mCenter(Vector2::Zero)
+	mCenter(Vector2::Zero),
+	mAlpha(0.0f),
+	mIsHold(false)
 {
 	loopX = textureSize.x / SplitSize;
 	loopY = textureSize.y / SplitSize;
@@ -32,13 +34,11 @@ PuyoTextureK::PuyoTextureK(IWorld* world, TextureID tex, Vector2 pos, Vector2 sc
 		for (int x = 0; x <= loopX; x++)
 		{
 			ActorPtr puyo = std::make_shared<PuyoCollision>(mWorld, commonVertexH[x][y].position, Vector2(x, y), mPosition);
-			mWorld->addActor(ActorGroup::PuyoVertex,puyo );
+			mWorld->addActor(ActorGroup::PuyoVertex, puyo);
 			puyoCols.push_back(puyo);
 		}
 	}
 	time = 0.0f;
-
-
 }
 
 PuyoTextureK::~PuyoTextureK()
@@ -55,19 +55,22 @@ void PuyoTextureK::SetPosition(Vector2 pos, Vector2 scale, float rotate, Vector2
 	mRotate = rotate;
 	mCenter = center;
 }
-void PuyoTextureK::PuyoPlayerPos(Vector2 pos1, Vector2 pos2)
+void PuyoTextureK::PuyoPlayerPos(Vector2 pos1, Vector2 pos2, bool isHold)
 {
 	mPlayerPos1 = pos1;
 	mPlayerPos2 = pos2;
+	mIsHold = isHold;
 }
 void PuyoTextureK::PuyoUpdate()
 {
-
+	if(mAlpha<=1.0f)
+	mAlpha += Time::GetInstance().deltaTime();
 	for (auto& i : mWorld->findActors(ActorGroup::PuyoVertex)) {
 		PuyoCollision* puyoCol = dynamic_cast<PuyoCollision*>(i.get());
 		Vector2 hairetu = puyoCol->GetArrayState();
-		if (Vector2::Distance(mPlayerPos1, commonVertexHNoMove[(int)hairetu.x][(int)hairetu.y].position) <= 32.0f*3.0f ||
-			Vector2::Distance(mPlayerPos2, commonVertexHNoMove[(int)hairetu.x][(int)hairetu.y].position) <= 32.0f*3.0f) {
+		if ((Vector2::Distance(mPlayerPos1, commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position) <= 64.0f*2.5f ||
+			Vector2::Distance(mPlayerPos2, commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position) <= 64.0f*2.5f)&&
+			mIsHold) {
 			commonVertexH[(int)hairetu.x][(int)hairetu.y].colWallVec = 0.0f;
 		}
 		else
@@ -143,12 +146,15 @@ void PuyoTextureK::PuyoDraw()
 		for (int x = 0; x < loopX; x++)
 		{
 			VertexPos vp = spriteVertexH[x][y];
+			float alpha = MathHelper::Lerp(0.0f, 255.0f, mAlpha);
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 			DrawModiGraphF(
 				vp.LeftTopPos.x, vp.LeftTopPos.y,
 				vp.RightTopPos.x, vp.RightTopPos.y,
 				vp.RightDownPos.x, vp.RightDownPos.y,
 				vp.LeftDownPos.x, vp.LeftDownPos.y,
 				spriteIndexsH[x][y], TRUE);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}
 
@@ -156,9 +162,10 @@ void PuyoTextureK::PuyoDraw()
 	//{
 	//	for (int x = 0; x <= loopX; x++)
 	//	{
-	//		DrawCircle(commonVertexH[x][y].position.x, commonVertexH[x][y].position.y, 3, GetColor(0, 0, 255));
+	//		DrawCircle(commonVertexHNoCol[x][y].position.x, commonVertexHNoCol[x][y].position.y, 3, GetColor(0, 0, 255));
 	//	}
 	//}
+
 	//DrawCircle(test.x + 100, test.y + 100, 10, GetColor(255, 255, 0));
 	//DrawFormatString(500,128, GetColor(255, 255, 255), "À•W:%f,%f",test.x,test.y);
 
@@ -227,7 +234,7 @@ void PuyoTextureK::PuyoVertexSetInit()
 	{
 		for (int x = 0; x <= loopX; x++)
 		{
-			commonVertexHNoCol[x][y].position = Vector2(x*SplitSize, y*SplitSize) + (mPosition );
+			commonVertexHNoCol[x][y].position = Vector2(x*SplitSize, y*SplitSize) + (mPosition);
 		}
 	}
 }

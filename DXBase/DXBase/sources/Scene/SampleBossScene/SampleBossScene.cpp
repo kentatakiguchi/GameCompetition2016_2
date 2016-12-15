@@ -1,7 +1,5 @@
 #include "SampleBossScene.h"
 #include "../../World/World.h"
-#include "../../Actor/Camera/Camera.h"
-#include "../../Actor/Light/Light.h"
 #include "../../Field/Field.h"
 #include "../../Actor/Base/ActorGroup.h"
 #include "../../Actor/Person/Player/Player.h"
@@ -34,8 +32,6 @@ void SampleBossScene::start()
 
 	MapGenerator gener = MapGenerator(world_.get());
 
-	world_->addCamera(std::make_shared<Camera>(world_.get()));
-	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(),
 		gener.findStartPoint("./resources/file/" + name_ + ".csv")));
 	// サンプルボスの追加
@@ -50,8 +46,8 @@ void SampleBossScene::start()
 
 	backManager = new BackGraundManager(world_.get());
 	//先にセットされたテクスチャほど奥に描写される
-	backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
-	backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
+	//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
+	//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 
 	world_->clear(false);
 }

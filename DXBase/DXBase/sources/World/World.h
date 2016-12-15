@@ -6,7 +6,7 @@
 #include "../Field/FieldPtr.h"
 #include <functional>
 #include <vector>
-
+#include "../Actor/Base/ActorGroup.h"
 enum class EventMessage;
 
 
@@ -44,16 +44,25 @@ public:
 	virtual void sendMessage(EventMessage message, void* param = nullptr)  override;
 	// イベントリスナーの追加
 	void addEventMessageListener(std::function<void(EventMessage, void*)> listener);
-
-	//速度
-	virtual Vector2 MoveActor() override;
-	//unsigned int fieldHandle();
-	virtual Vector2 ScroolStopFlag() override;
 	//クリア条件
 	virtual bool is_clear()override;
 	virtual void clear(bool clear)override;
 	virtual void SetScroolJudge(Vector2 scroolJudge,Vector2 scroolStopPos) override;
 	virtual ScroolJudge GetScroolJudge()override;
+	virtual Matrix GetInv()override {
+		Matrix mat;
+		mat.Translation(Vector3(mPlayerPos.x, mPlayerPos.y,0.0f));
+		return Matrix::Invert(mat) *
+			Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
+	}
+	virtual void SetPlayerPos(Vector2 pos) override
+	{
+		mPlayerPos = pos;
+	}
+	virtual Vector2 GetPlayerPos() override
+	{
+		return mPlayerPos;
+	}
 
 	// コピー禁止
 	World(const World& other) = delete;
@@ -73,6 +82,8 @@ private:
 	bool is_clear_;
 
 	ScroolJudge scrool_;
+	
+	Vector2 mPlayerPos;
 };
 
 #endif

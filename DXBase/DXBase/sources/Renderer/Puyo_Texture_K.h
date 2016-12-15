@@ -5,7 +5,6 @@
 #include "../Math/Vector2.h"
 #include "../Math/Matrix.h"
 #include "../World/IWorld.h"
-
 struct VertexPos {
 	//左上
 	Vector2 LeftTopPos=Vector2::Zero;
@@ -51,7 +50,7 @@ public:
 	//全タイマーをゼロにする(ぷよぷよOFF)
 	void PuyoTimerZero();
 	//主人公のポジションをセットする
-	void PuyoPlayerPos(Vector2 pos1, Vector2 pos2);
+	void PuyoPlayerPos(Vector2 pos1, Vector2 pos2,bool isHold);
 	void PuyoUpdate();
 	void PuyoDraw();
 private:
@@ -97,6 +96,9 @@ private:
 	float time;
 
 	std::vector<ActorPtr> puyoCols;
+	float mAlpha;
+	bool mIsHold;
+	
 
 
 };

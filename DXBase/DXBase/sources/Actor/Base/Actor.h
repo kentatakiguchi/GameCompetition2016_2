@@ -51,7 +51,7 @@ public:
 	// 変換行列を返す
 	Matrix getPose() const;
 
-	Matrix inv();
+	void inv();
 	// 子の検索
 	ActorPtr findCildren(const std::string& name);
 	// 子の検索
@@ -84,7 +84,8 @@ public:
 	IWorld* getWorld();
 	//Bodyの取得 return:CollisionBase
 	CollisionBase getBody();
-
+	//
+	Matrix InitializeInv(Vector2 position);
 	// メッセージ処理
 	void handleMessage(EventMessage message, void* param);
 	// コピー禁止

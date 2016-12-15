@@ -1,7 +1,5 @@
 #include "BossStage.h"
 #include "../../World/World.h"
-#include "../../Actor/Camera/Camera.h"
-#include "../../Actor/Light/Light.h"
 #include "../../Field/Field.h"
 #include "../../Actor/Base/ActorGroup.h"
 #include "../../Actor/Person/Player/Player.h"
@@ -19,7 +17,7 @@ BossStage::BossStage(SceneDataKeeper* keeper) :
 	//boss_(nullptr){
 	isEnd_ = false;
 	keeper_ = keeper;
-	name_ = "bossStage01";
+	name_ = "test";
 	deltaTime_ = 1 / 60.f;
 }
 
@@ -34,9 +32,9 @@ void BossStage::start() {
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
 
+	world_->SetScroolJudge(Vector2(1, 1), Vector2(3000, 8000));
 	MapGenerator gener = MapGenerator(world_.get());
 	//keeper_->getNextSceneName(name_);
-
 
 	//world_->addEventMessageListener(
 	//	[=](EventMessage msg, void* param) {
@@ -44,10 +42,10 @@ void BossStage::start() {
 	//}
 	//);
 	//world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
-	world_->addCamera(std::make_shared<Camera>(world_.get()));
-	world_->addLight(std::make_shared<Light>(world_.get(), Vector2(10.0f, 10.0f)));
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), 
 		gener.findStartPoint("./resources/file/" + name_ + ".csv")));
+	//プレイヤーのスタート位置を設定
+	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
 	/*auto boss = std::make_shared<BaseBoss>(
 		world_.get(), Vector2(1000, 200), 128.0f / 2.0f);
 	world_->addActor(ActorGroup::Enemy, boss);
@@ -65,9 +63,17 @@ void BossStage::start() {
 	//backManager->SetBackGraund(TextureID::BACKGRAUND3_TEX);
 	//backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX);
 	//backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX);
+	float graundPos = gener.GetRowSize()*CHIPSIZE-SCREEN_SIZE.y;
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX,graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_2_1_TEX, TextureID::BACKSTAGE1_2_2_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_3_1_TEX, TextureID::BACKSTAGE1_3_2_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_6_TEX, TextureID::BACKSTAGE1_6_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_8_1_TEX, TextureID::BACKSTAGE1_8_2_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_9_TEX, TextureID::BACKSTAGE1_9_TEX, graundPos, true);
 
-	backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
-	backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 
 	world_->clear(false);
 }
