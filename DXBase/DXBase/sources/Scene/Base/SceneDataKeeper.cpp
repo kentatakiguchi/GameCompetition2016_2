@@ -16,17 +16,18 @@ void SceneDataKeeper::setSceneName(std::string name)
 	previousSceneName_ = name;
 	OutputDebugString(name.c_str());
 }
-void SceneDataKeeper::getNextSceneName(std::string& name)
+int SceneDataKeeper::getNextSceneName(std::string& name)
 {
 	for (int i = 1; i < 5; i++) {
 		if (previousSceneName_.find(std::to_string(i)) != std::string::npos) {
 			int plus = 1;
 			if (i == 4) plus = -3;
 			name = "stage0" + std::to_string(i + plus);
-			return;
+			return i+plus;
 		}
 	}
 	name= previousSceneName_;
+	return 0;
 }
 std::string SceneDataKeeper::getSceneName()const
 {	

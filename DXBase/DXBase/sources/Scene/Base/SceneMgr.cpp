@@ -8,6 +8,8 @@ static const int fadeinSpeed = 20;
 SceneMgr::SceneMgr(SceneDataKeeper* keeper) :
 	currentScene_(std::make_shared<SceneNull>()),absnum(0) {
 	keeper_ = keeper;
+	isFirst_ = false;
+	isMove_ = false;
 }
 
 void SceneMgr::init() {
@@ -15,16 +17,28 @@ void SceneMgr::init() {
 }
 
 void SceneMgr::update() {
-	changer_.getEnd() ? currentScene_->update(): changer_.update();
+	//フェードが終わるまでInputを制限する
+	if(!changer_.getEnd())
+	{
+		changer_.update(); 
+	}
+	else {
+		isFirst_ = true;
+		isMove_ = true;
+	}
+	if (currentScene_->isEnd())
+	{
+		sceneChanger();
+	}
+
+	if (changer_.getIsSlimeMax()) {
+		currentScene_->update();
+	}
 	
 
 	changer_.getIsSlimeMax() ? absnum-= fadeinSpeed : absnum+=fadeoutSpeed;
 	absnum = max(min(absnum, 255), 0);
 
-	if (currentScene_->isEnd())
-	{
- 		sceneChanger();
-	}
 }
 
 void SceneMgr::draw() const {
@@ -59,7 +73,14 @@ void SceneMgr::change(Scene name) {
 
 void SceneMgr::sceneChanger()
 {
-	if(changer_.getEnd())changer_.start(currentScene_->getName());
+	if (isMove_)
+	{
+		changer_.start(currentScene_->getName());
+		isMove_ = false;
+	}
+	if (isFirst_&&changer_.getIsSlimeMax()) {
+		change(currentScene_->next());
+		isFirst_ = false;
+	}
 
-	if(changer_.getIsSlimeMax()) change(currentScene_->next());
 }

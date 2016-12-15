@@ -10,6 +10,7 @@ public:
 	MoveFloorUpDown() {}
 	//マップチップの生成
 	MoveFloorUpDown(IWorld* world, Vector2& position);
+	MoveFloorUpDown(int spriteID,IWorld* world, Vector2& position);
 	MoveFloorUpDown(std::shared_ptr<MoveFloorUpDown> chip, IWorld* world, Vector2& position);
 	MoveFloorUpDown(MoveFloorUpDown& chip, IWorld* world, Vector2& position);
 	virtual void set(Vector2& pos);
@@ -26,6 +27,7 @@ private:
 	Vector2 defaultPos_;
 	float moveCount_;
 	float moveVelocity;
+	int spriteID_;
 };
 
 

@@ -56,6 +56,9 @@ private:
 	
 	std::random_device random_;
 	std::mt19937 mt;
+	std::uniform_int_distribution<> randR;
+	std::uniform_int_distribution<> randG;
+	std::uniform_int_distribution<> randB;
 	std::uniform_int_distribution<> rand256;
 	std::uniform_int_distribution<> randL;
 

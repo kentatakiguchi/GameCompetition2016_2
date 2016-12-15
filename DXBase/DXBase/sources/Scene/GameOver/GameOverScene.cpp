@@ -31,7 +31,6 @@ void GameOverScene::start() {
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 	// グラフィックのロード
-	id = LoadGraph("./resources/Player.png");
 }
 
 void GameOverScene::update() {

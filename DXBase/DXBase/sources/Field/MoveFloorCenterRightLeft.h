@@ -10,6 +10,7 @@ public:
 	MoveFloorCenterRightLeft() {}
 	//マップチップの生成
 	MoveFloorCenterRightLeft(IWorld* world, Vector2& position);
+	MoveFloorCenterRightLeft(int spriteID,IWorld* world, Vector2& position);
 	MoveFloorCenterRightLeft(std::shared_ptr<MoveFloorCenterRightLeft> chip, IWorld* world, Vector2& position);
 	MoveFloorCenterRightLeft(MoveFloorCenterRightLeft& chip, IWorld* world, Vector2& position);
 	virtual void set(Vector2& pos);
@@ -26,6 +27,7 @@ private:
 	Vector2 defaultPos_;
 	float moveCount_;
 	float moveVelocity;
+	int spriteID_;
 };
 
 

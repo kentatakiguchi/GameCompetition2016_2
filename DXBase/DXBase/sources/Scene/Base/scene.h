@@ -18,7 +18,8 @@ enum Scene {
 	Nagano,
 	Ending,
 	GameEnd,
-	Test
+	Test,
+	Logo
 };
 
 #endif

@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TRANSLESS_TURN_FLOOR_H_
 #define TRANSLESS_TURN_FLOOR_H_
 #include"../Actor/Base/Actor.h"
@@ -13,6 +12,7 @@ public:
 	TranslessTurnFloor() {}
 	//マップチップの生成
 	TranslessTurnFloor(IWorld* world, Vector2& position);
+	TranslessTurnFloor(int spriteID, IWorld* world, Vector2& position);
 	TranslessTurnFloor(std::shared_ptr<TranslessTurnFloor> chip, IWorld* world, Vector2& position);
 	TranslessTurnFloor(TranslessTurnFloor& chip, IWorld* world, Vector2& position);
 	virtual void set(Vector2& pos);
@@ -28,6 +28,7 @@ private:
 private:
 	Vector2 defaultPos_;
 	int moveCount_;
+	int spriteID_;
 	Vector2 moveVelocity;
 };
 

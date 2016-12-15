@@ -1,12 +1,21 @@
 #include "MoveFloorUpDown.h"
 
-MoveFloorUpDown::MoveFloorUpDown(IWorld * world, Vector2 & position):
+MoveFloorUpDown::MoveFloorUpDown(IWorld * world, Vector2 & position) :spriteID_(-1),
 	MapChip(world, Vector2(position.x, position.y), "MoveFloorUpDown", CollisionBase(
-	Vector2{ position.x,position.y },
-	Vector2{ position.x - (CHIPSIZE),position.y },
-	Vector2{ position.x ,position.y - (CHIPSIZE) },
-	Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
-	,defaultPos_(position),moveVelocity(1),moveCount_(CHIPSIZE*UPDOWNRANGE)
+		Vector2{ position.x,position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*UPDOWNRANGE)
+{
+}
+MoveFloorUpDown::MoveFloorUpDown(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
+	MapChip(world, Vector2(position.x, position.y), "MoveFloorUpDown", CollisionBase(
+		Vector2{ position.x,position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*UPDOWNRANGE)
 {
 }
 
@@ -57,7 +66,7 @@ void MoveFloorUpDown::onUpdate(float deltaTime)
 
 void MoveFloorUpDown::onDraw() const
 {
-	body_.draw(inv_);
+	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
 }
 
 void MoveFloorUpDown::onCollide(Actor & other)

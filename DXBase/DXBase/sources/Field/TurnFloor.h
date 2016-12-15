@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TURN_FLOOR_H_
 #define TURN_FLOOR_H_
 #include"../Actor/Base/Actor.h"
@@ -13,6 +12,7 @@ public:
 	TurnFloor() {}
 	//マップチップの生成
 	TurnFloor(IWorld* world, Vector2& position);
+	TurnFloor(int spriteID,IWorld* world, Vector2& position);
 	TurnFloor(std::shared_ptr<TurnFloor> chip, IWorld* world, Vector2& position);
 	TurnFloor(TurnFloor& chip, IWorld* world, Vector2& position);
 	virtual void set(Vector2& pos);
@@ -28,6 +28,7 @@ private:
 private:
 	Vector2 defaultPos_;
 	int moveCount_;
+	int spriteID_;
 	Vector2 moveVelocity;
 };
 

@@ -1,6 +1,15 @@
 #include "MoveFloorCenterUpDown.h"
 
-MoveFloorCenterUpDown::MoveFloorCenterUpDown(IWorld * world, Vector2 & position) :
+MoveFloorCenterUpDown::MoveFloorCenterUpDown(IWorld * world, Vector2 & position) :spriteID_(-1),
+	MapChip(world, Vector2(position.x, position.y), "MoveFloorUpDown", CollisionBase(
+		Vector2{ position.x,position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*UPDOWNRANGE)
+{
+}
+MoveFloorCenterUpDown::MoveFloorCenterUpDown(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
 	MapChip(world, Vector2(position.x, position.y), "MoveFloorUpDown", CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE),position.y },
@@ -57,7 +66,7 @@ void MoveFloorCenterUpDown::onUpdate(float deltaTime)
 
 void MoveFloorCenterUpDown::onDraw() const
 {
-	body_.draw(inv_);
+	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
 }
 
 void MoveFloorCenterUpDown::onCollide(Actor & other)

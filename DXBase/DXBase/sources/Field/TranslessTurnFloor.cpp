@@ -1,6 +1,15 @@
 #include "TranslessTurnFloor.h"
 
-TranslessTurnFloor::TranslessTurnFloor(IWorld * world, Vector2 & position) :
+TranslessTurnFloor::TranslessTurnFloor(IWorld * world, Vector2 & position) :spriteID_(-1),
+	MapChip(world, Vector2(position.x, position.y), "TranslessTurnFloor", CollisionBase(
+		Vector2{ position.x,position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*TURNSPEED)
+{
+}
+TranslessTurnFloor::TranslessTurnFloor(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
 	MapChip(world, Vector2(position.x, position.y), "TranslessTurnFloor", CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE),position.y },
@@ -55,8 +64,7 @@ void TranslessTurnFloor::onUpdate(float deltaTime)
 
 void TranslessTurnFloor::onDraw() const
 {
-	
-	body_.draw(ResourceLoader::GetInstance().getTextureID(TextureID::CHIP3_TEX), rotate_, inv_);
+	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
 }
 
 void TranslessTurnFloor::onCollide(Actor & other)

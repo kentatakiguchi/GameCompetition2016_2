@@ -1,7 +1,15 @@
 #include "GameOverPoint.h"
 #include"../Input/InputMgr.h"
 
-GameOverPoint::GameOverPoint(IWorld * world, Vector2 & position) :
+GameOverPoint::GameOverPoint(IWorld * world, Vector2 & position) :spriteID_(-1),
+	MapChip(world, Vector2(position.x, position.y), "GameOverPoint", CollisionBase(
+		Vector2{ position.x,position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+{
+}
+GameOverPoint::GameOverPoint(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
 	MapChip(world, Vector2(position.x, position.y), "GameOverPoint", CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE),position.y },

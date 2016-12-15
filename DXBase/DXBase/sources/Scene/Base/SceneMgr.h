@@ -28,6 +28,9 @@ private:
 
 	int absnum;
 
+	bool isFirst_;
+	bool isMove_;
+
 };
 
 #endif

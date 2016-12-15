@@ -10,7 +10,7 @@ public:
 	//直前のシーン名を書き換えます name:1つ前のGamePlayScene名(std::string)
 	void setSceneName(std::string name);
 	//直前のシーン名から次のシーン名を調べ、引数として受け取ったnameに代入します name:更新前のシーン名(std::string)
-	void getNextSceneName(std::string& name);
+	int getNextSceneName(std::string& name);
 	//直前のシーン名を受け取ります return:直前のシーン名(std::string)
 	std::string getSceneName()const;
 	void setPlayerHP(int hp);

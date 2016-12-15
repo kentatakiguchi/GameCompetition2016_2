@@ -1,6 +1,15 @@
 #include "MoveFloorCenterRightLeft.h"
 
-MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(IWorld * world, Vector2 & position) :
+MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(IWorld * world, Vector2 & position) :spriteID_(-1),
+	MapChip(world, Vector2(position.x, position.y), "MoveFloorRightLeft", CollisionBase(
+		Vector2{ position.x,position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*RIGHTLEFTRANGE)
+{
+}
+MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
 	MapChip(world, Vector2(position.x, position.y), "MoveFloorRightLeft", CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE),position.y },
@@ -57,7 +66,7 @@ void MoveFloorCenterRightLeft::onUpdate(float deltaTime)
 
 void MoveFloorCenterRightLeft::onDraw() const
 {
-	body_.draw(inv_);
+	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
 }
 
 void MoveFloorCenterRightLeft::onCollide(Actor & other)

@@ -76,5 +76,5 @@ bool CreditScene::isEnd() const {
 }
 
 Scene CreditScene::next() const {
-	return Scene::Title;
+	return Scene::MainMenu;
 }

@@ -23,7 +23,7 @@ PauseScreen::PauseScreen()
 bool PauseScreen::update(Scene& next)
 {
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN)) {
-		next = Scene::Title;
+		next = Scene::MainMenu;
 		return true;
 	}
 	return false;

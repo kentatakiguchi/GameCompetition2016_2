@@ -37,7 +37,7 @@ void GamePlayScene::start() {
 	world_ = std::make_shared<World>();
 
 	MapGenerator gener = MapGenerator(world_.get());
-	keeper_->getNextSceneName(name_);
+	int stg=keeper_->getNextSceneName(name_);
 
 
 	//world_->addEventMessageListener(
@@ -52,7 +52,7 @@ void GamePlayScene::start() {
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
 
-	gener.create("./resources/file/" + name_ + ".csv");
+	gener.create("./resources/file/" + name_ + ".csv",0,0,stg);
 
 
 	status_ = Status(10);
@@ -88,6 +88,16 @@ void GamePlayScene::start() {
 	}
 
 	world_->clear(false);
+
+	if (name_ != "stage04")
+	{
+		PlaySoundFile("./resources/file/stage1,2,3_BGM.mp3", DX_PLAYTYPE_LOOP);
+
+	}
+	else {
+		PlaySoundFile("./resources/file/stage4_BGM.mp3", DX_PLAYTYPE_LOOP);
+
+	}
 }
 
 void GamePlayScene::update() {
@@ -110,14 +120,14 @@ void GamePlayScene::update() {
 
 	if (world_->is_clear()) {
 
-		if (name_ != "stage04")
-		{
+		//if (name_ != "stage04")
+		//{
 			nextScene_ = Scene::StageClear;
-		}
-		else
-		{
-			nextScene_ = Scene::GameClear;
-		}
+		//}
+		//else
+		//{
+		//	nextScene_ = Scene::GameClear;
+		//}
 	}
 	if (!isEnd_) {
 		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
@@ -134,7 +144,8 @@ void GamePlayScene::draw() const {
 }
 
 void GamePlayScene::end() {
-	delete backManager;
+	delete backManager; 
+	StopSoundFile();
 }
 
 bool GamePlayScene::isEnd() const {

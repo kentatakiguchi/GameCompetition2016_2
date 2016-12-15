@@ -9,6 +9,7 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper) :
 
 	nextScene[1] = GamePlay;
 	nextScene[2] = MainMenu;
+	nextScene[3] = BossStage01;
 
 
 	int listNum = 0;
@@ -24,6 +25,7 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper) :
 	list2.push_back("次のステージへ");
 	listBase[1] = list2;
 	textPoses[1] = Vector2(200, 600);
+	textPoses[3] = Vector2(200, 600);
 	textPosList.push_back(textPoses[1]);
 	changeTextList.clear();
 	
@@ -44,7 +46,7 @@ StageClearScene::~StageClearScene() {
 void StageClearScene::start() {
 
 	targetPoint = 1;
-
+	sinCount = 0;
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 	// グラフィックのロード
@@ -67,8 +69,11 @@ void StageClearScene::update() {
 	targetPoint = min(max(targetPoint, 1), 2);
 
 
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::SPACE))	isEnd_ = true;
-
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::SPACE))
+	{
+		isEnd_ = true;
+		if (targetPoint == 1 && keeper_->getSceneName() == "stage04")targetPoint = 3;
+	}
 	
 }
 

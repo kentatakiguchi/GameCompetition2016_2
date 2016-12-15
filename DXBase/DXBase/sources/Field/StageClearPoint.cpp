@@ -1,7 +1,15 @@
 #include "StageClearPoint.h"
 #include"../Input/InputMgr.h"
 
-StageClearPoint::StageClearPoint(IWorld * world, Vector2 & position) :
+StageClearPoint::StageClearPoint(IWorld * world, Vector2 & position) :spriteID_(-1),
+	MapChip(world, Vector2(position.x, position.y), "StageClearPoint", CollisionBase(
+		Vector2{ position.x,position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+{
+}
+StageClearPoint::StageClearPoint(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
 	MapChip(world, Vector2(position.x, position.y), "StageClearPoint", CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE),position.y },

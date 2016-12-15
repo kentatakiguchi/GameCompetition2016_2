@@ -10,6 +10,7 @@ public:
 	GameOverPoint() {}
 	//マップチップの生成
 	GameOverPoint(IWorld* world, Vector2& position);
+	GameOverPoint(int spriteID,IWorld* world, Vector2& position);
 	GameOverPoint(std::shared_ptr<GameOverPoint> chip, IWorld* world, Vector2& position);
 	GameOverPoint(GameOverPoint& chip, IWorld* world, Vector2& position);
 	void set(Vector2& pos);
@@ -21,6 +22,8 @@ private:
 	void onDraw() const override;
 	void onCollide(Actor& other);
 
+private:
+	int spriteID_;
 };
 
 #endif // !STAGE_CLEAR_POINT

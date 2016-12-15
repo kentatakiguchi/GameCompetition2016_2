@@ -34,14 +34,14 @@ bool MoveScreen::update(std::string name,Scene & next)
 	}
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::Y))
 	{
-		if (name != "stage04")
-		{
+		//if (name != "stage04")
+		//{
 			next = Scene::StageClear;
-		}
-		else
-		{
-			next = Scene::GameClear;
-		}
+		//}
+		//else
+		//{
+		//	next = Scene::GameClear;
+		//}
 		return true;
 	}
 	return false;

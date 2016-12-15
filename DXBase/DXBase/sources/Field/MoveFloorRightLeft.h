@@ -13,6 +13,7 @@ public:
 	MoveFloorRightLeft() {}
 	//マップチップの生成
 	MoveFloorRightLeft(IWorld* world, Vector2& position);
+	MoveFloorRightLeft(int spriteID,IWorld* world, Vector2& position);
 	MoveFloorRightLeft(std::shared_ptr<MoveFloorRightLeft> chip, IWorld* world, Vector2& position);
 	MoveFloorRightLeft(MoveFloorRightLeft& chip, IWorld* world, Vector2& position);
 	virtual void set(Vector2& pos);
@@ -29,6 +30,7 @@ private:
 	Vector2 defaultPos_;
 	float moveCount_;
 	float moveVelocity;
+	int spriteID_;
 };
 
 #endif // !MAPCHIP_H_
