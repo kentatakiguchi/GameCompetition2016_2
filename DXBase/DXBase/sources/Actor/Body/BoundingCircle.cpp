@@ -39,7 +39,7 @@ void BoundingCircle::draw(Matrix inv) const {
 
 	Vector3 pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
 
-	DrawCircle(pos0.x, pos0.y, component_.radius, GetColor(255, 0, 0), FALSE);
+	//DrawCircle(pos0.x, pos0.y, component_.radius, GetColor(255, 0, 0), FALSE);
 
 	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
 }

@@ -35,7 +35,7 @@ BoundingSegment BoundingSegment::transform(const Vector2& startPoint, const Vect
 void BoundingSegment::draw() const {
 	//if (!enabled)return;
 
-	DrawLine(component_.point[0].x, component_.point[0].y, component_.point[1].x, component_.point[1].y, GetColor(255, 0, 0));
+	//DrawLine(component_.point[0].x, component_.point[0].y, component_.point[1].x, component_.point[1].y, GetColor(255, 0, 0));
 
 	//DrawBox(component_.point[0].x, component_.point[0].y,
 	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);

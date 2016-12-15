@@ -8,6 +8,7 @@ MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(IWorld * world, Vector2 & pos
 		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
 	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*RIGHTLEFTRANGE)
 {
+	rotate_ = 0;
 }
 MoveFloorCenterRightLeft::MoveFloorCenterRightLeft(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
 	MapChip(world, Vector2(position.x, position.y), "MoveFloorRightLeft", CollisionBase(

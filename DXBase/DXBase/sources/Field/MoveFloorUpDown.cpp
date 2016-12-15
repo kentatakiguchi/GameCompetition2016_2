@@ -8,6 +8,7 @@ MoveFloorUpDown::MoveFloorUpDown(IWorld * world, Vector2 & position) :spriteID_(
 		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
 	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*UPDOWNRANGE)
 {
+	rotate_ = 0;
 }
 MoveFloorUpDown::MoveFloorUpDown(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
 	MapChip(world, Vector2(position.x, position.y), "MoveFloorUpDown", CollisionBase(

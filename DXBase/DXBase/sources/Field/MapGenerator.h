@@ -41,7 +41,7 @@ public:
 
 		//world_->addActor(ActorGroup::Field, std::make_shared<MapChip>(world_, Vector2(rowN*CHIPSIZE, colN*CHIPSIZE)));
 
-		stagetexes[0] = TextureID::FLOOR_STAGE1_TEX;
+		stagetexes[0] = TextureID::FLOOR_STAGE4_TEX;
 		stagetexes[1] = TextureID::FLOOR_STAGE1_TEX;
 		stagetexes[2] = TextureID::FLOOR_STAGE2_TEX;
 		stagetexes[3] = TextureID::FLOOR_STAGE3_TEX;
@@ -153,13 +153,19 @@ public:
 				if (reader_.geti(rowN, colN) == 20) {
 					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(TextureID::CHIP1_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_WOOD_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 21) {
 					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(TextureID::CHIP2_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STONE_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 22) {
+					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STAGE2_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 30) {

@@ -1,6 +1,6 @@
 #include "MapChip.h"
 
-MapChip::MapChip(IWorld * world, Vector2 & position):
+MapChip::MapChip(IWorld * world, Vector2 & position):rotate_(0),
 	Actor(world, "MapChip", Vector2(position.x, position.y), CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE),position.y },
@@ -15,7 +15,7 @@ MapChip::MapChip(IWorld * world, Vector2 & position,CollisionBase& base) :
 }
 
 MapChip::MapChip(IWorld * world, Vector2 & position, std::string name, CollisionBase & base)
-:Actor(world,name, Vector2(position.x, position.y), base){
+:rotate_(0),Actor(world,name, Vector2(position.x, position.y), base){
 }
 
 
