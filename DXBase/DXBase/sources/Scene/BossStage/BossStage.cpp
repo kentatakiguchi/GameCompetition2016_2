@@ -53,24 +53,15 @@ void BossStage::start() {
 
 	gener.create("./resources/file/" + name_ + ".csv");
 	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
-
+	world_->SetScroolJudge(Vector2(0, 0), Vector2(99999, 99999));
 	backManager = new BackGraundManager(world_.get());
 	//先にセットされたテクスチャほど奥に描写される
 	//backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX);
 	//backManager->SetBackGraund(TextureID::BACKGRAUND3_TEX);
 	//backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX);
 	//backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX);
-	float graundPos = gener.GetRowSize()*CHIPSIZE-SCREEN_SIZE.y;
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX,graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_2_1_TEX, TextureID::BACKSTAGE1_2_2_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_3_1_TEX, TextureID::BACKSTAGE1_3_2_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_6_TEX, TextureID::BACKSTAGE1_6_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_8_1_TEX, TextureID::BACKSTAGE1_8_2_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_9_TEX, TextureID::BACKSTAGE1_9_TEX, graundPos, true);
-
+	backManager->SetBackGraund(TextureID::BACKSTAGE4_1_TEX, TextureID::BACKSTAGE4_1_TEX);
+	backManager->SetBackGraund(TextureID::BACKSTAGE4_2_TEX, TextureID::BACKSTAGE4_2_TEX);
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
 
 	world_->clear(false);

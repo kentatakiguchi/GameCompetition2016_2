@@ -2,6 +2,7 @@
 #include "../../Body/CollisionBase.h"
 #include "../../../Math/Math.h"
 #include "../../Body/BoundingSegment.h"
+#include "../../../Game/Time.h"
 PuyoCollision::PuyoCollision(IWorld * world, Vector2 & position, Vector2 arrayState, Vector2& center) :
 	Actor(world, "PuyoCollision", position, CollisionBase(center, position)),
 	mIntersection(position),
@@ -11,7 +12,8 @@ PuyoCollision::PuyoCollision(IWorld * world, Vector2 & position, Vector2 arraySt
 	mCenter(center),
 	mIsCol(false),
 	mPlayerPos1(Vector2::Zero),
-	mPlayerPos2(Vector2::Zero)
+	mPlayerPos2(Vector2::Zero),
+	mNoColTimer(0.0f)
 {
 	for (int i = 0; i < 3; i++) {
 		mIntersections[i] = Vector2::Zero;
@@ -47,7 +49,10 @@ void PuyoCollision::onUpdate(float deltaTime)
 		}
 	}
 
-	
+	if (mNoColTimer <= 0.2f) {
+		mNoColTimer += Time::GetInstance().deltaTime();
+		mVec = 0.0f;
+	}
 
 	Vector2::Spring(mIntersection, mResIntersection, mVelo, 0.5f);
 	//ƒtƒ‰ƒO‰Šú‰»

@@ -53,7 +53,8 @@ private:
 	//プレイヤーの座標
 	Vector2 mPlayerPos1;
 	Vector2 mPlayerPos2;
-
+	//出現した瞬間はあたり判定無効
+	float mNoColTimer;
 	bool top;
 	bool right;
 	bool bot;

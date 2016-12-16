@@ -162,7 +162,7 @@ void PuyoTextureK::PuyoDraw()
 	//{
 	//	for (int x = 0; x <= loopX; x++)
 	//	{
-	//		DrawCircle(commonVertexHNoCol[x][y].position.x, commonVertexHNoCol[x][y].position.y, 3, GetColor(0, 0, 255));
+	//		DrawCircle(commonVertexH[x][y].position.x, commonVertexH[x][y].position.y, 3, GetColor(0, 0, 255));
 	//	}
 	//}
 

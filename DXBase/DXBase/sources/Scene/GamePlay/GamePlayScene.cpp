@@ -61,8 +61,7 @@ void GamePlayScene::start() {
 		world_->SetScroolJudge(Vector2(0, 1), Vector2(SCREEN_SIZE.x / 2, csvSize.y*CHIPSIZE - SCREEN_SIZE.y / 2.0f));
 	else if (name_ == "stage04")
 		world_->SetScroolJudge(Vector2(1, 1),  Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
-	else if (name_ == "stage05")
-		world_->SetScroolJudge(Vector2(1, 1), Vector2(99999, 99999));
+
 
 	backManager = new BackGraundManager(world_.get());
 	if (name_ == "stage01") {
