@@ -34,9 +34,9 @@ void KataokaScene::start()
 	MapGenerator gener = MapGenerator(world_.get());
 
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(),
-		gener.findStartPoint("./resources/file/" + name_ + ".csv")-Vector2(400,0)));
+		gener.findStartPoint("./resources/file/" + name_ + ".csv")/*-Vector2(400,0)*/));
 	//プレイヤーのスタート位置を設定
-	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv") - Vector2(100, 0));
+	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv") /*- Vector2(100, 0)*/);
 
 	gener.create("./resources/file/" + name_ + ".csv");
 
@@ -44,7 +44,7 @@ void KataokaScene::start()
 
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
 
-	world_->PlayerNotMove(true);
+	//world_->PlayerNotMove(true);
 
 	world_->clear(false);
 }
@@ -56,12 +56,12 @@ void KataokaScene::update()
 		isStopped_ = !isStopped_;
 	}
 	mIvemtTime += deltaTime_;
-	if (mIvemtTime <= 10.0f) {
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(100.0f, 0.0f));
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(100.0f, 0.0f));
-	}
-	else if(mIvemtTime<=20.0f)
-		world_->PlayerNotMove(false);
+	//if (mIvemtTime <= 10.0f) {
+	//	dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(100.0f, 0.0f));
+	//	dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(100.0f, 0.0f));
+	//}
+	//else if(mIvemtTime<=20.0f)
+	//	world_->PlayerNotMove(false);
 
 	world_->update(deltaTime_);
 

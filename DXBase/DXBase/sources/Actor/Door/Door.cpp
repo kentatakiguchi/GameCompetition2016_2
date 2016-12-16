@@ -9,6 +9,7 @@ Door::Door(IWorld * world, const Vector2 & position):
 			Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) })),
 	mDoorFlag(true)
 {
+	body_.enabled(false);
 }
 
 Door::~Door()
@@ -17,7 +18,7 @@ Door::~Door()
 
 void Door::onUpdate(float deltaTime)
 {
-	//body_.GetBox().enabled(!mDoorFlag);
+
 }
 
 void Door::onDraw() const

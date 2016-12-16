@@ -114,7 +114,7 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::Logo;
+	return Scene::Kataoka;
 }
 
 void LoadingScene::load_player_res(){
