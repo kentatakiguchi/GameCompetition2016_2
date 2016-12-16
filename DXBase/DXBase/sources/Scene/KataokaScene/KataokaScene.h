@@ -7,7 +7,7 @@
 #include"../GamePlay/PauseScreen.h"
 #include"../GamePlay/MoveScreen.h"
 class World;
-
+class BaseBoss;
 class KataokaScene : public IScene {
 public:
 	KataokaScene(SceneDataKeeper* keeper);
@@ -23,7 +23,7 @@ private:
 	// ワールド
 	WorldPtr	world_;
 
-	//BaseBoss* boss_;				// ボス
+	BaseBoss* boss_;				// ボス
 
 	Scene nextScene_;
 

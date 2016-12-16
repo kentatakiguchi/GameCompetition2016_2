@@ -110,27 +110,6 @@ void PuyoCollision::onCollide(Actor & other)
 		SegmentCol(mCenter, position_, b_right, t_right, mIntersections[1], true);
 		SegmentCol(mCenter, position_, b_left, t_left, mIntersections[3], true);
 
-
-		//if (Vector2::Distance(mIntersections[0], mCenter) <=
-		//	Vector2::Distance(mIntersections[3], mCenter)) {
-		//	mIntersection = mIntersections[0];
-		//}
-		//else
-		//	mIntersection = mIntersections[3];
-
-		////‹——£‚ð”äŠr‚·‚éŒð“_
-		//Vector2 mIntersectionDis;
-		//mIntersectionDis = mIntersections[0];
-		//top = true;
-		//if (Vector2::Distance(mIntersections[1], mCenter) <= Vector2::Distance(mIntersectionDis, mCenter)) {
-		//	mIntersectionDis = mIntersections[1];
-		//}
-		//if (Vector2::Distance(mIntersections[2], mCenter) <= Vector2::Distance(mIntersectionDis, mCenter)) {
-		//	mIntersectionDis = mIntersections[2];
-		//}
-		//if (Vector2::Distance(mIntersections[3], mCenter) <= Vector2::Distance(mIntersectionDis, mCenter)) {
-		//	mIntersectionDis = mIntersections[3];
-		//}
 		if (mIntersections[0].x != Vector2::Zero.x&&
 			mIntersections[0].y != Vector2::Zero.y)
 			mIntersectionsVector.push_back(mIntersections[0]);
@@ -145,21 +124,9 @@ void PuyoCollision::onCollide(Actor & other)
 		if (mIntersections[3].x != Vector2::Zero.x&&
 			mIntersections[3].y != Vector2::Zero.y)
 			mIntersectionsVector.push_back(mIntersections[3]);
-
-
-		//if(mIntersectionDis.x!=Vector2::Zero.x&&
-		//	mIntersectionDis.y != Vector2::Zero.y)
-		//mIntersectionsVector.push_back(mIntersectionDis);
-
-		//ˆê”Ô‹ß‚¢‹——£‚ÌŒð“_‚ð‹‚ß‚é
-		//for (int i = 0; i < 3; i++) {
-		//	float dis1 = Vector2::Distance(mCenter, mIntersections[i]);
-		//	float dis2 = Vector2::Distance(mCenter, mIntersection);
-		//	if (dis1 <= dis2) {
-		//		mIntersection = mIntersections[i];
-		//	}
-		//}
-		//mIntersection = mIntersections[0];
+	}
+	if (other.getName() == "SegmentCollider") {
+		int a;
 	}
 }
 
