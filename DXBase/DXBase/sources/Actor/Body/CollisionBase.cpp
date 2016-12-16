@@ -1,29 +1,29 @@
 #include "CollisionBase.h"
 #include"../../Define.h"
 
-CollisionBase::CollisionBase():box_(),capsule_(),circle_(),segment_(),type_(NoneCol)
+CollisionBase::CollisionBase() :box_(), capsule_(), circle_(), segment_(), type_(NoneCol), enabled_(true)
 {
 }
 
 CollisionBase::CollisionBase(const Vector2 & topLeft, const Vector2 & topRight, const Vector2 & bottomLeft, const Vector2 & bottomRight) :
-	box_(topLeft, topRight, bottomLeft, bottomRight), capsule_(),segment_(),circle_(), type_(BoxCol)
-{
-	
-}
-
-CollisionBase::CollisionBase(Vector2& startPoint, Vector2& endPoint, float capsuleRadius):
-	box_(),capsule_(startPoint,endPoint,capsuleRadius),segment_(),circle_(),type_(CapsuleCol)
+	box_(topLeft, topRight, bottomLeft, bottomRight), capsule_(), segment_(), circle_(), type_(BoxCol), enabled_(true)
 {
 
 }
 
-CollisionBase::CollisionBase(Vector2 & center, float circleRadius):
-	circle_(center, circleRadius), box_(), capsule_(), segment_(),  type_(CircleCol)
+CollisionBase::CollisionBase(Vector2& startPoint, Vector2& endPoint, float capsuleRadius) :
+	box_(), capsule_(startPoint, endPoint, capsuleRadius), segment_(), circle_(), type_(CapsuleCol), enabled_(true)
+{
+
+}
+
+CollisionBase::CollisionBase(Vector2 & center, float circleRadius) :
+	circle_(center, circleRadius), box_(), capsule_(), segment_(), type_(CircleCol), enabled_(true)
 {
 }
 
-CollisionBase::CollisionBase(Vector2 & startPoint, Vector2 & endPoint):
-	box_(), capsule_(), segment_(startPoint,endPoint), circle_(), type_(SegmentCol)
+CollisionBase::CollisionBase(Vector2 & startPoint, Vector2 & endPoint) :
+	box_(), capsule_(), segment_(startPoint, endPoint), circle_(), type_(SegmentCol), enabled_(true)
 {
 
 }
@@ -38,12 +38,12 @@ void CollisionBase::setPosition(Vector2 position)
 	{
 		box_.position_ = position;
 		box_.previousPosition_ = position;
-		
+
 		movePoint[0] = position - box_.component_.point[0];
 		movePoint[1] = position - box_.component_.point[1];
 		movePoint[2] = position - box_.component_.point[2];
 		movePoint[3] = position - box_.component_.point[3];
-		
+
 		for (int i = 0; i < 4; i++)
 		{
 			myvect[i] = movePoint[i];
@@ -67,12 +67,12 @@ void CollisionBase::setPosition(Vector2 position)
 		break;
 	}
 	case CircleCol:
-	{	
+	{
 		circle_.position_ = position;
 		circle_.previousPosition_ = position;
 
 		radius_ = circle_.component_.radius;
-	break;
+		break;
 	}
 	case SegmentCol:
 	{
@@ -92,17 +92,17 @@ void CollisionBase::setPosition(Vector2 position)
 	}
 	}
 }
-Vector2 CollisionBase::setSegmentPoint(Vector2& position,Vector2 & startPoint, Vector2 & endPoint)
+Vector2 CollisionBase::setSegmentPoint(Vector2& position, Vector2 & startPoint, Vector2 & endPoint)
 {
 	if (type_ != CollisionType::SegmentCol)return Vector2::Zero;
 
-	movePoint[0] =position-startPoint;
-	movePoint[1] =position-endPoint;
+	movePoint[0] = position - startPoint;
+	movePoint[1] = position - endPoint;
 
-	return (startPoint + endPoint)/2;
+	return (startPoint + endPoint) / 2;
 }
 
-void CollisionBase::RotateCapsule(Vector2 point1, Vector2 point2,float radius)
+void CollisionBase::RotateCapsule(Vector2 point1, Vector2 point2, float radius)
 {
 	if (type_ != CollisionType::CapsuleCol) return;
 
@@ -131,16 +131,16 @@ void CollisionBase::RotateBox(int rotation)
 
 		Vector2 vect;
 		vect.x = (CHIPSIZE*TURNLESS_FLOOR_SIZE) / 2;
-		vect.y = (CHIPSIZE) /2;
+		vect.y = (CHIPSIZE) / 2;
 
 		thisVect -= vect;
 
 
 		movePoint[i].x = thisVect.x * cosf(rotation * MathHelper::Pi / 180) - thisVect.y * sinf(rotation * MathHelper::Pi / 180);
 		movePoint[i].y = thisVect.x * sinf(rotation * MathHelper::Pi / 180) + thisVect.y * cosf(rotation * MathHelper::Pi / 180);
-		
+
 		movePoint[i] += vect;
-		
+
 	}
 	//float turnx;
 	//float turny;
@@ -247,7 +247,7 @@ void CollisionBase::draw(int spriteID, Matrix inv) const
 		circle_.draw(inv);
 		break;
 	case SegmentCol:
-		segment_.draw(spriteID,inv);
+		segment_.draw(spriteID, inv);
 		break;
 	case NoneCol:
 		break;
@@ -256,30 +256,30 @@ void CollisionBase::draw(int spriteID, Matrix inv) const
 	}
 
 }
-void CollisionBase::draw(int spriteID,int rotation, Matrix inv) const
+void CollisionBase::draw(int spriteID, int rotation, Matrix inv) const
 {
 	switch (type_)
 	{
 	case BoxCol:
 	{	box_.draw(spriteID, rotation, inv);
-		break;
+	break;
 	}
 	case CapsuleCol:
 	{	capsule_.draw(inv);
-		break;
+	break;
 	}
 	case CircleCol:
 	{	circle_.draw(inv);
-		break;
+	break;
 	}
 	case SegmentCol:
 	{		segment_.draw(inv);
-		break;
+	break;
 	}
 	case NoneCol:
 	{	Vector3 pos = Vector3(position_.x, position_.y)*inv;
-		DrawTurnGraph(pos.x, pos.y, spriteID, rotation);
-		break;
+	DrawTurnGraph(pos.x, pos.y, spriteID, rotation);
+	break;
 	}
 	default:
 		break;
@@ -289,12 +289,12 @@ void CollisionBase::draw(int spriteID,int rotation, Matrix inv) const
 
 void CollisionBase::transform(Vector2 & topLeft, Vector2 & topRight, Vector2 & bottomLeft, Vector2 & bottomRight)
 {
-	box_= box_.transform(topLeft,topRight,bottomLeft,bottomRight);
+	box_ = box_.transform(topLeft, topRight, bottomLeft, bottomRight);
 }
 
 void CollisionBase::transform(Vector2 & startPoint, Vector2 & endPoint, float capsuleRadius)
 {
-	capsule_= capsule_.transform(startPoint, endPoint, capsuleRadius);
+	capsule_ = capsule_.transform(startPoint, endPoint, capsuleRadius);
 }
 
 void CollisionBase::transform(Vector2 & center, float circleRadius)
@@ -314,22 +314,22 @@ void CollisionBase::MovePos(Vector2 & position)
 	switch (type_)
 	{
 	case BoxCol:
-		box_ = BoundingBox(Vector2( position + movePoint[0] ), Vector2( position + movePoint[1] ), Vector2( position + movePoint[2] ), Vector2( position + movePoint[3] ));
+		box_ = BoundingBox(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]), Vector2(position + movePoint[2]), Vector2(position + movePoint[3]));
 		box_.previousPosition_ = previousPosition_;
 		box_.position_ = position;
 		break;
 	case CapsuleCol:
-		capsule_ = BoundingCapsule(Vector2( position + movePoint[0] ), Vector2( position + movePoint[1] ), radius_);
+		capsule_ = BoundingCapsule(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]), radius_);
 		capsule_.previousPosition_ = previousPosition_;
 		capsule_.position_ = position;
 		break;
-	case CircleCol:		
-		circle_ = BoundingCircle(position,radius_);
+	case CircleCol:
+		circle_ = BoundingCircle(position, radius_);
 		circle_.previousPosition_ = previousPosition_;
 		circle_.position_ = position;
 		break;
-	case SegmentCol:	
-		segment_ = BoundingSegment(Vector2( position + movePoint[0] ), Vector2( position + movePoint[1] ));
+	case SegmentCol:
+		segment_ = BoundingSegment(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]));
 		segment_.previousPosition_ = previousPosition_;
 		segment_.position_ = position;
 		break;
@@ -345,10 +345,10 @@ void CollisionBase::translate(Vector2 position)
 	switch (type_)
 	{
 	case BoxCol:
-		box_= box_.translate(position);
+		box_ = box_.translate(position);
 		break;
 	case CapsuleCol:
-		capsule_=capsule_.translate(position);
+		capsule_ = capsule_.translate(position);
 		break;
 	case CircleCol:
 		circle_ = circle_.translate(position);
@@ -365,6 +365,7 @@ void CollisionBase::translate(Vector2 position)
 
 bool CollisionBase::intersects(CollisionBase & other)
 {
+	if (!enabled_)return false;
 	switch (type_)
 	{
 	case BoxCol:
@@ -492,23 +493,5 @@ Vector2 CollisionBase::GetColliderVelocity()
 
 void CollisionBase::enabled(bool change)
 {
-	switch (type_)
-	{
-	case BoxCol:
-		box_.enabled = change;
-		break;
-	case CapsuleCol:
-		capsule_.enabled = change;
-		break;
-	case CircleCol:
-		circle_.enabled = change;
-		break;
-	case SegmentCol:
-		segment_.enabled = change;
-		break;
-	case NoneCol:
-		break;
-	default:
-		break;
-	}
+	enabled_ = change;
 }

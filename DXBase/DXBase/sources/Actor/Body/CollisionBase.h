@@ -86,4 +86,6 @@ private:
 	Vector2 testVect[4];
 	Vector2 myvect[4];
 	float radius_;
+
+	bool enabled_;
 };
