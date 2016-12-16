@@ -14,32 +14,7 @@ enum class ModelID {
 };
 
 enum class TextureID {
-	//プレイヤーアニメーション（青）
-	PLAYER_BUTTY_IDLE,
-	PLAYER_BUTTY_MOVE,
-	PLAYER_BUTTY_HOLD,
-	PLAYER_BUTTY_SWIM,
-	PLAYER_BUTTY_SWIM_TURN,
-	PLAYER_BUTTY_DEATH,
-	PLAYER_BUTTY_DAMAGE,
-	PLAYER_BUTTY_DIV_IDLE,
-	PLAYER_BUTTY_DIV_MOVE,
-	PLAYER_BUTTY_TURN,
-	//プレイヤーアニメーション（赤）
-	PLAYER_RETTY_IDLE,
-	PLAYER_RETTY_MOVE,
-	PLAYER_RETTY_HOLD,
-	PLAYER_RETTY_SWIM,
-	PLAYER_RETTY_SWIM_TURN,
-	PLAYER_RETTY_DEATH,
-	PLAYER_RETTY_DAMAGE,
-	PLAYER_RETTY_DIV_IDLE,
-	PLAYER_RETTY_DIV_MOVE,
-	PLAYER_RETTY_TURN,
-	
-	//エフェクト
-	PLAYER_EFFECT_SEP_MOVE,
-	PLAYER_EFFECT_SEP_EXP,
+
 
 
 	//背景画像
@@ -153,6 +128,34 @@ enum class TextureID {
 
 };
 
+enum class AnimationID {
+	//プレイヤーアニメーション（青）
+	PLAYER_BUTTY_IDLE,
+	PLAYER_BUTTY_MOVE,
+	PLAYER_BUTTY_HOLD,
+	PLAYER_BUTTY_SWIM,
+	PLAYER_BUTTY_SWIM_TURN,
+	PLAYER_BUTTY_DEATH,
+	PLAYER_BUTTY_DAMAGE,
+	PLAYER_BUTTY_DIV_IDLE,
+	PLAYER_BUTTY_DIV_MOVE,
+	PLAYER_BUTTY_TURN,
+	//プレイヤーアニメーション（赤）
+	PLAYER_RETTY_IDLE,
+	PLAYER_RETTY_MOVE,
+	PLAYER_RETTY_HOLD,
+	PLAYER_RETTY_SWIM,
+	PLAYER_RETTY_SWIM_TURN,
+	PLAYER_RETTY_DEATH,
+	PLAYER_RETTY_DAMAGE,
+	PLAYER_RETTY_DIV_IDLE,
+	PLAYER_RETTY_DIV_MOVE,
+	PLAYER_RETTY_TURN,
+	//エフェクト
+	PLAYER_EFFECT_SEP_MOVE,
+	PLAYER_EFFECT_SEP_EXP
+}; 
+
 enum class SoundID {
 	BGM_MENU,
 	BGM_STAGE_123,
@@ -174,13 +177,15 @@ private:
 public:
 	static ResourceLoader& GetInstance();
 
-	void loadModel(ModelID id, const char* file_name);
-	void loadTexture(TextureID id, const char* file_name);
-	void loadSound(SoundID id, const char* file_name);
+	void loadModel(const ModelID& id, const char* file_name);
+	void loadTexture(const TextureID& id, const char* file_name);
+	void loadAnimation(const AnimationID& id, const char* file_name, const int & size, const int & row, const int & column, const int & surplus);
+	void loadSound(const SoundID& id, const char* file_name);
 
-	int getModelID(ModelID id);
-	int getTextureID(TextureID id);
-	int getSoundID(SoundID id);
+	int getModelID(const ModelID& id);
+	int getTextureID(const TextureID& id);
+	int getSoundID(const SoundID& id);
+	std::vector<int> getAnimationIDs(const AnimationID& id);
 	//テクスチャのサイズを取得する(引数:テクスチャハンドル,戻り値:Vector2)
 	Vector2 GetTextureSize(TextureID id);
 	void clearResources();
@@ -188,5 +193,6 @@ private:
 	std::unordered_map<ModelID, int> models_;
 	std::unordered_map<TextureID, int> textures_;
 	std::unordered_map<SoundID, int> sounds_;
+	std::unordered_map<AnimationID, std::vector<int>> animations_;
 
 };

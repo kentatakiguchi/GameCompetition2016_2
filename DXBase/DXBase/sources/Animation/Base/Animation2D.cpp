@@ -9,14 +9,9 @@ Animation2D::Animation2D() :
 	type_(ActionType::Right), type_stock_(ActionType::Right) {
 }
 
-void Animation2D::add_anim(const int & id, const int & res, const int & size, const int & row, const int & column, const int & surplus) {
-	for (int i = 0; i < column; ++i) {
-		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
-			// Ø‚èŽæ‚é¶ã‚ÌÀ•W
-			Vector2 src = Vector2(j, i) * size;
-			sprites_[id].push_back(DerivationGraph(src.x, src.y, size, size, res));
-		}
-	}
+
+void Animation2D::add_anim(const int & id, const std::vector<int>& anims) {
+	sprites_[id] = anims;
 }
 
 void Animation2D::change_param(const int& anim_num, const float& speed) {
@@ -77,4 +72,5 @@ void Animation2D::draw(const Vector2& position, const Vector2& origin, const Vec
 	if (type_ == ActionType::Left) DrawRotaGraph3(position.x, position.y, origin.x, origin.y, static_cast<float>(scale.x), static_cast<float>(scale.y), radian, id_, TRUE, TRUE);
 	SetDrawBright(255, 255, 255);
 }
+
 
