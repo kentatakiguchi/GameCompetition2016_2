@@ -29,10 +29,10 @@ protected:
 	enum {
 		//ENEMY_IDLE = 0,
 		ENEMY_WALK = 0,
-		ENEMY_DISCOVERY = 1,
+		ENEMY_DISCOVERY = 3,
 		//ENEMY_LOST = 3,
-		ENEMY_ATTACK = 2,
-		ENEMY_DAMAGE = 3,
+		ENEMY_ATTACK = 1,
+		ENEMY_DAMAGE = 2,
 		//ENEMY_DEAD = 4,
 	};
 	// èÛë‘óÒãì

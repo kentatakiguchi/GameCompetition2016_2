@@ -184,8 +184,6 @@ void BaseEnemy::onCollide(Actor & actor)
 		if (!isBlockCollidePrevEnter_ &&
 			isBlockCollidePrevEnter_ != isBlockCollideEnter_)
 			isBlockCollideBegin_ = true;
-		// 判定を一回のみにするので消す
-		//body_.enabled(false);
 		return;
 	}
 
@@ -204,9 +202,6 @@ void BaseEnemy::onCollide(Actor & actor)
 		else changeState(State::Damage, ENEMY_DAMAGE);*/
 		changeState(State::Dead, ENEMY_DAMAGE);
 		TexDegress_ = 0.0f;
-		//body_.GetBox().transform(0, 0, 0, 0);
-		//body_.GetBox().enabled// = false; // = false;
-		body_.enabled(false);
 		isUseGravity_ = true;
 		return;
 	}
@@ -565,20 +560,20 @@ void BaseEnemy::addAnimation()
 	// 敵の画像に合わせて調整
 	animation_.addAnimation(
 		ENEMY_WALK,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_EGGENEMY_WALK_TEX),
-		texSize_, 8, 4, 1);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_EGGENEMY_WALK_TEX));
 	animation_.addAnimation(
 		ENEMY_DISCOVERY,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_EGGENEMY_DISCORVER_TEX),
-		texSize_, 8, 2);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_EGGENEMY_DISCORVER_TEX));
 	animation_.addAnimation(
 		ENEMY_ATTACK,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_EGGENEMY_ATTACK_TEX),
-		texSize_, 8, 2);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_EGGENEMY_ATTACK_TEX));
 	animation_.addAnimation(
 		ENEMY_DAMAGE,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_EGGENEMY_DAMAGE_TEX),
-		texSize_, 8, 2);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_EGGENEMY_DAMAGE_TEX));
 }
 
 // プレイヤーとのX方向とY方向を計算し、画面外にいるかを返します

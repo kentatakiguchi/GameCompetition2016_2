@@ -21,7 +21,7 @@ public:
 	// 座標,軸,拡大率,回転角度(度数法),
 	void draw(const Vector2& position, const Vector2& origin = Vector2::Zero, const Vector2& scale = Vector2::One, const float& degree = 0, const Vector3& color = Vector3(255, 255, 255)) const;
 protected:
-	void add_anim(const int& id, const int& res, const int& size, const int& row, const int& column, const int& surplus);
+	void add_anim(const int & id, const std::vector<int>& anims);
 	// アニメーションの変更(速度のみ変更も可能)
 	void change_param(const int& anim_num, const float& speed = 1.0f);
 	// アニメーションの方向転換

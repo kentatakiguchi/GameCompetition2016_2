@@ -21,15 +21,20 @@ void ResourceLoader::loadTexture(const TextureID& id, const char* file_name) {
 	textures_[id] = LoadGraph(file_name);
 }
 
-void ResourceLoader::loadAnimation(const AnimationID& id, const char * file_name, const int & size, const int & row, const int & column, const int & surplus){
-	int handle = LoadGraph(file_name);	
+void ResourceLoader::loadAnimation(const AnimationID & id, const char * file_name, const Vector2 & size, const int & row, const int & column, const int & surplus)
+{
+	int handle = LoadGraph(file_name);
 	for (int i = 0; i < column; ++i) {
 		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
 			// Ø‚èŽæ‚é¶ã‚ÌÀ•W
-			Vector2 src = Vector2(j, i) * size;
-			animations_[id].push_back(DerivationGraph(src.x, src.y, size, size, handle));
+			Vector2 src = Vector2(j * size.x, i * size.y);
+			animations_[id].push_back(DerivationGraph(src.x, src.y, size.x, size.y, handle));
 		}
 	}
+}
+
+void ResourceLoader::loadAnimation(const AnimationID& id, const char * file_name, const int & size, const int & row, const int & column, const int & surplus){
+	loadAnimation(id, file_name, Vector2::One * size, row, column, surplus);
 }
 
 void ResourceLoader::loadSound(const SoundID& id, const char * file_name){

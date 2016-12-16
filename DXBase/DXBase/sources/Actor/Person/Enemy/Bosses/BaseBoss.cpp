@@ -224,7 +224,7 @@ bool BaseBoss::isSceneEnd()
 }
 
 // 目的地に移動します
-void BaseBoss::movePosition()
+void BaseBoss::movePosition(float deltaTime)
 {
 	/*movePos_ = position;
 	moveSpeed_ = speed;*/
@@ -237,7 +237,7 @@ void BaseBoss::movePosition()
 		//return true;
 	}
 	else
-		position_ += Vector2::Normalize(distance) * moveSpeed_;
+		position_ += Vector2::Normalize(distance) * moveSpeed_ * (deltaTime * 60.0f);
 }
 
 // 戦闘を開始するかを返します
@@ -312,7 +312,7 @@ void BaseBoss::battleIdel(float deltaTime)
 		movePos_.y == Vector2::Zero.y) return;
 
 	// 目的地に移動
-	movePosition();
+	movePosition(deltaTime);
 
 	// バトル開始でないなら
 	if (!isBattle_) return;
@@ -750,88 +750,71 @@ void BaseBoss::groundClamp(Actor& actor)
 // テクスチャの追加を行います
 void BaseBoss::addAnimation()
 {
-	auto texSize = 256;
-	// 敵の画像に合わせて調整
 	// 待機
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::WAIT_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_WAIT_TEX),
-		texSize, 8, 4, 1);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_WAIT_TEX));
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::WAIT_TURN_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_WAIT_TURN_TEX),
-		texSize, 8, 2);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_WAIT_TURN_TEX));
 	// ジャンプ攻撃
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::JUMP_UP_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_JUMP_UP_TEX),
-		texSize, 8, 3, 3);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_JUMP_UP_TEX));
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::JUMP_DOWN_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_JUMP_DOWN_TEX),
-		texSize, 8, 4);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_JUMP_DOWN_TEX));
 	// 壁移動攻撃
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::WALLATTACK_DASH_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_WALLATTACK_DASH_TEX),
-		texSize, 8, 2, 5);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_WALLATTACK_DASH_TEX));
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::WALLATTACK_DASHJUMP_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_WALLATTACK_DASHJUMP_TEX),
-		texSize, 8, 2, 4);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_WALLATTACK_DASHJUMP_TEX));
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::WALLATTACK_DASHJUMP_STOP_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_WALLATTACK_DASHJUMP_STOP_TEX),
-		texSize, 8, 3, 3);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_WALLATTACK_DASHJUMP_STOP_TEX));
 	// 吸い込み攻撃
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::BREATH_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_BREATH_TEX),
-		texSize, 8, 4);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_BREATH_TEX));
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::BREATH_TURN_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_BREATH_TURN_TEX),
-		texSize, 8, 2);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_BREATH_TURN_TEX));
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::BREATH_DYSFUNCTION_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_BREATH_DYSFUNCTION_TEX),
-		texSize, 8, 4);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_BREATH_DYSFUNCTION_TEX));
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::BREATH_LESS_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_BREATH_LESS_TEX),
-		texSize, 8, 4);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_BREATH_LESS_TEX));
 	// 怯み
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::PIYO_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_PIYO_TEX),
-		texSize, 8, 4);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_PIYO_TEX));
 	// ダメージ
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::DAMAGE_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_DAMAGE_TEX),
-		texSize, 7, 2, 2);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_DAMAGE_TEX));
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::DAMAGE_BOKO_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_DAMAGE_BOKO_TEX),
-		texSize, 8, 4);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_DAMAGE_BOKO_TEX));
 	// 死亡
 	animation_.addAnimation(
 		static_cast<int>(BossAnimationNumber::DEATH_NUMBER),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::BOSS_DEATH_TEX),
-		texSize, 8, 4);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_DEATH_TEX));
 }

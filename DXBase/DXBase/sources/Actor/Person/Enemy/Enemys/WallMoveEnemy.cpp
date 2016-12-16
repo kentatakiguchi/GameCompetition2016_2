@@ -128,6 +128,6 @@ void WallMoveEnemy::addAnimation()
 {
 	animation_.addAnimation(
 		ENEMY_WALK,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_WALLMOVEENEMY_TEX),
-		texSize_, 8, 4, 1);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_WALLMOVEENEMY_TEX));
 }

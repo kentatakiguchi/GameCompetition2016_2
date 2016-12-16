@@ -66,6 +66,6 @@ void WallTrunEnemy::addAnimation()
 {
 	animation_.addAnimation(
 		ENEMY_WALK,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLEENEMY_TEX),
-		texSize_, 8, 2, 0);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_NEEDLEENEMY_TEX));
 }

@@ -33,11 +33,10 @@ public:
 	//void onUpdate(float deltaTime);
 	// アニメーションの追加
 	// (アニメーションのID, リソースID, 横の数, 縦の数, 横の数の減らる数)
-	void addAnimation(
-		int id, int res, int size, int row, int column, int surplus = 0);
+	void addAnimation(int id, const std::vector<int>& anims);
 	// アニメーションの追加(サイズのX, Y指定)
-	void addAnimation(
-		int id, int res, Vector2 size, int row, int column, int surplus = 0);
+	/*void addAnimation(
+		int id, int res, Vector2 size, int row, int column, int surplus = 0);*/
 	// アニメーションの変更
 	void changeAnimation(int id, float speed = 1.0f);
 	// アニメーションのが終わったかを返します

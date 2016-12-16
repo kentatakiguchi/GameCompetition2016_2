@@ -5,10 +5,7 @@ BossEffect::BossEffect(
 	std::string name,
 	const Vector2 & position,
 	const int animeNum,
-	const TextureID id,
-	const Vector2 texSize,
-	const Vector2 size,
-	const int surplus) :
+	const AnimationID id) :
 	Actor(world, name, position, CollisionBase()),
 	animation_(EnemyAnimation2D())
 {
@@ -17,8 +14,7 @@ BossEffect::BossEffect(
 	// ‘Ò‹@
 	animation_.addAnimation(
 		static_cast<int>(animeNum),
-		ResourceLoader::GetInstance().getTextureID(id),
-		texSize, (int)size.x, (int)size.y, surplus);
+		ResourceLoader::GetInstance().getAnimationIDs(id));
 	animation_.changeAnimation(static_cast<int>(animeNum));
 }
 

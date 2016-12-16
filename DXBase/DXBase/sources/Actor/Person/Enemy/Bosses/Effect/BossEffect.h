@@ -20,10 +20,7 @@ public:
 		std::string name,
 		const Vector2&  position,
 		const int animeNum,
-		const TextureID id,
-		const Vector2 texSize,
-		const Vector2 size,
-		const int surplus = 0);
+		const AnimationID id);
 	~BossEffect();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;

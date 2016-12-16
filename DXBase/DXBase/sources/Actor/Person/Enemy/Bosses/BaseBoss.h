@@ -36,9 +36,9 @@ protected:
 	enum class State {
 		BattleIdel,
 		Idel,
-		//Search,
 		Attack,
 		Flinch,
+		Piyori,
 		Dead
 	};
 	// 攻撃状態の列挙
@@ -63,7 +63,7 @@ public:
 	// シーンを終了させるかを返します
 	bool isSceneEnd();
 	// 目的地に移動します
-	void movePosition();
+	void movePosition(float deltaTime);
 	// 目的の位置を設定します
 	void setMovePosition(const Vector2& position, const float speed);
 	// 目的の位置に到達したかを返します (目的の位置, 速度)

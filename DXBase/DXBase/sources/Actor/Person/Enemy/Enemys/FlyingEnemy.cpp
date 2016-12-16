@@ -39,8 +39,6 @@ FlyingEnemy::FlyingEnemy(
 	pricleObj_->setDirection(direction_);
 	// アニメーションの追加
 	addTexPosition_ = Vector2::Zero;
-	addAnimation();
-	animation_.changeAnimation(ENEMY_WALK);
 }
 
 void FlyingEnemy::beginUpdate(float deltaTime)
@@ -183,14 +181,14 @@ void FlyingEnemy::addAnimation()
 {
 	animation_.addAnimation(
 		ENEMY_WALK,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_FLYINGENEMY_WALK_TEX),
-		texSize_, 8, 3, 3);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_FLYINGENEMY_WALK_TEX));
 	animation_.addAnimation(
 		ENEMY_ATTACK,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_FLYINGENEMY_ATTACK_TEX),
-		texSize_, 8, 2, 5);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_FLYINGENEMY_ATTACK_TEX));
 	animation_.addAnimation(
 		ENEMY_DAMAGE,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_FLYINGENEMY_DAMAGE_TEX),
-		texSize_, 8, 3, 3);
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_FLYINGENEMY_DAMAGE_TEX));
 }

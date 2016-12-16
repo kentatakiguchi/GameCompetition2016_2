@@ -45,9 +45,10 @@ void EnemyAnimation2D::update(float deltaTime)
 //}
 
 // アニメーションの追加
-void EnemyAnimation2D::addAnimation(
-	int id, int res, int size, int row, int column, int surplus)
+void EnemyAnimation2D::addAnimation(int id, const std::vector<int>& anims)
 {
+	add_anim(id, anims);
+
 	// 縦から回す
 	//for (int i = 0; i != column; i++) {
 	//	// 縦が最後の列となった場合は、横に動かす回数を減らす
@@ -61,21 +62,22 @@ void EnemyAnimation2D::addAnimation(
 	//	}
 	//}
 	//type_ = ActionType::Left;
-	add_anim(static_cast<int>(id), res, size, row, column, surplus);
+
+	//add_anim(static_cast<int>(id), res, size, row, column, surplus);
 
 }
 
 // アニメーションの追加(サイズのX, Y指定)
-void EnemyAnimation2D::addAnimation(int id, int res, Vector2 size, int row, int column, int surplus)
-{
-	for (int i = 0; i < column; ++i) {
-		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
-			// 切り取る左上の座標
-			Vector2 src = Vector2(j * size.x, i * size.y);
-			sprites_[id].push_back(DerivationGraph(src.x, src.y, size.x, size.y, res));
-		}
-	}
-}
+//void EnemyAnimation2D::addAnimation(int id, int res, Vector2 size, int row, int column, int surplus)
+//{
+//	for (int i = 0; i < column; ++i) {
+//		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
+//			// 切り取る左上の座標
+//			Vector2 src = Vector2(j * size.x, i * size.y);
+//			sprites_[id].push_back(DerivationGraph(src.x, src.y, size.x, size.y, res));
+//		}
+//	}
+//}
 
 // アニメーションの変更
 void EnemyAnimation2D::changeAnimation(int id, float speed)
