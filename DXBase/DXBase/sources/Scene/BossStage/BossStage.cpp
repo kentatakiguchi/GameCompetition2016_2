@@ -3,7 +3,7 @@
 #include "../../Field/Field.h"
 #include "../../Actor/Base/ActorGroup.h"
 #include "../../Actor/Person/Player/Player.h"
-#include "../../Actor/Person/Enemy/ImportEnemys.h"
+#include "../../Actor/Person/Enemy/Bosses/BaseBoss.h"
 
 #include "../../Field/MapGenerator.h"
 #include "../../ResourceLoader/ResourceLoader.h"
@@ -13,8 +13,8 @@
 
 BossStage::BossStage(SceneDataKeeper* keeper) :
 	nextScene_(Scene::GameOver),
-	isStopped_(false){
-	//boss_(nullptr){
+	isStopped_(false),
+	boss_(nullptr){
 	isEnd_ = false;
 	keeper_ = keeper;
 	name_ = "bossStage01";
@@ -46,10 +46,14 @@ void BossStage::start() {
 		gener.findStartPoint("./resources/file/" + name_ + ".csv")));
 	//プレイヤーのスタート位置を設定
 	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
-	/*auto boss = std::make_shared<BaseBoss>(
-		world_.get(), Vector2(1000, 200), 128.0f / 2.0f);
+
+	// ボスの取得
+	auto boss = std::make_shared<BaseBoss>(
+		world_.get(), Vector2(CHIPSIZE * 16 + 50, -50.0f));
 	world_->addActor(ActorGroup::Enemy, boss);
-	boss_ = boss.get();*/
+	boss_ = boss.get();
+	// ボスの位置を設定
+	boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 10 - 5), 4.0f);
 
 	gener.create("./resources/file/" + name_ + ".csv");
 	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
@@ -75,6 +79,14 @@ void BossStage::update() {
 	}
 	world_->update(deltaTime_);
 	backManager->Update(deltaTime_);
+	// 目的地に到達したら、条件をtrueにする
+	if (boss_->isMovePosition()) {
+		// バトル開始
+		boss_->setIsBattle(true);
+	}
+	// ボスが死亡したら、クリアする
+	if (boss_->isSceneEnd())
+		world_->clear(true);
 
 	auto player = world_->findActor("Player");
 	isEnd_ = player == nullptr || world_->is_clear();
@@ -109,6 +121,8 @@ void BossStage::draw() const {
 
 void BossStage::end() {
 	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
+	boss_->dead();
+	boss_ = nullptr;
 }
 
 bool BossStage::isEnd() const {

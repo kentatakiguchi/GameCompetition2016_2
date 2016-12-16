@@ -154,11 +154,11 @@ void BaseEnemy::onDraw() const
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
 	// 文字の表示
-	DrawString(
+	/*DrawString(
 		vec3Pos.x - scale_, vec3Pos.y - 20 - scale_,
-		stateChar, GetColor(255, 255, 255));
+		stateChar, GetColor(255, 255, 255));*/
 	// デバッグ
-	body_.draw(inv_);
+	//body_.draw(inv_);
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
@@ -317,6 +317,8 @@ void BaseEnemy::deadMove()
 {
 	//if (stateTimer_ >= 3.0f) dead();
 	stateString_ = "死亡";
+	animation_.setIsLoop(false);
+	name_ = "";
 	// 所持しているオブジェクトの削除
 	for (auto i = objContainer_.begin(); i != objContainer_.end(); i++) {
 		auto a = *i;
@@ -342,6 +344,7 @@ void BaseEnemy::changeState(State state, unsigned int motion)
 	motion_ = motion;
 	// アニメーションの変更
 	animation_.changeAnimation(motion);
+	//animation_.
 }
 
 // 所持しているオブジェクトの位置を設定します

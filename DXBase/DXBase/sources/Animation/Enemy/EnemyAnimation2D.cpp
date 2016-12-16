@@ -5,30 +5,28 @@ EnemyAnimation2D::EnemyAnimation2D() :
 	isLoop_(true),
 	isStop_(false){}
 
-// 更新(自分のupdate)
-void EnemyAnimation2D::onUpdate(float deltaTime)
+void EnemyAnimation2D::update(float deltaTime)
 {
 	back_to_pre_motion();
 	// アニメーションのタイムが一周したら、止める
 	if (isStop_)return;
 
 	// 更新
-	//update(deltaTime);
-	if (curr_anim_ > 100 || curr_anim_ < -100) return;
+	if (curr_anim_ >= 15 || curr_anim_ <= -1) return;
 	frame_ = static_cast<int>(timer_) % sprites_[curr_anim_].size();
 	// ループしないなら
 	if (!isLoop_) {
 		// 過去のフレームが現在のフレームよりも大きいなら、
 		// フレームを最大値にする
 		/*if (prevFrame_ > frame_)
-			frame_ = sprites_[anim_num_].size();*/
+		frame_ = sprites_[anim_num_].size();*/
 	}
 	id_ = sprites_[curr_anim_][frame_];
 	timer_ += deltaTime * curr_speed_ * 60.0f / sprites_[curr_anim_].size() * 10;
 	// ループしないなら
 	if (!isLoop_) {
 		// アニメーションのタイムが一周したら、止める
-		if (timer_ >= sprites_[curr_anim_].size() - 1) {
+		if (timer_ >= sprites_[curr_anim_].size() - 3) {
 			frame_ = sprites_[curr_anim_].size() - 1;
 			timer_ = sprites_[curr_anim_].size() - 1;
 			isStop_ = true;
@@ -39,6 +37,12 @@ void EnemyAnimation2D::onUpdate(float deltaTime)
 	// フレームの更新
 	prevFrame_ = frame_;
 }
+
+// 更新(自分のupdate)
+//void EnemyAnimation2D::onUpdate(float deltaTime)
+//{
+//	
+//}
 
 // アニメーションの追加
 void EnemyAnimation2D::addAnimation(
@@ -78,6 +82,8 @@ void EnemyAnimation2D::changeAnimation(int id, float speed)
 {
 	// 親の変更を使う
 	change_param(id, speed);
+	
+	//curr_anim_ = id;
 }
 
 // アニメーションのが終わったかを返します

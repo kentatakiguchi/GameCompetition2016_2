@@ -19,7 +19,7 @@ BaseBoss::BaseBoss(
 	const float bodyScale) :
 	Actor(world, "BaseBoss", position,
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
-	dp_(5),
+	dp_(10),
 	initDp_(dp_),
 	hp_(3),
 	flinchCount_(0),
@@ -35,13 +35,14 @@ BaseBoss::BaseBoss(
 	isBottomHit_(false),
 	isBodyHit_(true),
 	isAttackHit_(true),
-	isSceneEnd_(true),
+	isSceneEnd_(false),
+	isBattle_(false),
 	stateString_("待機"),
 	// bossManager_(nullptr),
 	playerPastPosition_(Vector2::Zero),
 	direction_(Vector2::One),
 	player_(nullptr),
-	state_(State::Idel),
+	state_(State::BattleIdel),
 	attackState_(AttackState::JumpAttack),
 	animeNum_(BossAnimationNumber::WAIT_NUMBER),
 	animation_(EnemyAnimation2D()),
@@ -51,7 +52,9 @@ BaseBoss::BaseBoss(
 	bossGaugeUI_(nullptr),
 	bossManager_(BossManager(world, position)),
 	top_(0.0f), bottom_(0.0f), right_(0.0f), left_(0.0f),
-	handle_(CreateFontToHandle(NULL, 50, 10, DX_FONTTYPE_NORMAL))
+	handle_(CreateFontToHandle(NULL, 50, 10, DX_FONTTYPE_NORMAL)),
+	movePos_(Vector2::Zero),
+	moveSpeed_(0.0f)
 {
 	// コンテナに追加(攻撃順に追加する)
 	asContainer_.push_back(AttackState::JumpAttack);
@@ -98,6 +101,8 @@ BaseBoss::BaseBoss(
 	world_->addUIActor(bossUI);
 	bossGaugeUI_ = bossUI.get();
 	bossGaugeUI_->SetHp(heartObj_->getHeartHp() * hp_);
+
+	body_.enabled(false);
 }
 
 BaseBoss::~BaseBoss()
@@ -115,8 +120,8 @@ void BaseBoss::onUpdate(float deltaTime)
 	bossGaugeUI_->SetHp(heartObj_->getHeartHp());
 	bossManager_.setHeartHP(heartObj_->getHeartHp());
 	// アニメーションの更新
-	//animation_.update(deltaTime);
-	animation_.onUpdate(deltaTime);
+	animation_.update(deltaTime);
+	//animation_.onUpdate(deltaTime);
 
 	entryObj_->setBossPosition(position_);
 	wspObj_->setPosition(position_);
@@ -142,24 +147,24 @@ void BaseBoss::onDraw() const
 	auto stateChar = stateString_.c_str();
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
-	// 状態の表示
-	DrawString(
-		vec3Pos.x, vec3Pos.y - 100,
-		stateChar, GetColor(255, 255, 255));
-	// 体力の表示
-	DrawFormatString(
-		vec3Pos.x, vec3Pos.y - 150,
-		GetColor(255, 255, 255), "体力:%d", hp_);
-	DrawFormatString(
-		vec3Pos.x, vec3Pos.y - 175,
-		GetColor(255, 255, 255), "時間:%d", (int)stateTimer_);
+	//// 状態の表示
+	//DrawString(
+	//	vec3Pos.x, vec3Pos.y - 100,
+	//	stateChar, GetColor(255, 255, 255));
+	//// 体力の表示
+	//DrawFormatString(
+	//	vec3Pos.x, vec3Pos.y - 150,
+	//	GetColor(255, 255, 255), "体力:%d", hp_);
+	//DrawFormatString(
+	//	vec3Pos.x, vec3Pos.y - 175,
+	//	GetColor(255, 255, 255), "時間:%d", (int)stateTimer_);
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
 		pos - Vector2::Up * 10,
 		Vector2::One * (body_.GetCircle().getRadius()) + Vector2::Up * 20,
 		body_.GetCircle().getRadius() / (128 / 2), angle_);
-	body_.draw(inv_);
+	//body_.draw(inv_);
 }
 
 void BaseBoss::onCollide(Actor & actor)
@@ -186,14 +191,14 @@ void BaseBoss::onCollide(Actor & actor)
 	}
 	// 特定の状態ではプレイヤーに触れても何も起こらないようにする
 	if (state_ == State::Flinch || state_ == State::Dead) return;
-	if (damageTimer_ < 0) return;
+	if (damageTimer_ > 0) return;
 	// プレイヤーの攻撃範囲に当たった場合の処理
 	if (actorName == "Player_AttackCollider") {
 		// プレイヤーの攻撃に当たらない場合は返す
 		if (!isAttackHit_) return;
 		// ダメージ処理
 		damage(3);
-		damageTimer_ = 0.5f * 60.0f;
+		damageTimer_ = 1.0f;// *60.0f;
 		return;
 	}
 	// プレイヤー本体に当たった場合の処理
@@ -202,7 +207,7 @@ void BaseBoss::onCollide(Actor & actor)
 		if (!isBodyHit_) return;
 		// ダメージ処理
 		damage(1);
-		damageTimer_ = 0.5f * 60.0f;
+		damageTimer_ = 1.0f;// *60.0f;
 		// もしものためのreturn
 		return;
 	}
@@ -218,6 +223,44 @@ bool BaseBoss::isSceneEnd()
 	return isSceneEnd_;
 }
 
+// 目的地に移動します
+void BaseBoss::movePosition()
+{
+	/*movePos_ = position;
+	moveSpeed_ = speed;*/
+	// 自分の位置が
+	auto distance = movePos_ - position_;
+	//auto thisSpeed = speed;
+	// 目的地と速度の差が速度以下なら、位置を変える
+	if (distance.Length() < moveSpeed_) {
+		position_ = movePos_;
+		//return true;
+	}
+	else
+		position_ += Vector2::Normalize(distance) * moveSpeed_;
+}
+
+// 戦闘を開始するかを返します
+void BaseBoss::setIsBattle(bool isBattle)
+{
+	isBattle_ = isBattle;
+}
+
+// 目的の位置を設定します
+void BaseBoss::setMovePosition(const Vector2 & position, const float speed)
+{
+	movePos_ = position;
+	moveSpeed_ = speed;
+}
+
+bool BaseBoss::isMovePosition()
+{
+	if (movePos_.x == position_.x && 
+		movePos_.y == position_.y)
+		return true;
+	return false;
+}
+
 void BaseBoss::updateState(float deltaTime)
 {
 	// 現在は使用不可
@@ -229,6 +272,7 @@ void BaseBoss::updateState(float deltaTime)
 
 	switch (state_)
 	{
+	case State::BattleIdel: battleIdel(deltaTime); break;
 	case State::Idel: idel(deltaTime); break;
 	case State::Attack: attack(deltaTime); break;
 	case State::Flinch: flinch(deltaTime); break;
@@ -258,6 +302,25 @@ void BaseBoss::changeAttackState(AttackState aState, BossAnimationNumber num)
 	changeState(State::Attack, num);
 	attackState_ = aState;
 	bossManager_.prevPosition();
+}
+
+// 戦闘待機状態
+void BaseBoss::battleIdel(float deltaTime)
+{
+	// 目的地が設定されていないなら返す
+	if (movePos_.x == Vector2::Zero.x && 
+		movePos_.y == Vector2::Zero.y) return;
+
+	// 目的地に移動
+	movePosition();
+
+	// バトル開始でないなら
+	if (!isBattle_) return;
+	// 待機状態に遷移
+	//changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
+	changeAttackState(AttackState::JumpAttack,
+		BossAnimationNumber::JUMP_UP_NUMBER);
+	body_.enabled(true);
 }
 
 void BaseBoss::idel(float deltaTime)
@@ -385,7 +448,7 @@ void BaseBoss::deadMove(float deltaTime)
 	animation_.setIsLoop(false);
 	if (animation_.isEndAnimation()) {
 		// アニメーションを停止させる
-		dead();
+		//dead();
 	}
 	// 死亡から一定時間経過なら、シーンを終了させる
 	if (stateTimer_ >= 3.0f)

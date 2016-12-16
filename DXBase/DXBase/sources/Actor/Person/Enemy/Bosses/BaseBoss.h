@@ -34,6 +34,7 @@ protected:
 	};
 	// 状態列挙
 	enum class State {
+		BattleIdel,
 		Idel,
 		//Search,
 		Attack,
@@ -61,6 +62,14 @@ public:
 public:
 	// シーンを終了させるかを返します
 	bool isSceneEnd();
+	// 目的地に移動します
+	void movePosition();
+	// 目的の位置を設定します
+	void setMovePosition(const Vector2& position, const float speed);
+	// 目的の位置に到達したかを返します (目的の位置, 速度)
+	bool isMovePosition();
+	// 戦闘を開始するかを返します
+	void setIsBattle(bool isBattle);
 
 protected:
 	// 状態の更新
@@ -69,6 +78,8 @@ protected:
 	void changeState(State state, BossAnimationNumber num);
 	// 攻撃状態の変更を行います
 	void changeAttackState(AttackState aState, BossAnimationNumber num);
+	// 戦闘待機状態
+	void battleIdel(float deltaTime);
 	// 待機状態
 	virtual void idel(float deltaTime);
 	// 攻撃行動
@@ -119,6 +130,7 @@ protected:
 	bool isBodyHit_;				// プレイヤー本体に当たるか
 	bool isAttackHit_;				// プレイヤーの攻撃に当たるか
 	bool isSceneEnd_;				// シーンを終了させるか
+	bool isBattle_;					// 戦闘を行うか
 
 	std::string stateString_;		// 状態の文字列（デバッグ用）
 	int handle_;					// デバッグハンドル
@@ -144,6 +156,9 @@ private:
 	BossGaugeUI* bossGaugeUI_;		// ボスの体力
 
 	float top_, bottom_, right_, left_;
+
+	Vector2 movePos_;
+	float moveSpeed_;
 
 	// クランプ用の位置(仮)
 	const Vector2 FIELD_SIZE = Vector2(

@@ -57,7 +57,7 @@ void FloorSearchPoint::onUpdate(float deltaTime)
 
 void FloorSearchPoint::onDraw() const
 {
-	body_.draw(inv_);
+	//body_.draw(inv_);
 }
 
 void FloorSearchPoint::onCollide(Actor & actor)

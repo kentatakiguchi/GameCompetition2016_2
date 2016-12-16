@@ -12,7 +12,7 @@ public:
 	// コンストラクタ
 	Animation2D();
 	// 更新処理
-	void update(float deltaTime);
+	virtual void update(float deltaTime);
 	// アニメーションの終了フラグ
 	bool end_anim();
 	// 描画

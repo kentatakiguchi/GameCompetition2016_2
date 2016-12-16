@@ -27,8 +27,10 @@ class EnemyAnimation2D : public Animation2D {
 
 public:
 	EnemyAnimation2D();
+	// 更新
+	void update(float deltaTime) override;
 	// 更新(自分のupdate)
-	void onUpdate(float deltaTime);
+	//void onUpdate(float deltaTime);
 	// アニメーションの追加
 	// (アニメーションのID, リソースID, 横の数, 縦の数, 横の数の減らる数)
 	void addAnimation(

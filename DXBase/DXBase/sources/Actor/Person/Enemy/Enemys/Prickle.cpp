@@ -31,15 +31,15 @@ void Prickle::onUpdate(float deltaTime)
 
 void Prickle::onDraw() const
 {
-	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-	vec3Pos = vec3Pos * inv_;
-	body_.draw(inv_);
-	// ƒgƒQ‚Ì•\Ž¦
-	DrawExtendGraph(
-		vec3Pos.x - body_.GetBox().getWidth() / 2.0f,
-		vec3Pos.y - body_.GetBox().getHeight() / 2.0f,
-		vec3Pos.x + body_.GetBox().getWidth() / 2.0f, vec3Pos.y + body_.GetBox().getHeight() / 2.0f,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
+	//auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
+	//vec3Pos = vec3Pos * inv_;
+	//body_.draw(inv_);
+	//// ƒgƒQ‚Ì•\Ž¦
+	//DrawExtendGraph(
+	//	vec3Pos.x - body_.GetBox().getWidth() / 2.0f,
+	//	vec3Pos.y - body_.GetBox().getHeight() / 2.0f,
+	//	vec3Pos.x + body_.GetBox().getWidth() / 2.0f, vec3Pos.y + body_.GetBox().getHeight() / 2.0f,
+	//	ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
 	/*DrawGraph(
 		vec3Pos.x - body_.GetBox().getWidth() / 2.0f,
 		vec3Pos.y - body_.GetBox().getHeight() / 2.0f,
