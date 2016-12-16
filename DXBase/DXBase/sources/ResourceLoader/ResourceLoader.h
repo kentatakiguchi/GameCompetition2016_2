@@ -173,6 +173,10 @@ enum class SoundID {
 	SE_SYOUTOTU,
 	SE_HAKKEN
 };
+enum MOVIE_ID {
+	TEST_MOVE
+};
+
 
 class ResourceLoader{
 private:
