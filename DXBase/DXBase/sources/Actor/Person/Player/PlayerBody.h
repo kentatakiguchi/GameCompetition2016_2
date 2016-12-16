@@ -55,6 +55,9 @@ public:
 	PlayerAnimation2D& animation();
 
 	Vector2 GetVelo() { return velocity_; }
+
+	//‹­§ˆÚ“®ŠÖ”(‘¬“x”Å)
+	void ForcedMove(Vector2 velocity);
 private:
 	PlayerStateMgr_Single stateMgr_;
 	PlayerAnimation2D animation_;

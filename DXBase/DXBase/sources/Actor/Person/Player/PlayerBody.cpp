@@ -7,6 +7,8 @@
 
 #include "Effect/PlayerEffectObj.h"
 
+#include "../../../Game/Time.h"
+
 PlayerBody::PlayerBody() {}
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
@@ -32,6 +34,7 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 PlayerBody::~PlayerBody() {}
 
 void PlayerBody::onUpdate(float deltaTime) {
+
 	position_ += (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
 	velocity_ = position_ - body_.GetCircle().previousPosition_;
 
@@ -310,6 +313,11 @@ void PlayerBody::count_dead_limit(float deltaTime) {
 
 PlayerAnimation2D & PlayerBody::animation() {
 	return animation_;
+}
+
+void PlayerBody::ForcedMove(Vector2 velocity)
+{
+	position_ += velocity*Time::GetInstance().deltaTime();
 }
 
 

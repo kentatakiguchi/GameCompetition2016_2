@@ -49,6 +49,12 @@ public:
 	virtual void clear(bool clear)override;
 	virtual void SetScroolJudge(Vector2 scroolJudge,Vector2 scroolStopPos) override;
 	virtual ScroolJudge GetScroolJudge()override;
+	virtual void PlayerNotMove(bool flag) override {
+		mNoPlayerMove = flag;
+	}
+	virtual bool GetPlayerNotMove() override {
+		return mNoPlayerMove;
+	}
 	virtual Matrix GetInv()override {
 		Matrix mat;
 		mat.Translation(Vector3(mPlayerPos.x, mPlayerPos.y,0.0f));
@@ -84,6 +90,8 @@ private:
 	ScroolJudge scrool_;
 	
 	Vector2 mPlayerPos;
+	
+	bool mNoPlayerMove;
 };
 
 #endif

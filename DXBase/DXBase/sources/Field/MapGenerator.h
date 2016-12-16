@@ -241,7 +241,7 @@ public:
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 70) {
-					world_->addActor(ActorGroup::Enemy, std::make_shared<Door>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					world_->addActor(ActorGroup::Field, std::make_shared<Door>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
 				/*if (reader_.geti(rowN, colN) == 67) {

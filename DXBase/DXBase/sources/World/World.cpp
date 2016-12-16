@@ -7,7 +7,8 @@
 // コンストラクタ
 World::World() :
 	listener_([](EventMessage, void*) {}),
-	is_clear_(false){
+	is_clear_(false),
+	mNoPlayerMove(false){
 }
 
 // 更新
@@ -111,4 +112,5 @@ ScroolJudge World::GetScroolJudge()
 {
 	return scrool_;
 }
+
 

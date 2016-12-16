@@ -3,13 +3,14 @@
 
 #include "../Base/IScene.h"
 #include <memory>
-#include "../../Actor/BackGraundManager/BackGraundManager.h"
-#include "../../Renderer/Puyo_Texture_K.h"
+#include "../../Math/Math.h"
+#include"../GamePlay/PauseScreen.h"
+#include"../GamePlay/MoveScreen.h"
 class World;
 
 class KataokaScene : public IScene {
 public:
-	KataokaScene();
+	KataokaScene(SceneDataKeeper* keeper);
 	~KataokaScene();
 	virtual void start() override;
 	virtual void update() override;
@@ -18,24 +19,24 @@ public:
 	virtual bool isEnd() const override;
 	virtual Scene next() const override;
 private:
-	VECTOR vector;
-
 	using WorldPtr = std::shared_ptr<World>;
 	// ワールド
 	WorldPtr	world_;
 
-	int id;
+	//BaseBoss* boss_;				// ボス
 
-	BackGraundManager* backManager;
+	Scene nextScene_;
 
-	PuyoTextureK* puyo;
+	float deltaTime_;
 
-	Vector2 pos;
-	Vector2 scale;
-	float rotate;
+	bool isStopped_;
+
+	float mIvemtTime;
 
 
-	float power;
+
+	PauseScreen pause_;
+	MoveScreen move_;
 };
 
 #endif

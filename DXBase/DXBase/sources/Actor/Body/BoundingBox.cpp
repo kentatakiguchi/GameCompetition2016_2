@@ -55,7 +55,7 @@ void BoundingBox::draw(Matrix inv) const {
 	Vector3 pos2 = Vector3(component_.point[2].x, component_.point[2].y) * inv;
 	Vector3 pos3 = Vector3(component_.point[3].x, component_.point[3].y) * inv;
 
-	//DrawBox(pos0.x, pos0.y, pos3.x, pos3.y, GetColor(255, 255, 255), TRUE);
+	DrawBox(pos0.x, pos0.y, pos3.x, pos3.y, GetColor(255, 255, 255), TRUE);
 
 	//DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
 	//DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));

@@ -1,16 +1,22 @@
 #include "KataokaScene.h"
 #include "../../World/World.h"
+#include "../../Field/Field.h"
 #include "../../Actor/Base/ActorGroup.h"
 #include "../../Actor/Person/Player/Player.h"
+#include "../../Actor/Person/Enemy/ImportEnemys.h"
+#include "../../Actor/Door/Door.h"
+#include "../../Field/MapGenerator.h"
 #include "../../ResourceLoader/ResourceLoader.h"
-#include "../../Actor/TestPlayer/TestPlayer.h"
-#include "../../Actor/ScroolStop/ScroolStop.h"
-#include "../../Actor/UIActor/BossGaugeUI/BossGaugeUI.h"
-#include <memory>
-#include <random>
-KataokaScene::KataokaScene()
-{
+#include "../../Actor/BackGraundManager/BackGraundManager.h"
+#include "../../Actor/Person/Player/PlayerBody.h"
+KataokaScene::KataokaScene(SceneDataKeeper* keeper):
+nextScene_(Scene::GameOver),
+isStopped_(false) {
 	isEnd_ = false;
+	keeper_ = keeper;
+	name_ = "test";
+	deltaTime_ = 1 / 60.f;
+	mIvemtTime = 0.0f;
 }
 
 KataokaScene::~KataokaScene()
@@ -19,124 +25,82 @@ KataokaScene::~KataokaScene()
 
 void KataokaScene::start()
 {
-	power = 0.0f;
 
-	pos = Vector2(200,200);
-	scale = Vector2(1,1);
-	rotate = 0;
-	// 描画先画面を裏画面にセット
+	deltaTime_ = Time::GetInstance().deltaTime();
+	isStopped_ = false;
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
-	//puyo = new PuyoTextureK(TextureID::PUYO_TEST_TEX,pos,scale,rotate);
-	world_->addUIActor(std::make_shared<BossGaugeUI>(world_.get(), Vector2(500, 500)));
-	//backManager = new BackGraundManager(world_.get());
-	////先にセットされたテクスチャほど奥に描写される
-	//backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX);
-	//backManager->SetBackGraund(TextureID::BACKGRAUND3_TEX);
-	//backManager->SetBackGraund(TextureID::BACKGRAUND2_TEX);
-	//backManager->SetBackGraund(TextureID::BACKGRAUND1_TEX);
 
-	//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
-	//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
+	MapGenerator gener = MapGenerator(world_.get());
+
+	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(),
+		gener.findStartPoint("./resources/file/" + name_ + ".csv")-Vector2(400,0)));
+	//プレイヤーのスタート位置を設定
+	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv") - Vector2(100, 0));
+
+	gener.create("./resources/file/" + name_ + ".csv");
+
+	world_->SetScroolJudge(Vector2(0, 0), Vector2(99999, 99999));
+
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
+
+	world_->PlayerNotMove(true);
+
+	world_->clear(false);
 }
 
 void KataokaScene::update()
 {
-	puyo->PuyoUpdate();
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T)) {
+		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
+		isStopped_ = !isStopped_;
+	}
+	mIvemtTime += deltaTime_;
+	if (mIvemtTime <= 10.0f) {
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(100.0f, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(100.0f, 0.0f));
+	}
+	else if(mIvemtTime<=20.0f)
+		world_->PlayerNotMove(false);
 
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::D))
-		pos.x += 100.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::A))
-		pos.x -= 100.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::W))
-		pos.y += 100.0f*Time::GetInstance().deltaTime();
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::S))
-		pos.y -= 100.0f*Time::GetInstance().deltaTime();
-	
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::UP))
-	//	scale.y += 10.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::DOWN))
-	//	scale.y -= 10.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::LEFT))
-	//	scale.x += 10.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::RIGHT))
-	//	scale.x -= 10.0f*Time::GetInstance().deltaTime();
+	world_->update(deltaTime_);
 
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::G))
-	//	rotate += 100.0f*Time::GetInstance().deltaTime();
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::F))
-	//	rotate -= 100.0f*Time::GetInstance().deltaTime();
-
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T))
-	{
-		puyo->PuyoAddPower(Vector2::Zero, Vector2(4, -4));
+	auto player = world_->findActor("Player");
+	isEnd_ = player == nullptr || world_->is_clear();
+	if (player == nullptr) {
+		nextScene_ = Scene::GameOver;
 	}
 
+	if (world_->is_clear()) {
 
-	//テスト用
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::H))
-	{
-		for (int i = 0; i <= 10; i++)
+		if (name_ != "stage03")
 		{
-			puyo->PuyoAddPowerDx(Vector2(272, i*16), Vector2(4, 0));
+			nextScene_ = Scene::StageClear;
+		}
+		else
+		{
+			nextScene_ = Scene::GameClear;
 		}
 	}
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::J))
-	{	
-		for (int i = 0; i <= 2; i++)
-		{
-			for (int j = 0; j <= 2; j++)
-			{
-				puyo->PuyoAddPowerDx(Vector2(j*16, i * 16), Vector2(-4, -4));
-			}
-		}
+	if (!isEnd_) {
+		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
 	}
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::I))
-	{
-		for (int i = 0; i <= 17; i++)
-		{
-			puyo->PuyoAddPowerDx(Vector2(i * 16,0), Vector2(0, -4));
-		}
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J)) {
+		dynamic_cast<Door*>(world_->findActor("Door").get())->DoorOpen(false);
 	}
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))
-	{
-		//puyo->PuyoAddPowerEx(Vector2(500,500).Normalize(),10.0f);
-		power += 1000.0f*Time::GetInstance().deltaTime();
-	}
-	Vector2 vec = InputMgr::GetInstance().AnalogPadVectorL();
-	//puyo->PuyoAddPowerEx(vec.Normalize(), vec,power);
-	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::K))
-	//{
-	//	puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
-	//}
-	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::L))
-	//{
-	//	puyo->PuyoAddPower(Vector2(128, 0), Vector2(2, -2));
-	//}
 
-	//puyo->SetPosition(pos,scale,rotate);
-
-	world_->update(Time::GetInstance().deltaTime());
-	////背景update
-	//backManager->Update(Time::GetInstance().deltaTime());
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN)) isEnd_ = true;
 }
 
 void KataokaScene::draw() const
 {
-	puyo->PuyoDraw();
-	////背景draw
-	//backManager->Draw();
 	world_->draw();
-	DrawFormatString(550, 25, GetColor(255, 255, 255), "Hキー長押し:力を加え続ける");
-	DrawFormatString(550, 50, GetColor(255, 255, 255), "Jキー      :一瞬だけ力を加える");
-	DrawFormatString(550, 75, GetColor(255, 255, 255), "Hキー押したままJキーを押すとバグるかも");
+	isStopped_ ? pause_.draw() : move_.draw();
 }
 
 void KataokaScene::end()
 {
-	//delete backManager;
-	delete puyo;
+
 }
 
 bool KataokaScene::isEnd() const

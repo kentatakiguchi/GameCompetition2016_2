@@ -34,6 +34,10 @@ public:
 	//縦スクロール横スクロールするかどうか(引数 軸ごとにスクロールする場合は1、しない場合は0)
 	virtual void SetScroolJudge(Vector2 scroolJudge, Vector2 scroolStopPos) =0;
 	virtual ScroolJudge GetScroolJudge()=0;
+	//プレイヤーの操作不能にするかどうか
+	virtual void PlayerNotMove(bool flag) = 0;
+	//プレイヤーの操作不能にするかどうかを取得
+	virtual bool GetPlayerNotMove() = 0;
 	// メッセージの送信
 	virtual void sendMessage(EventMessage message, void* param = nullptr) = 0;
 	virtual Vector2 GetPlayerPos() = 0;

@@ -9,7 +9,7 @@
 
 // コンストラクタ
 Player::Player(IWorld * world, const Vector2 & position) :
-	Actor(world, "Player", position, CollisionBase()){
+	Actor(world, "Player", position, CollisionBase()) {
 	// bodyの生成
 	create_bodys();
 	// コネクタの生成
@@ -25,7 +25,8 @@ void Player::onUpdate(float deltaTime) {
 	position_ = center();
 
 	// 指定stateの更新
-	update_state(deltaTime);
+	if (!world_->GetPlayerNotMove())
+		update_state(deltaTime);
 }
 
 // body中心座標
