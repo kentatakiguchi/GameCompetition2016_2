@@ -128,13 +128,13 @@ void PlayerBody::onCollide(Actor & other) {
 		}
 	}
 	if (other.getName() == "StageClearPoint") {
-		hit_enemy_ = HitOpponent::CLEAR;
+		if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) {
+
+			hit_enemy_ = HitOpponent::CLEAR;
+		}
 	}
 	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
-		if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) {
 			hit_enemy_ = HitOpponent::ENEMY;
-			dead_limit_ = 0;
-		}
 	}
 
 	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||

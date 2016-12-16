@@ -4,7 +4,6 @@ PlayerState_Single_Idle::PlayerState_Single_Idle(const Keys& keys) : PlayerState
 
 void PlayerState_Single_Idle::unique_init(){
 	body_->reset_enemy();
-	body_->reset_dead_limit();
 	body_->reset_partner();
 	body_->animation().change(PlayerAnimID::DIV_IDLE);
 }

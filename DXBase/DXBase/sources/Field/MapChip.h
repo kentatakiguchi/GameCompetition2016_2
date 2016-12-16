@@ -23,10 +23,10 @@ public:
 		//Vector2 pos = ((world_->findActor("PlayerBody1")->position_ + world_->findActor("PlayerBody2")->position_) / 2) + Vector2(CHIPSIZE / 2, 0);
 		Vector2 pos = player->position_ + Vector2(CHIPSIZE / 2, 0);
 
-		if (pos.x - (15 * CHIPSIZE)>position_.x || pos.x + (15 * CHIPSIZE)<position_.x) {
+		if (pos.x - (30 * CHIPSIZE)>position_.x || pos.x + (30 * CHIPSIZE)<position_.x) {
 			return true;
 		}
-		else if (pos.y - (15 * CHIPSIZE)>position_.y || pos.y + (15 * CHIPSIZE)<position_.y) {
+		else if (pos.y - (20 * CHIPSIZE)>position_.y || pos.y + (20 * CHIPSIZE)<position_.y) {
 			return true;
 		}
 		return false;

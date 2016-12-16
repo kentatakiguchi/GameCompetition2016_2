@@ -145,7 +145,7 @@ public:
 				}
 				if (reader_.geti(rowN, colN) == 9) {
 					world_->addActor(ActorGroup::Field, std::make_shared<SticklessFloor>(
-						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STONE_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 10) {
@@ -163,13 +163,13 @@ public:
 				if (reader_.geti(rowN, colN) == 21) {
 					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STONE_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STAGE4_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 22) {
 					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STAGE2_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_SUB_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 30) {

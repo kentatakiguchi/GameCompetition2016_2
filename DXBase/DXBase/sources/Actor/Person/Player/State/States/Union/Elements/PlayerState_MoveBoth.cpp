@@ -34,6 +34,10 @@ void PlayerState_MoveBoth::key_input(){
 
 	if (!move_keyR()) change(PlayerState_Enum_Union::MOVE, ActionType::Left);
 	if (!move_keyL()) change(PlayerState_Enum_Union::MOVE, ActionType::Right);
+
+	if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
+	if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
+
 }
 
 void PlayerState_MoveBoth::pad_input(){
@@ -42,4 +46,7 @@ void PlayerState_MoveBoth::pad_input(){
 
 	if (!move_padR()) change(PlayerState_Enum_Union::MOVE, ActionType::Left);
 	if (!move_padL()) change(PlayerState_Enum_Union::MOVE, ActionType::Right);
+
+	if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
+	if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 }
