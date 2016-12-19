@@ -312,6 +312,11 @@ Vector3 Matrix::Translation() const{
 	return Vector3(m[3][0], m[3][1], m[3][2]);
 }
 
+Vector2 Matrix::TranslationVec2() const
+{
+	return Vector2(m[3][0],m[3][1]);
+}
+
 Matrix& Matrix::Translation(const Vector3 & translation){
 	m[3][0] = translation.x; m[3][1] = translation.y; m[3][2] = translation.z;
 	return *this;
