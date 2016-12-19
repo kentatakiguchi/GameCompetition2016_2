@@ -12,8 +12,8 @@ public:
 	MapChip(){}
 	//マップチップの生成
 	MapChip(IWorld* world, Vector2& position);
-	MapChip(IWorld* world, Vector2& position, CollisionBase& base);
-	MapChip(IWorld* world, Vector2& position,std::string name, CollisionBase& base);
+	MapChip(IWorld* world, Vector2& position,const IBodyPtr& base);
+	MapChip(IWorld* world, Vector2& position,std::string name,const IBodyPtr& base);
 	MapChip(std::shared_ptr<MapChip> chip, IWorld* world, Vector2& position);
 	MapChip(MapChip& chip,IWorld* world,Vector2& position);
 	virtual void set(Vector2& pos);

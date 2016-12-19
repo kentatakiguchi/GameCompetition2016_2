@@ -2,8 +2,9 @@
 #include"../Input/InputMgr.h"
 
 SegmentFloor::SegmentFloor(IWorld * world, Vector2 & startPosition,Vector2& endPosition) :spriteID_(-1),
-MapChip(world, Vector2(((startPosition.x+endPosition.x)/2), ((startPosition.y + endPosition.y) / 2)), "SegmentCollider", CollisionBase(startPosition,endPosition))
+MapChip(world, Vector2(((startPosition.x+endPosition.x)/2), ((startPosition.y + endPosition.y) / 2)), "SegmentCollider", BoundingSegment(position_,,(startPosition-endPosition).Length(),true)
 {
+	Vector2 Vector2(0, -1);
 	rotate_ = 0;
 }
 
