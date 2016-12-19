@@ -7,7 +7,7 @@
 
 class BoundingCircle : public Body {
 public:
-	BoundingCircle() {}
+	BoundingCircle();
 	//カプセルの判定を作成する(判定を行う場合) topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2)
 	BoundingCircle(Vector2 pos, Matrix mat, float rad,bool enable);
 	float getRadius() { return radius_; }

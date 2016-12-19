@@ -5,6 +5,7 @@
 #include "ShapeType.h"
 #include"../Collision/Collision.h"
 #include "IBodyPtr.h"
+#include <vector>
 
 class BoundingBox;
 class BoundingCapsule;
@@ -37,6 +38,7 @@ public:
 	virtual float length()const = 0;
 	virtual float height()const = 0;
 	virtual float width()const = 0;
+	virtual std::vector<Vector2> points()const = 0;
 	virtual void draw(int spriteID, Matrix inv) const = 0;
 	virtual void draw(int spriteID, int rotation, Matrix inv) const = 0;
 	virtual IBodyPtr translate(const Vector2& pos)const = 0;

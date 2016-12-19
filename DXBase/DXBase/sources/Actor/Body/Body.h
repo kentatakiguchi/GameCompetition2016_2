@@ -18,7 +18,6 @@ public:
 	virtual float length()const { return length_; }
 	virtual float height()const { return height_; }
 	virtual float width()const { return width_; }
-
 public:
 	CollisionType type_;
 

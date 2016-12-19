@@ -131,3 +131,10 @@ IBodyPtr BoundingCapsule::transform(const Matrix & mat) const{
 	return std::make_shared<BoundingCapsule>(position_ + mat.TranslationVec2(), mat_*mat, radius_*mat.Scale().x, length_*mat.Scale().y, enabled_);//”¼Œa‚ªMat‚Ìx,’·‚³‚ªMat‚Ìy
 }
 
+std::vector<Vector2> BoundingCapsule::points() const{
+	std::vector<Vector2> points = std::vector<Vector2>();
+	points.push_back(position_ + (Vector2::Down * length_ / 2) * mat_.RotationMatrix());
+	points.push_back(position_ + (Vector2::Up * length_ / 2) * mat_.RotationMatrix());
+	return points;
+}
+

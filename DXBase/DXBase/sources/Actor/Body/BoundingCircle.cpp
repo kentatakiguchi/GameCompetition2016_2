@@ -4,6 +4,11 @@
 #include"BoundingCircle.h"
 
 
+BoundingCircle::BoundingCircle() :
+	Body(CollisionType::CircleCol, false, Vector2::Zero, Matrix::Identity, 0) {
+
+}
+
 BoundingCircle::BoundingCircle(Vector2 pos, Matrix mat, float rad, bool enable) :
 	Body(CollisionType::CircleCol, enable, pos, mat, rad)
 {
@@ -102,4 +107,9 @@ IBodyPtr BoundingCircle::translate(const Vector2 & pos) const
 IBodyPtr BoundingCircle::transform(const Matrix & mat) const
 {
 	return std::make_shared<BoundingCircle>(position_ + mat.TranslationVec2(), mat_*mat, radius_*mat.Scale().y, enabled_);
+}
+
+std::vector<Vector2> BoundingCircle::points() const
+{
+	return std::vector<Vector2>();
 }

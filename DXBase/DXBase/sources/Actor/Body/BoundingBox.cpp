@@ -182,3 +182,14 @@ IBodyPtr BoundingBox::transform(const Matrix & mat) const
 {
 	return std::make_shared<BoundingBox>(position_ + mat.TranslationVec2(), mat_*mat, width_*mat.Scale().x, height_*mat.Scale().y, enabled_);
 }
+
+std::vector<Vector2> BoundingBox::points() const{
+	Vector2 size_ = Vector2(width_, height_) / 2;//íÜêSì_
+
+	std::vector<Vector2> points = std::vector<Vector2>();
+	points.push_back(-size_ * mat_.RotationMatrix() + position_ + size_);
+	points.push_back(Vector2(size_.x, -size_.y) * mat_.RotationMatrix() + position_ + size_);
+	points.push_back(Vector2(-size_.x, size_.y) * mat_.RotationMatrix() + position_ + size_);
+	points.push_back(size_  * mat_.RotationMatrix() + position_ + size_);
+	return points;
+}

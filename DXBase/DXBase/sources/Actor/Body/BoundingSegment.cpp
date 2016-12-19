@@ -139,3 +139,10 @@ IBodyPtr BoundingSegment::transform(const Matrix & mat) const{
 	return std::make_shared<BoundingSegment>(position_ + mat.TranslationVec2(), mat_*mat, length_*mat.Scale().y, enabled_);
 }
 
+std::vector<Vector2> BoundingSegment::points() const{
+	std::vector<Vector2> points = std::vector<Vector2>();
+	points.push_back(position_ + (Vector2::Down * length_ / 2) * mat_.RotationMatrix());
+	points.push_back(position_ + (Vector2::Up * length_ / 2) * mat_.RotationMatrix());
+	return points;
+}
+

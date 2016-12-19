@@ -20,6 +20,7 @@ public:
 	virtual void draw(int spriteID, int rotation, Matrix inv) const override;
 	virtual IBodyPtr translate(const Vector2 & pos) const override;
 	virtual IBodyPtr transform(const Matrix & mat) const override;
+	virtual std::vector<Vector2> points()const override;
 };
 
 #endif

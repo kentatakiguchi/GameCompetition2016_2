@@ -40,7 +40,6 @@ void Actor::update(float deltaTime) {
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 
-	body_->update(deltaTime);
 	//ˆÚ“®update
 	//ActorMove();
 	//body_.MovePos(Vector2(position_.x, position_.y));
@@ -50,6 +49,9 @@ void Actor::late_update(float deltaTime) {
 	//if (!isNearToPlayer())return;
 
 	//body_.MovePos(Vector2(position_.x, position_.y));
+
+	body_->update(deltaTime);
+
 	inv();
 	onLateUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.late_update(deltaTime); });
