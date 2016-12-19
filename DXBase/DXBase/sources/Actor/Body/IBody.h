@@ -42,6 +42,7 @@ public:
 	virtual std::vector<Vector2> points()const = 0;
 	virtual void draw(int spriteID, Matrix inv) const = 0;
 	virtual void draw(int spriteID, int rotation, Matrix inv) const = 0;
+	virtual void setSegment(const Vector2& start, const Vector2& end) = 0;
 	virtual IBodyPtr translate(const Vector2& pos)const = 0;
 	virtual IBodyPtr transform(const Matrix& mat)const = 0;
 };

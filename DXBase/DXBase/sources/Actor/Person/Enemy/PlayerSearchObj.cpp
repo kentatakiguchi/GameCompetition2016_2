@@ -10,10 +10,11 @@ PlayerSearchObj::PlayerSearchObj(
 		Vector2(
 			std::abs(enemyPosition.x + playerPosition.x) / 2,
 			std::abs(enemyPosition.y + playerPosition.y) / 2),
-		CollisionBase(
-			const_cast<Vector2&>(enemyPosition),
-			const_cast<Vector2&>(playerPosition)
-			)
+		std::make_shared<BoundingSegment>((enemyPosition + playerPosition) / 2, Matrix::CreateRotationZ(MathHelper::ACos(Vector2::Dot(Vector2::Down, (enemyPosition - playerPosition).Normalize()))), Vector2::Distance(enemyPosition, playerPosition), true)
+		//CollisionBase(
+		//	const_cast<Vector2&>(enemyPosition),
+		//	const_cast<Vector2&>(playerPosition)
+		//	)
 		),
 	enemyPosition_(enemyPosition),
 	playerPosition_(playerPosition),
@@ -23,8 +24,10 @@ PlayerSearchObj::PlayerSearchObj(
 
 void PlayerSearchObj::onUpdate(float deltaTime)
 {
-	position_ = body_.setSegmentPoint(
-		position_, enemyPosition_, playerPosition_);
+	//position_ = body_.setSegmentPoint(
+	//	position_, enemyPosition_, playerPosition_);
+
+	body_->setSegment(enemyPosition_, playerPosition_);
 }
 
 void PlayerSearchObj::onDraw() const

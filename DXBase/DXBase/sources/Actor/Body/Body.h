@@ -19,6 +19,12 @@ public:
 	virtual float length()const { return length_; }
 	virtual float height()const { return height_; }
 	virtual float width()const { return width_; }
+	virtual void setSegment(const Vector2& start, const Vector2& end){ 
+		position_ = (start + end) / 2;
+		mat_ = Matrix::CreateRotationZ(MathHelper::ACos(Vector2::Dot(Vector2::Down, (start - end).Normalize())));
+		length_ = Vector2::Distance(start, end);
+	}
+
 public:
 	CollisionType type_;
 

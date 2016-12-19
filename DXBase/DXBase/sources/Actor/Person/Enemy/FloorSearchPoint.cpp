@@ -10,12 +10,13 @@ FloorSearchPoint::FloorSearchPoint(
 	const Vector2& bodyScale
 	) :
 	Actor(world, "FSP", enemyPosition + addPosition,
-		CollisionBase(
-			Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
-			Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
-			Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f),
-			Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f)
-			)
+		std::make_shared<BoundingBox>(bodyScale / -2.0f, Matrix::Identity, bodyScale.x, bodyScale.y, true)
+		//CollisionBase(
+		//	Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+		//	Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+		//	Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f),
+		//	Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f)
+		//	)
 		),
 	turnCount_(0),
 	isFloor_(false),
@@ -33,7 +34,7 @@ FloorSearchPoint::FloorSearchPoint(
 	const Vector2 & addPosition,
 	const float radius) : 
 	Actor(world, "FSP", enemyPosition + addPosition,
-		CollisionBase(position_, radius)),
+		std::make_shared<BoundingCircle>(Vector2::Zero, Matrix::Identity, radius, true)),
 	turnCount_(0),
 	isFloor_(false),
 	isGround_(false),
