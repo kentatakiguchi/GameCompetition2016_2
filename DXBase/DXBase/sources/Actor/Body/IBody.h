@@ -28,6 +28,7 @@ public:
 	virtual bool intersects(const BoundingCapsule& other)const = 0;
 	virtual bool intersects(const BoundingSegment& other)const  = 0;
 	virtual bool intersects(const BoundingCircle& other)const = 0;
+	virtual void update(float deltaTime) = 0;
 	virtual void enabled(bool enabled) = 0;
 	virtual Vector2 cur_pos()const = 0;
 	virtual Vector2 pre_pos()const = 0;

@@ -39,6 +39,8 @@ void Actor::update(float deltaTime) {
 
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
+
+	body_->update(deltaTime);
 	//ˆÚ“®update
 	//ActorMove();
 	//body_.MovePos(Vector2(position_.x, position_.y));
