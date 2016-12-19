@@ -11,7 +11,7 @@
 #include "../Body/BoundingCapsule.h"
 #include "../Body/BoundingCircle.h"
 #include "../Body/BoundingSegment.h"
-#include"..//Body/CollisionBase.h"
+//#include"..//Body/CollisionBase.h"
 #include "../../Define.h"
 #include <string>
 #include <memory>
