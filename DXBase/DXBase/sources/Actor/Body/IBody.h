@@ -31,6 +31,7 @@ public:
 	virtual bool intersects(const BoundingCircle& other)const = 0;
 	virtual void update(float deltaTime) = 0;
 	virtual void enabled(bool enabled) = 0;
+	virtual Vector2 velocity()const = 0;
 	virtual Vector2 cur_pos()const = 0;
 	virtual Vector2 pre_pos()const = 0;
 	virtual Matrix mat()const = 0;

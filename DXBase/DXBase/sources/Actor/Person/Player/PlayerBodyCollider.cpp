@@ -1,7 +1,7 @@
 #include "PlayerBodyCollider.h"
 
 PlayerBodyCollider::PlayerBodyCollider(IWorld * world, std::string& name):
-	Actor(world, name + "Collider", Vector2::Zero, CollisionBase(Vector2(0, 0), PLAYER_COLLIDER_RADIUS)){
+	Actor(world, name + "Collider", Vector2::Zero, std::make_shared<BoundingCircle>(Vector2::Zero, Matrix::Identity, PLAYER_COLLIDER_RADIUS, true)){
 }
 
 PlayerBodyCollider::~PlayerBodyCollider(){}
@@ -20,8 +20,8 @@ void PlayerBodyCollider::onCollide(Actor & other) {
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor") {
 		opponent_ = HitOpponent::FLOOR_HIT;
-		other_velocity_ = other.getBody().GetColliderVelocity();
-		other_position_ = other.getBody().GetBox().position_;
+		other_velocity_ = other.getBody()->velocity();
+		other_position_ = other.getBody()->cur_pos();
 	}
 }
 

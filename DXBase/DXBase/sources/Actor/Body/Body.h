@@ -11,6 +11,7 @@ public:
 	virtual bool intersects(const IBody & other) const override { return other.intersects(*this); }
 	virtual void update(float deltaTime) { previousPosition_ = position_; }
 	virtual void enabled(bool enabled) { enabled_ = enabled; }
+	virtual Vector2 velocity()const { return position_ - previousPosition_; }
 	virtual Vector2 cur_pos()const { return position_; }
 	virtual Vector2 pre_pos()const { return previousPosition_; }
 	virtual Matrix mat()const { return mat_; }
