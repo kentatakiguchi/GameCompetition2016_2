@@ -6,6 +6,7 @@
 BoundingCircle::BoundingCircle(Vector2 center, float circleRadius) :
 	component_(center, circleRadius), enabled(true) {
 }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 BoundingCircle::BoundingCircle() :
@@ -16,6 +17,11 @@ BoundingCircle::BoundingCircle() :
 BoundingCircle::BoundingCircle(Vector2 pos, Matrix mat, float rad, bool enable) :
 	Body(CollisionType::CircleCol, enable, pos, mat, rad)
 =======
+BoundingCircle::BoundingCircle(Vector2 center, float circleRadius, bool isEnabled) :
+	component_(center, circleRadius), enabled(isEnabled)
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
+=======
+
 BoundingCircle::BoundingCircle(Vector2 center, float circleRadius, bool isEnabled) :
 	component_(center, circleRadius), enabled(isEnabled)
 >>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
@@ -119,6 +125,7 @@ bool BoundingCircle::intersects(BoundingBox & other)
 		
 		phd2 = (inner*inner) / pqd2;
 		d2 = pmd2 - phd2;
+<<<<<<< HEAD
 
 		if (d2 < component_.radius*component_.radius)return true;
 	}
@@ -129,6 +136,18 @@ bool BoundingCircle::intersects(BoundingBox & other)
 			pp = CreateVector(other.component_.point[i * 3], other.component_.point[1 + i]);
 			inpm = CreateVector(other.component_.point[i * 3], component_.point[0]);
 
+=======
+
+		if (d2 < component_.radius*component_.radius)return true;
+	}
+	//�l�p�̓������ǂ���
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			pp = CreateVector(other.component_.point[i * 3], other.component_.point[1 + i]);
+			inpm = CreateVector(other.component_.point[i * 3], component_.point[0]);
+
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 			ininner = InnerProduct(pp, inpm);
 			outer = OuterProduct(pp, inpm);
 
@@ -214,6 +233,7 @@ bool BoundingCircle::intersects(BoundingCapsule & other) {
 
 	Vector2 A1P = other.component_.point[1] + rotationA * other.component_.radius;
 	Vector2 A1M = other.component_.point[1] - rotationA * other.component_.radius;
+<<<<<<< HEAD
 
 	Vector2 pq, pm;
 	float inner, k, pqd2, pmd2, phd2, d2;
@@ -240,6 +260,34 @@ bool BoundingCircle::intersects(BoundingCapsule & other) {
 		if (d2 < component_.radius*component_.radius)return true;
 	}
 
+=======
+
+	Vector2 pq, pm;
+	float inner, k, pqd2, pmd2, phd2, d2;
+	
+	Vector2 As[][2]{ {A0P,A1P }, { A0M,A1M }};
+
+	for (int i = 0; i < 2; i++)
+	{
+		pq = CreateVector(As[i][0], As[i][1]);
+		pm = CreateVector(As[i][0], component_.point[0]);
+
+		//inner = Vector2::Dot(pq, pm);
+		inner = InnerProduct(pq, pm);
+		pqd2 = pq.LengthSquared();
+		pmd2 = pm.LengthSquared();
+
+		k = inner / pqd2;
+
+		if (k < 0 || 1 < k)continue;
+
+		phd2 = (inner*inner) / pqd2;
+		d2 = pmd2 - phd2;
+
+		if (d2 < component_.radius*component_.radius)return true;
+	}
+
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 	//�~���m�̔���
 	float dx, dy, r;
 	for (int i = 0; i < 2; i++)
@@ -320,6 +368,7 @@ bool BoundingCircle::intersects(BoundingSegment & other) {
 
 
 bool BoundingCircle::isIntersectOtherRayToThisLineSegment(BoundingSegment & other)
+<<<<<<< HEAD
 {
 	float otherPoint1 =
 		(component_.point[0].x - component_.point[1].x)
@@ -358,6 +407,46 @@ bool BoundingCircle::isIntersectThisRayToOtherLineSegment(BoundingSegment & othe
 		return true;
 	}
 
+=======
+{
+	float otherPoint1 =
+		(component_.point[0].x - component_.point[1].x)
+		*(other.component_.point[0].y - component_.point[0].y)
+		+ (component_.point[0].y - component_.point[1].y)
+		*(component_.point[0].x - other.component_.point[0].x);
+	float otherPoint2 =
+		(component_.point[0].x - component_.point[1].x)
+		*(other.component_.point[1].y - component_.point[0].y)
+		+ (component_.point[0].y - component_.point[1].y)
+		*(component_.point[0].x - other.component_.point[1].x);
+
+	if (otherPoint1*otherPoint2 < 0)
+	{
+
+		return true;
+	}
+	return false;
+}
+bool BoundingCircle::isIntersectThisRayToOtherLineSegment(BoundingSegment & other)
+{
+	Vector2 AB = CreateVector(previousPosition_, position_);
+	Vector2 AC, AD, CD, CA, CB;
+
+	//���蔲������
+	AC = CreateVector(previousPosition_, other.component_.point[0]);
+	AD = CreateVector(previousPosition_, other.component_.point[1]);
+	CD = CreateVector(other.component_.point[0], other.component_.point[1]);
+	CA = CreateVector(other.component_.point[0], previousPosition_);
+	CB = CreateVector(other.component_.point[0], position_);
+
+	if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
+		OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
+	{
+		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+		return true;
+	}
+
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 
 	float otherPoint1 =
 		(other.component_.point[0].x - other.component_.point[1].x)

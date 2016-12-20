@@ -9,9 +9,12 @@
 class BoundingBox : public Body {
 public:
 <<<<<<< HEAD
+<<<<<<< HEAD
 	BoundingBox():
 		Body(CollisionType::BoxCol, false, Vector2::Zero, Matrix::Identity, 0, 0, 0, 0)
 	{}
+=======
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 =======
 >>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 	//�l�p�̔�����쐬����(������s���ꍇ) topLeft:����̓_(Vector2) topRight:�E��̓_(Vector2) bottomLeft:�����̓_(Vector2) bottomRight:�E���̓_(Vector2)
@@ -59,11 +62,14 @@ public:
 	virtual void draw(Matrix inv) const override;
 	virtual void draw(int spriteID, Matrix inv) const override;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	virtual void draw(int spriteID, int rotation, Matrix inv) const override;
 	virtual IBodyPtr translate(const Vector2 & pos) const override;
 	virtual IBodyPtr transform(const Matrix & mat) const override;
 	virtual std::vector<Vector2> points()const override;
 =======
+=======
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 	virtual void draw(int spriteID,int rotation, Matrix inv) const override;
 	BoundingBox movePos(Vector2& position) {
 		return BoundingBox();
@@ -112,6 +118,9 @@ public:
 	bool enabled;
 
 
+<<<<<<< HEAD
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
+=======
 >>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 
 };

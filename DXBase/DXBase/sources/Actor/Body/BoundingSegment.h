@@ -59,6 +59,7 @@ private:
 		return (a.x*b.y - a.y*b.x);//a~b
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// Body ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	virtual bool intersects(const BoundingBox & other) const override;
 	virtual bool intersects(const BoundingCapsule & other) const override;
@@ -70,6 +71,8 @@ private:
 	virtual IBodyPtr transform(const Matrix & mat) const override;
 	virtual std::vector<Vector2> points()const override;
 =======
+=======
+>>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
 	//’·‚³‚Ì2æ‚ÌŒvZ
 	float VectorLength2(const Vector2 &v) {
 		return InnerProduct(v, v);//vEv=|v|^2
@@ -97,6 +100,9 @@ public:
 	//intersects‚ğg‚¤‚©‚Ç‚¤‚© true:”»’è‚·‚é false:”»’è‚µ‚È‚¢
 	bool enabled;
 
+<<<<<<< HEAD
+>>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
+=======
 >>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
 
 };

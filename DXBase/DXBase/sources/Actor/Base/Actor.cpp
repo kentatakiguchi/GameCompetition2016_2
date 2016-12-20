@@ -49,10 +49,14 @@ void Actor::late_update(float deltaTime) {
 	//if (!isNearToPlayer())return;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//body_.MovePos(Vector2(position_.x, position_.y));
 
 	body_->update(deltaTime);
 
+=======
+	body_.MovePos(Vector2(position_.x, position_.y));
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 =======
 	body_.MovePos(Vector2(position_.x, position_.y));
 >>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ

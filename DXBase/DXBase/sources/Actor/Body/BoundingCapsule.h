@@ -8,6 +8,7 @@ class BoundingCapsule : public Body {
 public:
 	//ƒJƒvƒZƒ‹‚Ì”»’è‚ðì¬‚·‚é(”»’è‚ðs‚¤ê‡) topLeft:¶ã‚Ì“_(Vector2) topRight:‰Eã‚Ì“_(Vector2) bottomLeft:¶‰º‚Ì“_(Vector2) bottomRight:‰E‰º‚Ì“_(Vector2)
 <<<<<<< HEAD
+<<<<<<< HEAD
 	BoundingCapsule(Vector2 pos, Matrix mat, float rad, float length,bool enable);
 	float getRadius() { return radius_; }
 	float getLength(){ return length_; }
@@ -22,6 +23,8 @@ public:
 	virtual IBodyPtr transform(const Matrix & mat) const override;
 	virtual std::vector<Vector2> points()const override;
 =======
+=======
+>>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
 	BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius);
 	//ƒJƒvƒZƒ‹‚Ì”»’è‚ðì¬‚·‚é(”»’è‚ðs‚¤ê‡) topLeft:¶ã‚Ì“_(Vector2) topRight:‰Eã‚Ì“_(Vector2) bottomLeft:¶‰º‚Ì“_(Vector2) bottomRight:‰E‰º‚Ì“_(Vector2) isEnabled:”»’è‚ð‚·‚é‚©‚Ç‚¤‚©(bool)
 	BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius,bool isEnabled);
@@ -121,6 +124,9 @@ public:
 
 	bool enabled;
 
+<<<<<<< HEAD
+>>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
+=======
 >>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
 };
 

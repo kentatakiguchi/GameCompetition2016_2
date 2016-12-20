@@ -251,6 +251,7 @@ bool BoundingSegment::intersects(BoundingCapsule & other) {
 	{
 		pq = CreateVector(component_.point[0], component_.point[1]);
 		pm = CreateVector(component_.point[0], other.component_.point[i]);
+<<<<<<< HEAD
 
 		inner = InnerProduct(pq, pm);
 		pqd2 = pq.LengthSquared();
@@ -260,6 +261,17 @@ bool BoundingSegment::intersects(BoundingCapsule & other) {
 
 		if (k < 0 || 1 < k) continue ;
 
+=======
+
+		inner = InnerProduct(pq, pm);
+		pqd2 = pq.LengthSquared();
+		pmd2 = pm.LengthSquared();
+
+		k = inner / pqd2;
+
+		if (k < 0 || 1 < k) continue ;
+
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 		phd2 = (inner*inner) / pqd2;
 		d2 = pmd2 - phd2;
 
@@ -426,6 +438,7 @@ bool BoundingSegment::isIntersectOtherRayToThisLine(BoundingCapsule & other, int
 		return true;
 	}
 	return false;
+<<<<<<< HEAD
 }
 
 bool BoundingSegment::isIntersectThisRayToOtherLine(BoundingCapsule & other, int point1, int point2)
@@ -462,6 +475,38 @@ std::vector<Vector2> BoundingSegment::points() const{
 }
 
 =======
+void BoundingSegment::debug() const
+{
+}
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
+=======
+}
+
+bool BoundingSegment::isIntersectThisRayToOtherLine(BoundingCapsule & other, int point1, int point2)
+{
+	float otherPoint1 =
+		(other.component_.point[0].x - other.component_.point[1].x)
+		*(component_.point[point1].y - other.component_.point[0].y)
+		+ (other.component_.point[0].y - other.component_.point[1].y)
+		*(other.component_.point[0].x - component_.point[point1].x);
+	float otherPoint2 =
+		(other.component_.point[0].x - other.component_.point[1].x)
+		*(component_.point[point2].y - other.component_.point[0].y)
+		+ (other.component_.point[0].y - other.component_.point[1].y)
+		*(other.component_.point[0].x - component_.point[point2].x);
+
+	if (otherPoint1*otherPoint2 < 0)
+	{
+
+		return true;
+	}
+	return false;
+}
+
+void BoundingSegment::update(const Vector2 & center)
+{
+}
+
 void BoundingSegment::debug() const
 {
 }

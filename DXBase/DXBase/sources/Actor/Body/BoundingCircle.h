@@ -8,6 +8,7 @@
 class BoundingCircle : public Body {
 public:
 <<<<<<< HEAD
+<<<<<<< HEAD
 	BoundingCircle();
 	//ƒJƒvƒZƒ‹‚Ì”»’è‚ðì¬‚·‚é(”»’è‚ðs‚¤ê‡) topLeft:¶ã‚Ì“_(Vector2) topRight:‰Eã‚Ì“_(Vector2) bottomLeft:¶‰º‚Ì“_(Vector2) bottomRight:‰E‰º‚Ì“_(Vector2)
 	BoundingCircle(Vector2 pos, Matrix mat, float rad,bool enable);
@@ -24,6 +25,9 @@ public:
 	virtual std::vector<Vector2> points()const override { return std::vector<Vector2>(); }
 =======
 	//ƒJƒvƒZƒ‹‚Ì”»’è‚ðì¬‚·‚é(”»’è‚ðs‚¤ê‡) topLeft:¶ã‚Ì“_(Vector2) topRight:‰Eã‚Ì“_(Vector2) bottomLeft:¶‰º‚Ì“_(Vector2) bottomRight:‰E‰º‚Ì“_(Vector2)
+=======
+	//ƒJƒvƒZƒ‹‚Ì”»’è‚ðì¬‚·‚é(”»’è‚ðs‚¤ê‡) topLeft:¶ã‚Ì“_(Vector2) topRight:‰Eã‚Ì“_(Vector2) bottomLeft:¶‰º‚Ì“_(Vector2) bottomRight:‰E‰º‚Ì“_(Vector2)
+>>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
 	BoundingCircle(Vector2 center,float circleRadius);
 	//ƒJƒvƒZƒ‹‚Ì”»’è‚ðì¬‚·‚é(”»’è‚ðs‚¤ê‡) topLeft:¶ã‚Ì“_(Vector2) topRight:‰Eã‚Ì“_(Vector2) bottomLeft:¶‰º‚Ì“_(Vector2) bottomRight:‰E‰º‚Ì“_(Vector2) isEnabled:”»’è‚ð‚·‚é‚©‚Ç‚¤‚©(bool)
 	BoundingCircle(Vector2 center,float circleRadius, bool isEnabled);
@@ -93,6 +97,9 @@ public:
 
 	bool enabled;
 
+<<<<<<< HEAD
+>>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
+=======
 >>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
 };
 

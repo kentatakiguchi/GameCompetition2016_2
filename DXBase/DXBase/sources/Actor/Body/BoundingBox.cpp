@@ -377,12 +377,21 @@ bool BoundingBox::intersects(BoundingCapsule & other) {
 bool BoundingBox::intersects(BoundingSegment & other)
 {
 	if (!enabled || !other.enabled)return false;
+<<<<<<< HEAD
 
 	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
 
 	Vector2 AB = CreateVector(other.previousPosition_, other.position_);
 	Vector2 AC, AD, CD, CA, CB;
 
+=======
+
+	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
+
+	Vector2 AB = CreateVector(other.previousPosition_, other.position_);
+	Vector2 AC, AD, CD, CA, CB;
+
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 	for (int i = 0; i < 4; i++)
 	{
 		AC = CreateVector(other.previousPosition_, component_.point[intSet[i][0]]);
@@ -534,9 +543,74 @@ bool BoundingBox::intersects(BoundingCircle & other)
 		}
 	}
 	return false;
+<<<<<<< HEAD
+=======
 
 }
 
+//bool BoundingBox::isIntersectOtherRayToThisLine(BoundingBox & other, int point1, int point2)
+//{
+//	float otherPoint1 =
+//		(component_.point[0].x - component_.point[1].x)
+//		*(other.component_.point[point1].y - component_.point[0].y)
+//		+ (component_.point[0].y - component_.point[1].y)
+//		*(component_.point[0].x - other.component_.point[point1].x);
+//	float otherPoint2 =
+//		(component_.point[0].x - component_.point[1].x)
+//		*(other.component_.point[point2].y - component_.point[0].y)
+//		+ (component_.point[0].y - component_.point[1].y)
+//		*(component_.point[0].x - other.component_.point[point2].x);
+//
+//	if (otherPoint1*otherPoint2 < 0)
+//	{
+//		return true;
+//	}
+//	return false;
+//}
+bool BoundingBox::isIntersectOtherRayToThisLine(BoundingCapsule & other,int point1,int point2)
+{
+	float otherPoint1 =
+		(component_.point[point1].x - component_.point[point2].x)
+		*(other.component_.point[0].y - component_.point[point1].y)
+		+ (component_.point[point1].y - component_.point[point2].y)
+		*(component_.point[point1].x - other.component_.point[0].x);
+	float otherPoint2 =
+		(component_.point[point1].x - component_.point[point2].x)
+		*(other.component_.point[1].y - component_.point[point1].y)
+		+ (component_.point[point1].y - component_.point[point2].y)
+		*(component_.point[point1].x - other.component_.point[1].x);
+
+	if (otherPoint1*otherPoint2 < 0)
+	{
+
+		return true;
+	}
+	return false;
+}
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
+
+bool BoundingBox::isIntersectThisRayToOtherLine(BoundingCapsule & other, int point1, int point2)
+{
+	float otherPoint1 =
+		(other.component_.point[0].x - other.component_.point[1].x)
+		*(component_.point[point1].y - other.component_.point[0].y)
+		+ (other.component_.point[0].y - other.component_.point[1].y)
+		*(other.component_.point[0].x - component_.point[point1].x);
+	float otherPoint2 =
+		(other.component_.point[0].x - other.component_.point[1].x)
+		*(component_.point[point2].y - other.component_.point[0].y)
+		+ (other.component_.point[0].y - other.component_.point[1].y)
+		*(other.component_.point[0].x - component_.point[point2].x);
+
+	if (otherPoint1*otherPoint2 < 0)
+	{
+
+		return true;
+	}
+	return false;
+}
+
+<<<<<<< HEAD
 //bool BoundingBox::isIntersectOtherRayToThisLine(BoundingBox & other, int point1, int point2)
 //{
 //	float otherPoint1 =
@@ -615,4 +689,12 @@ std::vector<Vector2> BoundingBox::points() const{
 	points.push_back(Vector2(-size_.x, size_.y) * mat_.RotationMatrix() + position_ + size_);
 	points.push_back(size_  * mat_.RotationMatrix() + position_ + size_);
 	return points;
+=======
+void BoundingBox::update(const Vector2 & center)
+{
+}
+
+void BoundingBox::debug() const
+{
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 }

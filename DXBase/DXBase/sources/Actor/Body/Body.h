@@ -23,6 +23,7 @@ class Body
 {
 public:
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Body(CollisionType type = CollisionType::NoneCol, bool enable = true, Vector2 pos = Vector2(0, 0), Matrix mat = Matrix::Identity, float rad = 0, float length = 0, float width = 0, float height = 0) :
 		type_(type), enabled_(enable), position_(pos), mat_(mat), radius_(rad), length_(length), width_(width), height_(height) {}
 	virtual ~Body() {}
@@ -47,6 +48,10 @@ public:
 =======
 	Body() {}
 	virtual ~Body() {}
+=======
+	Body() {}
+	virtual ~Body() {}
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 	virtual bool intersects(BoundingSphere& other) { return false; }
 	virtual bool intersects(Capsule& other) { return false; }
 	virtual bool intersects(Model& other) { return false; }
@@ -63,6 +68,9 @@ public:
 	virtual void draw(int spriteID, Matrix inv) const {}
 	virtual void draw(int spriteID,int rotation,Matrix inv) const {}
 	virtual void debug() const {}
+<<<<<<< HEAD
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
+=======
 >>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 public:
 	Vector2 position_;
