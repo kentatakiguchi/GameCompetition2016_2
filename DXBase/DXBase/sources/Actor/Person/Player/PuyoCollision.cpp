@@ -4,7 +4,7 @@
 #include "../../Body/BoundingSegment.h"
 #include "../../../Game/Time.h"
 PuyoCollision::PuyoCollision(IWorld * world, Vector2 & position, Vector2 arrayState, Vector2& center) :
-	Actor(world, "PuyoCollision", position, CollisionBase(center, position)),
+	Actor(world, "PuyoCollision", position, std::make_shared<BoundingSegment>(center, Matrix::Identity, (center - position).Length(),true)),//center, position
 	mIntersection(position),
 	mResIntersection(position),
 	mVelo(Vector2::Zero),
@@ -27,7 +27,7 @@ PuyoCollision::~PuyoCollision()
 void PuyoCollision::onUpdate(float deltaTime)
 {
 	//あたり判定更新
-	body_.setSegmentPoint(mCenter, mCenter, position_);
+	//body_.setSegmentPoint(mCenter, mCenter, position_);
 	//当たっていない場合は交点は本来の位置へ
 	if (!mIsCol){
 		mResIntersection = position_;

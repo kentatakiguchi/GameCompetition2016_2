@@ -1,42 +1,24 @@
 #include "TurnFloor.h"
 
 TurnFloor::TurnFloor(IWorld * world, Vector2 & position) :spriteID_(-1),
-	MapChip(world, Vector2(position.x, position.y), "TurnFloor", CollisionBase(
-		Vector2{ position.x,position.y },
-		Vector2{ position.x - (CHIPSIZE),position.y },
-		Vector2{ position.x ,position.y - (CHIPSIZE) },
-		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+	MapChip(world, Vector2(position.x, position.y), "TurnFloor", std::make_shared<BoundingBox>(position, Matrix::CreateRotationZ(0), CHIPSIZE, CHIPSIZE, true))
 	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*TURNRANGE)
 {
 }
 TurnFloor::TurnFloor(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
-	MapChip(world, Vector2(position.x, position.y), "TurnFloor", CollisionBase(
-		Vector2{ position.x,position.y },
-		Vector2{ position.x - (CHIPSIZE),position.y },
-		Vector2{ position.x ,position.y - (CHIPSIZE) },
-		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+	MapChip(world, Vector2(position.x, position.y), "TurnFloor", std::make_shared<BoundingBox>(position, Matrix::CreateRotationZ(0), CHIPSIZE, CHIPSIZE, true))
 	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*TURNRANGE)
 {
 }
 
 TurnFloor::TurnFloor(std::shared_ptr<TurnFloor> chip, IWorld * world, Vector2 & position) :
-	MapChip(world, Vector2(position.x, position.y), "TurnFloor", CollisionBase(
-		Vector2{ position.x ,position.y },
-		Vector2{ position.x - (CHIPSIZE),position.y },
-		Vector2{ position.x ,position.y - (CHIPSIZE) },
-		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }
-		))
+	MapChip(world, Vector2(position.x, position.y), "TurnFloor", std::make_shared<BoundingBox>(position, Matrix::CreateRotationZ(0), CHIPSIZE, CHIPSIZE, true))
 	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*TURNRANGE)
 {
 }
 
 TurnFloor::TurnFloor(TurnFloor & chip, IWorld * world, Vector2 & position) :
-	MapChip(world, Vector2(position.x, position.y), "TurnFloor", CollisionBase(
-		Vector2{ position.x ,position.y },
-		Vector2{ position.x - (CHIPSIZE),position.y },
-		Vector2{ position.x,position.y - (CHIPSIZE) },
-		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }
-		))
+	MapChip(world, Vector2(position.x, position.y), "TurnFloor", std::make_shared<BoundingBox>(position, Matrix::CreateRotationZ(0), CHIPSIZE, CHIPSIZE, true))
 	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*TURNRANGE)
 {
 }
@@ -45,11 +27,7 @@ void TurnFloor::set(Vector2 & pos)
 {
 	position_ = pos;
 	defaultPos_ = pos;
-	body_ = CollisionBase(
-		Vector2{ pos.x ,pos.y },
-		Vector2{ pos.x + (CHIPSIZE),pos.y },
-		Vector2{ pos.x ,pos.y + (CHIPSIZE) },
-		Vector2{ pos.x + (CHIPSIZE),pos.y + (CHIPSIZE) });
+	body_ = std::make_shared<BoundingBox>(pos, Matrix::CreateRotationZ(0), CHIPSIZE, CHIPSIZE, true);
 }
 
 void TurnFloor::onUpdate(float deltaTime)
@@ -70,7 +48,7 @@ void TurnFloor::onUpdate(float deltaTime)
 
 void TurnFloor::onDraw() const
 {
-	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
+	spriteID_ == -1 ? body_->draw(-1,inv_) : body_->draw(spriteID_, rotate_, inv_);
 }
 
 void TurnFloor::onCollide(Actor & other)
