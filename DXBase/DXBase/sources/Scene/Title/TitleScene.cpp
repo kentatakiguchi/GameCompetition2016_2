@@ -83,7 +83,7 @@ void TitleScene::start() {
 }
 
 void TitleScene::update() {
-	Time::GetInstance().update();
+	//Time::GetInstance().update();
 
 	slideSize+= SlideSpeed;
 	if (slideSize >= MaxTexSize) {

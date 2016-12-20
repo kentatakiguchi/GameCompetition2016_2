@@ -5,7 +5,7 @@
 #include "../../Math/MathHelper.h"
 #include "../../Define.h"
 // コンストラクタ
-Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, const CollisionBase& body) :
+Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, const IBodyPtr& body) :
 	world_(world),
 	name_(name),
 	position_(position),
@@ -19,7 +19,7 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, co
 		InitializeInv(world_->GetPlayerPos());
 	else
 		InitializeInv(world->findActor("Player").get()->getPosition());
-	body_.setPosition({ position_.x, position_.y });
+	//body_.setPosition({ position_.x, position_.y });
 }
 
 // コンストラクタ
@@ -28,6 +28,7 @@ Actor::Actor(const std::string& name) :
 	name_(name),
 	position_(0.0f, 0.0f),
 	rotation_(Matrix::Identity),
+	body_(std::make_shared<BoundingBox>()),
 	dead_(false) {
 
 }
@@ -42,24 +43,16 @@ void Actor::update(float deltaTime) {
 
 	//移動update
 	//ActorMove();
-	body_.MovePos(Vector2(position_.x, position_.y));
+	//body_.MovePos(Vector2(position_.x, position_.y));
 }
 
 void Actor::late_update(float deltaTime) {
 	//if (!isNearToPlayer())return;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	//body_.MovePos(Vector2(position_.x, position_.y));
 
 	body_->update(deltaTime);
 
-=======
-	body_.MovePos(Vector2(position_.x, position_.y));
->>>>>>> parent of d3118c3... 蛻､螳夂ｳｻ譛ｪ螳梧�千憾諷九∽ｸ譌ｦ繝励ャ繧ｷ繝･
-=======
-	body_.MovePos(Vector2(position_.x, position_.y));
->>>>>>> parent of d3118c3... 蛻､螳夂ｳｻ譛ｪ螳梧�千憾諷九∽ｸ譌ｦ繝励ャ繧ｷ繝･
 	inv();
 	onLateUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.late_update(deltaTime); });
@@ -111,8 +104,8 @@ Matrix Actor::getRotate() const {
 
 // 変換行列を返す
 Matrix Actor::getPose() const {
-	return Matrix().Translation(Vector3(position_.x, position_.y));
-	//return Matrix(rotation_).Translation(Vector3(position_.x, position_.y));
+	//return Matrix().Translation(Vector3(position_.x, position_.y));
+	return Matrix(rotation_).Translation(Vector3(position_.x, position_.y));
 }
 
 void Actor::inv() {
@@ -277,7 +270,7 @@ IWorld* Actor::getWorld() {
 	return world_;
 }
 
-CollisionBase Actor::getBody()
+IBodyPtr Actor::getBody()
 {
 	return body_;
 }
@@ -312,7 +305,7 @@ void Actor::onLateUpdate(float deltaTime)
 
 // 描画
 void Actor::onDraw() const {
-	body_.draw(inv_); // デバッグ表示
+	//body_->transform(getPose())->draw(0, inv_); // デバッグ表示
 }
 
 // 衝突した
@@ -322,9 +315,10 @@ void Actor::onCollide(Actor&) {
 }
 
 // 衝突判定
-bool Actor::isCollide(Actor& other) {
-	return body_.intersects(other.body_);
+bool Actor::isCollide(Actor& other)const {
+	return body_->transform(getPose())->intersects(*other.getBody()->transform(other.getPose()).get());
 }
+
 void Actor::Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness, float friction, float mass)const
 {
 	// バネの伸び具合を計算

@@ -1,7 +1,6 @@
 #include "BaseEnemy.h"
 #include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../Base/ActorGroup.h"
-#include"../../Body/CollisionBase.h"
 #include "FloorSearchPoint.h"
 #include "PlayerSearchObj.h"
 #include "DeadEnemy.h"

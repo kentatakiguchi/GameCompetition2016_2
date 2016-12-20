@@ -1,7 +1,6 @@
 #include "Prickle.h"
 #include "../../../../ResourceLoader/ResourceLoader.h"
 #include "../../../Base/ActorGroup.h"
-#include"../../../Body/CollisionBase.h"
 
 Prickle::Prickle(
 	IWorld * world,

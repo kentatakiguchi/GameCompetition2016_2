@@ -1,7 +1,6 @@
 #include "FloorSearchPoint.h"
 #include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../Base/ActorGroup.h"
-#include"../../Body/CollisionBase.h"
 
 FloorSearchPoint::FloorSearchPoint(
 	IWorld * world, 

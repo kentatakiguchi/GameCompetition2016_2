@@ -1,5 +1,4 @@
 #include "PuyoCollision.h"
-#include "../../Body/CollisionBase.h"
 #include "../../../Math/Math.h"
 #include "../../Body/BoundingSegment.h"
 #include "../../../Game/Time.h"
@@ -99,10 +98,10 @@ void PuyoCollision::onCollide(Actor & other)
 		//当たっているフラグ
 		mIsCol = true;
 		//当たっている短形の4頂点
-		auto t_left = other.getBody().GetBox().component_.point[0];
-		auto t_right = other.getBody().GetBox().component_.point[1];
-		auto b_left = other.getBody().GetBox().component_.point[2];
-		auto b_right = other.getBody().GetBox().component_.point[3];
+		auto t_left = other.getBody()->points()[0];
+		auto t_right = other.getBody()->points()[1];
+		auto b_left = other.getBody()->points()[2];
+		auto b_right = other.getBody()->points()[3];
 
 		//線のあたり判定＆交点を求める関数
 		SegmentCol(mCenter, position_, t_left, t_right, mIntersections[0], false);

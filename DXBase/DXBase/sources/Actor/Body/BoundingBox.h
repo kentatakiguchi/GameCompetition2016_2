@@ -5,123 +5,37 @@
 #include "../../Math/Math.h"
 #include "Body.h"
 
-
 class BoundingBox : public Body {
 public:
-<<<<<<< HEAD
-<<<<<<< HEAD
 	BoundingBox():
 		Body(CollisionType::BoxCol, false, Vector2::Zero, Matrix::Identity, 0, 0, 0, 0)
 	{}
-=======
->>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
-=======
->>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
 	//ŽlŠp‚Ì”»’è‚ðì¬‚·‚é(”»’è‚ðs‚¤ê‡) topLeft:¶ã‚Ì“_(Vector2) topRight:‰Eã‚Ì“_(Vector2) bottomLeft:¶‰º‚Ì“_(Vector2) bottomRight:‰E‰º‚Ì“_(Vector2)
-	BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight);
-	//ŽlŠp‚Ì”»’è‚ðì¬‚·‚é(”»’è‚ðs‚¤‚©‚Ç‚¤‚©‚ðŽw’è‚·‚éê‡) (true‚È‚çs‚¢Afalse‚È‚çs‚í‚È‚¢) topLeft:¶ã‚Ì“_(Vector2) topRight:‰Eã‚Ì“_(Vector2) bottomLeft:¶‰º‚Ì“_(Vector2) bottomRight:‰E‰º‚Ì“_(Vector2) isEnabled:”»’è‚ð‚·‚é‚©‚Ç‚¤‚©(bool)
-	BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight,bool isEnabled);
-	//ŽlŠp‚Ì”»’è‚ðì¬‚·‚é(”»’è‚ðs‚í‚È‚¢ê‡)
-	explicit BoundingBox();
+	BoundingBox(Vector2 pos, Matrix mat, float width, float height, bool enable);
 
 	float getWidth() {
-		Vector2 lengthVectWidth1 = Vector2((component_.point[0].x + component_.point[2].x) / 2, (component_.point[0].y + component_.point[2].y) / 2);
-		Vector2 lengthVectWidth2 = Vector2((component_.point[1].x + component_.point[3].x) / 2, (component_.point[1].y + component_.point[3].y) / 2);
-		Vector2 lengthVectMain = CreateVector(lengthVectWidth1, lengthVectWidth2);
-		return lengthVectMain.Length();
+		return width_;
 	}
 	float getHeight() {
-		Vector2 lengthVectHeight1 = Vector2((component_.point[0].x+component_.point[1].x)/2, (component_.point[0].y + component_.point[1].y) / 2);
-		Vector2 lengthVectHeight2 = Vector2((component_.point[2].x + component_.point[3].x) / 2, (component_.point[2].y + component_.point[3].y) / 2);
-		Vector2 lengthVectMain = CreateVector(lengthVectHeight1,lengthVectHeight2);
-		return lengthVectMain.Length();
+		return height_;
 	}
 	Vector2 getSize() {
-		return Vector2(getWidth(), getHeight());
+		return Vector2(width_, height_);
 	}
-	//Žg—p‚µ‚È‚¢
-	virtual bool intersects(BoundingSphere& other) override{ return false; }
-	//Žg—p‚µ‚È‚¢
-	virtual bool intersects(Capsule& other) override { return false; }
-	//Žg—p‚µ‚È‚¢
-	virtual bool intersects(Model& other) override { return false; }
-	// Ž©g(Box)‚Æ‘ŠŽè(Box)‚Ì”»’è other:”»’è‚µ‚½‚¢‘ŠŽè(BoundingBox) return:”»’èŒ‹‰Ê(bool)
-	virtual bool intersects(BoundingBox & other) override;
-	// Ž©g(Box)‚Æ‘ŠŽè(Capsule)‚Ì”»’è other:”»’è‚µ‚½‚¢‘ŠŽè(BoundingCapsule) return:”»’èŒ‹‰Ê(bool)
-	virtual bool intersects(BoundingCapsule & other) override;
-	virtual bool intersects(BoundingSegment & other) override;
-	virtual bool intersects(BoundingCircle & other) override;
-	//Ž©g‚Ì”»’è‚ÌXV‚ðs‚¤(Œ»Ý–¢Žg—p)
-	virtual void update(const Vector2 & center) override;
-	//Žg—p‚µ‚È‚¢
-	virtual void update(const Vector3& center) override {}
-	//Žg—p‚µ‚È‚¢
-	virtual void debug() const override;
-	//”»’è‚Ì•\Ž¦(ƒfƒoƒbƒO—p)
-	virtual void draw() const override;
-	virtual void draw(Matrix inv) const override;
+	Vector2 getPoint(int pointNum) {
+		
+	}
+	// Body ‚ð‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	virtual bool intersects(const IBody & other) const override { return other.intersects(*this); }
+	virtual bool intersects(const BoundingBox & other) const override;
+	virtual bool intersects(const BoundingCapsule & other) const override;
+	virtual bool intersects(const BoundingSegment & other) const override;
+	virtual bool intersects(const BoundingCircle & other) const override;
 	virtual void draw(int spriteID, Matrix inv) const override;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	virtual void draw(int spriteID, int rotation, Matrix inv) const override;
 	virtual IBodyPtr translate(const Vector2 & pos) const override;
 	virtual IBodyPtr transform(const Matrix & mat) const override;
 	virtual std::vector<Vector2> points()const override;
-=======
-=======
->>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
-	virtual void draw(int spriteID,int rotation, Matrix inv) const override;
-	BoundingBox movePos(Vector2& position) {
-		return BoundingBox();
-	}
-	//Ž©g(Box)‚ðˆÚ“®‚·‚é position:ˆÚ“®—Ê(Vector2) return:ˆÚ“®‚µ‚½Œ‹‰Ê(BoundingBox)
-	BoundingBox translate(const Vector2& position) const;
-	//Ž©g(Box)‚ð•ÏŒ`‚·‚é topLeft:¶ã‚Ì“_(Vector2) topRight:‰Eã‚Ì“_(Vector2) bottomLeft:¶‰º‚Ì“_(Vector2) bottomRight:‰E‰º‚Ì“_(Vector2) return:•ÏŒ`‚µ‚½Œ‹‰Ê(BoundingBox)
-	BoundingBox transform(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight) const;
-private:
-	Vector2 CreateVector(const Vector2& p, const Vector2& q) {
-		return Vector2(q.x - p.x, q.y - p.y);
-	}
-	float InnerProduct(const Vector2 &a, const Vector2 &b) {
-		return (a.x*b.x + a.y*b.y);//aEb
-	}
-	float OuterProduct(const Vector2 &a, const Vector2 &b) {
-		return (a.x*b.y - a.y*b.x);//a~b
-	}
-	float VectorLength2(const Vector2 &v) {
-		return InnerProduct(v, v);//vEv=|v|^2
-	}
-
-	//Ž©g(Box)‚Ì’¼ü‚Æ‘ŠŽè(Capsule)‚Ìü•ª‚ª“–‚½‚Á‚Ä‚¢‚é‚©‚ð’²‚×‚éApoint‚ÍComponent‚Ì•¨‚ð—˜—p‚·‚é other:‘ŠŽè‚Ì”»’è(BoundingCapsule) point1:Ž©g‚Ì‚Ç‚Ì“_‚ðŽn“_‚Æ‚·‚é‚©(int) point2:Ž©g‚Ì‚Ç‚Ì“_‚ðI“_‚Æ‚·‚é‚©(int)
-	bool isIntersectOtherRayToThisLine(BoundingCapsule & other, int point1, int point2);
-	//Ž©g(Box)‚Ìü•ª‚Æ‘ŠŽè(Capsule)‚Ì’¼ü‚ª“–‚½‚Á‚Ä‚¢‚é‚©‚ð’²‚×‚éApoint‚ÍComponent‚Ì•¨‚ð—˜—p‚·‚é other:‘ŠŽè‚Ì”»’è(BoundingCapsule) point1:Ž©g‚Ì‚Ç‚Ì“_‚ðŽn“_‚Æ‚·‚é‚©(int) point2:Ž©g‚Ì‚Ç‚Ì“_‚ðI“_‚Æ‚·‚é‚©(int)
-	bool isIntersectThisRayToOtherLine(BoundingCapsule & other, int point1, int point2);
-
-
-
-public:
-	struct Component {
-		// [0]:¶ã [1]:‰Eã [2]:¶‰º [3]:‰E‰º
-		Vector2 point[4];
-
-		Component(Vector2 topLeft, Vector2 topRight, Vector2 bottomLeft, Vector2 bottomRight) {
-			point[0] = topLeft;
-			point[1] = topRight;
-			point[2] = bottomLeft;
-			point[3] = bottomRight;
-		}
-	};
-	//ŽlŠp‚ð¶¬‚·‚é‚½‚ß‚Ì4“_‚ð•Û‘¶‚·‚é
-	Component component_;
-
-	//intersects‚ðŽg‚¤‚©‚Ç‚¤‚© true:”»’è‚·‚é false:”»’è‚µ‚È‚¢
-	bool enabled;
-
-
-<<<<<<< HEAD
->>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
-=======
->>>>>>> parent of d3118c3... åˆ¤å®šç³»æœªå®ŒæˆçŠ¶æ…‹ã€ä¸€æ—¦ãƒ—ãƒƒã‚·ãƒ¥
 
 };
 

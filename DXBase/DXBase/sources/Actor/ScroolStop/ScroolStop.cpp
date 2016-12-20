@@ -1,6 +1,5 @@
 #include "ScroolStop.h"
 #include "../../World/IWorld.h"
-#include "../Body/CollisionBase.h"
 ScroolStop::ScroolStop(IWorld* world, const Vector2& position, StopDirection dire) :
 	Actor(world, "ScroolStopPoint", position, std::make_shared<BoundingBox>()),
 	mDire(dire),

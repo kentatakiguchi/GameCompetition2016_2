@@ -50,8 +50,6 @@ void GamePlayScene::start() {
 
 	gener.create("./resources/file/" + name_ + ".csv", 0, 0, stg);
 
-
-
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	if (name_ == "stage01")
 		world_->SetScroolJudge(Vector2(1, 0), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, 1000.0f));

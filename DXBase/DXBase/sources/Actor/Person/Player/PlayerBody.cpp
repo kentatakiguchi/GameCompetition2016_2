@@ -64,10 +64,12 @@ void PlayerBody::onUpdate(float deltaTime) {
 		friction_ = 0.1f;
 		mass_ = 0.8f;
 	}
+
+	position_ = Vector2::Clamp(position_, Vector2(1, 0) * 96 * 3, Vector2::One * 50000);
 }
 
 void PlayerBody::onDraw() const {
-	body_->transform(getPose())->draw(-1, inv_);
+	//body_->transform(getPose())->draw(-1, inv_);
 
 	SetFontSize(32);
 	DrawFormatString(static_cast<int>((position_ * inv_).x) + 30, static_cast<int>((position_ * inv_).y), GetColor(255, 255, 255), "%f", dead_limit_);
@@ -95,12 +97,12 @@ void PlayerBody::onCollide(Actor & other) {
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" ||
 		other.getName() == "Door") {
-		auto pos = body_->pre_pos();
+		auto pos = position_;
 
-		auto t_left = other.getBody()->cur_pos();
-		auto t_right = other.getBody()->cur_pos() + Vector2::Right * other.getBody()->width();
-		auto b_left = other.getBody()->cur_pos() + Vector2::Up * other.getBody()->height();
-		auto b_right = other.getBody()->cur_pos() + Vector2::Right * other.getBody()->width() + Vector2::Up * other.getBody()->height();
+		auto t_left = other.getPosition();
+		auto t_right = other.getPosition() + Vector2::Right * other.getBody()->width();
+		auto b_left = other.getPosition() + Vector2::Up * other.getBody()->height();
+		auto b_right = other.getPosition() + Vector2::Right * other.getBody()->width() + Vector2::Up * other.getBody()->height();
 
 		auto center = (t_left + b_right) / 2;
 

@@ -1,6 +1,5 @@
 #include "PlayerSearchObj.h"
 #include "../../Base/ActorGroup.h"
-#include"../../Body/CollisionBase.h"
 
 PlayerSearchObj::PlayerSearchObj(
 	IWorld * world,

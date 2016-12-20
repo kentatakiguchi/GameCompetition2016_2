@@ -15,6 +15,8 @@ PlayerBodyPoint::~PlayerBodyPoint(){}
 
 // XVˆ—
 void PlayerBodyPoint::onUpdate(float deltaTime) {
+	position_ = Vector2::Clamp(position_, Vector2(1, 0) * 96 * 3, Vector2::One * 50000);
+
 	attract_update(deltaTime);
 }
 
