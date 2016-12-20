@@ -1,9 +1,10 @@
 #include "PuyoCollision.h"
+#include "../../Body/CollisionBase.h"
 #include "../../../Math/Math.h"
 #include "../../Body/BoundingSegment.h"
 #include "../../../Game/Time.h"
 PuyoCollision::PuyoCollision(IWorld * world, Vector2 & position, Vector2 arrayState, Vector2& center) :
-	Actor(world, "PuyoCollision", position, std::make_shared<BoundingSegment>(center, Matrix::Identity, (center - position).Length(),true)),//center, position
+	Actor(world, "PuyoCollision", position, CollisionBase(center, position)),
 	mIntersection(position),
 	mResIntersection(position),
 	mVelo(Vector2::Zero),
@@ -26,7 +27,7 @@ PuyoCollision::~PuyoCollision()
 void PuyoCollision::onUpdate(float deltaTime)
 {
 	//あたり判定更新
-	//body_.setSegmentPoint(mCenter, mCenter, position_);
+	body_.setSegmentPoint(mCenter, mCenter, position_);
 	//当たっていない場合は交点は本来の位置へ
 	if (!mIsCol){
 		mResIntersection = position_;
@@ -98,10 +99,10 @@ void PuyoCollision::onCollide(Actor & other)
 		//当たっているフラグ
 		mIsCol = true;
 		//当たっている短形の4頂点
-		auto t_left = other.getBody()->points()[0];
-		auto t_right = other.getBody()->points()[1];
-		auto b_left = other.getBody()->points()[2];
-		auto b_right = other.getBody()->points()[3];
+		auto t_left = other.getBody().GetBox().component_.point[0];
+		auto t_right = other.getBody().GetBox().component_.point[1];
+		auto b_left = other.getBody().GetBox().component_.point[2];
+		auto b_right = other.getBody().GetBox().component_.point[3];
 
 		//線のあたり判定＆交点を求める関数
 		SegmentCol(mCenter, position_, t_left, t_right, mIntersections[0], false);

@@ -6,7 +6,7 @@ BossEffect::BossEffect(
 	const Vector2 & position,
 	const int animeNum,
 	const AnimationID id) :
-	Actor(world, name, position, std::make_shared<BoundingBox>()),
+	Actor(world, name, position, CollisionBase()),
 	animation_(EnemyAnimation2D())
 {
 	//auto texSize = 512;
@@ -38,9 +38,9 @@ void BossEffect::onDraw() const
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
 		pos - Vector2(
-			body_->radius() * 2,
-			body_->radius() * 2),
-		Vector2::One * (body_->width() * 2),
+			body_.GetCircle().getRadius() * 2,
+			body_.GetCircle().getRadius() * 2),
+		Vector2::One * (body_.GetBox().getWidth() * 2),
 		1.0f);
 }
 

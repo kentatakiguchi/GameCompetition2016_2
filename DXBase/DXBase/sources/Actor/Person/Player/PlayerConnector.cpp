@@ -1,5 +1,7 @@
 #include "PlayerConnector.h"
 
+#include"../../Body/CollisionBase.h"
+
 #include "PlayerBody.h"
 #include "PlayerBodyPoint.h"
 
@@ -8,7 +10,7 @@
 #include "../../../Game/Time.h"
 
 PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, PlayerBodyPtr butty, PlayerBodyPtr retty) :
-	Actor(world, "PlayerConnector", position, std::make_shared<BoundingCircle>()), butty_(butty), retty_(retty),
+	Actor(world, "PlayerConnector", position, CollisionBase()), butty_(butty), retty_(retty),
 	mPower(0.0f),
 	mPuyoTimer(0.0f),
 	mPuyoFlag(false) {
@@ -17,11 +19,11 @@ PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, Playe
 	stateMgr_.change(*this, PlayerState_Enum_Union::STAND_BY);
 	Vector2 texSize = ResourceLoader::GetInstance().GetTextureSize(TextureID::PUYO_TEST_TEX);
 	inv();
-	//mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position_*inv_, 1, 0);
+	mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position_*inv_, 1, 0);
 }
 
 PlayerConnector::~PlayerConnector() {
-	//delete mPuyo;
+	delete mPuyo;
 }
 
 void PlayerConnector::onUpdate(float deltaTime) {
@@ -33,11 +35,11 @@ void PlayerConnector::onUpdate(float deltaTime) {
 	}
 	if (is_cleared()) world_->clear(true);
 	//ぷよテクスチャUPdate
-	//puyoUpdate();
+	puyoUpdate();
 }
 
 void PlayerConnector::onDraw() const {
-	//mPuyo->PuyoDraw();
+	mPuyo->PuyoDraw();
 
 }
 
@@ -69,7 +71,7 @@ float PlayerConnector::length_sum() {
 	float sum = 0;
 	float len1 = Vector2::Distance(butty_->position_, get_point(0));
 	float len2 = Vector2::Distance(retty_->position_, get_point(points.size() - 1));
-	for (int i = 0; i < static_cast<int>(points.size() - 1); i++) {
+	for (int i = 0; i < points.size() - 1; i++) {
 		sum += Vector2::Distance(points[i]->getPosition(), points[i + 1]->getPosition());
 	}
 	return sum + len1 + len2;

@@ -219,7 +219,7 @@ Vector2 EnemyManager::cliffMove(bool isFloor)
 	else distance_ = 1;*/
 	// 仮
 
-	posi = posi.Left * static_cast<float>(distance_);
+	posi = posi.Left * distance_;
 	// 敵の前方下部に当たり判定のあるオブジェクトを配置
 	// 向いている方向によって、オブジェクトの位置を変える
 	return posi;
@@ -403,7 +403,7 @@ float EnemyManager::eachWSPObj()
 	else if (wsDirection_.y != 0)
 		wspResult_ += 20;
 
-	return static_cast<float>(wspResult_);
+	return wspResult_;
 }
 
 FloorSearchPoint* EnemyManager::getWSPObj(const int number)

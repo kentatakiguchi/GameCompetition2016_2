@@ -1,8 +1,9 @@
 #include "TestPlayer.h"
 #include "../../Game/Time.h"
+#include"../Body/CollisionBase.h"
 
 TestPlayer::TestPlayer(IWorld * world, const Vector2 & position) :
-	Actor(world, "TestPlayer", position, std::make_shared<BoundingCircle>(position_, Matrix::Identity, 10.0f, true))
+	Actor(world, "TestPlayer", position, CollisionBase(position_,10.0f))
 {
 	time = 0.0f;
 }

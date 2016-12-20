@@ -3,146 +3,456 @@
 #include"BoundingBox.h"
 #include"BoundingCircle.h"
 
-BoundingSegment::BoundingSegment(Vector2 pos, Matrix mat, float length, bool enable) :
-	Body(CollisionType::SegmentCol, enable, pos, mat, 0, length)//lengthは全体の長さ
-{
+BoundingSegment::BoundingSegment(const Vector2& startPoint, const Vector2& endPoint) :
+	component_(startPoint, endPoint), enabled(true) {
+
+}
+BoundingSegment::BoundingSegment(const Vector2& startPoint, const Vector2& endPoint, bool isEnabled) :
+	component_(startPoint,endPoint), enabled(isEnabled) {
+
+}
+BoundingSegment::BoundingSegment() :
+	component_({ 0.0f, 0.0f }, { 0.0f, 0.0f }), enabled(false) {
 
 }
 
-bool BoundingSegment::intersects(const BoundingBox & other) const
-{
-	if (!enabled_ || !other.enabled_)return false;
+BoundingSegment BoundingSegment::translate(const Vector2& position) const {
 
-	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
-	Vector2 othersize_ = Vector2(other.width_ / 2, other.height_ / 2);//中心点
-
-	Vector2 otherpoints[4] = {
-		(-othersize_*other.mat_.RotationMatrix()) + (other.position_ + othersize_),//左上点の回転
-		(Vector2(othersize_.x, -othersize_.y)*other.mat_.RotationMatrix()) + (other.position_ + othersize_),//右上点の回転
-		(Vector2(-othersize_.x, othersize_.y)*other.mat_.RotationMatrix()) + (other.position_ + othersize_),//左下点の回転
-		(othersize_*other.mat_.RotationMatrix()) + (other.position_ + othersize_)//右下点の回転
-	};
-
-	Vector2 thispoints[2] = {
-		position_ + (Vector2::Down *length_ / 2)*mat_.RotationMatrix(),//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-		position_ + (Vector2::Up *length_ / 2)*mat_.RotationMatrix()//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-	};
-
-	for (int i = 0; i < 4; i++) {
-		if (CollisionUtil::IsCross(previousPosition_, position_, otherpoints[intSet[i][0]], otherpoints[intSet[i][1]]))return true;
-	}
-
-	if (CollisionUtil::Intersects_Segment_Box(otherpoints[0], otherpoints[1], thispoints[0], thispoints[1], thispoints[2], thispoints[3]))return true;
-
-	return false;
+	return BoundingSegment(component_.point[0] + position,
+		component_.point[1] + position,
+		enabled);
 }
 
-bool BoundingSegment::intersects(const BoundingCapsule & other) const
-{
-	if (!enabled_ || !other.enabled_)return false;
-
-	Vector2 thispoints[2] = {
-		position_ + (Vector2::Down *length_ / 2)*mat_.RotationMatrix(),//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-		position_ + (Vector2::Up *length_ / 2)*mat_.RotationMatrix()//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-	};
-	Vector2 otherpoints[2] = {
-		//上と下の長さ分の点を、positionにmat_Quaternionを使って回転させた値を加算して求めている
-		other.position_ + (Vector2::Down *other.length_ / 2)*other.mat_.RotationMatrix(),//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-		other.position_ + (Vector2::Up *other.length_ / 2)*other.mat_.RotationMatrix()//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-	};
-
-	if (CollisionUtil::IsCross(thispoints[0], thispoints[1], otherpoints[0], otherpoints[1]))return true;
-
-	if (CollisionUtil::Intersects_Segment_Capsule(thispoints[0], thispoints[1], otherpoints[0], otherpoints[1], other.radius_))return true;
-
-	return false;
+BoundingSegment BoundingSegment::transform(const Vector2& startPoint, const Vector2& endPoint) const {
+	return BoundingSegment(startPoint,endPoint,enabled);
 }
 
-bool BoundingSegment::intersects(const BoundingSegment & other) const
-{
-	if (!enabled_ || !other.enabled_)return false;
+//bool BoundingSphere::intersects(const BoundingSphere& other) const {
+//	return (component_.center_ - other.component_.center_).Length() <= component_.radius_ + other.component_.radius_
+//	/*gsCollisionSphereAndSphere(&center, radius, &other.center, other.radius) == GS_TRUE*/;
+//}
 
-	int intSet[][2] = { { 0,1 } };
-
-	Vector2 thispoints[2] = {
-		position_ + (Vector2::Down *length_ / 2)*mat_.RotationMatrix(),//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-		position_ + (Vector2::Up *length_ / 2)*mat_.RotationMatrix()//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-	};
-	Vector2 otherpoints[2] = {
-		other.position_ + (Vector2::Down *other.length_ / 2)*other.mat_.RotationMatrix(),//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-		other.position_ + (Vector2::Up *other.length_ / 2)*other.mat_.RotationMatrix()//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-	};
-
-	if (CollisionUtil::IsCross(previousPosition_, position_, otherpoints[0], otherpoints[1]))return true;
-
-	if (CollisionUtil::Intersects_Segment_Segment(thispoints[0], thispoints[1], otherpoints[0], otherpoints[1]))return true;
-
-	return false;
-}
-
-bool BoundingSegment::intersects(const BoundingCircle & other) const
-{
-	if (!enabled_ || !other.enabled_)return false;
-
-	Vector2 thispoints[2] = {
-		position_ + (Vector2::Down *length_ / 2)*mat_.RotationMatrix(),//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-		position_ + (Vector2::Up *length_ / 2)*mat_.RotationMatrix()//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-	};
-
-	if (CollisionUtil::IsCross(other.previousPosition_, other.position_, thispoints[0], thispoints[1]))return true;
-
-	if (CollisionUtil::Intersects_Segment_Circle(thispoints[0], thispoints[1], other.position_, other.radius_))return true;
-
-	return false;
-}
-
-void BoundingSegment::draw(int spriteID, Matrix inv) const
-{
+void BoundingSegment::draw() const {
 	//if (!enabled)return;
 
-	Vector2 thispoints[2] = {
-		position_ + (Vector2::Down *length_ / 2)*mat_.RotationMatrix(),//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-		position_ + (Vector2::Up *length_ / 2)*mat_.RotationMatrix()//原点を中心に、座標をa度回転させるのがQuaternion、こいつにpositionを足す
-	};
+	//DrawLine(component_.point[0].x, component_.point[0].y, component_.point[1].x, component_.point[1].y, GetColor(255, 0, 0));
 
-
-	Vector3 pos0, pos1;
-
-	if (thispoints[0].y <= thispoints[1].y) {
-		pos0 = Vector3(thispoints[0].x, thispoints[0].y) * inv;
-		pos1 = Vector3(thispoints[1].x, thispoints[1].y) * inv;
-	}
-	else {
-		pos0 = Vector3(thispoints[1].x, thispoints[1].y) * inv;
-		pos1 = Vector3(thispoints[0].x, thispoints[0].y) * inv;
-
-	}
-
-	//DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
-
-	DrawModiGraph(pos1.x, pos1.y, pos0.x, pos0.y, pos0.x, pos0.y, pos0.x, pos1.y, spriteID, TRUE);
 	//DrawBox(component_.point[0].x, component_.point[0].y,
 	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);
 	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
 }
 
-void BoundingSegment::draw(int spriteID, int rotation, Matrix inv) const
+void BoundingSegment::draw(Matrix inv) const {
+	//if (!enabled)return;
+
+	Vector3 pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+	Vector3 pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
+
+	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
+
+	//DrawBox(component_.point[0].x, component_.point[0].y,
+	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);
+	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
+}
+void BoundingSegment::draw(int spriteID, Matrix inv) const {
+	//if (!enabled)return;
+
+	Vector3 pos0, pos1;
+
+	if (component_.point[0].y <= component_.point[1].y) {
+		pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+		pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
+	}
+	else {
+		pos0 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
+		pos1 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+
+	}
+
+
+	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
+
+	DrawModiGraph(pos1.x, pos1.y, pos0.x, pos0.y, pos0.x, pos0.y, pos0.x, pos1.y,  spriteID, TRUE);
+	//DrawBox(component_.point[0].x, component_.point[0].y,
+	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);
+	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
+}
+
+bool BoundingSegment::intersects(BoundingBox & other)
 {
-	draw(spriteID, inv);
+	if (!enabled || !other.enabled)return false;
+
+	int intSet[][2] = { { 0,1 },{ 0,2 },{ 1,3 },{ 2,3 } };
+	
+	Vector2 AB = CreateVector(previousPosition_, position_);
+	Vector2 AC, AD, CD, CA, CB;
+
+	for (int i = 0; i < 4; i++)
+	{
+		//すり抜けたか
+		AC = CreateVector(previousPosition_, other.component_.point[intSet[i][0]]);
+		AD = CreateVector(previousPosition_, other.component_.point[intSet[i][1]]);
+		CD = CreateVector(other.component_.point[intSet[i][0]], other.component_.point[intSet[i][1]]);
+		CA = CreateVector(other.component_.point[intSet[i][0]], previousPosition_);
+		CB = CreateVector(other.component_.point[intSet[i][0]], position_);
+
+		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
+			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
+		{
+			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			return true;
+		}
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		float otherPoint1 =
+			(component_.point[0].x - component_.point[1].x)
+			*(other.component_.point[intSet[i][0]].y - component_.point[0].y)
+			+ (component_.point[0].y - component_.point[1].y)
+			*(component_.point[0].x - other.component_.point[intSet[i][0]].x);
+		float otherPoint2 =
+			(component_.point[0].x - component_.point[1].x)
+			*(other.component_.point[intSet[i][1]].y - component_.point[0].y)
+			+ (component_.point[0].y - component_.point[1].y)
+			*(component_.point[0].x - other.component_.point[intSet[i][1]].x);
+
+		if (otherPoint1*otherPoint2 < 0)
+		{
+			float otherPoint1 =
+				(other.component_.point[intSet[i][0]].x - other.component_.point[intSet[i][1]].x)
+				*(component_.point[0].y - other.component_.point[intSet[i][0]].y)
+				+ (other.component_.point[intSet[i][0]].y - other.component_.point[intSet[i][1]].y)
+				*(other.component_.point[intSet[i][0]].x - component_.point[0].x);
+			float otherPoint2 =
+				(other.component_.point[intSet[i][0]].x - other.component_.point[intSet[i][1]].x)
+				*(component_.point[1].y - other.component_.point[intSet[i][0]].y)
+				+ (other.component_.point[intSet[i][0]].y - other.component_.point[intSet[i][1]].y)
+				*(other.component_.point[intSet[i][0]].x - component_.point[1].x);
+
+			if (otherPoint1*otherPoint2 < 0)
+			{
+
+				return true;
+			}
+
+		}
+	}
+	return false;
+
+
+	//if (component_.point[1].x >= other.component_.point[0].x&&
+	//	component_.point[0].x <= other.component_.point[1].x)
+	//{
+	//	if (component_.point[2].y >= other.component_.point[0].y&&
+	//		component_.point[0].y <= other.component_.point[2].y)
+	//	{
+	//		return true;
+	//	}
+	//}
+	//return false;
+}
+bool BoundingSegment::intersects(BoundingCapsule & other) {
+	if (!enabled || !other.enabled)return false;
+
+	Vector2 AB = CreateVector(previousPosition_, position_);
+	Vector2 AC, AD, CD, CA, CB;
+
+	for (int i = 0; i < 4; i++)
+	{
+		//すり抜けたか
+		AC = CreateVector(previousPosition_, other.component_.point[0]);
+		AD = CreateVector(previousPosition_, other.component_.point[1]);
+		CD = CreateVector(other.component_.point[0], other.component_.point[1]);
+		CA = CreateVector(other.component_.point[0], previousPosition_);
+		CB = CreateVector(other.component_.point[0], position_);
+
+		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
+			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
+		{
+			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			return true;
+		}
+	}
+
+
+	//2円の各+-に線を引き、その線との当たり判定
+	float sin90, cos90;
+	sin90 = 1;
+	cos90 = 0;
+
+	Vector2 A = CreateVector(other.component_.point[0], other.component_.point[1]);
+	Vector2 AN = A.Normalize();
+	Vector2 rotationA{ (AN.x*cos90) - (AN.y*sin90) , (AN.x*sin90) + (AN.y*cos90) };
+	Vector2 A0P = other.component_.point[0] + rotationA * other.component_.radius;
+	Vector2 A0M = other.component_.point[0] - rotationA * other.component_.radius;
+
+	Vector2 A1P = other.component_.point[1] + rotationA * other.component_.radius;
+	Vector2 A1M = other.component_.point[1] - rotationA * other.component_.radius;
+
+	Vector2 pq, pm;
+	float inner, k, pqd2, pmd2, phd2, d2;
+
+	Vector2 As[][2]{ { A0P,A1P },{ A0M,A1M } };
+
+		//gensuisindou
+	//線分との当たり判定
+	for (int i = 0; i < 2; i++)
+	{
+		float otherPoint1 =
+			(component_.point[0].x - component_.point[1].x)
+			*(As[i][0].y - component_.point[0].y)
+			+ (component_.point[0].y - component_.point[1].y)
+			*(component_.point[0].x - As[i][0].x);
+		float otherPoint2 =
+			(component_.point[0].x - component_.point[1].x)
+			*(As[i][1].y - component_.point[0].y)
+			+ (component_.point[0].y - component_.point[1].y)
+			*(component_.point[0].x - As[i][1].x);
+
+		if (otherPoint1*otherPoint2 < 0)
+		{
+			float otherPoint1 =
+				(As[i][0].x - As[i][1].x)
+				*(component_.point[0].y - As[i][0].y)
+				+ (As[i][0].y - As[i][1].y)
+				*(As[i][0].x - component_.point[0].x);
+			float otherPoint2 =
+				(As[i][0].x - As[i][1].x)
+				*(component_.point[1].y - As[i][0].y)
+				+ (As[i][0].y - As[i][1].y)
+				*(As[i][0].x - component_.point[1].x);
+
+			if (otherPoint1*otherPoint2 < 0)
+			{
+
+				return true;
+			}
+		}
+	}
+	//円との当たり判定
+	float dx, dy, r;
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (int x = 0; x < 2; x++)
+		{
+			dx = component_.point[i].x - other.component_.point[x].x;
+			dy = component_.point[i].y - other.component_.point[x].y;
+			r = other.component_.radius;
+			if ((dx*dx) + (dy*dy) < (r*r))
+			{
+				return true;
+			}
+		}
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		pq = CreateVector(component_.point[0], component_.point[1]);
+		pm = CreateVector(component_.point[0], other.component_.point[i]);
+
+		inner = InnerProduct(pq, pm);
+		pqd2 = pq.LengthSquared();
+		pmd2 = pm.LengthSquared();
+
+		k = inner / pqd2;
+
+		if (k < 0 || 1 < k) continue ;
+
+		phd2 = (inner*inner) / pqd2;
+		d2 = pmd2 - phd2;
+
+		if (d2 < other.component_.radius*other.component_.radius)return true;
+	}
+	return false;
+}
+bool BoundingSegment::intersects(BoundingSegment & other)
+{
+	if (!enabled || !other.enabled)return false;
+
+	int intSet[][2] = { { 0,1 } };
+
+	Vector2 AB = CreateVector(previousPosition_, position_);
+	Vector2 AC, AD, CD, CA, CB;
+
+	//すり抜けたか
+	AC = CreateVector(previousPosition_, other.component_.point[0]);
+	AD = CreateVector(previousPosition_, other.component_.point[1]);
+	CD = CreateVector(other.component_.point[0], other.component_.point[1]);
+	CA = CreateVector(other.component_.point[0], previousPosition_);
+	CB = CreateVector(other.component_.point[0], position_);
+
+	if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
+		OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
+	{
+		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+		return true;
+	}
+
+
+
+	for (int i = 0; i < 1; i++)
+	{
+		float otherPoint1 =
+			(component_.point[0].x - component_.point[1].x)
+			*(other.component_.point[intSet[i][0]].y - component_.point[0].y)
+			+ (component_.point[0].y - component_.point[1].y)
+			*(component_.point[0].x - other.component_.point[intSet[i][0]].x);
+		float otherPoint2 =
+			(component_.point[0].x - component_.point[1].x)
+			*(other.component_.point[intSet[i][1]].y - component_.point[0].y)
+			+ (component_.point[0].y - component_.point[1].y)
+			*(component_.point[0].x - other.component_.point[intSet[i][1]].x);
+
+		if (otherPoint1*otherPoint2 < 0)
+		{
+			float otherPoint1 =
+				(other.component_.point[intSet[i][0]].x - other.component_.point[intSet[i][1]].x)
+				*(component_.point[0].y - other.component_.point[intSet[i][0]].y)
+				+ (other.component_.point[intSet[i][0]].y - other.component_.point[intSet[i][1]].y)
+				*(other.component_.point[intSet[i][0]].x - component_.point[0].x);
+			float otherPoint2 =
+				(other.component_.point[intSet[i][0]].x - other.component_.point[intSet[i][1]].x)
+				*(component_.point[1].y - other.component_.point[intSet[i][0]].y)
+				+ (other.component_.point[intSet[i][0]].y - other.component_.point[intSet[i][1]].y)
+				*(other.component_.point[intSet[i][0]].x - component_.point[1].x);
+
+			if (otherPoint1*otherPoint2 < 0)
+			{
+
+				return true;
+			}
+
+		}
+	}
+	return false;
+}
+bool BoundingSegment::intersects(BoundingCircle & other) {
+	if (!enabled || !other.enabled)return false;
+
+	Vector2 AB = CreateVector(other.previousPosition_, other.position_);
+	Vector2 AC, AD, CD, CA, CB;
+
+	//すり抜けたか
+	AC = CreateVector(other.previousPosition_, component_.point[0]);
+	AD = CreateVector(other.previousPosition_, component_.point[1]);
+	CD = CreateVector(component_.point[0], component_.point[1]);
+	CA = CreateVector(component_.point[0], other.previousPosition_);
+	CB = CreateVector(component_.point[0], other.position_);
+
+	if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
+		OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
+	{
+		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+		return true;
+	}
+
+
+
+	float dx, dy, r;
+
+	for (int i = 0; i < 2; i++)
+	{
+		dx = component_.point[i].x - other.component_.point[0].x;
+		dy = component_.point[i].y - other.component_.point[0].y;
+		r = other.component_.radius;
+		if ((dx*dx) + (dy*dy) < (r*r))
+		{
+			return true;
+		}
+	}
+
+
+	Vector2 pq, pm;
+	float inner, k, pqd2, pmd2, phd2, d2;
+
+	pq = CreateVector(component_.point[0], component_.point[1]);
+	pm = CreateVector(component_.point[0], other.component_.point[0]);
+
+	//inner = Vector2::Dot(pq, pm);
+	inner = InnerProduct(pq, pm);
+	pqd2 = pq.LengthSquared();
+	pmd2 = pm.LengthSquared();
+
+	k = inner / pqd2;
+
+	if (k < 0 || 1 < k) return false;
+
+	phd2 = (inner*inner) / pqd2;
+	d2 = pmd2 - phd2;
+
+	if (d2 < other.component_.radius*other.component_.radius)return true;
+
+	return false;
+
 }
 
-IBodyPtr BoundingSegment::translate(const Vector2 & pos) const{
-	return std::make_shared<BoundingSegment>(position_ + pos, mat_, length_, enabled_);
+//bool BoundingBox::isIntersectOtherRayToThisLine(BoundingBox & other, int point1, int point2)
+//{
+//	float otherPoint1 =
+//		(component_.point[0].x - component_.point[1].x)
+//		*(other.component_.point[point1].y - component_.point[0].y)
+//		+ (component_.point[0].y - component_.point[1].y)
+//		*(component_.point[0].x - other.component_.point[point1].x);
+//	float otherPoint2 =
+//		(component_.point[0].x - component_.point[1].x)
+//		*(other.component_.point[point2].y - component_.point[0].y)
+//		+ (component_.point[0].y - component_.point[1].y)
+//		*(component_.point[0].x - other.component_.point[point2].x);
+//
+//	if (otherPoint1*otherPoint2 < 0)
+//	{
+//		return true;
+//	}
+//	return false;
+//}
+bool BoundingSegment::isIntersectOtherRayToThisLine(BoundingCapsule & other, int point1, int point2)
+{
+	float otherPoint1 =
+		(component_.point[point1].x - component_.point[point2].x)
+		*(other.component_.point[0].y - component_.point[point1].y)
+		+ (component_.point[point1].y - component_.point[point2].y)
+		*(component_.point[point1].x - other.component_.point[0].x);
+	float otherPoint2 =
+		(component_.point[point1].x - component_.point[point2].x)
+		*(other.component_.point[1].y - component_.point[point1].y)
+		+ (component_.point[point1].y - component_.point[point2].y)
+		*(component_.point[point1].x - other.component_.point[1].x);
+
+	if (otherPoint1*otherPoint2 < 0)
+	{
+
+		return true;
+	}
+	return false;
 }
 
-IBodyPtr BoundingSegment::transform(const Matrix & mat) const{
-	return std::make_shared<BoundingSegment>(position_ + mat.TranslationVec2(), mat_*mat, length_*mat.Scale().y, enabled_);
+bool BoundingSegment::isIntersectThisRayToOtherLine(BoundingCapsule & other, int point1, int point2)
+{
+	float otherPoint1 =
+		(other.component_.point[0].x - other.component_.point[1].x)
+		*(component_.point[point1].y - other.component_.point[0].y)
+		+ (other.component_.point[0].y - other.component_.point[1].y)
+		*(other.component_.point[0].x - component_.point[point1].x);
+	float otherPoint2 =
+		(other.component_.point[0].x - other.component_.point[1].x)
+		*(component_.point[point2].y - other.component_.point[0].y)
+		+ (other.component_.point[0].y - other.component_.point[1].y)
+		*(other.component_.point[0].x - component_.point[point2].x);
+
+	if (otherPoint1*otherPoint2 < 0)
+	{
+
+		return true;
+	}
+	return false;
 }
 
-std::vector<Vector2> BoundingSegment::points() const{
-	std::vector<Vector2> points = std::vector<Vector2>();
-	points.push_back(position_ + (Vector2::Down * length_ / 2) * mat_.RotationMatrix());
-	points.push_back(position_ + (Vector2::Up * length_ / 2) * mat_.RotationMatrix());
-	return points;
+void BoundingSegment::update(const Vector2 & center)
+{
 }
 
+void BoundingSegment::debug() const
+{
+}

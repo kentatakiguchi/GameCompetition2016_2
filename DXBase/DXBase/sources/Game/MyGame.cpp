@@ -33,7 +33,7 @@ void MyGame::start(){
 	//SetBackgroundColor(0, 0, 255);
 
 	//gameDevice_.start();
-	
+
 	sceneMgr_.add(Scene::Loading, std::make_shared<LoadingScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Title, std::make_shared<TitleScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::MainMenu, std::make_shared<MainMenuScene>(&dataKeeper_));

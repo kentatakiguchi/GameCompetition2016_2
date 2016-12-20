@@ -1,6 +1,7 @@
 #include "FloorSearchPoint.h"
 #include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../Base/ActorGroup.h"
+#include"../../Body/CollisionBase.h"
 
 FloorSearchPoint::FloorSearchPoint(
 	IWorld * world, 
@@ -9,13 +10,12 @@ FloorSearchPoint::FloorSearchPoint(
 	const Vector2& bodyScale
 	) :
 	Actor(world, "FSP", enemyPosition + addPosition,
-		std::make_shared<BoundingBox>(bodyScale / -2.0f, Matrix::Identity, bodyScale.x, bodyScale.y, true)
-		//CollisionBase(
-		//	Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
-		//	Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
-		//	Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f),
-		//	Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f)
-		//	)
+		CollisionBase(
+			Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+			Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+			Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f),
+			Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f)
+			)
 		),
 	turnCount_(0),
 	isFloor_(false),
@@ -33,7 +33,7 @@ FloorSearchPoint::FloorSearchPoint(
 	const Vector2 & addPosition,
 	const float radius) : 
 	Actor(world, "FSP", enemyPosition + addPosition,
-		std::make_shared<BoundingCircle>(Vector2::Zero, Matrix::Identity, radius, true)),
+		CollisionBase(position_, radius)),
 	turnCount_(0),
 	isFloor_(false),
 	isGround_(false),

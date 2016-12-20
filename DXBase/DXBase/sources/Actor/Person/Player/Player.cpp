@@ -1,6 +1,6 @@
 #include "Player.h"
 
-#include "../../Body/BoundingCircle.h"
+#include"../../Body/CollisionBase.h"
 
 #include "PlayerBody.h"
 #include "PlayerConnector.h"
@@ -9,7 +9,7 @@
 
 // コンストラクタ
 Player::Player(IWorld * world, const Vector2 & position) :
-	Actor(world, "Player", position, std::make_shared<BoundingCircle>()) {
+	Actor(world, "Player", position, CollisionBase()) {
 	// bodyの生成
 	create_bodys();
 	// コネクタの生成

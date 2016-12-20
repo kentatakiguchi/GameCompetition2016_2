@@ -2,7 +2,7 @@
 
 // コンストラクタ
 PlayerEffectObj::PlayerEffectObj(IWorld* world, const Vector2& position, const PlayerEffectID & id, const float& speed, const float& scale):
-	Actor(world, "PlayerEffect", position, std::make_shared<BoundingCircle>()), scale_(scale){
+	Actor(world, "PlayerEffect", position, CollisionBase()), scale_(scale){
 	effect_.change(id, speed);
 }
 

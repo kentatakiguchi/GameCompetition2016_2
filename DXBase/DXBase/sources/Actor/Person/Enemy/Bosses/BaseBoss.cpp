@@ -1,7 +1,7 @@
 #include "BaseBoss.h"
 #include "../../../../ResourceLoader/ResourceLoader.h"
 #include "../../../Base/ActorGroup.h"
-//#include "../../../Body/CollisionBase.h"
+#include "../../../Body/CollisionBase.h"
 #include "../../../../Define.h"
 #include "BossManager.h"
 #include "BossEntry.h"
@@ -18,7 +18,7 @@ BaseBoss::BaseBoss(
 	const Vector2 & position,
 	const float bodyScale) :
 	Actor(world, "BaseBoss", position,
-		std::make_shared<BoundingCircle>(position,Matrix::Identity, bodyScale,true)),
+		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
 	dp_(10),
 	initDp_(dp_),
 	hp_(3),
@@ -79,8 +79,8 @@ BaseBoss::BaseBoss(
 	auto wspObj = std::make_shared<FloorSearchPoint>(
 		world_, position_,
 		Vector2(
-			body_->radius(),
-			body_->radius()), 10.0f);
+			body_.GetCircle().getRadius(),
+			body_.GetCircle().getRadius()), 10.0f);
 	world_->addActor(ActorGroup::Enemy, wspObj);
 	wspObj_ = &*wspObj;
 	// ボス入口オブジェクト
@@ -102,7 +102,7 @@ BaseBoss::BaseBoss(
 	bossGaugeUI_ = bossUI.get();
 	bossGaugeUI_->SetHp(heartObj_->getHeartHp() * hp_);
 
-	body_->enabled(false);
+	body_.enabled(false);
 }
 
 BaseBoss::~BaseBoss()
@@ -162,8 +162,8 @@ void BaseBoss::onDraw() const
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
 		pos - Vector2::Up * 10,
-		Vector2::One * (body_->radius()) + Vector2::Up * 20,
-		body_->radius() / (128 / 2), angle_);
+		Vector2::One * (body_.GetCircle().getRadius()) + Vector2::Up * 20,
+		body_.GetCircle().getRadius() / (128 / 2), angle_);
 	//body_.draw(inv_);
 }
 
@@ -320,7 +320,7 @@ void BaseBoss::battleIdel(float deltaTime)
 	//changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
 	changeAttackState(AttackState::JumpAttack,
 		BossAnimationNumber::JUMP_UP_NUMBER);
-	body_->enabled(true);
+	body_.enabled(true);
 }
 
 void BaseBoss::idel(float deltaTime)
@@ -607,17 +607,16 @@ void BaseBoss::damage(const int damage)
 //地面の位置に補正します
 void BaseBoss::groundClamp(Actor& actor)
 {
-	if (actor.body_->width() == 0) return;
+	if (actor.body_.GetBox().getWidth() == 0) return;
 	// 新円と正方形の衝突判定
 	// 自分自身の1f前の中心位置を取得
 	auto isHit = false;
-	auto pos = body_->pre_pos();
+	auto pos = body_.GetCircle().previousPosition_;
 	// 相手側の四角形の4点を取得
-	Vector2 points[4] = { actor.getBody()->points()[0],actor.getBody()->points()[1],actor.getBody()->points()[2],actor.getBody()->points()[3] };
-	auto topLeft = points[0];
-	auto topRight = points[0];
-	auto bottomLeft = points[0];
-	auto bottomRight = points[0];
+	auto topLeft = actor.getBody().GetBox().component_.point[0];
+	auto topRight = actor.getBody().GetBox().component_.point[1];
+	auto bottomLeft = actor.getBody().GetBox().component_.point[2];
+	auto bottomRight = actor.getBody().GetBox().component_.point[3];
 	// 外積を使って、縦の長さを計算する
 	auto top = Vector2::Cross(
 		(topLeft - topRight).Normalize(), (pos - topRight));
@@ -637,15 +636,15 @@ void BaseBoss::groundClamp(Actor& actor)
 	if (left < 0 &&
 		right < 0) {
 		// 上に補間
-		if (top > -actor.getBody()->height() / 3) {
-			position_.y = topLeft.y - body_->radius();
+		if (top > -actor.getBody().GetBox().getHeight() / 3) {
+			position_.y = topLeft.y - body_.GetCircle().getRadius();
 			// 接地
 			isGround_ = true;
 			isHit = true;
 		}
 		// 下に補間
-		if (bottom > -actor.getBody()->height() / 3) {
-			position_.y = bottomRight.y + body_->radius();
+		if (bottom > -actor.getBody().GetBox().getHeight() / 3) {
+			position_.y = bottomRight.y + body_.GetCircle().getRadius();
 			// ブロックの下側に当たった
 			isBottomHit_ = true;
 			isHit = true;
@@ -656,12 +655,12 @@ void BaseBoss::groundClamp(Actor& actor)
 		bottom < 0) {
 		// 左に補間
 		if (left > 0) {
-			position_.x = bottomLeft.x - body_->radius();
+			position_.x = bottomLeft.x - body_.GetCircle().getRadius();
 			isHit = true;
 		}
 		// 右に補間
 		if (right > 0) {
-			position_.x = topRight.x + body_->radius();
+			position_.x = topRight.x + body_.GetCircle().getRadius();
 			isHit = true;
 		}
 	}
@@ -684,14 +683,14 @@ void BaseBoss::groundClamp(Actor& actor)
 	if (left < 0 &&
 		right < 0) {
 		// 上に補間
-		if (top > -actor.getBody()->height() / 2.0f) {
-			position_.y = topLeft.y - body_->radius();
+		if (top > -actor.getBody().GetBox().getHeight() / 2.0f) {
+			position_.y = topLeft.y - body_.GetCircle().getRadius();
 			// 接地
 			isGround_ = true;
 		}
 		// 下に補間
-		if (bottom > -actor.getBody()->height() / 2.0f) {
-			position_.y = bottomRight.y + body_->radius();
+		if (bottom > -actor.getBody().GetBox().getHeight() / 2.0f) {
+			position_.y = bottomRight.y + body_.GetCircle().getRadius();
 			// ブロックの下側に当たった
 			isBottomHit_ = true;
 		}
@@ -700,11 +699,11 @@ void BaseBoss::groundClamp(Actor& actor)
 	if (top < 0 &&
 		bottom < 0) {
 		// 左に補間
-		if (left > -actor.getBody()->width() / 2.0f)
-			position_.x = bottomLeft.x - body_->radius();
+		if (left > -actor.getBody().GetBox().getWidth() / 2.0f)
+			position_.x = bottomLeft.x - body_.GetCircle().getRadius();
 		// 右に補間
-		if (right > -actor.getBody()->width() / 2.0f)
-			position_.x = topRight.x + body_->radius();
+		if (right > -actor.getBody().GetBox().getWidth() / 2.0f)
+			position_.x = topRight.x + body_.GetCircle().getRadius();
 	}
 	bossManager_.setPosition(position_);
 	bossManager_.prevPosition();

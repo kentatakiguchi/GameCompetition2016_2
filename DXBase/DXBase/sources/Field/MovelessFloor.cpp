@@ -2,25 +2,43 @@
 #include"../Input/InputMgr.h"
 
 MovelessFloor::MovelessFloor(IWorld * world, Vector2 & position) :spriteID_(-1),
-	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", std::make_shared<BoundingBox>(position, Matrix::CreateRotationZ(0), CHIPSIZE, CHIPSIZE, true))
+	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(
+		Vector2{ position.x,position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE ),position.y - (CHIPSIZE) }))
 {
 	rotate_ = 0;
 }
 
 MovelessFloor::MovelessFloor(int spriteID, IWorld * world, Vector2 & position):spriteID_(spriteID),
-	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", std::make_shared<BoundingBox>(position, Matrix::CreateRotationZ(0), CHIPSIZE, CHIPSIZE, true))
+	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(
+		Vector2{ position.x,position.y },
+		Vector2{ position.x - (CHIPSIZE),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
 {
 	rotate_ = 0;
 }
 
 MovelessFloor::MovelessFloor(std::shared_ptr<MovelessFloor> chip, IWorld * world, Vector2 & position) :spriteID_(-1),
-	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", std::make_shared<BoundingBox>(position, Matrix::CreateRotationZ(0), CHIPSIZE, CHIPSIZE, true))
+	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(
+		Vector2{ position.x ,position.y },
+		Vector2{ position.x - (CHIPSIZE ),position.y },
+		Vector2{ position.x ,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE ),position.y - (CHIPSIZE) }
+		))
 {
 	rotate_ = 0;
 }
 
 MovelessFloor::MovelessFloor(MovelessFloor & chip, IWorld * world, Vector2 & position) :spriteID_(-1),
-	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", std::make_shared<BoundingBox>(position, Matrix::CreateRotationZ(0), CHIPSIZE, CHIPSIZE, true))
+	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(
+		Vector2{ position.x ,position.y },
+		Vector2{ position.x - (CHIPSIZE ),position.y },
+		Vector2{ position.x,position.y - (CHIPSIZE) },
+		Vector2{ position.x - (CHIPSIZE ),position.y - (CHIPSIZE) }
+		))
 {
 	rotate_ = 0;
 }
@@ -28,7 +46,11 @@ MovelessFloor::MovelessFloor(MovelessFloor & chip, IWorld * world, Vector2 & pos
 void MovelessFloor::set(Vector2 & pos)
 {
 	position_ = pos;
-	body_ = std::make_shared<BoundingBox>(position_, rotation_, CHIPSIZE, CHIPSIZE, true);
+	body_ = CollisionBase(
+		Vector2{ pos.x ,pos.y },
+		Vector2{ pos.x + (CHIPSIZE),pos.y },
+		Vector2{ pos.x ,pos.y + (CHIPSIZE) },
+		Vector2{ pos.x + (CHIPSIZE),pos.y + (CHIPSIZE) });
 }
 
 void MovelessFloor::onUpdate(float deltaTime)
@@ -41,7 +63,7 @@ void MovelessFloor::onDraw() const
 {
 	if (isOutCamera())return;
 
-	spriteID_ == -1 ? body_->draw(-1,inv_) : body_->draw(spriteID_,rotate_,inv_);
+	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_,rotate_,inv_);
 }
 
 void MovelessFloor::onCollide(Actor & other)

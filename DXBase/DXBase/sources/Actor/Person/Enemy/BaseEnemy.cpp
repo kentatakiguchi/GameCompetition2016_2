@@ -1,6 +1,7 @@
 #include "BaseEnemy.h"
 #include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../Base/ActorGroup.h"
+#include"../../Body/CollisionBase.h"
 #include "FloorSearchPoint.h"
 #include "PlayerSearchObj.h"
 #include "DeadEnemy.h"
@@ -11,7 +12,12 @@ BaseEnemy::BaseEnemy(
 	const float bodyScale,
 	const Vector2& direction) :
 	Actor(world, "BaseEnemy", position,
-		std::make_shared<BoundingBox>(Vector2::One * bodyScale / -2.0f, Matrix::Identity, bodyScale, bodyScale, true)),
+		CollisionBase(
+			Vector2(position.x + bodyScale / 2.0f, position.y + bodyScale / 2.0f),
+			Vector2(position.x - bodyScale / 2.0f, position.y + bodyScale / 2.0f),
+			Vector2(position.x + bodyScale / 2.0f, position.y - bodyScale / 2.0f),
+			Vector2(position.x - bodyScale / 2.0f, position.y - bodyScale / 2.0f)
+			)),
 	hp_(10),
 	ap_(0),
 	texSize_(256),
@@ -156,7 +162,7 @@ void BaseEnemy::onDraw() const
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
-		pos, Vector2::One * (body_->width() * 2) + addTexPosition_,
+		pos, Vector2::One * (body_.GetBox().getWidth() * 2) + addTexPosition_,
 		0.5f, TexDegress_);
 }
 
@@ -232,7 +238,7 @@ void BaseEnemy::search()
 	// 捜索行動
 	searchMove();
 	// 画像の方向を合わせる
-	animation_.turnAnimation(motion_, static_cast<int>(direction_.x));
+	animation_.turnAnimation(motion_, direction_.x);
 	// プレイヤーが存在しなければ、捜索と待機状態以外は行わない
 	if (!isPlayer_) return;
 	// 一定距離内で、プレイヤーとの間にブロックがなかったら
@@ -275,7 +281,7 @@ void BaseEnemy::chase()
 	// 追跡行動
 	chaseMove();
 	// 画像の方向を合わせる
-	animation_.turnAnimation(motion_, static_cast<int>(direction_.x));
+	animation_.turnAnimation(motion_, direction_.x);
 	// プレイヤーが追跡距離外か、プレイヤーの間にブロックがあるなら、
 	// 捜索状態に遷移
 	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 100.0f &&
@@ -485,15 +491,15 @@ void BaseEnemy::updateCollide()
 //地面の位置に補正します
 void BaseEnemy::groundClamp(Actor& actor)
 {
-	if (actor.body_->width() == 0) return;
+	if (actor.body_.GetBox().getWidth() == 0) return;
 	// 正方形同士の計算
 	// 自分自身の1f前の中心位置を取得
-	auto pos = body_->pre_pos();
+	auto pos = body_.GetBox().previousPosition_;
 	// 相手側の四角形の4点を取得
-	auto topLeft = actor.getBody()->points()[0];
-	auto topRight = actor.getBody()->points()[1];
-	auto bottomLeft = actor.getBody()->points()[2];
-	auto bottomRight = actor.getBody()->points()[3];
+	auto topLeft = actor.getBody().GetBox().component_.point[0];
+	auto topRight = actor.getBody().GetBox().component_.point[1];
+	auto bottomLeft = actor.getBody().GetBox().component_.point[2];
+	auto bottomRight = actor.getBody().GetBox().component_.point[3];
 	// 外積を使って、縦の長さを計算する
 	auto top = Vector2::Cross(
 		(topLeft - topRight).Normalize(), (pos - topRight));
@@ -505,27 +511,27 @@ void BaseEnemy::groundClamp(Actor& actor)
 		(bottomLeft - topLeft).Normalize(), (pos - topLeft));
 
 	// Y方向に位置を補間する
-	if (left < body_->width() / 2.0f &&
-		right < body_->width() / 2.0f) {
+	if (left < body_.GetBox().getWidth() / 2.0f &&
+		right < body_.GetBox().getWidth() / 2.0f) {
 		// 上に補間
 		if (top > 0) {
-			position_.y = topLeft.y - body_->height() / 2.0f;
+			position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;
 			// 接地
 			isGround_ = true;
 		}
 		// 下に補間
 		if (bottom > 0)
-			position_.y = bottomRight.y + body_->height() / 2.0f;
+			position_.y = bottomRight.y + body_.GetBox().getHeight() / 2.0f;
 	}
 	// X方向に位置を補間する
-	if (top < body_->height() / 2.0f &&
-		bottom < body_->height() / 2.0f) {
+	if (top < body_.GetBox().getHeight() / 2.0f &&
+		bottom < body_.GetBox().getHeight() / 2.0f) {
 		// 左に補間
 		if (left > 0)
-			position_.x = bottomLeft.x - body_->width() / 2.0f;
+			position_.x = bottomLeft.x - body_.GetBox().getWidth() / 2.0f;
 		// 右に補間
 		if (right > 0)
-			position_.x = topRight.x + body_->width() / 2.0f;
+			position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;
 	}
 }
 
@@ -534,16 +540,16 @@ void BaseEnemy::circleClamp(Actor & actor)
 {
 	// 当たった円とのベクトルを計算して、位置を補間します
 	// 当たったオブジェクトが円でない場合(てきとう)
-	if (actor.getBody()->radius() == 0) return;
+	if (actor.getBody().GetCapsule().getRadius() == 0) return;
 	// 過去の位置を取得
-	auto pos = body_->pre_pos();
+	auto pos = body_.GetBox().previousPosition_;
 	auto direction = actor.getPosition() - pos;
 	// 矩形の補間
 	auto lerpVelo = Vector2(
-		(actor.getBody()->radius() +
-			body_->width() / 2.0f) * direction.Normalize().x,
-		(actor.getBody()->radius() +
-			body_->height() / 2.0f) * direction.Normalize().y
+		(actor.getBody().GetCircle().getRadius() +
+			body_.GetBox().getWidth() / 2.0f) * direction.Normalize().x,
+		(actor.getBody().GetCircle().getRadius() +
+			body_.GetBox().getHeight() / 2.0f) * direction.Normalize().y
 		);
 	position_ += lerpVelo;
 }
@@ -573,8 +579,8 @@ void BaseEnemy::addAnimation()
 // プレイヤーとのX方向とY方向を計算し、画面外にいるかを返します
 bool BaseEnemy::isScreen()
 {
-	if (std::abs(enemyManager_.getPlayerVector().x) <= (SCREEN_SIZE.x - SCREEN_SIZE.x / 10) + body_->width() &&
-		std::abs(enemyManager_.getPlayerVector().y) <= (SCREEN_SIZE.y - SCREEN_SIZE.x / 10) + body_->height()) {
+	if (std::abs(enemyManager_.getPlayerVector().x) <= (SCREEN_SIZE.x - SCREEN_SIZE.x / 10) + body_.GetBox().getWidth() &&
+		std::abs(enemyManager_.getPlayerVector().y) <= (SCREEN_SIZE.y - SCREEN_SIZE.x / 10) + body_.GetBox().getHeight()) {
 		isScreen_ = true;
 		return true;
 	}

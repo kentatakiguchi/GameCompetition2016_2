@@ -6,8 +6,12 @@ DeadEnemy::DeadEnemy(
 	const Vector2 & position,
 	const float bodyScale) : 
 	Actor(world_, "DeadEnemy", position, 
-		std::make_shared<BoundingBox>(Vector2::One * bodyScale / -2.0f, Matrix::Identity, bodyScale, bodyScale, true)),
-
+		CollisionBase(CollisionBase(
+			Vector2(position.x + bodyScale / 2.0f, position.y + bodyScale / 2.0f),
+			Vector2(position.x - bodyScale / 2.0f, position.y + bodyScale / 2.0f),
+			Vector2(position.x + bodyScale / 2.0f, position.y - bodyScale / 2.0f),
+			Vector2(position.x - bodyScale / 2.0f, position.y - bodyScale / 2.0f)
+			))),
 	timer_(0.0f),
 	isGround_(false),
 	animation_(EnemyAnimation2D())
@@ -46,15 +50,15 @@ void DeadEnemy::onMessage(EventMessage event, void *)
 // 地面の位置に補正します
 void DeadEnemy::groundClamp(Actor & actor)
 {
-	if (actor.body_->width() == 0) return;
+	if (actor.body_.GetBox().getWidth() == 0) return;
 	// 正方形同士の計算
 	// 自分自身の1f前の中心位置を取得
-	auto pos = body_->pre_pos();
+	auto pos = body_.GetBox().previousPosition_;
 	// 相手側の四角形の4点を取得
-	auto topLeft = actor.getBody()->points()[0];
-	auto topRight = actor.getBody()->points()[1];
-	auto bottomLeft = actor.getBody()->points()[2];
-	auto bottomRight = actor.getBody()->points()[3];
+	auto topLeft = actor.getBody().GetBox().component_.point[0];
+	auto topRight = actor.getBody().GetBox().component_.point[1];
+	auto bottomLeft = actor.getBody().GetBox().component_.point[2];
+	auto bottomRight = actor.getBody().GetBox().component_.point[3];
 	// 外積を使って、縦の長さを計算する
 	auto top = Vector2::Cross(
 		(topLeft - topRight).Normalize(), (pos - topRight));
@@ -66,28 +70,28 @@ void DeadEnemy::groundClamp(Actor & actor)
 		(bottomLeft - topLeft).Normalize(), (pos - topLeft));
 
 	// Y方向に位置を補間する
-	if (left < body_->width() / 2.0f &&
-		right < body_->width() / 2.0f) {
+	if (left < body_.GetBox().getWidth() / 2.0f &&
+		right < body_.GetBox().getWidth() / 2.0f) {
 		// 上に補間
 		if (top > 0) {
-			position_.y = topLeft.y - body_->height() / 2.0f;
+			position_.y = topLeft.y - body_.GetBox().getHeight() / 2.0f;
 			// 接地
 			isGround_ = true;
 			timer_ = 0.0f;
 		}
 		// 下に補間
 		if (bottom > 0)
-			position_.y = bottomRight.y + body_->height() / 2.0f;
+			position_.y = bottomRight.y + body_.GetBox().getHeight() / 2.0f;
 	}
 	// X方向に位置を補間する
-	if (top < body_->height() / 2.0f &&
-		bottom < body_->height() / 2.0f) {
+	if (top < body_.GetBox().getHeight() / 2.0f &&
+		bottom < body_.GetBox().getHeight() / 2.0f) {
 		// 左に補間
 		if (left > 0)
-			position_.x = bottomLeft.x - body_->width() / 2.0f;
+			position_.x = bottomLeft.x - body_.GetBox().getWidth() / 2.0f;
 		// 右に補間
 		if (right > 0)
-			position_.x = topRight.x + body_->width() / 2.0f;
+			position_.x = topRight.x + body_.GetBox().getWidth() / 2.0f;
 	}
 }
 

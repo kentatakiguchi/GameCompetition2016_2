@@ -7,14 +7,12 @@ NeedleEnemy::NeedleEnemy(
 	const Vector2 & position,
 	const float degrees) :
 	Actor(world, "BaseEnemy", position,
-		std::make_shared<BoundingBox>(Vector2::One * CHIPSIZE / -2.0f, Matrix::Identity, CHIPSIZE, CHIPSIZE, true))
-
-/*		CollisionBase(
+		CollisionBase(
 			Vector2(position.x + CHIPSIZE / 2.0f, position.y + CHIPSIZE / 2.0f),
 			Vector2(position.x - CHIPSIZE / 2.0f, position.y + CHIPSIZE / 2.0f),
 			Vector2(position.x + CHIPSIZE / 2.0f, position.y - CHIPSIZE / 2.0f),
 			Vector2(position.x - CHIPSIZE / 2.0f, position.y - CHIPSIZE / 2.0f)
-			))*/,
+			)),
 	degrees_(degrees)
 {}
 

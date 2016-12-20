@@ -4,8 +4,7 @@
 
 Rock::Rock(IWorld * world, const Vector2 & position, const float bodyScale) : 
 	Actor(world, "BaseEnemy", position,
-		std::make_shared<BoundingCircle>(Vector2::Zero, Matrix::Identity, bodyScale, true)),
-		//CollisionBase(const_cast<Vector2&>(position), bodyScale)),
+		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
 	timer_(0.0f),
 	speed_(4.0f),
 	state_(State::Idel)
@@ -30,9 +29,9 @@ void Rock::onDraw() const
 	vec3Pos = vec3Pos * inv_;
 	// ‰æ‘œ‚Ì•\Ž¦
 	DrawExtendGraph(
-		vec3Pos.x - body_->radius(),
-		vec3Pos.y - body_->radius(),
-		vec3Pos.x + body_->radius(), vec3Pos.y + body_->radius(),
+		vec3Pos.x - body_.GetCircle().getRadius(),
+		vec3Pos.y - body_.GetCircle().getRadius(),
+		vec3Pos.x + body_.GetCircle().getRadius(), vec3Pos.y + body_.GetCircle().getRadius(),
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
 	/*DrawGraph(
 		vec3Pos.x - body_.GetCircle().getRadius(),
@@ -40,7 +39,7 @@ void Rock::onDraw() const
 		ResourceLoader::GetInstance().getTextureID(
 			TextureID::ENEMY_NEEDLE_TEX), 1);*/
 
-	body_->transform(getPose())->draw(-1, inv_);
+	body_.draw(inv_);
 }
 
 void Rock::onCollide(Actor & actor)

@@ -1,6 +1,6 @@
 #include "PlayerBody.h"
 
-#include "../../Body/BoundingCircle.h"
+#include"../../Body/CollisionBase.h"
 
 #include "PlayerBodyCollider.h"
 #include "PlayerConnector.h"
@@ -12,7 +12,7 @@
 PlayerBody::PlayerBody() {}
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
-	Actor(world, name, position, std::make_shared<BoundingCircle>(Vector2::Zero, Matrix::Identity, PLAYER_RADIUS, true)),
+	Actor(world, name, position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS)),
 	dead_limit_(0),
 	timer_(0),
 	stiffness_(4.0f),
@@ -36,7 +36,7 @@ PlayerBody::~PlayerBody() {}
 void PlayerBody::onUpdate(float deltaTime) {
 
 	position_ += (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
-	velocity_ = position_ - body_->pre_pos();
+	velocity_ = position_ - body_.GetCircle().previousPosition_;
 
 	slope_.Length() > 0 ? slope_ -= slope_ / 20 : slope_ = Vector2::Zero;
 
@@ -64,12 +64,10 @@ void PlayerBody::onUpdate(float deltaTime) {
 		friction_ = 0.1f;
 		mass_ = 0.8f;
 	}
-
-	position_ = Vector2::Clamp(position_, Vector2(1, 0) * 96 * 3, Vector2::One * 50000);
 }
 
 void PlayerBody::onDraw() const {
-	//body_->transform(getPose())->draw(-1, inv_);
+	body_.draw(inv_);
 
 	SetFontSize(32);
 	DrawFormatString(static_cast<int>((position_ * inv_).x) + 30, static_cast<int>((position_ * inv_).y), GetColor(255, 255, 255), "%f", dead_limit_);
@@ -97,14 +95,14 @@ void PlayerBody::onCollide(Actor & other) {
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" ||
 		other.getName() == "Door") {
-		auto pos = position_;
+		auto pos = body_.GetCircle().previousPosition_;
 
-		auto t_left = other.getPosition();
-		auto t_right = other.getPosition() + Vector2::Right * other.getBody()->width();
-		auto b_left = other.getPosition() + Vector2::Up * other.getBody()->height();
-		auto b_right = other.getPosition() + Vector2::Right * other.getBody()->width() + Vector2::Up * other.getBody()->height();
+		auto t_left = other.getBody().GetBox().component_.point[0];
+		auto t_right = other.getBody().GetBox().component_.point[1];
+		auto b_left = other.getBody().GetBox().component_.point[2];
+		auto b_right = other.getBody().GetBox().component_.point[3];
 
-		auto center = (t_left + b_right) / 2;
+		auto center = t_left + other.getBody().GetBox().getSize() / 2;
 
 		auto top = Vector2::Cross((t_left - t_right).Normalize(), (pos - t_right));
 		auto right = Vector2::Cross((t_right - b_right).Normalize(), (pos - b_right));
@@ -156,10 +154,12 @@ void PlayerBody::onCollide(Actor & other) {
 	if (other.name_ == "SegmentCollider") {
 		//線分はpositionを中心に取る
 		//Vector2 myCenter = Vector2(previousPosition.x,previousPosition.y);
+		//相手の線分の中心
+		segCenter = other.position_;
 		//自分の前の位置-相手の中心
-		myCenter = body_->pre_pos() - other.getBody()->cur_pos();
+		myCenter = body_.GetCircle().previousPosition_ - segCenter;
 		//相手の中心から端へのベクトル(内積の計算に使う)
-		segPoint = other.getBody()->points()[1] - other.getBody()->cur_pos();
+		segPoint = (other.body_.GetSegment().component_.point[1]) - segCenter;
 		//正規化、内積のaの部分にする
 		segPoint = segPoint.Normalize();
 		//segpointをa、自分をbとして、内積の計算を行う
@@ -167,16 +167,16 @@ void PlayerBody::onCollide(Actor & other) {
 		//内積の計算で求めた、中心点から自分の位置への長さを相手の線分の向きに補正する
 		targetPoint = segPoint * posReset;
 		//前の位置-
-		targetVec = body_->pre_pos() - (targetPoint + other.position_);
+		targetVec = body_.GetCircle().previousPosition_ - (targetPoint + other.position_);
 
 		targetVec = targetVec.Normalize();
 
 		Vector2 posCenter = position_ - segCenter;
 		Vector2 positionPoint = (segPoint)* ((segPoint.x*posCenter.x) + (segPoint.y*posCenter.y));
 
-		position_ = (segCenter + positionPoint) + (targetVec * body_->radius());
+		position_ = (segCenter + positionPoint) + (targetVec*body_.GetCircle().component_.radius);
 
-		Vector2 moves = position_ - body_->pre_pos();
+		Vector2 moves = position_ - body_.GetCircle().previousPosition_;
 
 		if (moves.y > 0)slope_ = SLIP_SPEED * ((segCenter + positionPoint) - (segCenter + targetPoint)).Normalize();
 	}

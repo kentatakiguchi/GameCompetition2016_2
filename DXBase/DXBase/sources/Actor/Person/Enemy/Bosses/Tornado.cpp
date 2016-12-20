@@ -2,13 +2,12 @@
 
 Tornado::Tornado(IWorld * world, const Vector2 & position, const Vector2& bodyScale) :
 	Actor(world, "Tornado", position,
-		std::make_shared<BoundingBox>(Vector2(0, 1) * bodyScale.y / -2.0f, Matrix::Identity, bodyScale.x * 2, bodyScale.y, true)),
-	//CollisionBase(
-	//		Vector2(position.x + bodyScale.x, position.y + bodyScale.y / 2.0f),
-	//		Vector2(position.x, position.y + bodyScale.y / 2.0f),
-	//		Vector2(position.x + bodyScale.x, position.y - bodyScale.y / 2.0f),
-	//		Vector2(position.x, position.y - bodyScale.y / 2.0f)
-	//		)),
+		CollisionBase(
+			Vector2(position.x + bodyScale.x, position.y + bodyScale.y / 2.0f),
+			Vector2(position.x, position.y + bodyScale.y / 2.0f),
+			Vector2(position.x + bodyScale.x, position.y - bodyScale.y / 2.0f),
+			Vector2(position.x, position.y - bodyScale.y / 2.0f)
+			)),
 	initPosition_(position)
 {
 }
@@ -38,8 +37,8 @@ void Tornado::onDraw() const
 	vec3Pos = vec3Pos * inv_;*/
 	// デバッグ
 	//DrawFormatString(600, 25, GetColor(255, 0, 255), "座標:%f,%f", position_.x,position_.y);
-	
-	body_->transform(getPose())->draw(-1, inv_);
+
+	body_.draw(inv_);
 }
 
 void Tornado::onCollide(Actor & actor){}
@@ -55,7 +54,7 @@ void Tornado::initPosition()
 // 角度を変更します
 void Tornado::setAngle(int angle)
 {
-	//body_.RotateBox(angle);
+	body_.RotateBox(angle);
 }
 
 // プレイヤーを探します
@@ -67,6 +66,6 @@ void Tornado::findPlayer() const
 		playerLength_ = Vector2(player->getPosition() - position_).Length();
 	}
 	if (playerLength_ >=
-		SCREEN_SIZE.x / 2.0f + body_->height())
+		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
 		return;
 }

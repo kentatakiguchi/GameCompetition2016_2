@@ -94,7 +94,6 @@ struct Matrix {
 	
 	// 平行移動ベクトルを取得または設定します。
 	Vector3 Translation() const;
-	Vector2 TranslationVec2() const;
 	// 平行移動ベクトルを取得または設定します。
 	Matrix& Translation(const Vector3& translation);
 

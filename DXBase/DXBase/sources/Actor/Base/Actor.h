@@ -11,7 +11,7 @@
 #include "../Body/BoundingCapsule.h"
 #include "../Body/BoundingCircle.h"
 #include "../Body/BoundingSegment.h"
-//#include"..//Body/CollisionBase.h"
+#include"..//Body/CollisionBase.h"
 #include "../../Define.h"
 #include <string>
 #include <memory>
@@ -25,7 +25,7 @@ enum class EventMessage;
 class Actor {
 public:
 	// コンストラクタ
-	Actor(IWorld* world, const std::string& name, const Vector2& position, const IBodyPtr& body);
+	Actor(IWorld* world, const std::string& name, const Vector2& position, const CollisionBase& body);
 	// コンストラクタ
 	explicit Actor(const std::string& name = "none");
 	// 仮想デストラクタ
@@ -83,7 +83,7 @@ public:
 	// Worldの取得
 	IWorld* getWorld();
 	//Bodyの取得 return:CollisionBase
-	IBodyPtr getBody();
+	CollisionBase getBody();
 	//
 	Matrix InitializeInv(Vector2 position);
 	// メッセージ処理
@@ -108,10 +108,10 @@ private:
 	virtual void onCollide(Actor& other);
 public:
 	// 衝突判定
-	bool isCollide(Actor& other) const;
-	//void translate(Vector2& position) {
-	//	body_.translate();
-	//}
+	bool isCollide(Actor& other);
+	void translate(Vector2& position) {
+		body_.translate(position);
+	}
 
 private:
 	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness=0.1f, float friction=0.5f, float mass=2.0f)const;
@@ -126,7 +126,7 @@ public:
 	// 回転
 	Matrix				rotation_;
 	// 衝突判定
-	IBodyPtr			body_;
+	CollisionBase		body_;
 	// 死亡フラグ
 	bool				dead_;
 	// モデルハンドル
