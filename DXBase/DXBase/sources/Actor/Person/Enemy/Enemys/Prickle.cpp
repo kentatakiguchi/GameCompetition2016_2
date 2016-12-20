@@ -8,12 +8,14 @@ Prickle::Prickle(
 	const Vector2& enemyPosition,
 	const Vector2& addPosition,
 	const Vector2& bodyScale) :
-	Actor(world, "Prickle", enemyPosition + addPosition, CollisionBase(
-		Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
-		Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
-		Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f),
-		Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f)
-		)),
+	Actor(world, "Prickle", enemyPosition + addPosition,
+		std::make_shared<BoundingBox>(addPosition + bodyScale / -2.0f, Matrix::Identity, bodyScale.x, bodyScale.y, true)),
+		//CollisionBase(
+		//Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+		//Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) + bodyScale.y / 2.0f),
+		//Vector2((enemyPosition.x + addPosition.x) + bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f),
+		//Vector2((enemyPosition.x + addPosition.x) - bodyScale.x / 2.0f, (enemyPosition.y + addPosition.y) - bodyScale.y / 2.0f)
+		//)),
 	ap_(10),
 	direction_(Vector2(1.0f, 1.0f)),
 	enemyPosition_(enemyPosition),

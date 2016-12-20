@@ -7,7 +7,9 @@
 
 class BoundingBox : public Body {
 public:
-	BoundingBox() {}
+	BoundingBox():
+		Body(CollisionType::BoxCol, false, Vector2::Zero, Matrix::Identity, 0, 0, 0, 0)
+	{}
 	//四角の判定を作成する(判定を行う場合) topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2)
 	BoundingBox(Vector2 pos, Matrix mat, float width, float height, bool enable);
 

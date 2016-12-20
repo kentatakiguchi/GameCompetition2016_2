@@ -108,8 +108,3 @@ IBodyPtr BoundingCircle::transform(const Matrix & mat) const
 {
 	return std::make_shared<BoundingCircle>(position_ + mat.TranslationVec2(), mat_*mat, radius_*mat.Scale().y, enabled_);
 }
-
-std::vector<Vector2> BoundingCircle::points() const
-{
-	return std::vector<Vector2>();
-}

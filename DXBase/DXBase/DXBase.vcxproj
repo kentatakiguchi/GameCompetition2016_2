@@ -166,6 +166,8 @@
     <ClInclude Include="sources\Actor\Body\BoundingCircle.h" />
     <ClInclude Include="sources\Actor\Body\BoundingSegment.h" />
     <ClInclude Include="sources\Actor\Body\CollisionBase.h" />
+    <ClInclude Include="sources\Actor\Body\IBody.h" />
+    <ClInclude Include="sources\Actor\Body\IBodyPtr.h" />
     <ClInclude Include="sources\Actor\Body\ShapeType.h" />
     <ClInclude Include="sources\Actor\Collision\Collision.h" />
     <ClInclude Include="sources\Actor\Door\Door.h" />
@@ -336,6 +338,7 @@
     <ClCompile Include="sources\Actor\Body\BoundingCircle.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingSegment.cpp" />
     <ClCompile Include="sources\Actor\Body\CollisionBase.cpp" />
+    <ClCompile Include="sources\Actor\Collision\Collision.cpp" />
     <ClCompile Include="sources\Actor\Door\Door.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.cpp" />

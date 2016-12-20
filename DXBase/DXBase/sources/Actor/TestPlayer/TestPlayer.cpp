@@ -3,7 +3,7 @@
 #include"../Body/CollisionBase.h"
 
 TestPlayer::TestPlayer(IWorld * world, const Vector2 & position) :
-	Actor(world, "TestPlayer", position, CollisionBase(position_,10.0f))
+	Actor(world, "TestPlayer", position, std::make_shared<BoundingCircle>(position_, Matrix::Identity, 10.0f, true))
 {
 	time = 0.0f;
 }
