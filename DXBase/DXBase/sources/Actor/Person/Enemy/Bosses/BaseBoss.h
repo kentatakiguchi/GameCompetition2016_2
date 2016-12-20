@@ -162,8 +162,8 @@ private:
 
 	// クランプ用の位置(仮)
 	const Vector2 FIELD_SIZE = Vector2(
-		SCREEN_SIZE.x - CHIPSIZE - body_.GetCircle().getRadius(), 
-		SCREEN_SIZE.y - CHIPSIZE - body_.GetCircle().getRadius());
+		SCREEN_SIZE.x - CHIPSIZE - body_->radius(), 
+		SCREEN_SIZE.y - CHIPSIZE - body_->radius());
 
 	// クランプ用の位置コンテナ
 	typedef std::list<Vector2> ClampContainer;
