@@ -2,7 +2,7 @@
 
 BossBody::BossBody(IWorld * world, const Vector2 & position) : 
 	Actor(world, "BossBody", position,
-		CollisionBase(const_cast<Vector2&>(position), 1.0f))
+		std::make_shared<BoundingCircle>(const_cast<Vector2&>(position),Matrix::Identity, 1.0f,true))
 {
 }
 

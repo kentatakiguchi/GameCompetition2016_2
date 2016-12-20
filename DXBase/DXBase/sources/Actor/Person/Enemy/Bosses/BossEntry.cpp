@@ -9,10 +9,10 @@ BossEntry::BossEntry(
 	const Vector2 & addPosition,
 	const float bodyScale) :
 	Actor(world, "BossEntry", position + addPosition,
-		CollisionBase(
+		std::make_shared<BoundingCircle>(
 			const_cast<Vector2&>(position) + 
-			const_cast<Vector2&>(addPosition),
-			bodyScale)),
+			const_cast<Vector2&>(addPosition),Matrix::Identity,
+			bodyScale,true)),
 	blockTimer_(0.0f),
 	isEntry_(false),
 	isEntered_(false),
@@ -40,7 +40,7 @@ void BossEntry::onUpdate(float deltaTime)
 
 void BossEntry::onDraw() const
 {
-	body_.draw(inv_);
+	body_->draw(-1,inv_);
 	// •\Ž¦
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;

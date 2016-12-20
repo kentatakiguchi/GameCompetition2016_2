@@ -4,7 +4,7 @@ BossHeart::BossHeart(
 	IWorld * world, const Vector2 & position,
 	const int hp, const int bossHp) :
 	Actor(world, "BossEntry", position, 
-		CollisionBase(const_cast<Vector2&>(position), 32.0f)),
+		std::make_shared<BoundingCircle>(const_cast<Vector2&>(position),Matrix::Identity, 32.0f,true)),
 	stateCount_(3),
 	initStateCount_(stateCount_),
 	hp_(hp * stateCount_),
@@ -48,7 +48,7 @@ void BossHeart::onUpdate(float deltaTime)
 
 void BossHeart::onDraw() const
 {
-	body_.draw(inv_);
+	body_->draw(-1,inv_);
 
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
