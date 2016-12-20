@@ -1,9 +1,28 @@
 #pragma once
 
-#include "IBody.h"
+#include <string>
+#include "../../Math/Math.h"
+#include "ShapeType.h"
 
-class Body : public IBody{
+class BoundingSphere;
+class Capsule;
+class Model;
+class BoundingBox;
+class BoundingCapsule;
+class BoundingSegment;
+class BoundingCircle;
+class BezierCurve;
+
+struct BodyData {
+	std::string name;
+	Vector2 position;
+	ShapeType type;
+};
+
+class Body
+{
 public:
+<<<<<<< HEAD
 	Body(CollisionType type = CollisionType::NoneCol, bool enable = true, Vector2 pos = Vector2(0, 0), Matrix mat = Matrix::Identity, float rad = 0, float length = 0, float width = 0, float height = 0) :
 		type_(type), enabled_(enable), position_(pos), mat_(mat), radius_(rad), length_(length), width_(width), height_(height) {}
 	virtual ~Body() {}
@@ -25,17 +44,28 @@ public:
 		length_ = Vector2::Distance(start, end);
 	}
 
+=======
+	Body() {}
+	virtual ~Body() {}
+	virtual bool intersects(BoundingSphere& other) { return false; }
+	virtual bool intersects(Capsule& other) { return false; }
+	virtual bool intersects(Model& other) { return false; }
+	virtual bool intersects(BoundingBox& other) { return false; }
+	virtual bool intersects(BoundingCapsule& other) { return false; }
+	virtual bool intersects(BoundingSegment& other) { return false; }
+	virtual bool intersects(BoundingCircle& other) { return false; }
+	virtual bool intersects(BezierCurve& other) { return false; }
+	virtual void update(const Vector3& center) {}
+	virtual void update(const Vector2& center) {}
+	virtual void update(Vector2 position) {}
+	virtual void draw() const {}
+	virtual void draw(Matrix inv) const {}
+	virtual void draw(int spriteID, Matrix inv) const {}
+	virtual void draw(int spriteID,int rotation,Matrix inv) const {}
+	virtual void debug() const {}
+>>>>>>> parent of d3118c3... 判定系未完成状態、一旦プッシュ
 public:
-	CollisionType type_;
-
 	Vector2 position_;
 	Vector2 previousPosition_;
-
-	Matrix mat_;
-	float radius_;
-	float length_;
-	float width_;
-	float height_;
-	bool enabled_;
 };
 
