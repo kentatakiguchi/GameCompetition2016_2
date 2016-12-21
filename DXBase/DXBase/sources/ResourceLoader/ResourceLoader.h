@@ -171,7 +171,8 @@ enum class SoundID {
 	SE_HAKKEN
 };
 enum MOVIE_ID {
-	TEST_MOVE
+	TEST_MOVE,
+	TEST2_MOVIE
 };
 
 

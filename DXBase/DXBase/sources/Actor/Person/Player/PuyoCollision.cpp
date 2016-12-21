@@ -26,6 +26,12 @@ PuyoCollision::~PuyoCollision()
 
 void PuyoCollision::onUpdate(float deltaTime)
 {
+	if (Vector2::Distance(mCenter1, position_) <= Vector2::Distance(mCenter2, position_))
+		mCenter = mCenter1;
+	else
+		mCenter = mCenter2;
+
+
 	//あたり判定更新
 	body_.setSegmentPoint(mCenter, mCenter, position_);
 	//当たっていない場合は交点は本来の位置へ
@@ -48,7 +54,7 @@ void PuyoCollision::onUpdate(float deltaTime)
 			mIntersectionsVector.clear();
 		}
 	}
-
+	//生成された瞬間は当たらない
 	if (mNoColTimer <= 0.2f) {
 		mNoColTimer += Time::GetInstance().deltaTime();
 		mVec = 0.0f;

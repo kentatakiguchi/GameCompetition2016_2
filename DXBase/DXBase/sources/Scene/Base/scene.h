@@ -19,6 +19,7 @@ enum Scene {
 	Ending,
 	GameEnd,
 	Test,
+	Tutoreal,
 	Logo
 };
 

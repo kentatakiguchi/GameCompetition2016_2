@@ -14,9 +14,10 @@ public:
 	virtual void onCollide(Actor& other) override;
 public:
 	//逆行列かけていないポジションを
-	void SetPos(Vector2 pos,Vector2 center) {
+	void SetPos(const Vector2& pos,const Vector2& center1,const Vector2& center2) {
 		position_ = pos*Matrix::Invert(inv_);
-		mCenter = center;
+		mCenter1 = center1*Matrix::Invert(inv_);
+		mCenter2 = center2*Matrix::Invert(inv_);
 	}
 	//どの2次元配列にいるか取得
 	Vector2 GetArrayState() {
@@ -39,7 +40,10 @@ private:
 	Vector2 mIntersection;
 	//2次元配列のどこか
 	Vector2 mArrayState;
-	//ぷよテクスチャの中心
+	//ぶってぃとれってぃ
+	Vector2 mCenter1;
+	Vector2 mCenter2;
+	//センター
 	Vector2 mCenter;
 	//バネ補間関係
 	Vector2 mResIntersection;

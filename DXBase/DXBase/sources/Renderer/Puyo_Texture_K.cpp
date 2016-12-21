@@ -75,7 +75,7 @@ void PuyoTextureK::PuyoUpdate()
 		}
 		else
 			commonVertexH[(int)hairetu.x][(int)hairetu.y].colWallVec = puyoCol->GetVec();
-		puyoCol->SetPos(commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position, mCenter);
+		puyoCol->SetPos(commonVertexHNoCol[(int)hairetu.x][(int)hairetu.y].position, mPlayerPos1,mPlayerPos2);
 	}
 
 	//頂点のバネ系を毎フレーム更新

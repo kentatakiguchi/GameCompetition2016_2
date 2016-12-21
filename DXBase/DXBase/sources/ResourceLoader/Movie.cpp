@@ -52,12 +52,24 @@ bool Movie::IsPlay(const MOVIE_ID& moveID)
 }
 
 // 再生状態の動画を表示する
-void Movie::Draw() const
+void Movie::Draw(const MOVIE_ID& id, const Vector2& pos1, const float& scale)
 {
-	for (const auto& movie : m_movies)
-	{
-		DrawExtendGraph(0, 0, SCREEN_SIZE.x, SCREEN_SIZE.y, movie.second, FALSE);
-	}
+	Vector2 size = GetMovieSize(id);
+	DrawExtendGraph(pos1.x, pos1.y, pos1.x+(size.x*scale), pos1.y+(size.y*scale),m_movies[id] , FALSE);
+}
+//再生状態の動画をフルスクリーンで表示する
+void Movie::Draw(const MOVIE_ID & id)
+{
+	DrawExtendGraph(0,0,SCREEN_SIZE.x,SCREEN_SIZE.y, m_movies[id], FALSE);
+}
+
+Vector2 Movie::GetMovieSize(const MOVIE_ID & id)
+{
+	int x, y;
+	bool flag;
+	flag=GetGraphSize(GetHandle(id), &x, &y);
+	if (flag == 0) return Vector2(x, y);
+	return Vector2::Zero;
 }
 
 void Movie::Clear()
@@ -67,7 +79,7 @@ void Movie::Clear()
 		DeleteGraph(movie.second);
 	}
 }
-int Movie::GetHandle(MOVIE_ID moveID)
+int Movie::GetHandle(const MOVIE_ID& moveID)
 {
 	return m_movies[moveID];
 }

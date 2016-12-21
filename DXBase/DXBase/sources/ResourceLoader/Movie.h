@@ -40,13 +40,17 @@ public:
 	///<summary>
 	/// 再生状態の動画を表示する
 	///</summary>
-	void Draw() const;
+	void Draw(const MOVIE_ID& id,const Vector2& pos1,const float& scale);
 
+	void Draw(const MOVIE_ID& id);
+
+	//動画のサイズを取得
+	Vector2 GetMovieSize(const MOVIE_ID& id);
 
 	void Clear();
 private:
 
-	int GetHandle(MOVIE_ID moveID);
+	int GetHandle(const MOVIE_ID& moveID);
 	std::unordered_map<const MOVIE_ID, int> m_movies;
 
 };

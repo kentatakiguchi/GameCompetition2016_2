@@ -2,7 +2,7 @@
 #include "../../ResourceLoader/ResourceLoader.h"
 
 #include "../../Define.h"
-
+#include "../../ResourceLoader/Movie.h"
 LoadingScene::LoadingScene(SceneDataKeeper* keeper):
 isEnd_(false){
 }
@@ -92,6 +92,9 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::FLOOR_WOOD_TEX, "./resources/sprite/Block/wood.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::FLOOR_STONE_TEX, "./resources/sprite/Block/stone.png");
 
+	//動画
+	//Movie::GetInstance().Load(MOVIE_ID::TEST_MOVE, "./resources/Movie/Test.wmv");
+	//Movie::GetInstance().Load(MOVIE_ID::TEST2_MOVIE, "./resources/Movie/Test2.avi");
 
 	//プレイヤー関連のロード
 	load_player_res();
@@ -119,7 +122,7 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::Logo;
+	return Scene::Title;
 }
 
 void LoadingScene::load_player_res(){
