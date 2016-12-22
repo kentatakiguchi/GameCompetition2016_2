@@ -322,6 +322,7 @@
     <ClInclude Include="sources\Scene\Test\TestChara.h" />
     <ClInclude Include="sources\Scene\Test\TestScene.h" />
     <ClInclude Include="sources\Scene\Title\TitleScene.h" />
+    <ClInclude Include="sources\Scene\Tutoreal\TutorealScene.h" />
     <ClInclude Include="sources\Scene\YajimaScene\YajimaScene.h" />
     <ClInclude Include="sources\World\IWorld.h" />
     <ClInclude Include="sources\World\IWorldPtr.h" />
@@ -459,6 +460,7 @@
     <ClCompile Include="sources\Scene\TeamLogoScene\TeamLogoScene.cpp" />
     <ClCompile Include="sources\Scene\Test\TestScene.cpp" />
     <ClCompile Include="sources\Scene\Title\TitleScene.cpp" />
+    <ClCompile Include="sources\Scene\Tutoreal\TutorealScene.cpp" />
     <ClCompile Include="sources\Scene\YajimaScene\YajimaScene.cpp" />
     <ClCompile Include="sources\World\World.cpp" />
   </ItemGroup>

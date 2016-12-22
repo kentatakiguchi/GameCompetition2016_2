@@ -55,12 +55,17 @@ bool Movie::IsPlay(const MOVIE_ID& moveID)
 void Movie::Draw(const MOVIE_ID& id, const Vector2& pos1, const float& scale)
 {
 	Vector2 size = GetMovieSize(id);
-	DrawExtendGraph(pos1.x, pos1.y, pos1.x+(size.x*scale), pos1.y+(size.y*scale),m_movies[id] , FALSE);
+	DrawExtendGraph(pos1.x-size.x/2, pos1.y-size.y/2, pos1.x - size.x / 2 +(size.x*scale), pos1.y - size.y / 2 +(size.y*scale),m_movies[id] , FALSE);
 }
 //再生状態の動画をフルスクリーンで表示する
 void Movie::Draw(const MOVIE_ID & id)
 {
 	DrawExtendGraph(0,0,SCREEN_SIZE.x,SCREEN_SIZE.y, m_movies[id], FALSE);
+}
+
+void Movie::DrawRotaMovie(const MOVIE_ID & id, const Vector2 & pos, const float & scale)
+{
+	DrawRotaGraph(pos.x, pos.y, scale, 0.0f, m_movies[id], TRUE);
 }
 
 Vector2 Movie::GetMovieSize(const MOVIE_ID & id)

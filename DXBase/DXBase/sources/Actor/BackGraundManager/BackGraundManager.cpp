@@ -120,9 +120,10 @@ void BackGraundManager::SetDownBackGraund(TextureID id)
 
 void BackGraundManager::AllDeleteBackGraund()
 {
+	backStates.clear();
 }
 
-void BackGraundManager::Update(float deltatime)
+void BackGraundManager::Update(float deltatime,bool title)
 {
 	//要素内が何もなかったりプレイヤーがnullだったらリターン
 	if (backStates.empty()) return;
@@ -134,11 +135,16 @@ void BackGraundManager::Update(float deltatime)
 	{
 		for (auto& j : i.indexPos)
 		{
-			//プレイヤーベクトル加算
-			if (i.stage2)
-				j.position -= Vector2((mFloor->mVelo*(1.0f / layerNum)).x, mFloor->mVelo.y);
-			else
-				j.position -= mFloor->mVelo*1.0f / layerNum;;
+			if (!title) {
+				//プレイヤーベクトル加算
+				if (i.stage2)
+					j.position -= Vector2((mFloor->mVelo*(1.0f / layerNum)).x, mFloor->mVelo.y);
+				else
+					j.position -= mFloor->mVelo*1.0f / layerNum;
+			}
+			else {
+				j.position -= Vector2(20.0f, 0.0f)*(1.0f / layerNum);
+			}
 			//地面テクスチャサイズ
 			Vector2 size = i.size;
 			//x軸のループ
@@ -160,8 +166,11 @@ void BackGraundManager::Update(float deltatime)
 	//空系
 	for (auto& i : upBackStates.indexPos)
 	{
-		//プレイヤー速度加算
-		i.position -= Vector2((mFloor->mVelo*(1.0f / upBackStates.layer)).x, mFloor->mVelo.y);
+		//プレイヤー速度加算(タイトル用もある)
+		if (!title)
+			i.position -= Vector2((mFloor->mVelo*(1.0f / upBackStates.layer)).x, mFloor->mVelo.y);
+		else
+			i.position -= Vector2(20, 0)*(1.0f / layerNum);
 		//x軸のループ
 		if (i.position.x <= -size.x)
 			i.position.x = size.x + size.x + i.position.x;

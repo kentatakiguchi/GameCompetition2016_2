@@ -24,4 +24,6 @@ private:
 	void load_se_res();
 private:
 	bool isEnd_;
+	Vector2 mPosition;
+	float a;
 };

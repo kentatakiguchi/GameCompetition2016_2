@@ -131,12 +131,22 @@ void PuyoCollision::onCollide(Actor & other)
 			mIntersections[3].y != Vector2::Zero.y)
 			mIntersectionsVector.push_back(mIntersections[3]);
 	}
-	if (other.getName() == "SegmentCollider") {
-		int a;
+
+	if (other.getName() == "SegmentCollider")
+	{
+		mIsCol = true;
+		Vector2 intersection;
+		auto left = other.getBody().GetSegment().component_.point[0];
+		auto right= other.getBody().GetSegment().component_.point[1];
+		SegmentCol(mCenter, position_, left, right, intersection, false);
+		if (intersection.x != Vector2::Zero.x&&
+			intersection.y != Vector2::Zero.y)
+		mIntersectionsVector.push_back(intersection);
+
 	}
 }
 
-bool PuyoCollision::SegmentCol(Vector2 A, Vector2 B, Vector2 C, Vector2 D, Vector2& couten, bool rightLeft)
+bool PuyoCollision::SegmentCol(const Vector2& A, const Vector2& B, const Vector2& C, const Vector2& D, Vector2 & couten, bool rightLeft)
 {
 	////必要なベクトルを計算
 	Vector2 AB = B - A;

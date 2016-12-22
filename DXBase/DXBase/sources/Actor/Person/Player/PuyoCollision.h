@@ -32,7 +32,7 @@ public:
 	}
 private:
 	//線と線のあたり判定と交点を求める
-	bool SegmentCol(Vector2 A, Vector2 B, Vector2 C, Vector2 D,Vector2 & couten,bool rightLeft);
+	bool SegmentCol(const Vector2& A, const Vector2& B, const Vector2& C, const Vector2& D,Vector2 & couten,bool rightLeft);
 private:
 	//本来の位置と交点のベクトル
 	Vector2 mVec;

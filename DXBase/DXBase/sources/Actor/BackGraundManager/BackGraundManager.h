@@ -50,7 +50,7 @@ public:
 	//背景を全部消す
 	void AllDeleteBackGraund();
 	//横用スクロールUpdate
-	void Update(float deltatime);
+	void Update(float deltatime, bool title = false);
 	//縦用スクロールUpdate
 	void TateUpdate(float deltaTime);
 

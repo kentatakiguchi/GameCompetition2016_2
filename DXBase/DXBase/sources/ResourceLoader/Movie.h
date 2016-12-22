@@ -44,6 +44,8 @@ public:
 
 	void Draw(const MOVIE_ID& id);
 
+	void DrawRotaMovie(const MOVIE_ID& id, const Vector2& pos, const float& scale);
+
 	//“®‰æ‚ÌƒTƒCƒY‚ðŽæ“¾
 	Vector2 GetMovieSize(const MOVIE_ID& id);
 

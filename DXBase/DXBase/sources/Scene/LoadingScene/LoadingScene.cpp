@@ -3,6 +3,7 @@
 
 #include "../../Define.h"
 #include "../../ResourceLoader/Movie.h"
+
 LoadingScene::LoadingScene(SceneDataKeeper* keeper):
 isEnd_(false){
 }
@@ -12,10 +13,25 @@ LoadingScene::~LoadingScene(){
 }
 
 void LoadingScene::start(){
-	DrawFormatString(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2, GetColor(255, 255, 255), "NowLoading");
-
+	//---Updateテスト用---
+	mPosition = Vector2(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2);
 	isEnd_ = false;
+	a = 0.0f;
+	//---------
 
+	//ここにローディング専用のリソースを読み込む
+	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
+	//DerivationGraphと動画読み込みが非同期読み込みに対応していないため
+	//プレイヤー関連のロード
+	load_player_res();
+	load_enemy_res();
+	load_boss_res();
+	//動画
+	//Movie::GetInstance().Load(MOVIE_ID::TEST_MOVE, "./resources/Movie/Test.wmv");
+	//Movie::GetInstance().Load(MOVIE_ID::TEST2_MOVIE, "./resources/Movie/Test2.avi");
+	//非同期読み込みを開始
+	SetUseASyncLoadFlag(TRUE);
+	
 	//ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND1_TEX, "./resources/sprite/BackGraund1.png");
 	//ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND2_TEX, "./resources/sprite/BackGraund2.png");
 	//ResourceLoader::GetInstance().loadTexture(TextureID::BACKGRAUND3_TEX, "./resources/sprite/BackGraund3.png");
@@ -56,13 +72,15 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_9_TEX, "./resources/sprite/BackGraund/Stage2-9.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP_TEX, "./resources/sprite/BackGraund/Stage2-Top.png");
 
+	ResourceLoader::GetInstance().loadTexture(TextureID::MOVIEBACK_TEX, "./resources/sprite/MovieBack.png");
+
+
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE3_1_TEX, "./resources/sprite/BackGraund/Stage3-1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE3_2_TEX, "./resources/sprite/BackGraund/Stage3-2.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE4_1_TEX, "./resources/sprite/BackGraund/Stage4-1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE4_2_TEX, "./resources/sprite/BackGraund/Stage4-2.png");
 	
-	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::PAUSE_BACK_TEX, "./resources/sprite/pauseBack.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_NEEDLE_TEX, "./resources/sprite/Needle.png");
@@ -92,26 +110,28 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::FLOOR_WOOD_TEX, "./resources/sprite/Block/wood.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::FLOOR_STONE_TEX, "./resources/sprite/Block/stone.png");
 
-	//動画
-	//Movie::GetInstance().Load(MOVIE_ID::TEST_MOVE, "./resources/Movie/Test.wmv");
-	//Movie::GetInstance().Load(MOVIE_ID::TEST2_MOVIE, "./resources/Movie/Test2.avi");
 
-	//プレイヤー関連のロード
-	load_player_res();
-	load_enemy_res();
-	load_boss_res();
 	load_bgm_res();
 	load_se_res();
+	//非同期読み込み終了
+	SetUseASyncLoadFlag(FALSE);
 }
 
 void LoadingScene::update(){
-	DrawFormatString(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2, GetColor(255, 255, 255), "NowLoading");
+	//回る
+	mPosition = Vector2(std::cosf(a), std::sinf(a))*50.0f+ Vector2(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2);
+	a += 10.0f*Time::GetInstance().deltaTime();
 
-	isEnd_ = true;
+	//読み込み処理が終わっていたら
+	if (GetASyncLoadNum()==0&&ProcessMessage()==0) {
+		isEnd_ = true;
+	}
 }
 
 void LoadingScene::draw() const{
-	DrawFormatString(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2, GetColor(255, 255, 255), "NowLoading");
+	DrawGraph(mPosition.x, mPosition.y, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
+	DrawFormatString(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2, GetColor(255, 255, 255), "非同期読み込みの数 %d", GetASyncLoadNum());
+
 }
 
 void LoadingScene::end(){
