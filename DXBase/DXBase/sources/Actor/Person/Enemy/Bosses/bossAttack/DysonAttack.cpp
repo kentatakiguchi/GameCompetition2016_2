@@ -42,7 +42,8 @@ void DysonAttack::dysonAttack(float deltaTime)
 {
 	// 動けない状態なら、ひるみ状態に遷移
 	if (!isMove_) {
-		changeState(State::Flinch, BossAnimationNumber::BREATH_DYSFUNCTION_NUMBER);
+		changeState(State::Flinch,
+			BossAnimationNumber::BREATH_DYSFUNCTION_NUMBER);
 		isAnimaLoop_ = false;
 		if (tornadoObj_ != nullptr) {
 			tornadoObj_->dead();
@@ -73,13 +74,15 @@ void DysonAttack::dysonAttack(float deltaTime)
 	// ボスの竜巻攻撃(仮)
 	if (tornadoObj_ == nullptr) {
 		auto tornado = std::make_shared<Tornado>(
-			world_, position_, Vector2(CHIPSIZE * 10, 32.0f * 3));
+			world_, position_, Vector2(CHIPSIZE * 2, CHIPSIZE * 4));
 		world_->addActor(ActorGroup::Enemy, tornado);
 		tornadoObj_ = tornado.get();
+		// SEの再生
+
 	}
 	// 竜巻オブジェクトの位置更新
 	if (tornadoObj_ != nullptr)
-		tornadoObj_->position_ = position_;
+		tornadoObj_->position_ = position_ - Vector2::One * 100.0f;
 
 	if (isWspHit_ && isPrevWspHit_ != isWspHit_) {
 		direction_.x *= -1;
@@ -108,7 +111,8 @@ void DysonAttack::flinch(float deltaTime)
 	//isFlinch_ = true;
 	// プレイヤーをつなぐものに当たっていないなら、疲労状態に遷移
 	if (isMove_) {
-		changeState(State::Fatigue, BossAnimationNumber::BREATH_LESS_NUMBER);
+		changeState(State::Fatigue,
+			BossAnimationNumber::BREATH_LESS_NUMBER);
 		isAnimaLoop_ = true;
 		return;
 	}
@@ -123,7 +127,8 @@ void DysonAttack::fatigue(float deltaTime)
 {
 	if (timer_ <= 5.0f) return;
 	// 攻撃状態に遷移
-	changeState(State::Attack, BossAnimationNumber::BREATH_NUMBER);
+	changeState(State::Attack, 
+		BossAnimationNumber::BREATH_NUMBER);
 }
 
 // 状態の変更を行います
@@ -139,6 +144,8 @@ void DysonAttack::Refresh()
 	BossAttack::Refresh();
 	isFlinch_ = false;
 	tornadoObj_ = nullptr;
-	state_ = State::Attack;
-	animeNum_ = BossAnimationNumber::BREATH_NUMBER;
+	changeState(State::Attack,
+		BossAnimationNumber::BREATH_NUMBER);
+	//state_ = State::Attack;
+	//animeNum_ = BossAnimationNumber::BREATH_NUMBER;
 }

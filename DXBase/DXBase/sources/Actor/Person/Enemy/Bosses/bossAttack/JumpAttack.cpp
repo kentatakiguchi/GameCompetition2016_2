@@ -29,14 +29,48 @@ JumpAttack::JumpAttack(IWorld* world, const Vector2& position) :
 	isFirstJump_(false),
 	isJumpEnd_(false),
 	isIdel_(false),
+	otherName_(""),
+	prevOtherName_(""),
 	prevPlayerDistance_(Vector2::One)
 {
+	piyoriCount_ = 5;
+	isBodyHit_ = false;
+	isAttackHit_ = true;
 	animeNum_ = BossAnimationNumber::JUMP_UP_NUMBER;
 }
 
 // 攻撃
 void JumpAttack::attack(float deltaTime)
 {
+	//auto a = "PlayerAttackCollider";
+	if (collideObj_ != nullptr) {
+		// otherName_ = const_cast<char*>(collideObj_->getName().c_str());
+		otherName_ = collideObj_->getName();
+		if (otherName_ == "PlayerAttackCollider") {
+			if (prevOtherName_ != otherName_)
+				piyoriCount_--;
+		}
+	}
+	// プレイヤーの攻撃に触れたら、ぴよりカウントを減算する
+	// 衝突時の処理ではないので、名前が同一の場合は減算を行わない
+	/*if (otherName_ == "PlayerAttackCollider") {
+		if (prevOtherName_ != otherName_)
+			piyoriCount_--;
+	}*/
+		//piyoriCount_--;
+	/*else if (otherName_ != "PlayerAttackCollider")
+		prevOtherName_ = "";*/
+	// 前回衝突したオブジェクトの名前を更新
+	prevOtherName_ = otherName_;
+	otherName_ = "";
+	collideObj_ = nullptr;
+	// ぴより回数が一定値以下になったらぴよる
+	if (piyoriCount_ <= 0) {
+		isPiyori_ = true;
+		isAttackEnd_ = true;
+		return;
+	}
+
 	if (!isFirstJump_) {
 		// 方向の設定
 		auto distance = pPosition_ - position_;
@@ -56,9 +90,11 @@ void JumpAttack::attack(float deltaTime)
 	if (isJump_ && isGround_ && timer_ > 0.3f) {
 		isIdel_ = true;
 		isBodyHit_ = true;
-		auto addPos = Vector2::Left * 70;
+		auto addPos = Vector2::One * 212.0f;
 		world_->addActor(ActorGroup::Effect,
 			std::make_shared<BokoEffect>(world_, position_ + addPos));
+		// 着地時に攻撃判定追加
+
 		//recastTimer_ -= deltaTime;
 		//// リキャスト時間が 0 になったら、ジャンプ攻撃終了
 		//if (recastTimer_ > 0.0f) return;
@@ -132,7 +168,11 @@ void JumpAttack::Refresh()
 	isFirstJump_ = false;
 	isJumpEnd_ = false;
 	isIdel_ = false;
+	isBodyHit_ = true;
+	isPiyori_ = false;
 	jumpPower_ = initJumpPower_;
 	recastTimer_ = initRecastTimer_;
 	animeNum_ = BossAnimationNumber::JUMP_UP_NUMBER;
+	if (piyoriCount_ <= 0)
+		piyoriCount_ = 5;
 }

@@ -18,7 +18,8 @@ public:
 	BossEffect(
 		IWorld* world,
 		std::string name,
-		const Vector2&  position,
+		const Vector2& position,
+		const Vector2& texSize,
 		const int animeNum,
 		const AnimationID id);
 	~BossEffect();
@@ -32,6 +33,9 @@ public:
 
 protected:
 	EnemyAnimation2D animation_;
+
+	float scale_;
+	Vector2 texSize_;
 };
 
 #endif

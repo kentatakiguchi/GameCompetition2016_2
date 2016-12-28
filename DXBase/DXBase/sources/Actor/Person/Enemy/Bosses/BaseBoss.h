@@ -52,7 +52,7 @@ public:
 	BaseBoss(
 		IWorld* world,
 		const Vector2&  position,
-		const float bodyScale = 128.0f * 2 / 2.0f);
+		const float bodyScale = 128.0f);// * 2 / 2.0f);
 	~BaseBoss();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
@@ -84,8 +84,10 @@ protected:
 	virtual void idel(float deltaTime);
 	// 攻撃行動
 	void attack(float deltaTime);
-	// ひるみ状態
+	// 怯み状態
 	void flinch(float deltaTime);
+	// ぴより状態 // ぴよりー＞ロック解除
+	void piyori(float deltaTime);
 	// 死亡状態
 	void deadMove(float deltaTime);
 
@@ -105,16 +107,21 @@ private:
 	// ボスマネージャーのステータスの設定
 	void setBMStatus();
 	// 指定した値のダメージ量を加算します
-	void damage(const int damage);
+	void damage(
+		const int damage,
+		const Vector2& position, 
+		const float scale = 1.0f);
 	//地面の位置に補正します
 	void groundClamp(Actor& actor);
 	// アニメーションの追加
 	void addAnimation();
 
 protected:
-	int dp_;						// ひるむまでの耐久値
-	int initDp_;					// ひるむまでの耐久値(初期値)
+	int dp_;						// 耐久値
+	//int initDp_;					// 耐久値(初期値)
 	int hp_;						// 体力
+	int attackCount_;				// 攻撃行動するカウント
+	//int hpLock_;					// ロックする体力
 	int flinchCount_;				// ひるむまでの回数
 	int angleCount_;				// 振り向き回数
 	int starCreateCount_;
@@ -137,11 +144,14 @@ protected:
 
 	FloorSearchPoint* wspObj_;		// 壁捜索オブジェクト
 	BossEntry* entryObj_;			// ボス入口オブジェクト
-	BossHeart* heartObj_;			// ボス心臓オブジェクト
+	//BossHeart* heartObj_;			// ボス心臓オブジェクト
 	BossManager bossManager_;		// ボスマネージャー
 	// 攻撃状態のコンテナ
 	typedef std::vector<AttackState> AttackStateContainer;
 	AttackStateContainer asContainer_;
+	// 攻撃モーションコンテナ
+	typedef std::vector<BossAnimationNumber> BossAnimationContainer;
+	BossAnimationContainer asAnimations_;
 
 private:
 	Vector2 playerPastPosition_;	// プレイヤーの過去の位置
@@ -164,6 +174,9 @@ private:
 	const Vector2 FIELD_SIZE = Vector2(
 		SCREEN_SIZE.x - CHIPSIZE - body_.GetCircle().getRadius(), 
 		SCREEN_SIZE.y - CHIPSIZE - body_.GetCircle().getRadius());
+
+	typedef std::vector<int> LockHpContainer;
+	LockHpContainer lockHps_;
 
 	// クランプ用の位置コンテナ
 	typedef std::list<Vector2> ClampContainer;

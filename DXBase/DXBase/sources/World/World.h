@@ -47,6 +47,12 @@ public:
 	//クリア条件
 	virtual bool is_clear()override;
 	virtual void clear(bool clear)override;
+	// ボスの口に侵入したかを返します
+	bool isEntered() override;
+	// ボスの口から脱出したかを返します
+	bool isLetOuted() override;
+	// ボスの口の侵入脱出を設定します
+	void setEntry(const bool isEntry, const bool isLetOut) override;
 	virtual void SetScroolJudge(Vector2 scroolJudge,Vector2 scroolStopPos) override;
 	virtual ScroolJudge GetScroolJudge()override;
 	virtual void PlayerNotMove(bool flag) override {
@@ -86,6 +92,8 @@ private:
 	std::function<void(EventMessage, void*)> listener_;
 
 	bool is_clear_;
+
+	bool isEntered_, isLetOuted_;
 
 	ScroolJudge scrool_;
 	

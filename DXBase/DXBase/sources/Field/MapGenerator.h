@@ -236,10 +236,10 @@ public:
 					world_->addActor(ActorGroup::Enemy, std::make_shared<BaseBoss>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
 					continue;
 				}
-				if (reader_.geti(rowN, colN) == 66) {
+				/*if (reader_.geti(rowN, colN) == 66) {
 					world_->addActor(ActorGroup::Enemy, std::make_shared<BossBody>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
 					continue;
-				}
+				}*/
 				if (reader_.geti(rowN, colN) == 70) {
 					world_->addActor(ActorGroup::Field, std::make_shared<Door>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;

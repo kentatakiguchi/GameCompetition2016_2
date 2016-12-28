@@ -27,6 +27,7 @@ class EnemyAnimation2D : public Animation2D {
 
 public:
 	EnemyAnimation2D();
+	~EnemyAnimation2D();
 	// 更新
 	void update(float deltaTime) override;
 	// 更新(自分のupdate)

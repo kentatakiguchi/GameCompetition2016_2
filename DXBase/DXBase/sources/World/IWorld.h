@@ -30,6 +30,12 @@ public:
 	virtual std::forward_list<ActorPtr> findActors(const ActorGroup group) = 0;
 	virtual bool is_clear() = 0;
 	virtual void clear(bool clear) = 0;
+	// ボスの口に侵入したかを返します
+	virtual bool isEntered() = 0;
+	// ボスの口から脱出したかを返します
+	virtual bool isLetOuted() = 0;
+	// ボスの口の侵入脱出を設定します
+	virtual void setEntry(const bool isEntry, const bool isLetOut) = 0;
 	virtual void SetPlayerPos(Vector2 pos) = 0;
 	//縦スクロール横スクロールするかどうか(引数 軸ごとにスクロールする場合は1、しない場合は0)
 	virtual void SetScroolJudge(Vector2 scroolJudge, Vector2 scroolStopPos) =0;

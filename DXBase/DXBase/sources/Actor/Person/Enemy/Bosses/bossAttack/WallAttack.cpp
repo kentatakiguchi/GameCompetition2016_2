@@ -22,7 +22,8 @@ WallAttack::WallAttack(IWorld* world, const Vector2 & position) :
 	speed_(4.0f),
 	isWallAttackEnd_(false),
 	//isFlinch_(true),
-	state_(State::FloorSearch),
+	//state_(State::FloorSearch),
+	state_(State::WallMove),
 	prevPlayerDistance_(Vector2::One)
 {
 	moveTimes_.clear();
@@ -46,6 +47,7 @@ WallAttack::WallAttack(IWorld* world, const Vector2 & position) :
 		moveDirections_[count_ % 4]
 		);
 	direction_ = direction;
+	animeNum_ = BossAnimationNumber::WALLATTACK_DASH_NUMBER;
 }
 
 void WallAttack::attack(float deltaTime)
@@ -67,14 +69,17 @@ void WallAttack::Refresh()
 	isWallAttackEnd_ = false;
 	/*if (flinchCount_ <= 0)
 		isFlinch_ = true;*/
-	changeState(State::FloorSearch);
+	/*changeState(State::FloorSearch,
+		BossAnimationNumber::WAIT_NUMBER);*/
+	changeState(State::WallMove,
+		BossAnimationNumber::WALLATTACK_DASH_NUMBER);
 	count_ = 0;
 	auto direction = Vector2(
 		moveDirections_[(count_ + 1) % 4],
 		moveDirections_[count_ % 4]
 		);
 	direction_ = direction;
-	animeNum_ = BossAnimationNumber::WAIT_NUMBER;
+	//animeNum_ = BossAnimationNumber::WAIT_NUMBER;
 }
 
 // 床捜索状態です
@@ -88,11 +93,13 @@ void WallAttack::floorSearch(float deltaTime)
 		if (position_.x <= CHIPSIZE * 20 / 2)
 			direction = -1.0f;
 		direction_.x = direction;
-		changeState(State::FloorGetOff);
+		changeState(State::FloorGetOff,
+			BossAnimationNumber::WAIT_NUMBER);
 	}
 	// そうでなければ、壁移動に遷移
 	if (floorName_ == "MovelessFloor") {
-		changeState(State::WallMove);
+		changeState(State::WallMove,
+			BossAnimationNumber::WALLATTACK_DASH_NUMBER);
 		setAttackSecond();
 	}
 }
@@ -107,7 +114,8 @@ void WallAttack::floorGetOff(float deltaTime)
 		position_.y += 9.8f * (deltaTime* 60.0f);
 	// 地面に接地したら壁移動状態に遷移
 	if (floorName_ == "MovelessFloor") {
-		changeState(State::WallMove);
+		changeState(State::WallMove,
+			BossAnimationNumber::WALLATTACK_DASH_NUMBER);
 		setAttackSecond();
 	}
 }
@@ -151,7 +159,8 @@ void WallAttack::wallMove(float deltaTime)
 	}
 	// 一定時間経過で、壁攻撃に遷移
 	if (timer_ >= aSecond_) {
-		changeState(State::WallAttack);
+		changeState(State::WallAttack,
+			BossAnimationNumber::WALLATTACK_DASHJUMP_NUMBER);
 		isAnimaLoop_ = true;
 		prevPlayerDistance_ = pNormDirection_;
 	}
@@ -162,7 +171,7 @@ void WallAttack::wallAttack(float deltaTime)
 {
 	auto speed = speed_ * 7.0f;
 	isAnimaLoop_ = false;
-	animeNum_ = BossAnimationNumber::WALLATTACK_DASHJUMP_NUMBER;
+	//animeNum_ = BossAnimationNumber::WALLATTACK_DASHJUMP_NUMBER;
 	// プレイヤーの居た位置に向かって飛ぶ
 	position_ += prevPlayerDistance_ * speed;
 	//if (timer_ <= 0.2f) return;
@@ -214,8 +223,9 @@ void WallAttack::setAttackSecond()
 }
 
 // 状態の変更を行います
-void WallAttack::changeState(State state)
+void WallAttack::changeState(State state, BossAnimationNumber number)
 {
 	state_ = state;
+	animeNum_ = number;
 	timer_ = 0.0f;
 }

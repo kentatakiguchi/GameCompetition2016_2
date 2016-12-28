@@ -88,6 +88,7 @@ void ActorManager::collide() {
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy_AttackRange]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Field]);
 	actors_[ActorGroup::Enemy]->collideChildren(*actors_[ActorGroup::Field]);
+	actors_[ActorGroup::Enemy]->collideChildren(*actors_[ActorGroup::Player_Collider]);
 	actors_[ActorGroup::EnemyBullet]->collideChildren(*actors_[ActorGroup::Field]);
 	actors_[ActorGroup::PuyoVertex]->collideChildren(*actors_[ActorGroup::Field]);
 }

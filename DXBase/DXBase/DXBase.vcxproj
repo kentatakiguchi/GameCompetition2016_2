@@ -188,7 +188,6 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\bossAttack\PluralWallAttack.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\bossAttack\ThreeJumpAttack.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\bossAttack\WallAttack.h" />
-    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossBody.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossEntry.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossHeart.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossManager.h" />
@@ -355,7 +354,6 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\bossAttack\PluralWallAttack.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\bossAttack\ThreeJumpAttack.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\bossAttack\WallAttack.cpp" />
-    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BossBody.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BossEntry.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BossHeart.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BossManager.cpp" />

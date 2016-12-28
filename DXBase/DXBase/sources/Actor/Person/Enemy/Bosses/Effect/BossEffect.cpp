@@ -4,10 +4,13 @@ BossEffect::BossEffect(
 	IWorld * world,
 	std::string name,
 	const Vector2 & position,
+	const Vector2 & texSize,
 	const int animeNum,
 	const AnimationID id) :
-	Actor(world, name, position, CollisionBase()),
-	animation_(EnemyAnimation2D())
+	Actor(world, name, position,CollisionBase()),
+	animation_(EnemyAnimation2D()),
+	scale_(1.0f),
+	texSize_(texSize)
 {
 	//auto texSize = 512;
 	// 敵の画像に合わせて調整
@@ -37,11 +40,10 @@ void BossEffect::onDraw() const
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
-		pos - Vector2(
-			body_.GetCircle().getRadius() * 2,
-			body_.GetCircle().getRadius() * 2),
-		Vector2::One * (body_.GetBox().getWidth() * 2),
-		1.0f);
+		pos,
+		texSize_ * scale_,
+		scale_);
+	body_.draw();
 }
 
 void BossEffect::onCollide(Actor & actor){}

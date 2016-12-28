@@ -30,6 +30,11 @@ protected:
 	bool isIdel_;			// ƒWƒƒƒ“ƒvŒã‚Ì‘Ò‹@ó‘Ô‚©
 
 private:
+	//char* otherName_;
+	//char* prevOtherName_;
+	std::string otherName_;
+	std::string prevOtherName_;
+
 	Vector2 prevPlayerDistance_;
 };
 

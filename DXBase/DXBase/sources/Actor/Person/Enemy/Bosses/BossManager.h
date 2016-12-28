@@ -38,6 +38,8 @@ public:
 	bool IsAttackHit();
 	// 怯むかを返します
 	bool isFlinch();
+	// ぴより状態になるかを返します
+	bool isPiyori();
 	// ひるみカウントを返します
 	int getFlinchCount();
 	// 角度を返します
@@ -74,6 +76,8 @@ public:
 	void setIsWallHit(bool isHit);
 	// 壁の移動方向
 	Vector2 getWallMoveDirection();
+	// 衝突したオブジェクトを設定します
+	void setCollideObj(Actor& actor);
 	// アニメーション番号を返します
 	BossAnimationNumber getAnimaNum();
 	// アニメーションの角度を返します

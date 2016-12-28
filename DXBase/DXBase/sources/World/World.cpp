@@ -8,6 +8,8 @@
 World::World() :
 	listener_([](EventMessage, void*) {}),
 	is_clear_(false),
+	isEntered_(false),
+	isLetOuted_(false),
 	mNoPlayerMove(false){
 }
 
@@ -100,6 +102,25 @@ bool World::is_clear(){
 
 void World::clear(bool clear){
 	is_clear_ = clear;
+}
+
+// ボスの口に入ったかを返します
+bool World::isEntered()
+{
+	return isEntered_;
+}
+
+// ボスの口から脱出したかを返します
+bool World::isLetOuted()
+{
+	return isLetOuted_;
+}
+
+// ボスの口の侵入脱出を設定します
+void World::setEntry(const bool isEntry, const bool isLetOut)
+{
+	isEntered_ = isEntry;
+	isLetOuted_ = isLetOut;
 }
 
 void World::SetScroolJudge(Vector2 scroolJudge, Vector2 scroolStopPos)

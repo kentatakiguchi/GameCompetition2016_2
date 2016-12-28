@@ -5,6 +5,11 @@ EnemyAnimation2D::EnemyAnimation2D() :
 	isLoop_(true),
 	isStop_(false){}
 
+EnemyAnimation2D::~EnemyAnimation2D()
+{
+	sprites_.clear();
+}
+
 void EnemyAnimation2D::update(float deltaTime)
 {
 	back_to_pre_motion();

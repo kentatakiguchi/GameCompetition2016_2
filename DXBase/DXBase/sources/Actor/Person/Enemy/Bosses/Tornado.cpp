@@ -1,4 +1,5 @@
 #include "Tornado.h"
+#include "../../../../ResourceLoader/ResourceLoader.h"
 
 Tornado::Tornado(IWorld * world, const Vector2 & position, const Vector2& bodyScale) :
 	Actor(world, "Tornado", position,
@@ -8,12 +9,29 @@ Tornado::Tornado(IWorld * world, const Vector2 & position, const Vector2& bodySc
 			Vector2(position.x + bodyScale.x, position.y - bodyScale.y / 2.0f),
 			Vector2(position.x, position.y - bodyScale.y / 2.0f)
 			)),
-	initPosition_(position)
+	angle_(0.0f),
+	initPosition_(position),
+	animation_(EnemyAnimation2D())
 {
+	// アニメーションの追加
+	animation_.addAnimation(
+		0,
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_EFFECT_ATTACK_SUIKOMI_TEX));
+	animation_.changeAnimation(0);
+	/*animation_.changeAnimation(
+		static_cast<int>(0));*/
 }
 
 void Tornado::onUpdate(float deltaTime)
 {
+	animation_.update(deltaTime);
+
+	// 口の捜索
+	//auto mouse = world_->findActor("BossEntry");
+	/*if (mouse != nullptr)
+		position_ = mouse->getPosition();*/
+
 	//auto a = rotation_.;
 	//body_.
 
@@ -38,7 +56,21 @@ void Tornado::onDraw() const
 	// デバッグ
 	//DrawFormatString(600, 25, GetColor(255, 0, 255), "座標:%f,%f", position_.x,position_.y);
 
-	body_.draw(inv_);
+	//body_.draw(inv_);
+
+	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
+	vec3Pos = vec3Pos * inv_;
+	// アニメーションの描画
+	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
+	DrawGraph(
+		vec3Pos.x,
+		vec3Pos.y,
+		ResourceLoader::GetInstance().getTextureID(
+			TextureID::ENEMY_NEEDLE_TEX), 0);
+	animation_.draw(
+		pos,
+		Vector2::Zero,
+		2.0f);
 }
 
 void Tornado::onCollide(Actor & actor){}
@@ -55,6 +87,7 @@ void Tornado::initPosition()
 void Tornado::setAngle(int angle)
 {
 	body_.RotateBox(angle);
+	angle_ = angle;
 }
 
 // プレイヤーを探します

@@ -2,7 +2,7 @@
 #define TORNADO_H_
 
 #include "../../../Base/Actor.h"
-#include "../../../../Animation/Base/Animation2D.h"
+#include "../../../../Animation/Enemy/EnemyAnimation2D.h"
 #include "../../../../World/IWorld.h"
 #include "../../../../Math/Math.h"
 
@@ -26,7 +26,10 @@ private:
 	void findPlayer() const;
 
 private:
+	float angle_;
 	Vector2 initPosition_;
+
+	EnemyAnimation2D animation_;	// アニメーション
 };
 
 #endif

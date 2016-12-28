@@ -6,7 +6,11 @@
 // ボスの侵入口クラス
 class BossEntry : public Actor {
 public:
-	BossEntry(IWorld* world, const Vector2&  position, const Vector2& addPosition, const float bodyScale);
+	BossEntry(
+		IWorld* world,
+		const Vector2&  position,
+		const Vector2& addPosition,
+		const float bodyScale);
 	void onUpdate(float deltaTime) override;
 	void onDraw() const override;
 	void onCollide(Actor& actor) override;

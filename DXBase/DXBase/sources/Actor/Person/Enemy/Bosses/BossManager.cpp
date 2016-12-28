@@ -83,19 +83,25 @@ bool BossManager::isAttackEnd()
 // プレイヤーの攻撃に当たるかを返します
 bool BossManager::IsBodyHit()
 {
-	return false;
+	return bossAttackContainer_[attackNumber_]->isBodyHit();
 }
 
 // プレイヤーに当たるかを返します
 bool BossManager::IsAttackHit()
 {
-	return false;
+	return bossAttackContainer_[attackNumber_]->isAttackHit();
 }
 
 // 怯むかを返します
 bool BossManager::isFlinch()
 {
 	return bossAttackContainer_[attackNumber_]->isFlinch();
+}
+
+// ぴより状態になるかを返します
+bool BossManager::isPiyori()
+{
+	return bossAttackContainer_[attackNumber_]->isPiyori();
 }
 
 // ひるみカウントを返します
@@ -220,6 +226,12 @@ void BossManager::setIsWallHit(bool isHit)
 Vector2 BossManager::getWallMoveDirection()
 {
 	return bossAttackContainer_[attackNumber_]->getMoveDirection();
+}
+
+// 衝突したオブジェクトを設定します
+void BossManager::setCollideObj(Actor & actor)
+{
+	bossAttackContainer_[attackNumber_]->setCollideObj(actor);
 }
 
 // アニメーション番号を返します

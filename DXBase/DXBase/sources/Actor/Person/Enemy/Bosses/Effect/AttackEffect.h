@@ -7,7 +7,8 @@ class AttackEffect : public BossEffect {
 public:
 	AttackEffect(
 		IWorld* world,
-		const Vector2&  position);
+		const Vector2&  position,
+		const float scale = 1.0f);
 };
 
 #endif

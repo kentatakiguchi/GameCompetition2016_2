@@ -45,7 +45,7 @@ void Rock::onDraw() const
 void Rock::onCollide(Actor & actor)
 {
 	auto actorName = actor.getName();
-	auto getPlayerName = strstr(actorName.c_str(), "Player");
+	auto getPlayerName = strstr(actorName.c_str(), "PlayerBody");
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
 	// プレイヤー関連のオブジェクトに当たったら、消滅
 	if (getPlayerName != NULL || getFloorName != NULL)

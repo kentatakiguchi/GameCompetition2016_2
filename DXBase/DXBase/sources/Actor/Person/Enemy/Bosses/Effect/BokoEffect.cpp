@@ -3,6 +3,6 @@
 BokoEffect::BokoEffect(
 	IWorld * world,
 	const Vector2 & position) : 
-	BossEffect(world, "BokoEffect", position - Vector2(200, 200),
+	BossEffect(world, "BokoEffect", position, Vector2(512, 512),
 		EFFECT_BOKO, AnimationID::BOSS_EFFECT_BOKO_TEX)
 {}

@@ -53,7 +53,8 @@ void BossStage::start() {
 	world_->addActor(ActorGroup::Enemy, boss);
 	boss_ = boss.get();
 	// ƒ{ƒX‚ÌˆÊ’u‚ðÝ’è
-	boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 10 - 5), 4.0f);
+	boss_->setMovePosition(
+		Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 8 - 5), 4.0f);
 
 	gener.create("./resources/file/" + name_ + ".csv");
 	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);

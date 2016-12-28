@@ -2,8 +2,12 @@
 
 AttackEffect::AttackEffect(
 	IWorld * world,
-	const Vector2 & position) :
-	BossEffect(world, "AttackEffect", position - Vector2(200, 200),
+	const Vector2 & position,
+	const float scale) :
+	BossEffect(world, "AttackEffect", position, Vector2(256, 256), //Vector2(544, 416),
 		EFFECT_ATTACK, AnimationID::BOSS_EFFECT_ATTACK_TEX)
-{}
+{
+	//scale_ = scale;
+	//height_ = 
+}
 
