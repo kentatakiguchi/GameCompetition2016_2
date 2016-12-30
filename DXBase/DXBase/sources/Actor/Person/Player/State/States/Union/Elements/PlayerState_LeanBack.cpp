@@ -3,8 +3,14 @@
 PlayerState_LeanBack::PlayerState_LeanBack(){}
 
 void PlayerState_LeanBack::unique_init(){
-	dir_ = Vector2(-1, 1);
+	dir_ = Vector2(-1, -1);
 	power_ = PLAYER_LEANBACK_POWER;
+
+	butty_->reset_opponent();
+	retty_->reset_opponent();
+
+	butty_->launch(dir_ * power_);
+	retty_->launch(dir_ * power_);
 }
 
 void PlayerState_LeanBack::update(float deltaTime){
@@ -13,7 +19,7 @@ void PlayerState_LeanBack::update(float deltaTime){
 	butty_->launch(dir_ * power_);
 	retty_->launch(dir_ * power_);
 
-	if (butty_->able_to_hold() && retty_->able_to_hold()) {
+	if (butty_->is_hit() && retty_->is_hit()) {
 		change(PlayerState_Enum_Union::IDLE);
 	}
 }

@@ -3,11 +3,14 @@
 PlayerState_EventTime::PlayerState_EventTime(){}
 
 void PlayerState_EventTime::unique_init(){
-
+	butty_->animation().change(PlayerAnimID::IDLE);
+	retty_->animation().change(PlayerAnimID::IDLE);
 }
 
-void PlayerState_EventTime::update(float deltaTime){
-	if (cntr_->getWorld()->isLetOuted()) change(PlayerState_Enum_Union::LEAN_BACK);
+void PlayerState_EventTime::update(float deltaTime) {
+	if (cntr_->getWorld()->isLetOuted()) {
+		change(PlayerState_Enum_Union::LEAN_BACK);
+	}
 }
 
 void PlayerState_EventTime::end(){
