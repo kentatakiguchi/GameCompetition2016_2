@@ -23,6 +23,12 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	alphadefSpeeds[0] = TitleMainFadeInSpeed;
 	alphadefSpeeds[1] = SelectPointerFadeInSpeed;
 
+	textIDs[0] = TextureID::TEXT_TITLE_TEX;
+	textIDs[1] = TextureID::TEXT_GAMESTART_TEX;
+	textIDs[2] = TextureID::TEXT_CREDIT_TEX;
+	textIDs[3] = TextureID::TEXT_GAMEEND_TEX;
+	textIDs[4] = TextureID::TEXT_MARU_TEX;
+
 	defposlist[0] = 0;
 	defposlist[1] = 340;
 	defposlist[2] = 420;
@@ -197,10 +203,13 @@ void MainMenuScene::update() {
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
 			targetPoint--;
 			sinCount = 0;
+			PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
+
 		}
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_DOWN)) {
 			targetPoint++;
 			sinCount = 0;
+			PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
 		}
 		targetPoint = min(max(targetPoint, 1), 3);
 
@@ -208,6 +217,9 @@ void MainMenuScene::update() {
 		{
 			keeper_->setSceneName("stage04");
 			isEnd_ = true;
+
+			PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
+
 		}
 		if (InputMgr::GetInstance().IsKeyDown(KeyCode::A))
 		{
@@ -247,6 +259,7 @@ void MainMenuScene::update() {
 	else {
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE)) {
 			isTitle_ = false;
+			PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
 		}
 	}
 	for (int i = 0; i < 4; i++)
@@ -339,7 +352,10 @@ void MainMenuScene::draw() const {
 			//if (alphaCou[0]<=255)SetDrawBlendMode(DX_BLENDMODE_ALPHA, alphaCou[0]);
 			if (forcount == targetPoint&&isArrive.at(0))SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
 			//if (!isArrive.at(0) && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
-			DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			
+			DrawGraph(center - 320, textPosList.at(count).y, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			heightPoint++;
 		}

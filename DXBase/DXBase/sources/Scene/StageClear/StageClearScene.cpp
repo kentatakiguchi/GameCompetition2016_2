@@ -12,6 +12,13 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper) :
 	nextScene[3] = BossStage01;
 
 
+	//textIDs[0] = TextureID::TEXT_STAGECLEAR_ANM_TEX;
+	textIDs[1] = TextureID::TEXT_NEXTSTAGE_TEX;
+	textIDs[2] = TextureID::TEXT_MENUBACK_TEX;
+	textIDs[3] = TextureID::TEXT_NEXTSTAGE_TEX;
+
+
+
 	int listNum = 0;
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list1;
@@ -50,9 +57,14 @@ void StageClearScene::start() {
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 	// グラフィックのロード
+
+	anmer_ = StageClearTextAnm();
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGECLEAR), DX_PLAYTYPE_BACK);
 }
 
 void StageClearScene::update() {
+
+	anmer_.update_e(Time::GetInstance().deltaTime());
 
 	sinCount += FlashTempo;
 	sinCount = sinCount % 360;
@@ -63,10 +75,12 @@ void StageClearScene::update() {
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
 			targetPoint--;
 			sinCount = 0;
+			PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
 		}
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_DOWN)) {
 			targetPoint++;
 			sinCount = 0;
+			PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
 		}
 		targetPoint = min(max(targetPoint, 1), 2);
 
@@ -75,6 +89,8 @@ void StageClearScene::update() {
 		{
 			isEnd_ = true;
 			if (targetPoint == 1 && keeper_->getSceneName() == "stage04")targetPoint = 3;
+			PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
+
 		}
 	}
 }
@@ -85,14 +101,22 @@ void StageClearScene::draw() const {
 	count = 0;
 	heightPoint=0;
 	int forcount = 0;
+	center = SCREEN_SIZE.x / 2;
+
+	anmer_.draw_e(Vector2(center-320,textPosList.at(0).y));
+
 	for (auto lists : listBase) {
 		for (auto my : lists) {
+			if (count == 0)break;
+
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			center = SCREEN_SIZE.x / 2;
 
 			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
-			DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			
+			DrawGraph(center - 320, textPosList.at(count).y, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			heightPoint++;
 		}

@@ -3,6 +3,9 @@
 #define STAGE_CLEAR_SCENE_H_
 
 #include "../Base/IScene.h"
+#include<map>
+#include"../../ResourceLoader/ResourceLoader.h"
+#include"StageClearTextAnm.h"
 
 class StageClearScene : public IScene {
 public:
@@ -21,6 +24,11 @@ private:
 
 	std::map<int, Scene> nextScene;
 	std::map<int, Vector2> textPoses;
+
+	std::map<int, TextureID> textIDs;
+
+	StageClearTextAnm anmer_;
+
 };
 
 #endif

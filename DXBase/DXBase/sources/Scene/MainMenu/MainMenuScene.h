@@ -55,5 +55,7 @@ private:
 	//”wŒi‰æ‘œ‚ÌˆÚ“®æ‚ğŒˆ‚ß‚é
 	std::vector<int> changeTargetChecker;
 
+	std::map<int, TextureID> textIDs;
+
 };
 

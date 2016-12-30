@@ -2,6 +2,8 @@
 #define _GAME_OVER_SCENE_H_
 
 #include "../Base/IScene.h"
+#include<map>
+#include"../../ResourceLoader/ResourceLoader.h"
 
 class GameOverScene : public IScene{
 public:
@@ -15,7 +17,13 @@ public:
 	virtual Scene next() const override;
 private:
 	int id;
-	Scene nextScene_;
+	int targetPoint;
+	int sinCount;
+
+	std::map<int, TextureID> textIDs;
+	std::map<int, Scene> nextScene;
+	std::map<int, Vector2> textPoses;
+
 };
 
 #endif

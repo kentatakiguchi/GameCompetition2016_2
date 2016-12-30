@@ -21,6 +21,7 @@ void LoadingScene::start(){
 
 	//ここにローディング専用のリソースを読み込む
 	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::TEXT_STAGECLEAR_ANM_TEX, "./resources/sprite/Text/stageclear_anim.png", Vector2(640, 320), 6, 7, 2);
 	//DerivationGraphと動画読み込みが非同期読み込みに対応していないため
 	//プレイヤー関連のロード
 	load_player_res();
@@ -94,6 +95,7 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::CHIP3_TEX, "./resources/sprite/chip3.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::CHIP4_TEX, "./resources/sprite/chip4.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::SEGMENT_TRI_TEX, "./resources/sprite/segchip.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::SEGMENT_TRI2_TEX, "./resources/sprite/segchip2.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::SELECT_TARGET_TEX, "./resources/sprite/SelTarget.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_ALPHA_TEX, "./resources/sprite/TextAlphaMask.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::CHANGE_SCENE_TEX, "./resources/sprite/ChangeS.png");
@@ -109,6 +111,13 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::FLOOR_SUB_TEX, "./resources/sprite/Block/floorsub.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::FLOOR_WOOD_TEX, "./resources/sprite/Block/wood.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::FLOOR_STONE_TEX, "./resources/sprite/Block/stone.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_TITLE_TEX, "./resources/sprite/Text/title.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_CREDIT_TEX, "./resources/sprite/Text/credit.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_GAMEEND_TEX, "./resources/sprite/Text/gameend.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_GAMESTART_TEX, "./resources/sprite/Text/gamestart.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MARU_TEX, "./resources/sprite/Text/maru.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MENUBACK_TEX, "./resources/sprite/Text/menuback.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_NEXTSTAGE_TEX, "./resources/sprite/Text/nextstage.png");
 
 
 	load_bgm_res();
@@ -142,7 +151,7 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::Title;
+	return Scene::MainMenu;
 }
 
 void LoadingScene::load_player_res(){
@@ -217,6 +226,8 @@ void LoadingScene::load_bgm_res(){
 	ResourceLoader::GetInstance().loadSound(SoundID::BGM_STAGE_123, "./resources/sounds/bgm/stage1,2,3_BGM.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::BGM_STAGE_4, "./resources/sounds/bgm/stage4_BGM.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::BGM_STAGE_5, "./resources/sounds/bgm/stage5_BGM.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::BGM_STAGECLEAR, "./resources/sounds/menuse/stageClear.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::BGM_GAMEOVER, "./resources/sounds/menuse/gameover.mp3");
 
 }
 
