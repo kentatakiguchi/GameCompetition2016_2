@@ -13,11 +13,14 @@ PuyoTextureK::PuyoTextureK(IWorld* world, TextureID tex, Vector2 pos, Vector2 sc
 	mWorld(world),
 	textureIndex(ResourceLoader::GetInstance().getTextureID(tex)),
 	textureSize(ResourceLoader::GetInstance().GetTextureSize(tex)),
-	mPosition(pos-textureSize/2),
+	mPosition(pos - textureSize / 2),
 	mScale(scale),
 	mRotate(rotate),
 	mCenter(Vector2::Zero),
 	mAlpha(0.0f),
+	mColor(Vector3::Zero),
+	mColorVelo(Vector3::Zero),
+	mResColor(Vector3::Zero),
 	mIsHold(false)
 {
 	loopX = textureSize.x / SplitSize;
@@ -55,14 +58,19 @@ void PuyoTextureK::SetPosition(Vector2 pos, Vector2 scale, float rotate, Vector2
 	mRotate = rotate;
 	mCenter = center;
 }
-void PuyoTextureK::PuyoPlayerPos(Vector2 pos1, Vector2 pos2, bool isHold)
+void PuyoTextureK::PuyoPlayerPos(Vector2 pos1, Vector2 pos2,Vector3 color, bool isHold)
 {
 	mPlayerPos1 = pos1;
 	mPlayerPos2 = pos2;
 	mIsHold = isHold;
+	mResColor = color;
 }
 void PuyoTextureK::PuyoUpdate()
 {
+	if (!mIsHold)mResColor = Vector3(255,255,255);
+	//カラー変更
+	Vector3::Spring(mColor, mResColor, mColorVelo, 0.2f, 0.5f, 2.0f);
+
 	if(mAlpha<=1.0f)
 	mAlpha += Time::GetInstance().deltaTime();
 	for (auto& i : mWorld->findActors(ActorGroup::PuyoVertex)) {
@@ -140,6 +148,8 @@ void PuyoTextureK::PuyoUpdate()
 
 void PuyoTextureK::PuyoDraw()
 {
+	//色変更
+	SetDrawBright(mColor.x, mColor.y, mColor.z);
 	//描写
 	for (int y = 0; y < loopY; y++)
 	{
@@ -157,7 +167,8 @@ void PuyoTextureK::PuyoDraw()
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}
-
+	//色を戻す
+	SetDrawBright(0, 0, 0);
 	//for (int y = 0; y <= loopY; y++)
 	//{
 	//	for (int x = 0; x <= loopX; x++)

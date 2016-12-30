@@ -50,7 +50,7 @@ public:
 	//全タイマーをゼロにする(ぷよぷよOFF)
 	void PuyoTimerZero();
 	//主人公のポジションをセットする
-	void PuyoPlayerPos(Vector2 pos1, Vector2 pos2,bool isHold);
+	void PuyoPlayerPos(Vector2 pos1, Vector2 pos2, Vector3 color,bool isHold);
 	void PuyoUpdate();
 	void PuyoDraw();
 private:
@@ -94,6 +94,10 @@ private:
 	Vector2 mPlayerPos1;
 	Vector2 mPlayerPos2;
 	float time;
+	//カラー
+	Vector3 mColor;
+	Vector3 mResColor;
+	Vector3 mColorVelo;
 
 	std::vector<ActorPtr> puyoCols;
 	float mAlpha;
