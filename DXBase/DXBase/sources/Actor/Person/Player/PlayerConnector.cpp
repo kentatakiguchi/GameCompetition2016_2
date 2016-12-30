@@ -107,6 +107,8 @@ void PlayerConnector::puyoUpdate() {
 	Vector3 pos = Vector3(x, y, 0);
 	Vector2 center = points[(int)(points.size() / 2)]->getPosition();
 
+	Vector3 color;
+
 	pos = pos*inv_;
 
 	Vector2 posVec2 = Vector2(pos.x, pos.y);
@@ -159,7 +161,11 @@ void PlayerConnector::puyoUpdate() {
 			mPuyoFlag = false;
 		}
 	}
-	mPuyo->PuyoPlayerPos(butty_->getPosition()*inv_, retty_->getPosition()*inv_,
+	//‹——£‚ª330‚¾‚Á‚½‚½‚ß
+	float dis = Vector2::Distance(butty_->getPosition(), retty_->getPosition()) / 330.0f;
+	color = Vector3(255, MathHelper::Lerp(255, 0, dis), MathHelper::Lerp(255, 0, dis));
+
+	mPuyo->PuyoPlayerPos(butty_->getPosition()*inv_, retty_->getPosition()*inv_, color,
 		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD));
 	mPuyo->PuyoUpdate();
 }
