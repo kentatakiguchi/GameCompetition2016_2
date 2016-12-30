@@ -39,8 +39,9 @@ void PlayerConnector::onUpdate(float deltaTime) {
 }
 
 void PlayerConnector::onDraw() const {
-	mPuyo->PuyoDraw();
+	if (world_->isEntered())return;
 
+	mPuyo->PuyoDraw();
 }
 
 PlayerBodyPtr PlayerConnector::blue_body() {
@@ -78,13 +79,14 @@ float PlayerConnector::length_sum() {
 }
 
 bool PlayerConnector::is_damaged() {
-	//bool is_split_state = stateMgr_.get_state(PlayerState_Enum_Union::SPLIT);
 	bool is_attack_state = stateMgr_.get_state(PlayerState_Enum_Union::ATTACK);
+	bool is_event_state = stateMgr_.get_state(PlayerState_Enum_Union::EVENT);
+	bool is_leanback_state = stateMgr_.get_state(PlayerState_Enum_Union::LEAN_BACK);
 	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
 	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
 	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
 
-	return /*!is_split_state && */!is_attack_state && (is_main_target_enemy || is_sub_target_enemy || for_debug);
+	return !is_event_state && !is_leanback_state && !is_attack_state && (is_main_target_enemy || is_sub_target_enemy || for_debug);
 }
 
 bool PlayerConnector::is_cleared() {

@@ -20,6 +20,7 @@ public:
 		// キーが押されるまでループします
 		while (isRunning()){
 			update();
+			ClearDrawScreen();
 			draw();
 			device.flip();
 		}

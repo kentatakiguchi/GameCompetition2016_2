@@ -31,8 +31,6 @@ void PlayerState_Attack::unique_init(){
 }
 
 void PlayerState_Attack::update(float deltaTime) {
-	//InputMgr::GetInstance().isConnectGamePad() ? pad_update() : key_update();
-
 	timer_ += deltaTime;
 	//timer_ = std::min<float>(timer_ + deltaTime, 60);
 
@@ -72,6 +70,8 @@ void PlayerState_Attack::update(float deltaTime) {
 	if (butty_->able_to_hold() && retty_->able_to_hold()) {
 		change(PlayerState_Enum_Union::FREEZE);
 	}
+
+	if (cntr_->getWorld()->isEntered()) change(PlayerState_Enum_Union::EVENT);
 }
 
 void PlayerState_Attack::end(){
@@ -81,6 +81,8 @@ void PlayerState_Attack::end(){
 	if (element_.type_ == ActionType::Left) {
 		retty_->delete_attack_collider_();
 	}
+	butty_->reset_enemy();
+	retty_->reset_enemy();
 }
 
 void PlayerState_Attack::key_input(){

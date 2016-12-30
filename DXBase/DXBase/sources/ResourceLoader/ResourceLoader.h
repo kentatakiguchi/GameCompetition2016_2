@@ -134,6 +134,7 @@ enum class AnimationID {
 	//エフェクト
 	PLAYER_EFFECT_SEP_MOVE,
 	PLAYER_EFFECT_SEP_EXP,
+	PLAYER_EFFECT_SHOUGEKI,
 
 	// エネミーアニメーション
 	ENEMY_EGGENEMY_WALK_TEX,

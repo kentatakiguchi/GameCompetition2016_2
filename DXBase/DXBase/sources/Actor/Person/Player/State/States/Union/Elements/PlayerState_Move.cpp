@@ -56,6 +56,8 @@ void PlayerState_Move::update(float deltaTime){
 		}
 	}
 	move(deltaTime);
+
+	if (cntr_->getWorld()->isEntered()) change(PlayerState_Enum_Union::EVENT);
 }
 
 void PlayerState_Move::end(){ }

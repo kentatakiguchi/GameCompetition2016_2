@@ -227,8 +227,10 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\PlayerStateMgr_Single.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\StatePath_Single.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_EventTime.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_LeanBack.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\PlayerStateMgr_Union.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.h" />
@@ -317,6 +319,7 @@
     <ClInclude Include="sources\Scene\MainMenu\SceneChange.h" />
     <ClInclude Include="sources\Scene\SampleBossScene\SampleBossScene.h" />
     <ClInclude Include="sources\Scene\StageClear\StageClearScene.h" />
+    <ClInclude Include="sources\Scene\StageClear\StageClearTextAnm.h" />
     <ClInclude Include="sources\Scene\TeamLogoScene\TeamLogoScene.h" />
     <ClInclude Include="sources\Scene\Test\TestChara.h" />
     <ClInclude Include="sources\Scene\Test\TestScene.h" />
@@ -383,8 +386,10 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Move.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerStateMgr_Single.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_EventTime.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_LeanBack.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerStateMgr_Union.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\PlayerState_Union.cpp" />
@@ -455,6 +460,7 @@
     <ClCompile Include="sources\Scene\MainMenu\SceneChange.cpp" />
     <ClCompile Include="sources\Scene\SampleBossScene\SampleBossScene.cpp" />
     <ClCompile Include="sources\Scene\StageClear\StageClearScene.cpp" />
+    <ClCompile Include="sources\Scene\StageClear\StageClearTextAnm.cpp" />
     <ClCompile Include="sources\Scene\TeamLogoScene\TeamLogoScene.cpp" />
     <ClCompile Include="sources\Scene\Test\TestScene.cpp" />
     <ClCompile Include="sources\Scene\Title\TitleScene.cpp" />

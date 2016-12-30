@@ -11,7 +11,9 @@ enum class PlayerState_Enum_Union {
 	HOLD_BOTH,
 	JUMP,
 	ATTACK, 
-	FREEZE
+	FREEZE,
+	EVENT,
+	LEAN_BACK
 };
 
 // プレイヤーのステート一覧

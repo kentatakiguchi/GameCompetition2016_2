@@ -8,6 +8,7 @@ PlayerEffect2D::PlayerEffect2D() :
 	alpha_(255) {
 	add(PlayerEffectID::SEP_EXP,  ResourceLoader::GetInstance().getAnimationIDs(AnimationID::PLAYER_EFFECT_SEP_EXP));
 	add(PlayerEffectID::SEP_MOVE, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::PLAYER_EFFECT_SEP_MOVE));
+	add(PlayerEffectID::SHOUGEKI, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::PLAYER_EFFECT_SHOUGEKI));
 }
 
 void PlayerEffect2D::add(const PlayerEffectID & id, const std::vector<int>& anims){

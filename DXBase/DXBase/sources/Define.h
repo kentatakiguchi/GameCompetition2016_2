@@ -84,7 +84,7 @@ const static float		PLAYER_MIN_DIV_LENGTH = PLAYER_MAX_NORMAL_LENGTH / static_ca
 // プレイヤーコネクタの分割数
 const static float		PLAYER_MAX_DIV_LENGTH = PLAYER_MAX_STRETCH_LENGTH / static_cast<float>(PLAYER_CNTR_DIV_NUM + 1);
 // プレイヤーの坂速度
-const static float		SLIP_SPEED = 4.0f;
+const static float		SLIP_SPEED = 15.0f;
 
 
 

@@ -8,6 +8,7 @@ enum class PlayerEffectID {
 	NONE,
 	SEP_EXP,
 	SEP_MOVE,
+	SHOUGEKI,
 	COUNT
 };
 

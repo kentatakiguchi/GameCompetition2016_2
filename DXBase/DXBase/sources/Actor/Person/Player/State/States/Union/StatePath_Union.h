@@ -9,3 +9,5 @@
 #include "Elements/PlayerState_HoldBoth.h"
 #include "Elements/PlayerState_Attack.h"
 #include "Elements/PlayerState_Freeze.h"
+#include "Elements/PlayerState_EventTime.h"
+#include "Elements/PlayerState_LeanBack.h"

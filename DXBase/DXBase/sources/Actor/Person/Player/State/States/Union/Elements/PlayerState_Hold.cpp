@@ -1,5 +1,7 @@
 #include "PlayerState_Hold.h"
 
+#include "../../../../Effect/PlayerEffectObj.h"
+
 PlayerState_Hold::PlayerState_Hold() {}
 
 void PlayerState_Hold::unique_init(){
@@ -32,8 +34,9 @@ void PlayerState_Hold::update(float deltaTime) {
 	else {
 		flag1_ = false;
 		if (!flag2_) {
-			PlaySound("./resources/sounds/nobi_full.mp3", DX_PLAYTYPE_LOOP);
+			PlaySound("./resources/sounds/nobi_full.mp3", DX_PLAYTYPE_BACK);
 			flag2_ = true;
+			cntr_->world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(cntr_->world_, cntr_->getPosition(), PlayerEffectID::SHOUGEKI, 3.0f, 5.0f));
 		}
 	}
 	if (element_.type_ == ActionType::Right) {

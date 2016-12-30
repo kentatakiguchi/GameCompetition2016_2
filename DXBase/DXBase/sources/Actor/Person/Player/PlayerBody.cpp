@@ -9,6 +9,8 @@
 
 #include "../../../Game/Time.h"
 
+#include <algorithm>
+
 PlayerBody::PlayerBody() {}
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
@@ -44,7 +46,7 @@ void PlayerBody::onUpdate(float deltaTime) {
 
 	animation_.update(deltaTime);
 
-	if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::STAND_BY)) {
+	if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) {
 		timer_ += deltaTime * 60;
 		if (timer_ >= 60) {
 			world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_MOVE, 5.0f, 0.5f));
@@ -52,33 +54,24 @@ void PlayerBody::onUpdate(float deltaTime) {
 		}
 	}
 
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::Z))stiffness_ += 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::X))stiffness_ -= 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::C))friction_ += 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::V))friction_ -= 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::B))mass_ += 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))mass_ -= 0.01f;
-
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
-		stiffness_ = 3.0f;
-		friction_ = 0.1f;
-		mass_ = 0.8f;
-	}
+	position_.x = std::max<float>(position_.x, 0);
 }
 
 void PlayerBody::onDraw() const {
-	body_.draw(inv_);
+	//body_.draw(inv_);
 
-	SetFontSize(32);
-	DrawFormatString(static_cast<int>((position_ * inv_).x) + 30, static_cast<int>((position_ * inv_).y), GetColor(255, 255, 255), "%f", dead_limit_);
+	//SetFontSize(32);
+	//DrawFormatString(static_cast<int>((position_ * inv_).x) + 30, static_cast<int>((position_ * inv_).y), GetColor(255, 255, 255), "%f", dead_limit_);
 
 	//DrawFormatString(100, 900, GetColor(0, 0, 0), "„« : %f", stiffness_);
 	//DrawFormatString(100, 950, GetColor(0, 0, 0), "–€ŽC : %f", friction_);
 	//DrawFormatString(100, 1000, GetColor(0, 0, 0), "Ž¿—Ê : %f", mass_);
 
-	Vector3 color = Vector3::Zero;
-	if (name_ == "PlayerBody1")color = Vector3(255, 255, 255);
-	if (name_ == "PlayerBody2")color = Vector3(255, 255, 255);
+	if (world_->isEntered())return;
+
+	Vector3 color = Vector3(255, 255, 255);
+	//if (name_ == "PlayerBody1")color = Vector3(255, 255, 255);
+	//if (name_ == "PlayerBody2")color = Vector3(255, 255, 255);
 	animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f, 0, color);
 }
 

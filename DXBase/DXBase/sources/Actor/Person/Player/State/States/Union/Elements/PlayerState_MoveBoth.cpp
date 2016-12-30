@@ -23,6 +23,8 @@ void PlayerState_MoveBoth::update(float deltaTime){
 	retty_->clamp();
 	butty_->gravity();
 	retty_->gravity();
+
+	if (cntr_->getWorld()->isEntered()) change(PlayerState_Enum_Union::EVENT);
 }
 
 void PlayerState_MoveBoth::end(){

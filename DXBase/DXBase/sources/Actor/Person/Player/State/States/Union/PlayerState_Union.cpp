@@ -89,7 +89,8 @@ bool PlayerState_Union::move_padL() {
 }
 
 bool PlayerState_Union::jump_pad() {
-	return InputMgr::GetInstance().AnalogPadVectorR().y <= Vector2::Down.y && InputMgr::GetInstance().AnalogPadVectorL().y <= Vector2::Down.y;
+	//return InputMgr::GetInstance().AnalogPadVectorR().y <= Vector2::Down.y && InputMgr::GetInstance().AnalogPadVectorL().y <= Vector2::Down.y;
+	return InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L2) && InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1);
 }
 
 

@@ -27,6 +27,8 @@ void PlayerState_Jump::update(float deltaTime) {
 	if (butty_->able_to_jump() || retty_->able_to_jump()) {
 		change(PlayerState_Enum_Union::IDLE);
 	}
+
+	if (cntr_->getWorld()->isEntered()) change(PlayerState_Enum_Union::EVENT);
 }
 
 void PlayerState_Jump::end(){}
