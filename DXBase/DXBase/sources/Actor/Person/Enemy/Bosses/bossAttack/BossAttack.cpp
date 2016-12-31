@@ -25,7 +25,8 @@ BossAttack::BossAttack() :
 	pPosition_(Vector2::Zero),
 	pDirection_(Vector2::Zero),
 	pNormDirection_(Vector2::Zero),
-	animeNum_(BossAnimationNumber::WAIT_NUMBER),
+	//animeNum_(BossAnimationNumber::WAIT_NUMBER),
+	animeNum_(WAIT_NUMBER),
 	collideObj_(nullptr)
 {
 }
@@ -55,7 +56,8 @@ BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
 	pDirection_(Vector2::One),
 	pNormDirection_(Vector2::One),
 	world_(world),
-	animeNum_(BossAnimationNumber::WAIT_NUMBER),
+	//animeNum_(BossAnimationNumber::WAIT_NUMBER),
+	animeNum_(WAIT_NUMBER),
 	collideObj_(nullptr)
 {
 }
@@ -234,7 +236,8 @@ void BossAttack::setCollideObj(Actor & actor)
 }
 
 // アニメーション番号を返します
-BossAnimationNumber BossAttack::getAnimaNum()
+//BossAnimationNumber BossAttack::getAnimaNum()
+int BossAttack::getAnimaNum()
 {
 	return animeNum_;
 }

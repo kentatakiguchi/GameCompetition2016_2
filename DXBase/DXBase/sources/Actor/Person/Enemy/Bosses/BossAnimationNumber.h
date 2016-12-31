@@ -1,7 +1,9 @@
 #ifndef BOSS_ANIMATION_NUMBER_H_
 #define BOSS_ANIMATION_NUMBER_H_
 
-enum class BossAnimationNumber{
+// enum class BossAnimationNumber
+
+enum {
 	WAIT_NUMBER = 0,
 	WAIT_TURN_NUMBER = 1,
 	JUMP_UP_NUMBER = 2,
@@ -16,7 +18,7 @@ enum class BossAnimationNumber{
 	PIYO_NUMBER = 11,
 	DAMAGE_NUMBER = 12,
 	DAMAGE_BOKO_NUMBER = 13,
-	DEATH_NUMBER = 14,
+	DEATH_NUMBER = 14
 };
 
 #endif

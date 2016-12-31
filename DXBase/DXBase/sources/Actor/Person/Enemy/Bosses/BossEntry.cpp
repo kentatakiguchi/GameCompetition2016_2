@@ -41,17 +41,17 @@ void BossEntry::onUpdate(float deltaTime)
 void BossEntry::onDraw() const
 {
 	// 表示
-	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-	vec3Pos = vec3Pos * inv_;
-	/*DrawString(
-		vec3Pos.x, vec3Pos.y,
-		"ボスの口です", GetColor(255, 255, 255));*/
-	DrawGraph(
-		vec3Pos.x - body_.GetCircle().getRadius(),
-		vec3Pos.y - body_.GetCircle().getRadius(),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::ENEMY_NEEDLE_TEX), 0);
-	body_.draw(inv_);
+	//auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
+	//vec3Pos = vec3Pos * inv_;
+	///*DrawString(
+	//	vec3Pos.x, vec3Pos.y,
+	//	"ボスの口です", GetColor(255, 255, 255));*/
+	//DrawGraph(
+	//	vec3Pos.x - body_.GetCircle().getRadius(),
+	//	vec3Pos.y - body_.GetCircle().getRadius(),
+	//	ResourceLoader::GetInstance().getTextureID(
+	//		TextureID::ENEMY_NEEDLE_TEX), 0);
+	//body_.draw(inv_);
 }
 
 void BossEntry::onCollide(Actor & actor)

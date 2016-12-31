@@ -79,7 +79,8 @@ public:
 	// 衝突したオブジェクトを設定します
 	void setCollideObj(Actor& actor);
 	// アニメーション番号を返します
-	BossAnimationNumber getAnimaNum();
+	//BossAnimationNumber getAnimaNum();
+	int getAnimaNum();
 	// アニメーションの角度を返します
 	int getAnimeAngle();
 	// アニメーションがループするかを返します

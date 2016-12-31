@@ -1,10 +1,12 @@
 #include "DysonAttack.h"
 #include "../../Rock.h"
 #include "../Tornado.h"
+#include "../../../../../ResourceLoader/ResourceLoader.h"
 #include <random>	// C++11の機能
 
 DysonAttack::DysonAttack() : 
 	BossAttack(nullptr, Vector2::Zero),
+	windSE_(0),
 	addAngle_(0.0f),
 	isRockCreate_(true),
 	tornadoObj_(nullptr),
@@ -14,13 +16,14 @@ DysonAttack::DysonAttack() :
 
 DysonAttack::DysonAttack(IWorld * world, const Vector2 & position) :
 	BossAttack(world, position),
+	windSE_(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_WIND)),
 	addAngle_(1.0f),
 	isRockCreate_(false),
 	tornadoObj_(nullptr),
 	state_(State::Attack)
 {
 	angle_ = 70.0f;
-	animeNum_ = BossAnimationNumber::BREATH_NUMBER;
+	animeNum_ = BREATH_NUMBER;
 	/*auto tornado = std::make_shared<Tornado>(
 		world_, Vector2(-1000.0f, 0.0f), Vector2(CHIPSIZE * 10, 32.0f * 3));
 	world_->addActor(ActorGroup::Enemy, tornado);
@@ -42,12 +45,13 @@ void DysonAttack::dysonAttack(float deltaTime)
 {
 	// 動けない状態なら、ひるみ状態に遷移
 	if (!isMove_) {
-		changeState(State::Flinch,
-			BossAnimationNumber::BREATH_DYSFUNCTION_NUMBER);
+		changeState(State::Flinch, BREATH_DYSFUNCTION_NUMBER);
 		isAnimaLoop_ = false;
 		if (tornadoObj_ != nullptr) {
 			tornadoObj_->dead();
 			tornadoObj_ = nullptr;
+			// SEの停止
+			StopSoundMem(windSE_);
 		}
 		return;
 	}
@@ -74,15 +78,16 @@ void DysonAttack::dysonAttack(float deltaTime)
 	// ボスの竜巻攻撃(仮)
 	if (tornadoObj_ == nullptr) {
 		auto tornado = std::make_shared<Tornado>(
-			world_, position_, Vector2(CHIPSIZE * 2, CHIPSIZE * 4));
-		world_->addActor(ActorGroup::Enemy, tornado);
+			world_, position_ + Vector2(40.0f *  direction_.x, -120.0f),
+			Vector2(CHIPSIZE * 4, CHIPSIZE * 1));
+		world_->addActor(ActorGroup::EnemyBullet, tornado);
 		tornadoObj_ = tornado.get();
 		// SEの再生
-
+		PlaySoundMem(windSE_, DX_PLAYTYPE_LOOP);
 	}
 	// 竜巻オブジェクトの位置更新
 	if (tornadoObj_ != nullptr)
-		tornadoObj_->position_ = position_ - Vector2::One * 100.0f;
+		tornadoObj_->position_ = position_ + Vector2(40.0f *  direction_.x, -120.0f);
 
 	if (isWspHit_ && isPrevWspHit_ != isWspHit_) {
 		direction_.x *= -1;
@@ -91,7 +96,7 @@ void DysonAttack::dysonAttack(float deltaTime)
 	if (angle_ >= 90.0f + 40.0f || angle_ <= 90.0f - 40.0f)
 		addAngle_ *= -1;
 	// 角度の加算
-	angle_ += addAngle_;
+	angle_ += addAngle_ * (deltaTime * 60.0f);
 	tornadoObj_->setAngle(angle_);
 
 	isPrevWspHit_ = isWspHit_;
@@ -101,6 +106,8 @@ void DysonAttack::dysonAttack(float deltaTime)
 	// 一定時間経過で攻撃終了
 	if (timer_ <= 7.0f) return;
 	tornadoObj_->dead();
+	// SEの停止
+	StopSoundMem(windSE_);
 	//tornadoObj_->initPosition();
 	isAttackEnd_ = true;
 }
@@ -109,10 +116,10 @@ void DysonAttack::dysonAttack(float deltaTime)
 void DysonAttack::flinch(float deltaTime)
 {
 	//isFlinch_ = true;
+	isAnimaLoop_ = false;
 	// プレイヤーをつなぐものに当たっていないなら、疲労状態に遷移
 	if (isMove_) {
-		changeState(State::Fatigue,
-			BossAnimationNumber::BREATH_LESS_NUMBER);
+		changeState(State::Fatigue, BREATH_LESS_NUMBER);
 		isAnimaLoop_ = true;
 		return;
 	}
@@ -127,12 +134,11 @@ void DysonAttack::fatigue(float deltaTime)
 {
 	if (timer_ <= 5.0f) return;
 	// 攻撃状態に遷移
-	changeState(State::Attack, 
-		BossAnimationNumber::BREATH_NUMBER);
+	changeState(State::Attack, BREATH_NUMBER);
 }
 
 // 状態の変更を行います
-void DysonAttack::changeState(State state, BossAnimationNumber num)
+void DysonAttack::changeState(State state, int num)
 {
 	state_ = state;
 	timer_ = 0.0f;
@@ -144,8 +150,7 @@ void DysonAttack::Refresh()
 	BossAttack::Refresh();
 	isFlinch_ = false;
 	tornadoObj_ = nullptr;
-	changeState(State::Attack,
-		BossAnimationNumber::BREATH_NUMBER);
+	changeState(State::Attack, BREATH_NUMBER);
 	//state_ = State::Attack;
 	//animeNum_ = BossAnimationNumber::BREATH_NUMBER;
 }

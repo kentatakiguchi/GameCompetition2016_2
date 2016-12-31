@@ -21,10 +21,12 @@ BaseEnemy::BaseEnemy(
 	hp_(10),
 	ap_(0),
 	texSize_(256),
+	turnMotion_(ENEMY_WALK),
 	speed_(1.0f),
 	initSpeed_(speed_),
 	scale_(bodyScale),
 	direction_(direction),
+	prevDirection_(direction),
 	playerLength_(0.0f),
 	TexDegress_(0),
 	isPlayer_(false),
@@ -112,6 +114,7 @@ void BaseEnemy::Initialize()
 	// アニメーションの追加
 	addAnimation();
 	animation_.changeAnimation(ENEMY_WALK);
+	animation_.turnAnimation(turnMotion_, direction_.x);
 }
 
 void BaseEnemy::onUpdate(float deltaTime)
@@ -233,17 +236,36 @@ void BaseEnemy::search()
 	// プレイヤーの捜索
 	findPlayer();
 	stateString_ = "捜索";
+	turnMotion_ = ENEMY_WALKTURN;
 	// 初期速度に戻す
 	speed_ = initSpeed_;
 	// 捜索行動
 	searchMove();
 	// 画像の方向を合わせる
-	animation_.turnAnimation(motion_, direction_.x);
+	/*if(direction_.x != prevDirection_.x)
+		animation_.turnAnimation(turnMotion_, direction_.x);*/
 	// プレイヤーが存在しなければ、捜索と待機状態以外は行わない
 	if (!isPlayer_) return;
 	// 一定距離内で、プレイヤーとの間にブロックがなかったら
+	// 角度
+	/*auto a = enemyManager_.getPlayerNormalizeDirection();
+	auto b = Vector2::Right * direction_.x;
+	auto A = std::sqrtf((a.x * a.x) + (a.y * a.y));
+	auto B = std::sqrtf((b.x * b.x) + (b.y * b.y));
+	auto dot = Vector2::Dot(a, b);
+	auto cos = dot / (A * B);*/
+	auto a = enemyManager_.getPlayerNormalizeDirection();
+	auto b = Vector2::Left * direction_.x;
+	auto radius = std::atan2(b.y - a.y, b.x - a.x);
+	auto deg = radius * 180.0f / MathHelper::Pi;
+	/*auto direVec = Vector2::Right * direction_.x;
+	auto cos_deg = 
+		Vector2::Dot(direVec, enemyManager_.getPlayerNormalizeDirection()) /
+		(direVec.Length() * enemyManager_.getPlayerLength());
+	auto deg = MathHelper::ACos(cos_deg);*/
 	// 追跡する
 	if (enemyManager_.getPlayerLength() <= discoveryLenght_ && 
+		std::abs(deg) <= 30.0f &&
 		psObj_->isPlayerLook()) {
 		changeState(State::Discovery, ENEMY_DISCOVERY);
 		// 発見SEの再生
@@ -265,6 +287,7 @@ void BaseEnemy::discovery()
 	// ジャンプ後に床に接地したら追跡状態に遷移
 	if (isGround_ && stateTimer_ >= 0.2f) {
 		changeState(State::Chase, ENEMY_ATTACK);
+		turnMotion_ = ENEMY_ATTACKTURN;
 		//animation_.turnAnimation(ENEMY_ATTACK);
 		isUseGravity_ = true;
 	}
@@ -281,12 +304,15 @@ void BaseEnemy::chase()
 	// 追跡行動
 	chaseMove();
 	// 画像の方向を合わせる
-	animation_.turnAnimation(motion_, direction_.x);
+	/*if (direction_.x != prevDirection_.x)
+		animation_.turnAnimation(turnMotion_, direction_.x);*/
 	// プレイヤーが追跡距離外か、プレイヤーの間にブロックがあるなら、
 	// 捜索状態に遷移
 	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 100.0f &&
-		!psObj_->isPlayerLook())
+		!psObj_->isPlayerLook()) {
 		changeState(State::Search, ENEMY_WALK);
+		turnMotion_ = ENEMY_WALKTURN;
+	}
 }
 
 // 攻撃行動です
@@ -303,8 +329,10 @@ void BaseEnemy::attack()
 void BaseEnemy::damageMove()
 {
 	stateString_ = "ダメージ";
-	if (stateTimer_ >= 3.0f)
+	if (stateTimer_ >= 3.0f) {
 		changeState(State::Chase, ENEMY_WALK);
+		turnMotion_ = ENEMY_ATTACKTURN;
+	}
 }
 
 // 死亡行動です
@@ -441,6 +469,10 @@ void BaseEnemy::updateState(float deltaTime)
 		SCREEN_SIZE.x + body_.GetBox().getHeight())*/
 	if(!isScreen())
 		changeState(State::Idel, ENEMY_WALK);
+	// 方向の更新
+	if (direction_.x != prevDirection_.x)
+		animation_.turnAnimation(turnMotion_, direction_.x);
+	prevDirection_ = direction_;
 
 	stateTimer_ += deltaTime;
 }
@@ -563,6 +595,10 @@ void BaseEnemy::addAnimation()
 		ResourceLoader::GetInstance().getAnimationIDs(
 			AnimationID::ENEMY_EGGENEMY_WALK_TEX));
 	animation_.addAnimation(
+		ENEMY_WALKTURN,
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_EGGENEMY_WALKTURN_TEX));
+	animation_.addAnimation(
 		ENEMY_DISCOVERY,
 		ResourceLoader::GetInstance().getAnimationIDs(
 			AnimationID::ENEMY_EGGENEMY_DISCORVER_TEX));
@@ -570,6 +606,10 @@ void BaseEnemy::addAnimation()
 		ENEMY_ATTACK,
 		ResourceLoader::GetInstance().getAnimationIDs(
 			AnimationID::ENEMY_EGGENEMY_ATTACK_TEX));
+	animation_.addAnimation(
+		ENEMY_ATTACKTURN,
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::ENEMY_EGGENEMY_ATTACKTURN_TEX));
 	animation_.addAnimation(
 		ENEMY_DAMAGE,
 		ResourceLoader::GetInstance().getAnimationIDs(

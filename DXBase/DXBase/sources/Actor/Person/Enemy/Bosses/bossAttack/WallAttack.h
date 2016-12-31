@@ -34,7 +34,7 @@ private:
 	// 壁移動する時間を決定します
 	void setAttackSecond();
 	// 状態の変更を行います
-	void changeState(State state, BossAnimationNumber number);
+	void changeState(State state, int number);
 
 protected:
 	// int hp_;				// ボスの体力(心臓の体力)

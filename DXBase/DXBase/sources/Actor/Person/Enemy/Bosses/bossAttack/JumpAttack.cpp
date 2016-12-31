@@ -36,7 +36,7 @@ JumpAttack::JumpAttack(IWorld* world, const Vector2& position) :
 	piyoriCount_ = 5;
 	isBodyHit_ = false;
 	isAttackHit_ = true;
-	animeNum_ = BossAnimationNumber::JUMP_UP_NUMBER;
+	animeNum_ = JUMP_UP_NUMBER;
 }
 
 // 攻撃
@@ -141,9 +141,9 @@ void JumpAttack::jump(float deltaTime)
 	position_ += addPos;
 	// 移動量が - なら上、+ なら下のアニメーションにする
 	if (addPos.y <= 0)
-		animeNum_ = BossAnimationNumber::JUMP_UP_NUMBER;
+		animeNum_ = JUMP_UP_NUMBER;
 	else
-		animeNum_ = BossAnimationNumber::JUMP_DOWN_NUMBER;
+		animeNum_ = JUMP_DOWN_NUMBER;
 	// std::sin(degrees_) * -speed_);
 	//position_ += addPos;
 	/*position_.y += (-jumpPower_ / 10 + timer_) * 9.8f * (deltaTime * 60.0f);*/
@@ -172,7 +172,7 @@ void JumpAttack::Refresh()
 	isPiyori_ = false;
 	jumpPower_ = initJumpPower_;
 	recastTimer_ = initRecastTimer_;
-	animeNum_ = BossAnimationNumber::JUMP_UP_NUMBER;
+	animeNum_ = JUMP_UP_NUMBER;
 	if (piyoriCount_ <= 0)
 		piyoriCount_ = 5;
 }

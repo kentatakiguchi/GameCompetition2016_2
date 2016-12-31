@@ -74,7 +74,7 @@ void Rock::idel(float deltaTime)
 void Rock::fall(float deltaTime)
 {
 	// —‰º
-	position_.y += speed_ * timer_ * 9.8f;
+	position_.y += speed_ * timer_  * 9.8f * (deltaTime * 60.0f);
 }
 
 // €–Só‘Ô

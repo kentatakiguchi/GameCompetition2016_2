@@ -37,8 +37,10 @@ protected:
 		BattleIdel,
 		Idel,
 		Attack,
+		Damage,
 		Flinch,
 		Piyori,
+		Boko,
 		Dead
 	};
 	// 攻撃状態の列挙
@@ -75,19 +77,26 @@ protected:
 	// 状態の更新
 	void updateState(float deltaTime);
 	// 状態の変更を行います
-	void changeState(State state, BossAnimationNumber num);
+	//void changeState(State state, BossAnimationNumber num);
+	//// 攻撃状態の変更を行います
+	//void changeAttackState(AttackState aState, BossAnimationNumber num);
+	void changeState(State state, int num);
 	// 攻撃状態の変更を行います
-	void changeAttackState(AttackState aState, BossAnimationNumber num);
+	void changeAttackState(AttackState aState, int num);
 	// 戦闘待機状態
 	void battleIdel(float deltaTime);
 	// 待機状態
 	virtual void idel(float deltaTime);
 	// 攻撃行動
 	void attack(float deltaTime);
+	// ダメージ状態
+	void damage(float deltaTime);
 	// 怯み状態
 	void flinch(float deltaTime);
 	// ぴより状態 // ぴよりー＞ロック解除
 	void piyori(float deltaTime);
+	// ぼこり状態
+	void boko(float deltaTime);
 	// 死亡状態
 	void deadMove(float deltaTime);
 
@@ -123,8 +132,10 @@ protected:
 	int attackCount_;				// 攻撃行動するカウント
 	//int hpLock_;					// ロックする体力
 	int flinchCount_;				// ひるむまでの回数
+	int piyoriCount_;				// ぴよる回数
 	int angleCount_;				// 振り向き回数
 	int starCreateCount_;
+	int bockCreateCount_;
 	// int initHp_;					// 体力(初期値)
 	float stateTimer_;				// 状態の時間
 	float timer_;					// 現在の時間(最大値 1)
@@ -150,7 +161,8 @@ protected:
 	typedef std::vector<AttackState> AttackStateContainer;
 	AttackStateContainer asContainer_;
 	// 攻撃モーションコンテナ
-	typedef std::vector<BossAnimationNumber> BossAnimationContainer;
+	//typedef std::vector<BossAnimationNumber> BossAnimationContainer;
+	typedef std::vector<int> BossAnimationContainer;
 	BossAnimationContainer asAnimations_;
 
 private:
@@ -160,7 +172,8 @@ private:
 
 	State state_;					// 状態
 	AttackState attackState_;		// 攻撃状態
-	BossAnimationNumber animeNum_;	// アニメーション番号
+	//BossAnimationNumber animeNum_;	// アニメーション番号
+	int animeNum_;
 	EnemyAnimation2D animation_;	// アニメーション
 
 	BossGaugeUI* bossGaugeUI_;		// ボスの体力

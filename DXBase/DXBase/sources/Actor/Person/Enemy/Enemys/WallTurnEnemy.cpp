@@ -37,6 +37,9 @@ void WallTrunEnemy::update(float deltaTime)
 {
 	if (wsObj_->isGround())
 		direction_ *= -1;
+	if (direction_.y == -1)
+		TexDegress_ = 0;
+	else TexDegress_ = 180;
 	wsObj_->setDirection(direction_);
 	wsObj_->setPosition(position_);
 }

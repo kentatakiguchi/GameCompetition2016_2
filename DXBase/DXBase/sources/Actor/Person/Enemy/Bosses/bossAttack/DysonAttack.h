@@ -31,9 +31,10 @@ private:
 	// ”æ˜Jó‘Ô
 	void fatigue(float deltaTime);
 	// ó‘Ô‚Ì•ÏX‚ğs‚¢‚Ü‚·
-	void changeState(State state, BossAnimationNumber num);
+	void changeState(State state, int num);
 
 private:
+	int windSE_;			// ‹z‚¢‚İ‚ÌSE
 	float addAngle_;		// Šp“x‚Ì‰ÁZ—Ê
 	bool isRockCreate_;		// Šâ‚ğ¶¬‚µ‚½‚© 
 

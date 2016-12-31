@@ -29,9 +29,10 @@ protected:
 	enum {
 		//ENEMY_IDLE = 0,
 		ENEMY_WALK = 0,
+		ENEMY_WALKTURN = 4,
 		ENEMY_DISCOVERY = 3,
-		//ENEMY_LOST = 3,
 		ENEMY_ATTACK = 1,
+		ENEMY_ATTACKTURN = 5,
 		ENEMY_DAMAGE = 2,
 		//ENEMY_DEAD = 4,
 	};
@@ -134,6 +135,7 @@ protected:
 	int hp_;						// 体力
 	int ap_;						// アタックポイント
 	int texSize_;					// テクスチャを切り抜きする大きさ
+	int turnMotion_;
 	float speed_;					// 移動速度
 	float initSpeed_;				// 初期の移動速度
 	float scale_;					// 大きさ
@@ -142,6 +144,7 @@ protected:
 	float playerLostLenght_;		// プレイヤーを見失う距離
 	float TexDegress_;				// テクスチャの角度
 	Vector2 direction_;				// 方向
+	Vector2 prevDirection_;
 
 	bool isPlayer_;					// プレイヤーが存在するのか
 	bool isMove_;					// 動くか

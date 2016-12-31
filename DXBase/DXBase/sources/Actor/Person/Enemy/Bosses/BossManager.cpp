@@ -235,7 +235,8 @@ void BossManager::setCollideObj(Actor & actor)
 }
 
 // アニメーション番号を返します
-BossAnimationNumber BossManager::getAnimaNum()
+//BossAnimationNumber BossManager::getAnimaNum()
+int BossManager::getAnimaNum()
 {
 	return bossAttackContainer_[attackNumber_]->getAnimaNum();
 }

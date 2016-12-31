@@ -19,19 +19,19 @@ void EnemyAnimation2D::update(float deltaTime)
 	// 更新
 	if (curr_anim_ >= 15 || curr_anim_ <= -1) return;
 	frame_ = static_cast<int>(timer_) % sprites_[curr_anim_].size();
-	// ループしないなら
-	if (!isLoop_) {
-		// 過去のフレームが現在のフレームよりも大きいなら、
-		// フレームを最大値にする
-		/*if (prevFrame_ > frame_)
-		frame_ = sprites_[anim_num_].size();*/
-	}
+	//// ループしないなら
+	//if (!isLoop_) {
+	//	// 過去のフレームが現在のフレームよりも大きいなら、
+	//	// フレームを最大値にする
+	//	/*if (prevFrame_ > frame_)
+	//	frame_ = sprites_[anim_num_].size();*/
+	//}
 	id_ = sprites_[curr_anim_][frame_];
 	timer_ += deltaTime * curr_speed_ * 60.0f / sprites_[curr_anim_].size() * 10;
 	// ループしないなら
 	if (!isLoop_) {
 		// アニメーションのタイムが一周したら、止める
-		if (timer_ >= sprites_[curr_anim_].size() - 3) {
+		if (timer_ >= sprites_[curr_anim_].size() - 2) {
 			frame_ = sprites_[curr_anim_].size() - 1;
 			timer_ = sprites_[curr_anim_].size() - 1;
 			isStop_ = true;
@@ -87,6 +87,10 @@ void EnemyAnimation2D::addAnimation(int id, const std::vector<int>& anims)
 // アニメーションの変更
 void EnemyAnimation2D::changeAnimation(int id, float speed)
 {
+	/*if (id >= 15 || id <= -1)
+		id = 0;*/
+	isLoop_ = true;
+	isStop_ = false;
 	// 親の変更を使う
 	change_param(id, speed);
 	
@@ -103,7 +107,7 @@ bool EnemyAnimation2D::isEndAnimation()
 void EnemyAnimation2D::turnAnimation(int id, int direction)
 {
 	// アクションタイプの取得
-	if (direction > 0)
+	if (direction >= 0)
 		type_ = ActionType::Left;
 	else type_ = ActionType::Right;
 	change_dir_type(id, type_);

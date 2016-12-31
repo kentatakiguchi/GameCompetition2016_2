@@ -71,7 +71,8 @@ public:
 	// 衝突したオブジェクトを設定します
 	void setCollideObj(Actor& actor);
 	// アニメーション番号を返します
-	BossAnimationNumber getAnimaNum();
+	//BossAnimationNumber getAnimaNum();
+	int getAnimaNum();
 	// アニメーションの角度を返します
 	int getAnimeAngle();
 	// アニメーションがループするかを返します
@@ -106,7 +107,8 @@ protected:
 
 	IWorld* world_;
 
-	BossAnimationNumber animeNum_;
+	//BossAnimationNumber animeNum_;
+	int animeNum_;
 
 	Actor* collideObj_;
 };
