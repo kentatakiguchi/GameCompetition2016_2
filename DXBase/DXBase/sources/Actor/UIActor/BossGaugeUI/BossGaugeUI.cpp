@@ -33,7 +33,7 @@ BossGaugeUI::BossGaugeUI(IWorld* world, const Vector2& position) :
 	//使用するゲージ初期化
 	mGaugeNum = (int)((mHp + 1000.0f) / 100.0f) % 10;
 	//テクスチャサイズ
-	textureSize = ResourceLoader::GetInstance().GetTextureSize(TextureID::BOSS_GAUGE_TEX);
+	textureSize = ResourceLoader::GetInstance().GetTextureSize(TextureID::BOSS_GAUGE_IN_TEX);
 	//割る
 	mTexDivision = textureSize.x / 100.0f;
 }
@@ -78,11 +78,14 @@ void BossGaugeUI::onUpdate(float deltaTime)
 
 void BossGaugeUI::onDraw() const
 {
+	//ゲージ外
+	DrawGraph(position_.x, position_.y, ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_GAUGE_OUT_TEX), TRUE);
+	//ゲージ中
 	for (auto i : gauges)
 	{
 		SetDrawBright(i.Color.x, i.Color.y, i.Color.z);
 		DrawRectGraphF(position_.x, position_.y, 0, 0, i.Hp*mTexDivision, textureSize.y,
-			ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_GAUGE_TEX), TRUE, FALSE);
+		ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_GAUGE_IN_TEX), TRUE, FALSE);
 		SetDrawBright(255, 255, 255);
 	}
 	//DrawFormatString(200, 550, GetColor(255, 255, 255), "Hp:%f",mHp);

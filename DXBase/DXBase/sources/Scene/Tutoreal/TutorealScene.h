@@ -38,6 +38,8 @@ private:
 	std::vector<std::string> tutorealCsvs_;
 	//チュートリアル動画たち
 	std::vector<MOVIE_ID> tutorealMovies_;
+	//チュートリアルテキストたち
+	std::vector<TextureID> tutorealTxts_;
 	//動画を選択したか
 	bool isMovie_;
 	//動画の位置
@@ -46,6 +48,10 @@ private:
 	Vector2 moviePos_;
 	//サイズ
 	float size_;
+	//チュートリアルのテキスト
+	TextureID tutorealTex_;
+	//α値
+	float alpha_;
 	//動画移動の補間
 	float movieMoveTime_;
 };

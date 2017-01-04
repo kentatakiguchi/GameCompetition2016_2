@@ -10,11 +10,15 @@ TutorealScene::TutorealScene() :
 {
 	isEnd_ = false;
 	deltaTime_ = 1.0f / 60.0f;
-	//名前を入れる
+	//csv名前を入れる
 	tutorealCsvs_.push_back("tutoreal01");
 	tutorealCsvs_.push_back("tutoreal02");
+	//動画IDを入れる
 	tutorealMovies_.push_back(MOVIE_ID::TEST_MOVE);
 	tutorealMovies_.push_back(MOVIE_ID::TEST2_MOVIE);
+	//テキストIDを入れる
+	tutorealTxts_.push_back(TextureID::TUTOREAL01_TXT_TEX);
+	tutorealTxts_.push_back(TextureID::TUTOREAL02_TXT_TEX);
 	//サイズを入れる
 	tutorealSize_ = tutorealCsvs_.size();
 
@@ -29,10 +33,12 @@ void TutorealScene::start()
 	//初期化たち
 	isEnd_ = false;
 	isMovie_ = false;
+	//α値を初期化
+	alpha_ = 1.0f;
 	//補間初期化
 	size_ = 0.1f;
 	movieMoveTime_ = 0.0f;
-	moviePos_ = Vector2(128, 64);
+	moviePos_ = Vector2(160, 128);
 	movieResPos1_ = moviePos_;
 	movieResPos2_ = Vector2(SCREEN_SIZE.x / 2 , SCREEN_SIZE.y / 2 );
 	//デルタタイム
@@ -48,6 +54,7 @@ void TutorealScene::start()
 	name_ = tutorealCsvs_[tutorealRoopCount_];
 	//チュートリアル動画をセット
 	movieId_ = tutorealMovies_[tutorealRoopCount_];
+	tutorealTex_ = tutorealTxts_[tutorealRoopCount_];
 	//動画を再生
 	//Movie::GetInstance().Play(movieId_);
 	//セットしたら次の名前にしておく
@@ -55,7 +62,7 @@ void TutorealScene::start()
 		tutorealRoopCount_++;
 	//テュートリアルがない場合タイトルへ
 	else
-		nextScene_ = Scene::Title;
+		nextScene_ = Scene::MainMenu;
 	//プレイヤーの座標をセット
 	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
 	//プレイヤーを追加
@@ -87,7 +94,8 @@ void TutorealScene::update()
 	movieMoveTime_=MathHelper::Clamp(movieMoveTime_, 0.0f, 90.0f);
 	//拡大し終わったら再生する
 	//if (movieMoveTime_ >= 90) Movie::GetInstance().Play(movieId_);
-
+	//α値を線形保管
+	alpha_ = MathHelper::Lerp(255.0f, 0.0f, movieMoveTime_ / 90.0f);
 	//サイズを線形補間
 	size_=MathHelper::Lerp(0.1f, 0.8f, MathHelper::Sin(movieMoveTime_));
 	//移動を線形補間
@@ -101,6 +109,16 @@ void TutorealScene::update()
 void TutorealScene::draw() const
 {
 	world_->draw();
+
+	//αブレンド
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
+	//上の部分
+	DrawGraph(16, 8, ResourceLoader::GetInstance().getTextureID(TextureID::TUTOREAL_BACK_TEX), TRUE);
+	//テキスト部分
+	DrawGraph(16, 8, ResourceLoader::GetInstance().getTextureID(tutorealTex_), TRUE);
+	//αブレンド終わり
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
+
 	//動画の後ろの画像
 	int id = ResourceLoader::GetInstance().getTextureID(TextureID::MOVIEBACK_TEX);
 	DrawRotaGraph(moviePos_.x, moviePos_.y, size_, 0.0f, id, TRUE);
@@ -115,7 +133,7 @@ void TutorealScene::end()
 	//再生ストップ
 	Movie::GetInstance().Stop(movieId_);
 	//チュートリアルの進みをリセット
-	if (nextScene_ == Scene::Title) tutorealRoopCount_ = 0;
+	if (nextScene_ == Scene::MainMenu) tutorealRoopCount_ = 0;
 }
 
 bool TutorealScene::isEnd() const
