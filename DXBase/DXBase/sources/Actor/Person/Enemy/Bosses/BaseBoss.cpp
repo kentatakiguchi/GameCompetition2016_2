@@ -119,7 +119,7 @@ BaseBoss::BaseBoss(
 	world_->addActor(ActorGroup::Enemy, entryObj);
 	entryObj_ = &*entryObj;
 	// ボスの体力ゲージ
-	auto bossUI = std::make_shared<BossGaugeUI>(world_, Vector2::Zero);
+	auto bossUI = std::make_shared<BossGaugeUI>(world_, Vector2(64, -256));
 	world_->addUIActor(bossUI);
 	bossGaugeUI_ = bossUI.get();
 	bossGaugeUI_->SetHp(hp_);
