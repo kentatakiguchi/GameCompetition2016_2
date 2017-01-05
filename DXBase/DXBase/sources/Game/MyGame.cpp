@@ -69,7 +69,7 @@ void MyGame::update(){
 void MyGame::draw(){
 	sceneMgr_.draw();
 
-	Time::GetInstance().draw_fps();
+	//Time::GetInstance().draw_fps();
 }
 
 void MyGame::end(){

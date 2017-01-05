@@ -72,7 +72,7 @@ const static float		PLAYER_JUMP_POWER = 30.0f;
 // プレイヤーの仰け反り速度
 const static float		PLAYER_LEANBACK_POWER = 10.0f;
 // プレイヤーの無敵時間
-const static float		PLAYER_INV_TIME = 3.0f;
+const static float		PLAYER_INV_TIME = 1.0f;
 // プレイヤーの死亡までの時間
 const static float		PLAYER_DEAD_LIMIT = 5.0f;
 // プレイヤーの硬直時間
@@ -84,7 +84,7 @@ const static float		PLAYER_MIN_DIV_LENGTH = PLAYER_MAX_NORMAL_LENGTH / static_ca
 // プレイヤーコネクタの分割数
 const static float		PLAYER_MAX_DIV_LENGTH = PLAYER_MAX_STRETCH_LENGTH / static_cast<float>(PLAYER_CNTR_DIV_NUM + 1);
 // プレイヤーの坂速度
-const static float		SLIP_SPEED = 15.0f;
+const static float		SLIP_SPEED = 70.0f;
 
 
 

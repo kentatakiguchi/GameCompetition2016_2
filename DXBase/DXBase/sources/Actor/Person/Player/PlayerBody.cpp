@@ -130,7 +130,7 @@ void PlayerBody::onCollide(Actor & other) {
 		}
 	}
 	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
-			hit_enemy_ = HitOpponent::ENEMY;
+		hit_enemy_ = HitOpponent::ENEMY;
 	}
 
 	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
@@ -198,7 +198,7 @@ void PlayerBody::chase() {
 
 void PlayerBody::gravity() {
 	if (opponent_ == HitOpponent::FLOOR_TOP)gravity_ = Vector2(0, 0);
-	else gravity_ = Vector2(0, 9.8f);
+	else gravity_ = Vector2(0, 9.8f) * 2;
 }
 
 void PlayerBody::acc_gravity() {

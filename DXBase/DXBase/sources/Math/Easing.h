@@ -277,3 +277,8 @@ inline float EasingInOutSine(float t)
 {
 	return -0.5f * (std::cos(3.14159265359f * t) - 1.0f);
 }
+
+inline float EasingSinCurve(float t){
+	return (t >= 1.0f) ? 0.0f : MathHelper::Sin(t * 180);
+}
+

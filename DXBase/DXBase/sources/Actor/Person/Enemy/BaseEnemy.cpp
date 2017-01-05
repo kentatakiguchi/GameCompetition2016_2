@@ -194,9 +194,10 @@ void BaseEnemy::onCollide(Actor & actor)
 	if (state_ == State::Dead) return;
 	// プレイヤーに当たらない？
 	// PlayerのActorGroupが変わるので、 Player_AttackRangeに当たるようにする
-	if ((actorName == "PlayerBody2Collider" ||
-		actorName == "PlayerBody1Collider" || 
-		actorName == "Player_AttackCollide") &&
+	if ((/*actorName == "PlayerBody2Collider" ||
+		actorName == "PlayerBody1Collider" ||*/ 
+		actorName == "Player_AttackCollide" || 
+		actorName == "BodyPoint") &&
 		!isInvincible_) {
 		// ダメージ
 		//circleClamp(actor);
