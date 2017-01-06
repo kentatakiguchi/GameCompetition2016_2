@@ -111,7 +111,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	
 	baseTitleBackID[0] = TextureID::TITLE_BACK_TEX;
 	baseTitleBackID[1] = TextureID::TITLE_BACK2_TEX;
-	baseTitleBackID[2] = TextureID::TITLE_BACK3_TEX;
+	baseTitleBackID[2] = TextureID::TITLE_BACK_TEX;
 
 	listBase.push_back(changeTextList);
 	std::vector<std::string>  list6;
