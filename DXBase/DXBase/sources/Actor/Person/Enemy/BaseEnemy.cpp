@@ -196,7 +196,7 @@ void BaseEnemy::onCollide(Actor & actor)
 	// PlayerのActorGroupが変わるので、 Player_AttackRangeに当たるようにする
 	if ((/*actorName == "PlayerBody2Collider" ||
 		actorName == "PlayerBody1Collider" ||*/ 
-		actorName == "Player_AttackCollide" || 
+		actorName == "PlayerAttackCollider" || 
 		actorName == "BodyPoint") &&
 		!isInvincible_) {
 		// ダメージ
