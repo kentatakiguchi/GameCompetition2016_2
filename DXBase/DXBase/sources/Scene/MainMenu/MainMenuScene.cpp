@@ -26,18 +26,21 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	textIDs[0] = TextureID::TEXT_TITLE_TEX;
 	textIDs[1] = TextureID::TEXT_GAMESTART_TEX;
 	textIDs[2] = TextureID::TEXT_CREDIT_TEX;
-	textIDs[3] = TextureID::TEXT_GAMEEND_TEX;
-	textIDs[4] = TextureID::TEXT_MARU_TEX;
+	textIDs[3] = TextureID::TEXT_TUTORIAL_TEX;
+	textIDs[4] = TextureID::TEXT_GAMEEND_TEX;
+	textIDs[5] = TextureID::TEXT_MARU_TEX;
 
 	defposlist[0] = 0;
 	defposlist[1] = 340;
 	defposlist[2] = 420;
 	defposlist[3] = 500;
-	defposlist[4] = 450;
+	defposlist[4] = 620;
+	defposlist[5] = 450;
 
 	nextScene[1] = GamePlay;
 	nextScene[2] = Credit;
-	nextScene[3] = GameEnd;
+	nextScene[3] = Tutoreal;
+	nextScene[4] = GameEnd;
 
 
 
@@ -78,14 +81,27 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list4;
-	list4.push_back("ゲーム終了");
+	list4.push_back("チュートリアル");
 	listBase[3] = list4;
 	textPoses[3] = Vector2(200, 700);
 	textPosList.push_back(textPoses[3]);
 	changeTextList.clear();
 
-	lastPoses[3] = Vector2(200,700);
+	lastPoses[3] = Vector2(200, 700);
 	setPoses[3] = Vector2(0, defposlist[3]);
+
+	listBase.push_back(changeTextList);
+	std::vector<std::string> list5;
+	list5.push_back("ゲーム終了");
+	listBase[4] = list5;
+	textPoses[4] = Vector2(200, 800);
+	textPosList.push_back(textPoses[4]);
+	changeTextList.clear();
+
+	lastPoses[4] = Vector2(200, 800);
+	setPoses[4] = Vector2(0, defposlist[4]);
+
+
 
 	currentTitleBackID.push_back(TextureID::TITLE_BACK_TEX);
 	currentTitleBackID.push_back(TextureID::TITLE_BACK_TEX);
@@ -98,13 +114,13 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	baseTitleBackID[2] = TextureID::TITLE_BACK3_TEX;
 
 	listBase.push_back(changeTextList);
-	std::vector<std::string>  list5;
-	list5.push_back("〇ボタンを押してください");
-	listBase[4] = list5;
-	textPoses[4] = Vector2(200, 600);
-	lastPoses[4] = textPoses[4];
-	setPoses[4] = Vector2(0, spaceY);
-	textPosList.push_back(setPoses[4]);
+	std::vector<std::string>  list6;
+	list6.push_back("〇ボタンを押してください");
+	listBase[5] = list6;
+	textPoses[5] = Vector2(200, 600);
+	lastPoses[5] = textPoses[5];
+	setPoses[5] = Vector2(0, spaceY);
+	textPosList.push_back(setPoses[5]);
 	changeTextList.clear();
 
 }
@@ -211,7 +227,7 @@ void MainMenuScene::update() {
 			sinCount = 0;
 			PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
 		}
-		targetPoint = min(max(targetPoint, 1), 3);
+		targetPoint = min(max(targetPoint, 1), 4);
 
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))
 		{
@@ -262,12 +278,12 @@ void MainMenuScene::update() {
 			PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
 		}
 	}
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 
 		isPoint[i] ? moveText(i) : slideText(i);
 	}
-	isPoint[4] ? moveText(4) : slideText(4);
+	isPoint[5] ? moveText(5) : slideText(5);
 
 
 }
@@ -341,11 +357,11 @@ void MainMenuScene::draw() const {
 	for (auto lists : listBase) {
 		for (auto my : lists) {
 			if (isTitle_) {
-				if (count > 0 && count < 4) {
+				if (count > 0 && count < 5) {
 					continue;
 				}
 			}
-			else if (!isTitle_&& count >= 4)break;
+			else if (!isTitle_&& count >= 5)break;
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			center = SCREEN_SIZE.x / 2;

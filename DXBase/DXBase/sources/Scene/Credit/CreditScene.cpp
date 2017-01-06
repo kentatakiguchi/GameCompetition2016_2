@@ -1,9 +1,9 @@
 #include "CreditScene.h"
 #include"../../ResourceLoader/ResourceLoader.h"
-
+#include"../../Game/Time.h"
 
 CreditScene::CreditScene(SceneDataKeeper* keeper) :
-	id(0), sinCount(0),isPlay_(false) {
+	id(0), sinCount(0),isPlay_(false),timeCount(3) {
 	isEnd_ = false;
 	keeper_ = keeper;
 	name_ = "Credit";
@@ -39,6 +39,7 @@ void CreditScene::start() {
 	isPlay_ = false;
 	// •`‰ææ‰æ–Ê‚ð— ‰æ–Ê‚ÉƒZƒbƒg
 	SetDrawScreen(DX_SCREEN_BACK);
+	timeCount = 3;
 }
 
 void CreditScene::update() {
@@ -46,11 +47,14 @@ void CreditScene::update() {
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
 
+	timeCount -= Time::GetInstance().deltaTime();
+
 	if (!isPlay_) {
 		isPlay_ = true;
 		PlayMovie("./resources/file/pv.avi", 1, DX_MOVIEPLAYTYPE_BCANCEL);
 	}
 
+	if (timeCount > 0)return;
 	if (InputMgr::GetInstance().IsPushButton()) {
 		isEnd_=true;
 	}

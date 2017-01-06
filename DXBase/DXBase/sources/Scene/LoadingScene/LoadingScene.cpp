@@ -126,6 +126,7 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MARU_TEX, "./resources/sprite/Text/maru.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MENUBACK_TEX, "./resources/sprite/Text/menuback.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_NEXTSTAGE_TEX, "./resources/sprite/Text/nextstage.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_TUTORIAL_TEX, "./resources/sprite/Text/tutorial.png");
 
 
 	load_bgm_res();
@@ -159,7 +160,7 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::MainMenu;
+	return Scene::Logo;
 }
 
 void LoadingScene::load_player_res(){

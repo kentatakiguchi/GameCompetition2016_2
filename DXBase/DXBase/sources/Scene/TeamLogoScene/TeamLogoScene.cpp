@@ -1,5 +1,6 @@
 #include "TeamLogoScene.h"
 
+static const Vector2 LogoSize = Vector2(600,839);
 
 TeamLogoScene::TeamLogoScene(SceneDataKeeper* keeper)
 {
@@ -14,7 +15,7 @@ TeamLogoScene::~TeamLogoScene() {}
 void TeamLogoScene::start() {
 	isEnd_ = false;
 
-	timeCount = 3;
+	timeCount = 2;
 
 	// ï`âÊêÊâÊñ Çó†âÊñ Ç…ÉZÉbÉg
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -34,7 +35,7 @@ void TeamLogoScene::update() {
 
 void TeamLogoScene::draw() const {
 
-	DrawGraph(SCREEN_SIZE.x/2, SCREEN_SIZE.y/2, ResourceLoader::GetInstance().getTextureID(TextureID::TEAM_LOGO_TEX), TRUE);
+	DrawGraph(SCREEN_SIZE.x/2-(LogoSize.x/2), SCREEN_SIZE.y/2 - (LogoSize.y / 2), ResourceLoader::GetInstance().getTextureID(TextureID::TEAM_LOGO_TEX), TRUE);
 
 }
 

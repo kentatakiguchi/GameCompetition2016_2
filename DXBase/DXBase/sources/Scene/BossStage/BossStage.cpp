@@ -97,14 +97,14 @@ void BossStage::update() {
 
 	if (world_->is_clear()) {
 
-		if (name_ != "stage03")
-		{
-			nextScene_ = Scene::StageClear;
-		}
-		else
-		{
+		//if (name_ != "stage03")
+		//{
+		//	nextScene_ = Scene::StageClear;
+		//}
+		//else
+		//{
 			nextScene_ = Scene::GameClear;
-		}
+		//}
 	}
 	if (!isEnd_) {
 		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);

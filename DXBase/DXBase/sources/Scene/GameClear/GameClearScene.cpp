@@ -9,6 +9,7 @@ GameClearScene::GameClearScene(SceneDataKeeper* keeper) :
 
 	nextScene[1] = MainMenu;
 
+	textIDs[1] = TextureID::TEXT_MENUBACK_TEX;
 
 	int listNum = 0;
 	listBase.push_back(changeTextList);
@@ -39,9 +40,15 @@ void GameClearScene::start() {
 
 	// ï`âÊêÊâÊñ Çó†âÊñ Ç…ÉZÉbÉg
 	SetDrawScreen(DX_SCREEN_BACK);
+
+	anmer_ = StageClearTextAnm();
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGECLEAR), DX_PLAYTYPE_BACK);
 }
 
 void GameClearScene::update() {
+	
+	anmer_.update_e(Time::GetInstance().deltaTime());
+	
 	sinCount += FlashTempo;
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
@@ -57,7 +64,11 @@ void GameClearScene::update() {
 	targetPoint = min(max(targetPoint, 1), 1);
 
 	
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))	isEnd_ = true;
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))
+	{
+		isEnd_ = true;
+		PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
+	}
 }
 
 void GameClearScene::draw() const {
@@ -65,14 +76,22 @@ void GameClearScene::draw() const {
 	count = 0;
 	heightPoint = 0;
 	int forcount = 0;
+	center = SCREEN_SIZE.x / 2;
+
+	anmer_.draw_e(Vector2(center - 320, textPosList.at(0).y));
+
 	for (auto lists : listBase) {
 		for (auto my : lists) {
+			if (count == 0)break;
+
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			center = SCREEN_SIZE.x / 2;
 			
 			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
-			DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			
+			DrawGraph(center - 320, textPosList.at(count).y, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			heightPoint++;
 		}
@@ -80,7 +99,7 @@ void GameClearScene::draw() const {
 		count++;
 		heightPoint = 0;
 	}
-	DrawGraph(textPoses.at(targetPoint).x, textPoses.at(targetPoint).y, ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
+	//DrawGraph(textPoses.at(targetPoint).x, textPoses.at(targetPoint).y, ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
 
 }
 

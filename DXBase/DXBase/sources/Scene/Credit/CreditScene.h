@@ -16,6 +16,7 @@ public:
 private:
 	int id;
 	int sinCount;
+	int timeCount;
 	int MovieGraphHandle;
 
 	bool isPlay_;
