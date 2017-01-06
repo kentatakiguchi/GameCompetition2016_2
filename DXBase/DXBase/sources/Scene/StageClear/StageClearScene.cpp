@@ -1,6 +1,11 @@
 #include "StageClearScene.h"
 #include"../../ResourceLoader/ResourceLoader.h"
 
+static const int MaxTexSize = 1920;
+static const int SlideSpeed = 10;
+static const float DefBackSpriteChangeTime = 10.f;
+static const int TitleFadeInSpeed = 10;
+
 StageClearScene::StageClearScene(SceneDataKeeper* keeper) :
 	id(0) {
 	isEnd_ = false;
@@ -10,6 +15,7 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper) :
 	nextScene[1] = GamePlay;
 	nextScene[2] = MainMenu;
 	nextScene[3] = BossStage01;
+
 
 
 	//textIDs[0] = TextureID::TEXT_STAGECLEAR_ANM_TEX;
@@ -44,6 +50,18 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper) :
 	textPosList.push_back(textPoses[2]);
 	changeTextList.clear();
 
+
+	currentTitleBackID.push_back(TextureID::TITLE_BACK_TEX);
+	currentTitleBackID.push_back(TextureID::TITLE_BACK_TEX);
+
+	changeTargetChecker.push_back(0);
+	changeTargetChecker.push_back(0);
+
+	baseTitleBackID[0] = TextureID::TITLE_BACK_TEX;
+	baseTitleBackID[1] = TextureID::TITLE_BACK2_TEX;
+	baseTitleBackID[2] = TextureID::TITLE_BACK3_TEX;
+	baseTitleBackID[3] = TextureID::TITLE_BACK4_TEX;
+
 }
 
 StageClearScene::~StageClearScene() {
@@ -54,9 +72,31 @@ void StageClearScene::start() {
 
 	targetPoint = 1;
 	sinCount = 0;
+	slideSize = 0;
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 	// グラフィックのロード
+
+	for (int i = 0; i < 2; i++) {
+		titleBackStageNum[i] = 1;
+		//0が1枚目、1が2枚目で、1枚につきMaxTexSize移動フレーム分の時間をスライドの変更時間に追加する
+		titleBackChangeTime[i] = DefBackSpriteChangeTime + ((MaxTexSize / SlideSpeed) / 60 * (i));
+
+		if(keeper_->getSceneName()=="stage01")
+			currentTitleBackID[i] = TextureID::TITLE_BACK_TEX;
+
+		if (keeper_->getSceneName() == "stage02")
+			currentTitleBackID[i] = TextureID::TITLE_BACK2_TEX;
+
+		if (keeper_->getSceneName() == "stage03")
+			currentTitleBackID[i] = TextureID::TITLE_BACK3_TEX;
+
+		if (keeper_->getSceneName() == "stage04")
+			currentTitleBackID[i] = TextureID::TITLE_BACK4_TEX;
+
+		changeBackChecker[i] = false;
+	}
+
 
 	anmer_ = StageClearTextAnm();
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGECLEAR), DX_PLAYTYPE_BACK);
@@ -69,6 +109,11 @@ void StageClearScene::update() {
 	sinCount += FlashTempo;
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
+
+	slideSize += SlideSpeed;
+	if (slideSize >= MaxTexSize) {
+		slideSize = 0;
+	}
 
 	if (targetPoint != 3)
 	{
@@ -96,6 +141,10 @@ void StageClearScene::update() {
 }
 
 void StageClearScene::draw() const {
+
+	DrawGraph(MaxTexSize - slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[0]), TRUE);
+	DrawGraph(-slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[1]), TRUE);
+
 
 	int strLen, strWidth, center, count,heightPoint;
 	count = 0;

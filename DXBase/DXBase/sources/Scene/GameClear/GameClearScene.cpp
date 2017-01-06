@@ -1,6 +1,11 @@
 #include "GameClearScene.h"
 #include"../../ResourceLoader/ResourceLoader.h"
 
+static const int MaxTexSize = 1920;
+static const int SlideSpeed = 10;
+static const float DefBackSpriteChangeTime = 10.f;
+static const int TitleFadeInSpeed = 10;
+
 GameClearScene::GameClearScene(SceneDataKeeper* keeper) :
 	id(0) {
 	isEnd_ = false;
@@ -28,6 +33,14 @@ GameClearScene::GameClearScene(SceneDataKeeper* keeper) :
 	changeTextList.clear();
 	//OutputDebugString(listBase[0].at(0).c_str());
 
+	currentTitleBackID.push_back(TextureID::TITLE_BACK4_TEX);
+	currentTitleBackID.push_back(TextureID::TITLE_BACK4_TEX);
+
+	changeTargetChecker.push_back(0);
+	changeTargetChecker.push_back(0);
+
+	baseTitleBackID[0] = TextureID::TITLE_BACK4_TEX;
+
 }
 
 GameClearScene::~GameClearScene() {
@@ -37,9 +50,21 @@ GameClearScene::~GameClearScene() {
 void GameClearScene::start() {
 	targetPoint = 1;
 	sinCount = 0;
+	slideSize = 0;
 
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
+
+
+	for (int i = 0; i < 2; i++) {
+		titleBackStageNum[i] = 1;
+		//0が1枚目、1が2枚目で、1枚につきMaxTexSize移動フレーム分の時間をスライドの変更時間に追加する
+		titleBackChangeTime[i] = DefBackSpriteChangeTime + ((MaxTexSize / SlideSpeed) / 60 * (i));
+
+			currentTitleBackID[i] = TextureID::TITLE_BACK4_TEX;
+
+		changeBackChecker[i] = false;
+	}
 
 	anmer_ = StageClearTextAnm();
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGECLEAR), DX_PLAYTYPE_BACK);
@@ -53,6 +78,11 @@ void GameClearScene::update() {
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
 	
+	slideSize += SlideSpeed;
+	if (slideSize >= MaxTexSize) {
+		slideSize = 0;
+	}
+
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
 		targetPoint--;
 		sinCount = 0;
@@ -72,6 +102,10 @@ void GameClearScene::update() {
 }
 
 void GameClearScene::draw() const {
+
+	DrawGraph(MaxTexSize - slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[0]), TRUE);
+	DrawGraph(-slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[1]), TRUE);
+
 	int strLen, strWidth, center, count, heightPoint;
 	count = 0;
 	heightPoint = 0;

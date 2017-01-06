@@ -21,12 +21,26 @@ private:
 	int targetPoint;
 	int sinCount;
 
+	int slideSize;
+
 	std::map<int, Scene> nextScene;
 	std::map<int, Vector2> textPoses;
 
 	std::map<int, TextureID> textIDs;
 
 	StageClearTextAnm anmer_;
+
+	std::map<int, int> titleBackStageNum;
+	//背景を変更する時間を設定する
+	std::map<int, float> titleBackChangeTime;
+	//各番号で表示される画像のIDをセットしておく
+	std::map<int, TextureID> baseTitleBackID;
+	//現在の背景画像のID
+	std::vector<TextureID> currentTitleBackID;
+	//背景画像を変更するタイミングを決める
+	std::map<int, bool> changeBackChecker;
+	//背景画像の移動先を決める
+	std::vector<int> changeTargetChecker;
 
 };
 
