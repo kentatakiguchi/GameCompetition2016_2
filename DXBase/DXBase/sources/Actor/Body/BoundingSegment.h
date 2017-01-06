@@ -17,12 +17,15 @@ public:
 		Vector2 lengthVect = CreateVector(component_.point[0], component_.point[1]);
 		return lengthVect.Length();
 	}
+	virtual bool intersects( IBodyPtr & other)  override {
+		return other->intersects(*this); 
+	}
 	//使用しない
-	virtual bool intersects(BoundingSphere& other) override { return false; }
-	//使用しない
-	virtual bool intersects(Capsule& other) override { return false; }
-	//使用しない
-	virtual bool intersects(Model& other) override { return false; }
+	//virtual bool intersects(BoundingSphere& other) override { return false; }
+	////使用しない
+	//virtual bool intersects(Capsule& other) override { return false; }
+	////使用しない
+	//virtual bool intersects(Model& other) override { return false; }
 	// 自身(Box)と相手(Box)の判定 other:判定したい相手(BoundingBox) return:判定結果(bool)
 	virtual bool intersects(BoundingBox & other) override;
 	// 自身(Box)と相手(Capsule)の判定 other:判定したい相手(BoundingCapsule) return:判定結果(bool)
@@ -41,8 +44,12 @@ public:
 	virtual void draw() const override;
 	virtual void draw(Matrix inv) const override;
 	virtual void draw(int spriteID,Matrix inv) const override;
+	virtual void draw(int spriteID, int rotation, Matrix inv)const override {
+		draw(spriteID,inv);
+	}
+
 	//自身(Box)を移動する position:移動量(Vector2) return:移動した結果(BoundingBox)
-	BoundingSegment translate(const Vector2& position) const;
+	virtual IBodyPtr translate(const Vector2& position) const;
 	//自身(Box)を変形する topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2) return:変形した結果(BoundingBox)
 	BoundingSegment transform(const Vector2& startPoint, const Vector2& endPoint) const;
 private:
@@ -70,17 +77,7 @@ private:
 
 
 public:
-	struct Component {
-		// [0]:始点 [1]:終点
-		Vector2 point[2];
-
-		Component(Vector2 startPoint, Vector2 endPoint) {
-			point[0] = startPoint;
-			point[1] = endPoint;
-		}
-	};
 	//線分を生成するための2点を保存する
-	Component component_;
 
 	//intersectsを使うかどうか true:判定する false:判定しない
 	bool enabled;

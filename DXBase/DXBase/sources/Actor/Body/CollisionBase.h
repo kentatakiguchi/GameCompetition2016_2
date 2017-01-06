@@ -69,16 +69,19 @@ public:
 	//判定を利用するかどうかを変更する
 	void enabled(bool change);
 private:
+
+	IBodyPtr body_;
+
 	//利用している判定の種類
 	CollisionType type_;
 	//四角判定
-	BoundingBox box_;
-	//カプセル判定
-	BoundingCapsule capsule_;
-	//円判定
-	BoundingCircle circle_;
-	//線分判定
-	BoundingSegment segment_;
+	//BoundingBox box_;
+	////カプセル判定
+	//BoundingCapsule capsule_;
+	////円判定
+	//BoundingCircle circle_;
+	////線分判定
+	//BoundingSegment segment_;
 
 	Vector2 movePoint[4];
 	Vector2 position_;

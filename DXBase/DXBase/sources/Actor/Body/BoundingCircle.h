@@ -14,12 +14,15 @@ public:
 	//カプセルの判定を作成する(判定を行わない場合)
 	BoundingCircle(float radius = -1);
 	float getRadius() { return component_.radius; }
+	virtual bool intersects( IBodyPtr & other)  override {
+		return other->intersects(*this); 
+	}
 	//使用しない
-	virtual bool intersects(BoundingSphere& other) { return false; }
-	//使用しない
-	virtual bool intersects(Capsule& other) { return false; }
-	//使用しない
-	virtual bool intersects(Model& other) { return false; }
+	//virtual bool intersects(BoundingSphere& other) { return false; }
+	////使用しない
+	//virtual bool intersects(Capsule& other) { return false; }
+	////使用しない
+	//virtual bool intersects(Model& other) { return false; }
 	// 自身(Circle)と相手(Box)の判定 other:判定したい相手(BoundingBox) return:判定結果(bool)
 	virtual bool intersects(BoundingBox & other) override;
 	// 自身(Circle)と相手(Capsule)の判定 other:判定したい相手(BoundingCapsule) return:判定結果(bool)
@@ -35,12 +38,19 @@ public:
 	//使用しない
 	virtual void debug() const override;
 	//自身(Circle)を移動する position:移動量(Vector2) return:移動した結果(BoundingCircle)
-	BoundingCircle translate(const Vector2& position) const;
+	virtual IBodyPtr translate(const Vector2& position) const;
 	//自身(Box)を変形する center:中心点(Vector2) circleRadius:半径(float) return:変形した結果(BoundingCircle)
 	BoundingCircle transform(Vector2 center, float circleRadius) const;
 	//判定の表示(デバッグ用)
 	virtual void draw() const override;
 	virtual void draw(Matrix inv) const override;
+	virtual void draw(int spriteID, Matrix inv)const override {
+		draw(inv);
+	}
+	virtual void draw(int spriteID, int rotation, Matrix inv)const override {
+		draw(inv);
+	}
+
 private:
 	Vector2& CreateVector(const Vector2& p, const Vector2& q){
 		return Vector2(q.x - p.x, q.y - p.y);
@@ -61,19 +71,6 @@ private:
 	bool isIntersectOtherRayToThisLineBox(BoundingBox & other, int point1, int point2);
 	bool isIntersectThisRayToOtherLineBox(BoundingBox & other, int point1, int point2);
 public:
-	struct Component {
-		// [0]:始点
-		Vector2 point[1];
-		//半径
-		float radius;
-
-		Component(Vector2 center,float capsuleRadius) {
-			point[0] = center;
-			radius = capsuleRadius;
-		}
-	};
-
-	Component component_;
 
 	bool enabled;
 

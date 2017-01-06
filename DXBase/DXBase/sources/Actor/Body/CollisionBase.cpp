@@ -1,29 +1,34 @@
 #include "CollisionBase.h"
 #include"../../Define.h"
 
-CollisionBase::CollisionBase() :box_(), capsule_(), circle_(), segment_(), type_(NoneCol), enabled_(true)
+CollisionBase::CollisionBase() :body_(std::make_shared<BoundingBox>())//,box_(), capsule_(), circle_(), segment_()
+, type_(NoneCol), enabled_(false)
 {
 }
 
 CollisionBase::CollisionBase(const Vector2 & topLeft, const Vector2 & topRight, const Vector2 & bottomLeft, const Vector2 & bottomRight) :
-	box_(topLeft, topRight, bottomLeft, bottomRight), capsule_(), segment_(), circle_(), type_(BoxCol), enabled_(true)
+	body_(std::make_shared<BoundingBox>(topLeft, topRight, bottomLeft, bottomRight))//,box_(topLeft, topRight, bottomLeft, bottomRight), capsule_(), segment_(), circle_()
+	, type_(BoxCol), enabled_(true)
 {
 
 }
 
 CollisionBase::CollisionBase(Vector2& startPoint, Vector2& endPoint, float capsuleRadius) :
-	box_(), capsule_(startPoint, endPoint, capsuleRadius), segment_(), circle_(), type_(CapsuleCol), enabled_(true)
+	body_(std::make_shared<BoundingCapsule>(startPoint, endPoint, capsuleRadius))//, box_(), capsule_(startPoint, endPoint, capsuleRadius), segment_(), circle_()
+	, type_(CapsuleCol), enabled_(true)
 {
 
 }
 
 CollisionBase::CollisionBase(Vector2 & center, float circleRadius) :
-	circle_(center, circleRadius), box_(), capsule_(), segment_(), type_(CircleCol), enabled_(true)
+	body_(std::make_shared<BoundingCircle>(center, circleRadius))//,circle_(center, circleRadius), box_(), capsule_(), segment_()
+	, type_(CircleCol), enabled_(true)
 {
 }
 
 CollisionBase::CollisionBase(Vector2 & startPoint, Vector2 & endPoint) :
-	box_(), capsule_(), segment_(startPoint, endPoint), circle_(), type_(SegmentCol), enabled_(true)
+	body_(std::make_shared<BoundingSegment>(startPoint, endPoint))//, box_(), capsule_(), segment_(startPoint, endPoint), circle_()
+	, type_(SegmentCol), enabled_(true)
 {
 
 }
@@ -32,65 +37,80 @@ void CollisionBase::setPosition(Vector2 position)
 {
 	position_ = position;
 	previousPosition_ = position;
-	switch (type_)
+
+	body_->setPosition(position);
+
+	movePoint[0] = position - body_->component_.point[0];
+	movePoint[1] = position - body_->component_.point[1];
+	movePoint[2] = position - body_->component_.point[2];
+	movePoint[3] = position - body_->component_.point[3];
+
+	radius_ = body_->component_.radius;
+
+	for (int i = 0; i < 4; i++)
 	{
-	case BoxCol:
-	{
-		box_.position_ = position;
-		box_.previousPosition_ = position;
-
-		movePoint[0] = position - box_.component_.point[0];
-		movePoint[1] = position - box_.component_.point[1];
-		movePoint[2] = position - box_.component_.point[2];
-		movePoint[3] = position - box_.component_.point[3];
-
-		for (int i = 0; i < 4; i++)
-		{
-			myvect[i] = movePoint[i];
-		}
-
-		//leng[0] = (movePoint[0] + testVect[0]).Length();
-		//leng[1] = (movePoint[1] + testVect[1]).Length();
-		//leng[2] = (movePoint[2] + testVect[2]).Length();
-		//leng[3] = (movePoint[3] + testVect[3]).Length();
-
-		break;
+		myvect[i] = movePoint[i];
 	}
-	case CapsuleCol:
-	{
-		capsule_.position_ = position;
-		capsule_.previousPosition_ = position;
 
-		movePoint[0] = position - capsule_.component_.point[0];
-		movePoint[1] = position - capsule_.component_.point[1];
-		radius_ = capsule_.component_.radius;
-		break;
-	}
-	case CircleCol:
-	{
-		circle_.position_ = position;
-		circle_.previousPosition_ = position;
+	//switch (type_)
+	//{
+	//case BoxCol:
+	//{
+	//	box_.position_ = position;
+	//	box_.previousPosition_ = position;
 
-		radius_ = circle_.component_.radius;
-		break;
-	}
-	case SegmentCol:
-	{
-		segment_.position_ = position;
-		segment_.previousPosition_ = position;
+	//	movePoint[0] = position - box_.component_.point[0];
+	//	movePoint[1] = position - box_.component_.point[1];
+	//	movePoint[2] = position - box_.component_.point[2];
+	//	movePoint[3] = position - box_.component_.point[3];
 
-		movePoint[0] = position - segment_.component_.point[0];
-		movePoint[1] = position - segment_.component_.point[1];
+	//	for (int i = 0; i < 4; i++)
+	//	{
+	//		myvect[i] = movePoint[i];
+	//	}
 
-		break;
-	}
-	case NoneCol:
-	{	break;
-	}
-	default:
-	{	break;
-	}
-	}
+	//	//leng[0] = (movePoint[0] + testVect[0]).Length();
+	//	//leng[1] = (movePoint[1] + testVect[1]).Length();
+	//	//leng[2] = (movePoint[2] + testVect[2]).Length();
+	//	//leng[3] = (movePoint[3] + testVect[3]).Length();
+
+	//	break;
+	//}
+	//case CapsuleCol:
+	//{
+	//	capsule_.position_ = position;
+	//	capsule_.previousPosition_ = position;
+
+	//	movePoint[0] = position - capsule_.component_.point[0];
+	//	movePoint[1] = position - capsule_.component_.point[1];
+	//	radius_ = capsule_.component_.radius;
+	//	break;
+	//}
+	//case CircleCol:
+	//{
+	//	circle_.position_ = position;
+	//	circle_.previousPosition_ = position;
+
+	//	radius_ = circle_.component_.radius;
+	//	break;
+	//}
+	//case SegmentCol:
+	//{
+	//	segment_.position_ = position;
+	//	segment_.previousPosition_ = position;
+
+	//	movePoint[0] = position - segment_.component_.point[0];
+	//	movePoint[1] = position - segment_.component_.point[1];
+
+	//	break;
+	//}
+	//case NoneCol:
+	//{	break;
+	//}
+	//default:
+	//{	break;
+	//}
+	//}
 }
 Vector2 CollisionBase::setSegmentPoint(Vector2& position, Vector2 & startPoint, Vector2 & endPoint)
 {
@@ -212,251 +232,270 @@ void CollisionBase::update(Vector2 position)
 
 void CollisionBase::draw(Matrix inv) const
 {
-	switch (type_)
-	{
-	case BoxCol:
-		box_.draw(inv);
-		break;
-	case CapsuleCol:
-		capsule_.draw(inv);
-		break;
-	case CircleCol:
-		circle_.draw(inv);
-		break;
-	case SegmentCol:
-		segment_.draw(inv);
-		break;
-	case NoneCol:
-		break;
-	default:
-		break;
-	}
+	body_->draw(inv);
+	//switch (type_)
+	//{
+	//case BoxCol:
+	//	box_.draw(inv);
+	//	break;
+	//case CapsuleCol:
+	//	capsule_.draw(inv);
+	//	break;
+	//case CircleCol:
+	//	circle_.draw(inv);
+	//	break;
+	//case SegmentCol:
+	//	segment_.draw(inv);
+	//	break;
+	//case NoneCol:
+	//	break;
+	//default:
+	//	break;
+	//}
 }
 
 void CollisionBase::draw(int spriteID, Matrix inv) const
 {
-	switch (type_)
-	{
-	case BoxCol:
-		box_.draw(spriteID, inv);
-		break;
-	case CapsuleCol:
-		capsule_.draw(inv);
-		break;
-	case CircleCol:
-		circle_.draw(inv);
-		break;
-	case SegmentCol:
-		segment_.draw(spriteID, inv);
-		break;
-	case NoneCol:
-		break;
-	default:
-		break;
-	}
+	body_->draw(spriteID, inv);
+
+	//switch (type_)
+	//{
+	//case BoxCol:
+	//	box_.draw(spriteID, inv);
+	//	break;
+	//case CapsuleCol:
+	//	capsule_.draw(inv);
+	//	break;
+	//case CircleCol:
+	//	circle_.draw(inv);
+	//	break;
+	//case SegmentCol:
+	//	segment_.draw(spriteID, inv);
+	//	break;
+	//case NoneCol:
+	//	break;
+	//default:
+	//	break;
+	//}
 
 }
 void CollisionBase::draw(int spriteID, int rotation, Matrix inv) const
 {
-	switch (type_)
-	{
-	case BoxCol:
-	{	box_.draw(spriteID, rotation, inv);
-	break;
-	}
-	case CapsuleCol:
-	{	capsule_.draw(inv);
-	break;
-	}
-	case CircleCol:
-	{	circle_.draw(inv);
-	break;
-	}
-	case SegmentCol:
-	{		segment_.draw(inv);
-	break;
-	}
-	case NoneCol:
-	{	Vector3 pos = Vector3(position_.x, position_.y)*inv;
-	DrawTurnGraph(pos.x, pos.y, spriteID, rotation);
-	break;
-	}
-	default:
-		break;
-	}
+	body_->draw(spriteID, rotation, inv);
+
+	//switch (type_)
+	//{
+	//case BoxCol:
+	//{	box_.draw(spriteID, rotation, inv);
+	//break;
+	//}
+	//case CapsuleCol:
+	//{	capsule_.draw(inv);
+	//break;
+	//}
+	//case CircleCol:
+	//{	circle_.draw(inv);
+	//break;
+	//}
+	//case SegmentCol:
+	//{		segment_.draw(inv);
+	//break;
+	//}
+	//case NoneCol:
+	//{	Vector3 pos = Vector3(position_.x, position_.y)*inv;
+	//DrawTurnGraph(pos.x, pos.y, spriteID, rotation);
+	//break;
+	//}
+	//default:
+	//	break;
+	//}
 
 }
 
 void CollisionBase::transform(Vector2 & topLeft, Vector2 & topRight, Vector2 & bottomLeft, Vector2 & bottomRight)
 {
-	box_ = box_.transform(topLeft, topRight, bottomLeft, bottomRight);
+	body_ = std::make_shared<BoundingBox>(dynamic_cast<BoundingBox*>(body_.get())->transform(topLeft, topRight, bottomLeft, bottomRight));
+	//box_ = box_.transform(topLeft, topRight, bottomLeft, bottomRight);
 }
 
 void CollisionBase::transform(Vector2 & startPoint, Vector2 & endPoint, float capsuleRadius)
 {
-	capsule_ = capsule_.transform(startPoint, endPoint, capsuleRadius);
+	body_ = std::make_shared<BoundingCapsule>(dynamic_cast<BoundingCapsule*>(body_.get())->transform(startPoint, endPoint, capsuleRadius));
+	//capsule_ = capsule_.transform(startPoint, endPoint, capsuleRadius);
 }
 
 void CollisionBase::transform(Vector2 & center, float circleRadius)
 {
-	circle_ = circle_.transform(center, circleRadius);
+	body_ = std::make_shared<BoundingCircle>(dynamic_cast<BoundingCircle*>(body_.get())->transform(center, circleRadius));
+	//circle_ = circle_.transform(center, circleRadius);
 }
 
 void CollisionBase::transform(Vector2 & startPoint, Vector2 & endPoint)
 {
-	segment_ = segment_.transform(startPoint, endPoint);
+	body_ = std::make_shared<BoundingSegment>(dynamic_cast<BoundingSegment*>(body_.get())->transform(startPoint, endPoint));
+	//segment_ = segment_.transform(startPoint, endPoint);
 }
 
 void CollisionBase::MovePos(Vector2 & position)
 {
 	previousPosition_ = position_;
 	position_ = position;
+
+
 	switch (type_)
 	{
 	case BoxCol:
-		box_ = BoundingBox(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]), Vector2(position + movePoint[2]), Vector2(position + movePoint[3]));
-		box_.previousPosition_ = previousPosition_;
-		box_.position_ = position;
+		body_ = std::make_shared<BoundingBox>(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]), Vector2(position + movePoint[2]), Vector2(position + movePoint[3]));
+		//box_ = BoundingBox(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]), Vector2(position + movePoint[2]), Vector2(position + movePoint[3]));
+		//box_.previousPosition_ = previousPosition_;
+		//box_.position_ = position;
 		break;
 	case CapsuleCol:
-		capsule_ = BoundingCapsule(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]), radius_);
-		capsule_.previousPosition_ = previousPosition_;
-		capsule_.position_ = position;
+		body_ = std::make_shared<BoundingCapsule>(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]), radius_);
+		//capsule_.previousPosition_ = previousPosition_;
+		//capsule_.position_ = position;
 		break;
 	case CircleCol:
-		circle_ = BoundingCircle(position, radius_);
-		circle_.previousPosition_ = previousPosition_;
-		circle_.position_ = position;
+		body_ = std::make_shared<BoundingCircle>(position, radius_);
+		//circle_.previousPosition_ = previousPosition_;
+		//circle_.position_ = position;
 		break;
 	case SegmentCol:
-		segment_ = BoundingSegment(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]));
-		segment_.previousPosition_ = previousPosition_;
-		segment_.position_ = position;
+		body_ = std::make_shared<BoundingSegment>(Vector2(position + movePoint[0]), Vector2(position + movePoint[1]));
+		//segment_.previousPosition_ = previousPosition_;
+		//segment_.position_ = position;
 		break;
 	case NoneCol:
 		break;
 	default:
 		break;
 	}
+	body_->previousPosition_ = previousPosition_;
+	body_->position_ = position;
+
 }
 
 void CollisionBase::translate(Vector2 position)
 {
-	switch (type_)
-	{
-	case BoxCol:
-		box_ = box_.translate(position);
-		break;
-	case CapsuleCol:
-		capsule_ = capsule_.translate(position);
-		break;
-	case CircleCol:
-		circle_ = circle_.translate(position);
-		break;
-	case SegmentCol:
-		segment_ = segment_.translate(position);
-		break;
-	case NoneCol:
-		break;
-	default:
-		break;
-	}
+	body_->translate(position);
+	//switch (type_)
+	//{
+	//case BoxCol:
+	//	box_ = box_.translate(position);
+	//	break;
+	//case CapsuleCol:
+	//	capsule_ = capsule_.translate(position);
+	//	break;
+	//case CircleCol:
+	//	circle_ = circle_.translate(position);
+	//	break;
+	//case SegmentCol:
+	//	segment_ = segment_.translate(position);
+	//	break;
+	//case NoneCol:
+	//	break;
+	//default:
+	//	break;
+	//}
 }
 
 bool CollisionBase::intersects(CollisionBase & other)
 {
 	if (!enabled_)return false;
-	switch (type_)
-	{
-	case BoxCol:
-		switch (other.type_)
-		{
-		case BoxCol:
-			return box_.intersects(other.box_);
-			break;
-		case CapsuleCol:
-			return box_.intersects(other.capsule_);
-			break;
-		case CircleCol:
-			return box_.intersects(other.circle_);
-			break;
-		case SegmentCol:
-			return box_.intersects(other.segment_);
-			break;
-		case NoneCol:
-			break;
-		default:
-			break;
-		}
-		break;
-	case CapsuleCol:
-		switch (other.type_)
-		{
-		case BoxCol:
-			return capsule_.intersects(other.box_);
-			break;
-		case CapsuleCol:
-			return capsule_.intersects(other.capsule_);
-			break;
-		case CircleCol:
-			return capsule_.intersects(other.circle_);
-			break;
-		case SegmentCol:
-			return capsule_.intersects(other.segment_);
-			break;
-		case NoneCol:
-			break;
-		default:
-			break;
-		}
-		break;
-	case CircleCol:
-		switch (other.type_)
-		{
-		case BoxCol:
-			return circle_.intersects(other.box_);
-			break;
-		case CapsuleCol:
-			return circle_.intersects(other.capsule_);
-			break;
-		case CircleCol:
-			return circle_.intersects(other.circle_);
-			break;
-		case SegmentCol:
-			return circle_.intersects(other.segment_);
-			break;
-		case NoneCol:
-			break;
-		default:
-			break;
-		}
-		break;
-	case SegmentCol:
-		switch (other.type_)
-		{
-		case BoxCol:
-			return segment_.intersects(other.box_);
-			break;
-		case CapsuleCol:
-			return segment_.intersects(other.capsule_);
-			break;
-		case CircleCol:
-			return segment_.intersects(other.circle_);
-			break;
-		case SegmentCol:
-			return segment_.intersects(other.segment_);
-			break;
-		case NoneCol:
-			break;
-		default:
-			break;
-		}
-		break;
-	case NoneCol:
-		break;
-	default:
-		break;
-	}
+
+
+	return body_->intersects(other.body_);
+	//switch (type_)
+	//{
+	//case BoxCol:
+	//	switch (other.type_)
+	//	{
+	//	case BoxCol:
+	//		return box_.intersects(other.box_);
+	//		break;
+	//	case CapsuleCol:
+	//		return box_.intersects(other.capsule_);
+	//		break;
+	//	case CircleCol:
+	//		return box_.intersects(other.circle_);
+	//		break;
+	//	case SegmentCol:
+	//		return box_.intersects(other.segment_);
+	//		break;
+	//	case NoneCol:
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//	break;
+	//case CapsuleCol:
+	//	switch (other.type_)
+	//	{
+	//	case BoxCol:
+	//		return capsule_.intersects(other.box_);
+	//		break;
+	//	case CapsuleCol:
+	//		return capsule_.intersects(other.capsule_);
+	//		break;
+	//	case CircleCol:
+	//		return capsule_.intersects(other.circle_);
+	//		break;
+	//	case SegmentCol:
+	//		return capsule_.intersects(other.segment_);
+	//		break;
+	//	case NoneCol:
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//	break;
+	//case CircleCol:
+	//	switch (other.type_)
+	//	{
+	//	case BoxCol:
+	//		return circle_.intersects(other.box_);
+	//		break;
+	//	case CapsuleCol:
+	//		return circle_.intersects(other.capsule_);
+	//		break;
+	//	case CircleCol:
+	//		return circle_.intersects(other.circle_);
+	//		break;
+	//	case SegmentCol:
+	//		return circle_.intersects(other.segment_);
+	//		break;
+	//	case NoneCol:
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//	break;
+	//case SegmentCol:
+	//	switch (other.type_)
+	//	{
+	//	case BoxCol:
+	//		return segment_.intersects(other.box_);
+	//		break;
+	//	case CapsuleCol:
+	//		return segment_.intersects(other.capsule_);
+	//		break;
+	//	case CircleCol:
+	//		return segment_.intersects(other.circle_);
+	//		break;
+	//	case SegmentCol:
+	//		return segment_.intersects(other.segment_);
+	//		break;
+	//	case NoneCol:
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//	break;
+	//case NoneCol:
+	//	break;
+	//default:
+	//	break;
+	//}
 	return false;
 }
 
@@ -467,22 +506,25 @@ CollisionType CollisionBase::GetType() const
 
 BoundingBox CollisionBase::GetBox() const
 {
-	return box_;
+	if (type_ != BoxCol) return BoundingBox();
+	return *dynamic_cast<BoundingBox*>(body_.get());
 }
 
 BoundingCapsule CollisionBase::GetCapsule() const
 {
-	return capsule_;
+	return *dynamic_cast<BoundingCapsule*>(body_.get());
 }
 
 BoundingCircle CollisionBase::GetCircle() const
 {
-	return circle_;
+	return *dynamic_cast<BoundingCircle*>(body_.get());
+	//return circle_;
 }
 
 BoundingSegment CollisionBase::GetSegment() const
 {
-	return segment_;
+	return *dynamic_cast<BoundingSegment*>(body_.get());
+	//return segment_;
 }
 
 Vector2 CollisionBase::GetColliderVelocity()

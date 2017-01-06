@@ -4,20 +4,26 @@
 #include"BoundingCircle.h"
 
 BoundingCircle::BoundingCircle(Vector2 center, float circleRadius) :
-	component_(center, circleRadius), enabled(true) {
+	enabled(true) {
+	component_=Component(center, circleRadius);
+	bodyenub_ = false;
 }
 
 BoundingCircle::BoundingCircle(Vector2 center, float circleRadius, bool isEnabled) :
-	component_(center, circleRadius), enabled(isEnabled)
+	enabled(isEnabled)
 {
+	component_ = Component(center, circleRadius);
+	bodyenub_ = false;
 }
 
 BoundingCircle::BoundingCircle(float radius) :
 	BoundingCircle({ 0.0f, 0.0f }, radius, false) {
+
+	bodyenub_ = false;
 }
 
-BoundingCircle BoundingCircle::translate(const Vector2& position) const {
-	return BoundingCircle(component_.point[0] + position, component_.radius, enabled);
+IBodyPtr BoundingCircle::translate(const Vector2& position) const {
+	return std::make_shared<BoundingCircle>(component_.point[0] + position, component_.radius, enabled);
 }
 
 BoundingCircle BoundingCircle::transform(Vector2 center, float capsuleRadius) const {

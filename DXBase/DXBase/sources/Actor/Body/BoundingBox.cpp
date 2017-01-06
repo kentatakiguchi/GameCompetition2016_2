@@ -3,21 +3,25 @@
 #include"BoundingCircle.h"
 #include"BoundingCapsule.h"
 BoundingBox::BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight):
-	component_(topLeft,topRight,bottomLeft,bottomRight),enabled(true) {
-
+	enabled(true) {
+	component_ = Component(topLeft, topRight, bottomLeft, bottomRight);
+	bodyenub_ = false;
 }
 BoundingBox::BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight,bool isEnabled) :
-	component_(topLeft, topRight, bottomLeft, bottomRight), enabled(isEnabled) {
+	enabled(isEnabled) {
+	component_ = Component(topLeft, topRight, bottomLeft, bottomRight);
+	bodyenub_ = false;
 
 }
 BoundingBox::BoundingBox() :
-	component_({ 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f }),enabled(false) {
-	
+	enabled(false) {
+	component_ = Component(0, 0, 0, 0);
+	bodyenub_ = false;
 }
 
-BoundingBox BoundingBox::translate(const Vector2& position) const {
+IBodyPtr BoundingBox::translate(const Vector2& position) const {
 
-	return BoundingBox( component_.point[0] + position,
+	return std::make_shared<BoundingBox>( component_.point[0] + position,
 						component_.point[1] + position,
 						component_.point[2] + position,
 						component_.point[3] + position,

@@ -4,20 +4,25 @@
 #include"BoundingCircle.h"
 
 BoundingCapsule::BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) :
-	component_(startPoint, endPoint, capsuleRadius),enabled(true) {
+	enabled(true) {
+	component_=Component(startPoint, endPoint, capsuleRadius);
+	bodyenub_ = false;
 }
 
 BoundingCapsule::BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius, bool isEnabled):
-	component_(startPoint, endPoint, capsuleRadius),enabled(isEnabled)
+	enabled(isEnabled)
 {
+	component_ = Component(startPoint, endPoint, capsuleRadius);
+	bodyenub_ = false;
 }
 
 BoundingCapsule::BoundingCapsule(float radius) :
 	BoundingCapsule({ 0.0f, 0.0f }, { 0.0f, 0.0f }, radius,false) {
+	bodyenub_ = false;
 }
 
-BoundingCapsule BoundingCapsule::translate(const Vector2& position) const {
-	return BoundingCapsule(component_.point[0] + position,
+IBodyPtr BoundingCapsule::translate(const Vector2& position) const {
+	return std::make_shared<BoundingCapsule>(component_.point[0] + position,
 		component_.point[1] + position,component_.radius,enabled);
 }
 

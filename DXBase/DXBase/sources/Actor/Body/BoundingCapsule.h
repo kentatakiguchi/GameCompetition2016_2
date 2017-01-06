@@ -17,9 +17,14 @@ public:
 		Vector2 lengthVect = CreateVector(component_.point[0], component_.point[1]);
 		return lengthVect.Length();
 	}
-	virtual bool intersects(BoundingSphere& other) { return false; }
-	virtual bool intersects(Capsule& other) { return false; }
-	virtual bool intersects(Model& other) { return false; }
+	virtual bool intersects( IBodyPtr & other)  override
+	{
+		return other->intersects(*this); 
+	}
+
+	//virtual bool intersects(BoundingSphere& other) { return false; }
+	//virtual bool intersects(Capsule& other) { return false; }
+	//virtual bool intersects(Model& other) { return false; }
 
 	// Body を介して継承されました
 	virtual bool intersects(BoundingBox & other) override;
@@ -35,12 +40,18 @@ public:
 
 	virtual void debug() const override;
 
-	BoundingCapsule translate(const Vector2& position) const;
+	virtual IBodyPtr translate(const Vector2& position) const;
 
 	BoundingCapsule transform(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) const;
 
 	virtual void draw() const override;
 	virtual void draw(Matrix inv) const override;
+	virtual void draw(int spriteID, Matrix inv)const override {
+		draw(inv);
+	}
+	virtual void draw(int spriteID,int rotation, Matrix inv)const override {
+		draw(inv);
+	}
 private:
 	Vector2 CreateVector(const Vector2& p, const Vector2& q) {
 		return Vector2(q.x - p.x, q.y - p.y);
@@ -89,20 +100,6 @@ private:
 	bool isIntersectOtherRayToThisLineBox(BoundingBox & other,int point1,int point2);
 	bool isIntersectThisRayToOtherLineBox(BoundingBox & other,int point1,int point2);
 public:
-	struct Component {
-		// [0]:始点 [1]:終点
-		Vector2 point[2];
-		//半径
-		float radius;
-
-		Component(Vector2 startPoint, Vector2 endPoint,float capsuleRadius) {
-			point[0] = startPoint;
-			point[1] = endPoint;
-			radius = capsuleRadius;
-		}
-	};
-
-	Component component_;
 
 	bool enabled;
 

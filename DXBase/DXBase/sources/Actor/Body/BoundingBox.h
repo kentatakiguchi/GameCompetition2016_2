@@ -30,12 +30,16 @@ public:
 	Vector2 getSize() {
 		return Vector2(getWidth(), getHeight());
 	}
+	virtual bool intersects( IBodyPtr & other)  override { 
+		return other->intersects(*this);
+		//return intersects(other);
+	}//otherがBodyになっている
 	//使用しない
-	virtual bool intersects(BoundingSphere& other) override{ return false; }
-	//使用しない
-	virtual bool intersects(Capsule& other) override { return false; }
-	//使用しない
-	virtual bool intersects(Model& other) override { return false; }
+	//virtual bool intersects(BoundingSphere& other) override{ return false; }
+	////使用しない
+	//virtual bool intersects(Capsule& other) override { return false; }
+	////使用しない
+	//virtual bool intersects(Model& other) override { return false; }
 	// 自身(Box)と相手(Box)の判定 other:判定したい相手(BoundingBox) return:判定結果(bool)
 	virtual bool intersects(BoundingBox & other) override;
 	// 自身(Box)と相手(Capsule)の判定 other:判定したい相手(BoundingCapsule) return:判定結果(bool)
@@ -57,7 +61,7 @@ public:
 		return BoundingBox();
 	}
 	//自身(Box)を移動する position:移動量(Vector2) return:移動した結果(BoundingBox)
-	BoundingBox translate(const Vector2& position) const;
+	virtual IBodyPtr translate(const Vector2& position) const;
 	//自身(Box)を変形する topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2) return:変形した結果(BoundingBox)
 	BoundingBox transform(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight) const;
 private:
@@ -82,19 +86,6 @@ private:
 
 
 public:
-	struct Component {
-		// [0]:左上 [1]:右上 [2]:左下 [3]:右下
-		Vector2 point[4];
-
-		Component(Vector2 topLeft, Vector2 topRight, Vector2 bottomLeft, Vector2 bottomRight) {
-			point[0] = topLeft;
-			point[1] = topRight;
-			point[2] = bottomLeft;
-			point[3] = bottomRight;
-		}
-	};
-	//四角を生成するための4点を保存する
-	Component component_;
 
 	//intersectsを使うかどうか true:判定する false:判定しない
 	bool enabled;

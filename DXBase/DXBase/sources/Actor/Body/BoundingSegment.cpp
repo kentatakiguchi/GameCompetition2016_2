@@ -4,21 +4,26 @@
 #include"BoundingCircle.h"
 
 BoundingSegment::BoundingSegment(const Vector2& startPoint, const Vector2& endPoint) :
-	component_(startPoint, endPoint), enabled(true) {
-
+	enabled(true) {
+	component_=Component(startPoint, endPoint);
+	bodyenub_ = false;
 }
 BoundingSegment::BoundingSegment(const Vector2& startPoint, const Vector2& endPoint, bool isEnabled) :
-	component_(startPoint,endPoint), enabled(isEnabled) {
+	enabled(isEnabled) {
+	component_ = Component(startPoint, endPoint);
+	bodyenub_ = false;
 
 }
 BoundingSegment::BoundingSegment() :
-	component_({ 0.0f, 0.0f }, { 0.0f, 0.0f }), enabled(false) {
+	enabled(false) {
+	component_ = Component(0,0);
+	bodyenub_ = false;
 
 }
 
-BoundingSegment BoundingSegment::translate(const Vector2& position) const {
+IBodyPtr BoundingSegment::translate(const Vector2& position) const {
 
-	return BoundingSegment(component_.point[0] + position,
+	return std::make_shared<BoundingSegment>(component_.point[0] + position,
 		component_.point[1] + position,
 		enabled);
 }
