@@ -253,4 +253,5 @@ void LoadingScene::load_se_res(){
 
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_HAKKEN, "./resources/sounds/enemy_hakkenn.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_WIND, "./resources/sounds/boss/boss_wind.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_POKO, "./resources/sounds/boss/boss_poko.mp3");
 }

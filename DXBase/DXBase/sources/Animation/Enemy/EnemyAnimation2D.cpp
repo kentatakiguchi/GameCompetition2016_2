@@ -3,7 +3,8 @@
 EnemyAnimation2D::EnemyAnimation2D() : 
 	prevFrame_(0),
 	isLoop_(true),
-	isStop_(false){}
+	isStop_(false),
+	isTurn_(false){}
 
 EnemyAnimation2D::~EnemyAnimation2D()
 {
@@ -12,7 +13,8 @@ EnemyAnimation2D::~EnemyAnimation2D()
 
 void EnemyAnimation2D::update(float deltaTime)
 {
-	back_to_pre_motion();
+	// back_to_pre_motion();
+	preMotion();
 	// アニメーションのタイムが一周したら、止める
 	if (isStop_)return;
 
@@ -103,14 +105,29 @@ bool EnemyAnimation2D::isEndAnimation()
 	return end_anim();
 }
 
-// アニメーションのテクスチャを反転します
-void EnemyAnimation2D::turnAnimation(int id, int direction)
+// 振り向きアニメーションを行って、画像を反転します
+void EnemyAnimation2D::turnAnimation(int id, float direction)
 {
+	/*isLoop_ = true;
+	isStop_ = false;*/
+	//if (isTurn_) return;
+	auto type = ActionType::Right;
 	// アクションタイプの取得
 	if (direction >= 0)
-		type_ = ActionType::Left;
-	else type_ = ActionType::Right;
-	change_dir_type(id, type_);
+		type = ActionType::Left;
+	change_dir_type(id, type);
+	isTurn_ = true;
+}
+
+// アニメーションを振り向きアニメーションを行わずに画像を反転します
+void EnemyAnimation2D::changeDirType(float direction)
+{
+	auto type = ActionType::Right;
+	// アクションタイプの取得
+	if (direction >= 0)
+		type = ActionType::Left;
+	type_ = type;
+	type_stock_ = type;
 }
 
 // アニメーションをループさせるかを設定します
@@ -119,4 +136,11 @@ void EnemyAnimation2D::setIsLoop(bool isLoop)
 	isLoop_ = isLoop;
 	if (isLoop_)
 		isStop_ = false;
+}
+
+void EnemyAnimation2D::preMotion()
+{
+	if (turn_anim_ != -1 && end_anim())
+		isTurn_ = false;
+	back_to_pre_motion();
 }

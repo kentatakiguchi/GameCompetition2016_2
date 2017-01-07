@@ -91,7 +91,7 @@ void BaseEnemy::Initialize()
 {
 	// 床捜索オブジェクトの追加
 	/*auto fsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector2(0.0f, 0.0f + scale_ / 2.0f), position_);*/
+	world_, Vector2(0.0f, 0.0f + scale_ / 2.0f), position_);*/
 	auto fsObj = std::make_shared<FloorSearchPoint>(
 		world_, position_,
 		Vector2(0.0f, 0.0f + scale_ / 2.0f),
@@ -103,18 +103,19 @@ void BaseEnemy::Initialize()
 	fspScript->setPosition(position_);
 	// 壁捜索オブジェクト
 	/*auto wsObj = std::make_shared<FloorSearchPoint>(
-		world_, Vector2(-scale_ / 2.0f, 0.0f), position_);*/
+	world_, Vector2(-scale_ / 2.0f, 0.0f), position_);*/
 	auto wsObj = std::make_shared<FloorSearchPoint>(
-		world_, position_, 
+		world_, position_,
 		Vector2(scale_ / 2.0f, 0.0f),
-		Vector2(2.0f, scale_- 30.0f));
+		Vector2(2.0f, scale_ - 30.0f));
 	world_->addActor(ActorGroup::Enemy, wsObj);
 	wsScript = &*wsObj;
 	objContainer_.push_back(wsScript);
 	// アニメーションの追加
 	addAnimation();
 	animation_.changeAnimation(ENEMY_WALK);
-	animation_.turnAnimation(turnMotion_, direction_.x);
+	animation_.changeDirType(direction_.x);
+	//animation_.turnAnimation(turnMotion_, direction_.x);
 }
 
 void BaseEnemy::onUpdate(float deltaTime)
@@ -122,8 +123,8 @@ void BaseEnemy::onUpdate(float deltaTime)
 	/*enemyManager_.setEMPosition(position_, world_->findActor("PlayerBody01")->getPosition(), direction_);
 	playerLength_ = enemyManager_.getPlayerLength();
 	if (playerLength_ >=
-		SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
-		return;*/
+	SCREEN_SIZE.x / 2.0f + body_.GetBox().getHeight())
+	return;*/
 	// 子供用のupdate(親のupdate前に行います)
 	beginUpdate(deltaTime);
 	// デルタタイムの値を設定する
@@ -143,6 +144,13 @@ void BaseEnemy::onUpdate(float deltaTime)
 	// 衝突関連の更新
 	updateCollide();
 
+	// 画像の方向を合わせる
+	//animation_.turnAnimation(turnMotion_, direction_.x);
+	//animation_.turnAnimation(motion_, direction_.x);
+	animation_.changeDirType(direction_.x);
+	/*if (direction_.x != prevDirection_.x)
+	animation_.turnAnimation(turnMotion_, direction_.x);*/
+
 	// アニメーションの変更
 	//animation_.change(motion_);
 	// アニメーションの更新
@@ -158,8 +166,8 @@ void BaseEnemy::onDraw() const
 	vec3Pos = vec3Pos * inv_;
 	// 文字の表示
 	/*DrawString(
-		vec3Pos.x - scale_, vec3Pos.y - 20 - scale_,
-		stateChar, GetColor(255, 255, 255));*/
+	vec3Pos.x - scale_, vec3Pos.y - 20 - scale_,
+	stateChar, GetColor(255, 255, 255));*/
 	// デバッグ
 	//body_.draw(inv_);
 	// アニメーションの描画
@@ -194,9 +202,7 @@ void BaseEnemy::onCollide(Actor & actor)
 	if (state_ == State::Dead) return;
 	// プレイヤーに当たらない？
 	// PlayerのActorGroupが変わるので、 Player_AttackRangeに当たるようにする
-	if ((/*actorName == "PlayerBody2Collider" ||
-		actorName == "PlayerBody1Collider" ||*/ 
-		actorName == "PlayerAttackCollider" || 
+	if ((actorName == "PlayerAttackCollider" ||
 		actorName == "BodyPoint") &&
 		!isInvincible_) {
 		// ダメージ
@@ -211,13 +217,13 @@ void BaseEnemy::onCollide(Actor & actor)
 	}
 }
 
-void BaseEnemy::onMessage(EventMessage event, void *){}
+void BaseEnemy::onMessage(EventMessage event, void *) {}
 
 // 子供用のupdate(親のupdate前に行います)
-void BaseEnemy::beginUpdate(float deltaTime){}
+void BaseEnemy::beginUpdate(float deltaTime) {}
 
 // 子供用のupdate
-void BaseEnemy::update(float deltaTime){}
+void BaseEnemy::update(float deltaTime) {}
 
 // 待機状態です
 void BaseEnemy::idle()
@@ -226,8 +232,8 @@ void BaseEnemy::idle()
 	// プレイヤーとの距離を計算して、
 	// スクリーンの幅の半分 + 敵の大きさよりちいさいなら動く
 	auto a = enemyManager_.getPlayerLength();
-	/*if (enemyManager_.getPlayerLength() < 
-		SCREEN_SIZE.x + body_.GetBox().getHeight())*/
+	/*if (enemyManager_.getPlayerLength() <
+	SCREEN_SIZE.x + body_.GetBox().getHeight())*/
 	if (isScreen())
 		changeState(State::Search, ENEMY_WALK);
 }
@@ -242,9 +248,9 @@ void BaseEnemy::search()
 	speed_ = initSpeed_;
 	// 捜索行動
 	searchMove();
-	// 画像の方向を合わせる
-	/*if(direction_.x != prevDirection_.x)
-		animation_.turnAnimation(turnMotion_, direction_.x);*/
+	//// 画像の方向を合わせる
+	//if(direction_.x != prevDirection_.x)
+	//	animation_.turnAnimation(turnMotion_, direction_.x);
 	// プレイヤーが存在しなければ、捜索と待機状態以外は行わない
 	if (!isPlayer_) return;
 	// 一定距離内で、プレイヤーとの間にブロックがなかったら
@@ -260,12 +266,12 @@ void BaseEnemy::search()
 	auto radius = std::atan2(b.y - a.y, b.x - a.x);
 	auto deg = radius * 180.0f / MathHelper::Pi;
 	/*auto direVec = Vector2::Right * direction_.x;
-	auto cos_deg = 
-		Vector2::Dot(direVec, enemyManager_.getPlayerNormalizeDirection()) /
-		(direVec.Length() * enemyManager_.getPlayerLength());
+	auto cos_deg =
+	Vector2::Dot(direVec, enemyManager_.getPlayerNormalizeDirection()) /
+	(direVec.Length() * enemyManager_.getPlayerLength());
 	auto deg = MathHelper::ACos(cos_deg);*/
 	// 追跡する
-	if (enemyManager_.getPlayerLength() <= discoveryLenght_ && 
+	if (enemyManager_.getPlayerLength() <= discoveryLenght_ &&
 		std::abs(deg) <= 30.0f &&
 		psObj_->isPlayerLook()) {
 		changeState(State::Discovery, ENEMY_DISCOVERY);
@@ -306,7 +312,7 @@ void BaseEnemy::chase()
 	chaseMove();
 	// 画像の方向を合わせる
 	/*if (direction_.x != prevDirection_.x)
-		animation_.turnAnimation(turnMotion_, direction_.x);*/
+	animation_.turnAnimation(turnMotion_, direction_.x);*/
 	// プレイヤーが追跡距離外か、プレイヤーの間にブロックがあるなら、
 	// 捜索状態に遷移
 	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 100.0f &&
@@ -320,7 +326,7 @@ void BaseEnemy::chase()
 void BaseEnemy::attack()
 {
 	/*world_->addActor(
-		ActorGroup::Enemy_AttackRange, std::make_shared<Enemy_AttackRange>(world_, position_));*/
+	ActorGroup::Enemy_AttackRange, std::make_shared<Enemy_AttackRange>(world_, position_));*/
 	stateString_ = "攻撃";
 	if (stateTimer_ >= 3.0f)
 		changeState(State::Search, ENEMY_WALK);
@@ -350,7 +356,7 @@ void BaseEnemy::deadMove()
 	}
 	// 死亡アニメーションオブジェクトの追加
 	/*world_->addActor(ActorGroup::Effect, std::make_shared<DeadEnemy>(
-		world_, position_, body_.GetBox().getWidth()));*/
+	world_, position_, body_.GetBox().getWidth()));*/
 	if (!animation_.isEndAnimation()) return;
 	dead();
 }
@@ -404,9 +410,9 @@ void BaseEnemy::createFSP()
 	// 追加された位置分だけ生成する
 	for (int i = 0; i != fspPositionContainer_.size(); ++i) {
 		// 捜索オブジェクトの追加
-		auto fsObj = 
+		auto fsObj =
 			std::make_shared<FloorSearchPoint>(
-				world_, position_, 
+				world_, position_,
 				fspPositionContainer_[i],
 				fspScaleContainer_[i]
 				);
@@ -467,12 +473,12 @@ void BaseEnemy::updateState(float deltaTime)
 
 	// スクリーンの幅の半分 + 敵の大きさより大きいなら待機状態にする
 	/*if (enemyManager_.getPlayerLength() >=
-		SCREEN_SIZE.x + body_.GetBox().getHeight())*/
-	if(!isScreen())
+	SCREEN_SIZE.x + body_.GetBox().getHeight())*/
+	if (!isScreen())
 		changeState(State::Idel, ENEMY_WALK);
 	// 方向の更新
-	if (direction_.x != prevDirection_.x)
-		animation_.turnAnimation(turnMotion_, direction_.x);
+	/*if (direction_.x != prevDirection_.x)
+	animation_.turnAnimation(turnMotion_, direction_.x);*/
 	prevDirection_ = direction_;
 
 	stateTimer_ += deltaTime;
@@ -629,4 +635,3 @@ bool BaseEnemy::isScreen()
 	// 画面外
 	return false;
 }
-

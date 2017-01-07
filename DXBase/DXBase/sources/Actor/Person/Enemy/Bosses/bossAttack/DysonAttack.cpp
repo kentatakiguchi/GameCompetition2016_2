@@ -124,7 +124,7 @@ void DysonAttack::flinch(float deltaTime)
 		return;
 	}
 	// G‚ê‘±‚¯‚Ä‚¢‚éŠÔ‚Åˆê’èŠÔŒo‰ß‚µ‚½‚ç‚Ğ‚é‚Ş
-	if (timer_ <= 5.0f) return;
+	if (timer_ <= 1.5f) return;
 	isFlinch_ = true;
 	//isAttackEnd_ = true;
 }

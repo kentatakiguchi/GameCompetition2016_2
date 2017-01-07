@@ -11,6 +11,7 @@ FloorTurnEnemy::FloorTurnEnemy(
 	fspObj_(nullptr)
 {
 	direction_ = Vector2(-right, 1.0f);
+	//turnMotion_ = ENEMY_WALKTURN;
 	BaseEnemy::Initialize();
 
 	// 崖捜索オブジェクトの追加

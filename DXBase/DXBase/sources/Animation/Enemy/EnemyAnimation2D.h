@@ -42,15 +42,20 @@ public:
 	void changeAnimation(int id, float speed = 1.0f);
 	// アニメーションのが終わったかを返します
 	bool isEndAnimation();
-	// アニメーションのテクスチャを反転します
-	void turnAnimation(int id, int direction);
+	// 振り向きアニメーションを行って、画像を反転します
+	void turnAnimation(int id, float direction);
+	// アニメーションを振り向きアニメーションを行わずに画像を反転します
+	void changeDirType(float direction);
 	// アニメーションをループさせるかを設定します
 	void setIsLoop(bool isLoop);
+	//
+	void preMotion();
 
 public:
 	int prevFrame_;		// 1f前のフレーム
 	bool isLoop_;		// ループするか
 	bool isStop_;		// アニメーションを止めるか
+	bool isTurn_;		// 振り向きアニメーションをしたか
 };
 
 
