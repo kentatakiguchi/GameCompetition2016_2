@@ -6,6 +6,16 @@
 #include <string>
 #include "../GamePlay/MoveScreen.h"
 #include "../GamePlay/PauseScreen.h"
+
+
+struct TutorealName {
+	std::string csvName;
+	MOVIE_ID movieID;
+	std::vector<TextureID> textIDs;
+	std::vector<TextureID> timeCountIDs;
+};
+
+
 class World;
 class TutorealScene : public IScene {
 public:
@@ -34,12 +44,8 @@ private:
 	Scene nextScene_;
 	//動画ID
 	MOVIE_ID movieId_;
-	//チュートリアルcsv名前たち
-	std::vector<std::string> tutorealCsvs_;
-	//チュートリアル動画たち
-	std::vector<MOVIE_ID> tutorealMovies_;
-	//チュートリアルテキストたち
-	std::vector<TextureID> tutorealTxts_;
+	//チュートリアルたち
+	std::vector<TutorealName> tutorels_;
 	//動画を選択したか
 	bool isMovie_;
 	//動画の位置
@@ -48,10 +54,16 @@ private:
 	Vector2 moviePos_;
 	//サイズ
 	float size_;
-	//チュートリアルのテキスト
-	TextureID tutorealTex_;
+	//チュートリアルのテキストたち
+	std::vector<TextureID> tutorealTexs_;
 	//α値
 	float alpha_;
 	//動画移動の補間
 	float movieMoveTime_;
+	//チュートリアルテキスト番号
+	int tutorealTexCount_;
+	//カウントや時間
+	std::vector<TextureID> tutorealTimes_;
+	//チュートリアルの時間とかカウントとか
+	int countAndTime_;
 };

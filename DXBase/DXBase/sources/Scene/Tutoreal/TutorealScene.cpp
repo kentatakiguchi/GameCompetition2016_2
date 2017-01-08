@@ -10,17 +10,46 @@ TutorealScene::TutorealScene() :
 {
 	isEnd_ = false;
 	deltaTime_ = 1.0f / 60.0f;
-	//csv名前を入れる
-	tutorealCsvs_.push_back("tutoreal01");
-	tutorealCsvs_.push_back("tutoreal02");
-	//動画IDを入れる
-	tutorealMovies_.push_back(MOVIE_ID::TEST_MOVE);
-	tutorealMovies_.push_back(MOVIE_ID::TEST2_MOVIE);
-	//テキストIDを入れる
-	tutorealTxts_.push_back(TextureID::TUTOREAL01_TXT_TEX);
-	tutorealTxts_.push_back(TextureID::TUTOREAL02_TXT_TEX);
+	//チュートリアル設定
+	//1番
+	TutorealName name1;
+	name1.csvName = "tutoreal01";
+	name1.movieID = MOVIE_ID::TEST_MOVE;
+	name1.textIDs.push_back(TextureID::TUTOREAL1_1_TXT_TEX);
+	name1.textIDs.push_back(TextureID::TUTOREAL1_2_TXT_TEX);
+	//2番
+	TutorealName name2;
+	name2.csvName = "tutoreal02";
+	name2.movieID = MOVIE_ID::TEST_MOVE;
+	name2.textIDs.push_back(TextureID::TUTOREAL2_1_TXT_TEX);
+	name2.textIDs.push_back(TextureID::TUTOREAL2_2_TXT_TEX);
+	name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_1_TEX);
+	name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_2_TEX);
+	name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_3_TEX);
+	//3番
+	TutorealName name3;
+	name3.csvName = "tutoreal03";
+	name3.movieID = MOVIE_ID::TEST2_MOVIE;
+	name3.textIDs.push_back(TextureID::TUTOREAL3_1_TXT_TEX);
+	name3.textIDs.push_back(TextureID::TUTOREAL3_2_TXT_TEX);
+	name3.timeCountIDs.push_back(TextureID::TUTOREAL_COUNT_1_TEX);
+	name3.timeCountIDs.push_back(TextureID::TUTOREAL_COUNT_2_TEX);
+	//4番
+	TutorealName name4;
+	name4.csvName = "tutoreal04";
+	name4.movieID = MOVIE_ID::TEST2_MOVIE;
+	name4.textIDs.push_back(TextureID::TUTOREAL4_1_TXT_TEX);
+	name4.textIDs.push_back(TextureID::TUTOREAL4_2_TXT_TEX);
+	name4.textIDs.push_back(TextureID::TUTOREAL4_3_TXT_TEX);
+
+	//設定したやつを入れる
+	tutorels_.push_back(name1);
+	tutorels_.push_back(name2);
+	tutorels_.push_back(name3);
+	tutorels_.push_back(name4);
+
 	//サイズを入れる
-	tutorealSize_ = tutorealCsvs_.size();
+	tutorealSize_ = tutorels_.size();
 
 }
 
@@ -33,12 +62,17 @@ void TutorealScene::start()
 	//初期化たち
 	isEnd_ = false;
 	isMovie_ = false;
+	tutorealTexCount_ = 0;
+	countAndTime_ = 0;
 	//α値を初期化
 	alpha_ = 1.0f;
 	//補間初期化
-	size_ = 0.1f;
+	size_ = 0.2f;
 	movieMoveTime_ = 0.0f;
-	moviePos_ = Vector2(160, 128);
+	//動画サイズ取得
+	Vector2 movieSize = Movie::GetInstance().GetMovieSize(tutorels_[tutorealRoopCount_].movieID);
+	//動画の位置設定
+	moviePos_ = Vector2(SCREEN_SIZE.x-movieSize.x-320, 128);
 	movieResPos1_ = moviePos_;
 	movieResPos2_ = Vector2(SCREEN_SIZE.x / 2 , SCREEN_SIZE.y / 2 );
 	//デルタタイム
@@ -51,10 +85,13 @@ void TutorealScene::start()
 	world_ = std::make_shared<World>();
 	MapGenerator gener = MapGenerator(world_.get());
 	//ネームをセット
-	name_ = tutorealCsvs_[tutorealRoopCount_];
+	name_ = tutorels_[tutorealRoopCount_].csvName;
 	//チュートリアル動画をセット
-	movieId_ = tutorealMovies_[tutorealRoopCount_];
-	tutorealTex_ = tutorealTxts_[tutorealRoopCount_];
+	movieId_ = tutorels_[tutorealRoopCount_].movieID;
+	//テキストをセット
+	tutorealTexs_ = tutorels_[tutorealRoopCount_].textIDs;
+	//時間とカウントをセット
+	tutorealTimes_ = tutorels_[tutorealRoopCount_].timeCountIDs;
 	//動画を再生
 	//Movie::GetInstance().Play(movieId_);
 	//セットしたら次の名前にしておく
@@ -97,7 +134,7 @@ void TutorealScene::update()
 	//α値を線形保管
 	alpha_ = MathHelper::Lerp(255.0f, 0.0f, movieMoveTime_ / 90.0f);
 	//サイズを線形補間
-	size_=MathHelper::Lerp(0.1f, 0.8f, MathHelper::Sin(movieMoveTime_));
+	size_=MathHelper::Lerp(0.2f, 0.8f, MathHelper::Sin(movieMoveTime_));
 	//移動を線形補間
 	moviePos_ = Vector2::Lerp(movieResPos1_, movieResPos2_, MathHelper::Sin(movieMoveTime_));
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J)) {
@@ -113,9 +150,12 @@ void TutorealScene::draw() const
 	//αブレンド
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
 	//上の部分
-	DrawGraph(16, 8, ResourceLoader::GetInstance().getTextureID(TextureID::TUTOREAL_BACK_TEX), TRUE);
+	//DrawGraph(16, 8, ResourceLoader::GetInstance().getTextureID(TextureID::TUTOREAL_BACK_TEX), TRUE);
 	//テキスト部分
-	DrawGraph(16, 8, ResourceLoader::GetInstance().getTextureID(tutorealTex_), TRUE);
+	DrawGraph(32, 16, ResourceLoader::GetInstance().getTextureID(tutorealTexs_[tutorealTexCount_]), TRUE);
+	//時間とカウント部分
+	if(!tutorealTimes_.empty())
+	DrawGraph(32, 256, ResourceLoader::GetInstance().getTextureID(tutorealTimes_[0]), TRUE);
 	//αブレンド終わり
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
 

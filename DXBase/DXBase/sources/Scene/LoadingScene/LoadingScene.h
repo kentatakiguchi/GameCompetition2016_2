@@ -25,5 +25,5 @@ private:
 private:
 	bool isEnd_;
 	Vector2 mPosition;
-	float a;
+	float mAngle;
 };
