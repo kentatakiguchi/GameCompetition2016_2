@@ -13,11 +13,6 @@ LoadingScene::~LoadingScene(){
 }
 
 void LoadingScene::start(){
-	//---Updateテスト用---
-	mPosition = Vector2(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2);
-	isEnd_ = false;
-	a = 0.0f;
-	//---------
 
 	//ここにローディング専用のリソースを読み込む
 	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
@@ -88,9 +83,23 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_WEAPON_TEX, "./resources/sprite/EnemyWeapon.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_TEX, "./resources/sprite/Boss01.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL01_TXT_TEX, "./resources/sprite/TutorealText01.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL02_TXT_TEX, "./resources/sprite/TutorealText02.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_BACK_TEX, "./resources/sprite/TutorealBack.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL1_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText1-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL1_2_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText1-2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL2_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText2-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL2_2_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText2-2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL3_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText3-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL3_2_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText3-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL4_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText4-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL4_2_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText4-2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL4_3_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText4-3.png");
+
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_TIME_1_TEX, "./resources/sprite/Tutoreal/TutorealTime1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_TIME_2_TEX, "./resources/sprite/Tutoreal/TutorealTime2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_TIME_3_TEX, "./resources/sprite/Tutoreal/TutorealTime3.png");
+
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_COUNT_1_TEX, "./resources/sprite/Tutoreal/TutorealCount1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_COUNT_2_TEX, "./resources/sprite/Tutoreal/TutorealCount2.png");
+
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_GAUGE_IN_TEX, "./resources/sprite/BossGaugeIn.png");
 
@@ -134,13 +143,17 @@ void LoadingScene::start(){
 	load_se_res();
 	//非同期読み込み終了
 	SetUseASyncLoadFlag(FALSE);
+
+
+	//---Updateテスト用---
+	mPosition = Vector2(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2);
+	isEnd_ = false;
+	mAngle = 0;
+	//---------
 }
 
 void LoadingScene::update(){
-	//回る
-	mPosition = Vector2(std::cosf(a), std::sinf(a))*50.0f+ Vector2(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2);
-	a += 10.0f*Time::GetInstance().deltaTime();
-
+	mAngle += 10.0f*Time::GetInstance().deltaTime();
 	//読み込み処理が終わっていたら
 	if (GetASyncLoadNum()==0&&ProcessMessage()==0) {
 		isEnd_ = true;
@@ -148,9 +161,7 @@ void LoadingScene::update(){
 }
 
 void LoadingScene::draw() const{
-	DrawGraph(mPosition.x, mPosition.y, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
-	DrawFormatString(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2, GetColor(255, 255, 255), "非同期読み込みの数 %d", GetASyncLoadNum());
-
+	DrawRotaGraph(mPosition.x, mPosition.y,0.3f,mAngle, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
 }
 
 void LoadingScene::end(){
