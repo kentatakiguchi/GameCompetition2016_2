@@ -322,8 +322,6 @@
     <ClInclude Include="sources\Scene\StageClear\StageClearScene.h" />
     <ClInclude Include="sources\Scene\StageClear\StageClearTextAnm.h" />
     <ClInclude Include="sources\Scene\TeamLogoScene\TeamLogoScene.h" />
-    <ClInclude Include="sources\Scene\Test\TestChara.h" />
-    <ClInclude Include="sources\Scene\Test\TestScene.h" />
     <ClInclude Include="sources\Scene\Title\TitleScene.h" />
     <ClInclude Include="sources\Scene\Tutoreal\TutorealScene.h" />
     <ClInclude Include="sources\Scene\YajimaScene\YajimaScene.h" />
@@ -464,7 +462,6 @@
     <ClCompile Include="sources\Scene\StageClear\StageClearScene.cpp" />
     <ClCompile Include="sources\Scene\StageClear\StageClearTextAnm.cpp" />
     <ClCompile Include="sources\Scene\TeamLogoScene\TeamLogoScene.cpp" />
-    <ClCompile Include="sources\Scene\Test\TestScene.cpp" />
     <ClCompile Include="sources\Scene\Title\TitleScene.cpp" />
     <ClCompile Include="sources\Scene\Tutoreal\TutorealScene.cpp" />
     <ClCompile Include="sources\Scene\YajimaScene\YajimaScene.cpp" />
