@@ -31,6 +31,8 @@ public:
 	float length_sum();
 
 	Vector2 get_point(int index);
+public:
+	PlayerStateMgr_Union stateMgr_;
 private:
 	// ƒ_ƒ[ƒW‚ğó‚¯‚½‚©‚Ç‚¤‚©
 	bool is_damaged();
@@ -39,7 +41,7 @@ private:
 
 	void puyoUpdate();
 private:
-	PlayerStateMgr_Union stateMgr_;
+
 
 	PlayerBodyPtr butty_;
 	PlayerBodyPtr retty_;

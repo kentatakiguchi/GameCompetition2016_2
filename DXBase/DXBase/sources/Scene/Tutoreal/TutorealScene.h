@@ -6,7 +6,7 @@
 #include <string>
 #include "../GamePlay/MoveScreen.h"
 #include "../GamePlay/PauseScreen.h"
-
+class PlayerConnector;
 
 struct TutorealName {
 	std::string csvName;
@@ -27,7 +27,13 @@ public:
 	virtual void end() override;
 	virtual bool isEnd() const override;
 	virtual Scene next() const override;
-
+private:
+	bool EndTutoreal(int num);
+	//終わるフラグ判定
+	bool Tutoreal1();
+	bool Tutoreal2();
+	bool Tutoreal3();
+	bool Tutoreal4();
 private:
 	//デルタタイム
 	float deltaTime_;
@@ -58,12 +64,31 @@ private:
 	std::vector<TextureID> tutorealTexs_;
 	//α値
 	float alpha_;
+	//フェード用α
+	float feedAlpha_;
 	//動画移動の補間
 	float movieMoveTime_;
-	//チュートリアルテキスト番号
+	//見せかけのチュートリアルテキスト番号
 	int tutorealTexCount_;
+	//本来のテキスト番号
+	int resTutorealTexCount_;
 	//カウントや時間
 	std::vector<TextureID> tutorealTimes_;
 	//チュートリアルの時間とかカウントとか
 	int countAndTime_;
+	int endTutorealCount_;
+	//チュートリアル1,2
+	float stickTime_;
+	//チュートリアル3
+	int endCount_;
+	float attackRagCount_;
+	bool attackRagFalg;
+	//クリアーした後の時間
+	float clearTime_;
+	//クリアーしたか
+	bool isClear_;
+	//最後に使うフラグ
+	bool tutoreal4Flag;
+	//プレイヤーコネクター
+	PlayerConnector* playerConnector_;
 };
