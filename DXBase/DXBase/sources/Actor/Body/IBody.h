@@ -60,12 +60,12 @@ public:
 	struct Component {
 		// [0]:ç∂è„ [1]:âEè„ [2]:ç∂â∫ [3]:âEâ∫
 		Vector2 point[4];
-		int radius;
+		float radius;
 		Component() {
-			point[0] = 0;
-			point[1] = 0;
-			point[2] = 0;
-			point[3] = 0;
+			point[0] = Vector2(0,0);
+			point[1] = Vector2(0, 0);
+			point[2] = Vector2(0, 0);
+			point[3] = Vector2(0, 0);
 			radius = 0;
 		}
 		Component(Vector2 topLeft, Vector2 topRight, Vector2 bottomLeft, Vector2 bottomRight) {

@@ -5,14 +5,15 @@ static const float shotSpeed = 5;
 static const int boundCount = 5;
 static const int TitleMainFadeInSpeed = 15;
 static const int SelectPointerFadeInSpeed = 15;
-
+static const int DefAlphaSlideCount = 100;
 static const float titleY = 10;
 static const float spaceY = 400;
 static const float boundPower = 30;
 static const int MaxTexSize = 1920;
-static const int SlideSpeed = 10;
+static const int SlideSpeed = 7;
 static const float DefBackSpriteChangeTime = 10.f;
 static const int TitleFadeInSpeed = 10;
+static const int alphaspeed = 5;
 
 MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	id(0),sinCount(0),targetPoint(1) {
@@ -51,7 +52,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	listBase[0] = list1;
 	
 	lastPoses[0] = Vector2(200, 200);
-	setPoses[0] = Vector2(0, defposlist[0]);
+	setPoses[0] = Vector2(0, static_cast<float>(defposlist[0]));
 
 	textPosList.push_back(Vector2(200,200));
 	changeTextList.clear();
@@ -66,7 +67,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	changeTextList.clear();
 
 	lastPoses[1] = Vector2(200,500);
-	setPoses[1] = Vector2(0, defposlist[1]);
+	setPoses[1] = Vector2(0, static_cast<float>(defposlist[1]));
 
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list3;
@@ -77,7 +78,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	changeTextList.clear();
 
 	lastPoses[2] = Vector2(200,600);
-	setPoses[2] = Vector2(0, defposlist[2]);
+	setPoses[2] = Vector2(0, static_cast<float>(defposlist[2]));
 
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list4;
@@ -88,7 +89,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	changeTextList.clear();
 
 	lastPoses[3] = Vector2(200, 700);
-	setPoses[3] = Vector2(0, defposlist[3]);
+	setPoses[3] = Vector2(0, static_cast<float>(defposlist[3]));
 
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list5;
@@ -99,7 +100,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	changeTextList.clear();
 
 	lastPoses[4] = Vector2(200, 800);
-	setPoses[4] = Vector2(0, defposlist[4]);
+	setPoses[4] = Vector2(0, static_cast<float>(defposlist[4]));
 
 
 
@@ -130,15 +131,18 @@ MainMenuScene::~MainMenuScene() {}
 void MainMenuScene::start() {
 	isEnd_ = false;
 	isTitle_ = true;
+	isDrawAlphaBack_ = false;
 
 	alphaCou[0] = 0;
 	alphaCou[1] = 0;
+
+	titleBackAlpha_ = 0;
 
 	targetPoint = 1;
 
 	sinCount = 0;
 
-	for (int i = 0; i < textPosList.size(); i++) {
+	for (int i = 0; i < static_cast<int>(textPosList.size()); i++) {
 		textPosList[i] = setPoses[i];
 		shotPos[i] = Vector2::Zero;
 		isPoint[i] = false;
@@ -168,27 +172,39 @@ void MainMenuScene::start() {
 }
 
 void MainMenuScene::update() {
-	Time::GetInstance().update();
 
+	Vector2 alphasize= ResourceLoader::GetInstance().GetTextureSize(TextureID::TITLE_BACK_ALPHA_TEX);
 
 	sinCount += FlashTempo;
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
 
+	if (isDrawAlphaBack_) {
+		alphaSlideCount_--;
+		if (alphaSlideCount_ <= 0) {
+			titleBackAlpha_ = 0;
+			isDrawAlphaBack_ = false;
+		}
+		if (alphaSlideCount_ <= DefAlphaSlideCount / 2) {
+				titleBackAlpha_-= alphaspeed;
+		}
+		else {
+			titleBackAlpha_+= alphaspeed;
+		}
+	}
+
 	slideSize += SlideSpeed;
+
 	if (slideSize >= MaxTexSize) {
 		slideSize = 0;
-		for (int i = 0; i < 2; i++)
-		{
+	}
+			if (changeBackChecker[0]) {
+				changeBackChecker[0] = false;
 
-			if (changeBackChecker[i]) {
-				changeBackChecker[i] = false;
-				changeTargetChecker[i]++;
-				if (changeTargetChecker[i] == baseTitleBackID.size())changeTargetChecker[i] = 0;
-				currentTitleBackID[i] = baseTitleBackID[changeTargetChecker[i]];
-			}
-
-		}
+				alphaSlideCount_=DefAlphaSlideCount;
+				titleBackAlpha_ = 0;
+				isDrawAlphaBack_ = true;
+		
 	}
 	for (int i = 0; i < 2; i++) {
 		titleBackChangeTime[i] -= Time::GetInstance().deltaTime();
@@ -199,21 +215,6 @@ void MainMenuScene::update() {
 		}
 	}
 
-	//if (isTitle_) {
-	//	isPoint[4] ? moveText(4) : slideText(4);		
-
-	//	if (alphaCou[1] <= 255 && isArrive.at(0)) {
-	//		alphaCou[1] += alphadefSpeeds[1];
-	//		alphaCou[1] = min(max(alphaCou[1], 0), 255);
-	//	}
-	//	if (alphaCou[0] <= 255) {
-	//		alphaCou[0] += alphadefSpeeds[0];
-	//		alphaCou[0] = min(max(alphaCou[0], 0), 255);
-	//	}
-
-	//	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))isTitle_ = false;
-	//	return;
-	//}
 	if (!isTitle_)
 	{
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
@@ -331,28 +332,16 @@ void MainMenuScene::draw() const {
 
 	DrawGraph(MaxTexSize - slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[0]), TRUE);
 	DrawGraph(-slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[1]), TRUE);
-	
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, titleBackAlpha_);
+	if (isDrawAlphaBack_)DrawGraph(0, 0, ResourceLoader::GetInstance().getTextureID(TextureID::TITLE_BACK_ALPHA_TEX), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	int strLen, strWidth, center, count, heightPoint;
 	count = 0;
 	heightPoint = 0;
 	int forcount = 0;
 
-	//if (isTitle_)
-	//{
-	//	for (auto my : listBase[4]) {
-	//		strLen = strlen(my.c_str());
-	//		strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-	//		center = SCREEN_SIZE.x / 2;
-	//		if (alphaCou[0] <= 255)SetDrawBlendMode(DX_BLENDMODE_ALPHA, alphaCou[0]);
-	//		if (forcount == targetPoint&&isArrive.at(0))SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
-	//		//if (!isArrive.at(0) && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
-	//		DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-	//		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	//		heightPoint++;
-	//	}
-
-	//	return;
-	//}
 
 	for (auto lists : listBase) {
 		for (auto my : lists) {
@@ -364,14 +353,17 @@ void MainMenuScene::draw() const {
 			else if (!isTitle_&& count >= 5)break;
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			center = SCREEN_SIZE.x / 2;
-			//if (alphaCou[0]<=255)SetDrawBlendMode(DX_BLENDMODE_ALPHA, alphaCou[0]);
-			if (forcount == targetPoint&&isArrive.at(0))SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
-			//if (!isArrive.at(0) && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
-			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			center = static_cast<int>(SCREEN_SIZE.x) / 2;
+			if (forcount == targetPoint&&isArrive.at(0))SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 			
-			DrawGraph(center - 320, textPosList.at(count).y, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
-			
+			if (count == 0) {
+				int psizex = 80;
+				int psizey = 50;
+				DrawExtendGraph(center - (748+psizex / 2), textPosList.at(count).y, center + (748+psizex / 2), textPosList.at(count).y + 155+psizey, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_TITLE_TEX), TRUE);
+			}
+			else {
+				DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			}
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			heightPoint++;
 		}
@@ -383,11 +375,8 @@ void MainMenuScene::draw() const {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alphaCou[1]);
 	}
 
-	DrawGraph(textPoses.at(targetPoint).x, textPoses.at(targetPoint).y, ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
+	DrawGraph(static_cast<int>(textPoses.at(targetPoint).x), static_cast<int>(textPoses.at(targetPoint).y), ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
-	//DrawGraph(textPoses.at(targetPoint).x+100, textPoses.at(targetPoint).y, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_ALPHA_TEX), TRUE);
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 }
 

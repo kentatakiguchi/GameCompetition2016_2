@@ -35,7 +35,7 @@ void TeamLogoScene::update() {
 
 void TeamLogoScene::draw() const {
 
-	DrawGraph(SCREEN_SIZE.x/2-(LogoSize.x/2), SCREEN_SIZE.y/2 - (LogoSize.y / 2), ResourceLoader::GetInstance().getTextureID(TextureID::TEAM_LOGO_TEX), TRUE);
+	DrawGraph(static_cast<int>(SCREEN_SIZE.x/2-(LogoSize.x/2)), static_cast<int>(SCREEN_SIZE.y/2 - (LogoSize.y / 2)), ResourceLoader::GetInstance().getTextureID(TextureID::TEAM_LOGO_TEX), TRUE);
 
 }
 

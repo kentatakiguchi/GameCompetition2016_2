@@ -36,7 +36,7 @@ BoundingCircle BoundingCircle::transform(Vector2 center, float capsuleRadius) co
 //}
 
 void BoundingCircle::draw() const {
-	DrawCircle(component_.point[0].x, component_.point[0].y, component_.radius, GetColor(255, 0, 0), FALSE);
+	DrawCircle(static_cast<int>(component_.point[0].x), static_cast<int>(component_.point[0].y), static_cast<int>(component_.radius), GetColor(255, 0, 0), FALSE);
 
 	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
 }

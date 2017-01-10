@@ -47,7 +47,7 @@ void CreditScene::update() {
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
 
-	timeCount -= Time::GetInstance().deltaTime();
+	timeCount -= static_cast<int>(Time::GetInstance().deltaTime());
 
 	if (!isPlay_) {
 		isPlay_ = true;

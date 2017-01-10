@@ -23,7 +23,7 @@ GameEndScene::~GameEndScene() {}
 void GameEndScene::start() {
 	isEnd_ = false;
 
-	for (int i = 0; i < textPosList.size(); i++) {
+	for (int i = 0; i < static_cast<int>(textPosList.size()); i++) {
 		textPosList[i] = setPoses[i];
 		shotPos[i] = Vector2::Zero;
 

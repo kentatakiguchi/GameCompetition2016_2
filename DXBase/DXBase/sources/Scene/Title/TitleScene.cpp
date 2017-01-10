@@ -16,8 +16,8 @@ TitleScene::TitleScene(SceneDataKeeper* keeper) :
 	keeper_ = keeper;
 	name_ = "Title";
 
-	defposlist[0] = titleY;
-	defposlist[1] = spaceY;
+	defposlist[0] = static_cast<int>(titleY);
+	defposlist[1] = static_cast<int>(spaceY);
 
 	int listNum = 0;
 	listBase.push_back(changeTextList);
@@ -58,7 +58,7 @@ void TitleScene::start() {
 	slideSize = 0;
 	alphaCou = 0;
 
-	for (int i = 0; i < textPosList.size(); i++) {
+	for (int i = 0; i < static_cast<int>(textPosList.size()); i++) {
 		textPosList[i] = setPoses[i];
 		shotPos[i] = Vector2::Zero;
 		isPoint[i] = false;
@@ -123,7 +123,7 @@ void TitleScene::update() {
 		//textPosList[1].y = min(max(textPosList[1].y, setPoses[1].y), lastPoses[1].y);
 	}
 
-	for (int i = 0; i < textPosList.size(); i++)
+	for (int i = 0; i < static_cast<int>(textPosList.size()); i++)
 	{
 		isPoint[i] ? moveText(i) : slideText(i);
 	}
@@ -190,12 +190,12 @@ void TitleScene::draw() const {
 		for (auto my : lists) {
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			center = SCREEN_SIZE.x / 2;
+			center = static_cast<int>(SCREEN_SIZE.x) / 2;
 			
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, alphaCou);
-			if (forcount == 1 && isArrive.at(1))SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
+			if (forcount == 1 && isArrive.at(1))SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 
-			DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			DrawStringToHandle(center - (strWidth / 2), static_cast<int>(textPosList.at(count).y) + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 

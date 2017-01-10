@@ -10,6 +10,10 @@ SceneDataKeeper::SceneDataKeeper(std::string name):previousSceneName_(name),hp_(
 
 void SceneDataKeeper::setSceneName(std::string name)
 {
+	if (name == "bossStage01") { 
+		previousSceneName_ = name; 
+		return;
+	}
 	std::string::size_type pos = name.find("stage");
 	if (pos == std::string::npos) return;
 

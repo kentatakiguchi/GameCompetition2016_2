@@ -150,9 +150,9 @@ void StageClearScene::draw() const {
 	count = 0;
 	heightPoint=0;
 	int forcount = 0;
-	center = SCREEN_SIZE.x / 2;
+	center = static_cast<int>(SCREEN_SIZE.x) / 2;
 
-	anmer_.draw_e(Vector2(center-320,textPosList.at(0).y));
+	anmer_.draw_e(Vector2(static_cast<float>(center-320),textPosList.at(0).y));
 
 	for (auto lists : listBase) {
 		for (auto my : lists) {
@@ -161,10 +161,10 @@ void StageClearScene::draw() const {
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 
-			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
+			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			
-			DrawGraph(center - 320, textPosList.at(count).y, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			heightPoint++;
@@ -175,7 +175,7 @@ void StageClearScene::draw() const {
 	}
 
 	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
-	DrawGraph(textPoses.at(targetPoint).x, textPoses.at(targetPoint).y, ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
+	DrawGraph(static_cast<int>(textPoses.at(targetPoint).x), static_cast<int>(textPoses.at(targetPoint).y), ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
 	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//int strLen, strWidth, center;

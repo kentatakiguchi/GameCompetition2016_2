@@ -60,7 +60,7 @@ void MoveScreen::draw() const
 		for (auto my : lists) {
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			center = SCREEN_SIZE.x / 2;
+			center = static_cast<int>(SCREEN_SIZE.x) / 2;
 			//center - (strWidth / 2) íÜêS
 			//DrawStringToHandle(textPosList.at(count).x-(strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			heightPoint++;

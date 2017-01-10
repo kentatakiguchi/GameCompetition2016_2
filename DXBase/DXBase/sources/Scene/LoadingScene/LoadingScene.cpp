@@ -121,6 +121,7 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TITLE_BACK2_TEX, "./resources/sprite/TitleBack2.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TITLE_BACK3_TEX, "./resources/sprite/TitleBack3.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TITLE_BACK4_TEX, "./resources/sprite/TitleBack4.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TITLE_BACK_ALPHA_TEX, "./resources/sprite/TitleBackAlpha.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEAM_LOGO_TEX, "./resources/sprite/Logo.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::FLOOR_STAGE1_TEX, "./resources/sprite/Block/floor1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::FLOOR_STAGE2_TEX, "./resources/sprite/Block/floor2.png");
@@ -137,6 +138,8 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MENUBACK_TEX, "./resources/sprite/Text/menuback.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_NEXTSTAGE_TEX, "./resources/sprite/Text/nextstage.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_TUTORIAL_TEX, "./resources/sprite/Text/tutorial.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_GAMEOVER_TEX, "./resources/sprite/Text/gameover.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_RETRY_TEX, "./resources/sprite/Text/retry.png");
 
 
 	load_bgm_res();

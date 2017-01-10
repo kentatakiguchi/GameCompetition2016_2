@@ -36,10 +36,10 @@ BoundingCapsule BoundingCapsule::transform(Vector2 startPoint, Vector2 endPoint,
 //}
 
 void BoundingCapsule::draw() const {
-	DrawCircle(component_.point[0].x, component_.point[0].y, component_.radius, GetColor(255, 0, 0), FALSE);
-	DrawLine(component_.point[0].x, component_.point[0].y, component_.point[1].x, component_.point[1].y, GetColor(255, 0, 0), FALSE);
-	DrawLine(component_.point[0].x, component_.point[0].y, component_.point[1].x, component_.point[1].y, GetColor(255, 0, 0), FALSE);
-	DrawCircle(component_.point[1].x, component_.point[1].y, component_.radius, GetColor(255, 0, 0), FALSE);
+	DrawCircle(static_cast<int>(component_.point[0].x), static_cast<int>(component_.point[0].y), static_cast<int>(component_.radius), GetColor(255, 0, 0), FALSE);
+	DrawLine(static_cast<int>(component_.point[0].x), static_cast<int>(component_.point[0].y), static_cast<int>(component_.point[1].x), static_cast<int>(component_.point[1].y), GetColor(255, 0, 0), FALSE);
+	DrawLine(static_cast<int>(component_.point[0].x), static_cast<int>(component_.point[0].y), static_cast<int>(component_.point[1].x), static_cast<int>(component_.point[1].y), GetColor(255, 0, 0), FALSE);
+	DrawCircle(static_cast<int>(component_.point[1].x), static_cast<int>(component_.point[1].y), static_cast<int>(component_.radius), GetColor(255, 0, 0), FALSE);
 
 	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;
 }
@@ -301,10 +301,10 @@ bool BoundingCapsule::intersects(BoundingCapsule & other){
 
 	Vector2 As[][2]{ { A0P,A1P },{ A0M,A1M } };
 	Vector2 Bs[][2]{ { B0P,B1P },{ B0M,B1M } };
-	DrawLine(A0P.x, A0P.y, A1P.x, A1P.y, GetColor(255, 255, 255));
-	DrawLine(A0M.x, A0M.y, A1M.x, A1M.y, GetColor(255, 255, 255));
-	DrawLine(B0P.x, B0P.y, B1P.x, B1P.y, GetColor(255, 255, 255));
-	DrawLine(B0M.x, B0M.y, B1M.x, B1M.y, GetColor(255, 255, 255));
+	DrawLine(static_cast<int>(A0P.x), static_cast<int>(A0P.y), static_cast<int>(A1P.x), static_cast<int>(A1P.y), GetColor(255, 255, 255));
+	DrawLine(static_cast<int>(A0M.x), static_cast<int>(A0M.y), static_cast<int>(A1M.x), static_cast<int>(A1M.y), GetColor(255, 255, 255));
+	DrawLine(static_cast<int>(B0P.x), static_cast<int>(B0P.y), static_cast<int>(B1P.x), static_cast<int>(B1P.y), GetColor(255, 255, 255));
+	DrawLine(static_cast<int>(B0M.x), static_cast<int>(B0M.y), static_cast<int>(B1M.x), static_cast<int>(B1M.y), GetColor(255, 255, 255));
 
 	for (int i = 0; i < 2; i++)
 	{

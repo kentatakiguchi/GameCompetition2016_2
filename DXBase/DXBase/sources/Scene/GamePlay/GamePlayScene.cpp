@@ -123,7 +123,7 @@ void GamePlayScene::update() {
 
 	
 
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T)) {
+	if (InputMgr::GetInstance().IsButtonDown (Buttons::BUTTON_START)) {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 	}

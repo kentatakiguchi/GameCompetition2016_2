@@ -22,7 +22,7 @@ PauseScreen::PauseScreen()
 
 bool PauseScreen::update(Scene& next)
 {
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN)) {
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE)) {
 		next = Scene::MainMenu;
 		return true;
 	}
@@ -40,8 +40,8 @@ void PauseScreen::draw() const
 		for (auto my : lists) {
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			center = SCREEN_SIZE.x / 2;
-			DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+			center = static_cast<int>(SCREEN_SIZE.x) / 2;
+			DrawStringToHandle(center - (strWidth / 2), static_cast<int>(textPosList.at(count).y) + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			heightPoint++;
 		}
 		count++;

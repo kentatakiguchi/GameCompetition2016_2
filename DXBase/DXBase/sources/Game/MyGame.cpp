@@ -16,7 +16,6 @@
 #include"../Scene/MainMenu/MainMenuScene.h"
 #include"../Scene/Credit/CreditScene.h"
 #include"../Scene/TeamLogoScene/TeamLogoScene.h"
-#include"../Scene/Test/TestScene.h"
 #include"../Scene/GameEnd/GameEndScene.h"
 #include "../Scene/Tutoreal/TutorealScene.h"
 
@@ -47,7 +46,6 @@ void MyGame::start(){
 	sceneMgr_.add(Scene::Credit, std::make_shared<CreditScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GameEnd, std::make_shared<GameEndScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Logo, std::make_shared<TeamLogoScene>(&dataKeeper_));
-	sceneMgr_.add(Scene::Test, std::make_shared<TestScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Tutoreal, std::make_shared<TutorealScene>());
 	sceneMgr_.change(Scene::Loading);
 

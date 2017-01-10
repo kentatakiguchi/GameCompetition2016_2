@@ -8,10 +8,10 @@ GameOverScene::GameOverScene(SceneDataKeeper* keeper) :
 
 	nextScene[1] = GamePlay;
 	nextScene[2] = MainMenu;
-	//nextScene[3] = BossStage01;
+	nextScene[3] = BossStage01;
 	
-	textIDs[0] = TextureID::TEXT_TITLE_TEX;
-	textIDs[1] = TextureID::TEXT_NEXTSTAGE_TEX;
+	textIDs[0] = TextureID::TEXT_GAMEOVER_TEX;
+	textIDs[1] = TextureID::TEXT_RETRY_TEX;
 	textIDs[2] = TextureID::TEXT_MENUBACK_TEX;
 
 
@@ -28,7 +28,7 @@ GameOverScene::GameOverScene(SceneDataKeeper* keeper) :
 	list2.push_back("次のステージへ");
 	listBase[1] = list2;
 	textPoses[1] = Vector2(200, 600);
-	//textPoses[3] = Vector2(200, 600);
+	textPoses[3] = Vector2(200, 600);
 	textPosList.push_back(textPoses[1]);
 	changeTextList.clear();
 
@@ -86,7 +86,7 @@ void GameOverScene::update() {
 		{
 			isEnd_ = true;
 			PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
-			//if (targetPoint == 1 && keeper_->getSceneName() == "stage04")targetPoint = 3;
+			if (targetPoint == 1 && keeper_->getSceneName() == "bossStage01")targetPoint = 3;
 		}
 	}
 
@@ -115,11 +115,11 @@ void GameOverScene::draw() const {
 		for (auto my : lists) {
 			strLen = strlen(my.c_str());
 			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			center = SCREEN_SIZE.x / 2;
+			center = static_cast<int>(SCREEN_SIZE.x) / 2;
 			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(sin(sinCount*MathHelper::Pi / 180)) * 255);
+			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 
-			DrawGraph(center - 320, textPosList.at(count).y, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			heightPoint++;
@@ -129,7 +129,7 @@ void GameOverScene::draw() const {
 		heightPoint = 0;
 	}
 
-	DrawGraph(textPoses.at(targetPoint).x, textPoses.at(targetPoint).y, ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
+ 	DrawGraph(static_cast<int>(textPoses.at(targetPoint).x), static_cast<int>(textPoses.at(targetPoint).y), ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
 
 }
 

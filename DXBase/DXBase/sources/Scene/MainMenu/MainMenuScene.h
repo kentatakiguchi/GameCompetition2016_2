@@ -22,6 +22,8 @@ public:
 
 private:
 	bool isTitle_;
+	bool isDrawAlphaBack_;
+	int alphaSlideCount_;
 
 	int slideSize;
 	
@@ -30,6 +32,8 @@ private:
 	int sinCount;
 	int alphaCou[2];
 	int alphadefSpeeds[2];
+
+	int titleBackAlpha_;
 
 	std::map<int,Vector2> textPoses;
 	std::map<int,Scene> nextScene;

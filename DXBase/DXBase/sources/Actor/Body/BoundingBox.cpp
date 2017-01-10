@@ -40,10 +40,10 @@ BoundingBox BoundingBox::transform(const Vector2& topLeft, const Vector2& topRig
 void BoundingBox::draw() const {
 	//if (!enabled)return;
 
-	DrawLine(component_.point[0].x, component_.point[0].y, component_.point[1].x, component_.point[1].y, GetColor(255, 0, 0));
-	DrawLine(component_.point[1].x, component_.point[1].y, component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0));
-	DrawLine(component_.point[0].x, component_.point[0].y, component_.point[2].x, component_.point[2].y, GetColor(255, 0, 0));
-	DrawLine(component_.point[2].x, component_.point[2].y, component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0));
+	DrawLine(static_cast<int>(component_.point[0].x), static_cast<int>(component_.point[0].y), static_cast<int>(component_.point[1].x), static_cast<int>(component_.point[1].y), GetColor(255, 0, 0));
+	DrawLine(static_cast<int>(component_.point[1].x), static_cast<int>(component_.point[1].y), static_cast<int>(component_.point[3].x), static_cast<int>(component_.point[3].y), GetColor(255, 0, 0));
+	DrawLine(static_cast<int>(component_.point[0].x), static_cast<int>(component_.point[0].y), static_cast<int>(component_.point[2].x), static_cast<int>(component_.point[2].y), GetColor(255, 0, 0));
+	DrawLine(static_cast<int>(component_.point[2].x), static_cast<int>(component_.point[2].y), static_cast<int>(component_.point[3].x), static_cast<int>(component_.point[3].y), GetColor(255, 0, 0));
 	
 
 	//DrawBox(component_.point[0].x, component_.point[0].y,
@@ -59,7 +59,7 @@ void BoundingBox::draw(Matrix inv) const {
 	Vector3 pos2 = Vector3(component_.point[2].x, component_.point[2].y) * inv;
 	Vector3 pos3 = Vector3(component_.point[3].x, component_.point[3].y) * inv;
 
-	DrawBox(pos0.x, pos0.y, pos3.x, pos3.y, GetColor(255, 255, 255), TRUE);
+	DrawBox(static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos3.x), static_cast<int>(pos3.y), GetColor(255, 255, 255), TRUE);
 
 	//DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
 	//DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));
@@ -78,7 +78,7 @@ void BoundingBox::draw(int spriteID, Matrix inv) const
 	Vector3 pos2 = Vector3(component_.point[2].x, component_.point[2].y) * inv;
 	Vector3 pos3 = Vector3(component_.point[3].x, component_.point[3].y) * inv;
 
-	DrawGraph(pos0.x, pos0.y, spriteID, TRUE);
+	DrawGraph(static_cast<int>(pos0.x), static_cast<int>(pos0.y), spriteID, TRUE);
 }
 
 void BoundingBox::draw(int spriteID, int rotation, Matrix inv) const
@@ -96,7 +96,7 @@ void BoundingBox::draw(int spriteID, int rotation, Matrix inv) const
 	centerMath2.y = (pos2.y + pos3.y) / 2;
 	center = (centerMath1 + centerMath2) / 2;
 
-	DrawRotaGraph(center.x, center.y,1,(rotation*MathHelper::Pi/180), spriteID, TRUE);
+	DrawRotaGraph(static_cast<int>(center.x), static_cast<int>(center.y),1, static_cast<int>((rotation*MathHelper::Pi/180)), spriteID, TRUE);
 
 	//DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
 	//DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));

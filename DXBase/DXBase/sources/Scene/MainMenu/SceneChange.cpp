@@ -3,7 +3,7 @@
 #include"../../Game/Time.h"
 #include"../../Define.h"
 
-static const float SdefTime = 0.05;
+static const float SdefTime = 0.05f;
 static const float SfallSpeed = 30;
 static const float SSlimePadd = 46;
 static const Vector2 SSlimeSize = Vector2(290, 130);
@@ -11,14 +11,14 @@ static const int LineSize = 8;
 SceneChange::SceneChange():isMainMenu_(false),isEnd_(true),isSlimeMax_(true),slimeCount(0),timeCount(SdefTime),deltaTime_(0),slimesetline(0), switchCount(0), mt(random_()),
 rand256(0, 255), randR(100, 255), randG(100, 255), randB(0, 200),randL(0, LineSize-1),changeCount(0)
 {
-	spawnPoses[0][0] = (Vector2((SSlimeSize.x - SSlimePadd)*(-0.5), 0));
-	spawnPoses[0][1] = (Vector2((SSlimeSize.x - SSlimePadd) * 0.5, 0));
-	spawnPoses[0][2] = (Vector2((SSlimeSize.x - SSlimePadd) * 1.5, 0));
-	spawnPoses[0][3] = (Vector2((SSlimeSize.x - SSlimePadd) * 2.5, 0));
-	spawnPoses[0][4] = (Vector2((SSlimeSize.x - SSlimePadd) * 3.5, 0));
-	spawnPoses[0][5] = (Vector2((SSlimeSize.x - SSlimePadd) * 4.5, 0));
-	spawnPoses[0][6] = (Vector2((SSlimeSize.x - SSlimePadd) * 5.5, 0));
-	spawnPoses[0][7] = (Vector2((SSlimeSize.x - SSlimePadd) * 6.5, 0));
+	spawnPoses[0][0] = (Vector2((SSlimeSize.x - SSlimePadd)*(-0.5f), 0));
+	spawnPoses[0][1] = (Vector2((SSlimeSize.x - SSlimePadd) * 0.5f, 0));
+	spawnPoses[0][2] = (Vector2((SSlimeSize.x - SSlimePadd) * 1.5f, 0));
+	spawnPoses[0][3] = (Vector2((SSlimeSize.x - SSlimePadd) * 2.5f, 0));
+	spawnPoses[0][4] = (Vector2((SSlimeSize.x - SSlimePadd) * 3.5f, 0));
+	spawnPoses[0][5] = (Vector2((SSlimeSize.x - SSlimePadd) * 4.5f, 0));
+	spawnPoses[0][6] = (Vector2((SSlimeSize.x - SSlimePadd) * 5.5f, 0));
+	spawnPoses[0][7] = (Vector2((SSlimeSize.x - SSlimePadd) * 6.5f, 0));
 	//spawnPoses[0][8] = (Vector2((SSlimeSize.x - SSlimePadd) * 7.5, 0));
 
 	spawnPoses[1][0] = (Vector2((spawnPoses[0].at(1).x-(SSlimeSize.x/2)) + SSlimePadd, 0));
@@ -29,7 +29,7 @@ rand256(0, 255), randR(100, 255), randG(100, 255), randB(0, 200),randL(0, LineSi
 	spawnPoses[1][5] = (Vector2((spawnPoses[0].at(6).x - (SSlimeSize.x / 2) + SSlimePadd), 0));
 	spawnPoses[1][6] = (Vector2((spawnPoses[0].at(7).x - (SSlimeSize.x / 2) + SSlimePadd), 0));
 	//spawnPoses[1][7] = (Vector2((spawnPoses[0].at(8).x - (SSlimeSize.x / 2) + SSlimePadd), 0));
-	spawnPoses[1][7] = (Vector2((((SSlimeSize.x - SSlimePadd) *7.5) - (SSlimeSize.x / 2) + SSlimePadd), 0));
+	spawnPoses[1][7] = (Vector2((((SSlimeSize.x - SSlimePadd) *7.5f) - (SSlimeSize.x / 2) + SSlimePadd), 0));
 	//spawnPoses[1][8] = (Vector2((((SSlimeSize.x - SSlimePadd) * 8.5) - (SSlimeSize.x / 2) + SSlimePadd), 0));
 
 	allSizes = spawnPoses[0].size() + spawnPoses[1].size();
@@ -146,7 +146,7 @@ void SceneChange::update()
 
 void SceneChange::fallSlimes()
 {
-	for (int i = 0; i < slimes.size(); i++) {
+	for (int i = 0; i < static_cast<int>(slimes.size()); i++) {
 		slimes[i] += Vector2(0, 80);
 	}
 	if (slimes.at(slimes.size()-1).y >= SCREEN_SIZE.y) isEnd_ = true;
@@ -160,7 +160,7 @@ void SceneChange::draw() const
 
 	for (int i = 0; i < slimeCount; i++) {
 		SetDrawBright(slimeColors.at(i).Red, slimeColors.at(i).Green, slimeColors.at(i).Blue);
-		DrawGraph(slimes.at(i).x, slimes.at(i).y, ResourceLoader::GetInstance().getTextureID(TextureID::CHANGE_SCENE_TEX), TRUE);
+		DrawGraph(static_cast<int>(slimes.at(i).x), static_cast<int>(slimes.at(i).y), ResourceLoader::GetInstance().getTextureID(TextureID::CHANGE_SCENE_TEX), TRUE);
 		SetDrawBright(255, 255, 255);
 	}
 }
