@@ -167,8 +167,8 @@ protected:
 	ActorPtr player_;				// プレイヤー
 	//ActorPtr fsPoint_;				// 床捜索オブジェクト
 	EnemyManager enemyManager_;		// エネミーマネージャー
-	FloorSearchPoint* fspScript;	// 床捜索オブジェクト
-	FloorSearchPoint* wsScript;		// 壁捜索オブジェクト
+	FloorSearchPoint* fspScript_;	// 床捜索オブジェクト
+	FloorSearchPoint* wsScript_;		// 壁捜索オブジェクト
 	Prickle* pricleObj_;			// トゲのオブジェクト
 	PlayerSearchObj* psObj_;		// 線分衝突判定用オブジェクト
 
@@ -185,12 +185,8 @@ protected:
 	ObjContainer objContainer_;
 	// 重力加速度
 	const float GRAVITY_ = 9.8f;
-
 	// SE
 	int seHandle_;
-
-	// デバッグ
-	int handle_;
 };
 
 #endif

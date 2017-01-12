@@ -176,6 +176,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\DashEffect.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\EntrySignEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\ImportEffects.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\PiyoriEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ShockWave.h" />
@@ -346,6 +347,7 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\DashEffect.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EntrySignEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\PiyoriEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\ShockWave.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.cpp" />

@@ -99,6 +99,8 @@ protected:
 	void boko(float deltaTime);
 	// 死亡状態
 	void deadMove(float deltaTime);
+	// ぴより行動
+	void piyoriMove(float deltaTime);
 
 // 攻撃行動
 protected:
@@ -124,17 +126,18 @@ private:
 	void groundClamp(Actor& actor);
 	// アニメーションの追加
 	void addAnimation();
+	// ぴより状態の設定を行います
+	void setPiyori();
 
 protected:
 	int dp_;						// 耐久値
 	//int initDp_;					// 耐久値(初期値)
 	int hp_;						// 体力
-	int attackCount_;				// 攻撃行動するカウント
+	unsigned int attackCount_;				// 攻撃行動するカウント
 	//int hpLock_;					// ロックする体力
 	int flinchCount_;				// ひるむまでの回数
 	int piyoriCount_;				// ぴよる回数
 	int angleCount_;				// 振り向き回数
-	int starCreateCount_;
 	int bockCreateCount_;
 	// int initHp_;					// 体力(初期値)
 	float stateTimer_;				// 状態の時間
@@ -142,6 +145,7 @@ protected:
 	float deltaTimer_;				// 現在の時間(補間)
 	float damageTimer_;				// 次に被弾までの時間
 	float angle_;					// 角度(時計周り)
+	float effectCreateTimer_;		// エフェクト生成時間(間隔)
 
 	bool isGround_;					// 接地しているか
 	bool isBottomHit_;				// 壁の下側に当たったか
@@ -149,6 +153,7 @@ protected:
 	bool isAttackHit_;				// プレイヤーの攻撃に当たるか
 	bool isSceneEnd_;				// シーンを終了させるか
 	bool isBattle_;					// 戦闘を行うか
+	bool isEffectCreate_;			// エフェクトを生成するか
 
 	std::string stateString_;		// 状態の文字列（デバッグ用）
 	int handle_;					// デバッグハンドル

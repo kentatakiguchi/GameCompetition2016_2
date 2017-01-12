@@ -22,6 +22,7 @@ BossAttack::BossAttack() :
 	isAnimaLoop_(false),
 	position_(Vector2::Zero),
 	direction_(Vector2::Zero),
+	wsDirection_(Vector2::Zero),
 	pPosition_(Vector2::Zero),
 	pDirection_(Vector2::Zero),
 	pNormDirection_(Vector2::Zero),
@@ -54,6 +55,7 @@ BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
 	direction_(Vector2::Left),
 	pPosition_(Vector2::One),
 	pDirection_(Vector2::One),
+	wsDirection_(Vector2::One),
 	pNormDirection_(Vector2::One),
 	world_(world),
 	//animeNum_(BossAnimationNumber::WAIT_NUMBER),
@@ -161,7 +163,7 @@ void BossAttack::setIsWallHit(bool isHit)
 // •ÇˆÚ“®‚Ì•ûŒü‚ğæ“¾‚µ‚Ü‚·
 Vector2 BossAttack::getMoveDirection()
 {
-	return direction_;
+	return wsDirection_;
 }
 
 // °‚ÉG‚ê‚Ä‚¢‚é‚©‚ğİ’è‚µ‚Ü‚·

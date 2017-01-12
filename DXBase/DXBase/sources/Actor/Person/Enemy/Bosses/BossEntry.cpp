@@ -38,21 +38,7 @@ void BossEntry::onUpdate(float deltaTime)
 	isBlock_ = false;
 }
 
-void BossEntry::onDraw() const
-{
-	// 表示
-	//auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-	//vec3Pos = vec3Pos * inv_;
-	///*DrawString(
-	//	vec3Pos.x, vec3Pos.y,
-	//	"ボスの口です", GetColor(255, 255, 255));*/
-	//DrawGraph(
-	//	vec3Pos.x - body_.GetCircle().getRadius(),
-	//	vec3Pos.y - body_.GetCircle().getRadius(),
-	//	ResourceLoader::GetInstance().getTextureID(
-	//		TextureID::ENEMY_NEEDLE_TEX), 0);
-	//body_.draw(inv_);
-}
+void BossEntry::onDraw() const{}
 
 void BossEntry::onCollide(Actor & actor)
 {
@@ -63,9 +49,9 @@ void BossEntry::onCollide(Actor & actor)
 
 	// 中に入れる状態のみ、プレイヤーの本体に当たる
 	if (!isEntry_) return;
-	if (actor.getName() == "PlayerBody1Collider" || actor.getName() == "PlayerBody2Collider") {
+	if (actor.getName() == "PlayerBody1Collider" ||
+		actor.getName() == "PlayerBody2Collider") {
 		isEntered_ = true;
-		// プレイヤーの位置を変更
 	}
 }
 

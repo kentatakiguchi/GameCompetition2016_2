@@ -90,19 +90,11 @@ void JumpAttack::attack(float deltaTime)
 	if (isJump_ && isGround_ && timer_ > 0.3f) {
 		isIdel_ = true;
 		isBodyHit_ = true;
-		auto addPos = Vector2::One * 212.0f;
+		auto addPos = Vector2::Left * 40.0f;
 		world_->addActor(ActorGroup::Effect,
 			std::make_shared<BokoEffect>(world_, position_ + addPos));
 		// 着地時に攻撃判定追加
 
-		//recastTimer_ -= deltaTime;
-		//// リキャスト時間が 0 になったら、ジャンプ攻撃終了
-		//if (recastTimer_ > 0.0f) return;
-		//jumpPower_ = initJumpPower_;
-		//isJump_ = false;
-		//isJumpEnd_ = true;
-		//timer_ = 0.0f;
-		//return;
 	}
 	// ジャンプが終了したら、リキャストタイムを減算する
 	if (isIdel_) {

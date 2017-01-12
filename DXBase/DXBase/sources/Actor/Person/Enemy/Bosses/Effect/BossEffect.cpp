@@ -6,10 +6,12 @@ BossEffect::BossEffect(
 	const Vector2 & position,
 	const Vector2 & texSize,
 	const int animeNum,
-	const AnimationID id) :
+	const AnimationID id,
+	const bool isLoop) :
 	Actor(world, name, position,CollisionBase()),
 	animation_(EnemyAnimation2D()),
 	scale_(1.0f),
+	isLoop_(isLoop),
 	texSize_(texSize)
 {
 	//auto texSize = 512;
@@ -29,7 +31,7 @@ BossEffect::~BossEffect(){
 void BossEffect::onUpdate(float deltaTime)
 {
 	animation_.update(deltaTime);
-	if (animation_.isEndAnimation())
+	if (animation_.isEndAnimation() && !isLoop_)
 		dead();
 }
 
@@ -41,22 +43,9 @@ void BossEffect::onDraw() const
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
 		pos,
-		texSize_ * scale_,
+		texSize_ / 2 * scale_,
 		scale_);
 	body_.draw();
 }
 
 void BossEffect::onCollide(Actor & actor){}
-
-// アニメーションの追加を行います
-//void BossEffect::addAnimation()
-//{
-//	auto texSize = 256;
-//	// 敵の画像に合わせて調整
-//	// 待機
-//	/*animation_.addAnimation(
-//		animeNum,
-//		ResourceLoader::GetInstance().getTextureID(id),
-//		texSize, 8, 4, 1);
-//	animation_.changeAnimation(animeNum);*/
-//}

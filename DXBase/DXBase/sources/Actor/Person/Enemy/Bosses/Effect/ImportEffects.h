@@ -5,5 +5,6 @@
 #include "BokoEffect.h"
 #include "DashEffect.h"
 #include "PiyoriEffect.h"
+#include "EntrySignEffect.h"
 
 #endif

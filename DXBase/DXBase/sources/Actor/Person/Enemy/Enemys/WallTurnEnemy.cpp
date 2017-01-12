@@ -9,9 +9,7 @@ WallTrunEnemy::WallTrunEnemy(
 	const Vector2& direction) :
 	BaseEnemy(world, position, 64.0f, direction)
 {
-	//direction_ = direction;
-	//BaseEnemy::Initialize();
-
+	speed_ * 2;
 	isUseGravity_ = false;
 	isInvincible_ = true;
 	// 壁捜索オブジェクトの生成

@@ -21,12 +21,6 @@ BossManager::BossManager(IWorld* world, const Vector2 & position) :
 	movePosition_(position)*/
 {
 	// bossAttackContainer_.clear();
-	// UŒ‚s“®‚Ì’Ç‰Á
-	// bossAttackContainer_.push_back(std::make_shared<JumpAttack>(position));
-	//bossAttackContainer_.push_back(std::make_shared<ThreeJumpAttack>(position));
-	//bossAttackContainer_.push_back(std::make_shared<WallAttack>(position));
-	////bossAttackContainer_.push_back(std::make_shared<PluralWallAttack>(position));
-	//bossAttackContainer_.push_back(std::make_shared<DysonAttack>(, position));
 }
 
 // UŒ‚ƒRƒ“ƒeƒi‚ÉUŒ‚‚ğ’Ç‰Á‚µ‚Ü‚·
@@ -36,7 +30,7 @@ void BossManager::addAttack(std::shared_ptr<BossAttack> attack)
 }
 
 // UŒ‚‚Ì”Ô†‚ğ•ÏX‚µ‚Ü‚·
-void BossManager::changeAttackNumber(const float number)
+void BossManager::changeAttackNumber(const int number)
 {
 	// ”Ô†‚Ì•ÏX
 	attackNumber_ = number;

@@ -101,6 +101,7 @@ protected:
 	bool isAnimaLoop_;			// アニメーションをループさせるか
 	Vector2 position_;			// 位置
 	Vector2 direction_;			// 方向
+	Vector2 wsDirection_;		// 壁捜索オブジェクトの方向
 	Vector2 pPosition_;			// プレイヤーの位置
 	Vector2 pDirection_;		// プレイヤーとの方向
 	Vector2 pNormDirection_;	// プレイヤーとの方向

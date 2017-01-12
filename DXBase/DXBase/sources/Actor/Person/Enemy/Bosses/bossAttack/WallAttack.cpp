@@ -47,6 +47,7 @@ WallAttack::WallAttack(IWorld* world, const Vector2 & position) :
 		moveDirections_[count_ % 4]
 		);
 	direction_ = direction;
+	wsDirection_ = direction_;
 	animeNum_ = WALLATTACK_DASH_NUMBER;
 }
 
@@ -71,13 +72,14 @@ void WallAttack::Refresh()
 		isFlinch_ = true;*/
 	/*changeState(State::FloorSearch,
 		BossAnimationNumber::WAIT_NUMBER);*/
-	changeState(State::WallMove, WALLATTACK_DASH_NUMBER);
+	changeState(State::FloorSearch, WALLATTACK_DASH_NUMBER);
 	count_ = 0;
 	auto direction = Vector2(
 		moveDirections_[(count_ + 1) % 4],
 		moveDirections_[count_ % 4]
 		);
 	direction_ = direction;
+	wsDirection_ = direction_;
 	//animeNum_ = BossAnimationNumber::WAIT_NUMBER;
 }
 
@@ -92,6 +94,7 @@ void WallAttack::floorSearch(float deltaTime)
 		if (position_.x <= CHIPSIZE * 20 / 2)
 			direction = -1.0f;
 		direction_.x = direction;
+		wsDirection_.x = direction_.x;
 		changeState(State::FloorGetOff, WAIT_NUMBER);
 	}
 	// そうでなければ、壁移動に遷移
@@ -143,7 +146,8 @@ void WallAttack::wallMove(float deltaTime)
 		moveDirections_[(int)(count_ % 4)]
 		);
 	direction_ = direction;
-	animeAngle_ = (count_ * 90) % 360;
+	wsDirection_ = direction_;
+	animeAngle_ = (float)((count_ * 90) % 360);
 	// 仮
 	auto pos = direction * speed * (deltaTime * 60.0f);
 	position_ += pos;
@@ -159,9 +163,10 @@ void WallAttack::wallMove(float deltaTime)
 		isAnimaLoop_ = false;
 		prevPlayerDistance_ = pNormDirection_;
 		// プレイヤーの方向を向く
-		auto a = prevPlayerDistance_;
-		auto angle = std::atan2(a.y, a.x) * 180.0f / MathHelper::Pi;
+		direction = prevPlayerDistance_;
+		auto angle = std::atan2(direction.y, direction.x) * 180.0f / MathHelper::Pi;
 		animeAngle_ = angle + 90.0f;
+		wsDirection_ = direction;
 	}
 }
 
@@ -173,7 +178,7 @@ void WallAttack::wallAttack(float deltaTime)
 	//animeNum_ = BossAnimationNumber::WALLATTACK_DASHJUMP_NUMBER;
 	// プレイヤーの居た位置に向かって飛ぶ
 	position_ += prevPlayerDistance_ * speed * (deltaTime * 60.0f);
-	if (timer_ <= 0.2f) return;
+	//if (timer_ <= 0.2f) return;
 	if (floorName_ == "BossAreaFloor" || floorName_ == "MovelessFloor") {
 		//flinchCount_--;
 		isAnimaLoop_ = true;
@@ -190,19 +195,10 @@ void WallAttack::setAttackSecond()
 	// コンテナの要素数の指定
 	int aCount = 0;
 	auto hp = (hp_ % 100) + 1;
-	/*if (flinchCount_ <= 0) {
-		flinchCount_ = 1;
-		if (hp >= 30) {
-			flinchCount_ = 2;
-		}
-		else if (hp < 30) {
-			flinchCount_ = 3;
-		}
-	}*/
 	
 	flinchCount_ = 1;
 	// 体力が70未満の場合、カウントの値を変える
-	if (hp >= 30) {
+	if (hp < 70 && hp >= 30) {
 		aCount = 2;
 		flinchCount_ = 2;
 	}

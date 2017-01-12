@@ -27,15 +27,7 @@ void PlayerSearchObj::onUpdate(float deltaTime)
 		position_, enemyPosition_, playerPosition_);
 }
 
-void PlayerSearchObj::onDraw() const
-{
-	// body_.setSegmentPoint(enemyPosition_, playerPosition_)
-	/*DrawFormatString(25, 75, GetColor(255, 255, 255),
-		"ÉvÉåÉCÉÑÅ[Ç∆ÇÃê¸ï™:X%d, Y%d",
-		(int)position_.x,
-		(int)position_.y);*/
-	//body_.draw(inv_);
-}
+void PlayerSearchObj::onDraw() const{}
 
 void PlayerSearchObj::onCollide(Actor & actor)
 {

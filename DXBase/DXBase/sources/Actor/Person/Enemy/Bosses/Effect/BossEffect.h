@@ -12,6 +12,7 @@ protected:
 		EFFECT_BOKO = 1,
 		EFFECT_DASH = 2,
 		EFFECT_PIYO = 3,
+		EFFECT_ENTRY_SIGN = 4
 	};
 
 public:
@@ -21,7 +22,8 @@ public:
 		const Vector2& position,
 		const Vector2& texSize,
 		const int animeNum,
-		const AnimationID id);
+		const AnimationID id,
+		const bool isLoop = false);
 	~BossEffect();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
@@ -34,8 +36,9 @@ public:
 protected:
 	EnemyAnimation2D animation_;
 
-	float scale_;
-	Vector2 texSize_;
+	float scale_;		// 大きさ
+	bool isLoop_;		// ループするか
+	Vector2 texSize_;	// テクスチャの大きさ
 };
 
 #endif

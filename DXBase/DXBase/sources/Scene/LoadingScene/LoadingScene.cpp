@@ -65,9 +65,7 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::PAUSE_BACK_TEX, "./resources/sprite/pauseBack.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_NEEDLE_TEX, "./resources/sprite/Needle.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_WEAPON_TEX, "./resources/sprite/EnemyWeapon.png");
 
-	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_TEX, "./resources/sprite/Boss01.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL1_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText1-1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL1_2_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText1-2.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL2_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText2-1.png");
@@ -228,8 +226,8 @@ void LoadingScene::load_boss_res(){
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_BOKO_TEX, "./resources/sprite/actor/boss/effect/boss_boko.png", 512, 5, 6);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_DASH_TEX, "./resources/sprite/actor/boss/effect/dash.png", 256, 9, 7);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_PIYO_TEX, "./resources/sprite/actor/boss/effect/piyori.png", 256, 8, 7);
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ATTACK_SUIKOMI_TEX, "./resources/sprite/actor/boss/effect/suikomi.png", Vector2(256, 512), 20, 24);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ATTACK_SUIKOMI_30_TEX, "./resources/sprite/actor/boss/effect/suikomi_30.png", Vector2(256, 512), 5, 6);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ENTRY_SIGN_TEX, "./resources/sprite/actor/boss/effect/chance_anim.png", Vector2(320, 321), 6, 4);
 }
 
 void LoadingScene::load_bgm_res(){

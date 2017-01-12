@@ -23,21 +23,22 @@ BaseBoss::BaseBoss(
 	attackCount_(0),
 	flinchCount_(0),
 	piyoriCount_(5),
-	angleCount_(0),
-	starCreateCount_(0),
 	bockCreateCount_(0),
+	angleCount_(0),
 	// initHp_(hp_),
 	stateTimer_(0.0f),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
 	damageTimer_(0.0f),
 	angle_(0.0f),
+	effectCreateTimer_(0.0f),
 	isGround_(false),
 	isBottomHit_(false),
 	isBodyHit_(true),
 	isAttackHit_(true),
 	isSceneEnd_(false),
 	isBattle_(false),
+	isEffectCreate_(true),
 	stateString_("待機"),
 	// bossManager_(nullptr),
 	playerPastPosition_(Vector2::Zero),
@@ -60,7 +61,6 @@ BaseBoss::BaseBoss(
 {
 	asContainer_.clear();
 	asAnimations_.clear();
-
 	// 攻撃状態をコンテナに追加(攻撃順に追加する)
 	asContainer_.push_back(AttackState::JumpAttack);
 	asContainer_.push_back(AttackState::WallAttack);
@@ -76,17 +76,17 @@ BaseBoss::BaseBoss(
 	bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
 
 	//// 攻撃状態をコンテナに追加(攻撃順に追加する)
-	//asContainer_.push_back(AttackState::WallAttack);
 	//asContainer_.push_back(AttackState::SpeacialAttack);
+	//asContainer_.push_back(AttackState::WallAttack);
 	//asContainer_.push_back(AttackState::JumpAttack);
 	//// 攻撃アニメーションコンテナ
-	//asAnimations_.push_back(WALLATTACK_DASH_NUMBER);
 	//asAnimations_.push_back(BREATH_NUMBER);
+	//asAnimations_.push_back(WALLATTACK_DASH_NUMBER);
 	//asAnimations_.push_back(JUMP_UP_NUMBER);
 
 	//// ボスマネージャーに攻撃を追加
-	//bossManager_.addAttack(std::make_shared<WallAttack>(world_, position));
 	//bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
+	//bossManager_.addAttack(std::make_shared<WallAttack>(world_, position));
 	//bossManager_.addAttack(std::make_shared<ThreeJumpAttack>(world_, position));
 
 	// 体力をロックするコンテナに追加
@@ -113,8 +113,8 @@ BaseBoss::BaseBoss(
 	wspObj_ = &*wspObj;
 	// ボス入口オブジェクト
 	auto entryObj = std::make_shared<BossEntry>(
-		world_, position_,
-		Vector2(bodyScale / 2.0f, -bodyScale / 1.5f),
+		world_, position_ + Vector2::Left * 50,
+		Vector2(bodyScale / 1.75f, -bodyScale / 1.25f),
 		bodyScale / 4.0f);
 	world_->addActor(ActorGroup::Enemy, entryObj);
 	entryObj_ = &*entryObj;
@@ -139,6 +139,7 @@ BaseBoss::~BaseBoss()
 void BaseBoss::onUpdate(float deltaTime)
 {
 	clampList_.clear();
+	deltaTimer_ = deltaTime * 60.0f;
 
 	// 補間タイマ(最大値１)の更新
 	setTimer(deltaTime);
@@ -148,7 +149,7 @@ void BaseBoss::onUpdate(float deltaTime)
 	// アニメーションの更新
 	animation_.update(deltaTime);
 
-	entryObj_->setBossPosition(position_);
+	entryObj_->setBossPosition(position_ + Vector2::Left * 50);
 	wspObj_->setPosition(position_);
 	// wspObj_->setDirection(direction_);
 	// 状態の更新
@@ -212,7 +213,8 @@ void BaseBoss::onCollide(Actor & actor)
 	}
 	// 特定の状態ではプレイヤーに触れても何も起こらないようにする
 	if (state_ == State::Flinch || state_ == State::Dead ||
-		state_ == State::Boko || state_ == State::BattleIdel) return;
+		state_ == State::Boko || state_ == State::BattleIdel ||
+		state_ == State::Damage) return;
 	if (damageTimer_ > 0 || attackCount_ == 2) return;
 	// プレイヤーの攻撃範囲に当たった場合の処理
 	if (actorName == "PlayerAttackCollider") {
@@ -343,7 +345,8 @@ void BaseBoss::changeAttackState(AttackState aState, int num)
 	//if (attackState_ == aState) return;
 	changeState(State::Attack, num);
 	// 画像の方向を合わせる
-	animation_.turnAnimation(num, direction_.x);
+	//animation_.turnAnimation(num, direction_.x);
+	animation_.changeDirType(direction_.x);
 	attackState_ = aState;
 	bossManager_.prevPosition();
 }
@@ -375,7 +378,8 @@ void BaseBoss::idel(float deltaTime)
 	// プレイヤーが取得できていれば、エネミーマネージャーに位置などを入れる
 	setBMStatus();
 	// 画像の方向を合わせる
-	animation_.turnAnimation(WAIT_NUMBER, direction_.x);
+	//animation_.turnAnimation(WAIT_NUMBER, direction_.x);
+	animation_.changeDirType(direction_.x);
 
 	//bossManager_.changeAttackNumber(asContainer_.size() - hp_);
 	bossManager_.changeAttackNumber(attackCount_);
@@ -438,89 +442,9 @@ void BaseBoss::flinch(float deltaTime)
 {
 	stateString_ = "ひるみ";
 	name_ = "flinchBoss";
-	entryObj_->setIsEntry(true);
 	flinchCount_ = 0;
-	animation_.setIsLoop(true);
-	// 星の生成
-	if (starCreateCount_ % 50 == 0 && stars_.size() < 6) {
-		auto addPos = Vector2::Right * 100;
-		auto star = std::make_shared<PiyoriEffect>(
-			world_, position_ + addPos);
-		world_->addActor(ActorGroup::Effect, star);
-		stars_.push_back(star);
-	}
-	starCreateCount_++;
-	// ぴよりエフェクトの位置
-	for (auto i = stars_.begin(); i != stars_.end(); i++) {
-		auto addPos = Vector2::Right * 100;
-		i->get()->position_ = position_ + addPos;
-	}
-
-	// 重力
-	if (!isGround_ && bossManager_.isUseGravity()) {
-		position_.y += 9.8f * (1.0f);// * 60.0f);
-	}
-
-	//// 体内に入った場合、体力を減らす
-	//if (entryObj_->isEntered()) {
-	//	entryObj_->letOut();
-	//	entryObj_->setIsEntry(false);
-	//	heartObj_->addBossHp(-50);
-	//	changeState(State::Idel, BOSS_IDLE);
-	//}
-
-	// 体内に入っていたら、ハートに入ったことを知らせる
-	if (entryObj_->isEntered()) {
-		// プレイヤーが出てきたら、待機状態にする
-		//stateTimer_ = 5.0f;
-		stateTimer_ = 5.0f;
-		//heartObj_->setIsEntered(true);
-		//heartObj_->addBossHp(-30);
-		// カウントを減らす
-		piyoriCount_--;
-		// ダメージ処理
-		damage(30, entryObj_->getPosition(), 0.8f);
-		//changeState(State::Damage, DAMAGE_NUMBER);
-		/*if (attackCount_ < asContainer_.size() - 1)
-		attackCount_++;*/
-		entryObj_->letOut();
-		//name_ = "BaseEnemy";
-		// スターの削除
-		for (auto i = stars_.begin(); i != stars_.end(); i++) {
-			auto star = *i;
-			star->dead();
-		}
-		stars_.clear();
-		starCreateCount_ = 0;
-		return;
-	}
-	//// 体内に入ったら何かする
-	//if (entryObj_->isEntered()) {
-	//	// プレイヤーを追い出せていないなら返す
-	//	//if (!heartObj_->isLetOut()) return;
-	//	// プレイヤーが出てきた
-	//	entryObj_->letOut();
-	//}
-
-	//// 体力が0になったら死亡
-	//if (hp_ <= 0) {
-	//	changeState(State::Dead, BossAnimationNumber::DEATH_NUMBER);
-	//	return;
-	//}
-	// 一定時間経過で待機状態に遷移
-	if (stateTimer_ < 5.0f) return;
-	//changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
-	changeState(State::Idel, WAIT_NUMBER);
-	name_ = "BaseEnemy";
-	entryObj_->setIsEntry(false);
-	//dp_ = initDp_;
-	// スターの削除
-	for (auto i = stars_.begin(); i != stars_.end(); i++) {
-		auto star = *i;
-		star->dead();
-	}
-	stars_.clear();
-	starCreateCount_ = 0;
+	// 行動
+	piyoriMove(deltaTime);
 }
 
 // ぴより状態
@@ -528,95 +452,40 @@ void BaseBoss::piyori(float deltaTime)
 {
 	stateString_ = "ぴより";
 	name_ = "piyoriBoss";
-	entryObj_->setIsEntry(true);
-	//flinchCount_ = 0;
-	animation_.setIsLoop(true);
-	// 星の生成
-	if (starCreateCount_ % 50 == 0 && stars_.size() < 6) {
-		auto addPos = Vector2::Right * 100;
-		auto star = std::make_shared<PiyoriEffect>(
-			world_, position_ + addPos);
-		world_->addActor(ActorGroup::Effect, star);
-		stars_.push_back(star);
-	}
-	starCreateCount_++;
-	// ぴよりエフェクトの位置
-	for (auto i = stars_.begin(); i != stars_.end(); i++) {
-		auto addPos = Vector2::Right * 100;
-		i->get()->position_ = position_ + addPos;
-	}
-
-	// 重力
-	if (!isGround_ && bossManager_.isUseGravity()) {
-		position_.y += 9.8f * (1.0f);// * 60.0f);
-	}
-	// 体内に入っていたら、ハートに入ったことを知らせる
-	if (entryObj_->isEntered()) {
-		// プレイヤーが出てきたら、待機状態にする
-		stateTimer_ = 5.0f;
-		if (attackCount_ < asContainer_.size() - 1)
-			attackCount_++;
-		// ぼこり状態に変更
-		changeState(State::Boko, DAMAGE_BOKO_NUMBER);
-		world_->setEntry(true, false);
-		entryObj_->letOut();
-		// SEの再生
-		PlaySoundMem(
-			ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO),
-			DX_PLAYTYPE_LOOP);
-
-		// スターの削除
-		for (auto i = stars_.begin(); i != stars_.end(); i++) {
-			auto star = *i;
-			star->dead();
-		}
-		stars_.clear();
-		starCreateCount_ = 0;
-
-		return;
-	}
-
-	// 一定時間経過で待機状態に遷移
-	if (stateTimer_ < 5.0f) return;
-	//changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
-	changeState(State::Idel, WAIT_NUMBER);
-	name_ = "BaseEnemy";
-	entryObj_->setIsEntry(false);
-	// スターの削除
-	for (auto i = stars_.begin(); i != stars_.end(); i++) {
-		auto star = *i;
-		star->dead();
-	}
-	stars_.clear();
-	starCreateCount_ = 0;
+	piyoriCount_ = 5;
+	piyoriMove(deltaTime);
 }
 
 void BaseBoss::boko(float deltaTime)
 {
 	name_ = "BokoBoss";
 	// 煙の生成
-	if (starCreateCount_ % 50 == 0 && bockCreateCount_ < 2) {
+	if (isEffectCreate_ && (int)effectCreateTimer_ % 50 <= 24 && bockCreateCount_ < 2) {
 		// エフェクトの追加
-		auto addPos = Vector2::One * 220.0f;
+		auto addPos = Vector2::One * -40.0f;
 		world_->addActor(ActorGroup::Effect,
 			std::make_shared<BokoEffect>(world_, position_ + addPos));
 		bockCreateCount_++;
+		isEffectCreate_ = false;
 		//stars_.push_back(star);
 	}
-	starCreateCount_++;
+	else if ((int)effectCreateTimer_ % 50 > 24) {
+		isEffectCreate_ = true;
+	}
+	effectCreateTimer_ += deltaTimer_;
 	if (stateTimer_ < 2.0f) return;
 	direction_.x = -1.0f;
-	animation_.turnAnimation(DAMAGE_BOKO_NUMBER, direction_.x);
+	animation_.changeDirType(direction_.x);
 	world_->setEntry(false, true);
 	entryObj_->setIsEntry(false);
 	// SEが再生中なら、止める
 	if (CheckSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO)) == 1)
 		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO));
-
 	if (stateTimer_ >= 3.0f) {
 		name_ = "BaseEnemy";
 		bockCreateCount_ = 0;
-		starCreateCount_ = 0;
+		effectCreateTimer_ = 0.0f;
+		isEffectCreate_ = true;
 		changeState(State::Idel, WAIT_NUMBER);
 	}
 }
@@ -625,29 +494,108 @@ void BaseBoss::deadMove(float deltaTime)
 {
 	stateString_ = "死亡";
 	animation_.setIsLoop(false);
-	if (animation_.isEndAnimation()) {
-		// アニメーションを停止させる
-		//dead();
-	}
 	// 死亡から一定時間経過なら、シーンを終了させる
 	if (stateTimer_ >= 3.0f)
 		isSceneEnd_ = true;
-	//dead();
+}
+
+// ぴより行動
+void BaseBoss::piyoriMove(float deltaTime)
+{
+	entryObj_->setIsEntry(true);
+	auto dir = direction_;
+	dir.y = 1.0f;
+	entryObj_->setDirection(dir);
+	animation_.setIsLoop(true);
+	// 星の生成
+	if (isEffectCreate_ && (int)effectCreateTimer_ % 50 <= 24 && stars_.size() < 6) {
+		auto star = std::make_shared<PiyoriEffect>(
+			world_, position_);
+		world_->addActor(ActorGroup::Effect, star);
+		stars_.push_back(star);
+		isEffectCreate_ = false;
+	}
+	else if ((int)effectCreateTimer_ % 50 > 24) {
+		isEffectCreate_ = true;
+	}
+	effectCreateTimer_ += deltaTimer_;
+	// ぴよりエフェクトの位置
+	for (auto i = stars_.begin(); i != stars_.end(); i++) {
+		auto addPos = Vector2::Up * -150;
+		i->get()->position_ = position_ + addPos;
+	}
+	// 重力
+	if (!isGround_ && bossManager_.isUseGravity()) {
+		position_.y += 9.8f * deltaTimer_;// * 60.0f);
+	}
+	// 口の印の更新
+	auto posEffect = world_->findActor("EntrySignEffect");
+	auto addPos = Vector2::Up * -150;
+	if (posEffect != nullptr) {
+		posEffect->position_ = entryObj_->getPosition() + addPos;
+	}
+	//i->get()->position_ = position_ + addPos;
+	// 体内に入っていたら、ハートに入ったことを知らせる
+	if (entryObj_->isEntered()) {
+		// プレイヤーが出てきたら、待機状態にする
+		stateTimer_ = 5.0f;
+		// スターの削除
+		for (auto i = stars_.begin(); i != stars_.end(); i++) {
+			auto star = *i;
+			star->dead();
+		}
+		// エフェクトの削除
+		auto effect = world_->findActor("EntrySignEffect");
+		if (effect != nullptr)
+			effect->dead();
+		stars_.clear();
+		effectCreateTimer_ = 0.0f;
+		entryObj_->letOut();
+		isEffectCreate_ = true;
+
+		// 状態によって行動を変える
+		if (state_ == State::Flinch) {
+			// カウントを減らす
+			piyoriCount_--;
+			// ダメージ処理
+			damage(30, entryObj_->getPosition(), 0.8f);
+			return;
+		}
+		else if (state_ == State::Piyori) {
+			if (attackCount_ < asContainer_.size() - 1)
+				attackCount_++;
+			// ぼこり状態に変更
+			changeState(State::Boko, DAMAGE_BOKO_NUMBER);
+			world_->setEntry(true, false);
+			// SEの再生
+			PlaySoundMem(
+				ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO),
+				DX_PLAYTYPE_LOOP);
+			return;
+		}
+	}
+	// 一定時間経過で待機状態に遷移
+	if (stateTimer_ < 5.0f) return;
+	changeState(State::Idel, WAIT_NUMBER);
+	name_ = "BaseEnemy";
+	entryObj_->setIsEntry(false);
+	isEffectCreate_ = true;
+	// エフェクトの削除
+	auto effect = world_->findActor("EntrySignEffect");
+	if (effect != nullptr)
+		effect->dead();
+	// スターの削除
+	for (auto i = stars_.begin(); i != stars_.end(); i++) {
+		auto star = *i;
+		star->dead();
+	}
+	stars_.clear();
+	effectCreateTimer_ = 0.0f;
 }
 
 void BaseBoss::jumpAttack(float deltaTime)
 {
-	/*auto anime = BossAnimationNumber::PIYO_NUMBER;
-	changeState(State::Piyori, BossAnimationNumber::PIYO_NUMBER);
-	animation_.setIsLoop(true);
-	bossManager_.attackRefresh();
-
-	animation_.changeAnimation(static_cast<int>(bossManager_.getAnimaNum()));
-	return;*/
-
 	stateString_ = "ジャンプ攻撃";
-	// プレイヤー本体に当たらない
-	//isBodyHit_ = false;
 	// ジャンプ攻撃
 	bossManager_.attackMove(deltaTime);
 	bossManager_.setPlayerPosition(player_->getPosition());
@@ -656,23 +604,15 @@ void BaseBoss::jumpAttack(float deltaTime)
 	animation_.setIsLoop(bossManager_.isAnimeLoop());
 	animation_.changeAnimation(
 		static_cast<int>(bossManager_.getAnimaNum()));
-	/*animation_.changeAnimation(
-	static_cast<int>(bossManager_.getAnimaNum()));*/
-	animation_.turnAnimation(JUMP_UP_NUMBER, bossManager_.getAttackDirection().x);
-	/*if (bossManager_.isPiyori()) {
-	changeState(State::Piyori, BossAnimationNumber::PIYO_NUMBER);
-	animation_.setIsLoop(true);
-	bossManager_.attackRefresh();
-	}*/
+	//animation_.turnAnimation(JUMP_UP_NUMBER, bossManager_.getAttackDirection().x);
+	animation_.changeDirType(bossManager_.getAttackDirection().x);
 	// ジャンプ攻撃が終わったら、待機状態にする
 	if (bossManager_.isAttackEnd()) {
-		//changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
 		animation_.setIsLoop(true);
 		changeState(State::Idel, WAIT_NUMBER);
 		// 攻撃が当たるかの判定を入れる
 		isAttackHit_ = true;
 		isBodyHit_ = true;
-		//isBodyHit_ = true;
 		bossManager_.attackRefresh();
 	}
 }
@@ -683,13 +623,12 @@ void BaseBoss::wallAttack(float deltaTime)
 	bossManager_.attackMove(deltaTime);
 	position_ = bossManager_.getMovePosition();
 	// アニメーションの変更
-	angle_ = bossManager_.getAnimeAngle();
+	angle_ = static_cast<float>(bossManager_.getAnimeAngle());
 	animation_.changeAnimation(
 		static_cast<int>(bossManager_.getAnimaNum()));
 	animation_.setIsLoop(bossManager_.isAnimeLoop());
-	/*animation_.changeAnimation(
-	static_cast<int>(bossManager_.getAnimaNum()));*/
-	animation_.turnAnimation(WALLATTACK_DASH_NUMBER, Vector2::Left.x);
+	//animation_.turnAnimation(WALLATTACK_DASH_NUMBER, Vector2::Left.x);
+	animation_.changeDirType(Vector2::Left.x);
 	// 攻撃動作中なら、壁捜索オブジェクトなどの判定をONにする
 	if (bossManager_.isAttackStart()) {
 		setBMStatus();
@@ -697,27 +636,23 @@ void BaseBoss::wallAttack(float deltaTime)
 	}
 	// ジャンプ攻撃が終わったら、待機状態にする
 	if (bossManager_.isAttackEnd()) {
-		//flinchCount_ = 0;
 		flinchCount_++;
-		//if (flinchCount_ == 0)
-		// 攻撃側のひるみ回数と以上なら、ひるみ状態に遷移
-		if (bossManager_.getFlinchCount() <= flinchCount_) {
-			//changeState(State::Flinch, BossAnimationNumber::PIYO_NUMBER);
-			changeState(State::Flinch, PIYO_NUMBER);
-			bossManager_.attackRefresh();
-			// 攻撃が当たるかの判定を入れる
-			isAttackHit_ = true;
-			isBodyHit_ = true;
-			flinchCount_ = 0;
-			return;
-		}
-		else {
-			//changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
+		// 攻撃側のひるみ回数と以上なら、ひるみ状態に遷移	
+		if (bossManager_.getFlinchCount() < flinchCount_) {
 			changeState(State::Idel, WAIT_NUMBER);
 			// 攻撃が当たるかの判定を入れる
 			isAttackHit_ = true;
 			isBodyHit_ = true;
 			bossManager_.attackRefresh();
+			return;
+		}
+		else if (bossManager_.getFlinchCount() >= flinchCount_) {
+			changeState(State::Flinch, PIYO_NUMBER);
+			bossManager_.attackRefresh();
+			flinchCount_ = 0;
+			// 怯み状態の設定
+			direction_.x = -1.0f;
+			setPiyori();
 			return;
 		}
 	}
@@ -728,16 +663,11 @@ void BaseBoss::specialAttack(float deltaTime)
 	// 口にプレイヤー同士をつなぐ線が当たり、
 	// ひるむ時間に達するまでに
 	// 口から離れたら、もう一度攻撃を行う
-
 	if (bossManager_.isFlinch()) {
-		//changeState(State::Flinch, BossAnimationNumber::PIYO_NUMBER);
 		changeState(State::Flinch, PIYO_NUMBER);
-		// 攻撃が当たるかの判定を入れる
-		isAttackHit_ = true;
-		isBodyHit_ = true;
 		bossManager_.attackRefresh();
-		//angleCount_ = 0;
-		//angle_ = 0.0f;
+		// 怯み状態の設定
+		setPiyori();
 		return;
 	}
 
@@ -747,9 +677,6 @@ void BaseBoss::specialAttack(float deltaTime)
 	bossManager_.setIsAttackMove(!entryObj_->isBlock());
 	bossManager_.attackMove(deltaTime);
 	position_ = bossManager_.getMovePosition();
-	// 角度の変更
-	//angle_ = bossManager_.getAngle();
-
 	// 壁に当たっている場合
 	bossManager_.setIsWallHit(wspObj_->isGround());
 	wspObj_->setDirection(bossManager_.getWallMoveDirection());
@@ -757,26 +684,18 @@ void BaseBoss::specialAttack(float deltaTime)
 	animation_.changeAnimation(
 		static_cast<int>(bossManager_.getAnimaNum()));
 	animation_.setIsLoop(bossManager_.isAnimeLoop());
-	/*animation_.changeAnimation(
-	static_cast<int>(bossManager_.getAnimaNum()));*/
-	animation_.turnAnimation(
+	/*animation_.turnAnimation(
 		static_cast<int>(bossManager_.getAnimaNum()),
-		bossManager_.getAttackDirection().x);
-	// bossManager_.specialAttack(deltaTime);
-	/*if (entryObj_->isBlock()) {
-
-	}*/
+		bossManager_.getAttackDirection().x);*/
+	animation_.changeDirType(bossManager_.getAttackDirection().x);
 
 	if (bossManager_.isAttackEnd()) {
 		name_ = "BaseEnemy";
-		//changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
 		changeState(State::Idel, WAIT_NUMBER);
 		// 攻撃が当たるかの判定を入れる
 		isAttackHit_ = true;
 		isBodyHit_ = true;
 		bossManager_.attackRefresh();
-		//angleCount_ = 0;
-		//angle_ = 0.0f;
 	}
 }
 
@@ -831,40 +750,28 @@ void BaseBoss::damage(const int damage, const Vector2& position, const float sca
 		std::make_shared<AttackEffect>(world_, position, scale));
 	// 耐久値が0になったら、ぴよる
 	if (piyoriCount_ <= 0) {
-		//changeState(State::Piyori, BossAnimationNumber::PIYO_NUMBER);
 		changeState(State::Piyori, PIYO_NUMBER);
 		// 衝突するかどうかの bool を全てtrueにする
 		piyoriCount_ = 5;
-		isBodyHit_ = true;
-		isAttackHit_ = true;
 		setBMStatus();
 		// 画像の方向を合わせる
 		animation_.setIsLoop(true);
-		animation_.turnAnimation(DAMAGE_NUMBER, direction_.x);
+		//animation_.turnAnimation(DAMAGE_NUMBER, direction_.x);
+		animation_.changeDirType(direction_.x);
 		bossManager_.attackRefresh();
+		// 怯み状態の設定
+		setPiyori();
 		return;
 	}
 	else {
 		if (state_ == State::Idel || state_ == State::Flinch) {
-			/*isBodyHit_ = true;
-			isAttackHit_ = true;*/
 			setBMStatus();
 			// 画像の方向を合わせる
-			//animation_.setIsLoop(true);
-			animation_.turnAnimation(DAMAGE_NUMBER, direction_.x);
+			//animation_.turnAnimation(DAMAGE_NUMBER, direction_.x);
+			animation_.changeDirType(direction_.x);
 			changeState(State::Damage, DAMAGE_NUMBER);
 		}
 	}
-
-	//if (dp_ <= 0) {
-	//	changeState(State::Flinch, BossAnimationNumber::PIYO_NUMBER);
-	//	// 衝突するかどうかの bool を全てtrueにする
-	//	isBodyHit_ = true;
-	//	isAttackHit_ = true;
-	//	setBMStatus();
-	//	// 画像の方向を合わせる
-	//	animation_.turnAnimation(motion_, direction_.x);
-	//}
 }
 
 //地面の位置に補正します
@@ -970,44 +877,6 @@ void BaseBoss::groundClamp(Actor& actor)
 	}
 	bossManager_.setPosition(position_);
 	bossManager_.prevPosition();
-
-	// 60
-	// 160
-	//// 左に補間
-	//if (left > -14)
-	//	position_.x = bottomLeft.x - body_.GetCircle().getRadius();
-	//// 右に補間
-	//if (right > -body_.GetCircle().getRadius())
-	//	position_.x = topRight.x + body_.GetCircle().getRadius();
-
-	/*if (top >= 0 && left <= 0 && right <= 0) {
-	position_.y = t_left.y - PLAYER_RADIUS;
-	}
-	if (bottom >= 0 && left <= 0 && right <= 0) {
-	position_.y = b_right.y + PLAYER_RADIUS;
-	}
-	if (right >= 0 && top <= 0 && bottom <= 0) {
-	position_.x = t_right.x + PLAYER_RADIUS;
-	}
-	if (left >= 0 && top <= 0 && bottom <= 0) {
-	position_.x = b_left.x - PLAYER_RADIUS;
-	}
-	if (left <= 0 && right <= 0 && top <= 0 && bottom <= 0) {
-	position_ = center + (pos - center).Normalize() * (t_left - center).Length();
-	}*/
-
-	//float r2 = body_.GetCircle().getRadius() * body_.GetCircle().getRadius();
-	//Vector2 topV = topRight - topLeft;
-	//Vector2 v1 = position_ - topLeft;
-	//float t = Vector2::Dot(topV, v1) / Vector2::Dot(topV, topV);
-	//Vector2 vn =t * topV;
-	//// Vector2 vn = v1 - t * v;
-	////if (0 < t && t < 1 && vn.LengthSquared() <= r2) {
-	////	// pc = p1 + v * t + r * Vector2.Normalize(vn); // 中心を移動
-	////	position_ = topLeft + topV * t + body_.GetCircle().getRadius() *
-	////		Vector2::Normalize(vn);
-	////}
-	//top_ = vn.Length();
 }
 
 // テクスチャの追加を行います
@@ -1080,4 +949,16 @@ void BaseBoss::addAnimation()
 		static_cast<int>(DEATH_NUMBER),
 		ResourceLoader::GetInstance().getAnimationIDs(
 			AnimationID::BOSS_DEATH_TEX));
+}
+
+// ぴより状態の設定を行います
+void BaseBoss::setPiyori()
+{
+	// 攻撃が当たるかの判定を入れる
+	isAttackHit_ = true;
+	isBodyHit_ = true;
+	// エフェクトの生成
+	auto effect = std::make_shared<EntrySignEffect>(
+		world_, entryObj_->getPosition() - Vector2::Up * 150.0f);
+	world_->addActor(ActorGroup::Effect, effect);
 }

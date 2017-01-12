@@ -33,11 +33,6 @@ void Rock::onDraw() const
 		vec3Pos.y - body_.GetCircle().getRadius(),
 		vec3Pos.x + body_.GetCircle().getRadius(), vec3Pos.y + body_.GetCircle().getRadius(),
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
-	/*DrawGraph(
-		vec3Pos.x - body_.GetCircle().getRadius(),
-		vec3Pos.y - body_.GetCircle().getRadius(),
-		ResourceLoader::GetInstance().getTextureID(
-			TextureID::ENEMY_NEEDLE_TEX), 1);*/
 
 	body_.draw(inv_);
 }

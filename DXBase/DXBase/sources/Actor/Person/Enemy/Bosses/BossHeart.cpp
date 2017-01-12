@@ -48,24 +48,24 @@ void BossHeart::onUpdate(float deltaTime)
 
 void BossHeart::onDraw() const
 {
-	body_.draw(inv_);
+	//body_.draw(inv_);
 
-	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-	vec3Pos = vec3Pos * inv_;
-	DrawString(
-		vec3Pos.x, vec3Pos.y -100,
-		"心臓です", GetColor(255, 255, 255));
-	// 攻撃可能なら表示
-	if (isEntered_) {
-		// 文字の表示
-		DrawString(
-			vec3Pos.x, vec3Pos.y,
-			"攻撃可能", GetColor(255, 255, 255));
-		// 体力の表示
-		DrawFormatString(
-			vec3Pos.x, vec3Pos.y - 75,
-			GetColor(255, 255, 255), "体力:%d", hp_);
-	}
+	//auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
+	//vec3Pos = vec3Pos * inv_;
+	//DrawString(
+	//	vec3Pos.x, vec3Pos.y -100,
+	//	"心臓です", GetColor(255, 255, 255));
+	//// 攻撃可能なら表示
+	//if (isEntered_) {
+	//	// 文字の表示
+	//	DrawString(
+	//		vec3Pos.x, vec3Pos.y,
+	//		"攻撃可能", GetColor(255, 255, 255));
+	//	// 体力の表示
+	//	DrawFormatString(
+	//		vec3Pos.x, vec3Pos.y - 75,
+	//		GetColor(255, 255, 255), "体力:%d", hp_);
+	//}
 }
 
 void BossHeart::onCollide(Actor & actor)

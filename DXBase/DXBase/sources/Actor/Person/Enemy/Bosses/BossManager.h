@@ -19,7 +19,7 @@ public:
 	// 攻撃コンテナに攻撃を追加します
 	void addAttack(std::shared_ptr<BossAttack> attack);
 	// 攻撃の番号を変更します
-	void changeAttackNumber(const float number);
+	void changeAttackNumber(const int number);
 	// 指定した番号の攻撃行動を行います
 	void attackMove(const float deltaTime);
 	// 攻撃のリフレッシュを行います

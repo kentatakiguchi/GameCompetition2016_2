@@ -77,6 +77,7 @@ void DysonAttack::dysonAttack(float deltaTime)
 		isRockCreate_ = false;
 	// ボスの竜巻攻撃(仮)
 	if (tornadoObj_ == nullptr) {
+		wsDirection_ = direction_;
 		auto tornado = std::make_shared<Tornado>(
 			world_, position_ + Vector2(40.0f *  direction_.x, -120.0f),
 			Vector2(CHIPSIZE * 4, CHIPSIZE * 1));
@@ -91,6 +92,7 @@ void DysonAttack::dysonAttack(float deltaTime)
 
 	if (isWspHit_ && isPrevWspHit_ != isWspHit_) {
 		direction_.x *= -1;
+		wsDirection_ = direction_;
 	}
 	// 角度が一定値を超えたら、加算方向を変える
 	if (angle_ >= 90.0f + 40.0f || angle_ <= 90.0f - 40.0f)
