@@ -6,6 +6,7 @@
 #include<map>
 #include"../../ResourceLoader/ResourceLoader.h"
 
+class BackGraundManager;
 
 class MainMenuScene : public IScene {
 public:
@@ -23,8 +24,10 @@ public:
 private:
 	bool isTitle_;
 	bool isDrawAlphaBack_;
-	int alphaSlideCount_;
-
+	//チェンジするカウント
+	float alphaSlideCount_;
+	//一回しか入らないようにするフラグ
+	bool oneFlag_;
 	int slideSize;
 	
 	int id;
@@ -33,7 +36,11 @@ private:
 	int alphaCou[2];
 	int alphadefSpeeds[2];
 
-	int titleBackAlpha_;
+	float titleBackAlpha_;
+	//チェンジするバック画面
+	int backNum_;
+	BackGraundManager* backManager;
+
 
 	std::map<int,Vector2> textPoses;
 	std::map<int,Scene> nextScene;
@@ -58,8 +65,11 @@ private:
 	std::map<int, bool> changeBackChecker;
 	//背景画像の移動先を決める
 	std::vector<int> changeTargetChecker;
-
 	std::map<int, TextureID> textIDs;
+	//背景画像たち
+	typedef std::vector<TextureID> BackTitles;
+	std::vector<BackTitles> titleTexs;
+
 
 };
 

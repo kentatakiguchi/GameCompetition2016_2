@@ -1,5 +1,6 @@
 #include "MainMenuScene.h"
 #include"../../ResourceLoader/ResourceLoader.h"
+#include "../../Actor/BackGraundManager/BackGraundManager.h"
 
 static const float shotSpeed = 5;
 static const int boundCount = 5;
@@ -114,6 +115,8 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	baseTitleBackID[1] = TextureID::TITLE_BACK2_TEX;
 	baseTitleBackID[2] = TextureID::TITLE_BACK_TEX;
 
+
+
 	listBase.push_back(changeTextList);
 	std::vector<std::string>  list6;
 	list6.push_back("Zƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢");
@@ -132,15 +135,53 @@ void MainMenuScene::start() {
 	isEnd_ = false;
 	isTitle_ = true;
 	isDrawAlphaBack_ = false;
+	oneFlag_ = true;
+	backManager = new BackGraundManager();
+	backNum_ = 0;
 
 	alphaCou[0] = 0;
 	alphaCou[1] = 0;
 
 	titleBackAlpha_ = 0;
+	alphaSlideCount_ = 0.0f;
 
 	targetPoint = 1;
 
 	sinCount = 0;
+	//”wŒi‚ÌIDİ’è
+	BackTitles id;
+	id.push_back(TextureID::BACKSTAGE1_1_TEX);
+	id.push_back(TextureID::BACKSTAGE1_2_TEX);
+	id.push_back(TextureID::BACKSTAGE1_3_TEX);
+	id.push_back(TextureID::BACKSTAGE1_4_TEX);
+	id.push_back(TextureID::BACKSTAGE1_5_TEX);
+	id.push_back(TextureID::BACKSTAGE1_6_1_TEX);
+	id.push_back(TextureID::BACKSTAGE1_6_1_TEX);
+	id.push_back(TextureID::BACKSTAGE1_7_TEX);
+	id.push_back(TextureID::BACKSTAGE1_8_TEX);
+	BackTitles id2;
+	id2.push_back(TextureID::BACKSTAGE2_1_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_2_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_3_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_4_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_5_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_6_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_7_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_8_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_9_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_10_TEX);
+	BackTitles id3;
+	id3.push_back(TextureID::BACKSTAGE4_1_TEX);
+	id3.push_back(TextureID::BACKSTAGE4_2_TEX);
+	titleTexs.push_back(id);
+	titleTexs.push_back(id2);
+	titleTexs.push_back(id3);
+	//backManager‚Ì‰Šú‰»
+	for (int i = 0; i < titleTexs[0].size(); i++) {
+		backManager->SetBackGraund(titleTexs[0][i], titleTexs[0][i]);
+	}
+
+
 
 	for (int i = 0; i < static_cast<int>(textPosList.size()); i++) {
 		textPosList[i] = setPoses[i];
@@ -179,41 +220,70 @@ void MainMenuScene::update() {
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
 
-	if (isDrawAlphaBack_) {
-		alphaSlideCount_--;
-		if (alphaSlideCount_ <= 0) {
-			titleBackAlpha_ = 0;
-			isDrawAlphaBack_ = false;
+	alphaSlideCount_ += Time::GetInstance().deltaTime();
+
+	//5•b‚Éˆê‰ñ”’‚­‚È‚é
+	if (alphaSlideCount_ >= 10.0f) {
+		titleBackAlpha_ += Time::GetInstance().deltaTime();
+		//Š®‘S‚É”’‚­‚È‚Á‚½‚ç”wŒi‚ğŒğŠ·
+		if (oneFlag_&&titleBackAlpha_ >= 0.5f) {
+			//”wŒi”Ô†‚ğ•ÏX
+			backNum_++;
+			//Œ»İ‚Ì”wŒi‚ğ‘S•”Á‚·
+			backManager->AllDeleteBackGraund();
+			//V‚µ‚¢”wŒi‚ğƒZƒbƒg
+			for (int i = 0; i < titleTexs[backNum_].size(); i++) {
+				backManager->SetBackGraund(titleTexs[backNum_][i], titleTexs[backNum_][i]);
+			}
+			//ˆê‰ñ“ü‚Á‚½‚çŸ‚ª—ˆ‚é‚Ü‚Å“ü‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+			oneFlag_ = false;
 		}
-		if (alphaSlideCount_ <= DefAlphaSlideCount / 2) {
-				titleBackAlpha_-= alphaspeed;
-		}
-		else {
-			titleBackAlpha_+= alphaspeed;
-		}
-	}
-
-	slideSize += SlideSpeed;
-
-	if (slideSize >= MaxTexSize) {
-		slideSize = 0;
-	}
-			if (changeBackChecker[0]) {
-				changeBackChecker[0] = false;
-
-				alphaSlideCount_=DefAlphaSlideCount;
-				titleBackAlpha_ = 0;
-				isDrawAlphaBack_ = true;
-		
-	}
-	for (int i = 0; i < 2; i++) {
-		titleBackChangeTime[i] -= Time::GetInstance().deltaTime();
-
-		if (titleBackChangeTime[i] <= 0) {
-			titleBackChangeTime[i] = DefBackSpriteChangeTime;
-			changeBackChecker[i] = true;
+		if (titleBackAlpha_ >= 1.0f) {
+			//ˆêü‚µ‚½‚ç–ß‚·
+			if (backNum_ == 2) backNum_ = -1;
+			//–ß‚·
+			alphaSlideCount_ = 0.0f;
+			titleBackAlpha_ = 0.0f;
+			oneFlag_ = true;
 		}
 	}
+	//”wŒiUpdate
+	backManager->Update(0, true);
+	//if (isDrawAlphaBack_) {
+	//	alphaSlideCount_--;
+	//	if (alphaSlideCount_ <= 0) {
+	//		titleBackAlpha_ = 0;
+	//		isDrawAlphaBack_ = false;
+	//	}
+	//	if (alphaSlideCount_ <= DefAlphaSlideCount / 2) {
+	//			titleBackAlpha_-= alphaspeed;
+	//	}
+	//	else {
+	//		titleBackAlpha_+= alphaspeed;
+	//	}
+	//}
+
+	//slideSize += SlideSpeed;
+
+	//if (slideSize >= MaxTexSize) {
+	//	slideSize = 0;
+	//}
+	//		if (changeBackChecker[0]) {
+	//			changeBackChecker[0] = false;
+
+	//			alphaSlideCount_=DefAlphaSlideCount;
+	//			titleBackAlpha_ = 0;
+	//			isDrawAlphaBack_ = true;
+	//	
+	//}
+	//for (int i = 0; i < 2; i++) {
+	//	titleBackChangeTime[i] -= Time::GetInstance().deltaTime();
+
+	//	if (titleBackChangeTime[i] <= 0) {
+	//		titleBackChangeTime[i] = DefBackSpriteChangeTime;
+	//		changeBackChecker[i] = true;
+	//	}
+	//}
 
 	if (!isTitle_)
 	{
@@ -330,11 +400,15 @@ void MainMenuScene::moveText(int targettext)
 
 void MainMenuScene::draw() const {
 
-	DrawGraph(MaxTexSize - slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[0]), TRUE);
-	DrawGraph(-slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[1]), TRUE);
-
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, titleBackAlpha_);
-	if (isDrawAlphaBack_)DrawGraph(0, 0, ResourceLoader::GetInstance().getTextureID(TextureID::TITLE_BACK_ALPHA_TEX), TRUE);
+	//DrawGraph(MaxTexSize - slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[0]), TRUE);
+	//DrawGraph(-slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[1]), TRUE);
+	
+	//”wŒiDraw
+	backManager->Draw();
+	//ƒ¿’l‚ğ0‚©‚ç180‚ÅüŒ`•âŠÔ‚ğ‚µ‚Ä‚»‚ê‚ğsin‚É‚Á‚Ä‚¢‚«‚»‚ÌŒ‹‰Ê‚ğ0‚©‚ç255‚ÉüŒ`•âŠÔ‚·‚é
+	float alpha = MathHelper::Lerp(0.0f, 255.0f, MathHelper::Sin(MathHelper::Lerp(0, 180, titleBackAlpha_)));
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA,alpha);
+	/*if (isDrawAlphaBack_)*/DrawGraph(0, 0, ResourceLoader::GetInstance().getTextureID(TextureID::TITLE_BACK_ALPHA_TEX), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	int strLen, strWidth, center, count, heightPoint;
@@ -380,7 +454,10 @@ void MainMenuScene::draw() const {
 
 }
 
-void MainMenuScene::end() { StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU)); }
+void MainMenuScene::end() {
+	delete backManager;
+	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU));
+}
 
 bool MainMenuScene::isEnd() const {
 	return isEnd_;

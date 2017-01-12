@@ -91,7 +91,9 @@ void GamePlayScene::start() {
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_7_TEX, TextureID::BACKSTAGE2_7_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_8_TEX, TextureID::BACKSTAGE2_8_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_9_TEX, TextureID::BACKSTAGE2_9_TEX, graundPos, false, true);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP_TEX, 2);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_10_TEX, TextureID::BACKSTAGE2_10_TEX, graundPos, false, true);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP1_TEX, 4);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP2_TEX, 1);
 	}
 	else if (name_ == "stage03")
 	{

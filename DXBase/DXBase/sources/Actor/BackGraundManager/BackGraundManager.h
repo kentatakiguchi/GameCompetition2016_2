@@ -34,6 +34,7 @@ class BackGraundManager
 {
 public:
 	BackGraundManager(IWorld* world);
+	BackGraundManager();
 	~BackGraundManager();
 	//”wŒi‚ğİ’è‚·‚éiƒ[ƒh‚µ‚½ƒeƒNƒXƒ`ƒƒŒÀ’èj
 	void SetBackGraund(TextureID id1,TextureID id2,float heightY=0.0f,bool frontGraund=false,bool stage2=false);
@@ -71,7 +72,7 @@ private:
 	//’nã‚Ì”wŒi
 	std::list<BackGraundState> backStates;
 	//‹ó‚Ì”wŒi
-	BackGraundState upBackStates;
+	std::list<BackGraundState> upBackStates;
 	//’n–Ê‚Ì”wŒi
 	BackGraundState downBackStates;
 	//cƒXƒNƒ[ƒ‹‚Ì‰¡‚Ì”wŒi
