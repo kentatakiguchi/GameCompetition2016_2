@@ -119,6 +119,7 @@ bool InputMgr::IsPushButton(){
 	for (auto i : ButtonName) {
 		if (current_button_state!=0)return true;
 	}
+	return false;
 }
 
 bool InputMgr::IsKeyDown(KeyCode handle)
@@ -182,7 +183,7 @@ Vector2 InputMgr::AnalogPadVectorL()
 	int horizontal;
 	int vertical;
 	GetJoypadAnalogInput(&horizontal, &vertical, DX_INPUT_PAD1);
-	return Vector2(horizontal, vertical) / 1000;
+	return Vector2(static_cast<float>(horizontal), static_cast<float>(vertical)) / 1000.0f;
 
 }
 Vector2 InputMgr::AnalogPadVectorR()
@@ -190,13 +191,13 @@ Vector2 InputMgr::AnalogPadVectorR()
 	DINPUT_JOYSTATE joy;
 	GetJoypadDirectInputState(DX_INPUT_PAD1, &joy);
 
-	float horizontal;
-	float vertical;
+	int horizontal;
+	int vertical;
 
 	horizontal = joy.Z;
 	vertical = joy.Rz;
 
-	return Vector2(horizontal, vertical) / 1000;
+	return Vector2(static_cast<float>(horizontal), static_cast<float>(vertical)) / 1000.0f;
 }
 Vector2 InputMgr::DirectPadVector() {
 	DINPUT_JOYSTATE joy;

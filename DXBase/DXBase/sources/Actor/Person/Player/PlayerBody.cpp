@@ -256,6 +256,10 @@ void PlayerBody::reset_enemy() {
 	hit_enemy_ = HitOpponent::NONE;
 }
 
+void PlayerBody::reset_slope(){
+	slope_ = Vector2::Zero;
+}
+
 float PlayerBody::distance() {
 	return Vector2::Distance(position_, partner_->getPosition());
 }

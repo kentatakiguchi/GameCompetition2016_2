@@ -77,18 +77,18 @@ void PlayerBodyPoint::attract_update(float deltaTime){
 	position_ = Vector2::ClampTarget(position_, cntr->get_point(index_ + 1), PLAYER_MAX_DIV_LENGTH);
 	position_ = Vector2::ClampTarget(position_, cntr->get_point(index_ - 1), PLAYER_MAX_DIV_LENGTH);
 
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::Z))stiffness_ += 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::X))stiffness_ -= 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::C))friction_ += 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::V))friction_ -= 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::B))mass_ += 0.01f;
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))mass_ -= 0.01f;
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::Z))stiffness_ += 0.01f;
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::X))stiffness_ -= 0.01f;
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::C))friction_ += 0.01f;
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::V))friction_ -= 0.01f;
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::B))mass_ += 0.01f;
+	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))mass_ -= 0.01f;
 
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
-		stiffness_ = 3.0f;
-		friction_ = 0.1f;
-		mass_ = 0.8f;
-	}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
+	//	stiffness_ = 3.0f;
+	//	friction_ = 0.1f;
+	//	mass_ = 0.8f;
+	//}
 }
 
 // ˆø—Í

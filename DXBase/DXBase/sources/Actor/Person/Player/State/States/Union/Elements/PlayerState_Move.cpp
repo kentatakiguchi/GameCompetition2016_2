@@ -81,7 +81,7 @@ void PlayerState_Move::pad_input(){
 	if (!move_padR() && !move_padL()) change(PlayerState_Enum_Union::IDLE);
 	else if (jump_pad()) change(PlayerState_Enum_Union::JUMP);
 	else if (element_.type_ == ActionType::Right && move_padL()) change(PlayerState_Enum_Union::MOVE_BOTH);
-	else if (element_.type_ == ActionType::Left  && move_padR())	change(PlayerState_Enum_Union::MOVE_BOTH);
+	else if (element_.type_ == ActionType::Left  && move_padR()) change(PlayerState_Enum_Union::MOVE_BOTH);
 	else if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 	else if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 }

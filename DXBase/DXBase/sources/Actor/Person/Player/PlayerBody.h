@@ -2,7 +2,6 @@
 
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
-//#include "EventMessage.h"
 #include "State/States/Single/PlayerStateMgr_Single.h"
 #include "PlayerPtr.h"
 #include "HitOpponent.h"
@@ -40,6 +39,7 @@ public:
 	void reset_opponent();
 	void reset_partner();
 	void reset_enemy();
+	void reset_slope();
 	float distance();
 	void set_partner(PlayerBodyPtr partner);
 	void set_hold_point();

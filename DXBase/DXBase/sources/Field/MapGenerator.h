@@ -226,19 +226,19 @@ public:
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 58) {
-					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 0));
+					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 0.0f));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 59) {
-					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 180));
+					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 180.0f));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 60) {
-					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 90));
+					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 90.0f));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 61) {
-					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 270));
+					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 270.0f));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 65) {

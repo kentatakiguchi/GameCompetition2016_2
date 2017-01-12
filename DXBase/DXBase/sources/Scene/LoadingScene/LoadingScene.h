@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Base/IScene.h"
+#include "../../Animation/Base/Animation2D.h"
 #include <memory>
 
 class World;
@@ -26,4 +27,5 @@ private:
 	bool isEnd_;
 	Vector2 mPosition;
 	float mAngle;
+	Animation2D mLoadAnim;
 };

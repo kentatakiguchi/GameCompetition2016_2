@@ -40,9 +40,10 @@ void PlayerState_MoveBoth::key_input(){
 	if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 	if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 
+	if (jump_key()) change(PlayerState_Enum_Union::JUMP);
 }
 
-void PlayerState_MoveBoth::pad_input(){
+void PlayerState_MoveBoth::pad_input() {
 	butty_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal());
 	retty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal());
 
@@ -51,4 +52,6 @@ void PlayerState_MoveBoth::pad_input(){
 
 	if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 	if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
+
+	if (jump_pad()) change(PlayerState_Enum_Union::JUMP);
 }

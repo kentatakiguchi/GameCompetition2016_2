@@ -25,7 +25,7 @@ void PlayerEffect2D::update_e(float deltaTime){
 }
 
 void PlayerEffect2D::draw_e(const Vector2 & position, const Vector2 & origin, const float & scale)const{
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(alpha_));
 	draw(position, origin, scale);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }

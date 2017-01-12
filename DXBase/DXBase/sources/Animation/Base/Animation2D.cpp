@@ -65,11 +65,11 @@ void Animation2D::draw(const Vector2& position, const Vector2& origin, const flo
 }
 
 void Animation2D::draw(const Vector2& position, const Vector2& origin, const Vector2& scale, const float& degree, const Vector3& color) const {
-	SetDrawBright(color.x, color.y, color.z);
+	SetDrawBright(static_cast<int>(color.x), static_cast<int>(color.y), static_cast<int>(color.z));
 	//度数法→弧度法に変換
 	float radian = MathHelper::ToRadians(degree);
-	if (type_ == ActionType::Right)DrawRotaGraph3(position.x, position.y, origin.x, origin.y, static_cast<float>(scale.x), static_cast<float>(scale.y), radian, id_, TRUE, FALSE);
-	if (type_ == ActionType::Left) DrawRotaGraph3(position.x, position.y, origin.x, origin.y, static_cast<float>(scale.x), static_cast<float>(scale.y), radian, id_, TRUE, TRUE);
+	if (type_ == ActionType::Right)DrawRotaGraph3(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(origin.x), static_cast<int>(origin.y), scale.x, scale.y, radian, id_, TRUE, FALSE);
+	if (type_ == ActionType::Left) DrawRotaGraph3(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(origin.x), static_cast<int>(origin.y), scale.x, scale.y, radian, id_, TRUE, TRUE);
 	SetDrawBright(255, 255, 255);
 }
 

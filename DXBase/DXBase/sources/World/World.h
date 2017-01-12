@@ -7,9 +7,8 @@
 #include <functional>
 #include <vector>
 #include "../Actor/Base/ActorGroup.h"
+
 enum class EventMessage;
-
-
 
 class World : public IWorld {
 public:

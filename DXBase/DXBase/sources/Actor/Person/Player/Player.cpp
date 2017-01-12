@@ -5,8 +5,6 @@
 #include "PlayerBody.h"
 #include "PlayerConnector.h"
 
-#include <memory>
-
 // コンストラクタ
 Player::Player(IWorld * world, const Vector2 & position) :
 	Actor(world, "Player", position, CollisionBase()) {
@@ -25,8 +23,7 @@ void Player::onUpdate(float deltaTime) {
 	position_ = center();
 
 	// 指定stateの更新
-	if (!world_->GetPlayerNotMove())
-		update_state(deltaTime);
+	if (!world_->GetPlayerNotMove()) update_state(deltaTime);
 }
 
 // body中心座標
@@ -59,9 +56,7 @@ void Player::update_state(float deltaTime) {
 		if (is_dead()) {
 			butty_->change_state(PlayerState_Enum_Single::DEAD);
 			retty_->change_state(PlayerState_Enum_Single::DEAD);
-			if (butty_->isDead() && retty_->isDead()) {
-				dead();
-			}
+			if (butty_->isDead() && retty_->isDead()) dead();
 		}
 	}
 	else std::dynamic_pointer_cast<PlayerConnector>(cntr)->state_update(deltaTime);
@@ -77,7 +72,7 @@ void Player::connect() {
 bool Player::is_connectable() {
 	bool is_main_target_partner = butty_->hit_partner() == HitOpponent::PARTNER;
 	bool is_sub_target_partner = retty_->hit_partner() == HitOpponent::PARTNER;
-	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::C);
+	bool for_debug = false;	//InputMgr::GetInstance().IsKeyDown(KeyCode::C);
 
 	return (is_main_target_partner || is_sub_target_partner || for_debug);
 }

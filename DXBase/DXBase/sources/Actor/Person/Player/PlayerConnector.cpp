@@ -72,7 +72,7 @@ float PlayerConnector::length_sum() {
 	float sum = 0;
 	float len1 = Vector2::Distance(butty_->position_, get_point(0));
 	float len2 = Vector2::Distance(retty_->position_, get_point(points.size() - 1));
-	for (int i = 0; i < points.size() - 1; i++) {
+	for (unsigned int i = 0; i < points.size() - 1; i++) {
 		sum += Vector2::Distance(points[i]->getPosition(), points[i + 1]->getPosition());
 	}
 	return sum + len1 + len2;
