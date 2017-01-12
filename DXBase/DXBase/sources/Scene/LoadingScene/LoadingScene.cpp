@@ -17,6 +17,10 @@ void LoadingScene::start(){
 	//ここにローディング専用のリソースを読み込む
 	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::TEXT_STAGECLEAR_ANM_TEX, "./resources/sprite/Text/stageclear_anim.png", Vector2(640, 320), 6, 7, 2);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::LOADING, "./resources/sprite/loading_anim.png", Vector2(623.0f, 120.0f), 3, 8, 0);
+	// アニメーション生成
+	mLoadAnim.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::LOADING));
+	mLoadAnim.change_param(0);
 	//DerivationGraphと動画読み込みが非同期読み込みに対応していないため
 	//プレイヤー関連のロード
 	load_player_res();
@@ -132,7 +136,7 @@ void LoadingScene::start(){
 
 
 	//---Updateテスト用---
-	mPosition = Vector2(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2);
+	mPosition = SCREEN_SIZE - Vector2(623, 120);
 	isEnd_ = false;
 	mAngle = 0;
 	//---------
@@ -140,6 +144,7 @@ void LoadingScene::start(){
 
 void LoadingScene::update(){
 	mAngle += 10.0f*Time::GetInstance().deltaTime();
+	mLoadAnim.update(Time::GetInstance().deltaTime());
 	//読み込み処理が終わっていたら
 	if (GetASyncLoadNum()==0&&ProcessMessage()==0) {
 		isEnd_ = true;
@@ -147,7 +152,8 @@ void LoadingScene::update(){
 }
 
 void LoadingScene::draw() const{
-	DrawRotaGraph(mPosition.x, mPosition.y,0.3f,mAngle, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
+	mLoadAnim.draw(mPosition - Vector2(0, 1) * 20, Vector2::Zero, 1.0f);
+	DrawRotaGraph(mPosition.x - 60, mPosition.y + 25,0.3f,mAngle, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
 }
 
 void LoadingScene::end(){

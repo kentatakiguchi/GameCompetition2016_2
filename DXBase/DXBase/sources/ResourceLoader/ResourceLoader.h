@@ -125,6 +125,8 @@ enum class TextureID {
 };
 
 enum class AnimationID {
+	LOADING,
+
 	TEXT_STAGECLEAR_ANM_TEX,
 
 	//プレイヤーアニメーション（青）
