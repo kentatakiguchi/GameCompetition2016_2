@@ -33,7 +33,7 @@ void GamePlayScene::start() {
 	isStopped_ = false;
 	//SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
-
+	world_->CollisitionOffOn(true);
 	MapGenerator gener = MapGenerator(world_.get());
 	int stg = keeper_->getNextSceneName(name_);
 	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));

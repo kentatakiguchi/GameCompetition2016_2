@@ -6,6 +6,8 @@
 #include "../../Math/Math.h"
 #include"../GamePlay/PauseScreen.h"
 #include"../GamePlay/MoveScreen.h"
+#include "../../Animation/Base/Animation2D.h"
+#include "../../Actor/Door/Door.h"
 
 class World;
 class BackGraundManager;
@@ -29,12 +31,15 @@ private:
 
 	BackGraundManager* backManager;
 	BaseBoss* boss_;				// É{ÉX
+	Door* door_;
 
 	Scene nextScene_;
 
 	float deltaTime_;
 
 	bool isStopped_;
+
+	float mIvemtTime;
 
 	PauseScreen pause_;
 	MoveScreen move_;

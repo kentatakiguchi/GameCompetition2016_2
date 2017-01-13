@@ -35,7 +35,7 @@ void PuyoCollision::onUpdate(float deltaTime)
 	//あたり判定更新
 	body_.setSegmentPoint(mCenter, mCenter, position_);
 	//当たっていない場合は交点は本来の位置へ
-	if (!mIsCol){
+	if (!mIsCol) {
 		mResIntersection = position_;
 		mVec = Vector2::Zero;
 		mIntersectionsVector.clear();
@@ -100,7 +100,7 @@ void PuyoCollision::onCollide(Actor & other)
 {
 	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
-		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor") {
+		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" || other.getName() == "Door") {
 
 		//当たっているフラグ
 		mIsCol = true;
@@ -137,11 +137,11 @@ void PuyoCollision::onCollide(Actor & other)
 		mIsCol = true;
 		Vector2 intersection;
 		auto left = other.getBody().GetSegment().component_.point[0];
-		auto right= other.getBody().GetSegment().component_.point[1];
+		auto right = other.getBody().GetSegment().component_.point[1];
 		SegmentCol(mCenter, position_, left, right, intersection, false);
 		if (intersection.x != Vector2::Zero.x&&
 			intersection.y != Vector2::Zero.y)
-		mIntersectionsVector.push_back(intersection);
+			mIntersectionsVector.push_back(intersection);
 
 	}
 }

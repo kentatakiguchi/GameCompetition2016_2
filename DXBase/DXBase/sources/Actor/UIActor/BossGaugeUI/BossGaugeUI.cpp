@@ -44,15 +44,6 @@ BossGaugeUI::~BossGaugeUI()
 
 void BossGaugeUI::onUpdate(float deltaTime)
 {
-
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::UP))
-	{
-		mResHp += 100.0f*Time::GetInstance().deltaTime();;
-	}
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::DOWN))
-	{
-		mResHp -= 100.0f*Time::GetInstance().deltaTime();;
-	}
 	//ƒNƒ‰ƒ“ƒv
 	mResHp = MathHelper::Clamp(mResHp, 0.0f, 300.0f);
 	//•âŠÔ

@@ -9,6 +9,9 @@
 #include "../../ResourceLoader/ResourceLoader.h"
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
 
+#include "../../Input/InputMgr.h"
+#include "../../Actor/Person/Player/PlayerBody.h"
+
 //const Vector2 START_POS = Vector2(300, 900);
 
 BossStage::BossStage(SceneDataKeeper* keeper) :
@@ -26,6 +29,7 @@ BossStage::~BossStage()
 }
 
 void BossStage::start() {
+	mIvemtTime = 0.0f;
 
 	deltaTime_ = Time::GetInstance().deltaTime();
 	isStopped_ = false;
@@ -34,31 +38,29 @@ void BossStage::start() {
 
 	world_->SetScroolJudge(Vector2(1, 1), Vector2(3000, 8000));
 	MapGenerator gener = MapGenerator(world_.get());
-	//keeper_->getNextSceneName(name_);
 
-	//world_->addEventMessageListener(
-	//	[=](EventMessage msg, void* param) {
-	//	handleMessage(msg, param);
-	//}
-	//);
-	//world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
-	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), 
-		gener.findStartPoint("./resources/file/" + name_ + ".csv")));
+	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(),
+		gener.findStartPoint("./resources/file/" + name_ + ".csv") - Vector2(400, 0)));
 	//プレイヤーのスタート位置を設定
-	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
+	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv") - Vector2(400, 0));
+
 
 	// ボスの取得
 	auto boss = std::make_shared<BaseBoss>(
-		world_.get(), Vector2(CHIPSIZE * 16 + 50, -50.0f));
+		world_.get(), Vector2(CHIPSIZE * 16 + 50, -150.0f));
 	world_->addActor(ActorGroup::Enemy, boss);
-	boss_ = boss.get();
-	// ボスの位置を設定
-	boss_->setMovePosition(
-		Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 8 - 5), 4.0f);
 
 	gener.create("./resources/file/" + name_ + ".csv");
-	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
+
+
+	boss_ = boss.get();
+
+	// ボスの位置を設定
+	boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, -150.0f), 0.0f);
 	world_->SetScroolJudge(Vector2(0, 0), Vector2(99999, 99999));
+
+
+	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
 	backManager = new BackGraundManager(world_.get());
 	//先にセットされたテクスチャほど奥に描写される
 	//backManager->SetBackGraund(TextureID::BACKGRAUND4_TEX);
@@ -69,7 +71,12 @@ void BossStage::start() {
 	backManager->SetBackGraund(TextureID::BACKSTAGE4_2_TEX, TextureID::BACKSTAGE4_2_TEX);
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
 
+	door_ = dynamic_cast<Door*>(world_->findActor("Door").get());
+
+	world_->PlayerNotMove(true);
+	world_->CollisitionOffOn(false);
 	world_->clear(false);
+	door_->DoorOpen(true);
 }
 
 void BossStage::update() {
@@ -78,13 +85,27 @@ void BossStage::update() {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 	}
+	//イベント関係
+	mIvemtTime += deltaTime_;
+	if (mIvemtTime <= 7.0f) {
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(150.0f, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(150.0f, 0.0f));
+	}
+	else if (mIvemtTime >= 9.0f&&mIvemtTime <= 15.0f) {
+		boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 8 - 5), 4.0f);
+	}
+	else if (boss_->isMovePosition() && mIvemtTime >= 15.0f) {
+		boss_->setIsBattle(true);
+		world_->PlayerNotMove(false);
+		world_->CollisitionOffOn(true);
+		door_->DoorOpen(false);
+
+	}
+
 	world_->update(deltaTime_);
 	backManager->Update(deltaTime_);
-	// 目的地に到達したら、条件をtrueにする
-	if (boss_->isMovePosition()) {
-		// バトル開始
-		boss_->setIsBattle(true);
-	}
+
+
 	// ボスが死亡したら、クリアする
 	if (boss_->isSceneEnd())
 		world_->clear(true);
@@ -122,6 +143,7 @@ void BossStage::draw() const {
 
 void BossStage::end() {
 	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
+	boss_->onEnd();
 	boss_->dead();
 	boss_ = nullptr;
 }

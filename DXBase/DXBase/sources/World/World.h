@@ -74,10 +74,17 @@ public:
 	{
 		return mPlayerPos;
 	}
-
+	virtual void CollisitionOffOn(bool col) {
+		colOffOn_ = col;
+	}
+	virtual bool GetCollisitionOffOn() {
+		return colOffOn_;
+	}
 	// コピー禁止
 	World(const World& other) = delete;
 	World& operator = (const World& other) = delete;
+
+
 private:
 	// アクターマネージャー
 	ActorManager	actors_;
@@ -99,6 +106,7 @@ private:
 	Vector2 mPlayerPos;
 	
 	bool mNoPlayerMove;
+	bool colOffOn_;
 };
 
 #endif

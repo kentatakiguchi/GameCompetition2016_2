@@ -58,6 +58,8 @@ TutorealScene::TutorealScene() :
 	//サイズを入れる
 	tutorealSize_ = tutorels_.size();
 
+
+
 }
 
 TutorealScene::~TutorealScene()
@@ -122,6 +124,8 @@ void TutorealScene::start()
 	//プレイヤーを追加
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>
 		(world_.get(), gener.findStartPoint("./resources/file/" + name_ + ".csv")));
+	
+	world_->CollisitionOffOn(true);
 	//マップ生成
 	gener.create("./resources/file/" + name_ + ".csv", 0, 0);
 	//スクロールセット

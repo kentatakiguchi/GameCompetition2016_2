@@ -55,7 +55,7 @@ void KataokaScene::start()
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
 
 	world_->PlayerNotMove(true);
-
+	world_->CollisitionOffOn(false);
 	world_->clear(false);
 }
 
@@ -76,6 +76,7 @@ void KataokaScene::update()
 	else if (boss_->isMovePosition()&&mIvemtTime>=15.0f) {
 		boss_->setIsBattle(true);
 		world_->PlayerNotMove(false);
+		world_->CollisitionOffOn(true);
 	}
 
 	world_->update(deltaTime_);
@@ -94,9 +95,6 @@ void KataokaScene::update()
 
 	if (!isEnd_) {
 		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
-	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J)) {
-		dynamic_cast<Door*>(world_->findActor("Door").get())->DoorOpen(false);
 	}
 
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN)) isEnd_ = true;

@@ -2,6 +2,7 @@
 #include "../Base/Actor.h"
 #include "../../World/IWorld.h"
 #include "../../Math/Vector3.h"
+#include "../../Animation/Base/Animation2D.h"
 // ÉvÉåÅ[ÉÑÅ[
 class Door : public Actor {
 public:
@@ -15,6 +16,7 @@ public:
 	void DoorOpen(bool openFlag);
 private:
 	bool mDoorFlag;
-
+	Animation2D mLoadAnim;
+	bool mEndAnim;
 
 };

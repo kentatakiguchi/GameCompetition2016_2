@@ -48,6 +48,10 @@ public:
 	virtual void sendMessage(EventMessage message, void* param = nullptr) = 0;
 	virtual Vector2 GetPlayerPos() = 0;
 	virtual Matrix GetInv() = 0;
+
+	//‘S‚ ‚½‚è”»’è‚ğØ‚é‚©‚Ç‚¤‚© true:on false:off
+	virtual void CollisitionOffOn(bool col)=0;
+	virtual bool GetCollisitionOffOn()=0;
 };
 
 #endif
