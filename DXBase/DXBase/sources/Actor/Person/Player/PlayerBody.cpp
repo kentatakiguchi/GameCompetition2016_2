@@ -57,7 +57,7 @@ void PlayerBody::onUpdate(float deltaTime) {
 		}
 	}
 
-	position_.x = std::max<float>(position_.x, 0);
+	//position_.x = std::max<float>(position_.x, 0);
 }
 
 void PlayerBody::onDraw() const {

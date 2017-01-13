@@ -34,6 +34,7 @@ Actor::Actor(const std::string& name) :
 
 // XV
 void Actor::update(float deltaTime) {
+	if (world_ != nullptr) body_.enabled(world_->GetCollisitionOffOn());
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//ˆÚ“®update
