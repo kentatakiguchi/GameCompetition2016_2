@@ -47,7 +47,7 @@ public:
 	// 方向を決めるか
 	void setIsDirection(bool isDirection);
 	// 壁オブジェクトを回して、合計値を返します
-	float eachWSPObj();
+	int eachWSPObj();
 	// 指定した要素数の壁捜索オブジェクトを取得します
 	FloorSearchPoint* getWSPObj(const int number);
 	// mapに追加処理を行います
@@ -63,16 +63,12 @@ private:
 	float timer_;				// 経過時間
 	float deltaTimer_;			// 時間
 	float boxMoveCount;			// 四角形移動カウント
-
 	bool isDirection_;			// 方向を代入するか
-
 	Vector2 enemyPosition_;		// 敵の位置
 	Vector2 playerPosition_;	// プレイヤーの位置
 	Vector2 threadPosition_;	// 糸の位置
 	Vector2 enemyDirection_;
-
 	Vector2 playerVector_;
-
 	Vector2 wsDirection_;		// 壁移動時の方向
 
 	// 四角形移動用コンテナ
@@ -89,7 +85,6 @@ private:
 	WSPDirectionMap wspDirectionMap_;
 
 // 糸移動用
-//private:
 public:
 	int threadLength_;
 	float rotate_;

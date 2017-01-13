@@ -29,12 +29,11 @@ void Rock::onDraw() const
 	vec3Pos = vec3Pos * inv_;
 	// âÊëúÇÃï\é¶
 	DrawExtendGraph(
-		vec3Pos.x - body_.GetCircle().getRadius(),
-		vec3Pos.y - body_.GetCircle().getRadius(),
-		vec3Pos.x + body_.GetCircle().getRadius(), vec3Pos.y + body_.GetCircle().getRadius(),
+		(int)(vec3Pos.x - body_.GetCircle().getRadius()),
+		(int)(vec3Pos.y - body_.GetCircle().getRadius()),
+		(int)(vec3Pos.x + body_.GetCircle().getRadius()), 
+		(int)(vec3Pos.y + body_.GetCircle().getRadius()),
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
-
-	body_.draw(inv_);
 }
 
 void Rock::onCollide(Actor & actor)
@@ -47,9 +46,7 @@ void Rock::onCollide(Actor & actor)
 		changeState(State::Dead);
 }
 
-void Rock::onMessage(EventMessage event, void *)
-{
-}
+void Rock::onMessage(EventMessage event, void *){}
 
 // èÛë‘ÇÃïœçX
 void Rock::changeState(State state)

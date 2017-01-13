@@ -28,7 +28,6 @@ private:
 private:
 	float angle_;
 	Vector2 initPosition_;
-
 	EnemyAnimation2D animation_;	// アニメーション
 };
 

@@ -20,8 +20,7 @@ BossEntry::BossEntry(
 	direction_(1.0f, -1.0f),
 	bossPosition_(position),
 	addPosition_(addPosition)
-{
-}
+{}
 
 void BossEntry::onUpdate(float deltaTime)
 {
@@ -29,11 +28,10 @@ void BossEntry::onUpdate(float deltaTime)
 		addPosition_.x * direction_.x,
 		addPosition_.y * direction_.y);
 	position_ = bossPosition_ + addPos;
-
+	// ブロックされていたら、時間を加算
 	if (isBlock_)
 		blockTimer_ += deltaTime;
 	else blockTimer_ = 0.0f;
-
 	// bool系の更新
 	isBlock_ = false;
 }
@@ -46,7 +44,6 @@ void BossEntry::onCollide(Actor & actor)
 	if (actor.getName() == "BodyPoint") {
 		isBlock_ = true;
 	}
-
 	// 中に入れる状態のみ、プレイヤーの本体に当たる
 	if (!isEntry_) return;
 	if (actor.getName() == "PlayerBody1Collider" ||
@@ -55,9 +52,7 @@ void BossEntry::onCollide(Actor & actor)
 	}
 }
 
-void BossEntry::onMessage(EventMessage event, void *)
-{
-}
+void BossEntry::onMessage(EventMessage event, void *){}
 
 // 位置の設定をします
 void BossEntry::setBossPosition(const Vector2 & position)

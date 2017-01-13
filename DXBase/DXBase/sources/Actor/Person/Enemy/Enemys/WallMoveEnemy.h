@@ -2,7 +2,6 @@
 #define WALL_MOVE_ENEMY_H_
 
 #include "../BaseEnemy.h"
-#include <vector> // デバッグ
 
 // 壁移動エネミークラス
 class WallMoveEnemy : public BaseEnemy {

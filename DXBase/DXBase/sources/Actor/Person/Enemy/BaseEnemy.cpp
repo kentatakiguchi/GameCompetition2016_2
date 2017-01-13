@@ -42,7 +42,6 @@ BaseEnemy::BaseEnemy(
 	discoveryLenght_(500),
 	stateTimer_(0.0f),
 	state_(State::Idel),
-	stateString_(""),
 	discoveryPosition_(Vector2::Zero),
 	addTexPosition_(Vector2(0.0f, 40.0f)),
 	player_(nullptr),
@@ -130,8 +129,6 @@ void BaseEnemy::onUpdate(float deltaTime)
 void BaseEnemy::onDraw() const
 {
 	if (!isScreen_) return;
-
-	auto stateChar = stateString_.c_str();
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
 	// アニメーションの描画
@@ -189,7 +186,6 @@ void BaseEnemy::update(float deltaTime) {}
 // 待機状態です
 void BaseEnemy::idle()
 {
-	stateString_ = "待機";
 	// プレイヤーとの距離を計算して、
 	// スクリーンの幅の半分 + 敵の大きさよりちいさいなら動く
 	auto a = enemyManager_.getPlayerLength();
@@ -201,7 +197,6 @@ void BaseEnemy::search()
 {
 	// プレイヤーの捜索
 	findPlayer();
-	stateString_ = "捜索";
 	turnMotion_ = ENEMY_WALKTURN;
 	// 初期速度に戻す
 	speed_ = initSpeed_;
@@ -230,7 +225,6 @@ void BaseEnemy::search()
 void BaseEnemy::discovery()
 {
 	isUseGravity_ = false;
-	stateString_ = "発見";
 	// ジャンプモーション
 	position_.y += (-0.5f + stateTimer_) * GRAVITY_ * deltaTimer_;
 	// ジャンプ後に床に接地したら追跡状態に遷移
@@ -247,7 +241,6 @@ void BaseEnemy::chase()
 {
 	// プレイヤーの捜索
 	findPlayer();
-	stateString_ = "追跡";
 	// 移動速度を倍速にする
 	speed_ = initSpeed_ * 1.5f;
 	// 追跡行動
@@ -267,7 +260,6 @@ void BaseEnemy::chase()
 // 攻撃行動です
 void BaseEnemy::attack()
 {
-	stateString_ = "攻撃";
 	if (stateTimer_ >= 3.0f)
 		changeState(State::Search, ENEMY_WALK);
 }
@@ -275,7 +267,6 @@ void BaseEnemy::attack()
 // 被弾行動です
 void BaseEnemy::damageMove()
 {
-	stateString_ = "ダメージ";
 	if (stateTimer_ >= 3.0f) {
 		changeState(State::Chase, ENEMY_WALK);
 		turnMotion_ = ENEMY_ATTACKTURN;
@@ -285,7 +276,6 @@ void BaseEnemy::damageMove()
 // 死亡行動です
 void BaseEnemy::deadMove()
 {
-	stateString_ = "死亡";
 	animation_.setIsLoop(false);
 	name_ = "";
 	// 所持しているオブジェクトの削除
@@ -397,7 +387,6 @@ void BaseEnemy::updateState(float deltaTime)
 	if (!isScreen())
 		changeState(State::Idel, ENEMY_WALK);
 	prevDirection_ = direction_;
-
 	stateTimer_ += deltaTime;
 }
 

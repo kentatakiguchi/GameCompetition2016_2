@@ -166,6 +166,7 @@ void WallAttack::wallMove(float deltaTime)
 		direction = prevPlayerDistance_;
 		auto angle = std::atan2(direction.y, direction.x) * 180.0f / MathHelper::Pi;
 		animeAngle_ = angle + 90.0f;
+		direction_ = direction;
 		wsDirection_ = direction;
 	}
 }
@@ -178,7 +179,8 @@ void WallAttack::wallAttack(float deltaTime)
 	//animeNum_ = BossAnimationNumber::WALLATTACK_DASHJUMP_NUMBER;
 	// プレイヤーの居た位置に向かって飛ぶ
 	position_ += prevPlayerDistance_ * speed * (deltaTime * 60.0f);
-	//if (timer_ <= 0.2f) return;
+	// 保険(すぐに衝突したことになる)
+	if (timer_ <= 0.2f) return;
 	if (floorName_ == "BossAreaFloor" || floorName_ == "MovelessFloor") {
 		//flinchCount_--;
 		isAnimaLoop_ = true;

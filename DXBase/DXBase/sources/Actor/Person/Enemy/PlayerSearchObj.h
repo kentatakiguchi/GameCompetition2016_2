@@ -20,8 +20,6 @@ public:
 	bool isPlayerLook();
 
 private:
-	//bool isLook_;				// プレイヤーが見えているか
-
 	Vector2 enemyPosition_;		// 敵の位置
 	Vector2 playerPosition_;	// プレイヤーの位置
 	Vector2 blockPosition_;		// ブロックの位置

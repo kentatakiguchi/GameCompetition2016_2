@@ -7,10 +7,8 @@
 #include "../../../../Define.h"
 #include "../../../../Animation/Enemy/EnemyAnimation2D.h"
 #include "BossAnimationNumber.h"
-
 #include "BossManager.h"
 
-// class BossManager;
 class FloorSearchPoint;
 class BossEntry;
 class BossHeart;
@@ -57,6 +55,7 @@ public:
 		const float bodyScale = 128.0f);// * 2 / 2.0f);
 	~BaseBoss();
 	virtual void onUpdate(float deltaTime) override;
+	virtual void onEnd();
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& actor) override;
 	virtual void onMessage(EventMessage event, void*) override;
@@ -77,9 +76,6 @@ protected:
 	// 状態の更新
 	void updateState(float deltaTime);
 	// 状態の変更を行います
-	//void changeState(State state, BossAnimationNumber num);
-	//// 攻撃状態の変更を行います
-	//void changeAttackState(AttackState aState, BossAnimationNumber num);
 	void changeState(State state, int num);
 	// 攻撃状態の変更を行います
 	void changeAttackState(AttackState aState, int num);
@@ -104,7 +100,6 @@ protected:
 
 // 攻撃行動
 protected:
-	//void initAttackState();
 	// ジャンプ攻撃
 	void jumpAttack(float deltaTime);
 	// 壁攻撃
@@ -131,42 +126,32 @@ private:
 
 protected:
 	int dp_;						// 耐久値
-	//int initDp_;					// 耐久値(初期値)
 	int hp_;						// 体力
-	unsigned int attackCount_;				// 攻撃行動するカウント
-	//int hpLock_;					// ロックする体力
+	unsigned int attackCount_;		// 攻撃行動するカウント
 	int flinchCount_;				// ひるむまでの回数
 	int piyoriCount_;				// ぴよる回数
-	int angleCount_;				// 振り向き回数
-	int bockCreateCount_;
-	// int initHp_;					// 体力(初期値)
+	int bokoCreateCount_;			// ボコエフェクト生成回数
 	float stateTimer_;				// 状態の時間
 	float timer_;					// 現在の時間(最大値 1)
 	float deltaTimer_;				// 現在の時間(補間)
 	float damageTimer_;				// 次に被弾までの時間
 	float angle_;					// 角度(時計周り)
 	float effectCreateTimer_;		// エフェクト生成時間(間隔)
-
 	bool isGround_;					// 接地しているか
 	bool isBottomHit_;				// 壁の下側に当たったか
-	bool isBodyHit_;				// プレイヤー本体に当たるか
+	//bool isHit_;					// プレイヤー本体に当たるか
 	bool isAttackHit_;				// プレイヤーの攻撃に当たるか
 	bool isSceneEnd_;				// シーンを終了させるか
 	bool isBattle_;					// 戦闘を行うか
 	bool isEffectCreate_;			// エフェクトを生成するか
-
-	std::string stateString_;		// 状態の文字列（デバッグ用）
 	int handle_;					// デバッグハンドル
-
 	FloorSearchPoint* wspObj_;		// 壁捜索オブジェクト
 	BossEntry* entryObj_;			// ボス入口オブジェクト
-	//BossHeart* heartObj_;			// ボス心臓オブジェクト
 	BossManager bossManager_;		// ボスマネージャー
 	// 攻撃状態のコンテナ
 	typedef std::vector<AttackState> AttackStateContainer;
 	AttackStateContainer asContainer_;
 	// 攻撃モーションコンテナ
-	//typedef std::vector<BossAnimationNumber> BossAnimationContainer;
 	typedef std::vector<int> BossAnimationContainer;
 	BossAnimationContainer asAnimations_;
 
@@ -174,32 +159,24 @@ private:
 	Vector2 playerPastPosition_;	// プレイヤーの過去の位置
 	Vector2 direction_;				// 方向
 	ActorPtr player_;
-
 	State state_;					// 状態
 	AttackState attackState_;		// 攻撃状態
-	//BossAnimationNumber animeNum_;	// アニメーション番号
 	int animeNum_;
 	EnemyAnimation2D animation_;	// アニメーション
-
 	BossGaugeUI* bossGaugeUI_;		// ボスの体力
 
-	float top_, bottom_, right_, left_;
+	float top_, bottom_, right_, left_;	// 判定用
 
 	Vector2 movePos_;
 	float moveSpeed_;
-
 	// クランプ用の位置(仮)
 	const Vector2 FIELD_SIZE = Vector2(
 		SCREEN_SIZE.x - CHIPSIZE - body_.GetCircle().getRadius(), 
 		SCREEN_SIZE.y - CHIPSIZE - body_.GetCircle().getRadius());
-
+	// 体力のロックコンテナ
 	typedef std::vector<int> LockHpContainer;
 	LockHpContainer lockHps_;
-
-	// クランプ用の位置コンテナ
-	typedef std::list<Vector2> ClampContainer;
-	ClampContainer clampList_;
-
+	// スターエフェクト用コンテナ
 	typedef std::list<ActorPtr> StarContainer;
 	StarContainer stars_;
 };

@@ -6,8 +6,6 @@
 #include <vector>
 #include <memory>
 
-// class BossAttack;
-
 class IWorld;
 
 // ボスマネージャー 
@@ -16,6 +14,8 @@ public:
 	BossManager();
 	// コンストラクタ
 	BossManager(IWorld* world, const Vector2& position);
+	// デストラクタ
+	~BossManager();
 	// 攻撃コンテナに攻撃を追加します
 	void addAttack(std::shared_ptr<BossAttack> attack);
 	// 攻撃の番号を変更します
@@ -38,8 +38,6 @@ public:
 	bool IsAttackHit();
 	// 怯むかを返します
 	bool isFlinch();
-	// ぴより状態になるかを返します
-	bool isPiyori();
 	// ひるみカウントを返します
 	int getFlinchCount();
 	// 角度を返します
@@ -90,9 +88,6 @@ private:
 	int attackNumber_;			// 攻撃番号
 	Vector2 bossPosition_;		// ボスの位置
 	Vector2 playerPosition_;	// プレイヤーの位置
-	//float timer_;			// 時間
-	//bool isAttackEnd_;		// 攻撃が終了しているか
-
 	// ボス攻撃コンテナ
 	typedef std::vector<std::shared_ptr<BossAttack>> BossAttackContainer;
 	BossAttackContainer bossAttackContainer_;

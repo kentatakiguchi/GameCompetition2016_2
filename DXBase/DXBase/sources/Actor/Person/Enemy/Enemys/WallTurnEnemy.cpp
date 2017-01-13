@@ -9,7 +9,7 @@ WallTrunEnemy::WallTrunEnemy(
 	const Vector2& direction) :
 	BaseEnemy(world, position, 64.0f, direction)
 {
-	speed_ * 2;
+	speed_ *= 2;
 	isUseGravity_ = false;
 	isInvincible_ = true;
 	// 壁捜索オブジェクトの生成
@@ -48,7 +48,6 @@ void WallTrunEnemy::search()
 {
 	// プレイヤーの捜索
 	findPlayer();
-	stateString_ = "捜索";
 	// 捜索行動
 	searchMove();
 }

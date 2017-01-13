@@ -3,7 +3,6 @@
 BossAttack::BossAttack() :
 	hp_(0),
 	flinchCount_(0),
-	piyoriCount_(0),
 	timer_(0.0f),
 	animeAngle_(0.0f),
 	floorName_(""),
@@ -18,7 +17,6 @@ BossAttack::BossAttack() :
 	isAttackHit_(true),
 	isMove_(false),
 	isFlinch_(true),
-	isPiyori_(true),
 	isAnimaLoop_(false),
 	position_(Vector2::Zero),
 	direction_(Vector2::Zero),
@@ -35,7 +33,6 @@ BossAttack::BossAttack() :
 BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
 	hp_(100),
 	flinchCount_(1),
-	piyoriCount_(5),
 	timer_(0.0f),
 	angle_(0.0f),
 	animeAngle_(0.0f),
@@ -49,7 +46,6 @@ BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
 	isAttackHit_(false),
 	isMove_(true),
 	isFlinch_(false),
-	isPiyori_(false),
 	isAnimaLoop_(true),
 	position_(position),
 	direction_(Vector2::Left),
@@ -208,11 +204,6 @@ bool BossAttack::isFlinch()
 	return isFlinch_;
 }
 
-bool BossAttack::isPiyori()
-{
-	return isPiyori_;
-}
-
 // 重力を使用するかを返します
 bool BossAttack::isUseGravity()
 {
@@ -247,7 +238,7 @@ int BossAttack::getAnimaNum()
 // アニメーションの角度を返します
 int BossAttack::getAnimeAngle()
 {
-	return animeAngle_;
+	return (int)animeAngle_;
 }
 
 // アニメーションがループするかを返します

@@ -29,7 +29,6 @@ public:
 
 private:
 	int ap_;				// プレイヤーに与えるダメージ量
-
 	Vector2 direction_;		// 方向
 	Vector2 enemyPosition_;	// 敵の位置
 	Vector2 addPosition_;	// 追加の位置

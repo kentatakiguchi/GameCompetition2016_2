@@ -44,7 +44,6 @@ FlyingEnemy::FlyingEnemy(
 void FlyingEnemy::beginUpdate(float deltaTime)
 {
 	// トゲの更新
-	//pricleObj_->setDirection(direction_);
 	pricleObj_->setEnemyPosition(position_);
 }
 
@@ -52,11 +51,6 @@ void FlyingEnemy::update(float deltaTime)
 {
 	wsObj_->setDirection(direction_);
 	wsObj_->setPosition(position_);
-	/*if (InputMgr::GetInstance().IsKeyOn(KeyCode::L)) {
-		changeState(State::Dead, ENEMY_DAMAGE);
-		isUseGravity_ = true;
-		TexDegress_ = 0.0f;
-	}*/
 }
 
 void FlyingEnemy::onMessage(EventMessage event, void *){}
@@ -66,7 +60,6 @@ void FlyingEnemy::search()
 {
 	// プレイヤーの捜索
 	findPlayer();
-	stateString_ = "捜索";
 	// 初期速度に戻す
 	speed_ = initSpeed_;
 	// 捜索行動
@@ -90,17 +83,9 @@ void FlyingEnemy::search()
 	}
 }
 
-void FlyingEnemy::discovery()
-{
-	/*auto player = world_->findActor("PlayerBody1");
-	pastPosition = player->getPosition();
-	pricleObj_->setDirection(enemyManager_.getDirection(pastPosition));
-	changeState(State::Chase, ENEMY_WALK);*/
-}
+void FlyingEnemy::discovery(){}
 
-void FlyingEnemy::attack()
-{
-}
+void FlyingEnemy::attack(){}
 
 void FlyingEnemy::searchMove()
 {
@@ -108,7 +93,6 @@ void FlyingEnemy::searchMove()
 	// => direTimer_ = 1 => マップチップ一個分動いたことにする	
 	direTimer_ += (speed_ / CHIPSIZE) * deltaTimer_;
 	// 床に当たるか、一定のマップチップ分動いたら、方向転換
-	// (wsObj_->isGround() || direTimer_ >= 14.0f)
 	if (wsObj_->isGround() || direTimer_ >= 3.0f) {
 		direction_.y *= -1;
 		direTimer_ = 0;
@@ -116,7 +100,6 @@ void FlyingEnemy::searchMove()
 	position_ += Vector2::Down * speed_ * direction_.y * deltaTimer_;
 	pricleObj_->setDirection(Vector2::Up);
 	pricleObj_->setAddPosition(Vector2::Up * -(scale_ + 1.0f));
-	//pDirection_ = enemyManager_.getPlayerNormalizeDirection();
 }
 
 // プレイヤーの追跡行動です
@@ -124,7 +107,6 @@ void FlyingEnemy::chase()
 {
 	// プレイヤーの捜索
 	findPlayer();
-	stateString_ = "追跡";
 	// 移動速度を倍速にする
 	speed_ = initSpeed_ * 1.5f;
 	// 追跡行動
@@ -135,12 +117,9 @@ void FlyingEnemy::chaseMove()
 {
 	// プレイヤーのいた方向に進む
 	// プレイヤーが居た位置との距離が０ならば、見失う
-	// pastPosition -= world_->MoveActor();
 	auto direction = enemyManager_.getDirection(pastPosition_);
 	auto p_Direction = position_ - pastPosition_;
  	auto length = p_Direction.Length();
-	/*pricleObj_->setDirection(-direction);
-	pricleObj_->setAddPosition(Vector2::Left * (scale_ + 1.0f));*/
 	// プレイヤーが床にいる場合、一定の距離内に居ることが難しいので、切り上げる
 	if (length <= 15) {
 		//changeState(State::Lost, ENEMY_LOST);
@@ -155,13 +134,10 @@ void FlyingEnemy::chaseMove()
 	if (length < speed_)
 		speed = length;
 	// プレイヤーの居た位置からの方向を設定
-	//direction_ = enemyManager_.getPlayerNormalizeDirection();
 	direction_ = enemyManager_.getNormalizeDirection(pastPosition_);
 	// プレイヤーの居た位置に進む
-	//direction.y *= -1;
 	position_ += direction_ * speed * deltaTimer_;
 	// トゲの設定
-	//pricleObj_->setDirection(direction);
 	pricleObj_->setAddPosition(Vector2::Left * (scale_ + 1.0f));
 }
 
@@ -169,7 +145,6 @@ void FlyingEnemy::chaseMove()
 void FlyingEnemy::lostMove()
 {
 	// 見失う
-	stateString_ = "見失う";
 	lostTimer_ += deltaTimer_ / 60.0f;
 	if (lostTimer_ <= 8.0f) return;
 	lostTimer_ = 0.0f;

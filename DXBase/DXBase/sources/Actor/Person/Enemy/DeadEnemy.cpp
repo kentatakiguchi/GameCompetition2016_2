@@ -15,9 +15,7 @@ DeadEnemy::DeadEnemy(
 	timer_(0.0f),
 	isGround_(false),
 	animation_(EnemyAnimation2D())
-{
-
-}
+{}
 
 void DeadEnemy::onUpdate(float deltaTime)
 {
@@ -26,8 +24,6 @@ void DeadEnemy::onUpdate(float deltaTime)
 		timer_ += deltaTime;
 		position_.y += timer_ * 9.8f * (deltaTime * 60.0f);
 	}
-
-	//timer_ += deltaTime;
 
 	isGround_ = false;
 }
@@ -38,14 +34,11 @@ void DeadEnemy::onCollide(Actor & actor)
 	// プレイヤー関連のオブジェクトに当たっているなら
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
 	// マップのブロックに当たったら、処理を行う
-	if (getFloorName != NULL) {
+	if (getFloorName != NULL)
 		groundClamp(actor);
-	}
 }
 
-void DeadEnemy::onMessage(EventMessage event, void *)
-{
-}
+void DeadEnemy::onMessage(EventMessage event, void *){}
 
 // 地面の位置に補正します
 void DeadEnemy::groundClamp(Actor & actor)
@@ -68,7 +61,6 @@ void DeadEnemy::groundClamp(Actor & actor)
 		(topRight - bottomRight).Normalize(), (pos - bottomRight));
 	auto left = Vector2::Cross(
 		(bottomLeft - topLeft).Normalize(), (pos - topLeft));
-
 	// Y方向に位置を補間する
 	if (left < body_.GetBox().getWidth() / 2.0f &&
 		right < body_.GetBox().getWidth() / 2.0f) {

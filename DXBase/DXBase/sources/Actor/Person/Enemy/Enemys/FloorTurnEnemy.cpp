@@ -11,9 +11,7 @@ FloorTurnEnemy::FloorTurnEnemy(
 	fspObj_(nullptr)
 {
 	direction_ = Vector2(-right, 1.0f);
-	//turnMotion_ = ENEMY_WALKTURN;
 	BaseEnemy::Initialize();
-
 	// 崖捜索オブジェクトの追加
 	auto fsObj = std::make_shared<FloorSearchPoint>(
 		world_, 
@@ -34,12 +32,7 @@ FloorTurnEnemy::FloorTurnEnemy(
 	objContainer_.push_back(pricleObj_);
 }
 
-void FloorTurnEnemy::beginUpdate(float deltaTime)
-{
-	// 崖捜索オブジェクトの更新
-	//fspObj_->setDirection(direction_);
-	//fspObj_->setPosition(position_);
-}
+void FloorTurnEnemy::beginUpdate(float deltaTime){}
 
 void FloorTurnEnemy::update(float deltaTime)
 {
@@ -70,9 +63,6 @@ void FloorTurnEnemy::attack(){}
 void FloorTurnEnemy::searchMove()
 {
 	// 崖移動
-	/*position_ +=
-		enemyManager_.cliffMove(false)
-		* speed_ * deltaTimer_ *direction_.x;*/
 	position_ += direction_.x * speed_ * deltaTimer_;
 	pricleObj_->setAddPosition(Vector2::Up * -(scale_ + 1.0f));
 }

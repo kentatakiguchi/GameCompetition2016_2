@@ -7,7 +7,6 @@ WallMoveEnemy::WallMoveEnemy(
 	const Vector2& direction) :
 	BaseEnemy(world, position, 64.0f, direction),
 	addScale_(4.0f, 4.0f)
-	//result_(0)
 {
 	direction_ = direction;
 	// 壁捜索オブジェクトの各ステータスの追加
@@ -38,8 +37,6 @@ void WallMoveEnemy::onUpdate(float deltaTime)
 	for (int i = 0; i != fspScaleContainer_.size(); i++) {
 		enemyManager_.getWSPObj(i)->setPosition(position_);
 	}
-	//// デバッグ表示のためのリザルト
-	//result_ = enemyManager_.eachWSPObj();
 }
 
 void WallMoveEnemy::onCollide(Actor & actor)
@@ -49,9 +46,7 @@ void WallMoveEnemy::onCollide(Actor & actor)
 	enemyManager_.setIsDirection(isBlockCollideBegin_);
 }
 
-void WallMoveEnemy::onMessage(EventMessage event, void *)
-{
-}
+void WallMoveEnemy::onMessage(EventMessage event, void *){}
 
 void WallMoveEnemy::search()
 {

@@ -21,11 +21,11 @@ void NeedleEnemy::onUpdate(float deltaTime){}
 void NeedleEnemy::onDraw() const
 {
 	// j‚Ì‰æ‘œ‚Ì•ûŒü‚ğ•Ï‚¦‚é
-	// direction_
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
 	// j‚Ì•\¦
-	DrawRotaGraph(vec3Pos.x, vec3Pos.y, 1.0f, MathHelper::ToRadians(degrees_),
+	DrawRotaGraph((int)vec3Pos.x, (int)vec3Pos.y, 1.0f,
+		MathHelper::ToRadians(degrees_),
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
 }
 

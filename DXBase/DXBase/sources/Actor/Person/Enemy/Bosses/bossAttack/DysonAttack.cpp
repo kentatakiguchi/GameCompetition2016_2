@@ -64,12 +64,13 @@ void DysonAttack::dysonAttack(float deltaTime)
 		// 初期Seed値を渡す
 		std::mt19937 mt(random());
 		// 範囲の指定(int型)
-		std::uniform_int_distribution<> aSecond(CHIPSIZE * 2, CHIPSIZE * 18);
+		int size = static_cast<int>(CHIPSIZE);
+		std::uniform_int_distribution<> aSecond(size * 2, size * 18);
 		// 岩の生成
 		for (int i = 0; i != 3; i++) {
 			// Xの生成位置を入れる
 			world_->addActor(ActorGroup::Enemy,
-				std::make_shared<Rock>(world_, Vector2(aSecond(mt), 200.0f)));
+				std::make_shared<Rock>(world_, Vector2((float)aSecond(mt), 200.0f)));
 		}
 		isRockCreate_ = true;
 	}
@@ -99,25 +100,33 @@ void DysonAttack::dysonAttack(float deltaTime)
 		addAngle_ *= -1;
 	// 角度の加算
 	angle_ += addAngle_ * (deltaTime * 60.0f);
-	tornadoObj_->setAngle(angle_);
+	tornadoObj_->setAngle((int)angle_);
 
 	isPrevWspHit_ = isWspHit_;
 
 	position_.x += 4.0f * direction_.x * (deltaTime * 60.0f);
+
+	// デルタタイムが0以下なら、SEを一時停止する
+	if (CheckSoundMem(windSE_) == 1 &&
+		deltaTime <= 0) {
+		StopSoundMem(windSE_);
+	}
+	else if (CheckSoundMem(windSE_) == 0 &&	deltaTime > 0) {
+		// SEの再生(停止した箇所から再生)
+		PlaySoundMem(windSE_, DX_PLAYTYPE_LOOP, false);
+	}
 
 	// 一定時間経過で攻撃終了
 	if (timer_ <= 7.0f) return;
 	tornadoObj_->dead();
 	// SEの停止
 	StopSoundMem(windSE_);
-	//tornadoObj_->initPosition();
 	isAttackEnd_ = true;
 }
 
 // 怯み状態
 void DysonAttack::flinch(float deltaTime)
 {
-	//isFlinch_ = true;
 	isAnimaLoop_ = false;
 	// プレイヤーをつなぐものに当たっていないなら、疲労状態に遷移
 	if (isMove_) {
@@ -128,7 +137,6 @@ void DysonAttack::flinch(float deltaTime)
 	// 触れ続けている間で一定時間経過したらひるむ
 	if (timer_ <= 1.5f) return;
 	isFlinch_ = true;
-	//isAttackEnd_ = true;
 }
 
 // 疲労状態
@@ -152,6 +160,9 @@ void DysonAttack::Refresh()
 	BossAttack::Refresh();
 	isFlinch_ = false;
 	tornadoObj_ = nullptr;
+	// SEが再生中なら、止める
+	if (CheckSoundMem(windSE_) == 1)
+		StopSoundMem(windSE_);
 	changeState(State::Attack, BREATH_NUMBER);
 	//state_ = State::Attack;
 	//animeNum_ = BossAnimationNumber::BREATH_NUMBER;

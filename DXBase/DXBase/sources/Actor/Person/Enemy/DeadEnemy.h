@@ -15,17 +15,13 @@ public:
 	void onCollide(Actor& actor) override;
 	void onMessage(EventMessage event, void*) override;
 
-
-
 private:
 	// 地面の位置に補正します
 	void groundClamp(Actor& actor);
 
 private:
 	float timer_;
-
 	bool isGround_;
-
 	EnemyAnimation2D animation_;	// アニメーション
 };
 

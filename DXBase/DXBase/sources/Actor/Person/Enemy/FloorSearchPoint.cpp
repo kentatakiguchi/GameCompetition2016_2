@@ -55,21 +55,7 @@ void FloorSearchPoint::onUpdate(float deltaTime)
 	isGround_ = false;
 }
 
-void FloorSearchPoint::onDraw() const
-{
-	//// •\Ž¦
-	//auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-	//vec3Pos = vec3Pos * inv_;
-	///*DrawString(
-	//	vec3Pos.x, vec3Pos.y,
-	//	"ƒ{ƒX‚ÌŒû‚Å‚·", GetColor(255, 255, 255));*/
-	//DrawGraph(
-	//	vec3Pos.x - body_.GetBox().getWidth(),
-	//	vec3Pos.y - body_.GetBox().getHeight(),
-	//	ResourceLoader::GetInstance().getTextureID(
-	//		TextureID::ENEMY_NEEDLE_TEX), 0);
-	//body_.draw(inv_);
-}
+void FloorSearchPoint::onDraw() const{}
 
 void FloorSearchPoint::onCollide(Actor & actor)
 {

@@ -60,8 +60,6 @@ public:
 	float getAngle();
 	// 怯むかを返します
 	bool isFlinch();
-	// ぴより状態になるかを返します
-	bool isPiyori();
 	// 重力を使用するかを返します
 	bool isUseGravity();
 	// プレイヤーの攻撃に当たるかを返します
@@ -81,7 +79,6 @@ public:
 protected:
 	int hp_;					// 体力
 	int flinchCount_;			// ひるむまでの回数
-	int piyoriCount_;			// ぴよりまでの回数
 	float timer_;				// 時間
 	float angle_;				// 角度
 	float animeAngle_;			// アニメーションの角度
@@ -97,7 +94,6 @@ protected:
 	bool isAttackHit_;			// プレイヤーの攻撃に当たるか
 	bool isMove_;				// 動ける状態か
 	bool isFlinch_;				// 怯むか
-	bool isPiyori_;
 	bool isAnimaLoop_;			// アニメーションをループさせるか
 	Vector2 position_;			// 位置
 	Vector2 direction_;			// 方向

@@ -33,7 +33,6 @@ JumpAttack::JumpAttack(IWorld* world, const Vector2& position) :
 	prevOtherName_(""),
 	prevPlayerDistance_(Vector2::One)
 {
-	piyoriCount_ = 5;
 	isBodyHit_ = false;
 	isAttackHit_ = true;
 	animeNum_ = JUMP_UP_NUMBER;
@@ -46,10 +45,10 @@ void JumpAttack::attack(float deltaTime)
 	if (collideObj_ != nullptr) {
 		// otherName_ = const_cast<char*>(collideObj_->getName().c_str());
 		otherName_ = collideObj_->getName();
-		if (otherName_ == "PlayerAttackCollider") {
+		/*if (otherName_ == "PlayerAttackCollider") {
 			if (prevOtherName_ != otherName_)
 				piyoriCount_--;
-		}
+		}*/
 	}
 	// プレイヤーの攻撃に触れたら、ぴよりカウントを減算する
 	// 衝突時の処理ではないので、名前が同一の場合は減算を行わない
@@ -65,11 +64,11 @@ void JumpAttack::attack(float deltaTime)
 	otherName_ = "";
 	collideObj_ = nullptr;
 	// ぴより回数が一定値以下になったらぴよる
-	if (piyoriCount_ <= 0) {
+	/*if (piyoriCount_ <= 0) {
 		isPiyori_ = true;
 		isAttackEnd_ = true;
 		return;
-	}
+	}*/
 
 	if (!isFirstJump_) {
 		// 方向の設定
@@ -161,10 +160,7 @@ void JumpAttack::Refresh()
 	isJumpEnd_ = false;
 	isIdel_ = false;
 	isBodyHit_ = true;
-	isPiyori_ = false;
 	jumpPower_ = initJumpPower_;
 	recastTimer_ = initRecastTimer_;
 	animeNum_ = JUMP_UP_NUMBER;
-	if (piyoriCount_ <= 0)
-		piyoriCount_ = 5;
 }

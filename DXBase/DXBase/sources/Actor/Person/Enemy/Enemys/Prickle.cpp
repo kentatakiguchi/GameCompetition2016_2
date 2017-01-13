@@ -29,32 +29,11 @@ void Prickle::onUpdate(float deltaTime)
 	position_ = enemyPosition_ + addPos;
 }
 
-void Prickle::onDraw() const
-{
-	//auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-	//vec3Pos = vec3Pos * inv_;
-	//body_.draw(inv_);
-	//// トゲの表示
-	//DrawExtendGraph(
-	//	vec3Pos.x - body_.GetBox().getWidth() / 2.0f,
-	//	vec3Pos.y - body_.GetBox().getHeight() / 2.0f,
-	//	vec3Pos.x + body_.GetBox().getWidth() / 2.0f, vec3Pos.y + body_.GetBox().getHeight() / 2.0f,
-	//	ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
-	/*DrawGraph(
-		vec3Pos.x - body_.GetBox().getWidth() / 2.0f,
-		vec3Pos.y - body_.GetBox().getHeight() / 2.0f,
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);*/
-	// トゲの表示
-	// DrawRotaGraph(position_.x, position_.y, 1.0f, MathHelper::ToRadians())
-}
+void Prickle::onDraw() const{}
 
-void Prickle::onCollide(Actor & actor)
-{
-}
+void Prickle::onCollide(Actor & actor){}
 
-void Prickle::onMessage(EventMessage event, void *)
-{
-}
+void Prickle::onMessage(EventMessage event, void *){}
 
 // 位置を入れます
 void Prickle::setEnemyPosition(const Vector2 & position)

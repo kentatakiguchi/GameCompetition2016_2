@@ -16,25 +16,16 @@ class FloorSearchPoint;
 class Prickle;
 class PlayerSearchObj;
 
-//// 死亡状態列挙(特定状態の死亡などに対応　現在使用しない)
-//enum class DeadState {
-//	KnockBackDead,
-//	BlowAwayDead,
-//	TornadoDead
-//};
-
 class BaseEnemy : public Actor {
 protected:
 	// アニメーションID
 	enum {
-		//ENEMY_IDLE = 0,
 		ENEMY_WALK = 0,
 		ENEMY_WALKTURN = 4,
 		ENEMY_DISCOVERY = 3,
 		ENEMY_ATTACK = 1,
 		ENEMY_ATTACKTURN = 5,
 		ENEMY_DAMAGE = 2,
-		//ENEMY_DEAD = 4,
 	};
 	// 状態列挙
 	enum class State {
@@ -88,12 +79,8 @@ protected:
 	void changeState(State state, unsigned int motion);
 	// 所持しているオブジェクトの位置を設定します
 	virtual void setObjPosition();
-	//// 敵の死亡状態の変更を行います
-	//void changeDeadState(EnemyDeadState state);
 	// プレイヤーを捜索します
 	void findPlayer();
-	//// プレイヤーの追跡を中止する距離の加算です
-	//void AddPlayerChaseStopDistance(float distance);
 
 protected:
 	// 索敵時の行動です
@@ -131,7 +118,6 @@ protected:
 	// メンバ変数
 	float timer_;					// 現在の時間(補間)
 	float deltaTimer_;				// 現在の時間(補間, 最大値 1)
-
 	int hp_;						// 体力
 	int ap_;						// アタックポイント
 	int texSize_;					// テクスチャを切り抜きする大きさ
@@ -144,8 +130,7 @@ protected:
 	float playerLostLenght_;		// プレイヤーを見失う距離
 	float TexDegress_;				// テクスチャの角度
 	Vector2 direction_;				// 方向
-	Vector2 prevDirection_;
-
+	Vector2 prevDirection_;			// 過去の方向
 	bool isPlayer_;					// プレイヤーが存在するのか
 	bool isMove_;					// 動くか
 	bool isScreen_;					// 画面内にいるか
@@ -157,23 +142,17 @@ protected:
 	bool isUseGravity_;				// 重力を使うか trueで重力を追加します
 	bool isInvincible_;				// 無敵か trueで無敵になります
 	bool isLostChase_;				// 見失っても追うか trueでプレイヤーが範囲外に出ても、追跡行動を行います
-
 	float stateTimer_;				// 状態タイマ
-	std::string stateString_;		// 状態の文字列（デバッグ用）
 	State state_;					// 状態
 	Vector2 discoveryPosition_;		// 発見したときの位置
 	Vector2 addTexPosition_;		// テクスチャの表示位置の追加
-
 	ActorPtr player_;				// プレイヤー
-	//ActorPtr fsPoint_;				// 床捜索オブジェクト
 	EnemyManager enemyManager_;		// エネミーマネージャー
 	FloorSearchPoint* fspScript_;	// 床捜索オブジェクト
 	FloorSearchPoint* wsScript_;		// 壁捜索オブジェクト
 	Prickle* pricleObj_;			// トゲのオブジェクト
 	PlayerSearchObj* psObj_;		// 線分衝突判定用オブジェクト
-
 	EnemyAnimation2D animation_;	// アニメーション
-
 	// 捜索オブジェクトの位置コンテナ
 	typedef std::vector<Vector2> FSPPositionContainer;
 	FSPPositionContainer fspPositionContainer_;

@@ -34,8 +34,8 @@ void EnemyAnimation2D::update(float deltaTime)
 	if (!isLoop_) {
 		// アニメーションのタイムが一周したら、止める
 		if (timer_ >= sprites_[curr_anim_].size() - 2) {
-			frame_ = sprites_[curr_anim_].size() - 1;
-			timer_ = sprites_[curr_anim_].size() - 1;
+			frame_ = static_cast<unsigned int>(sprites_[curr_anim_].size() - 1);
+			timer_ = (float)sprites_[curr_anim_].size() - 1;
 			isStop_ = true;
 		}
 	}

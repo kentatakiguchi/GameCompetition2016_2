@@ -6,9 +6,7 @@ WeakEnemy::WeakEnemy(IWorld * world, const Vector2& position) :
 	BaseEnemy::Initialize();
 }
 
-void WeakEnemy::onMessage(EventMessage event, void *)
-{
-}
+void WeakEnemy::onMessage(EventMessage event, void *){}
 
 // õ“G‚Ìs“®‚Å‚·
 void WeakEnemy::searchMove()

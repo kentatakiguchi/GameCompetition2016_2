@@ -6,21 +6,18 @@ BossManager::BossManager() :
 	attackNumber_(0),
 	bossPosition_(Vector2::Zero),
 	playerPosition_(Vector2::Zero)
-	/*timer_(0.0f),
-	isAttackEnd_(false),
-	movePosition_(Vector2::Zero)*/
-{
-}
+{}
 
 BossManager::BossManager(IWorld* world, const Vector2 & position) :
 	attackNumber_(0), 
 	bossPosition_(position),
 	playerPosition_(Vector2::Zero)
-	/*timer_(0.0f),
-	isAttackEnd_(false),
-	movePosition_(position)*/
+{}
+
+// デストラクタ
+BossManager::~BossManager()
 {
-	// bossAttackContainer_.clear();
+	bossAttackContainer_.clear();
 }
 
 // 攻撃コンテナに攻撃を追加します
@@ -92,12 +89,6 @@ bool BossManager::isFlinch()
 	return bossAttackContainer_[attackNumber_]->isFlinch();
 }
 
-// ぴより状態になるかを返します
-bool BossManager::isPiyori()
-{
-	return bossAttackContainer_[attackNumber_]->isPiyori();
-}
-
 // ひるみカウントを返します
 int BossManager::getFlinchCount()
 {
@@ -138,7 +129,6 @@ void BossManager::prevPosition()
 Vector2 BossManager::getDirection(const Vector2 & otherPosition)
 {
 	// 方向の計算(ボスの位置を主軸にする)
-	// auto pos = bossAttackContainer_[attackNumber_]->getMovePosition();
 	auto distance = otherPosition - bossPosition_;
 	auto direction = Vector2().Zero;
 	// 方向の値を代入
@@ -229,7 +219,6 @@ void BossManager::setCollideObj(Actor & actor)
 }
 
 // アニメーション番号を返します
-//BossAnimationNumber BossManager::getAnimaNum()
 int BossManager::getAnimaNum()
 {
 	return bossAttackContainer_[attackNumber_]->getAnimaNum();

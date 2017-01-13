@@ -1,8 +1,6 @@
 #ifndef BOSS_ANIMATION_NUMBER_H_
 #define BOSS_ANIMATION_NUMBER_H_
 
-// enum class BossAnimationNumber
-
 enum {
 	WAIT_NUMBER = 0,
 	WAIT_TURN_NUMBER = 1,

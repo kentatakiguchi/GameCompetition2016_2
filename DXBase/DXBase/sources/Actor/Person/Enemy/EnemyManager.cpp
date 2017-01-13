@@ -13,19 +13,19 @@ EnemyManager::EnemyManager(const Vector2 position, const Vector2& direction) :
 	enemyPosition_(position),
 	playerPosition_(Vector2::Zero),
 	threadPosition_(position + Vector2::Left * 100.0f),
-	threadLength_(Vector2::Distance(enemyPosition_, threadPosition_)),
+	threadLength_((int)Vector2::Distance(enemyPosition_, threadPosition_)),
 	enemyDirection_(Vector2::Zero),
-	wsDirection_(-1.0f, 0.0f),
+	wsDirection_(Vector2(-1.0f, 0.0f)),
 	rotate_(0.0f),
 	rotateSpeed_(10.0f),
 	threadGravity_(0.5f)
 {
 	wspDirectionMap_.clear();
 
-	wallMoveConteiner_.push_back(0);
-	wallMoveConteiner_.push_back(1);
-	wallMoveConteiner_.push_back(0);
-	wallMoveConteiner_.push_back(-1);
+	wallMoveConteiner_.push_back(0.0f);
+	wallMoveConteiner_.push_back(1.0f);
+	wallMoveConteiner_.push_back(0.0f);
+	wallMoveConteiner_.push_back(-1.0f);
 	// 素数を追加(3～4桁)
 	primeContainer_.push_back(200);
 	primeContainer_.push_back(300);
@@ -219,7 +219,7 @@ Vector2 EnemyManager::cliffMove(bool isFloor)
 	else distance_ = 1;*/
 	// 仮
 
-	posi = posi.Left * distance_;
+	posi = posi.Left * (float)distance_;
 	// 敵の前方下部に当たり判定のあるオブジェクトを配置
 	// 向いている方向によって、オブジェクトの位置を変える
 	return posi;
@@ -289,7 +289,6 @@ Vector2 EnemyManager::getPlayerVector()
 {
 	playerVector_ = playerPosition_ - enemyPosition_;
 	return Vector2(std::abs(playerVector_.x), std::abs(playerVector_.y));
-	//return Vector2::Zero;
 }
 
 // 指定したオブジェクトとの方向を単位ベクトルで取得します
@@ -298,7 +297,6 @@ Vector2 EnemyManager::getDirection(const Vector2& otherPosition)
 	// 方向の計算
 	auto distance = enemyPosition_ - otherPosition;
 	auto direction = Vector2().Zero;
-	//auto direction = 1.0f;
 	// 方向の値を代入
 	// X
 	if (distance.x < 0)
@@ -333,7 +331,6 @@ Vector2 EnemyManager::getNormalizeDirection(const Vector2 & otherPosition)
 Vector2 EnemyManager::getPlayerNormalizeDirection()
 {
 	// 方向の計算
-	//auto distance = playerPosition_ - enemyPosition_;
 	return getNormalizeDirection(playerPosition_);
 }
 
@@ -377,7 +374,6 @@ Vector2 EnemyManager::getWallDirection()
 	// 過去のカウントを更新
 	wCollidePastCount_ = wCollideCount_;
 	return wsDirection_;
-	//return Vector2();
 }
 
 void EnemyManager::setIsDirection(bool isDirection)
@@ -385,7 +381,7 @@ void EnemyManager::setIsDirection(bool isDirection)
 	isDirection_ = isDirection;
 }
 
-float EnemyManager::eachWSPObj()
+int EnemyManager::eachWSPObj()
 {
 	wspResult_ = 0;
 	wCollideCount_ = 0;
@@ -416,9 +412,5 @@ bool EnemyManager::isDirecion()
 	// カウントが同一なら、falseを返す
 	if (wCollidePastCount_ == wCollideCount_) 
 		return false;
-	//// 敵側の判定でtrueか、衝突数が1以外の場合はtrueを返す
-	//if (isDirection_ || wCollideCount_ != 1)
-	//	return true;
-
 	return true;
 }

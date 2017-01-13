@@ -63,8 +63,7 @@ void Tornado::setAngle(int angle)
 	//	body_.GetBox().component_.point[i].x = tx * cosf(angle * MathHelper::Pi / 180) - ty * sinf(angle * MathHelper::Pi / 180) + position_.x;
 	//	body_.GetBox().component_.point[i].y = tx * sinf(angle * MathHelper::Pi / 180) + ty * cosf(angle * MathHelper::Pi / 180) + position_.y;
 	//}
-
-	angle_ = angle;
+	angle_ = (float)angle;
 }
 
 // ÉvÉåÉCÉÑÅ[ÇíTÇµÇ‹Ç∑

@@ -23,9 +23,7 @@ BaseBoss::BaseBoss(
 	attackCount_(0),
 	flinchCount_(0),
 	piyoriCount_(5),
-	bockCreateCount_(0),
-	angleCount_(0),
-	// initHp_(hp_),
+	bokoCreateCount_(0),
 	stateTimer_(0.0f),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
@@ -34,24 +32,19 @@ BaseBoss::BaseBoss(
 	effectCreateTimer_(0.0f),
 	isGround_(false),
 	isBottomHit_(false),
-	isBodyHit_(true),
-	isAttackHit_(true),
+	isAttackHit_(false),
 	isSceneEnd_(false),
 	isBattle_(false),
 	isEffectCreate_(true),
-	stateString_("待機"),
-	// bossManager_(nullptr),
 	playerPastPosition_(Vector2::Zero),
 	direction_(Vector2::One),
 	player_(nullptr),
 	state_(State::BattleIdel),
 	attackState_(AttackState::JumpAttack),
-	//animeNum_(BossAnimationNumber::WAIT_NUMBER),
 	animeNum_(WAIT_NUMBER),
 	animation_(EnemyAnimation2D()),
 	wspObj_(nullptr),
 	entryObj_(nullptr),
-	//heartObj_(nullptr),
 	bossGaugeUI_(nullptr),
 	bossManager_(BossManager(world, position)),
 	top_(0.0f), bottom_(0.0f), right_(0.0f), left_(0.0f),
@@ -69,7 +62,6 @@ BaseBoss::BaseBoss(
 	asAnimations_.push_back(JUMP_UP_NUMBER);
 	asAnimations_.push_back(WALLATTACK_DASH_NUMBER);
 	asAnimations_.push_back(BREATH_NUMBER);
-
 	// ボスマネージャーに攻撃を追加
 	bossManager_.addAttack(std::make_shared<ThreeJumpAttack>(world_, position));
 	bossManager_.addAttack(std::make_shared<WallAttack>(world_, position));
@@ -100,9 +92,6 @@ BaseBoss::BaseBoss(
 	addAnimation();
 	animation_.changeAnimation(
 		static_cast<int>(WAIT_NUMBER));
-	/*animation_.changeAnimation(
-	static_cast<int>(BossAnimationNumber::WAIT_NUMBER));*/
-
 	// 床捜索オブジェクト
 	auto wspObj = std::make_shared<FloorSearchPoint>(
 		world_, position_,
@@ -123,7 +112,7 @@ BaseBoss::BaseBoss(
 	world_->addUIActor(bossUI);
 	bossGaugeUI_ = bossUI.get();
 	bossGaugeUI_->SetHp(hp_);
-
+	// 衝突判定を一回無くす
 	body_.enabled(false);
 }
 
@@ -132,55 +121,46 @@ BaseBoss::~BaseBoss()
 	asContainer_.clear();
 	asAnimations_.clear();
 	lockHps_.clear();
-	clampList_.clear();
 	stars_.clear();
 }
 
 void BaseBoss::onUpdate(float deltaTime)
 {
-	clampList_.clear();
 	deltaTimer_ = deltaTime * 60.0f;
-
 	// 補間タイマ(最大値１)の更新
 	setTimer(deltaTime);
 	// 体力の更新
 	bossGaugeUI_->SetHp(hp_);
-	//bossManager_.setHeartHP(heartObj_->getHeartHp());
 	// アニメーションの更新
 	animation_.update(deltaTime);
-
+	// 所持しているオブジェクトの位置更新
 	entryObj_->setBossPosition(position_ + Vector2::Left * 50);
 	wspObj_->setPosition(position_);
-	// wspObj_->setDirection(direction_);
 	// 状態の更新
 	updateState(deltaTime);
 	// 接地(仮)
 	bossManager_.setIsGround(isGround_);
 	bossManager_.setIsBottom(isBottomHit_);
-
-	if (damageTimer_ > 0) {
+	// 被弾したら、ダメージタイマを減算する
+	if (damageTimer_ > 0)
 		damageTimer_ -= deltaTime;
-	}
-
-	// 演習が終わったらフラグを変更する。
-	// world_->setEntry(false, true);
-	// アニメーション(やられ状態)の追加
-
 	// bool系
 	isGround_ = false;
 	isBottomHit_ = false;
 }
 
+void BaseBoss::onEnd()
+{
+	bossManager_.attackRefresh();
+	// SEが再生中なら、止める
+	if (CheckSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO)) == 1)
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO));
+}
+
 void BaseBoss::onDraw() const
 {
-	// デバッグ
-	auto stateChar = stateString_.c_str();
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
-	//// 状態の表示
-	//DrawString(
-	//	vec3Pos.x, vec3Pos.y - 250,
-	//	stateChar, GetColor(255, 255, 255));
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
@@ -192,7 +172,6 @@ void BaseBoss::onDraw() const
 void BaseBoss::onCollide(Actor & actor)
 {
 	auto actorName = actor.getName();
-
 	// ブロックの下側にぶつかったら、落ちるようにする?
 	// プログラムを書いて、コメントアウトする
 	// マップのブロックに当たったら、処理を行う
@@ -205,48 +184,27 @@ void BaseBoss::onCollide(Actor & actor)
 	// 空中に浮かぶ床に当たったら、ひるみカウントを加算する
 	if (actorName == "BossAreaFloor") {
 		// 位置の補間
-		/*if (state_ == State::Attack)
-		flinchCount_++;*/
 		groundClamp(actor);
 		bossManager_.setFloorName(actorName.c_str());
 		return;
 	}
-	// 特定の状態ではプレイヤーに触れても何も起こらないようにする
-	if (state_ == State::Flinch || state_ == State::Dead ||
-		state_ == State::Boko || state_ == State::BattleIdel ||
-		state_ == State::Damage) return;
-	if (damageTimer_ > 0 || attackCount_ == 2) return;
+	// プレイヤーの攻撃に当たらない場合は返す
+	if (!isAttackHit_ || damageTimer_ > 0 || attackCount_ == 2) return;
+	if (state_ == State::Flinch) return;
+	//if (damageTimer_ > 0 || attackCount_ == 2) return;
 	// プレイヤーの攻撃範囲に当たった場合の処理
 	if (actorName == "PlayerAttackCollider") {
-		// プレイヤーの攻撃に当たらない場合は返す
-		if (!isAttackHit_) return;
 		// カウントを減らす
 		piyoriCount_--;
 		// ダメージ処理
 		damage(30, actor.getPosition(), 2.0f);
-		/*if (state_ == State::Idel)
-		changeState(State::Damage, DAMAGE_NUMBER);
-		setBMStatus();*/
 		// ボスマネージャーに設定
 		bossManager_.setCollideObj(actor);
 		return;
 	}
-	//// プレイヤー本体に当たった場合の処理
-	//if (actorName == "PlayerBody2" || actorName == "PlayerBody1") {
-	//	// プレイヤーに当たらない場合は返す
-	//	if (!isBodyHit_) return;
-	//	// ダメージ処理
-	//	damage(10, actor.getPosition(), 0.3f);
-	//	//// ボスマネージャーに設定
-	//	//bossManager_.setCollideObj(actor);
-	//	// もしものためのreturn
-	//	return;
-	//}
 }
 
-void BaseBoss::onMessage(EventMessage event, void *)
-{
-}
+void BaseBoss::onMessage(EventMessage event, void *){}
 
 // シーンを終了させるかを返します
 bool BaseBoss::isSceneEnd()
@@ -257,15 +215,11 @@ bool BaseBoss::isSceneEnd()
 // 目的地に移動します
 void BaseBoss::movePosition(float deltaTime)
 {
-	/*movePos_ = position;
-	moveSpeed_ = speed;*/
-	// 自分の位置が
+	// 目的地と自分の方向を出す
 	auto distance = movePos_ - position_;
-	//auto thisSpeed = speed;
 	// 目的地と速度の差が速度以下なら、位置を変える
 	if (distance.Length() < moveSpeed_) {
 		position_ = movePos_;
-		//return true;
 	}
 	else
 		position_ += Vector2::Normalize(distance)
@@ -296,15 +250,14 @@ bool BaseBoss::isMovePosition()
 void BaseBoss::updateState(float deltaTime)
 {
 	// 現在は使用不可
-	// player_ = world_->findActor("Player");
 	player_ = world_->findActor("PlayerBody1");
-
+	// 体力が0以下になったら死亡
 	if (hp_ <= 0) {
 		name_ = "DeadBoss";
+		isAttackHit_ = false;
 		changeState(State::Dead, DEATH_NUMBER);
-		//changeState(State::Dead, BossAnimationNumber::DEATH_NUMBER);
 	}
-
+	// 状態の更新
 	switch (state_)
 	{
 	case State::BattleIdel: battleIdel(deltaTime); break;
@@ -318,18 +271,12 @@ void BaseBoss::updateState(float deltaTime)
 	}
 
 	stateTimer_ += deltaTime;
-	// 位置の更新
-	//position_ = bossManager_->getMovePosition();
 }
 
-//void BaseBoss::changeState(State state, BossAnimationNumber num)
 void BaseBoss::changeState(State state, int num)
 {
 	// アニメーションの変更
 	animation_.setIsLoop(true);
-	//auto 
-	//if (static_cast<int>(num) >= 15 && static_cast<int>(num) <= -1)
-	//num = BossAnimationNumber::WAIT_NUMBER;
 	animation_.changeAnimation(static_cast<int>(num));
 	// 同じ状態なら返す
 	if (state_ == state) return;
@@ -338,14 +285,11 @@ void BaseBoss::changeState(State state, int num)
 	angle_ = 0.0f;
 }
 
-//void BaseBoss::changeAttackState(AttackState aState, BossAnimationNumber num)
 void BaseBoss::changeAttackState(AttackState aState, int num)
 {
 	// 攻撃状態に強制遷移する
-	//if (attackState_ == aState) return;
 	changeState(State::Attack, num);
 	// 画像の方向を合わせる
-	//animation_.turnAnimation(num, direction_.x);
 	animation_.changeDirType(direction_.x);
 	attackState_ = aState;
 	bossManager_.prevPosition();
@@ -360,30 +304,21 @@ void BaseBoss::battleIdel(float deltaTime)
 	// 目的地に移動
 	movePosition(deltaTime);
 	setBMStatus();
-
-	// バトル開始でないなら
+	// バトル開始でないなら返す
 	if (!isBattle_) return;
-	// 待機状態に遷移
-	//changeState(State::Idel, BossAnimationNumber::WAIT_NUMBER);
-	/*changeAttackState(AttackState::JumpAttack,
-	BossAnimationNumber::JUMP_UP_NUMBER);*/
+	// ジャンプ攻撃状態に遷移
 	changeAttackState(AttackState::JumpAttack, JUMP_UP_NUMBER);
+	isAttackHit_ = true;
 	body_.enabled(true);
 }
 
 void BaseBoss::idel(float deltaTime)
 {
-	stateString_ = "待機状態";
-	//animation_.setIsLoop(true);
 	// プレイヤーが取得できていれば、エネミーマネージャーに位置などを入れる
 	setBMStatus();
 	// 画像の方向を合わせる
-	//animation_.turnAnimation(WAIT_NUMBER, direction_.x);
 	animation_.changeDirType(direction_.x);
-
-	//bossManager_.changeAttackNumber(asContainer_.size() - hp_);
 	bossManager_.changeAttackNumber(attackCount_);
-
 	// 一定時間経過で攻撃状態に遷移
 	if (stateTimer_ >= 5.0f) {
 		// 攻撃行動のカウントで行動を決める
@@ -406,23 +341,8 @@ void BaseBoss::attack(float deltaTime)
 	case AttackState::WallAttack: wallAttack(deltaTime); break;
 	case AttackState::SpeacialAttack: specialAttack(deltaTime); break;
 	}
-	// 
-	//animation_.setIsLoop(bossManager_.isAnimeLoop());
-	//animation_.changeAnimation(static_cast<int>(bossManager_.getAnimaNum()));
-
-	/*if(!bossManager_.isAttackEnd())
-	animation_.changeAnimation(
-	static_cast<int>(bossManager_.getAnimaNum()));*/
 	// 攻撃が当たるかの判定を入れる
 	isAttackHit_ = bossManager_.IsAttackHit();
-	isBodyHit_ = bossManager_.IsBodyHit();
-
-	// 攻撃が終了したら、待機状態に遷移
-	//if (bossManager_->isAttackEnd()) {
-	//	changeState(State::Idel, BOSS_IDLE);
-	//	// ボスマネージャーの内部値をリフレッシュ
-	//	bossManager_->attackRefresh();
-	//}
 }
 
 // ダメージ状態
@@ -433,6 +353,7 @@ void BaseBoss::damage(float deltaTime)
 	if (stateTimer_ > 0.5f) {
 		animation_.setIsLoop(true);
 		changeState(State::Idel, WAIT_NUMBER);
+		isAttackHit_ = false;
 		name_ = "BaseEnemy";
 	}
 }
@@ -440,7 +361,6 @@ void BaseBoss::damage(float deltaTime)
 // 怯み状態
 void BaseBoss::flinch(float deltaTime)
 {
-	stateString_ = "ひるみ";
 	name_ = "flinchBoss";
 	flinchCount_ = 0;
 	// 行動
@@ -450,7 +370,6 @@ void BaseBoss::flinch(float deltaTime)
 // ぴより状態
 void BaseBoss::piyori(float deltaTime)
 {
-	stateString_ = "ぴより";
 	name_ = "piyoriBoss";
 	piyoriCount_ = 5;
 	piyoriMove(deltaTime);
@@ -460,19 +379,28 @@ void BaseBoss::boko(float deltaTime)
 {
 	name_ = "BokoBoss";
 	// 煙の生成
-	if (isEffectCreate_ && (int)effectCreateTimer_ % 50 <= 24 && bockCreateCount_ < 2) {
+	if (isEffectCreate_ && (int)effectCreateTimer_ % 50 <= 24 && bokoCreateCount_ < 2) {
 		// エフェクトの追加
 		auto addPos = Vector2::One * -40.0f;
 		world_->addActor(ActorGroup::Effect,
 			std::make_shared<BokoEffect>(world_, position_ + addPos));
-		bockCreateCount_++;
+		bokoCreateCount_++;
 		isEffectCreate_ = false;
-		//stars_.push_back(star);
 	}
 	else if ((int)effectCreateTimer_ % 50 > 24) {
 		isEffectCreate_ = true;
 	}
 	effectCreateTimer_ += deltaTimer_;
+	// デルタタイムが0以下なら、SEを一時停止する
+	auto se = ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO);
+	if (CheckSoundMem(se) == 1 &&
+		deltaTime <= 0) {
+		StopSoundMem(se);
+	}
+	else if (CheckSoundMem(se) == 0 && deltaTime > 0) {
+		// SEの再生(停止した箇所から再生)
+		PlaySoundMem(se, DX_PLAYTYPE_LOOP, false);
+	}
 	if (stateTimer_ < 2.0f) return;
 	direction_.x = -1.0f;
 	animation_.changeDirType(direction_.x);
@@ -483,16 +411,16 @@ void BaseBoss::boko(float deltaTime)
 		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO));
 	if (stateTimer_ >= 3.0f) {
 		name_ = "BaseEnemy";
-		bockCreateCount_ = 0;
+		bokoCreateCount_ = 0;
 		effectCreateTimer_ = 0.0f;
 		isEffectCreate_ = true;
+		isAttackHit_ = true;
 		changeState(State::Idel, WAIT_NUMBER);
 	}
 }
 
 void BaseBoss::deadMove(float deltaTime)
 {
-	stateString_ = "死亡";
 	animation_.setIsLoop(false);
 	// 死亡から一定時間経過なら、シーンを終了させる
 	if (stateTimer_ >= 3.0f)
@@ -530,11 +458,10 @@ void BaseBoss::piyoriMove(float deltaTime)
 	}
 	// 口の印の更新
 	auto posEffect = world_->findActor("EntrySignEffect");
-	auto addPos = Vector2::Up * -150;
+	auto addPos = Vector2::Up * -225;
 	if (posEffect != nullptr) {
 		posEffect->position_ = entryObj_->getPosition() + addPos;
 	}
-	//i->get()->position_ = position_ + addPos;
 	// 体内に入っていたら、ハートに入ったことを知らせる
 	if (entryObj_->isEntered()) {
 		// プレイヤーが出てきたら、待機状態にする
@@ -552,7 +479,6 @@ void BaseBoss::piyoriMove(float deltaTime)
 		effectCreateTimer_ = 0.0f;
 		entryObj_->letOut();
 		isEffectCreate_ = true;
-
 		// 状態によって行動を変える
 		if (state_ == State::Flinch) {
 			// カウントを減らす
@@ -566,6 +492,7 @@ void BaseBoss::piyoriMove(float deltaTime)
 				attackCount_++;
 			// ぼこり状態に変更
 			changeState(State::Boko, DAMAGE_BOKO_NUMBER);
+			isAttackHit_ = false;
 			world_->setEntry(true, false);
 			// SEの再生
 			PlaySoundMem(
@@ -578,6 +505,7 @@ void BaseBoss::piyoriMove(float deltaTime)
 	if (stateTimer_ < 5.0f) return;
 	changeState(State::Idel, WAIT_NUMBER);
 	name_ = "BaseEnemy";
+	isAttackHit_ = true;
 	entryObj_->setIsEntry(false);
 	isEffectCreate_ = true;
 	// エフェクトの削除
@@ -595,7 +523,6 @@ void BaseBoss::piyoriMove(float deltaTime)
 
 void BaseBoss::jumpAttack(float deltaTime)
 {
-	stateString_ = "ジャンプ攻撃";
 	// ジャンプ攻撃
 	bossManager_.attackMove(deltaTime);
 	bossManager_.setPlayerPosition(player_->getPosition());
@@ -604,7 +531,6 @@ void BaseBoss::jumpAttack(float deltaTime)
 	animation_.setIsLoop(bossManager_.isAnimeLoop());
 	animation_.changeAnimation(
 		static_cast<int>(bossManager_.getAnimaNum()));
-	//animation_.turnAnimation(JUMP_UP_NUMBER, bossManager_.getAttackDirection().x);
 	animation_.changeDirType(bossManager_.getAttackDirection().x);
 	// ジャンプ攻撃が終わったら、待機状態にする
 	if (bossManager_.isAttackEnd()) {
@@ -612,14 +538,12 @@ void BaseBoss::jumpAttack(float deltaTime)
 		changeState(State::Idel, WAIT_NUMBER);
 		// 攻撃が当たるかの判定を入れる
 		isAttackHit_ = true;
-		isBodyHit_ = true;
 		bossManager_.attackRefresh();
 	}
 }
 
 void BaseBoss::wallAttack(float deltaTime)
 {
-	stateString_ = "壁攻撃";
 	bossManager_.attackMove(deltaTime);
 	position_ = bossManager_.getMovePosition();
 	// アニメーションの変更
@@ -637,22 +561,27 @@ void BaseBoss::wallAttack(float deltaTime)
 	// ジャンプ攻撃が終わったら、待機状態にする
 	if (bossManager_.isAttackEnd()) {
 		flinchCount_++;
-		// 攻撃側のひるみ回数と以上なら、ひるみ状態に遷移	
-		if (bossManager_.getFlinchCount() < flinchCount_) {
+		// ボスマネージャ側のひるみ回数以上なら、ひるみ状態に遷移	
+		if (bossManager_.getFlinchCount() > flinchCount_) {
 			changeState(State::Idel, WAIT_NUMBER);
 			// 攻撃が当たるかの判定を入れる
 			isAttackHit_ = true;
-			isBodyHit_ = true;
 			bossManager_.attackRefresh();
 			return;
 		}
-		else if (bossManager_.getFlinchCount() >= flinchCount_) {
+		else if (bossManager_.getFlinchCount() <= flinchCount_) {
 			changeState(State::Flinch, PIYO_NUMBER);
-			bossManager_.attackRefresh();
 			flinchCount_ = 0;
+			isAttackHit_ = false;
 			// 怯み状態の設定
-			direction_.x = -1.0f;
 			setPiyori();
+			// 方向の変更
+			auto dir = Vector2::Left;
+			if(bossManager_.getAttackDirection().x >= 0)
+			dir.x = 1.0f;
+			direction_.x = dir.x;
+			animation_.changeDirType(dir.x);
+			bossManager_.attackRefresh();
 			return;
 		}
 	}
@@ -666,12 +595,12 @@ void BaseBoss::specialAttack(float deltaTime)
 	if (bossManager_.isFlinch()) {
 		changeState(State::Flinch, PIYO_NUMBER);
 		bossManager_.attackRefresh();
+		isAttackHit_ = false;
 		// 怯み状態の設定
 		setPiyori();
 		return;
 	}
 
-	stateString_ = "スペシャルな攻撃";
 	name_ = "suikomiBoss";
 	// isBlock() == true => 塞がれている
 	bossManager_.setIsAttackMove(!entryObj_->isBlock());
@@ -684,9 +613,6 @@ void BaseBoss::specialAttack(float deltaTime)
 	animation_.changeAnimation(
 		static_cast<int>(bossManager_.getAnimaNum()));
 	animation_.setIsLoop(bossManager_.isAnimeLoop());
-	/*animation_.turnAnimation(
-		static_cast<int>(bossManager_.getAnimaNum()),
-		bossManager_.getAttackDirection().x);*/
 	animation_.changeDirType(bossManager_.getAttackDirection().x);
 
 	if (bossManager_.isAttackEnd()) {
@@ -694,7 +620,6 @@ void BaseBoss::specialAttack(float deltaTime)
 		changeState(State::Idel, WAIT_NUMBER);
 		// 攻撃が当たるかの判定を入れる
 		isAttackHit_ = true;
-		isBodyHit_ = true;
 		bossManager_.attackRefresh();
 	}
 }
@@ -713,17 +638,12 @@ void BaseBoss::setBMStatus()
 		// 方向を入れる
 		auto direction = bossManager_.getPlayerDirection();
 		direction_ = direction;
-		//wspObj_->setDirection(direction);
 		// 壁に当たっている場合
 		bossManager_.setIsWallHit(wspObj_->isGround());
 		if (wspObj_->isGround()) {
 			wspObj_->setDirection(bossManager_.getWallMoveDirection());
 		}
 		wspObj_->setDirection(bossManager_.getWallMoveDirection());
-		/*if (wspObj_->isGround()) {
-
-		}*/
-
 		// 戻す y = -1.0fに
 		// direction.y = -1.0f;
 		direction.y = 1.0f;
@@ -734,9 +654,7 @@ void BaseBoss::setBMStatus()
 // 指定した値のダメージ量を加算します
 void BaseBoss::damage(const int damage, const Vector2& position, const float scale)
 {
-	// if (attackCount_ == 2) return;
 	hp_ -= damage;
-	//dp_--;
 	// 体力がロックよりも小さくなったら補間する
 	if (hp_ < lockHps_[attackCount_]) {
 		hp_ = lockHps_[attackCount_];
@@ -770,6 +688,7 @@ void BaseBoss::damage(const int damage, const Vector2& position, const float sca
 			//animation_.turnAnimation(DAMAGE_NUMBER, direction_.x);
 			animation_.changeDirType(direction_.x);
 			changeState(State::Damage, DAMAGE_NUMBER);
+			isAttackHit_ = false;
 		}
 	}
 }
@@ -955,8 +874,7 @@ void BaseBoss::addAnimation()
 void BaseBoss::setPiyori()
 {
 	// 攻撃が当たるかの判定を入れる
-	isAttackHit_ = true;
-	isBodyHit_ = true;
+	isAttackHit_ = false;
 	// エフェクトの生成
 	auto effect = std::make_shared<EntrySignEffect>(
 		world_, entryObj_->getPosition() - Vector2::Up * 150.0f);
