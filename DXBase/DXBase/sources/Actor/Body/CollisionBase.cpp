@@ -401,7 +401,7 @@ void CollisionBase::translate(Vector2 position)
 
 bool CollisionBase::intersects(CollisionBase & other)
 {
-	if (!enabled_)return false;
+	if (!enabled_||!other.enabled_)return false;
 
 
 	return body_->intersects(other.body_);
