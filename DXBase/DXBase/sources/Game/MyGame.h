@@ -5,8 +5,6 @@
 #include "../Scene/Base/SceneMgr.h"
 #include "../Scene/Base/SceneDataKeeper.h"
 
-//#include "GameDevice.h"
-
 class MyGame : public Game{
 public:
 	MyGame();
@@ -16,8 +14,6 @@ public:
 	void draw();
 	void end();
 private:
-	//GameDevice gameDevice_;
-
 	SceneMgr sceneMgr_;
 	SceneDataKeeper dataKeeper_;
 };

@@ -25,15 +25,9 @@ MyGame::MyGame() :
 	sceneMgr_(&dataKeeper_){
 }
 
-MyGame::~MyGame(){
-}
+MyGame::~MyGame(){}
 
 void MyGame::start(){
-	////背景色の設定
-	//SetBackgroundColor(0, 0, 255);
-
-	//gameDevice_.start();
-
 	sceneMgr_.add(Scene::Loading, std::make_shared<LoadingScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Title, std::make_shared<TitleScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::MainMenu, std::make_shared<MainMenuScene>(&dataKeeper_));
@@ -48,13 +42,6 @@ void MyGame::start(){
 	sceneMgr_.add(Scene::Logo, std::make_shared<TeamLogoScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Tutoreal, std::make_shared<TutorealScene>());
 	sceneMgr_.change(Scene::Loading);
-
-	//前のゲームプレイシーンの内容を保存する専用のクラスを作る(ステージ番号、キャラクター情報等を保存)
-	//ここにインスタンス化して、現在動いているゲームプレイのデータを、遷移(Updateまたはエンド)するタイミングで送るシーン内だとデータが消えてしまうから
-	//3ステージ分の切り分けが読み込めるようにする、とりあえずゲームプレイシーンのみ
-	//ゲームプレイシーンは使いまわしする、csvの切り替えによって、ステージを変更する(初期化で、オブジェクト位置等のみ再設定する)
-	//デバッグ用に、直接好きなステージに飛べるコマンドを作る(ボタンは余っている好きな物で良い)
-	//各シーンには、データ保存用クラスのポインタを渡す
 }
 
 void MyGame::update(){
@@ -67,7 +54,7 @@ void MyGame::update(){
 void MyGame::draw(){
 	sceneMgr_.draw();
 
-	//Time::GetInstance().draw_fps();
+	Time::GetInstance().draw_fps();
 }
 
 void MyGame::end(){

@@ -60,11 +60,13 @@ void Player::update_state(float deltaTime) {
 		}
 	}
 	else std::dynamic_pointer_cast<PlayerConnector>(cntr)->state_update(deltaTime);
+
+	if (position_.y >= 96 * 60)dead();
 }
 
 // Ú‘±ˆ—
 void Player::connect() {
-	PlaySound("./resources/sounds/puyon.mp3", DX_PLAYTYPE_BACK);
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_PUYON), DX_PLAYTYPE_BACK);
 	addChild(std::make_shared<PlayerConnector>(world_, position_, butty_, retty_));
 }
 

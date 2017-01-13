@@ -15,19 +15,19 @@ void BezierCurve::draw(const int & point_num, Matrix inv) const {
 		float t = 1.0f / point_num * i;
 		Vector2 pos = get(start_point_, end_point_, control_points_, t);
 		Vector3 pos_inv = Vector3(pos.x, pos.y) * inv;
-		DrawPixel(pos_inv.x, pos_inv.y, GetColor(0, 255, 0));
+		DrawPixel(static_cast<int>(pos_inv.x), static_cast<int>(pos_inv.y), GetColor(0, 255, 0));
 	}
 
 	Vector3 start_inv = Vector3(start_point_.x, start_point_.y) * inv;
-	DrawCircle(start_inv.x, start_inv.y, 5.0f, GetColor(255, 0, 0), TRUE);
+	DrawCircle(static_cast<int>(start_inv.x), static_cast<int>(start_inv.y), 5, GetColor(255, 0, 0), TRUE);
 
-	for (int i = 0; i < control_points_.size(); i++) {
+	for (unsigned int i = 0; i < control_points_.size(); i++) {
 		Vector3 pos_inv = Vector3(control_points_[i].x, control_points_[i].y) * inv;
-		DrawCircle(pos_inv.x, pos_inv.y, 5.0f, GetColor(255, 0, 0), TRUE);
+		DrawCircle(static_cast<int>(pos_inv.x), static_cast<int>(pos_inv.y), 5, GetColor(255, 0, 0), TRUE);
 	}
 
 	Vector3 end_inv = Vector3(end_point_.x, end_point_.y) * inv;
-	DrawCircle(end_inv.x, end_inv.y, 5.0f, GetColor(255, 0, 0), TRUE);
+	DrawCircle(static_cast<int>(end_inv.x), static_cast<int>(end_inv.y), 5, GetColor(255, 0, 0), TRUE);
 } 
 
 Vector2 BezierCurve::get(const Vector2 & start, const Vector2 & end, const std::vector<Vector2>& control, const float & time) const {
@@ -39,14 +39,14 @@ Vector2 BezierCurve::get(const Vector2 & start, const Vector2 & end, const std::
 std::vector<Vector2> BezierCurve::all_points(const Vector2 & start, const Vector2 & end, const std::vector<Vector2>& control) const {
 	std::vector<Vector2> points = std::vector<Vector2>();
 	points.push_back(start);
-	for (int i = 0; i < control.size(); i++) points.push_back(control[i]);
+	for (unsigned int i = 0; i < control.size(); i++) points.push_back(control[i]);
 	points.push_back(end);
 	return points;
 }
 
 Vector2 BezierCurve::calc_point(const std::vector<Vector2>& points, const float & t) const{
 	Vector2 pos = Vector2::Zero;
-	for (int i = 0; i < points.size(); i++) {
+	for (unsigned int i = 0; i < points.size(); i++) {
 		pos += nPasTgl[points.size() - 1][i] * std::pow(1 - t, points.size() - 1 - i) * std::pow(t, i) * points[i];
 	}
 	return pos;

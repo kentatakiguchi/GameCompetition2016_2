@@ -37,6 +37,10 @@ Vector2 PlayerBodyCollider::other_velocity(){
 	return other_velocity_;
 }
 
+void PlayerBodyCollider::reset_velocity() {
+	other_velocity_ = Vector2::Zero;
+}
+
 Vector2 PlayerBodyCollider::other_position(){
 	return other_position_;
 }

@@ -18,6 +18,7 @@ public:
 	virtual void onCollide(Actor& other) override;
 	void pos_update(Vector2 parent_pos);
 	void reset_pos();
+	void reset_velocity();
 	Vector2 other_velocity();
 	Vector2 other_position();
 	HitOpponent opponent();

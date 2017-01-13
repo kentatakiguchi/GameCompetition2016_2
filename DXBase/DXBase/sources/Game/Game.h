@@ -20,7 +20,6 @@ public:
 		// キーが押されるまでループします
 		while (isRunning()){
 			update();
-			ClearDrawScreen();
 			draw();
 			device.flip();
 		}
@@ -39,7 +38,7 @@ private:
 	// 終了
 	virtual void end() {}
 	// 実行中か
-	virtual bool isRunning() { return (ProcessMessage() == 0 && InputMgr::GetInstance().IsKeyUp(KeyCode::ESCAPE) == 0); }
+	virtual bool isRunning() { return (ProcessMessage() == 0 && ClearDrawScreen() == 0 && InputMgr::GetInstance().IsKeyUp(KeyCode::ESCAPE) == 0); }
 
 private:
 	// コピー禁止

@@ -72,7 +72,7 @@ const static float		PLAYER_JUMP_POWER = 30.0f;
 // プレイヤーの仰け反り速度
 const static float		PLAYER_LEANBACK_POWER = 10.0f;
 // プレイヤーの無敵時間
-const static float		PLAYER_INV_TIME = 1.0f;
+const static float		PLAYER_INV_TIME = 2.5f;
 // プレイヤーの死亡までの時間
 const static float		PLAYER_DEAD_LIMIT = 5.0f;
 // プレイヤーの硬直時間

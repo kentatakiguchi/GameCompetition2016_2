@@ -37,8 +37,11 @@ PlayerBody::~PlayerBody() {}
 
 void PlayerBody::onUpdate(float deltaTime) {
 
-	position_ += (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
-	velocity_ = position_ - body_.GetCircle().previousPosition_;
+	velocity_ = (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
+	position_ += velocity_;
+
+	//position_ += (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
+	//velocity_ = position_ - body_.GetCircle().previousPosition_;
 
 	slope_.Length() > 0 ? slope_ -= slope_ / 20 : slope_ = Vector2::Zero;
 
@@ -78,6 +81,7 @@ void PlayerBody::onDraw() const {
 void PlayerBody::onLateUpdate(float deltaTime) {
 	collider_->pos_update(position_);
 	if (attack_collider_ != nullptr)attack_collider_->pos_update(position_);
+	collider_->reset_velocity();
 	input_ = Vector2::Zero;
 	gravity_ = Vector2::Zero;
 	launch_ = Vector2::Zero;

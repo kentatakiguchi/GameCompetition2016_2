@@ -17,7 +17,7 @@ void PlayerState_Hold::unique_init(){
 
 void PlayerState_Hold::update(float deltaTime) {
 	if (retty_->distance() < PLAYER_MAX_STRETCH_LENGTH * 0.4f) {
-		StopSound();
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_NOBI));
 		flag1_ = false;
 		flag2_ = false;
 	}
@@ -31,6 +31,7 @@ void PlayerState_Hold::update(float deltaTime) {
 	else {
 		flag1_ = false;
 		if (!flag2_) {
+			StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_NOBI));
 			PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_NOBI_FULL), DX_PLAYTYPE_BACK);
 			flag2_ = true;
 			cntr_->world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(cntr_->world_, cntr_->getPosition(), PlayerEffectID::SHOUGEKI, 3.0f, 5.0f));
@@ -48,7 +49,9 @@ void PlayerState_Hold::update(float deltaTime) {
 	move();
 }
 
-void PlayerState_Hold::end(){}
+void PlayerState_Hold::end(){
+	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_NOBI));
+}
 
 void PlayerState_Hold::key_input(){
 	if (element_.type_ == ActionType::Right) {

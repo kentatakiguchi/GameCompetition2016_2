@@ -92,9 +92,6 @@ public:
 	Actor(const Actor& other) = delete;
 	Actor& operator = (const Actor& other) = delete;
 private:
-	bool isNearToPlayer() const;
-
-private:
 	// メッセージ処理
 	virtual void onMessage(EventMessage message, void* param);
 	// 更新

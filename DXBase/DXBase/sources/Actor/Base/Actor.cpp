@@ -29,25 +29,20 @@ Actor::Actor(const std::string& name) :
 	position_(0.0f, 0.0f),
 	rotation_(Matrix::Identity),
 	dead_(false) {
-
 }
 
 
 // 更新
 void Actor::update(float deltaTime) {
-	//if (!isNearToPlayer())return;
-
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
 	//移動update
 	//ActorMove();
-	body_.MovePos(Vector2(position_.x, position_.y));
+	body_.MovePos(position_);
 }
 
 void Actor::late_update(float deltaTime) {
-	//if (!isNearToPlayer())return;
-
-	body_.MovePos(Vector2(position_.x, position_.y));
+	//body_.MovePos(position_);
 	inv();
 	onLateUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.late_update(deltaTime); });
@@ -55,8 +50,6 @@ void Actor::late_update(float deltaTime) {
 
 // 描画
 void Actor::draw() const {
-	//if (!isNearToPlayer())return;
-
 	onDraw();
 	eachChildren([&](const Actor& child) { child.draw(); });
 }
@@ -89,7 +82,7 @@ const std::string& Actor::getName() const {
 
 // 座標を返す
 Vector2 Actor::getPosition() const {
-	return Vector2(position_.x, position_.y);
+	return position_;
 }
 
 // 回転行列を返す
@@ -142,9 +135,8 @@ void Actor::inv() {
 	mVelo = mPrePos - mCurPos;
 	mVelo = Vector2(mVelo.x*scrool.scroolJudge.x, mVelo.y * scrool.scroolJudge.y);
 }
-Matrix Actor::InitializeInv(Vector2 position)
-{
 
+Matrix Actor::InitializeInv(Vector2 position){
 	//1フレーム前の座標
 	mPrePos = Vector2(inv_.Translation().x, inv_.Translation().y);
 	Matrix playerMat;
@@ -165,8 +157,7 @@ Matrix Actor::InitializeInv(Vector2 position)
 
 // 子の検索
 ActorPtr Actor::findCildren(const std::string& name) {
-	return findCildren(
-		[&](const Actor& actor) { return actor.getName() == name; });
+	return findCildren([&](const Actor& actor) { return actor.getName() == name; });
 }
 
 // 子の検索
@@ -187,8 +178,6 @@ ActorPtr Actor::findCildren(std::function<bool(const Actor&)> fn) {
 
 // 子の衝突判定
 void Actor::collideChildren(Actor& other) {
-	//if (!isNearToPlayer())return;
-
 	eachChildren(
 		[&](Actor& my) {
 		other.eachChildren([&](Actor& target) { my.collide(target); });
@@ -239,8 +228,7 @@ void Actor::clearChildren() {
 	children_.clear();
 }
 
-std::forward_list<ActorPtr> Actor::getChildren()
-{
+std::forward_list<ActorPtr> Actor::getChildren(){
 	return children_;
 }
 
@@ -265,27 +253,14 @@ IWorld* Actor::getWorld() {
 	return world_;
 }
 
-CollisionBase Actor::getBody()
-{
+CollisionBase Actor::getBody(){
 	return body_;
 }
-
-
-
 
 // メッセージ処理
 void Actor::handleMessage(EventMessage message, void* param) {
 	onMessage(message, param);
 	eachChildren([&](Actor& child) { child.handleMessage(message, param); });
-}
-
-bool Actor::isNearToPlayer() const {
-	if (world_ == nullptr) return false;
-	auto player = world_->findActor("Player");
-	if (player == nullptr) return false;
-	float distance = Vector2::Distance(player->getPosition(), position_);
-	return distance <= SCREEN_SIZE.x;
-	//return true;
 }
 
 // メッセージ処理
@@ -294,13 +269,11 @@ void Actor::onMessage(EventMessage, void*) {}
 // 更新
 void Actor::onUpdate(float) {}
 
-void Actor::onLateUpdate(float deltaTime)
-{
-}
+void Actor::onLateUpdate(float deltaTime){}
 
 // 描画
 void Actor::onDraw() const {
-	body_.draw(inv_); // デバッグ表示
+	//body_.draw(inv_); // デバッグ表示
 }
 
 // 衝突した

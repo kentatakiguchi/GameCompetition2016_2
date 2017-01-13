@@ -28,7 +28,7 @@ void ResourceLoader::loadAnimation(const AnimationID & id, const char * file_nam
 		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
 			// êÿÇËéÊÇÈç∂è„ÇÃç¿ïW
 			Vector2 src = Vector2(j * size.x, i * size.y);
-			animations_[id].push_back(DerivationGraph(src.x, src.y, size.x, size.y, handle));
+			animations_[id].push_back(DerivationGraph(static_cast<int>(src.x), static_cast<int>(src.y), static_cast<int>(size.x), static_cast<int>(size.y), handle));
 		}
 	}
 }
@@ -65,7 +65,7 @@ Vector2 ResourceLoader::GetTextureSize(TextureID id)
 	//ÉGÉâÅ[Çæ
 	if (flag < 0) return Vector2::Zero;
 	//ê¨å˜Çæ
-		return Vector2(x, y);
+		return Vector2(static_cast<float>(x), static_cast<float>(y));
 }
 
 void ResourceLoader::clearResources()

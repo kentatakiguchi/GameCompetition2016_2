@@ -23,6 +23,7 @@ PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, Playe
 }
 
 PlayerConnector::~PlayerConnector() {
+	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_NOBI));
 	delete mPuyo;
 }
 
