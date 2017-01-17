@@ -66,21 +66,6 @@ BaseBoss::BaseBoss(
 	bossManager_.addAttack(std::make_shared<ThreeJumpAttack>(world_, position));
 	bossManager_.addAttack(std::make_shared<WallAttack>(world_, position));
 	bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
-
-	//// 攻撃状態をコンテナに追加(攻撃順に追加する)
-	//asContainer_.push_back(AttackState::SpeacialAttack);
-	//asContainer_.push_back(AttackState::WallAttack);
-	//asContainer_.push_back(AttackState::JumpAttack);
-	//// 攻撃アニメーションコンテナ
-	//asAnimations_.push_back(BREATH_NUMBER);
-	//asAnimations_.push_back(WALLATTACK_DASH_NUMBER);
-	//asAnimations_.push_back(JUMP_UP_NUMBER);
-
-	//// ボスマネージャーに攻撃を追加
-	//bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
-	//bossManager_.addAttack(std::make_shared<WallAttack>(world_, position));
-	//bossManager_.addAttack(std::make_shared<ThreeJumpAttack>(world_, position));
-
 	// 体力をロックするコンテナに追加
 	lockHps_.clear();
 	lockHps_.push_back(200);
@@ -329,7 +314,7 @@ void BaseBoss::idel(float deltaTime)
 	}
 	// 重力
 	if (!isGround_ && bossManager_.isUseGravity()) {
-		position_.y += 9.8f * (1.0f);// * 60.0f);
+		position_.y += 9.8f * (deltaTime * 60.0f);
 	}
 }
 
@@ -613,7 +598,10 @@ void BaseBoss::specialAttack(float deltaTime)
 	animation_.changeAnimation(
 		static_cast<int>(bossManager_.getAnimaNum()));
 	animation_.setIsLoop(bossManager_.isAnimeLoop());
+	//animation_.setIsLoop(false);
 	animation_.changeDirType(bossManager_.getAttackDirection().x);
+	// アニメーションの逆再生を変更
+	animation_.setIsReverse(bossManager_.isAnimeReverse());
 
 	if (bossManager_.isAttackEnd()) {
 		name_ = "BaseEnemy";

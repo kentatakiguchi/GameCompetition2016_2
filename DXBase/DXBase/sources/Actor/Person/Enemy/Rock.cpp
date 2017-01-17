@@ -8,8 +8,7 @@ Rock::Rock(IWorld * world, const Vector2 & position, const float bodyScale) :
 	timer_(0.0f),
 	speed_(4.0f),
 	state_(State::Idel)
-{
-}
+{}
 
 void Rock::onUpdate(float deltaTime)
 {

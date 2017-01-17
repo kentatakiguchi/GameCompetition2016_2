@@ -43,7 +43,6 @@ public:
 	void setPlayerNormalizeDirection(const Vector2& direction);
 	// 壁捜索オブジェクトが当たったかを設定します
 	void setIsWallHit(bool isHit);
-	//void setDirection(const Vector2& direction);
 	// 壁移動の方向を取得します
 	Vector2 getMoveDirection();
 	// 床に触れているかを設定します
@@ -69,12 +68,13 @@ public:
 	// 衝突したオブジェクトを設定します
 	void setCollideObj(Actor& actor);
 	// アニメーション番号を返します
-	//BossAnimationNumber getAnimaNum();
 	int getAnimaNum();
 	// アニメーションの角度を返します
 	int getAnimeAngle();
 	// アニメーションがループするかを返します
 	bool isLoop();
+	// アニメーションを逆再生するかを返します
+	bool isReverse();
 
 protected:
 	int hp_;					// 体力
@@ -95,18 +95,16 @@ protected:
 	bool isMove_;				// 動ける状態か
 	bool isFlinch_;				// 怯むか
 	bool isAnimaLoop_;			// アニメーションをループさせるか
+	bool isAnimaReverse_;		// アニメーションを逆再生するか
 	Vector2 position_;			// 位置
 	Vector2 direction_;			// 方向
 	Vector2 wsDirection_;		// 壁捜索オブジェクトの方向
 	Vector2 pPosition_;			// プレイヤーの位置
 	Vector2 pDirection_;		// プレイヤーとの方向
 	Vector2 pNormDirection_;	// プレイヤーとの方向
-
 	IWorld* world_;
 
-	//BossAnimationNumber animeNum_;
 	int animeNum_;
-
 	Actor* collideObj_;
 };
 

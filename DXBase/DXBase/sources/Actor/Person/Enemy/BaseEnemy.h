@@ -27,6 +27,10 @@ protected:
 		ENEMY_ATTACKTURN = 5,
 		ENEMY_DAMAGE = 2,
 	};
+	// エフェクトID
+	enum {
+		EFFECT_DEAD = 0
+	};
 	// 状態列挙
 	enum class State {
 		Idel,

@@ -63,7 +63,7 @@ void FloorSearchPoint::onCollide(Actor & actor)
 	// プレイヤー関連のオブジェクトに当たっているなら
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
 	// 床に当たっていた、振り向き回数をリセット
-	if (getFloorName != NULL) {
+	if (getFloorName != NULL || actorName == "Door") {
 		turnCount_ = 0;
 		isGround_ = true;
 		isFloor_ = true;

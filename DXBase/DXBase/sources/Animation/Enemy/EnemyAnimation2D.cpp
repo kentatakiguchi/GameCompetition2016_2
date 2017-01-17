@@ -4,7 +4,11 @@ EnemyAnimation2D::EnemyAnimation2D() :
 	prevFrame_(0),
 	isLoop_(true),
 	isStop_(false),
-	isTurn_(false){}
+	isTurn_(false),
+	//isPrevTurn_(isTurn_),
+	isReverse_(false)
+	/*isPrevReverse_(isReverse_),
+	isRev_(false)*/{}
 
 EnemyAnimation2D::~EnemyAnimation2D()
 {
@@ -13,11 +17,9 @@ EnemyAnimation2D::~EnemyAnimation2D()
 
 void EnemyAnimation2D::update(float deltaTime)
 {
-	// back_to_pre_motion();
 	preMotion();
 	// アニメーションのタイムが一周したら、止める
 	if (isStop_)return;
-
 	// 更新
 	if (curr_anim_ >= 15 || curr_anim_ <= -1) return;
 	frame_ = static_cast<int>(timer_) % sprites_[curr_anim_].size();
@@ -29,74 +31,56 @@ void EnemyAnimation2D::update(float deltaTime)
 	//	frame_ = sprites_[anim_num_].size();*/
 	//}
 	id_ = sprites_[curr_anim_][frame_];
-	timer_ += deltaTime * curr_speed_ * 60.0f / sprites_[curr_anim_].size() * 10;
+	auto timer = deltaTime * curr_speed_ * 60.0f / sprites_[curr_anim_].size() * 10;
+	// 逆再生するならば、値を反転する
+	if (isReverse_)
+		timer *= -1.0f;
+	timer_ += timer;
 	// ループしないなら
 	if (!isLoop_) {
 		// アニメーションのタイムが一周したら、止める
-		if (timer_ >= sprites_[curr_anim_].size() - 2) {
-			frame_ = static_cast<unsigned int>(sprites_[curr_anim_].size() - 1);
-			timer_ = (float)sprites_[curr_anim_].size() - 1;
-			isStop_ = true;
+		if (!isReverse_) {
+			if (timer_ >= sprites_[curr_anim_].size() - 2) {
+				frame_ = static_cast<unsigned int>(sprites_[curr_anim_].size() - 1);
+				timer_ = (float)sprites_[curr_anim_].size() - 1;
+				isStop_ = true;
+			}
+		}
+		else {
+			if (timer_ <= 1) {
+				frame_ = 0;
+				timer_ = 0;
+				isStop_ = true;
+			}
 		}
 	}
 
+	/*if (isPrevReverse_ != isReverse_)
+		isRev_ = true;
+	else isRev_ = false;
+	isPrevReverse_ = isReverse_;*/
+	isBeginTurn_ = false;
+	if (isTurn_)
+		isBeginTurn_ = true;
+	isTurn_ = false;
 	// ループ時の更新
 	// フレームの更新
 	prevFrame_ = frame_;
 }
 
-// 更新(自分のupdate)
-//void EnemyAnimation2D::onUpdate(float deltaTime)
-//{
-//	
-//}
-
 // アニメーションの追加
 void EnemyAnimation2D::addAnimation(int id, const std::vector<int>& anims)
 {
 	add_anim(id, anims);
-
-	// 縦から回す
-	//for (int i = 0; i != column; i++) {
-	//	// 縦が最後の列となった場合は、横に動かす回数を減らす
-	//	// 縦が最後の列まで達していいない場合は、横に動かす回数を減らさずに回す
-	//	for (int j = 0; j != ((i < column - 1) ? row : row - surplus); j++) {
-	//		// 切り取る左上の座標
-	//		Vector2 src = Vector2(size * j, size * i);
-	//		// グラフィックの登録
-	//		int id_ = DerivationGraph(src.x, src.y, size, size, res);
-	//		sprites_[id].push_back(id_);
-	//	}
-	//}
-	//type_ = ActionType::Left;
-
-	//add_anim(static_cast<int>(id), res, size, row, column, surplus);
-
 }
-
-// アニメーションの追加(サイズのX, Y指定)
-//void EnemyAnimation2D::addAnimation(int id, int res, Vector2 size, int row, int column, int surplus)
-//{
-//	for (int i = 0; i < column; ++i) {
-//		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
-//			// 切り取る左上の座標
-//			Vector2 src = Vector2(j * size.x, i * size.y);
-//			sprites_[id].push_back(DerivationGraph(src.x, src.y, size.x, size.y, res));
-//		}
-//	}
-//}
 
 // アニメーションの変更
 void EnemyAnimation2D::changeAnimation(int id, float speed)
 {
-	/*if (id >= 15 || id <= -1)
-		id = 0;*/
 	isLoop_ = true;
 	isStop_ = false;
 	// 親の変更を使う
 	change_param(id, speed);
-	
-	//curr_anim_ = id;
 }
 
 // アニメーションのが終わったかを返します
@@ -108,15 +92,12 @@ bool EnemyAnimation2D::isEndAnimation()
 // 振り向きアニメーションを行って、画像を反転します
 void EnemyAnimation2D::turnAnimation(int id, float direction)
 {
-	/*isLoop_ = true;
-	isStop_ = false;*/
-	//if (isTurn_) return;
 	auto type = ActionType::Right;
 	// アクションタイプの取得
 	if (direction >= 0)
 		type = ActionType::Left;
 	change_dir_type(id, type);
-	isTurn_ = true;
+	//isTurn_ = true;
 }
 
 // アニメーションを振り向きアニメーションを行わずに画像を反転します
@@ -126,8 +107,23 @@ void EnemyAnimation2D::changeDirType(float direction)
 	// アクションタイプの取得
 	if (direction >= 0)
 		type = ActionType::Left;
+	if (type_ == type) return;
 	type_ = type;
 	type_stock_ = type;
+	isTurn_ = true;
+}
+
+// アニメーションの時間を初期化します
+void EnemyAnimation2D::initAnimeTime()
+{
+	frame_ = 0;
+	timer_ = 0;
+}
+
+// アニメーションの再生速度を変更します
+void EnemyAnimation2D::setSpeed(float speed)
+{
+	curr_speed_ = norm_speed_ = speed;
 }
 
 // アニメーションをループさせるかを設定します
@@ -138,9 +134,27 @@ void EnemyAnimation2D::setIsLoop(bool isLoop)
 		isStop_ = false;
 }
 
+// 逆再生するかを設定します
+void EnemyAnimation2D::setIsReverse(bool isReverse)
+{
+	isReverse_ = isReverse;
+}
+
 void EnemyAnimation2D::preMotion()
 {
 	if (turn_anim_ != -1 && end_anim())
 		isTurn_ = false;
 	back_to_pre_motion();
 }
+
+// アニメーションの向きを変えたかを返します(1f)
+bool EnemyAnimation2D::isBeginTurn()
+{
+	return isBeginTurn_;
+}
+
+//// アニメーションを逆再生したかを返します(1f)
+//bool EnemyAnimation2D::isReverse()
+//{
+//	return isRev_;
+//}

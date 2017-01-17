@@ -12,8 +12,6 @@ public:
 	virtual void attack(float deltaTime) override;
 	// ジャンプ攻撃
 	void jump(float deltaTime);
-	//// 移動した位置を取得します
-	//Vector2 getMovePosition() override;
 	// 攻撃行動のリフレッシュを行います
 	virtual void Refresh() override;
 
@@ -30,12 +28,9 @@ protected:
 	bool isIdel_;			// ジャンプ後の待機状態か
 
 private:
-	//char* otherName_;
-	//char* prevOtherName_;
-	std::string otherName_;
-	std::string prevOtherName_;
-
-	Vector2 prevPlayerDistance_;
+	std::string otherName_;			// 衝突した相手側の名前
+	std::string prevOtherName_;		// 過去の衝突した相手側の名前
+	Vector2 prevPlayerDistance_;	// 過去のプレイヤーとの方向
 };
 
 #endif

@@ -4,7 +4,8 @@
 #include"../../Body/CollisionBase.h"
 #include "FloorSearchPoint.h"
 #include "PlayerSearchObj.h"
-#include "DeadEnemy.h"
+#include "Bosses/Effect/EnemyDeadEffect.h"
+//#include "DeadEnemy.h"
 
 BaseEnemy::BaseEnemy(
 	IWorld * world,
@@ -284,6 +285,10 @@ void BaseEnemy::deadMove()
 		a->dead();
 	}
 	if (!animation_.isEndAnimation()) return;
+	// 死亡エフェクトの追加
+	world_->addActor(ActorGroup::Effect,
+		std::make_shared<EnemyDeadEffect>(
+			world_, position_ - Vector2::Up * 325.0f, EFFECT_DEAD));
 	dead();
 }
 

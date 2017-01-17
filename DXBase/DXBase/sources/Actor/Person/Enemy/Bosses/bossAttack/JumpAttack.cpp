@@ -14,8 +14,7 @@ JumpAttack::JumpAttack() :
 	isJumpEnd_(true),
 	isIdel_(false),
 	prevPlayerDistance_(Vector2::Zero)
-{
-}
+{}
 
 JumpAttack::JumpAttack(IWorld* world, const Vector2& position) :
 	BossAttack(world, position),
@@ -41,40 +40,17 @@ JumpAttack::JumpAttack(IWorld* world, const Vector2& position) :
 // 攻撃
 void JumpAttack::attack(float deltaTime)
 {
-	//auto a = "PlayerAttackCollider";
-	if (collideObj_ != nullptr) {
-		// otherName_ = const_cast<char*>(collideObj_->getName().c_str());
+
+	if (collideObj_ != nullptr)
 		otherName_ = collideObj_->getName();
-		/*if (otherName_ == "PlayerAttackCollider") {
-			if (prevOtherName_ != otherName_)
-				piyoriCount_--;
-		}*/
-	}
-	// プレイヤーの攻撃に触れたら、ぴよりカウントを減算する
-	// 衝突時の処理ではないので、名前が同一の場合は減算を行わない
-	/*if (otherName_ == "PlayerAttackCollider") {
-		if (prevOtherName_ != otherName_)
-			piyoriCount_--;
-	}*/
-		//piyoriCount_--;
-	/*else if (otherName_ != "PlayerAttackCollider")
-		prevOtherName_ = "";*/
 	// 前回衝突したオブジェクトの名前を更新
 	prevOtherName_ = otherName_;
 	otherName_ = "";
 	collideObj_ = nullptr;
-	// ぴより回数が一定値以下になったらぴよる
-	/*if (piyoriCount_ <= 0) {
-		isPiyori_ = true;
-		isAttackEnd_ = true;
-		return;
-	}*/
-
 	if (!isFirstJump_) {
 		// 方向の設定
 		auto distance = pPosition_ - position_;
 		// 方向の値を代入
-		// X
 		if (distance.x < 0)
 			pDirection_.x = -1;
 		else if (distance.x > 0)
@@ -83,9 +59,6 @@ void JumpAttack::attack(float deltaTime)
 		isFirstJump_ = true;
 	}
 	// ジャンプ攻撃中に床に接地したら、リキャストに移行
-	// これだと、2巡目以降の２回目のジャンプの終了判定がすぐに行われる。
-	// あとで直す
-	// if (isJump_ && isGround_)
 	if (isJump_ && isGround_ && timer_ > 0.3f) {
 		isIdel_ = true;
 		isBodyHit_ = true;
@@ -107,7 +80,6 @@ void JumpAttack::attack(float deltaTime)
 		// 方向の設定
 		auto distance = pPosition_.x - position_.x;
 		// 方向の値を代入
-		// X
 		if (distance < 0)
 			pDirection_.x = -1;
 		else if (distance >= 0)
@@ -131,25 +103,14 @@ void JumpAttack::jump(float deltaTime)
 		(-jumpPower_ / 10 + timer_) * 9.8f * (deltaTime * 60.0f));
 	position_ += addPos;
 	// 移動量が - なら上、+ なら下のアニメーションにする
-	if (addPos.y <= 0)
-		animeNum_ = JUMP_UP_NUMBER;
-	else
-		animeNum_ = JUMP_DOWN_NUMBER;
-	// std::sin(degrees_) * -speed_);
-	//position_ += addPos;
-	/*position_.y += (-jumpPower_ / 10 + timer_) * 9.8f * (deltaTime * 60.0f);*/
+	if (addPos.y <= 0) animeNum_ = JUMP_UP_NUMBER;
+	else animeNum_ = JUMP_DOWN_NUMBER;
 	// ジャンプをした
 	isJump_ = true;
 	isAttackStart_ = true;
 	// プレイヤーに当たってもダメージなし
 	isBodyHit_ = false;
 }
-
-//// 移動した位置を取得します
-//Vector2 JumpAttack::getMovePosition()
-//{
-//	return position_;
-//}
 
 // 攻撃行動のリフレッシュを行います
 void JumpAttack::Refresh()

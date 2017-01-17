@@ -3,6 +3,8 @@
 #include "../FloorSearchPoint.h"
 #include "Prickle.h"
 
+#include "../Bosses/Effect/EnemyDeadEffect.h"
+
 FloorTurnEnemy::FloorTurnEnemy(
 	IWorld * world, 
 	const Vector2 & position,

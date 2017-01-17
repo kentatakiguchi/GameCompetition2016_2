@@ -11,7 +11,6 @@
 #include "../Scene/StageClear/StageClearScene.h"
 #include "../Scene/GameClear/GameClearScene.h"
 #include "../Scene/BossStage/BossStage.h"
-#include "../Scene/SampleBossScene/SampleBossScene.h"
 #include"../Scene/MainMenu/MainMenuScene.h"
 #include"../Scene/Credit/CreditScene.h"
 #include"../Scene/TeamLogoScene/TeamLogoScene.h"

@@ -14,14 +14,10 @@ public:
 	~EnemyManager();
 	// 更新
 	void update(float deltaTime);
-	// 箱の動き方(壁なし)
-	Vector2 boxMove();
 	// 壁に沿った動き方（まだ）
 	Vector2 wallMove();
 	// 崖を避ける動き方
 	Vector2 cliffMove(bool isFloor);
-	// 糸を使った動き方
-	Vector2 threadMove();
 	// 指定したオブジェクトとの距離を返します
 	float getLength(const Vector2& otherPosition);
 	// プレイヤーとの距離を返します
@@ -54,6 +50,8 @@ public:
 	void initWSPMap();
 	// 壁移動の方向を決定するかを返します
 	bool isDirecion();
+	// 壁移動の方向を追加します
+	void addWSPDirection(const Vector2& direction);
 
 private:
 	int distance_;				// 方向
@@ -67,29 +65,21 @@ private:
 	Vector2 enemyPosition_;		// 敵の位置
 	Vector2 playerPosition_;	// プレイヤーの位置
 	Vector2 threadPosition_;	// 糸の位置
-	Vector2 enemyDirection_;
-	Vector2 playerVector_;
+	Vector2 enemyDirection_;	// エネミーの方向
+	Vector2 playerVector_;		// 
 	Vector2 wsDirection_;		// 壁移動時の方向
-
 	// 四角形移動用コンテナ
 	typedef std::vector<float> WallMoveConteiner;
 	WallMoveConteiner wallMoveConteiner_;
-	// 
+	// 壁捜索オブジェクトコンテナ
 	typedef std::vector<FloorSearchPoint*> WSPContainer;
 	WSPContainer wspContainer_;
 	// 素数コンテナ
 	typedef std::vector<int> PrimeContainer;
 	PrimeContainer primeContainer_;
-	// map
+	// 壁移動の方向コンテナ
 	typedef std::map<int, Vector2> WSPDirectionMap;
 	WSPDirectionMap wspDirectionMap_;
-
-// 糸移動用
-public:
-	int threadLength_;
-	float rotate_;
-	float rotateSpeed_;
-	float threadGravity_;
 };
 
 #endif

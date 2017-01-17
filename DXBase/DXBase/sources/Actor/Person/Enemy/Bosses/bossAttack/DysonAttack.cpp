@@ -11,8 +11,7 @@ DysonAttack::DysonAttack() :
 	isRockCreate_(true),
 	tornadoObj_(nullptr),
 	state_(State::Attack)
-{
-}
+{}
 
 DysonAttack::DysonAttack(IWorld * world, const Vector2 & position) :
 	BossAttack(world, position),
@@ -24,10 +23,6 @@ DysonAttack::DysonAttack(IWorld * world, const Vector2 & position) :
 {
 	angle_ = 70.0f;
 	animeNum_ = BREATH_NUMBER;
-	/*auto tornado = std::make_shared<Tornado>(
-		world_, Vector2(-1000.0f, 0.0f), Vector2(CHIPSIZE * 10, 32.0f * 3));
-	world_->addActor(ActorGroup::Enemy, tornado);
-	tornadoObj_ = tornado.get();*/
 }
 
 void DysonAttack::attack(float deltaTime)
@@ -46,6 +41,7 @@ void DysonAttack::dysonAttack(float deltaTime)
 	// ìÆÇØÇ»Ç¢èÛë‘Ç»ÇÁÅAÇ–ÇÈÇ›èÛë‘Ç…ëJà⁄
 	if (!isMove_) {
 		changeState(State::Flinch, BREATH_DYSFUNCTION_NUMBER);
+		isAnimaReverse_ = false;
 		isAnimaLoop_ = false;
 		if (tornadoObj_ != nullptr) {
 			tornadoObj_->dead();
@@ -55,7 +51,6 @@ void DysonAttack::dysonAttack(float deltaTime)
 		}
 		return;
 	}
-
 	// ä‚ÇÃê∂ê¨
 	if ((int)(timer_ * 10) % 10 == 0 && !isRockCreate_) {
 		// óêêîÇÃéÊìæ
@@ -82,7 +77,7 @@ void DysonAttack::dysonAttack(float deltaTime)
 		auto tornado = std::make_shared<Tornado>(
 			world_, position_ + Vector2(40.0f *  direction_.x, -120.0f),
 			Vector2(CHIPSIZE * 4, CHIPSIZE * 1));
-		world_->addActor(ActorGroup::EnemyBullet, tornado);
+		world_->addActor(ActorGroup::Enemy, tornado);
 		tornadoObj_ = tornado.get();
 		// SEÇÃçƒê∂
 		PlaySoundMem(windSE_, DX_PLAYTYPE_LOOP);
@@ -90,18 +85,36 @@ void DysonAttack::dysonAttack(float deltaTime)
 	// ó≥ä™ÉIÉuÉWÉFÉNÉgÇÃà íuçXêV
 	if (tornadoObj_ != nullptr)
 		tornadoObj_->position_ = position_ + Vector2(40.0f *  direction_.x, -120.0f);
-
+	// ï«Ç…ìñÇΩÇ¡ÇΩéûÇ…îΩì]Ç∑ÇÈ
 	if (isWspHit_ && isPrevWspHit_ != isWspHit_) {
 		direction_.x *= -1;
 		wsDirection_ = direction_;
+		angle_ = 180 - angle_;
+		addAngle_ *= -1;
 	}
 	// äpìxÇ™àÍíËílÇí¥Ç¶ÇΩÇÁÅAâ¡éZï˚å¸ÇïœÇ¶ÇÈ
-	if (angle_ >= 90.0f + 40.0f || angle_ <= 90.0f - 40.0f)
+	if (angle_ >= 90.0f + 30.0f || angle_ <= 90.0f - 30.0f) {
 		addAngle_ *= -1;
+		if (direction_.x < 0) {
+			if (addAngle_ >= 0) {
+				isAnimaReverse_ = false;
+			}
+			else {
+				isAnimaReverse_ = true;
+			}
+		}
+		else if (direction_.x >= 0) {
+			if (addAngle_ < 0) {
+				isAnimaReverse_ = false;
+			}
+			else {
+				isAnimaReverse_ = true;
+			}
+		}
+	}
 	// äpìxÇÃâ¡éZ
 	angle_ += addAngle_ * (deltaTime * 60.0f);
 	tornadoObj_->setAngle((int)angle_);
-
 	isPrevWspHit_ = isWspHit_;
 
 	position_.x += 4.0f * direction_.x * (deltaTime * 60.0f);
@@ -142,6 +155,7 @@ void DysonAttack::flinch(float deltaTime)
 // îÊòJèÛë‘
 void DysonAttack::fatigue(float deltaTime)
 {
+	//isAnimaLoop_ = true;
 	if (timer_ <= 5.0f) return;
 	// çUåÇèÛë‘Ç…ëJà⁄
 	changeState(State::Attack, BREATH_NUMBER);
@@ -164,6 +178,7 @@ void DysonAttack::Refresh()
 	if (CheckSoundMem(windSE_) == 1)
 		StopSoundMem(windSE_);
 	changeState(State::Attack, BREATH_NUMBER);
-	//state_ = State::Attack;
-	//animeNum_ = BossAnimationNumber::BREATH_NUMBER;
+	if (direction_.x >= 0)
+		angle_ = 90.0f + 29.0f;
+	else angle_ = 90.0f - 29.0f;
 }

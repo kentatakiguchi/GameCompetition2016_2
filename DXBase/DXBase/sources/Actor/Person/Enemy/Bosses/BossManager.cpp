@@ -38,7 +38,6 @@ void BossManager::attackMove(const float deltaTime)
 {
 	// 攻撃
 	bossAttackContainer_[attackNumber_]->update(deltaTime);
-	// 攻撃が終わったらの処理を、値を返したときに行う
 }
 
 // 行動のリフレッシュを行います
@@ -234,4 +233,10 @@ int BossManager::getAnimeAngle()
 bool BossManager::isAnimeLoop()
 {
 	return bossAttackContainer_[attackNumber_]->isLoop();
+}
+
+// アニメーションが逆再生するかを返します
+bool BossManager::isAnimeReverse()
+{
+	return bossAttackContainer_[attackNumber_]->isReverse();
 }

@@ -165,9 +165,6 @@
     <ClInclude Include="sources\Actor\Person\Enemy\FloorSearchPoint.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -327,9 +324,6 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossEntry.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossHeart.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\bossAttack\WallAttack.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -384,19 +378,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\bossAttack\DysonAttack.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ImportBosses.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\bossAttack\PluralWallAttack.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\Rock.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\SampleBoss.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Scene\SampleBossScene\SampleBossScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Scene\Credit\CreditScene.h">
@@ -537,6 +519,15 @@
     <ClInclude Include="sources\resource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyDeadEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ImportBosses.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -633,9 +624,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\FloorTurnEnemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\Enemys\WeakEnemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Field\MapChip.cpp">
@@ -767,9 +755,6 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BossEntry.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BossHeart.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\bossAttack\WallAttack.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -818,16 +803,7 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\bossAttack\DysonAttack.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\bossAttack\PluralWallAttack.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Rock.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\SampleBoss.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Scene\SampleBossScene\SampleBossScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Scene\Credit\CreditScene.cpp">
@@ -942,6 +918,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EntrySignEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyDeadEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

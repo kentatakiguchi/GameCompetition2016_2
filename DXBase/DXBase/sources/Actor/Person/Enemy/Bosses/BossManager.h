@@ -83,6 +83,8 @@ public:
 	int getAnimeAngle();
 	// アニメーションがループするかを返します
 	bool isAnimeLoop();
+	// アニメーションが逆再生するかを返します
+	bool isAnimeReverse();
 
 private:
 	int attackNumber_;			// 攻撃番号

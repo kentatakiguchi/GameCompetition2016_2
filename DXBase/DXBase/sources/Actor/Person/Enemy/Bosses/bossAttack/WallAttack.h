@@ -37,18 +37,13 @@ private:
 	void changeState(State state, int number);
 
 protected:
-	// int hp_;				// ボスの体力(心臓の体力)
-	int count_;				// 方向転換カウント
-	int aSecond_;			// 攻撃状態に遷移する秒数です
-	int createCount_;
-	float speed_;			// 移動速度
-
-	bool isWallAttackEnd_;	// 壁攻撃が終わったか
-	//bool isFlinch_;			// ひるむか
-
-	State state_;			// 状態
-	// float stateTimer_;	// 状態の時間
-	Vector2 prevPlayerDistance_;
+	int count_;						// 方向転換カウント
+	int aSecond_;					// 攻撃状態に遷移する秒数です
+	int createCount_;				// エフェクト生成回数
+	float speed_;					// 移動速度
+	bool isWallAttackEnd_;			// 壁攻撃が終わったか
+	State state_;					// 状態
+	Vector2 prevPlayerDistance_;	// 過去のプレイヤーの方向
 	// 壁移動時間コンテナ
 	typedef std::vector<int> MoveTimeContainer;
 	MoveTimeContainer moveTimes_;

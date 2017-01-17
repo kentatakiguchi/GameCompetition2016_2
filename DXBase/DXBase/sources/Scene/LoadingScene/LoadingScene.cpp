@@ -214,6 +214,7 @@ void LoadingScene::load_enemy_res(){
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_FLYINGENEMY_DAMAGE_TEX, "./resources/sprite/actor/enemy/Enemy02_damege.png", 256, 8, 3, 3);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_NEEDLEENEMY_TEX, "./resources/sprite/actor/enemy/Enemy03.png", 256, 8, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_WALLMOVEENEMY_TEX, "./resources/sprite/actor/enemy/Enemy04_Left.png", 256, 8, 4, 1);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_EFFECT_DEAD_TEX, "./resources/sprite/actor/enemy/Enemy_Dead.png", Vector2(280, 800), 10, 12);
 }
 
 void LoadingScene::load_boss_res(){

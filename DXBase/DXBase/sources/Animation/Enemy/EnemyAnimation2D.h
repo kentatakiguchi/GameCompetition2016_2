@@ -5,39 +5,16 @@
 
 #include <unordered_map>
 
-//enum class EnemyAnimationID {
-//	Idel,
-//	Search,
-//	Chase,
-//	Attack,
-//	Damage,
-//	Dead
-//};
-
 class EnemyAnimation2D : public Animation2D {
-//public:
-//	enum class EnemyAnimationID {
-//		Idel,
-//		Search,
-//		Chase,
-//		Attack,
-//		Damage,
-//		Dead
-//	};
 
 public:
 	EnemyAnimation2D();
 	~EnemyAnimation2D();
 	// 更新
 	void update(float deltaTime) override;
-	// 更新(自分のupdate)
-	//void onUpdate(float deltaTime);
 	// アニメーションの追加
 	// (アニメーションのID, リソースID, 横の数, 縦の数, 横の数の減らる数)
 	void addAnimation(int id, const std::vector<int>& anims);
-	// アニメーションの追加(サイズのX, Y指定)
-	/*void addAnimation(
-		int id, int res, Vector2 size, int row, int column, int surplus = 0);*/
 	// アニメーションの変更
 	void changeAnimation(int id, float speed = 1.0f);
 	// アニメーションのが終わったかを返します
@@ -46,16 +23,31 @@ public:
 	void turnAnimation(int id, float direction);
 	// アニメーションを振り向きアニメーションを行わずに画像を反転します
 	void changeDirType(float direction);
+	// アニメーションの時間を初期化します
+	void initAnimeTime();
+	// アニメーションの再生速度を変更します
+	void setSpeed(float speed);
 	// アニメーションをループさせるかを設定します
 	void setIsLoop(bool isLoop);
-	//
+	// 逆再生するかを設定します
+	void setIsReverse(bool isReverse);
+	// 
 	void preMotion();
+	// アニメーションの向きを変えたかを返します(1f)
+	bool isBeginTurn();
+	//// アニメーションを逆再生したかを返します(1f)
+	//bool isReverse();
 
 public:
-	int prevFrame_;		// 1f前のフレーム
-	bool isLoop_;		// ループするか
-	bool isStop_;		// アニメーションを止めるか
-	bool isTurn_;		// 振り向きアニメーションをしたか
+	int prevFrame_;			// 1f前のフレーム
+	bool isLoop_;			// ループするか
+	bool isStop_;			// アニメーションを止めるか
+	bool isTurn_;			// 振り向きアニメーションをしたか
+	bool isBeginTurn_;		// 振り向きアニメーションをしたか(1f)
+	//bool isPrevTurn_;		// 過去に振り向きアニメーションをしたか
+	bool isReverse_;		// 逆再生するか
+	//bool isPrevReverse_;	// 過去の逆再生
+	//bool isRev_;
 };
 
 

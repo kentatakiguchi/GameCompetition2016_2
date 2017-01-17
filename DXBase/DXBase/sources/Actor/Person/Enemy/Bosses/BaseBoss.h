@@ -11,7 +11,6 @@
 
 class FloorSearchPoint;
 class BossEntry;
-class BossHeart;
 class BossGaugeUI;
 
 // ボスクラス

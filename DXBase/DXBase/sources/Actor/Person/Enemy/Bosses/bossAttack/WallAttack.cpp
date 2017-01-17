@@ -9,11 +9,9 @@ WallAttack::WallAttack() :
 	createCount_(0),
 	speed_(0.0f),
 	isWallAttackEnd_(true),
-	//isFlinch_(false),
 	state_(State::FloorSearch),
 	prevPlayerDistance_(Vector2::Zero)
-{
-}
+{}
 
 WallAttack::WallAttack(IWorld* world, const Vector2 & position) :
 	BossAttack(world, position),
@@ -21,8 +19,6 @@ WallAttack::WallAttack(IWorld* world, const Vector2 & position) :
 	aSecond_(5),
 	speed_(4.0f),
 	isWallAttackEnd_(false),
-	//isFlinch_(true),
-	//state_(State::FloorSearch),
 	state_(State::WallMove),
 	prevPlayerDistance_(Vector2::One)
 {
@@ -68,10 +64,6 @@ void WallAttack::Refresh()
 	flinchCount_ = 0;
 	createCount_ = 0;
 	isWallAttackEnd_ = false;
-	/*if (flinchCount_ <= 0)
-		isFlinch_ = true;*/
-	/*changeState(State::FloorSearch,
-		BossAnimationNumber::WAIT_NUMBER);*/
 	changeState(State::FloorSearch, WALLATTACK_DASH_NUMBER);
 	count_ = 0;
 	auto direction = Vector2(
@@ -80,7 +72,6 @@ void WallAttack::Refresh()
 		);
 	direction_ = direction;
 	wsDirection_ = direction_;
-	//animeNum_ = BossAnimationNumber::WAIT_NUMBER;
 }
 
 // 床捜索状態です
@@ -127,20 +118,10 @@ void WallAttack::wallMove(float deltaTime)
 	isBodyHit_ = false;
 	isAttackHit_ = false;
 	animeNum_ = WALLATTACK_DASH_NUMBER;
-
-	/*if (createCount_ % 2 == 0) {
-		world_->addActor(ActorGroup::EffectBack,
-			std::make_shared<DashEffect>(world_, position_));
-	}
-	createCount_++;*/
 	// 時計周りで移動
 	auto speed = speed_ * 3.0f;
-	//auto count = 0;
-	if (isWspHit_ && isPrevWspHit_ != isWspHit_) {
-		count_++;
-	}
+	if (isWspHit_ && isPrevWspHit_ != isWspHit_) count_++;
 	isPrevWspHit_ = isWspHit_;
-
 	auto direction = Vector2(
 		moveDirections_[(count_ + 1) % 4],
 		moveDirections_[(int)(count_ % 4)]
@@ -148,10 +129,8 @@ void WallAttack::wallMove(float deltaTime)
 	direction_ = direction;
 	wsDirection_ = direction_;
 	animeAngle_ = (float)((count_ * 90) % 360);
-	// 仮
 	auto pos = direction * speed * (deltaTime * 60.0f);
 	position_ += pos;
-
 	// 攻撃間近にアニメーションを変更する
 	if (timer_ >= aSecond_ - 0.2f) {
 		animeNum_ = WALLATTACK_DASHJUMP_STOP_NUMBER;
@@ -181,8 +160,8 @@ void WallAttack::wallAttack(float deltaTime)
 	position_ += prevPlayerDistance_ * speed * (deltaTime * 60.0f);
 	// 保険(すぐに衝突したことになる)
 	if (timer_ <= 0.2f) return;
-	if (floorName_ == "BossAreaFloor" || floorName_ == "MovelessFloor") {
-		//flinchCount_--;
+	if (floorName_ == "BossAreaFloor" || floorName_ == "MovelessFloor" ||
+		floorName_ == "Door") {
 		isAnimaLoop_ = true;
 		isBodyHit_ = true;
 		isAttackHit_ = true;
@@ -197,7 +176,6 @@ void WallAttack::setAttackSecond()
 	// コンテナの要素数の指定
 	int aCount = 0;
 	auto hp = (hp_ % 100) + 1;
-	
 	flinchCount_ = 1;
 	// 体力が70未満の場合、カウントの値を変える
 	if (hp < 70 && hp >= 30) {

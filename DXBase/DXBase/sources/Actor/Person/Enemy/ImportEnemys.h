@@ -6,7 +6,6 @@
 #include "Enemys/FlyingEnemy.h"
 #include "Enemys/WallMoveEnemy.h"
 #include "Enemys/NeedleEnemy.h"
-#include "Enemys\WeakEnemy.h"	// ƒTƒ“ƒvƒ‹
 #include "Bosses/BaseBoss.h"
 
 #endif

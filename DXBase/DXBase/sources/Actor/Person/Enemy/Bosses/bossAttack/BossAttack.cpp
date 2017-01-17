@@ -18,17 +18,16 @@ BossAttack::BossAttack() :
 	isMove_(false),
 	isFlinch_(true),
 	isAnimaLoop_(false),
+	isAnimaReverse_(false),
 	position_(Vector2::Zero),
 	direction_(Vector2::Zero),
 	wsDirection_(Vector2::Zero),
 	pPosition_(Vector2::Zero),
 	pDirection_(Vector2::Zero),
 	pNormDirection_(Vector2::Zero),
-	//animeNum_(BossAnimationNumber::WAIT_NUMBER),
 	animeNum_(WAIT_NUMBER),
 	collideObj_(nullptr)
-{
-}
+{}
 
 BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
 	hp_(100),
@@ -47,6 +46,7 @@ BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
 	isMove_(true),
 	isFlinch_(false),
 	isAnimaLoop_(true),
+	isAnimaReverse_(false),
 	position_(position),
 	direction_(Vector2::Left),
 	pPosition_(Vector2::One),
@@ -54,15 +54,11 @@ BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
 	wsDirection_(Vector2::One),
 	pNormDirection_(Vector2::One),
 	world_(world),
-	//animeNum_(BossAnimationNumber::WAIT_NUMBER),
 	animeNum_(WAIT_NUMBER),
 	collideObj_(nullptr)
-{
-}
+{}
 
-BossAttack::~BossAttack()
-{
-}
+BossAttack::~BossAttack(){}
 
 // 更新
 void BossAttack::update(float deltaTime)
@@ -76,8 +72,7 @@ void BossAttack::update(float deltaTime)
 
 // 攻撃(デフォルト)
 void BossAttack::attack(float deltaTime)
-{
-}
+{}
 
 // 移動した位置を取得します
 Vector2 BossAttack::getMovePosition()
@@ -100,7 +95,6 @@ void BossAttack::Refresh()
 	isAttackEnd_ = false;
 	isUseGravity_ = true;
 	isAnimaLoop_ = true;
-	//direction_ = Vector2::One;
 }
 
 // 攻撃が開始したかを返します
@@ -150,11 +144,6 @@ void BossAttack::setIsWallHit(bool isHit)
 {
 	isWspHit_ = isHit;
 }
-
-//void BossAttack::setDirection(const Vector2 & direction)
-//{
-//
-//}
 
 // 壁移動の方向を取得します
 Vector2 BossAttack::getMoveDirection()
@@ -229,7 +218,6 @@ void BossAttack::setCollideObj(Actor & actor)
 }
 
 // アニメーション番号を返します
-//BossAnimationNumber BossAttack::getAnimaNum()
 int BossAttack::getAnimaNum()
 {
 	return animeNum_;
@@ -245,4 +233,10 @@ int BossAttack::getAnimeAngle()
 bool BossAttack::isLoop()
 {
 	return isAnimaLoop_;
+}
+
+// アニメーションを逆再生するかを返します
+bool BossAttack::isReverse()
+{
+	return isAnimaReverse_;
 }
