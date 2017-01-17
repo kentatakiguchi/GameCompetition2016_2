@@ -52,6 +52,13 @@ public:
 	//ëSÇ†ÇΩÇËîªíËÇêÿÇÈÇ©Ç«Ç§Ç© true:on false:off
 	virtual void CollisitionOffOn(bool col)=0;
 	virtual bool GetCollisitionOffOn()=0;
+
+	virtual void inv() = 0;
+	//
+	virtual Matrix InitializeInv(Vector2 position) = 0;
+
+	virtual void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness = 0.1f, float friction = 0.5f, float mass = 2.0f)const = 0;
+
 };
 
 #endif

@@ -11,6 +11,12 @@ World::World() :
 	isEntered_(false),
 	isLetOuted_(false),
 	mNoPlayerMove(false){
+	inv_ = Matrix::Identity;
+	if(findActor("Player")==nullptr)
+		InitializeInv(GetPlayerPos());
+	else
+		InitializeInv(findActor("Player").get()->getPosition());
+
 }
 
 // 更新
@@ -18,6 +24,7 @@ void World::update(float deltaTime) {
 	//field_->update(deltaTime);
 	actors_.update(deltaTime);
 
+	inv();
 
 	//camera_->update(deltaTime);
 	//light_->update(deltaTime);
@@ -129,9 +136,82 @@ void World::SetScroolJudge(Vector2 scroolJudge, Vector2 scroolStopPos)
 	scrool_.scroolStop = scroolStopPos;
 }
 
-ScroolJudge World::GetScroolJudge()
-{
+ScroolJudge World::GetScroolJudge(){
 	return scrool_;
+}
+
+void World::inv(){
+	auto player = findActor("Player");
+	if (player == nullptr)return;
+	ScroolJudge scrool = GetScroolJudge();
+	//1フレーム前の座標
+	mPrePos = Vector2(inv_.Translation().x, inv_.Translation().y);
+	//スクロールストップ処理
+	Matrix playerMat;
+	playerMat = player->getPose();
+
+	float clampPosX = MathHelper::Clamp(playerMat.Translation().x, 0.0f, scrool.scroolStop.x);
+	float clampPosY = MathHelper::Clamp(playerMat.Translation().y, 0.0f, scrool.scroolStop.y);
+	if (scrool.scroolJudge.x == 0)
+		clampPosX = PLAYER_SCREEN_POSITION.x;
+	if (scrool.scroolJudge.y == 0)
+		clampPosY = PLAYER_SCREEN_POSITION.y;
+	playerMat.Translation(Vector3(clampPosX, clampPosY, 0.0f));
+
+	//行くべき位置を設定(matrix版)
+	resInv_ = Matrix::Invert(playerMat) *
+		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
+	//行くべき位置を設定
+	Vector2 resPos = Vector2(resInv_.Translation().x, resInv_.Translation().y);
+	Vector2 pos = Vector2(inv_.Translation().x, inv_.Translation().y);
+
+	Spring(pos, resPos, velo);
+	//補正された移動マトリックス代入
+	inv_ = Matrix::CreateTranslation(Vector3(
+		pos.x*scrool.scroolJudge.x,
+		pos.y*scrool.scroolJudge.y,
+		0.0f));
+
+	//1フレーム後の座標
+	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);
+	//移動量を計算
+	mVelo = mPrePos - mCurPos;
+	mVelo = Vector2(mVelo.x*scrool.scroolJudge.x, mVelo.y * scrool.scroolJudge.y);
+
+}
+
+Matrix World::InitializeInv(Vector2 position)
+{
+	//1フレーム前の座標
+	mPrePos = Vector2(inv_.Translation().x, inv_.Translation().y);
+	Matrix playerMat;
+	ScroolJudge scrool = GetScroolJudge();
+	playerMat.Translation(Vector3(position.x, position.y, 0.0f));
+	
+	inv_ = Matrix::Invert(playerMat) *
+		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
+	resInv_= Matrix::Invert(playerMat) *
+		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
+	
+	//1フレーム後の座標
+	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);
+	//移動量を計算
+	//mVelo = mPrePos - mCurPos;
+	return inv_;
+}
+
+void World::Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness, float friction, float mass) const
+{
+		// バネの伸び具合を計算
+		Vector2 stretch = (pos - resPos);
+		// バネの力を計算
+		Vector2 force = -stiffness * stretch;
+		// 加速度を追加
+		Vector2 acceleration = force / mass;
+		// 移動速度を計算
+		velo = friction * (velo + acceleration);
+	
+		pos = pos + velo;
 }
 
 

@@ -18,7 +18,7 @@ PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, Playe
 	create_point(PLAYER_CNTR_DIV_NUM);
 	stateMgr_.change(*this, PlayerState_Enum_Union::STAND_BY);
 	Vector2 texSize = ResourceLoader::GetInstance().GetTextureSize(TextureID::PUYO_TEST_TEX);
-	inv();
+	//inv();
 	mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position_*inv_, 1, 0);
 }
 

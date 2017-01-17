@@ -61,10 +61,11 @@ public:
 		return mNoPlayerMove;
 	}
 	virtual Matrix GetInv()override {
-		Matrix mat;
-		mat.Translation(Vector3(mPlayerPos.x, mPlayerPos.y,0.0f));
-		return Matrix::Invert(mat) *
-			Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
+		return inv_;
+		//Matrix mat;
+		//mat.Translation(Vector3(mPlayerPos.x, mPlayerPos.y,0.0f));
+		//return Matrix::Invert(mat) *
+		//	Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
 	}
 	virtual void SetPlayerPos(Vector2 pos) override
 	{
@@ -80,6 +81,14 @@ public:
 	virtual bool GetCollisitionOffOn() {
 		return colOffOn_;
 	}
+
+	// IWorld を介して継承されました
+	virtual void inv() override;
+
+	virtual Matrix InitializeInv(Vector2 position) override;
+
+	virtual void Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness = 0.1f, float friction = 0.5f, float mass = 2.0f) const override;
+
 	// コピー禁止
 	World(const World& other) = delete;
 	World& operator = (const World& other) = delete;
@@ -107,6 +116,22 @@ private:
 	
 	bool mNoPlayerMove;
 	bool colOffOn_;
+
+public:
+
+	Matrix inv_;
+	Matrix resInv_;
+	//補正された速度
+	Vector2 mVelo;
+
+	//補正用速度
+	Vector2 velo;
+	//1フレーム前
+	Vector2 mPrePos;
+	//1フレーム後
+	Vector2 mCurPos;
+	
+
 };
 
 #endif

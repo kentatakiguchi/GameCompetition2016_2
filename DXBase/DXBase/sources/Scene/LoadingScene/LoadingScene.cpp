@@ -158,7 +158,7 @@ void LoadingScene::update(){
 
 void LoadingScene::draw() const{
 	mLoadAnim.draw(mPosition - Vector2(0, 1) * 20, Vector2::Zero, 1.0f);
-	DrawRotaGraph(mPosition.x - 60, mPosition.y + 25,0.3f,mAngle, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
+	DrawRotaGraph(static_cast<int>(mPosition.x - 60.0f), static_cast<int>(mPosition.y + 25.0f), 0.3f, mAngle, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
 }
 
 void LoadingScene::end(){

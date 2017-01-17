@@ -7,7 +7,7 @@
 void DrawShape::Oval(const Vector2 & main_pos, const Vector2 & sub_pos, const float & height, const float& max)
 {
 	Vector2 vec = (main_pos - sub_pos).Normalize();
-	Vector2 sign = Vector2(MathHelper::Sign(vec.x), MathHelper::Sign(vec.y));
+	Vector2 sign = Vector2(static_cast<float>(MathHelper::Sign(vec.x)), static_cast<float>(MathHelper::Sign(vec.y)));
 	vec *= sign.x;
 	float angle = Vector3::Angle(Vector3::Right * sign.x, Vector3(vec.x, vec.y, 0)) * sign.y;
 
@@ -28,7 +28,7 @@ void DrawShape::Oval(const Vector2 & main_pos, const Vector2 & sub_pos, const fl
 		Vector3 pos_p = Vector3(x, y) * Matrix::CreateFromAxisAngle(Vector3::Forward, angle) + Vector3(center.x, center.y);
 		Vector3 pos_n = Vector3(x, -y) * Matrix::CreateFromAxisAngle(Vector3::Forward, angle) + Vector3(center.x, center.y);
 
-		DrawPixel(pos_p.x, pos_p.y, GetColor(0, 255, 255));
-		DrawPixel(pos_n.x, pos_n.y, GetColor(0, 255, 255));
+		DrawPixel(static_cast<int>(pos_p.x), static_cast<int>(pos_p.y), GetColor(0, 255, 255));
+		DrawPixel(static_cast<int>(pos_n.x), static_cast<int>(pos_n.y), GetColor(0, 255, 255));
 	}
 }

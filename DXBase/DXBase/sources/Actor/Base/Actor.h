@@ -51,7 +51,7 @@ public:
 	// 変換行列を返す
 	Matrix getPose() const;
 
-	void inv();
+	//void inv();
 	// 子の検索
 	ActorPtr findCildren(const std::string& name);
 	// 子の検索
@@ -84,8 +84,8 @@ public:
 	IWorld* getWorld();
 	//Bodyの取得 return:CollisionBase
 	CollisionBase getBody();
-	//
-	Matrix InitializeInv(Vector2 position);
+	////
+	//Matrix InitializeInv(Vector2 position);
 	// メッセージ処理
 	void handleMessage(EventMessage message, void* param);
 	// コピー禁止
@@ -110,8 +110,8 @@ public:
 		body_.translate(position);
 	}
 
-private:
-	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness=0.1f, float friction=0.5f, float mass=2.0f)const;
+//private:
+//	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness=0.1f, float friction=0.5f, float mass=2.0f)const;
 
 public:
 	// ワールド
@@ -134,7 +134,7 @@ public:
 	float				alpha_;
 
 	Matrix inv_;
-	Matrix resInv_;
+	//Matrix resInv_;
 	//補正された速度
 	Vector2 mVelo;
 private:
