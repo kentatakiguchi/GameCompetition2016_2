@@ -122,7 +122,8 @@ enum class TextureID {
 	TUTOREAL_TIME_3_TEX,
 	TUTOREAL_COUNT_1_TEX,
 	TUTOREAL_COUNT_2_TEX,
-	DOOR_STAY_TEX
+	DOOR_STAY_TEX,
+	DOOR_OPEN_TEX
 };
 
 enum class AnimationID {

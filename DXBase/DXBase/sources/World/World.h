@@ -69,6 +69,8 @@ public:
 	}
 	virtual void SetPlayerPos(Vector2 pos) override
 	{
+		//”z—ñ‚Ì‰Šú‰»
+		InitializeInv(pos);
 		mPlayerPos = pos;
 	}
 	virtual Vector2 GetPlayerPos() override
@@ -84,6 +86,10 @@ public:
 
 	// IWorld ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	virtual void inv() override;
+
+	virtual Vector2 GetInvVelo() override {
+		return mVelo;
+	}
 
 	virtual Matrix InitializeInv(Vector2 position) override;
 

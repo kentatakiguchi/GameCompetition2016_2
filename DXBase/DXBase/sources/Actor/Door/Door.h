@@ -18,5 +18,7 @@ private:
 	bool mDoorFlag;
 	Animation2D mLoadAnim;
 	bool mEndAnim;
+	bool mOpenFlag;
+	bool mCloseFlag;
 
 };

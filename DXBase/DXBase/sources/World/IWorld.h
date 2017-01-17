@@ -55,6 +55,8 @@ public:
 
 	virtual void inv() = 0;
 	//
+
+	virtual Vector2 GetInvVelo() = 0;
 	virtual Matrix InitializeInv(Vector2 position) = 0;
 
 	virtual void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness = 0.1f, float friction = 0.5f, float mass = 2.0f)const = 0;

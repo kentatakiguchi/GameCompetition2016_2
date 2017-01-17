@@ -12,11 +12,6 @@ World::World() :
 	isLetOuted_(false),
 	mNoPlayerMove(false){
 	inv_ = Matrix::Identity;
-	if(findActor("Player")==nullptr)
-		InitializeInv(GetPlayerPos());
-	else
-		InitializeInv(findActor("Player").get()->getPosition());
-
 }
 
 // XV

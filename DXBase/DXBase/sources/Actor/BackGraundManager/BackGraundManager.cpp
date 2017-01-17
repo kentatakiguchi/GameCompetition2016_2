@@ -147,9 +147,9 @@ void BackGraundManager::Update(float deltatime,bool title)
 			if (!title) {
 				//プレイヤーベクトル加算
 				if (i.stage2)
-					j.position -= Vector2((mFloor->mVelo*(1.0f / layerNum)).x, mFloor->mVelo.y);
+					j.position -= Vector2((mWorld->GetInvVelo()*(1.0f / layerNum)).x, mWorld->GetInvVelo().y);
 				else
-					j.position -= mFloor->mVelo*1.0f / layerNum;
+					j.position -= mWorld->GetInvVelo()*1.0f / layerNum;
 			}
 			else {
 				j.position -= Vector2(10.0f, 0.0f)*(1.0f / layerNum);
@@ -179,7 +179,7 @@ void BackGraundManager::Update(float deltatime,bool title)
 		for (auto& j : i.indexPos) {
 			//プレイヤー速度加算(タイトル用もある)
 			if (!title)
-				j.position -= Vector2((mFloor->mVelo*(1.0f / i.layer)).x, mFloor->mVelo.y);
+				j.position -= Vector2((mWorld->GetInvVelo()*(1.0f / i.layer)).x, mWorld->GetInvVelo().y);
 			else
 				j.position -= Vector2(10, 0)*(1.0f / layerNum);
 
@@ -204,7 +204,7 @@ void BackGraundManager::Update(float deltatime,bool title)
 	//{
 	//	//プレイヤー速度加算(タイトル用もある)
 	//	if (!title)
-	//		i.position -= Vector2((mFloor->mVelo*(1.0f / upBackStates.layer)).x, mFloor->mVelo.y);
+	//		i.position -= Vector2((mWorld->GetInvVelo()*(1.0f / upBackStates.layer)).x, mWorld->GetInvVelo().y);
 	//	else
 	//		i.position -= Vector2(10, 0)*(1.0f / layerNum);
 	//	//x軸のループ
@@ -227,7 +227,7 @@ void BackGraundManager::Update(float deltatime,bool title)
 	{
 		//プレイヤー速度加算
 		if(!title)
-		i.position += -mFloor->mVelo;
+		i.position += -mWorld->GetInvVelo();
 		//x軸のループ
 		if (i.position.x <= -size.x)
 			i.position.x = size.x + size.x + i.position.x;
@@ -257,7 +257,7 @@ void BackGraundManager::TateUpdate(float deltaTime)
 		for (auto& j : i.indexPos)
 		{
 			//プレイヤーベクトル加算
-			j.position += -mFloor->mVelo*(1.0f / layerNum);
+			j.position += -mWorld->GetInvVelo()*(1.0f / layerNum);
 			//地面テクスチャサイズ
 			Vector2 size = i.size;
 			//x軸のループ
@@ -273,7 +273,7 @@ void BackGraundManager::TateUpdate(float deltaTime)
 	{
 		Vector2 size = tateYokoState.size;
 		//プレイヤー速度加算
-		i.position += -mFloor->mVelo;
+		i.position += -mWorld->GetInvVelo();
 		//Y軸のループ(地上が見えていなかった場合)
 		if (i.position.y <= -size.y)
 			i.position.y = size.y + size.y + i.position.y;

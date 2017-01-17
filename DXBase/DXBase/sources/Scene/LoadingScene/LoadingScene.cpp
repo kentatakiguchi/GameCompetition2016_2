@@ -132,7 +132,7 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_RETRY_TEX, "./resources/sprite/Text/retry.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::DOOR_STAY_TEX, "./resources/sprite/DoorStay.png");
-
+	ResourceLoader::GetInstance().loadTexture(TextureID::DOOR_OPEN_TEX, "./resources/sprite/DoorOpen.png");
 
 	load_bgm_res();
 	load_se_res();

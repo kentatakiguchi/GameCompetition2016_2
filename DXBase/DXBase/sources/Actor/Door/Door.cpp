@@ -9,7 +9,9 @@ Door::Door(IWorld * world, const Vector2 & position) :
 			Vector2(position.x - (CHIPSIZE), position.y),
 			Vector2(position.x, position.y - (CHIPSIZE * 5)),
 			Vector2(position.x - (CHIPSIZE), position.y - (CHIPSIZE * 4)))),
-	mDoorFlag(false)
+	mDoorFlag(false),
+	mOpenFlag(false),
+	mCloseFlag(true)
 {
 
 	mLoadAnim.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::DOOR_OPEN));
@@ -30,20 +32,21 @@ Door::~Door()
 void Door::onUpdate(float deltaTime)
 {
 	if (mDoorFlag) {
-		mEndAnim = false;
+		mCloseFlag = false;
 		mLoadAnim.change_param(0, 1.0f);
 		if (mLoadAnim.end_anim())
 		{
+			mOpenFlag = true;
 			mLoadAnim.change_param(0, 0.0f);
 		}
 	}
 	else {
-		mEndAnim = false;
+		mOpenFlag = false;
 		mLoadAnim.change_param(1, 1.0f);
 		if (mLoadAnim.end_anim())
 		{
+			mCloseFlag = true;
 			mLoadAnim.change_param(1, 0.0f);
-			mEndAnim = true;
 		}
 	}
 	mLoadAnim.update(Time::GetInstance().deltaTime());
@@ -55,8 +58,11 @@ void Door::onDraw() const
 
 	if (!mEndAnim)
 		mLoadAnim.draw(pos, Vector2::Zero, Vector2::One);
-	else
+	if(mCloseFlag)
 		DrawGraph(pos.x, pos.y, ResourceLoader::GetInstance().getTextureID(TextureID::DOOR_STAY_TEX), true);
+	if(mOpenFlag)
+		DrawGraph(pos.x, pos.y, ResourceLoader::GetInstance().getTextureID(TextureID::DOOR_OPEN_TEX), true);
+
 	//body_.draw(inv_);
 	//DrawBox(pos.x, pos.y, (pos + Vector2(CHIPSIZE, CHIPSIZE)).x, (pos + Vector2(CHIPSIZE, CHIPSIZE)).y, GetColor(255, 255, 255), TRUE);
 }
