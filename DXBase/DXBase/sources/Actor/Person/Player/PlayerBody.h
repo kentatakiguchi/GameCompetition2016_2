@@ -82,6 +82,8 @@ private:
 	float stiffness_;
 	float friction_;
 	float mass_;
+
+	Vector2 suction_;
 };
 
 

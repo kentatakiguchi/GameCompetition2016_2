@@ -2,6 +2,7 @@
 #include"../../ResourceLoader/ResourceLoader.h"
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
 
+
 static const float shotSpeed = 5;
 static const int boundCount = 5;
 static const int TitleMainFadeInSpeed = 15;
@@ -63,7 +64,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	std::vector<std::string> list2;
 	list2.push_back("ゲームスタート");
 	listBase[1] = list2;
-	textPoses[1] = Vector2(200, 500);
+	textPoses[1] = Vector2(500, 500);
 	textPosList.push_back(textPoses[1]);
 	changeTextList.clear();
 
@@ -74,7 +75,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	std::vector<std::string> list3;
 	list3.push_back("クレジット");
 	listBase[2] = list3;
-	textPoses[2] = Vector2(200, 600);
+	textPoses[2] = Vector2(500, 600);
 	textPosList.push_back(textPoses[2]);
 	changeTextList.clear();
 
@@ -85,7 +86,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	std::vector<std::string> list4;
 	list4.push_back("チュートリアル");
 	listBase[3] = list4;
-	textPoses[3] = Vector2(200, 700);
+	textPoses[3] = Vector2(500, 700);
 	textPosList.push_back(textPoses[3]);
 	changeTextList.clear();
 
@@ -96,7 +97,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	std::vector<std::string> list5;
 	list5.push_back("ゲーム終了");
 	listBase[4] = list5;
-	textPoses[4] = Vector2(200, 800);
+	textPoses[4] = Vector2(500, 800);
 	textPosList.push_back(textPoses[4]);
 	changeTextList.clear();
 
@@ -121,7 +122,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	std::vector<std::string>  list6;
 	list6.push_back("〇ボタンを押してください");
 	listBase[5] = list6;
-	textPoses[5] = Vector2(200, 600);
+	textPoses[5] = Vector2(500, 600);
 	lastPoses[5] = textPoses[5];
 	setPoses[5] = Vector2(0, spaceY);
 	textPosList.push_back(setPoses[5]);
@@ -210,6 +211,14 @@ void MainMenuScene::start() {
 
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU), DX_PLAYTYPE_LOOP);
 	//PlaySoundFile("./resources/file/game_menuBGM.mp3", DX_PLAYTYPE_LOOP);
+
+	mButtyAnim = PlayerAnimation2D("PlayerBody1");
+	mRettyAnim = PlayerAnimation2D("PlayerBody2");
+	mButtyAnim.change(PlayerAnimID::SWIM);
+	mRettyAnim.change(PlayerAnimID::SWIM);
+	mRettyAnim.change_dir(PlayerAnimID::SWIM, ActionType::Left);
+
+	mCursorPos = Vector2(500, 500);
 }
 
 void MainMenuScene::update() {
@@ -356,7 +365,10 @@ void MainMenuScene::update() {
 	}
 	isPoint[5] ? moveText(5) : slideText(5);
 
+	mButtyAnim.update(Time::GetInstance().deltaTime());
+	mRettyAnim.update(Time::GetInstance().deltaTime());
 
+	mCursorPos = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f);
 }
 void MainMenuScene::slideText(int targettext)
 {
@@ -396,6 +408,7 @@ void MainMenuScene::moveText(int targettext)
 		isArrive[targettext] = true;
 		textPosList[targettext].y = lastPoses[targettext].y;
 	}
+
 }
 
 void MainMenuScene::draw() const {
@@ -432,7 +445,7 @@ void MainMenuScene::draw() const {
 			
 			if (count == 0) {
 				int psizex = 80;
-				int psizey = 50;
+				int psizey = 80;
 				DrawExtendGraph(center - (748+psizex / 2), textPosList.at(count).y, center + (748+psizex / 2), textPosList.at(count).y + 155+psizey, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_TITLE_TEX), TRUE);
 			}
 			else {
@@ -449,7 +462,10 @@ void MainMenuScene::draw() const {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alphaCou[1]);
 	}
 
-	DrawGraph(static_cast<int>(textPoses.at(targetPoint).x), static_cast<int>(textPoses.at(targetPoint).y), ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
+
+	mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 }

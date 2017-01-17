@@ -37,12 +37,9 @@ PlayerBody::~PlayerBody() {}
 
 void PlayerBody::onUpdate(float deltaTime) {
 
-	velocity_ = (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
+	velocity_ = (input_ * PLAYER_SPEED + launch_ + gravity_ + suction_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
 	position_ += velocity_;
-
-	//position_ += (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
-	//velocity_ = position_ - body_.GetCircle().previousPosition_;
-
+	suction_ = 0.0f;
 	slope_.Length() > 0 ? slope_ -= slope_ / 20 : slope_ = Vector2::Zero;
 
 	opponent_ = HitOpponent::NONE;
@@ -56,8 +53,6 @@ void PlayerBody::onUpdate(float deltaTime) {
 			timer_ = 0;
 		}
 	}
-
-	//position_.x = std::max<float>(position_.x, 0);
 }
 
 void PlayerBody::onDraw() const {
@@ -71,11 +66,7 @@ void PlayerBody::onDraw() const {
 	//DrawFormatString(100, 1000, GetColor(0, 0, 0), "Ž¿—Ê : %f", mass_);
 
 	if (world_->isEntered())return;
-
-	Vector3 color = Vector3(255, 255, 255);
-	//if (name_ == "PlayerBody1")color = Vector3(255, 255, 255);
-	//if (name_ == "PlayerBody2")color = Vector3(255, 255, 255);
-	animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f, 0, color);
+	animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
 }
 
 void PlayerBody::onLateUpdate(float deltaTime) {
@@ -176,6 +167,10 @@ void PlayerBody::onCollide(Actor & other) {
 		Vector2 moves = position_ - body_.GetCircle().previousPosition_;
 
 		if (moves.y > 0)slope_ = SLIP_SPEED * ((segCenter + positionPoint) - (segCenter + targetPoint)).Normalize();
+	}
+
+	if (other.getName() == "Tornado") {
+		suction_ = (other.getPosition() - position_).Normalize() * 100;
 	}
 }
 

@@ -82,8 +82,9 @@ std::forward_list<ActorPtr> ActorManager::GetActors(const ActorGroup group)
 
 // Õ“Ë”»’è
 void ActorManager::collide() {
-	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Player_Collider]);
+	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy]);
+	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::EnemyBullet]);
 	actors_[ActorGroup::Player_Collider]->collideChildren(*actors_[ActorGroup::Field]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy_AttackRange]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Field]);

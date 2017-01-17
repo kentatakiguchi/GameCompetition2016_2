@@ -3,6 +3,8 @@
 #include "../../ResourceLoader/ResourceLoader.h"
 
 PlayerAnimation2D::PlayerAnimation2D(const std::string& name) {
+	sprites_.clear();
+
 	if (name == "") return;
 	//butty
 	if (name == "PlayerBody1") {

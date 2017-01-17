@@ -53,7 +53,7 @@ public:
 
 private:
 	Vector2& CreateVector(const Vector2& p, const Vector2& q){
-		return Vector2(q.x - p.x, q.y - p.y);
+		return q - p;// Vector2(q.x - p.x, q.y - p.y);
 	}
 	float InnerProduct(const Vector2 &a, const Vector2 &b) {
 		return (a.x*b.x + a.y*b.y);//aÅEb

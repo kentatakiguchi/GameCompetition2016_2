@@ -5,6 +5,7 @@
 #include"SceneChange.h"
 #include<map>
 #include"../../ResourceLoader/ResourceLoader.h"
+#include "../../Animation/Player/PlayerAnimation2D.h"
 
 class BackGraundManager;
 
@@ -70,6 +71,9 @@ private:
 	typedef std::vector<TextureID> BackTitles;
 	std::vector<BackTitles> titleTexs;
 
+	PlayerAnimation2D mButtyAnim;
+	PlayerAnimation2D mRettyAnim;
 
+	Vector2 mCursorPos;
 };
 
