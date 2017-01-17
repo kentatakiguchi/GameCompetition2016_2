@@ -6,6 +6,8 @@
 #include"../../ResourceLoader/ResourceLoader.h"
 #include"StageClearTextAnm.h"
 
+class BackGraundManager;
+
 class StageClearScene : public IScene {
 public:
 	StageClearScene(SceneDataKeeper* keeper);
@@ -40,6 +42,10 @@ private:
 	std::map<int, bool> changeBackChecker;
 	//”wŒi‰æ‘œ‚ÌˆÚ“®æ‚ğŒˆ‚ß‚é
 	std::vector<int> changeTargetChecker;
+
+
+	//”wŒiƒNƒ‰ƒX
+	BackGraundManager* backManager;
 
 };
 

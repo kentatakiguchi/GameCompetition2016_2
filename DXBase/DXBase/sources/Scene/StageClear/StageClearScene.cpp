@@ -1,6 +1,6 @@
 #include "StageClearScene.h"
 #include"../../ResourceLoader/ResourceLoader.h"
-
+#include "../../Actor/BackGraundManager/BackGraundManager.h"
 static const int MaxTexSize = 1920;
 static const int SlideSpeed = 10;
 static const float DefBackSpriteChangeTime = 10.f;
@@ -41,7 +41,7 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper) :
 	textPoses[3] = Vector2(200, 600);
 	textPosList.push_back(textPoses[1]);
 	changeTextList.clear();
-	
+
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list3;
 	list3.push_back("メニューに戻る");
@@ -57,10 +57,10 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper) :
 	changeTargetChecker.push_back(0);
 	changeTargetChecker.push_back(0);
 
-	baseTitleBackID[0] = TextureID::TITLE_BACK_TEX;
-	baseTitleBackID[1] = TextureID::TITLE_BACK2_TEX;
-	baseTitleBackID[2] = TextureID::TITLE_BACK3_TEX;
-	baseTitleBackID[3] = TextureID::TITLE_BACK4_TEX;
+	//baseTitleBackID[0] = TextureID::TITLE_BACK_TEX;
+	//baseTitleBackID[1] = TextureID::TITLE_BACK2_TEX;
+	//baseTitleBackID[2] = TextureID::TITLE_BACK3_TEX;
+	//baseTitleBackID[3] = TextureID::TITLE_BACK4_TEX;
 
 }
 
@@ -69,32 +69,60 @@ StageClearScene::~StageClearScene() {
 }
 
 void StageClearScene::start() {
-
+	backManager = new BackGraundManager();
 	targetPoint = 1;
 	sinCount = 0;
 	slideSize = 0;
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 	// グラフィックのロード
+	//for (int i = 0; i < 2; i++) {
+	//	titleBackStageNum[i] = 1;
+	//	//0が1枚目、1が2枚目で、1枚につきMaxTexSize移動フレーム分の時間をスライドの変更時間に追加する
+	//	titleBackChangeTime[i] = DefBackSpriteChangeTime + ((MaxTexSize / SlideSpeed) / 60 * (i));
 
-	for (int i = 0; i < 2; i++) {
-		titleBackStageNum[i] = 1;
-		//0が1枚目、1が2枚目で、1枚につきMaxTexSize移動フレーム分の時間をスライドの変更時間に追加する
-		titleBackChangeTime[i] = DefBackSpriteChangeTime + ((MaxTexSize / SlideSpeed) / 60 * (i));
+	//	if(keeper_->getSceneName()=="stage01")
+	//		currentTitleBackID[i] = TextureID::TITLE_BACK_TEX;
 
-		if(keeper_->getSceneName()=="stage01")
-			currentTitleBackID[i] = TextureID::TITLE_BACK_TEX;
+	//	if (keeper_->getSceneName() == "stage02")
+	//		currentTitleBackID[i] = TextureID::TITLE_BACK2_TEX;
 
-		if (keeper_->getSceneName() == "stage02")
-			currentTitleBackID[i] = TextureID::TITLE_BACK2_TEX;
+	//	if (keeper_->getSceneName() == "stage03")
+	//		currentTitleBackID[i] = TextureID::TITLE_BACK3_TEX;
 
-		if (keeper_->getSceneName() == "stage03")
-			currentTitleBackID[i] = TextureID::TITLE_BACK3_TEX;
+	//	if (keeper_->getSceneName() == "stage04")
+	//		currentTitleBackID[i] = TextureID::TITLE_BACK4_TEX;
 
-		if (keeper_->getSceneName() == "stage04")
-			currentTitleBackID[i] = TextureID::TITLE_BACK4_TEX;
+	//	changeBackChecker[i] = false;
+	//}
 
-		changeBackChecker[i] = false;
+
+	if (keeper_->getSceneName() == "stage01") {
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX);
+	}
+	else if (keeper_->getSceneName() == "stage02") {
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_3_TEX, TextureID::BACKSTAGE2_3_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_4_TEX, TextureID::BACKSTAGE2_4_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_5_TEX, TextureID::BACKSTAGE2_5_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_6_TEX, TextureID::BACKSTAGE2_6_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_7_TEX, TextureID::BACKSTAGE2_7_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_8_TEX, TextureID::BACKSTAGE2_8_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_9_TEX, TextureID::BACKSTAGE2_9_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE2_10_TEX, TextureID::BACKSTAGE2_10_TEX);
+	}
+	else if (keeper_->getSceneName() == "stage03" ||
+		keeper_->getSceneName() == "stage04") {
+		backManager->SetBackGraund(TextureID::BACKSTAGE4_1_TEX, TextureID::BACKSTAGE4_1_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE4_2_TEX, TextureID::BACKSTAGE4_2_TEX);
 	}
 
 
@@ -105,15 +133,15 @@ void StageClearScene::start() {
 void StageClearScene::update() {
 
 	anmer_.update_e(Time::GetInstance().deltaTime());
-
+	backManager->Update(Time::GetInstance().deltaTime(), true);
 	sinCount += FlashTempo;
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
 
-	slideSize += SlideSpeed;
-	if (slideSize >= MaxTexSize) {
-		slideSize = 0;
-	}
+	//slideSize += SlideSpeed;
+	//if (slideSize >= MaxTexSize) {
+	//	slideSize = 0;
+	//}
 
 	if (targetPoint != 3)
 	{
@@ -142,17 +170,17 @@ void StageClearScene::update() {
 
 void StageClearScene::draw() const {
 
-	DrawGraph(MaxTexSize - slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[0]), TRUE);
-	DrawGraph(-slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[1]), TRUE);
+	//DrawGraph(MaxTexSize - slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[0]), TRUE);
+	//DrawGraph(-slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[1]), TRUE);
+	backManager->Draw();
 
-
-	int strLen, strWidth, center, count,heightPoint;
+	int strLen, strWidth, center, count, heightPoint;
 	count = 0;
-	heightPoint=0;
+	heightPoint = 0;
 	int forcount = 0;
 	center = static_cast<int>(SCREEN_SIZE.x) / 2;
 
-	anmer_.draw_e(Vector2(static_cast<float>(center-320),textPosList.at(0).y));
+	anmer_.draw_e(Vector2(static_cast<float>(center - 320), textPosList.at(0).y));
 
 	for (auto lists : listBase) {
 		for (auto my : lists) {
@@ -163,7 +191,7 @@ void StageClearScene::draw() const {
 
 			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			
+
 			DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -189,7 +217,7 @@ void StageClearScene::draw() const {
 }
 
 void StageClearScene::end() {
-
+	delete backManager;
 }
 
 bool StageClearScene::isEnd() const {
