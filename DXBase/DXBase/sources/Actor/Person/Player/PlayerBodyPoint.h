@@ -17,9 +17,9 @@ public:
 	virtual void onDraw() const override;
 	// Õ“Ëˆ—
 	virtual void onCollide(Actor& other) override;
-private:
 	// ˆø—ÍXVˆ—
 	void attract_update(float deltaTime);
+private:
 	// ˆø—Í
 	void attraction(const int index, Vector2& velocity);
 private:

@@ -16,12 +16,15 @@ void PlayerBodyCollider::onDraw() const{
 }
 
 void PlayerBodyCollider::onCollide(Actor & other) {
-	if (other.getName() == "MovelessFloor" || other.getName() == "SegmentCollider" ||
+	if (other.getName() == "MovelessFloor"  ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor") {
 		opponent_ = HitOpponent::FLOOR_HIT;
 		other_velocity_ = other.getBody().GetColliderVelocity();
 		other_position_ = other.getBody().GetBox().position_;
+	}
+	if (other.getName() == "SegmentCollider") {
+		opponent_ = HitOpponent::FLOOR_HIT;
 	}
 }
 

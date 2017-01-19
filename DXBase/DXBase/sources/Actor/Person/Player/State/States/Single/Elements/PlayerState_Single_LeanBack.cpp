@@ -14,12 +14,14 @@ void PlayerState_Single_LeanBack::unique_init(){
 	body_->launch(dir_ * power_);
 }
 
-void PlayerState_Single_LeanBack::update(float deltaTime){
+void PlayerState_Single_LeanBack::update(float deltaTime) {
 	dir_.y += 0.1f;
 
 	body_->launch(dir_ * power_);
 
-	if (body_->is_hit()) change(StateElement((unsigned int)PlayerState_Enum_Single::IDLE));
+	if (body_->is_hit()) {
+		change(StateElement((unsigned int)PlayerState_Enum_Single::IDLE));
+	}
 }
 
 void PlayerState_Single_LeanBack::end(){

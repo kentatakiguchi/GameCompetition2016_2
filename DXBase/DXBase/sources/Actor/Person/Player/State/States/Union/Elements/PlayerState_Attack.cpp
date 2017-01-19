@@ -63,8 +63,7 @@ void PlayerState_Attack::update(float deltaTime) {
 	butty_->gravity();
 	retty_->gravity();
 
-
-	if (butty_->able_to_hold() && !butty_->able_to_jump() && retty_->able_to_hold() && !retty_->able_to_jump()) {
+	if (butty_->able_to_hold() && retty_->able_to_hold()) {
 		change(PlayerState_Enum_Union::FREEZE);
 	}
 

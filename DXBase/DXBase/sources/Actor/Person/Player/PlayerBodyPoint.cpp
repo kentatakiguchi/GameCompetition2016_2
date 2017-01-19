@@ -15,7 +15,7 @@ PlayerBodyPoint::~PlayerBodyPoint(){}
 
 // XVˆ—
 void PlayerBodyPoint::onUpdate(float deltaTime) {
-	attract_update(deltaTime);
+	//attract_update(deltaTime);
 }
 
 // •`‰æˆ—
@@ -76,6 +76,7 @@ void PlayerBodyPoint::attract_update(float deltaTime){
 
 	position_ = Vector2::ClampTarget(position_, cntr->get_point(index_ + 1), PLAYER_MAX_DIV_LENGTH);
 	position_ = Vector2::ClampTarget(position_, cntr->get_point(index_ - 1), PLAYER_MAX_DIV_LENGTH);
+
 
 	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::Z))stiffness_ += 0.01f;
 	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::X))stiffness_ -= 0.01f;

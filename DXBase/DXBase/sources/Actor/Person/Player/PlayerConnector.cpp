@@ -30,6 +30,17 @@ PlayerConnector::~PlayerConnector() {
 void PlayerConnector::onUpdate(float deltaTime) {
 	position_ = (butty_->getPosition() + retty_->getPosition()) / 2;
 
+	for (int i = 0; i < points.size(); i++) {
+		if (stateMgr_.currentActionType(ActionType::Left)) {
+			auto point = std::dynamic_pointer_cast<PlayerBodyPoint>(points[i]);
+			point->attract_update(deltaTime);
+		}
+		else {
+			auto point = std::dynamic_pointer_cast<PlayerBodyPoint>(points[points.size() - 1 - i]);
+			point->attract_update(deltaTime);
+		}
+	}
+
 	if (is_damaged()) {
 		world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_EXP, 5.0f, 3.0f));
 		dead();

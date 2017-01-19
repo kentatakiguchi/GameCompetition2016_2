@@ -140,6 +140,8 @@ void PlayerBody::onCollide(Actor & other) {
 	Vector2 myCenter, segCenter, segPoint, targetPoint, targetVec;
 	float posReset;
 	if (other.name_ == "SegmentCollider") {
+		opponent_ = HitOpponent::FLOOR_HIT;
+
 		//ü•ª‚Íposition‚ð’†S‚ÉŽæ‚é
 		//Vector2 myCenter = Vector2(previousPosition.x,previousPosition.y);
 		//‘ŠŽè‚Ìü•ª‚Ì’†S
@@ -166,7 +168,8 @@ void PlayerBody::onCollide(Actor & other) {
 
 		Vector2 moves = position_ - body_.GetCircle().previousPosition_;
 
-		if (moves.y > 0)slope_ = SLIP_SPEED * ((segCenter + positionPoint) - (segCenter + targetPoint)).Normalize();
+		if (moves.y > 0)slope_ = SLIP_SPEED * (positionPoint - targetPoint).Normalize();
+		//if (moves.y > 0)slope_ = SLIP_SPEED * segPoint;
 	}
 
 	if (other.getName() == "Tornado") {

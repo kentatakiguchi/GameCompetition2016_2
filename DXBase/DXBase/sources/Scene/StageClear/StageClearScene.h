@@ -5,6 +5,7 @@
 #include<map>
 #include"../../ResourceLoader/ResourceLoader.h"
 #include"StageClearTextAnm.h"
+#include "../../Animation/Player/PlayerAnimation2D.h"
 
 class BackGraundManager;
 
@@ -47,6 +48,11 @@ private:
 	//背景クラス
 	BackGraundManager* backManager;
 
+	// キャラアニメーション
+	PlayerAnimation2D mButtyAnim;
+	PlayerAnimation2D mRettyAnim;
+	// 選択時の座標
+	Vector2 mCursorPos;
 };
 
 #endif

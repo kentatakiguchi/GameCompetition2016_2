@@ -71,9 +71,10 @@ private:
 	typedef std::vector<TextureID> BackTitles;
 	std::vector<BackTitles> titleTexs;
 
+	// キャラアニメーション
 	PlayerAnimation2D mButtyAnim;
 	PlayerAnimation2D mRettyAnim;
-
+	// 選択時の座標
 	Vector2 mCursorPos;
 };
 
