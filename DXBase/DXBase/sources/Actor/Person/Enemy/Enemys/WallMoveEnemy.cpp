@@ -37,6 +37,7 @@ void WallMoveEnemy::onUpdate(float deltaTime)
 	for (int i = 0; i != fspScaleContainer_.size(); i++) {
 		enemyManager_.getWSPObj(i)->setPosition(position_);
 	}
+	isMoveFloor_ = false;
 }
 
 void WallMoveEnemy::onCollide(Actor & actor)
@@ -56,10 +57,12 @@ void WallMoveEnemy::search()
 
 void WallMoveEnemy::searchMove()
 {
-	// •ûŒü‚ð“ü‚ê‚é
-	direction_ = enemyManager_.getWallDirection();
-	// •ÇˆÚ“®
-	position_ += direction_ * speed_ * deltaTimer_;
+	if (!isMoveFloor_) {
+		// •ûŒü‚ð“ü‚ê‚é
+		direction_ = enemyManager_.getWallDirection();
+		// •ÇˆÚ“®
+		position_ += direction_ * speed_ * deltaTimer_;
+	}
 }
 
 void WallMoveEnemy::addWSPPosition()

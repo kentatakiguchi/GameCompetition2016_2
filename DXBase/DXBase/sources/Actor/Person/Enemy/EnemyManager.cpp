@@ -296,6 +296,6 @@ void EnemyManager::addWSPDirection(const Vector2 & direction)
 	wspDirectionMap_[6627] = Vector2(1.0f, 0.0f);
 	wspDirectionMap_[6027] = Vector2(0.0f, 1.0f);
 	// ‘S•”“–‚½‚Á‚Ä‚¢‚é
-	wspDirectionMap_[7718] = Vector2::Zero;
-	wspDirectionMap_[7728] = Vector2::Zero;
+	//wspDirectionMap_[7718] = Vector2::Zero;
+	//wspDirectionMap_[7728] = Vector2::Zero;
 }

@@ -146,6 +146,7 @@ protected:
 	bool isUseGravity_;				// 重力を使うか trueで重力を追加します
 	bool isInvincible_;				// 無敵か trueで無敵になります
 	bool isLostChase_;				// 見失っても追うか trueでプレイヤーが範囲外に出ても、追跡行動を行います
+	bool isMoveFloor_;				// 動いている床に触れているか
 	float stateTimer_;				// 状態タイマ
 	State state_;					// 状態
 	Vector2 discoveryPosition_;		// 発見したときの位置

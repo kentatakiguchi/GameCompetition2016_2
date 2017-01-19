@@ -40,6 +40,7 @@ BaseEnemy::BaseEnemy(
 	isGround_(false),
 	isUseGravity_(true),
 	isInvincible_(false),
+	isMoveFloor_(false),
 	discoveryLenght_(500),
 	stateTimer_(0.0f),
 	state_(State::Idel),
@@ -144,6 +145,8 @@ void BaseEnemy::onCollide(Actor & actor)
 	auto actorName = actor.getName();
 	// プレイヤー関連のオブジェクトに当たっているなら
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
+	// 動く床関連に当たっているか
+	auto getMoveFloorName = strstr(actorName.c_str(), "MoveFloor");
 	// マップのブロックに当たったら、処理を行う
 	if (getFloorName != NULL) {
 		// 位置の補間
@@ -157,6 +160,9 @@ void BaseEnemy::onCollide(Actor & actor)
 		if (!isBlockCollidePrevEnter_ &&
 			isBlockCollidePrevEnter_ != isBlockCollideEnter_)
 			isBlockCollideBegin_ = true;
+		// 動く床に触れたら止まる(一部の敵)
+		if (getMoveFloorName != NULL)
+			isMoveFloor_ = true;
 		return;
 	}
 
@@ -164,8 +170,7 @@ void BaseEnemy::onCollide(Actor & actor)
 	if (state_ == State::Dead) return;
 	// プレイヤーに当たらない？
 	// PlayerのActorGroupが変わるので、 Player_AttackRangeに当たるようにする
-	if ((actorName == "PlayerAttackCollider" ||
-		actorName == "BodyPoint") &&
+	if ((actorName == "PlayerAttackCollider" || actorName == "BodyPoint") &&
 		!isInvincible_) {
 		// ダメージ
 		//circleClamp(actor);
@@ -434,6 +439,7 @@ void BaseEnemy::updateCollide()
 	isBlockCollidePrevEnter_ = isBlockCollideEnter_;
 	// ブロックに当たっていればtrueになるので、falseを入れる
 	isBlockCollideEnter_ = false;
+	isMoveFloor_ = false;
 }
 
 //地面の位置に補正します

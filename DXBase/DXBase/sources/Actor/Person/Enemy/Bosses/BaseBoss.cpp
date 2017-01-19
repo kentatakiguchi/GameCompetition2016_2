@@ -157,17 +157,14 @@ void BaseBoss::onDraw() const
 void BaseBoss::onCollide(Actor & actor)
 {
 	auto actorName = actor.getName();
+	//床関連のオブジェクトに当たっているなら
+	auto getFloorName = strstr(actorName.c_str(), "Floor");
 	// ブロックの下側にぶつかったら、落ちるようにする?
 	// プログラムを書いて、コメントアウトする
 	// マップのブロックに当たったら、処理を行う
-	if (actorName == "MovelessFloor") {
-		// 位置の補間
-		groundClamp(actor);
-		bossManager_.setFloorName(actorName.c_str());
-		return;
-	}
+	//if (actorName == "MovelessFloor")
 	// 空中に浮かぶ床に当たったら、ひるみカウントを加算する
-	if (actorName == "BossAreaFloor") {
+	if (getFloorName != NULL || actorName == "Door") {
 		// 位置の補間
 		groundClamp(actor);
 		bossManager_.setFloorName(actorName.c_str());
@@ -176,7 +173,6 @@ void BaseBoss::onCollide(Actor & actor)
 	// プレイヤーの攻撃に当たらない場合は返す
 	if (!isAttackHit_ || damageTimer_ > 0 || attackCount_ == 2) return;
 	if (state_ == State::Flinch) return;
-	//if (damageTimer_ > 0 || attackCount_ == 2) return;
 	// プレイヤーの攻撃範囲に当たった場合の処理
 	if (actorName == "PlayerAttackCollider") {
 		// カウントを減らす
