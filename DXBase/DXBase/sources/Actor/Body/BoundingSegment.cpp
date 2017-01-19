@@ -2,20 +2,25 @@
 #include"BoundingCapsule.h"
 #include"BoundingBox.h"
 #include"BoundingCircle.h"
+#include"../../Define.h"
+#include"../../ResourceLoader/ResourceLoader.h"
 
-BoundingSegment::BoundingSegment(const Vector2& startPoint, const Vector2& endPoint) :
-	enabled(true) {
+BoundingSegment::BoundingSegment(const Vector2& startPoint, const Vector2& endPoint) 
+{
+	enabled = true;
 	component_=Component(startPoint, endPoint);
 	bodyenub_ = false;
 }
-BoundingSegment::BoundingSegment(const Vector2& startPoint, const Vector2& endPoint, bool isEnabled) :
-	enabled(isEnabled) {
+BoundingSegment::BoundingSegment(const Vector2& startPoint, const Vector2& endPoint, bool isEnabled) 
+{
+	enabled=isEnabled;
 	component_ = Component(startPoint, endPoint);
 	bodyenub_ = false;
 
 }
-BoundingSegment::BoundingSegment() :
-	enabled(false) {
+BoundingSegment::BoundingSegment()
+{
+	enabled = false;
 	component_ = Component(0,0);
 	bodyenub_ = false;
 
@@ -62,22 +67,73 @@ void BoundingSegment::draw(Matrix inv) const {
 void BoundingSegment::draw(int spriteID, Matrix inv) const {
 	//if (!enabled)return;
 
-	Vector3 pos0, pos1;
+	Vector3 pos0, pos1,posis;
 
 	if (component_.point[0].y <= component_.point[1].y) {
 		pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
 		pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
+		posis = Vector3(component_.point[1].x, component_.point[1].y);
 	}
 	else {
 		pos0 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
 		pos1 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+		posis = Vector3(component_.point[0].x, component_.point[0].y);
 
 	}
 
 
 	DrawLine(static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos1.x), static_cast<int>(pos1.y), GetColor(255, 0, 0));
 
-	DrawModiGraph(static_cast<int>(pos1.x), static_cast<int>(pos1.y), static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos0.x), static_cast<int>(pos1.y),  spriteID, TRUE);
+	//DrawModiGraph(static_cast<int>(pos1.x), static_cast<int>(pos1.y), static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos0.x), static_cast<int>(pos1.y), spriteID, TRUE);
+	//DrawModiGraph(pos1.x, pos1.y, pos0.x, pos0.y, pos0.x, pos0.y, pos0.x, pos1.y, spriteID, TRUE);
+	DrawModiGraph(pos0.x, pos0.y, pos1.x, pos1.y, pos1.x, pos1.y, pos0.x, pos1.y,  spriteID, TRUE);
+	
+
+	//posis = Vector3(posis.x, CHIPSIZE * 55)*inv;
+
+	int sprid;
+	int ysizeCou;
+	if (spriteID == ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX)) {
+		sprid = ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STAGE2_TEX);
+		ysizeCou = 23;
+	}
+	if (spriteID == ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI2_TEX)) {
+		sprid = ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STAGE4_TEX);
+		ysizeCou = 20;
+	}
+	//Vector2 leftPos = Vector2(pos0.x, pos1.y);
+	//Vector2 rightPos = Vector2(posis.x, posis.y);
+	//DrawExtendGraph(leftPos.x, leftPos.y, rightPos.x, rightPos.y, spriteID, TRUE);
+	
+	Vector2 piecePos;
+
+	int tileSpace;
+	int yleSpace = (pos1.y+CHIPSIZE*ysizeCou)-pos1.y;
+	int tileCount = 0;
+	int yleCount = 0;
+	for (int yl = 0; yl < yleSpace; yl++) {
+		if (yleSpace > (pos1.y + CHIPSIZE * ysizeCou))break;
+		yleSpace = (pos1.y+CHIPSIZE * ysizeCou) - (pos1.y*yl);
+
+		tileSpace = pos1.x - pos0.x;
+
+		tileCount = 0;
+
+		for (int i = 0; i < tileSpace;) {
+
+			piecePos = Vector2(pos0.x + CHIPSIZE*tileCount, pos1.y+CHIPSIZE*yleCount);
+
+			DrawGraph(piecePos.x, piecePos.y, sprid, TRUE);
+
+			tileCount++;
+
+			tileSpace -= CHIPSIZE;
+		}
+		yleCount++;
+	}
+	
+	//DrawGraph(leftPos.x, leftPos.y, ResourceLoader::GetInstance().getTextureID(TextureID::CHIP1_TEX), TRUE);
+
 	//DrawBox(component_.point[0].x, component_.point[0].y,
 	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);
 	//DrawSphere3D(Vector3::Vector3ToVECTOR(component_.center_), component_.radius_, 32, GetColor( 255,0,0 ), GetColor( 255, 255, 255 ), TRUE ) ;

@@ -27,7 +27,7 @@ struct BodyData {
 class Body:public IBody
 {
 public:
-	Body() { /*bodyenub_ = true;*/ }
+	//Body() { /*bodyenub_ = true;*/ }
 	virtual ~Body() {}
 	//virtual bool intersects(Body& other) {
 	//	if (bodyenub_)return false;
@@ -42,10 +42,11 @@ public:
 	//virtual bool intersects(BezierCurve& other) { return false; }
 	virtual void update(const Vector3& center) {}
 	virtual void update(const Vector2& center) {}
-	virtual void update(Vector2 position) {}
+	//virtual void update(Vector2 position) {}
 	virtual void draw() const {}
 	virtual void draw(Matrix inv) const {}
 	virtual void draw(int spriteID, Matrix inv) const {}
+	virtual void draw(int spriteID, Matrix inv, int width, int height) const override{};
 	virtual void draw(int spriteID,int rotation,Matrix inv) const {}
 	virtual void debug() const {}
 	//virtual IBodyPtr translate(const Vector2& pos)const { return std::make_shared<Body>(); }

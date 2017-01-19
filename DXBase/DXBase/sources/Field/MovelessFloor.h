@@ -9,7 +9,8 @@ public:
 	MovelessFloor() {}
 	//マップチップの生成
 	MovelessFloor(IWorld* world, Vector2& position);
-	MovelessFloor(int spriteID,IWorld* world, Vector2& position);
+	MovelessFloor(int spriteID, IWorld* world, Vector2& position);
+	MovelessFloor(int spriteID, IWorld* world, Vector2& position,int width,int height);
 	MovelessFloor(std::shared_ptr<MovelessFloor> chip, IWorld* world, Vector2& position);
 	MovelessFloor(MovelessFloor& chip, IWorld* world, Vector2& position);
 	void set(Vector2& pos);
@@ -22,5 +23,7 @@ private:
 	void onCollide(Actor& other);
 private:
 	int spriteID_;
+	int width_;
+	int height_;
 };
 

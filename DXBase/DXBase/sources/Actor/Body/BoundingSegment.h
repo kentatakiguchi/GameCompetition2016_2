@@ -80,7 +80,6 @@ public:
 	//ü•ª‚ğ¶¬‚·‚é‚½‚ß‚Ì2“_‚ğ•Û‘¶‚·‚é
 
 	//intersects‚ğg‚¤‚©‚Ç‚¤‚© true:”»’è‚·‚é false:”»’è‚µ‚È‚¢
-	bool enabled;
 
 
 };

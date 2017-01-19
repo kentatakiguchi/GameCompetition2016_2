@@ -37,6 +37,7 @@ public:
 	void draw(Matrix inv = Matrix::Identity) const;
 	//スプライトのIDを渡す事で、対応したスプライトを表示する各判定のdrawを呼び出す(BOX以外は通常のdrawと同じ)
 	void draw(int spriteID, Matrix inv = Matrix::Identity) const;
+	void draw(int spriteID,int width,int height, Matrix inv = Matrix::Identity) const;
 	void draw(int spriteID,int rotation,Matrix inv = Matrix::Identity) const;
 	//
 	void update(Vector2 position);

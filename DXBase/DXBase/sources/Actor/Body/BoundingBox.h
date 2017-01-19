@@ -13,7 +13,7 @@ public:
 	//四角の判定を作成する(判定を行うかどうかを指定する場合) (trueなら行い、falseなら行わない) topLeft:左上の点(Vector2) topRight:右上の点(Vector2) bottomLeft:左下の点(Vector2) bottomRight:右下の点(Vector2) isEnabled:判定をするかどうか(bool)
 	BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight,bool isEnabled);
 	//四角の判定を作成する(判定を行わない場合)
-	explicit BoundingBox();
+	BoundingBox();
 
 	float getWidth() {
 		Vector2 lengthVectWidth1 = Vector2((component_.point[0].x + component_.point[2].x) / 2, (component_.point[0].y + component_.point[2].y) / 2);
@@ -56,6 +56,7 @@ public:
 	virtual void draw() const override;
 	virtual void draw(Matrix inv) const override;
 	virtual void draw(int spriteID, Matrix inv) const override;
+	virtual void draw(int spriteID, Matrix inv,int width,int height) const override;
 	virtual void draw(int spriteID,int rotation, Matrix inv) const override;
 	BoundingBox movePos(Vector2& position) {
 		return BoundingBox();
@@ -88,7 +89,6 @@ private:
 public:
 
 	//intersectsを使うかどうか true:判定する false:判定しない
-	bool enabled;
 
 
 

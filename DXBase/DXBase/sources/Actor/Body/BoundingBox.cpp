@@ -2,19 +2,24 @@
 #include"BoundingSegment.h"
 #include"BoundingCircle.h"
 #include"BoundingCapsule.h"
-BoundingBox::BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight):
-	enabled(true) {
+#include"../../Define.h"
+
+BoundingBox::BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight)
+{
+	enabled = true;
 	component_ = Component(topLeft, topRight, bottomLeft, bottomRight);
 	bodyenub_ = false;
 }
-BoundingBox::BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight,bool isEnabled) :
-	enabled(isEnabled) {
+BoundingBox::BoundingBox(const Vector2& topLeft, const Vector2& topRight, const Vector2& bottomLeft, const Vector2& bottomRight,bool isEnabled)
+{
+	enabled = isEnabled;
 	component_ = Component(topLeft, topRight, bottomLeft, bottomRight);
 	bodyenub_ = false;
 
 }
-BoundingBox::BoundingBox() :
-	enabled(false) {
+BoundingBox::BoundingBox() 
+{
+	enabled = false;
 	component_ = Component(0, 0, 0, 0);
 	bodyenub_ = false;
 }
@@ -59,12 +64,12 @@ void BoundingBox::draw(Matrix inv) const {
 	Vector3 pos2 = Vector3(component_.point[2].x, component_.point[2].y) * inv;
 	Vector3 pos3 = Vector3(component_.point[3].x, component_.point[3].y) * inv;
 
-	DrawBox(static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos3.x), static_cast<int>(pos3.y), GetColor(255, 255, 255), TRUE);
+	//DrawBox(static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos3.x), static_cast<int>(pos3.y), GetColor(255, 255, 255), TRUE);
 
-	//DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
-	//DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));
-	//DrawLine(pos0.x, pos0.y, pos2.x, pos2.y, GetColor(255, 0, 0));
-	//DrawLine(pos2.x, pos2.y, pos3.x, pos3.y, GetColor(255, 0, 0));
+	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
+	DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));
+	DrawLine(pos0.x, pos0.y, pos2.x, pos2.y, GetColor(255, 0, 0));
+	DrawLine(pos2.x, pos2.y, pos3.x, pos3.y, GetColor(255, 0, 0));
 
 	//DrawBox(component_.point[0].x, component_.point[0].y,
 	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);
@@ -96,14 +101,32 @@ void BoundingBox::draw(int spriteID, int rotation, Matrix inv) const
 	centerMath2.y = (pos2.y + pos3.y) / 2;
 	center = (centerMath1 + centerMath2) / 2;
 
-	DrawRotaGraph(static_cast<int>(center.x), static_cast<int>(center.y),1, static_cast<int>((rotation*MathHelper::Pi/180)), spriteID, TRUE);
+	DrawRotaGraph(static_cast<int>(center.x), static_cast<int>(center.y), 1, static_cast<int>((rotation*MathHelper::Pi / 180)), spriteID, TRUE);
 
 	//DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
 	//DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));
 	//DrawLine(pos0.x, pos0.y, pos2.x, pos2.y, GetColor(255, 0, 0));
 	//DrawLine(pos2.x, pos2.y, pos3.x, pos3.y, GetColor(255, 0, 0));
+}
+void BoundingBox::draw(int spriteID, Matrix inv, int width, int height) const
+{
+	for (int i = 0; i < width; i++) {
+		for (int x = 0; x < height; x++) {
 
+			Vector3 pos0 = Vector3(component_.point[0].x + (i*CHIPSIZE), component_.point[0].y + (x*CHIPSIZE)) * inv;
+			Vector3 pos1 = Vector3(component_.point[1].x + (i*CHIPSIZE), component_.point[1].y + (x*CHIPSIZE)) * inv;
+			Vector3 pos2 = Vector3(component_.point[2].x + (i*CHIPSIZE), component_.point[2].y + (x*CHIPSIZE)) * inv;
+			Vector3 pos3 = Vector3(component_.point[3].x + (i*CHIPSIZE), component_.point[3].y + (x*CHIPSIZE)) * inv;
 
+			DrawGraph(static_cast<int>(pos0.x), static_cast<int>(pos0.y), spriteID, TRUE);
+
+		}
+	}
+
+	//DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
+	//DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));
+	//DrawLine(pos0.x, pos0.y, pos2.x, pos2.y, GetColor(255, 0, 0));
+	//DrawLine(pos2.x, pos2.y, pos3.x, pos3.y, GetColor(255, 0, 0));
 }
 
 bool BoundingBox::intersects(BoundingBox & other)

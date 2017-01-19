@@ -279,6 +279,11 @@ void CollisionBase::draw(int spriteID, Matrix inv) const
 	//}
 
 }
+void CollisionBase::draw(int spriteID, int width, int height, Matrix inv) const
+{
+	body_->draw(spriteID, inv,width,height);
+
+}
 void CollisionBase::draw(int spriteID, int rotation, Matrix inv) const
 {
 	body_->draw(spriteID, rotation, inv);

@@ -101,7 +101,6 @@ private:
 	bool isIntersectThisRayToOtherLineBox(BoundingBox & other,int point1,int point2);
 public:
 
-	bool enabled;
 
 };
 

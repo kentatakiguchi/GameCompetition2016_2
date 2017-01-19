@@ -3,15 +3,16 @@
 #include"BoundingSegment.h"
 #include"BoundingCircle.h"
 
-BoundingCapsule::BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) :
-	enabled(true) {
+BoundingCapsule::BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius) 
+{
+	enabled = true;
 	component_=Component(startPoint, endPoint, capsuleRadius);
 	bodyenub_ = false;
 }
 
-BoundingCapsule::BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius, bool isEnabled):
-	enabled(isEnabled)
+BoundingCapsule::BoundingCapsule(Vector2 startPoint, Vector2 endPoint, float capsuleRadius, bool isEnabled)
 {
+	enabled = isEnabled;
 	component_ = Component(startPoint, endPoint, capsuleRadius);
 	bodyenub_ = false;
 }

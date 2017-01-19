@@ -22,7 +22,6 @@
 #include"SticklessFloor.h"
 #include"BossAreaFloor.h"
 #include"../Actor/Person/Enemy/ImportEnemys.h"
-#include"../Actor/Person/Enemy/Bosses/ImportBosses.h"
 #include"../ResourceLoader/ResourceLoader.h"
 #include "../Actor/Door/Door.h"
 
@@ -93,6 +92,15 @@ public:
 
 		rowSize = reader_.rows();
 		colSize = reader_.columns();
+		std::vector<std::vector<bool>> baseBlockConnectChecker;
+
+		baseBlockConnectChecker.resize(rowSize);
+		
+		for (int i = 0; i < baseBlockConnectChecker.size();i++) {
+			baseBlockConnectChecker[i].resize(colSize);
+		}
+		
+		//OutputDebugString(std::to_string(baseBlockConnectChecker[0].size()).c_str());
 
 		int rowCountDef = rowDef - 1;
 		int colCountDef = colDef - 1;
@@ -110,8 +118,11 @@ public:
 
 				if (reader_.geti(rowN, colN) == 1) {//テンプレートを使って複数種類生成出来るようにする
 													//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
-					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+					//	ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					
+					baseBlockConnectChecker[rowN][colN] = true;
+
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 2) {
@@ -245,6 +256,17 @@ public:
 					world_->addActor(ActorGroup::Enemy, std::make_shared<BaseBoss>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
 					continue;
 				}
+				if (reader_.geti(rowN, colN) == 66) {
+					// 壁移動エネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2) + Vector2::One * (CHIPSIZE - 64.0f)));
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 67) {
+					// 壁移動エネミー
+					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2) + Vector2::One * (CHIPSIZE - 64.0f), Vector2(1.f, 1.f)));
+					continue;
+				}
+
 				//if (reader_.geti(rowN, colN) == 66) {
 				//	world_->addActor(ActorGroup::Enemy, std::make_shared<BossBody>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
 				//	continue;
@@ -656,8 +678,102 @@ public:
 				}
 			}
 		}
+		
+		CreateFloor(baseBlockConnectChecker, stagenum);
 	}
 private:
+	void CreateFloor(std::vector<std::vector<bool>> baseBlockConnectChecker,int stagenum) {
+		int blockCount;
+		bool isFirst;
+		Vector2 startPosition;
+
+		std::vector<std::vector<bool>> posit;
+
+		
+		for (int i = 0; i < baseBlockConnectChecker.size(); i++) {
+
+			blockCount = 0;
+			isFirst = true;
+
+			for (int x = 0; x < baseBlockConnectChecker[i].size(); x++) {
+				if (baseBlockConnectChecker[i][x]) {
+					
+
+
+
+					baseBlockConnectChecker[i][x] = false;
+					blockCount++;
+					if (isFirst)startPosition = Vector2(CHIPSIZE*x, CHIPSIZE*i);
+
+					isFirst = false;
+				}
+				else if (blockCount>0) {
+					if (blockCount == 1) {
+						blockCount = 0;
+						isFirst = true;
+						baseBlockConnectChecker[startPosition.y / CHIPSIZE][startPosition.x / CHIPSIZE] = true;
+						continue;
+					}
+
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, blockCount, 1));
+
+					blockCount = 0;
+					isFirst = true;
+				}
+				if (x == baseBlockConnectChecker[0].size() - 1 && blockCount != 0)
+				{
+					if (blockCount == 1) {
+						blockCount = 0;
+						isFirst = true;
+						baseBlockConnectChecker[startPosition.y / CHIPSIZE][startPosition.x / CHIPSIZE] = true;
+						continue;
+					}
+
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, blockCount, 1));
+
+					blockCount = 0;
+					isFirst = true;
+
+				}
+			}
+		}
+		for (int i = 0; i < baseBlockConnectChecker[0].size(); i++) {
+
+			blockCount = 0;
+			isFirst = true;
+
+			for (int x = 0; x < baseBlockConnectChecker.size(); x++) {
+				if (baseBlockConnectChecker[x][i]) {
+					baseBlockConnectChecker[x][i] = false;
+					blockCount++;
+					if (isFirst)startPosition = Vector2(CHIPSIZE*i, CHIPSIZE*x);
+
+					isFirst = false;
+				}
+				else if (blockCount>0) {
+
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, 1, blockCount));
+
+					blockCount = 0;
+					isFirst = true;
+				}
+				if (x == baseBlockConnectChecker.size() - 1 && blockCount != 0)
+				{
+
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, 1, blockCount));
+
+					blockCount = 0;
+					isFirst = true;
+
+				}
+			}
+		}
+
+	}
 	void SetSegmentPoint(int rowN, int colN, Vector2& startPoint, Vector2& endPoint, pointSetState state)
 	{
 		startPoint = segmentStartPoints[reader_.geti(rowN, colN)];

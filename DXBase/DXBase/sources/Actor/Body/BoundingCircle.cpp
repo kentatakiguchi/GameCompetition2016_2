@@ -3,15 +3,16 @@
 #include"BoundingSegment.h"
 #include"BoundingCircle.h"
 
-BoundingCircle::BoundingCircle(Vector2 center, float circleRadius) :
-	enabled(true) {
+BoundingCircle::BoundingCircle(Vector2 center, float circleRadius) 
+{
+	enabled = (true);
 	component_=Component(center, circleRadius);
 	bodyenub_ = false;
 }
 
-BoundingCircle::BoundingCircle(Vector2 center, float circleRadius, bool isEnabled) :
-	enabled(isEnabled)
+BoundingCircle::BoundingCircle(Vector2 center, float circleRadius, bool isEnabled)
 {
+	enabled = (isEnabled);
 	component_ = Component(center, circleRadius);
 	bodyenub_ = false;
 }

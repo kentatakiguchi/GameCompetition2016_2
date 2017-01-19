@@ -43,6 +43,7 @@ public:
 	//virtual std::vector<Vector2> points()const = 0;
 	virtual void draw(Matrix inv) const = 0;
 	virtual void draw(int spriteID, Matrix inv) const = 0;
+	virtual void draw(int spriteID, Matrix inv, int width, int height) const =0;
 	virtual void draw(int spriteID, int rotation, Matrix inv) const = 0;
 	//virtual void setSegment(const Vector2& start, const Vector2& end) = 0;
 	virtual IBodyPtr translate(const Vector2& pos)const = 0;
@@ -56,6 +57,8 @@ public:
 
 	Vector2 position_;
 	Vector2 previousPosition_;
+
+	bool enabled;
 
 	struct Component {
 		// [0]:ç∂è„ [1]:âEè„ [2]:ç∂â∫ [3]:âEâ∫
