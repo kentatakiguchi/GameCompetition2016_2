@@ -174,6 +174,9 @@ void BaseEnemy::onCollide(Actor & actor)
 		!isInvincible_) {
 		// ƒ_ƒ[ƒW
 		//circleClamp(actor);
+		//// ‹——£‚ª’·‚©‚Á‚½‚ç•Ô‚·
+		if (Vector2(actor.getPosition() - position_).Length() >= 
+			actor.getBody().GetCircle().getRadius() + scale_) return;
 		changeState(State::Dead, ENEMY_DAMAGE);
 		TexDegress_ = 0.0f;
 		isUseGravity_ = true;

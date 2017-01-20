@@ -2,7 +2,10 @@
 
 BokoEffect::BokoEffect(
 	IWorld * world,
-	const Vector2 & position) : 
+	const Vector2 & position,
+	float speed) : 
 	BossEffect(world, "BokoEffect", position, Vector2(512, 512),
 		EFFECT_BOKO, AnimationID::BOSS_EFFECT_BOKO_TEX)
-{}
+{
+	animation_.setSpeed(speed);
+}

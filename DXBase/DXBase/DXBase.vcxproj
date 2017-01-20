@@ -250,6 +250,7 @@
     <ClInclude Include="sources\Actor\ScroolStop\ScroolStop.h" />
     <ClInclude Include="sources\Actor\TestPlayer\TestPlayer.h" />
     <ClInclude Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.h" />
+    <ClInclude Include="sources\Actor\UIActor\HelperUI\HelperUI.h" />
     <ClInclude Include="sources\Animation\Base\Animation.h" />
     <ClInclude Include="sources\Animation\Base\Animation2D.h" />
     <ClInclude Include="sources\Animation\Enemy\EnemyAnimation2D.h" />
@@ -318,6 +319,7 @@
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h" />
     <ClInclude Include="sources\Scene\MainMenu\MainMenuScene.h" />
     <ClInclude Include="sources\Scene\MainMenu\SceneChange.h" />
+    <ClInclude Include="sources\Scene\MainMenu\SceneChangeAnm.h" />
     <ClInclude Include="sources\Scene\StageClear\StageClearScene.h" />
     <ClInclude Include="sources\Scene\StageClear\StageClearTextAnm.h" />
     <ClInclude Include="sources\Scene\TeamLogoScene\TeamLogoScene.h" />
@@ -401,6 +403,7 @@
     <ClCompile Include="sources\Actor\ScroolStop\ScroolStop.cpp" />
     <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
     <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
+    <ClCompile Include="sources\Actor\UIActor\HelperUI\HelperUI.cpp" />
     <ClCompile Include="sources\Animation\Base\Animation.cpp" />
     <ClCompile Include="sources\Animation\Base\Animation2D.cpp" />
     <ClCompile Include="sources\Animation\Enemy\EnemyAnimation2D.cpp" />
@@ -454,6 +457,7 @@
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp" />
     <ClCompile Include="sources\Scene\MainMenu\MainMenuScene.cpp" />
     <ClCompile Include="sources\Scene\MainMenu\SceneChange.cpp" />
+    <ClCompile Include="sources\Scene\MainMenu\SceneChangeAnm.cpp" />
     <ClCompile Include="sources\Scene\StageClear\StageClearScene.cpp" />
     <ClCompile Include="sources\Scene\StageClear\StageClearTextAnm.cpp" />
     <ClCompile Include="sources\Scene\TeamLogoScene\TeamLogoScene.cpp" />

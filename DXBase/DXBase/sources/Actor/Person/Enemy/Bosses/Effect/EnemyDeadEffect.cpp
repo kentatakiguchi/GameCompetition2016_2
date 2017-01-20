@@ -8,5 +8,5 @@ EnemyDeadEffect::EnemyDeadEffect(
 		animation, AnimationID::ENEMY_EFFECT_DEAD_TEX)
 {
 	//scale_ = 0.3f;
-	animation_.setSpeed(5.0f);
+	animation_.setSpeed(20.0f);
 }

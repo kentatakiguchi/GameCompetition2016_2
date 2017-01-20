@@ -64,7 +64,7 @@ void JumpAttack::attack(float deltaTime)
 		isBodyHit_ = true;
 		auto addPos = Vector2::Left * 40.0f;
 		world_->addActor(ActorGroup::Effect,
-			std::make_shared<BokoEffect>(world_, position_ + addPos));
+			std::make_shared<BokoEffect>(world_, position_ + addPos, 3.0f));
 		// ’…’n‚ÉUŒ‚”»’è’Ç‰Á
 
 	}

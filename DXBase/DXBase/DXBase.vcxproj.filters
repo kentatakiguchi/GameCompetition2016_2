@@ -528,6 +528,12 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ImportBosses.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\UIActor\HelperUI\HelperUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Scene\MainMenu\SceneChangeAnm.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -924,6 +930,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\UIActor\HelperUI\HelperUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Scene\MainMenu\SceneChangeAnm.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
