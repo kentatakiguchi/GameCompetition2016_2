@@ -23,6 +23,7 @@ private:
 	Vector2 enemyPosition_;		// 敵の位置
 	Vector2 playerPosition_;	// プレイヤーの位置
 	Vector2 blockPosition_;		// ブロックの位置
+	bool isBlockHit_;
 };
 
 #endif

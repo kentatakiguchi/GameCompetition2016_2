@@ -17,7 +17,8 @@ PlayerSearchObj::PlayerSearchObj(
 		),
 	enemyPosition_(enemyPosition),
 	playerPosition_(playerPosition),
-	blockPosition_(Vector2::Zero)
+	blockPosition_(Vector2::Zero),
+	isBlockHit_(false)
 {
 }
 
@@ -25,6 +26,7 @@ void PlayerSearchObj::onUpdate(float deltaTime)
 {
 	position_ = body_.setSegmentPoint(
 		position_, enemyPosition_, playerPosition_);
+	isBlockHit_ = false;
 }
 
 void PlayerSearchObj::onDraw() const{}
@@ -37,6 +39,7 @@ void PlayerSearchObj::onCollide(Actor & actor)
 	// 床に当たっていたら、位置を代入
 	if (getFloorName != NULL) {
 		blockPosition_ = actor.position_;
+		isBlockHit_ = true;
 		return;
 	}
 }
@@ -51,10 +54,12 @@ void PlayerSearchObj::setPosition(const Vector2 & enemyPosition, const Vector2 &
 // プレイヤーが見えているかを返します
 bool PlayerSearchObj::isPlayerLook()
 {
-	auto blockLen = (enemyPosition_ - blockPosition_).Length();
-	auto playerLen = (enemyPosition_ - playerPosition_).Length();
-	// プレイヤーとの距離との距離が短かったら、trueを返す
-	if (playerLen < blockLen)
-		return true;
-	return false;
+	//auto blockLen = (enemyPosition_ - blockPosition_).Length();
+	//auto playerLen = (enemyPosition_ - playerPosition_).Length();
+	//// プレイヤーとの距離との距離が短かったら、trueを返す
+	//if (playerLen < blockLen)
+	//	return true;
+	//return false;
+
+	return !isBlockHit_;
 }

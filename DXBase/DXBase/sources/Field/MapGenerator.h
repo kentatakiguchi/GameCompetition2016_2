@@ -258,12 +258,12 @@ public:
 				}
 				if (reader_.geti(rowN, colN) == 66) {
 					// 壁移動エネミー
-					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2) + Vector2::One * (CHIPSIZE - 64.0f)));
+					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2) + Vector2::One * (CHIPSIZE - 64.0f) / 2));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 67) {
 					// 壁移動エネミー
-					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2) + Vector2::One * (CHIPSIZE - 64.0f), Vector2(1.f, 1.f)));
+					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2) + Vector2::One * (CHIPSIZE - 64.0f) / 2, Vector2(1.f, 1.f)));
 					continue;
 				}
 
