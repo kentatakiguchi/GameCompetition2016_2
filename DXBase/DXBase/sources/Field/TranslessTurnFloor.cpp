@@ -6,7 +6,7 @@ TranslessTurnFloor::TranslessTurnFloor(IWorld * world, Vector2 & position) :spri
 		Vector2{ position.x - (CHIPSIZE),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
 		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
-	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*TURNSPEED)
+	, defaultPos_(position), moveVelocity(1), moveCount_(static_cast<int>(CHIPSIZE*TURNSPEED))
 {
 }
 TranslessTurnFloor::TranslessTurnFloor(int spriteID,IWorld * world, Vector2 & position) :spriteID_(spriteID),
@@ -15,7 +15,7 @@ TranslessTurnFloor::TranslessTurnFloor(int spriteID,IWorld * world, Vector2 & po
 		Vector2{ position.x - (CHIPSIZE),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
 		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
-	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*TURNSPEED)
+	, defaultPos_(position), moveVelocity(1), moveCount_(static_cast<int>(CHIPSIZE*TURNSPEED))
 {
 }
 
@@ -26,7 +26,7 @@ TranslessTurnFloor::TranslessTurnFloor(std::shared_ptr<TranslessTurnFloor> chip,
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
 		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }
 		))
-	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*TURNSPEED)
+	, defaultPos_(position), moveVelocity(1), moveCount_(static_cast<int>(CHIPSIZE*TURNSPEED))
 {
 }
 
@@ -37,7 +37,7 @@ TranslessTurnFloor::TranslessTurnFloor(TranslessTurnFloor & chip, IWorld * world
 		Vector2{ position.x,position.y - (CHIPSIZE) },
 		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }
 		))
-	, defaultPos_(position), moveVelocity(1), moveCount_(CHIPSIZE*TURNSPEED)
+	, defaultPos_(position), moveVelocity(1), moveCount_(static_cast<int>(CHIPSIZE*TURNSPEED))
 {
 }
 
@@ -54,7 +54,7 @@ void TranslessTurnFloor::set(Vector2 & pos)
 
 void TranslessTurnFloor::onUpdate(float deltaTime)
 {
-	moveCount_+=1*ceilf(deltaTime);
+	moveCount_+=1*static_cast<int>(ceilf(deltaTime));
 	if (moveCount_ % 360 == 0) {
 		moveCount_ = 0;
 	}

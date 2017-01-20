@@ -15,6 +15,7 @@ LoadingScene::~LoadingScene(){
 void LoadingScene::start(){
 
 	//ここにローディング専用のリソースを読み込む
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::SCENE_CHANGE_SLIME_ANM, "./resources/sprite/slimeanm.png", Vector2(256, 256), 8, 4, 2);
 	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::TEXT_STAGECLEAR_ANM_TEX, "./resources/sprite/Text/stageclear_anim.png", Vector2(640, 320), 6, 7, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::LOADING, "./resources/sprite/loading_anim.png", Vector2(623.0f, 120.0f), 3, 8, 0);
@@ -131,6 +132,10 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_TUTORIAL_TEX, "./resources/sprite/Text/tutorial.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_GAMEOVER_TEX, "./resources/sprite/Text/gameover.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_RETRY_TEX, "./resources/sprite/Text/retry.png");
+
+	ResourceLoader::GetInstance().loadTexture(TextureID::CREDIT_TEX, "./resources/sprite/creditScene.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PAUSE_CIRCLE_TEX, "./resources/sprite/text/pause_menu.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::PAUSE_START_TEX, "./resources/sprite/text/pause_start.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::DOOR_STAY_TEX, "./resources/sprite/DoorStay.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::DOOR_OPEN_TEX, "./resources/sprite/DoorOpen.png");

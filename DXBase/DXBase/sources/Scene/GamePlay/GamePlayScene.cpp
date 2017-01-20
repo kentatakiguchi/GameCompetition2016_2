@@ -191,8 +191,8 @@ void GamePlayScene::draw() const {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0, 255, stageAlpha_));
 	DrawGraph(pos.x, pos.y, ResourceLoader::GetInstance().getTextureID(stageTexs_[stage]),true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	isStopped_ ? pause_.draw() : move_.draw();
 	backManager->BackDraw();
+	isStopped_ ? pause_.draw() : move_.draw();
 }
 
 void GamePlayScene::end() {

@@ -28,11 +28,12 @@ MapChip(world, Vector2(position.x, position.y), "CollidelessFloor", CollisionBas
 void CollidelessFloor::set(Vector2 & pos)
 {
 	position_ = pos;
-	body_ = CollisionBase(
-		Vector2{ pos.x ,pos.y },
-		Vector2{ pos.x + (CHIPSIZE),pos.y },
-		Vector2{ pos.x ,pos.y + (CHIPSIZE) },
-		Vector2{ pos.x + (CHIPSIZE),pos.y + (CHIPSIZE) });
+	//body_ = CollisionBase(
+	//	Vector2{ pos.x ,pos.y },
+	//	Vector2{ pos.x + (CHIPSIZE),pos.y },
+	//	Vector2{ pos.x ,pos.y + (CHIPSIZE) },
+	//	Vector2{ pos.x + (CHIPSIZE),pos.y + (CHIPSIZE) });
+	//body_.enabled(false);
 }
 
 void CollidelessFloor::onUpdate(float deltaTime)
@@ -41,7 +42,9 @@ void CollidelessFloor::onUpdate(float deltaTime)
 
 void CollidelessFloor::onDraw() const
 {
-	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
+	Vector2 pos = position_*inv_;
+	DrawGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), spriteID_, TRUE);
+	//spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
 }
 
 void CollidelessFloor::onCollide(Actor & other)

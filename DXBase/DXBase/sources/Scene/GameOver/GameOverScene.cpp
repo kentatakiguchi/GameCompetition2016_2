@@ -67,6 +67,8 @@ void GameOverScene::update() {
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
 
+	if (isEnd_)return;
+
 	if (targetPoint != 3)
 	{
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
@@ -134,6 +136,7 @@ void GameOverScene::draw() const {
 }
 
 void GameOverScene::end() {
+	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_GAMEOVER));
 
 }
 

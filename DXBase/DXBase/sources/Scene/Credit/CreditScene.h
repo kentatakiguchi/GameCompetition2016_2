@@ -19,6 +19,8 @@ private:
 	int timeCount;
 	int MovieGraphHandle;
 
+	int creditPosY;
+
 	bool isPlay_;
 };
 

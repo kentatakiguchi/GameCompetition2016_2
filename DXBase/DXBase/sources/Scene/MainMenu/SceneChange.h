@@ -5,6 +5,8 @@
 #include"../../Math/Vector2.h"
 #include<random>
 #include"../Base/Scene.h"
+#include"SceneChangeAnm.h"
+#include"../StageClear/StageClearTextAnm.h"
 
 static const int fadeTime = 100;
 
@@ -51,7 +53,7 @@ private:
 	std::map<int, Vector2> slimes;
 	std::map<int, ChangeSColor> slimeColors;
 	std::map<int, std::map<int, Vector2>> spawnPoses;
-
+	std::map<int, bool> isArrive_;
 	int allSizes;
 	
 	std::random_device random_;
@@ -66,4 +68,6 @@ private:
 	int changeCount;
 
 	bool isMainMenu_;
+
+	SceneChangeAnm anmer_;
 };

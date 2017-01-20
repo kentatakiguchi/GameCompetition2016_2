@@ -219,10 +219,12 @@ void MainMenuScene::start() {
 	mRettyAnim.change_dir(PlayerAnimID::SWIM, ActionType::Left);
 
 	mCursorPos = Vector2(500, 500);
+
 }
 
 void MainMenuScene::update() {
 
+	
 	Vector2 alphasize= ResourceLoader::GetInstance().GetTextureSize(TextureID::TITLE_BACK_ALPHA_TEX);
 
 	sinCount += FlashTempo;
@@ -443,6 +445,7 @@ void MainMenuScene::draw() const {
 			center = static_cast<int>(SCREEN_SIZE.x) / 2;
 			if (forcount == targetPoint&&isArrive.at(0))SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 			
+			if (count == 5)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 			if (count == 0) {
 				int psizex = 80;
 				int psizey = 80;

@@ -11,7 +11,7 @@ MapChip::MapChip(IWorld * world, Vector2 & position):rotate_(0),
 MapChip::MapChip(IWorld * world, Vector2 & position,CollisionBase& base) :
 	Actor(world, "MapChip", Vector2(position.x, position.y),base)
 {
-
+	rotate_ = 0;
 }
 
 MapChip::MapChip(IWorld * world, Vector2 & position, std::string name, CollisionBase & base)

@@ -40,6 +40,8 @@ void CreditScene::start() {
 	// ï`âÊêÊâÊñ Çó†âÊñ Ç…ÉZÉbÉg
 	SetDrawScreen(DX_SCREEN_BACK);
 	timeCount = 3;
+
+	creditPosY = 1080;
 }
 
 void CreditScene::update() {
@@ -47,14 +49,21 @@ void CreditScene::update() {
 	sinCount = sinCount % 360;
 	sinCount = min(max(sinCount, 0), 360);
 
-	timeCount -= static_cast<int>(Time::GetInstance().deltaTime());
+	creditPosY-=2;
 
-	if (!isPlay_) {
-		isPlay_ = true;
-		PlayMovie("./resources/file/pv.avi", 1, DX_MOVIEPLAYTYPE_BCANCEL);
+	if (creditPosY<-3840)
+	{
+		isEnd_ = true;
 	}
 
-	if (timeCount > 0)return;
+	//timeCount -= static_cast<int>(Time::GetInstance().deltaTime());
+
+	//if (!isPlay_) {
+	//	isPlay_ = true;
+	//	PlayMovie("./resources/file/pv.avi", 1, DX_MOVIEPLAYTYPE_BCANCEL);
+	//}
+
+	//if (timeCount > 0)return;
 	if (InputMgr::GetInstance().IsPushButton()) {
 		isEnd_=true;
 	}
@@ -71,6 +80,7 @@ void CreditScene::update() {
 }
 
 void CreditScene::draw() const {
+	DrawGraph(0, creditPosY, ResourceLoader::GetInstance().getTextureID(TextureID::CREDIT_TEX), TRUE);
 }
 
 void CreditScene::end() {}

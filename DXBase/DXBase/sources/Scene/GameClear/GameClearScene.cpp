@@ -93,7 +93,7 @@ void GameClearScene::update() {
 	}
 	targetPoint = min(max(targetPoint, 1), 1);
 
-	
+	if (isEnd_) return;
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))
 	{
 		isEnd_ = true;

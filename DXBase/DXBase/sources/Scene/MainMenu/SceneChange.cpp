@@ -7,29 +7,30 @@ static const float SdefTime = 0.05f;
 static const float SfallSpeed = 30;
 static const float SSlimePadd = 46;
 static const Vector2 SSlimeSize = Vector2(290, 130);
+static const float defPosY= -100;
 static const int LineSize = 8;
 SceneChange::SceneChange():isMainMenu_(false),isEnd_(true),isSlimeMax_(true),slimeCount(0),timeCount(SdefTime),deltaTime_(0),slimesetline(0), switchCount(0), mt(random_()),
 rand256(0, 255), randR(100, 255), randG(100, 255), randB(0, 200),randL(0, LineSize-1),changeCount(0)
 {
-	spawnPoses[0][0] = (Vector2((SSlimeSize.x - SSlimePadd)*(-0.5f), 0));
-	spawnPoses[0][1] = (Vector2((SSlimeSize.x - SSlimePadd) * 0.5f, 0));
-	spawnPoses[0][2] = (Vector2((SSlimeSize.x - SSlimePadd) * 1.5f, 0));
-	spawnPoses[0][3] = (Vector2((SSlimeSize.x - SSlimePadd) * 2.5f, 0));
-	spawnPoses[0][4] = (Vector2((SSlimeSize.x - SSlimePadd) * 3.5f, 0));
-	spawnPoses[0][5] = (Vector2((SSlimeSize.x - SSlimePadd) * 4.5f, 0));
-	spawnPoses[0][6] = (Vector2((SSlimeSize.x - SSlimePadd) * 5.5f, 0));
-	spawnPoses[0][7] = (Vector2((SSlimeSize.x - SSlimePadd) * 6.5f, 0));
+	spawnPoses[0][0] = (Vector2((SSlimeSize.x - SSlimePadd)*(-0.5f), defPosY));
+	spawnPoses[0][1] = (Vector2((SSlimeSize.x - SSlimePadd) * 0.5f, defPosY));
+	spawnPoses[0][2] = (Vector2((SSlimeSize.x - SSlimePadd) * 1.5f, defPosY));
+	spawnPoses[0][3] = (Vector2((SSlimeSize.x - SSlimePadd) * 2.5f, defPosY));
+	spawnPoses[0][4] = (Vector2((SSlimeSize.x - SSlimePadd) * 3.5f, defPosY));
+	spawnPoses[0][5] = (Vector2((SSlimeSize.x - SSlimePadd) * 4.5f, defPosY));
+	spawnPoses[0][6] = (Vector2((SSlimeSize.x - SSlimePadd) * 5.5f, defPosY));
+	spawnPoses[0][7] = (Vector2((SSlimeSize.x - SSlimePadd) * 6.5f, defPosY));
 	//spawnPoses[0][8] = (Vector2((SSlimeSize.x - SSlimePadd) * 7.5, 0));
 
-	spawnPoses[1][0] = (Vector2((spawnPoses[0].at(1).x-(SSlimeSize.x/2)) + SSlimePadd, 0));
-	spawnPoses[1][1] = (Vector2((spawnPoses[0].at(2).x - (SSlimeSize.x / 2)) + SSlimePadd, 0));
-	spawnPoses[1][2] = (Vector2((spawnPoses[0].at(3).x - (SSlimeSize.x / 2) + SSlimePadd), 0));
-	spawnPoses[1][3] = (Vector2((spawnPoses[0].at(4).x - (SSlimeSize.x / 2) + SSlimePadd), 0));
-	spawnPoses[1][4] = (Vector2((spawnPoses[0].at(5).x - (SSlimeSize.x / 2) + SSlimePadd), 0));
-	spawnPoses[1][5] = (Vector2((spawnPoses[0].at(6).x - (SSlimeSize.x / 2) + SSlimePadd), 0));
-	spawnPoses[1][6] = (Vector2((spawnPoses[0].at(7).x - (SSlimeSize.x / 2) + SSlimePadd), 0));
+	spawnPoses[1][0] = (Vector2((spawnPoses[0].at(1).x-(SSlimeSize.x/2)) + SSlimePadd, defPosY));
+	spawnPoses[1][1] = (Vector2((spawnPoses[0].at(2).x - (SSlimeSize.x / 2)) + SSlimePadd, defPosY));
+	spawnPoses[1][2] = (Vector2((spawnPoses[0].at(3).x - (SSlimeSize.x / 2) + SSlimePadd), defPosY));
+	spawnPoses[1][3] = (Vector2((spawnPoses[0].at(4).x - (SSlimeSize.x / 2) + SSlimePadd), defPosY));
+	spawnPoses[1][4] = (Vector2((spawnPoses[0].at(5).x - (SSlimeSize.x / 2) + SSlimePadd), defPosY));
+	spawnPoses[1][5] = (Vector2((spawnPoses[0].at(6).x - (SSlimeSize.x / 2) + SSlimePadd), defPosY));
+	spawnPoses[1][6] = (Vector2((spawnPoses[0].at(7).x - (SSlimeSize.x / 2) + SSlimePadd), defPosY));
 	//spawnPoses[1][7] = (Vector2((spawnPoses[0].at(8).x - (SSlimeSize.x / 2) + SSlimePadd), 0));
-	spawnPoses[1][7] = (Vector2((((SSlimeSize.x - SSlimePadd) *7.5f) - (SSlimeSize.x / 2) + SSlimePadd), 0));
+	spawnPoses[1][7] = (Vector2((((SSlimeSize.x - SSlimePadd) *7.5f) - (SSlimeSize.x / 2) + SSlimePadd), defPosY));
 	//spawnPoses[1][8] = (Vector2((((SSlimeSize.x - SSlimePadd) * 8.5) - (SSlimeSize.x / 2) + SSlimePadd), 0));
 
 	allSizes = spawnPoses[0].size() + spawnPoses[1].size();
@@ -65,6 +66,18 @@ void SceneChange::start(std::string next)
  			numberMap.push_back(i);
 		}
 		randL = std::uniform_int_distribution<>(0, numberMap.size() - 1);
+
+		//anmer_ = SceneChangeAnm();
+
+		anmer_.set();
+		//anmer_ = StageClearTextAnm();
+
+		int count=0;
+		for (auto i : isArrive_) {
+			isArrive_[count] = false;
+
+			count++;
+		}
 }
 
 void SceneChange::update()
@@ -98,8 +111,8 @@ void SceneChange::update()
 		if (slimes[i].y >= SCREEN_SIZE.y-SSlimeSize.y - (SSlimeSize.y*setline)) {
 			slimes[i].y = (SCREEN_SIZE.y-SSlimeSize.y)-(SSlimeSize.y*setline);
 			
-
-
+			isArrive_[i] = true;
+			
 			if (i % spawnPoses[slimesetline % 2].size() == spawnPoses[slimesetline % 2].size() -1&&i!=0) {
 				setline++;
 
@@ -142,6 +155,8 @@ void SceneChange::update()
 		randL = std::uniform_int_distribution<>(0, numberMap.size() - 1);
 
 	}
+	anmer_.update_e(0.016,isArrive_);
+
 }
 
 void SceneChange::fallSlimes()
@@ -151,16 +166,18 @@ void SceneChange::fallSlimes()
 	}
 	if (slimes.at(slimes.size()-1).y >= SCREEN_SIZE.y) isEnd_ = true;
 }
-
 void SceneChange::draw() const
+
 {
 	if (isEnd_)return;
 
 
 
 	for (int i = 0; i < slimeCount; i++) {
-		SetDrawBright(slimeColors.at(i).Red, slimeColors.at(i).Green, slimeColors.at(i).Blue);
-		DrawGraph(static_cast<int>(slimes.at(i).x), static_cast<int>(slimes.at(i).y), ResourceLoader::GetInstance().getTextureID(TextureID::CHANGE_SCENE_TEX), TRUE);
-		SetDrawBright(255, 255, 255);
+		//SetDrawBright(slimeColors.at(i).Red, slimeColors.at(i).Green, slimeColors.at(i).Blue);
+
+		anmer_.draw_e(i,slimes.at(i),0,1,Vector3(slimeColors.at(i).Red, slimeColors.at(i).Green, slimeColors.at(i).Blue));
+		//DrawGraph(static_cast<int>(slimes.at(i).x), static_cast<int>(slimes.at(i).y), ResourceLoader::GetInstance().getTextureID(TextureID::CHANGE_SCENE_TEX), TRUE);
+		//SetDrawBright(255, 255, 255);
 	}
 }
