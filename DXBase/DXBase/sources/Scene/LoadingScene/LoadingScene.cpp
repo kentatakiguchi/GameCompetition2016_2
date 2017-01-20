@@ -16,27 +16,32 @@ void LoadingScene::start(){
 
 	//ここにローディング専用のリソースを読み込む
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::SCENE_CHANGE_SLIME_ANM, "./resources/sprite/slimeanm.png", Vector2(256, 256), 8, 4, 2);
-	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::TEXT_STAGECLEAR_ANM_TEX, "./resources/sprite/Text/stageclear_anim.png", Vector2(640, 320), 6, 7, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::LOADING, "./resources/sprite/loading_anim.png", Vector2(623.0f, 120.0f), 3, 8, 0);
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_CLOSE, "./resources/sprite/DoorAnimClose.png", Vector2(320, 384), 6, 4, 1);
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_OPEN, "./resources/sprite/DoorAnimOpen.png", Vector2(320,384), 6, 4, 2);
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::HATENA, "./resources/sprite/hatena.png", Vector2(256, 256), 8, 5, 1);
 
 	// アニメーション生成
 	mLoadAnim.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::LOADING));
+	mLoadPuyo.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::SCENE_CHANGE_SLIME_ANM));
 	mLoadAnim.change_param(0);
+	mLoadPuyo.change_param(0);
 	//DerivationGraphと動画読み込みが非同期読み込みに対応していないため
-	//プレイヤー関連のロード
-	load_player_res();
-	load_enemy_res();
-	load_boss_res();
+
 	//動画
 	//Movie::GetInstance().Load(MOVIE_ID::TEST_MOVE, "./resources/Movie/Test.wmv");
 	//Movie::GetInstance().Load(MOVIE_ID::TEST2_MOVIE, "./resources/Movie/Test2.avi");
 	//非同期読み込みを開始
 	SetUseASyncLoadFlag(TRUE);
 	
+	//プレイヤー関連のロード
+	load_player_res();
+	load_enemy_res();
+	load_boss_res();
+
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_CLOSE, "./resources/sprite/DoorAnimClose.png", Vector2(320, 384), 6, 4, 1);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_OPEN, "./resources/sprite/DoorAnimOpen.png", Vector2(320, 384), 6, 4, 2);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::HATENA, "./resources/sprite/hatena.png", Vector2(256, 256), 8, 5, 1);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::TEXT_STAGECLEAR_ANM_TEX, "./resources/sprite/Text/stageclear_anim.png", Vector2(640, 320), 6, 7, 2);
+	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
+
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_1_TEX, "./resources/sprite/BackGraund/Stage1-1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_2_TEX, "./resources/sprite/BackGraund/Stage1-2.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_3_TEX, "./resources/sprite/BackGraund/Stage1-3.png");
@@ -162,6 +167,7 @@ void LoadingScene::start(){
 void LoadingScene::update(){
 	mAngle += 10.0f*Time::GetInstance().deltaTime();
 	mLoadAnim.update(Time::GetInstance().deltaTime());
+	mLoadPuyo.update(Time::GetInstance().deltaTime());
 	//読み込み処理が終わっていたら
 	if (GetASyncLoadNum()==0&&ProcessMessage()==0) {
 		isEnd_ = true;
@@ -170,7 +176,8 @@ void LoadingScene::update(){
 
 void LoadingScene::draw() const{
 	mLoadAnim.draw(mPosition - Vector2(0, 1) * 20, Vector2::Zero, 1.0f);
-	DrawRotaGraph(static_cast<int>(mPosition.x - 60.0f), static_cast<int>(mPosition.y + 25.0f), 0.3f, mAngle, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
+	mLoadPuyo.draw(mPosition - Vector2(128, 48), Vector2::Zero, 0.5f);
+	//DrawRotaGraph(static_cast<int>(mPosition.x - 60.0f), static_cast<int>(mPosition.y + 25.0f), 0.3f, mAngle, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
 }
 
 void LoadingScene::end(){

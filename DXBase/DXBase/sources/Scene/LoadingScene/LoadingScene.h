@@ -28,4 +28,5 @@ private:
 	Vector2 mPosition;
 	float mAngle;
 	Animation2D mLoadAnim;
+	Animation2D mLoadPuyo;
 };

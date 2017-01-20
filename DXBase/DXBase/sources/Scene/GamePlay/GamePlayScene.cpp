@@ -36,7 +36,14 @@ void GamePlayScene::start() {
 	deltaTime_ = Time::GetInstance().deltaTime();
 	stageTime_ = 0.0f;
 	//ステージを進める
-	stageNum_++;
+	if (keeper_->getSceneName() == "stage04")
+		stageNum_ = 1;
+	else if (keeper_->getSceneName() == "stage01")
+		stageNum_ = 2;
+	else if (keeper_->getSceneName() == "stage02")
+		stageNum_ = 3;
+	else if (keeper_->getSceneName() == "stage03")
+		stageNum_ = 4;
 
 	isStopped_ = false;
 

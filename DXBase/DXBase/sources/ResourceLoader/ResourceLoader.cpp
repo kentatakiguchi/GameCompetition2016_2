@@ -23,13 +23,20 @@ void ResourceLoader::loadTexture(const TextureID& id, const char* file_name) {
 
 void ResourceLoader::loadAnimation(const AnimationID & id, const char * file_name, const Vector2 & size, const int & row, const int & column, const int & surplus)
 {
-	int handle = LoadGraph(file_name);
-	for (int i = 0; i < column; ++i) {
-		for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
-			// Ø‚èŽæ‚é¶ã‚ÌÀ•W
-			Vector2 src = Vector2(j * size.x, i * size.y);
-			animations_[id].push_back(DerivationGraph(static_cast<int>(src.x), static_cast<int>(src.y), static_cast<int>(size.x), static_cast<int>(size.y), handle));
-		}
+	//int handle = LoadGraph(file_name);
+	//for (int i = 0; i < column; ++i) {
+	//	for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
+	//		// Ø‚èŽæ‚é¶ã‚ÌÀ•W
+	//		Vector2 src = Vector2(j * size.x, i * size.y);
+
+
+	//	}
+	//}
+
+	int handle[500];
+	LoadDivGraph(file_name, (row*column) - surplus, row,column, size.x, size.y, handle);
+	for (int i = 0; i < (row*column) - surplus; i++) {
+		animations_[id].push_back(handle[i]);
 	}
 }
 
