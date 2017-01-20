@@ -20,6 +20,7 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::LOADING, "./resources/sprite/loading_anim.png", Vector2(623.0f, 120.0f), 3, 8, 0);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_CLOSE, "./resources/sprite/DoorAnimClose.png", Vector2(320, 384), 6, 4, 1);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_OPEN, "./resources/sprite/DoorAnimOpen.png", Vector2(320,384), 6, 4, 2);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::HATENA, "./resources/sprite/hatena.png", Vector2(256, 256), 8, 5, 1);
 
 	// アニメーション生成
 	mLoadAnim.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::LOADING));
@@ -60,8 +61,8 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP1_TEX, "./resources/sprite/BackGraund/Stage2-Top1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP2_TEX, "./resources/sprite/BackGraund/Stage2-Top2.png");
 
-	ResourceLoader::GetInstance().loadTexture(TextureID::MOVIEBACK_TEX, "./resources/sprite/MovieBack.png");
-
+	ResourceLoader::GetInstance().loadTexture(TextureID::MOVIEBACK_TEX, "./resources/sprite/Tutoreal/MovieBack.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_BACK_TEX, "./resources/sprite/Tutoreal/tutorealFlame.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE3_1_TEX, "./resources/sprite/BackGraund/Stage3-1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE3_2_TEX, "./resources/sprite/BackGraund/Stage3-2.png");
@@ -133,6 +134,12 @@ void LoadingScene::start(){
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::DOOR_STAY_TEX, "./resources/sprite/DoorStay.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::DOOR_OPEN_TEX, "./resources/sprite/DoorOpen.png");
+
+
+	ResourceLoader::GetInstance().loadTexture(TextureID::STAGE_01_TEX, "./resources/sprite/Stage01.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::STAGE_02_TEX, "./resources/sprite/Stage02.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::STAGE_03_TEX, "./resources/sprite/Stage03.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::STAGE_04_TEX, "./resources/sprite/Stage04.png");
 
 	load_bgm_res();
 	load_se_res();

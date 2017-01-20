@@ -68,8 +68,8 @@ enum class TextureID {
 
 	BOSS_GAUGE_IN_TEX,
 	BOSS_GAUGE_OUT_TEX,
-	
-	ENEMY_NEEDLE_TEX,	
+
+	ENEMY_NEEDLE_TEX,
 
 	CHIP1_TEX,
 	CHIP2_TEX,
@@ -123,12 +123,18 @@ enum class TextureID {
 	TUTOREAL_COUNT_1_TEX,
 	TUTOREAL_COUNT_2_TEX,
 	DOOR_STAY_TEX,
-	DOOR_OPEN_TEX
+	DOOR_OPEN_TEX,
+	TUTOREAL_BACK_TEX,
+	STAGE_01_TEX,
+	STAGE_02_TEX,
+	STAGE_03_TEX,
+	STAGE_04_TEX
 };
 
 enum class AnimationID {
 	LOADING,
-
+	//？アニメーション
+	HATENA,
 	TEXT_STAGECLEAR_ANM_TEX,
 	//ドアアニメーション
 	DOOR_OPEN,
@@ -199,7 +205,7 @@ enum class AnimationID {
 	// ボス攻撃エフェクト
 	BOSS_EFFECT_ATTACK_SUIKOMI_30_TEX,
 	BOSS_EFFECT_ENTRY_SIGN_TEX
-}; 
+};
 
 enum class SoundID {
 	BGM_MENU,
@@ -224,7 +230,7 @@ enum MOVIE_ID {
 };
 
 
-class ResourceLoader{
+class ResourceLoader {
 private:
 	ResourceLoader();
 	~ResourceLoader();
