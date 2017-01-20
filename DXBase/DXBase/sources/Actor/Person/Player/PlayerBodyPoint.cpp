@@ -67,7 +67,7 @@ void PlayerBodyPoint::attract_update(float deltaTime){
 	//position_ += v1_ + v2_ + Vector2(0, 9.8f) / 10;
 
 	auto cntr = std::dynamic_pointer_cast<PlayerConnector>(world_->findActor("PlayerConnector"));
-
+	if (cntr == nullptr)return;
 	//if (cntr->length_sum() > PLAYER_MAX_NORMAL_LENGTH) {
 	v1_ = Vector2::Spring_v(position_, cntr->get_point(index_ + 1), v1_, stiffness_, friction_, mass_);
 	v2_ = Vector2::Spring_v(position_, cntr->get_point(index_ - 1), v2_, stiffness_, friction_, mass_);

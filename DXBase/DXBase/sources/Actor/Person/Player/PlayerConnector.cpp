@@ -13,7 +13,8 @@ PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, Playe
 	Actor(world, "PlayerConnector", position, CollisionBase()), butty_(butty), retty_(retty),
 	mPower(0.0f),
 	mPuyoTimer(0.0f),
-	mPuyoFlag(false) {
+	mPuyoFlag(false),
+	timer_(0){
 	// ƒ|ƒCƒ“ƒg‚Ì¶¬
 	create_point(PLAYER_CNTR_DIV_NUM);
 	stateMgr_.change(*this, PlayerState_Enum_Union::STAND_BY);
@@ -28,6 +29,7 @@ PlayerConnector::~PlayerConnector() {
 }
 
 void PlayerConnector::onUpdate(float deltaTime) {
+	timer_ += deltaTime;
 	position_ = (butty_->getPosition() + retty_->getPosition()) / 2;
 
 	for (int i = 0; i < points.size(); i++) {
@@ -97,7 +99,7 @@ bool PlayerConnector::is_damaged() {
 	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
 	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
 	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
-
+	if (timer_ < 3.0f)return false;
 	return !is_event_state && !is_leanback_state && !is_attack_state && (is_main_target_enemy || is_sub_target_enemy || for_debug);
 }
 

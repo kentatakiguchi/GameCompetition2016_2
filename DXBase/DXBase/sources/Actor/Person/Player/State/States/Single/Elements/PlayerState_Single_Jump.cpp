@@ -26,7 +26,9 @@ void PlayerState_Single_Jump::update(float deltaTime){
 	if (body_->able_to_jump()) change((unsigned int)PlayerState_Enum_Single::IDLE);
 }
 
-void PlayerState_Single_Jump::end(){}
+void PlayerState_Single_Jump::end(){
+	body_->reset_slope();
+}
 
 void PlayerState_Single_Jump::key_input(){
 	body_->move(InputMgr::GetInstance().KeyVector(keys_.right, keys_.left, keys_.up, keys_.down).Horizontal());

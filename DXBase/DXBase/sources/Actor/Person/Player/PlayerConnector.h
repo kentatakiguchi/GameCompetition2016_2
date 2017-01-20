@@ -41,7 +41,7 @@ private:
 
 	void puyoUpdate();
 private:
-
+	float timer_;
 
 	PlayerBodyPtr butty_;
 	PlayerBodyPtr retty_;

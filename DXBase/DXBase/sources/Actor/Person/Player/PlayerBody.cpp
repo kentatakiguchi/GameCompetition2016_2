@@ -72,7 +72,7 @@ void PlayerBody::onDraw() const {
 void PlayerBody::onLateUpdate(float deltaTime) {
 	collider_->pos_update(position_);
 	if (attack_collider_ != nullptr)attack_collider_->pos_update(position_);
-	collider_->reset_velocity();
+	//collider_->reset_velocity();
 	input_ = Vector2::Zero;
 	gravity_ = Vector2::Zero;
 	launch_ = Vector2::Zero;
@@ -140,7 +140,7 @@ void PlayerBody::onCollide(Actor & other) {
 	Vector2 myCenter, segCenter, segPoint, targetPoint, targetVec;
 	float posReset;
 	if (other.name_ == "SegmentCollider") {
-		opponent_ = HitOpponent::FLOOR_HIT;
+		opponent_ = HitOpponent::FLOOR_TOP;
 
 		//ü•ª‚Íposition‚ğ’†S‚Éæ‚é
 		//Vector2 myCenter = Vector2(previousPosition.x,previousPosition.y);

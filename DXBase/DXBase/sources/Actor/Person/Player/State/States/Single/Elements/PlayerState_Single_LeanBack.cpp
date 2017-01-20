@@ -28,5 +28,7 @@ void PlayerState_Single_LeanBack::end(){
 	body_->reset_dead_limit();
 
 	body_->reset_enemy();
+
+	body_->reset_slope();
 }
 

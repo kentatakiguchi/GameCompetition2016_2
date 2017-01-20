@@ -31,7 +31,10 @@ void PlayerState_Jump::update(float deltaTime) {
 	if (cntr_->getWorld()->isEntered()) change(PlayerState_Enum_Union::EVENT);
 }
 
-void PlayerState_Jump::end(){}
+void PlayerState_Jump::end(){
+	butty_->reset_slope();
+	retty_->reset_slope();
+}
 
 void PlayerState_Jump::key_input(){
 	butty_->move(InputMgr::GetInstance().KeyVector_R().Horizontal() / 2);
