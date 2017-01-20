@@ -17,9 +17,6 @@ void PlayerState_Union::common_init(Actor& actor, const ActionType& type){
 	cntr_ = dynamic_cast<PlayerConnector*>(&actor);
 	butty_ = cntr_->blue_body();
 	retty_ = cntr_->red_body();
-
-	//player_ = dynamic_cast<Player*>(&actor);
-	//cntr_ = player_->connector();
 }
 
 void PlayerState_Union::input(){

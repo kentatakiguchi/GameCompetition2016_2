@@ -5,7 +5,7 @@
 PlayerState_Attack::PlayerState_Attack() {}
 
 void PlayerState_Attack::unique_init(){
-	PlaySound("./resources/sounds/shot.mp3", DX_PLAYTYPE_BACK);
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_SHOT), DX_PLAYTYPE_BACK);
 
 	butty_->reset_opponent();
 	retty_->reset_opponent();
@@ -13,7 +13,6 @@ void PlayerState_Attack::unique_init(){
 	if (element_.type_ == ActionType::Right) {
 		launch_dir_ = Vector2::Normalize(retty_->getPosition() - butty_->getPosition());
 		chase_dir_ = Vector2::Normalize(retty_->getPosition() - butty_->getPosition());
-
 		//butty_->launch(dir_ * power_);
 		butty_->create_attack_collider_();
 	}

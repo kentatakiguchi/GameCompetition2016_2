@@ -27,8 +27,8 @@ GameOverScene::GameOverScene(SceneDataKeeper* keeper) :
 	std::vector<std::string> list2;
 	list2.push_back("次のステージへ");
 	listBase[1] = list2;
-	textPoses[1] = Vector2(200, 600);
-	textPoses[3] = Vector2(200, 600);
+	textPoses[1] = Vector2(500, 600);
+	textPoses[3] = Vector2(500, 600);
 	textPosList.push_back(textPoses[1]);
 	changeTextList.clear();
 
@@ -36,7 +36,7 @@ GameOverScene::GameOverScene(SceneDataKeeper* keeper) :
 	std::vector<std::string> list3;
 	list3.push_back("メニューに戻る");
 	listBase[2] = list3;
-	textPoses[2] = Vector2(200, 700);
+	textPoses[2] = Vector2(500, 700);
 	textPosList.push_back(textPoses[2]);
 	changeTextList.clear();
 
@@ -60,6 +60,13 @@ void GameOverScene::start() {
 
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_GAMEOVER), DX_PLAYTYPE_BACK);
 
+	mButtyAnim = PlayerAnimation2D("PlayerBody1");
+	mRettyAnim = PlayerAnimation2D("PlayerBody2");
+	mButtyAnim.change(PlayerAnimID::SWIM);
+	mRettyAnim.change(PlayerAnimID::SWIM);
+	mRettyAnim.change_dir(PlayerAnimID::SWIM, ActionType::Left);
+
+	mCursorPos = Vector2(500, 500);
 }
 
 void GameOverScene::update() {
@@ -106,6 +113,11 @@ void GameOverScene::update() {
 	//	isEnd_ = true;
 	//	//ゴールポイントについた時点でシーンを遷移
 	//}
+
+	mButtyAnim.update(Time::GetInstance().deltaTime());
+	mRettyAnim.update(Time::GetInstance().deltaTime());
+
+	mCursorPos = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f);
 }
 
 void GameOverScene::draw() const {
@@ -131,7 +143,8 @@ void GameOverScene::draw() const {
 		heightPoint = 0;
 	}
 
- 	DrawGraph(static_cast<int>(textPoses.at(targetPoint).x), static_cast<int>(textPoses.at(targetPoint).y), ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
+	mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
 
 }
 

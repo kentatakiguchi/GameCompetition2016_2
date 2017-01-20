@@ -13,6 +13,8 @@ void PlayerState_Hold::unique_init(){
 		retty_->animation().change(PlayerAnimID::HOLD);
 		butty_->animation().change(PlayerAnimID::SWIM);
 	}
+
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_SYOUTOTU), DX_PLAYTYPE_BACK);
 }
 
 void PlayerState_Hold::update(float deltaTime) {

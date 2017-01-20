@@ -8,6 +8,8 @@ void PlayerState_Single_Dead::unique_init(){
 
 void PlayerState_Single_Dead::update(float deltaTime){
 	if (body_->animation().end_anim())body_->dead();
+
+	body_->gravity();
 }
 
 void PlayerState_Single_Dead::end(){}

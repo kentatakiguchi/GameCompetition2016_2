@@ -28,7 +28,7 @@ GameClearScene::GameClearScene(SceneDataKeeper* keeper) :
 	std::vector<std::string> list2;
 	list2.push_back("ÉÅÉjÉÖÅ[Ç…ñﬂÇÈ");
 	listBase[1] = list2;
-	textPoses[1] = Vector2(200, 600);
+	textPoses[1] = Vector2(500, 600);
 	textPosList.push_back(textPoses[1]);
 	changeTextList.clear();
 	//OutputDebugString(listBase[0].at(0).c_str());
@@ -68,6 +68,14 @@ void GameClearScene::start() {
 
 	anmer_ = StageClearTextAnm();
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGECLEAR), DX_PLAYTYPE_BACK);
+
+	mButtyAnim = PlayerAnimation2D("PlayerBody1");
+	mRettyAnim = PlayerAnimation2D("PlayerBody2");
+	mButtyAnim.change(PlayerAnimID::SWIM);
+	mRettyAnim.change(PlayerAnimID::SWIM);
+	mRettyAnim.change_dir(PlayerAnimID::SWIM, ActionType::Left);
+
+	mCursorPos = Vector2(500, 500);
 }
 
 void GameClearScene::update() {
@@ -99,6 +107,12 @@ void GameClearScene::update() {
 		isEnd_ = true;
 		PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
 	}
+
+	mButtyAnim.update(Time::GetInstance().deltaTime());
+	mRettyAnim.update(Time::GetInstance().deltaTime());
+
+	mCursorPos = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f);
+
 }
 
 void GameClearScene::draw() const {
@@ -134,7 +148,8 @@ void GameClearScene::draw() const {
 		heightPoint = 0;
 	}
 	//DrawGraph(textPoses.at(targetPoint).x, textPoses.at(targetPoint).y, ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
-
+	mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
 }
 
 void GameClearScene::end() {

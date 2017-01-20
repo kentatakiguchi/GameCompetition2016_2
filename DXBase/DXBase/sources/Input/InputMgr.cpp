@@ -90,13 +90,13 @@ void InputMgr::RegistKeyCode(){
 	KeyName[KeyCode::L_SHIFT] = KEY_INPUT_LSHIFT;
 	KeyName[KeyCode::R_SHIFT] = KEY_INPUT_RSHIFT;
 
-	ButtonName[Buttons::BUTTON_CIRCLE] = PAD_INPUT_2;
-	ButtonName[Buttons::BUTTON_CROSS] = PAD_INPUT_3;
+	ButtonName[Buttons::BUTTON_CIRCLE] = PAD_INPUT_3;
+	ButtonName[Buttons::BUTTON_CROSS] = PAD_INPUT_2;
 	ButtonName[Buttons::BUTTON_START] = PAD_INPUT_10;
-	ButtonName[Buttons::BUTTON_L1] = PAD_INPUT_5;
-	ButtonName[Buttons::BUTTON_R1] = PAD_INPUT_7;
-	ButtonName[Buttons::BUTTON_L2] = PAD_INPUT_6;
-	ButtonName[Buttons::BUTTON_R2] = PAD_INPUT_8;
+	ButtonName[Buttons::BUTTON_L1] = PAD_INPUT_7;
+	ButtonName[Buttons::BUTTON_R1] = PAD_INPUT_8;
+	ButtonName[Buttons::BUTTON_L2] = PAD_INPUT_5;
+	ButtonName[Buttons::BUTTON_R2] = PAD_INPUT_6;
 	ButtonName[Buttons::BUTTON_UP] = PAD_INPUT_UP;
 	ButtonName[Buttons::BUTTON_DOWN] = PAD_INPUT_DOWN;
 	ButtonName[Buttons::BUTTON_RIGHT] = PAD_INPUT_RIGHT;

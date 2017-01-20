@@ -5,6 +5,8 @@ PlayerState_HoldBoth::PlayerState_HoldBoth() {}
 void PlayerState_HoldBoth::unique_init() {
 	butty_->animation().change(PlayerAnimID::HOLD);
 	retty_->animation().change(PlayerAnimID::HOLD);
+
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_SYOUTOTU), DX_PLAYTYPE_BACK);
 }
 
 void PlayerState_HoldBoth::update(float deltaTime) {

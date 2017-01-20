@@ -8,7 +8,7 @@ void PlayerState_Freeze::unique_init(){
 
 	timer_ = 0;
 
-	PlaySound("./resources/sounds/syoutotu.mp3", DX_PLAYTYPE_BACK);
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_SYOUTOTU), DX_PLAYTYPE_BACK);
 }
 
 void PlayerState_Freeze::update(float deltaTime){

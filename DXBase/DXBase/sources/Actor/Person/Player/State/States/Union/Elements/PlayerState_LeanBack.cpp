@@ -29,10 +29,6 @@ void PlayerState_LeanBack::end(){
 	retty_->reset_enemy();
 }
 
-void PlayerState_LeanBack::key_input()
-{
-}
+void PlayerState_LeanBack::key_input(){}
 
-void PlayerState_LeanBack::pad_input()
-{
-}
+void PlayerState_LeanBack::pad_input(){}

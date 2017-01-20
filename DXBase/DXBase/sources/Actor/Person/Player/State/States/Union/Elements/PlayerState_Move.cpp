@@ -6,33 +6,14 @@ void PlayerState_Move::unique_init(){
 	butty_->animation().change(PlayerAnimID::MOVE, 2.0f);
 	retty_->animation().change(PlayerAnimID::MOVE, 2.0f);
 
-	//if (element_.type_ == ActionType::Right) {
-	//	if (InputMgr::GetInstance().AnalogPadVectorR().x > 0) butty_->animation().change_dir(ActionType::Right);
-	//	if (InputMgr::GetInstance().AnalogPadVectorR().x < 0) butty_->animation().change_dir(ActionType::Left);
-	//}
-	//if (element_.type_ == ActionType::Left) {
-	//	if (InputMgr::GetInstance().AnalogPadVectorL().x > 0) retty_->animation().change_dir(ActionType::Right);
-	//	if (InputMgr::GetInstance().AnalogPadVectorL().x < 0) retty_->animation().change_dir(ActionType::Left);
-	//}
-
 	if (InputMgr::GetInstance().AnalogPadVectorR().x > 0) butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
 	if (InputMgr::GetInstance().AnalogPadVectorR().x < 0) butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
 
 	if (InputMgr::GetInstance().AnalogPadVectorL().x > 0) retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
 	if (InputMgr::GetInstance().AnalogPadVectorL().x < 0) retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
-
 }
 
 void PlayerState_Move::update(float deltaTime){
-	//if (element_.type_ == ActionType::Right) {
-	//	if (InputMgr::GetInstance().AnalogPadVectorR().x > 0) butty_->animation().change_dir(ActionType::Right);
-	//	if (InputMgr::GetInstance().AnalogPadVectorR().x < 0) butty_->animation().change_dir(ActionType::Left);
-	//}
-	//if (element_.type_ == ActionType::Left) {
-	//	if (InputMgr::GetInstance().AnalogPadVectorL().x > 0) retty_->animation().change_dir(ActionType::Right);
-	//	if (InputMgr::GetInstance().AnalogPadVectorL().x < 0) retty_->animation().change_dir(ActionType::Left);
-	//}
-
 	if (InputMgr::GetInstance().AnalogPadVectorR().x > 0) butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
 	if (InputMgr::GetInstance().AnalogPadVectorR().x < 0) butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
 

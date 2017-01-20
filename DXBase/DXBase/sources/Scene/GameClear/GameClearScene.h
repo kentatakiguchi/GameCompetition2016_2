@@ -5,6 +5,7 @@
 #include<map>
 #include"../../ResourceLoader/ResourceLoader.h"
 #include"../StageClear/StageClearTextAnm.h"
+#include "../../Animation/Player/PlayerAnimation2D.h"
 
 class GameClearScene : public IScene {
 public:
@@ -42,6 +43,11 @@ private:
 	//背景画像の移動先を決める
 	std::vector<int> changeTargetChecker;
 
+	// キャラアニメーション
+	PlayerAnimation2D mButtyAnim;
+	PlayerAnimation2D mRettyAnim;
+	// 選択時の座標
+	Vector2 mCursorPos;
 };
 
 #endif

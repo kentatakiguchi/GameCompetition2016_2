@@ -4,6 +4,7 @@
 #include "../Base/IScene.h"
 #include<map>
 #include"../../ResourceLoader/ResourceLoader.h"
+#include "../../Animation/Player/PlayerAnimation2D.h"
 
 class GameOverScene : public IScene{
 public:
@@ -24,6 +25,11 @@ private:
 	std::map<int, Scene> nextScene;
 	std::map<int, Vector2> textPoses;
 
+	// キャラアニメーション
+	PlayerAnimation2D mButtyAnim;
+	PlayerAnimation2D mRettyAnim;
+	// 選択時の座標
+	Vector2 mCursorPos;
 };
 
 #endif
