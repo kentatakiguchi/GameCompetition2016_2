@@ -6,7 +6,7 @@
 #include "../../Math/Math.h"
 #include"PauseScreen.h"
 #include"MoveScreen.h"
-
+#include "../../ResourceLoader/ResourceLoader.h"
 class World;
 class BackGraundManager;
 class GamePlayScene : public IScene{
@@ -34,6 +34,13 @@ private:
 
 	PauseScreen pause_;
 	MoveScreen move_;
+
+	//ステージ紹介のα
+	float stageAlpha_;
+	float stageTime_;
+	bool stageFlag_;
+	std::vector<TextureID> stageTexs_;
+	int stageNum_;
 };
 
 #endif

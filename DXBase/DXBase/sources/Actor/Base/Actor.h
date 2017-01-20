@@ -50,8 +50,6 @@ public:
 	Matrix getRotate() const;
 	// 変換行列を返す
 	Matrix getPose() const;
-
-	//void inv();
 	// 子の検索
 	ActorPtr findCildren(const std::string& name);
 	// 子の検索
@@ -84,8 +82,6 @@ public:
 	IWorld* getWorld();
 	//Bodyの取得 return:CollisionBase
 	CollisionBase getBody();
-	////
-	//Matrix InitializeInv(Vector2 position);
 	// メッセージ処理
 	void handleMessage(EventMessage message, void* param);
 	// コピー禁止
@@ -134,19 +130,10 @@ public:
 	float				alpha_;
 
 	Matrix inv_;
-	//Matrix resInv_;
-	//補正された速度
-	Vector2 mVelo;
+
 private:
 	// 子アクター
 	std::forward_list<ActorPtr> children_;
-	//補正用速度
-	Vector2 velo;
-	//1フレーム前
-	Vector2 mPrePos;
-	//1フレーム後
-	Vector2 mCurPos;
-
 };
 
 #endif

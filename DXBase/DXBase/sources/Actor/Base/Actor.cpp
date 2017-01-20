@@ -12,8 +12,8 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, co
 	rotation_(Matrix::Identity),
 	body_(body),
 	dead_(false),
-	alpha_(0.0f),
-	velo(Vector2::Zero){
+	alpha_(0.0f){
+	inv_ = world_->GetInv();
 	//inv_ = Matrix::Identity;
 	//if(world->findActor("Player")==nullptr)
 	//	InitializeInv(world_->GetPlayerPos());
@@ -97,65 +97,6 @@ Matrix Actor::getPose() const {
 	return Matrix().Translation(Vector3(position_.x, position_.y));
 	//return Matrix(rotation_).Translation(Vector3(position_.x, position_.y));
 }
-
-//void Actor::inv() {
-//	if (world_ == nullptr) return;
-//	auto player = world_->findActor("Player");
-//	if (player == nullptr)return;
-//	ScroolJudge scrool = world_->GetScroolJudge();
-//	//1フレーム前の座標
-//	mPrePos = Vector2(inv_.Translation().x, inv_.Translation().y);
-//	//スクロールストップ処理
-//	Matrix playerMat;
-//	playerMat = player->getPose();
-//
-//	float clampPosX = MathHelper::Clamp(playerMat.Translation().x, 0.0f, scrool.scroolStop.x);
-//	float clampPosY = MathHelper::Clamp(playerMat.Translation().y, 0.0f, scrool.scroolStop.y);
-//	if (scrool.scroolJudge.x == 0)
-//		clampPosX = PLAYER_SCREEN_POSITION.x;
-//	if (scrool.scroolJudge.y == 0)
-//		clampPosY = PLAYER_SCREEN_POSITION.y;
-//	playerMat.Translation(Vector3(clampPosX, clampPosY, 0.0f));
-//
-//	//行くべき位置を設定(matrix版)
-//	resInv_ = Matrix::Invert(playerMat) *
-//		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
-//	//行くべき位置を設定
-//	Vector2 resPos = Vector2(resInv_.Translation().x, resInv_.Translation().y);
-//	Vector2 pos = Vector2(inv_.Translation().x, inv_.Translation().y);
-//
-//	Spring(pos, resPos, velo);
-//	//補正された移動マトリックス代入
-//	inv_ = Matrix::CreateTranslation(Vector3(
-//		pos.x*scrool.scroolJudge.x,
-//		pos.y*scrool.scroolJudge.y,
-//		0.0f));
-//
-//	//1フレーム後の座標
-//	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);
-//	//移動量を計算
-//	mVelo = mPrePos - mCurPos;
-//	mVelo = Vector2(mVelo.x*scrool.scroolJudge.x, mVelo.y * scrool.scroolJudge.y);
-//}
-//
-//Matrix Actor::InitializeInv(Vector2 position){
-//	//1フレーム前の座標
-//	mPrePos = Vector2(inv_.Translation().x, inv_.Translation().y);
-//	Matrix playerMat;
-//	ScroolJudge scrool = world_->GetScroolJudge();
-//	playerMat.Translation(Vector3(position.x, position.y, 0.0f));
-//
-//	inv_ = Matrix::Invert(playerMat) *
-//		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
-//	resInv_= Matrix::Invert(playerMat) *
-//		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
-//
-//	//1フレーム後の座標
-//	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);
-//	//移動量を計算
-//	//mVelo = mPrePos - mCurPos;
-//	return inv_;
-//}
 
 // 子の検索
 ActorPtr Actor::findCildren(const std::string& name) {

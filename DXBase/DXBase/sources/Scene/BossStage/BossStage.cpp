@@ -77,6 +77,9 @@ void BossStage::start() {
 	world_->CollisitionOffOn(false);
 	world_->clear(false);
 	door_->DoorOpen(true);
+
+	hatenaAnm_.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::HATENA));
+	hatenaAnm_.change_param(0, 0.0f);
 }
 
 void BossStage::update() {
@@ -91,6 +94,9 @@ void BossStage::update() {
 		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(150.0f, 0.0f));
 		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(150.0f, 0.0f));
 	}
+	else if (mIvemtTime > 7.0f&&mIvemtTime <= 8) {
+		hatenaAnm_.change_param(0, 1.0f);
+	}
 	else if (mIvemtTime >= 9.0f&&mIvemtTime <= 15.0f) {
 		boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 8 - 5), 4.0f);
 	}
@@ -102,15 +108,18 @@ void BossStage::update() {
 
 	}
 
+	if (hatenaAnm_.end_anim()) hatenaAnm_.change_param(0, 0.0f);
+
 	world_->update(deltaTime_);
 	backManager->Update(deltaTime_);
+	hatenaAnm_.update(deltaTime_);
 
 
 	// ボスが死亡したら、クリアする
 	if (boss_->isSceneEnd())
 		world_->clear(true);
 
-	auto player = world_->findActor("Player");
+	player = world_->findActor("Player");
 	isEnd_ = player == nullptr || world_->is_clear();
 	if (player == nullptr) {
 		nextScene_ = Scene::GameOver;
@@ -130,13 +139,15 @@ void BossStage::update() {
 	if (!isEnd_) {
 		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
 	}
+
 }
 
 void BossStage::draw() const {
 	backManager->Draw();
 	//world描画
 	world_->draw();
-
+	Vector2 pos = player->getPosition()-Vector2(0,256+128);
+	hatenaAnm_.draw(pos,Vector2::Zero,Vector2(0.7,0.7),0);
 	isStopped_ ? pause_.draw() : move_.draw();
 
 }

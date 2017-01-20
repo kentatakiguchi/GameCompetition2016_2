@@ -8,7 +8,7 @@
 #include"../GamePlay/MoveScreen.h"
 #include "../../Animation/Base/Animation2D.h"
 #include "../../Actor/Door/Door.h"
-
+#include "../../Animation/Base/Animation2D.h"
 class World;
 class BackGraundManager;
 class BaseBoss;
@@ -43,6 +43,10 @@ private:
 
 	PauseScreen pause_;
 	MoveScreen move_;
+
+	ActorPtr player;
+
+	Animation2D hatenaAnm_;
 };
 
 #endif

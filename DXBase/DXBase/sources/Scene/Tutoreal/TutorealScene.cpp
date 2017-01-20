@@ -91,7 +91,7 @@ void TutorealScene::start()
 	//動画サイズ取得
 	Vector2 movieSize = Movie::GetInstance().GetMovieSize(tutorels_[tutorealRoopCount_].movieID)*0.1f;
 	//動画の位置設定
-	moviePos_ = Vector2(SCREEN_SIZE.x - movieSize.x-128, 150);
+	moviePos_ = Vector2(SCREEN_SIZE.x - movieSize.x - 16, 150);
 	movieResPos1_ = moviePos_;
 	movieResPos2_ = Vector2(SCREEN_SIZE.x / 2, SCREEN_SIZE.y / 2);
 	//デルタタイム
@@ -124,7 +124,7 @@ void TutorealScene::start()
 	//プレイヤーを追加
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>
 		(world_.get(), gener.findStartPoint("./resources/file/" + name_ + ".csv")));
-	
+
 	world_->CollisitionOffOn(true);
 	//マップ生成
 	gener.create("./resources/file/" + name_ + ".csv", 0, 0);
@@ -137,7 +137,7 @@ void TutorealScene::start()
 void TutorealScene::update()
 {
 	//Tを押したらチュートリアル動画が再生される
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T)) {
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T)&&!isClear_) {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 		isMovie_ = !isMovie_;
@@ -176,12 +176,12 @@ void TutorealScene::update()
 	}
 	//最後のチュートリアルだけの処理
 	else if (isClear_) {
-		if (tutorels_.back().textIDs.size()-1 == tutorealTexCount_&&
+		if (tutorels_.back().textIDs.size() - 1 == tutorealTexCount_&&
 			InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE)) {
 			isEnd_ = true;
 		}
 		//クリアーした時だけ強制
-		if (resTutorealTexCount_== 0) resTutorealTexCount_++;
+		if (resTutorealTexCount_ == 0) resTutorealTexCount_++;
 
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE) && feedAlpha_ >= 1.0f) {
 			resTutorealTexCount_++;
@@ -198,11 +198,14 @@ void TutorealScene::update()
 		feedAlpha_ = MathHelper::Clamp(feedAlpha_, 0.0f, 1.0f);
 	}
 
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
+		isClear_ = true;
+
 	if (!isClear_)
 		EndTutoreal(endTutorealCount_);
 
 
-	if(!isStopped_)
+	if (!isStopped_)
 		world_->update(deltaTime_);
 }
 
@@ -212,23 +215,23 @@ void TutorealScene::draw() const
 
 	//αブレンド
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
-	//上の部分
-	//DrawGraph(16, 8, ResourceLoader::GetInstance().getTextureID(TextureID::TUTOREAL_BACK_TEX), TRUE);
 	//テキスト部分
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0, 255, feedAlpha_));
-	DrawGraph(32, 16, ResourceLoader::GetInstance().getTextureID(tutorealTexs_[tutorealTexCount_]), TRUE);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
+	Vector2 size = ResourceLoader::GetInstance().GetTextureSize(TextureID::TUTOREAL_BACK_TEX)*0.93f / 2.0f;
+	DrawRotaGraphF(32 + size.x, 16 + size.y, 0.93f, 0, ResourceLoader::GetInstance().getTextureID(TextureID::TUTOREAL_BACK_TEX), TRUE);
+	if (isClear_)SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0, 255, feedAlpha_));
+	DrawGraph(64, 64, ResourceLoader::GetInstance().getTextureID(tutorealTexs_[tutorealTexCount_]), TRUE);
 	//時間とカウント部分
 	if (!tutorealTimes_.empty() && (int)stickTime_ != -1 && (int)endCount_ != -1)
-		DrawGraph(32, 256, ResourceLoader::GetInstance().getTextureID(tutorealTimes_[countAndTime_]), TRUE);
+		DrawGraph(32, 256 + 128, ResourceLoader::GetInstance().getTextureID(tutorealTimes_[countAndTime_]), TRUE);
 	//αブレンド終わり
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
+
+	//動画
+	Movie::GetInstance().DrawRotaMovie(movieId_, moviePos_, size_);
 
 	//動画の後ろの画像
 	int id = ResourceLoader::GetInstance().getTextureID(TextureID::MOVIEBACK_TEX);
 	DrawRotaGraph(moviePos_.x, moviePos_.y, size_, 0.0f, id, TRUE);
-	//動画
-	Movie::GetInstance().DrawRotaMovie(movieId_, moviePos_, size_);
 }
 
 void TutorealScene::end()

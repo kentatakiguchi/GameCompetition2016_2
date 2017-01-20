@@ -21,7 +21,11 @@ GamePlayScene::GamePlayScene(SceneDataKeeper* keeper) :nextScene_(Scene::GameOve
 	keeper_ = keeper;
 	name_ = "stage00";
 	deltaTime_ = 1 / 60.f;
-
+	stageNum_ = 0;
+	stageTexs_.push_back(TextureID::STAGE_01_TEX);
+	stageTexs_.push_back(TextureID::STAGE_02_TEX);
+	stageTexs_.push_back(TextureID::STAGE_03_TEX);
+	stageTexs_.push_back(TextureID::STAGE_04_TEX);
 }
 
 GamePlayScene::~GamePlayScene() {
@@ -30,7 +34,16 @@ GamePlayScene::~GamePlayScene() {
 void GamePlayScene::start() {
 
 	deltaTime_ = Time::GetInstance().deltaTime();
+	stageTime_ = 0.0f;
+	//ステージを進める
+	stageNum_++;
+
 	isStopped_ = false;
+
+	stageAlpha_ = 0.0f;
+	stageTime_ = 0.0f;
+	stageFlag_ = true;
+
 	//SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
 	world_->CollisitionOffOn(true);
@@ -60,7 +73,7 @@ void GamePlayScene::start() {
 	else if (name_ == "stage03")
 		world_->SetScroolJudge(Vector2(0, 1), Vector2(SCREEN_SIZE.x / 2, csvSize.y*CHIPSIZE - SCREEN_SIZE.y / 2.0f));
 	else if (name_ == "stage04")
-		world_->SetScroolJudge(Vector2(1, 1),  Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
+		world_->SetScroolJudge(Vector2(1, 1), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
 
 
 	backManager = new BackGraundManager(world_.get());
@@ -74,14 +87,14 @@ void GamePlayScene::start() {
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_1_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX,0.0f,true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, 0.0f, true);
 
 		//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 		//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 	}
 	else if (name_ == "stage02")
 	{
-		float graundPos = csvSize.y*CHIPSIZE -SCREEN_SIZE.y-(PLAYER_SCREEN_POSITION.y-SCREEN_SIZE.y);
+		float graundPos = csvSize.y*CHIPSIZE - SCREEN_SIZE.y - (PLAYER_SCREEN_POSITION.y - SCREEN_SIZE.y);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_3_TEX, TextureID::BACKSTAGE2_3_TEX, graundPos, false, true);
@@ -105,7 +118,7 @@ void GamePlayScene::start() {
 		backManager->SetBackGraund(TextureID::BACKSTAGE4_1_TEX, TextureID::BACKSTAGE4_1_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE4_2_TEX, TextureID::BACKSTAGE4_2_TEX);
 
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE4_1_TEX,2);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE4_1_TEX, 2);
 	}
 
 	world_->clear(false);
@@ -122,10 +135,20 @@ void GamePlayScene::start() {
 }
 
 void GamePlayScene::update() {
+	if (stageFlag_) {
+		stageAlpha_ += Time::GetInstance().deltaTime();
+		if (stageAlpha_ >= 1.0f) {
+			stageFlag_ = false;
+		}
+	}
+	else
+	{
+		stageTime_ += Time::GetInstance().deltaTime();
+		if (stageTime_ >= 3.0f) stageAlpha_ -= Time::GetInstance().deltaTime();
+	}
+	stageAlpha_ = MathHelper::Clamp(stageAlpha_, 0.0f, 1.0f);
 
-	
-
-	if (InputMgr::GetInstance().IsButtonDown (Buttons::BUTTON_START)) {
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_START)) {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 	}
@@ -162,6 +185,12 @@ void GamePlayScene::draw() const {
 	//world描画
 	world_->draw();
 
+	int stage = stageNum_ - 1;
+	Vector2 size = ResourceLoader::GetInstance().GetTextureSize(stageTexs_[stage])/2;
+	Vector2 pos = SCREEN_SIZE/2 - size;
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0, 255, stageAlpha_));
+	DrawGraph(pos.x, pos.y, ResourceLoader::GetInstance().getTextureID(stageTexs_[stage]),true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	isStopped_ ? pause_.draw() : move_.draw();
 	backManager->BackDraw();
 }
