@@ -56,12 +56,8 @@ void PlayerState_Hold::end(){
 }
 
 void PlayerState_Hold::key_input(){
-	if (element_.type_ == ActionType::Right) {
-		retty_->move(InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S));
-	}
-	if (element_.type_ == ActionType::Left) {
-		butty_->move(InputMgr::GetInstance().KeyVector());
-	}
+	if (element_.type_ == ActionType::Right) retty_->move(InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S) * 7.5f);
+	if (element_.type_ == ActionType::Left) butty_->move(InputMgr::GetInstance().KeyVector() * 7.5f);
 
 	if (!InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && element_.type_ == ActionType::Right) {
 		if (retty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.7f)change(PlayerState_Enum_Union::ATTACK, ActionType::Right);
@@ -81,8 +77,8 @@ void PlayerState_Hold::key_input(){
 }
 
 void PlayerState_Hold::pad_input(){
-	if (element_.type_ == ActionType::Right) retty_->move(InputMgr::GetInstance().AnalogPadVectorL());
-	if (element_.type_ == ActionType::Left)  butty_->move(InputMgr::GetInstance().AnalogPadVectorR());
+	if (element_.type_ == ActionType::Right) retty_->move(InputMgr::GetInstance().AnalogPadVectorL() * 7.5f);
+	if (element_.type_ == ActionType::Left)  butty_->move(InputMgr::GetInstance().AnalogPadVectorR() * 7.5f);
 
 	if (!InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && element_.type_ == ActionType::Right) {
 		if (retty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.7f)change(PlayerState_Enum_Union::ATTACK, ActionType::Right);

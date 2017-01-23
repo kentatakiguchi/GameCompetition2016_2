@@ -7,7 +7,7 @@
 
 // コンストラクタ
 Player::Player(IWorld * world, const Vector2 & position) :
-	Actor(world, "Player", position, CollisionBase()) {
+	Actor(world, "Player", position, CollisionBase()), input_count_(0) {
 	// bodyの生成
 	create_bodys();
 	// コネクタの生成
@@ -68,15 +68,23 @@ void Player::update_state(float deltaTime) {
 void Player::connect() {
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_PUYON), DX_PLAYTYPE_BACK);
 	addChild(std::make_shared<PlayerConnector>(world_, position_, butty_, retty_));
+	input_count_ = 0;
 }
 
 // 接続可能かどうか
 bool Player::is_connectable() {
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) ||
+		InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) ||
+		InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1) ||
+		InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1)) {
+		input_count_++;
+	}
+
 	bool is_main_target_partner = butty_->hit_partner() == HitOpponent::PARTNER;
 	bool is_sub_target_partner = retty_->hit_partner() == HitOpponent::PARTNER;
 	bool for_debug = false;	//InputMgr::GetInstance().IsKeyDown(KeyCode::C);
 
-	return (is_main_target_partner || is_sub_target_partner || for_debug);
+	return (input_count_ >= 10 || is_main_target_partner || is_sub_target_partner || for_debug);
 }
 
 // 死亡したかどうか
