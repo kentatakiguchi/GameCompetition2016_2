@@ -42,9 +42,9 @@ const static float UPDOWNRANGE = 3;
 
 static const int FlashTempo = 3;
 
-static const float LRMoveSpeed = 1;
+static const float LRMoveSpeed = 2;
 
-static const float UDMoveSpeed = 1;
+static const float UDMoveSpeed = 2;
 
 /*** ‰i–ì ***/
 

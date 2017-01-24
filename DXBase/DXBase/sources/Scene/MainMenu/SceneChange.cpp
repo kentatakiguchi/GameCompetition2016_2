@@ -36,14 +36,14 @@ rand256(0, 255), randR(100, 255), randG(100, 255), randB(0, 200),randL(0, LineSi
 	allSizes = spawnPoses[0].size() + spawnPoses[1].size();
 }
 
-void SceneChange::start(std::string next)
+void SceneChange::start(std::string next,std::string tonexScene)
 {
 
 	changeCount = 0;
 	isEnd_ = false;
 	isSlimeMax_ = false;
 
-	if (next != "MainMenu") {
+	if (next != "MainMenu"||tonexScene=="GameEnd") {
 		isMainMenu_ = false;
 		return;
 	}

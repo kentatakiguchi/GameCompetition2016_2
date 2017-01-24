@@ -19,6 +19,9 @@ void StageClearTextAnm::update_e(float deltaTime) {
 
 void StageClearTextAnm::draw_e(const Vector2 & position, const Vector2 & origin, const float & scale)const {
 	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
-	draw(position, origin, scale);
+
+	Vector2 drawPos = Vector2(position.x - ((ResourceLoader::GetInstance().GetTextureSize(AnimationID::TEXT_STAGECLEAR_ANM_TEX).x/2)*scale), position.y);
+
+	draw(drawPos, origin, scale);
 	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }

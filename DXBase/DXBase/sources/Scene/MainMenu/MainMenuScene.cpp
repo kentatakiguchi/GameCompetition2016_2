@@ -28,8 +28,8 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 
 	textIDs[0] = TextureID::TEXT_TITLE_TEX;
 	textIDs[1] = TextureID::TEXT_GAMESTART_TEX;
-	textIDs[2] = TextureID::TEXT_CREDIT_TEX;
-	textIDs[3] = TextureID::TEXT_TUTORIAL_TEX;
+	textIDs[2] = TextureID::TEXT_TUTORIAL_TEX;
+	textIDs[3] = TextureID::TEXT_CREDIT_TEX;
 	textIDs[4] = TextureID::TEXT_GAMEEND_TEX;
 	textIDs[5] = TextureID::TEXT_MARU_TEX;
 
@@ -41,8 +41,8 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	defposlist[5] = 450;
 
 	nextScene[1] = GamePlay;
-	nextScene[2] = Credit;
-	nextScene[3] = Tutoreal;
+	nextScene[2] = Tutoreal;
+	nextScene[3] = Credit;
 	nextScene[4] = GameEnd;
 
 
@@ -73,7 +73,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list3;
-	list3.push_back("クレジット");
+	list3.push_back("チュートリアル");
 	listBase[2] = list3;
 	textPoses[2] = Vector2(500, 600);
 	textPosList.push_back(textPoses[2]);
@@ -84,7 +84,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 
 	listBase.push_back(changeTextList);
 	std::vector<std::string> list4;
-	list4.push_back("チュートリアル");
+	list4.push_back("クレジット");
 	listBase[3] = list4;
 	textPoses[3] = Vector2(500, 700);
 	textPosList.push_back(textPoses[3]);
@@ -218,7 +218,7 @@ void MainMenuScene::start() {
 	mRettyAnim.change(PlayerAnimID::SWIM);
 	mRettyAnim.change_dir(PlayerAnimID::SWIM, ActionType::Left);
 
-	mCursorPos = Vector2(500, 500);
+	mCursorPos = Vector2(SCREEN_SIZE.x/2-128, 500);
 
 }
 
@@ -370,7 +370,7 @@ void MainMenuScene::update() {
 	mButtyAnim.update(Time::GetInstance().deltaTime());
 	mRettyAnim.update(Time::GetInstance().deltaTime());
 
-	mCursorPos = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f);
+	mCursorPos.y = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f).y;
 }
 void MainMenuScene::slideText(int targettext)
 {
@@ -451,8 +451,14 @@ void MainMenuScene::draw() const {
 				int psizey = 80;
 				DrawExtendGraph(center - (748+psizex / 2), textPosList.at(count).y, center + (748+psizex / 2), textPosList.at(count).y + 155+psizey, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_TITLE_TEX), TRUE);
 			}
+			else if (count == targetPoint) {
+				DrawRotaGraph2(center, textPosList.at(count).y, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x/2, 0, 1.5,0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			}
+			else if(count>targetPoint){
+				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x/2, static_cast<int>(textPosList.at(count).y+ ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			}
 			else {
-				DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x/2, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			heightPoint++;
@@ -466,8 +472,8 @@ void MainMenuScene::draw() const {
 	}
 
 
-	mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
-	mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
+	mButtyAnim.draw(mCursorPos + Vector2::Left * 420, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 580, Vector2::Zero, 0.5f);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 

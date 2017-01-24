@@ -31,6 +31,9 @@ public:
 	std::string getName() {
 		return name_;
 	}
+	virtual std::string nextName() {
+		return "next";
+	}
 	void setName(std::string name) {
 		name_=name;
 	}

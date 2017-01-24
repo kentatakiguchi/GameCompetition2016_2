@@ -5,8 +5,9 @@
 #include "State/States/Single/PlayerStateMgr_Single.h"
 #include "PlayerPtr.h"
 #include "HitOpponent.h"
-
+#include<map>
 #include "../../../Animation/Player/PlayerAnimation2D.h"
+#include"../../../ResourceLoader/ResourceLoader.h"
 
 // ÉvÉåÅ[ÉÑÅ[
 class PlayerBody : public Actor {
@@ -84,6 +85,8 @@ private:
 	float mass_;
 
 	Vector2 suction_;
+
+	std::map<int,TextureID> NumIDs;
 };
 
 

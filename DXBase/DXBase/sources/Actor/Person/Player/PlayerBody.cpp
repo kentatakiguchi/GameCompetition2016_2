@@ -31,6 +31,13 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	// グラフィックのロード
 	animation_ = PlayerAnimation2D(name_);
 	animation_.change(PlayerAnimID::IDLE, 2.0f);
+
+	NumIDs[0] = TextureID::NUMBER_ZERO_TEX;
+	NumIDs[1] = TextureID::NUMBER_ONE_TEX;
+	NumIDs[2] = TextureID::NUMBER_TWO_TEX;
+	NumIDs[3] = TextureID::NUMBER_THREE_TEX;
+	NumIDs[4] = TextureID::NUMBER_FOUR_TEX;
+	NumIDs[5] = TextureID::NUMBER_FIVE_TEX;
 }
 
 PlayerBody::~PlayerBody() {}
@@ -67,6 +74,15 @@ void PlayerBody::onDraw() const {
 
 	if (world_->isEntered())return;
 	animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
+
+
+	if (dead_limit_ <= 0)return;
+
+	int graphNum = (int)ceil(PLAYER_DEAD_LIMIT - dead_limit_);
+	graphNum = min((int)PLAYER_DEAD_LIMIT, max(0, graphNum));
+	Vector2 drawPos = (position_+Vector2(-(CHIPSIZE/2),-(ResourceLoader::GetInstance().GetTextureSize(AnimationID::PLAYER_BUTTY_IDLE).y/2)))*inv_;
+	DrawGraph( drawPos.x,drawPos.y, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
+	//DrawFormatString(0, 0, GetColor(255, 255, 255), "%f", PLAYER_DEAD_LIMIT-dead_limit_);
 }
 
 void PlayerBody::onLateUpdate(float deltaTime) {

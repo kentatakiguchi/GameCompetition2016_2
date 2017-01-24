@@ -51,7 +51,7 @@ void CreditScene::update() {
 
 	creditPosY-=2;
 
-	if (creditPosY<-3840)
+	if (creditPosY<-3300)
 	{
 		isEnd_ = true;
 	}

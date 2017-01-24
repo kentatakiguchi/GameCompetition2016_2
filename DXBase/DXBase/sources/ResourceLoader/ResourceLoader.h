@@ -15,8 +15,6 @@ enum class ModelID {
 
 enum class TextureID {
 
-
-
 	//背景画像
 	BACKSTAGE1_1_TEX,
 	BACKSTAGE1_2_TEX,
@@ -110,6 +108,12 @@ enum class TextureID {
 	PAUSE_CIRCLE_TEX,
 	PAUSE_START_TEX,
 
+	NUMBER_ZERO_TEX,
+	NUMBER_ONE_TEX,
+	NUMBER_TWO_TEX,
+	NUMBER_THREE_TEX,
+	NUMBER_FOUR_TEX,
+	NUMBER_FIVE_TEX,
 
 	TUTOREAL1_1_TXT_TEX,
 	TUTOREAL1_2_TXT_TEX,
@@ -131,7 +135,7 @@ enum class TextureID {
 	STAGE_01_TEX,
 	STAGE_02_TEX,
 	STAGE_03_TEX,
-	STAGE_04_TEX
+	STAGE_04_TEX,
 };
 
 enum class AnimationID {
@@ -253,11 +257,13 @@ public:
 	std::vector<int> getAnimationIDs(const AnimationID& id);
 	//テクスチャのサイズを取得する(引数:テクスチャハンドル,戻り値:Vector2)
 	Vector2 GetTextureSize(TextureID id);
+	Vector2 GetTextureSize(AnimationID id);
 	void clearResources();
 private:
 	std::unordered_map<ModelID, int> models_;
 	std::unordered_map<TextureID, int> textures_;
 	std::unordered_map<SoundID, int> sounds_;
 	std::unordered_map<AnimationID, std::vector<int>> animations_;
+	std::unordered_map <AnimationID,Vector2> animationsSize_;
 
 };

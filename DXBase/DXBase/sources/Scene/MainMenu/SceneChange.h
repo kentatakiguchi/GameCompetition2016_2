@@ -27,7 +27,7 @@ struct ChangeSColor
 class SceneChange {
 public:
 	SceneChange();
-	void start(std::string next);
+	void start(std::string next, std::string tonexScene);
 	void update();
 	void fallSlimes();
 	void draw()const;

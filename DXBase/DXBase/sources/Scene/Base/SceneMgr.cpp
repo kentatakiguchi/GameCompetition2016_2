@@ -75,7 +75,7 @@ void SceneMgr::sceneChanger()
 {
 	if (isMove_)
 	{
-		changer_.start(currentScene_->getName());
+		changer_.start(currentScene_->getName(),currentScene_->nextName());
 		isMove_ = false;
 	}
 	if (isFirst_&&changer_.getIsSlimeMax()) {

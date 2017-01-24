@@ -66,7 +66,8 @@ void GameOverScene::start() {
 	mRettyAnim.change(PlayerAnimID::SWIM);
 	mRettyAnim.change_dir(PlayerAnimID::SWIM, ActionType::Left);
 
-	mCursorPos = Vector2(500, 500);
+	//mCursorPos = Vector2(500, 500);
+	mCursorPos = Vector2(SCREEN_SIZE.x / 2 - 128, 500);
 }
 
 void GameOverScene::update() {
@@ -117,7 +118,8 @@ void GameOverScene::update() {
 	mButtyAnim.update(Time::GetInstance().deltaTime());
 	mRettyAnim.update(Time::GetInstance().deltaTime());
 
-	mCursorPos = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f);
+	//mCursorPos = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f);
+	mCursorPos.y = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f).y;
 }
 
 void GameOverScene::draw() const {
@@ -133,7 +135,17 @@ void GameOverScene::draw() const {
 			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 
-			DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			if (count == targetPoint) {
+				DrawRotaGraph2(center, textPosList.at(count).y, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, 0, 1.5, 0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			}
+			else if (count>targetPoint) {
+				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, static_cast<int>(textPosList.at(count).y + ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			}
+			else {
+				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			}
+
+			//DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			heightPoint++;
@@ -143,8 +155,10 @@ void GameOverScene::draw() const {
 		heightPoint = 0;
 	}
 
-	mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
-	mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
+	//mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
+	//mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
+	mButtyAnim.draw(mCursorPos + Vector2::Left * 420, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 580, Vector2::Zero, 0.5f);
 
 }
 

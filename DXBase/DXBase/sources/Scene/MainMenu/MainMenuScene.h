@@ -21,7 +21,12 @@ public:
 	virtual void end() override;
 	virtual bool isEnd() const override;
 	virtual Scene next() const override;
-
+	virtual std::string nextName()  override {
+		if (nextScene.at(targetPoint) == Scene::GameEnd)return "GameEnd";
+		else {
+			return "next";
+		}
+	}
 private:
 	bool isTitle_;
 	bool isDrawAlphaBack_;

@@ -33,6 +33,8 @@ void ResourceLoader::loadAnimation(const AnimationID & id, const char * file_nam
 	//	}
 	//}
 
+	animationsSize_[id] = size;
+
 	int handle[500];
 	LoadDivGraph(file_name, (row*column) - surplus, row,column, size.x, size.y, handle);
 	for (int i = 0; i < (row*column) - surplus; i++) {
@@ -73,6 +75,11 @@ Vector2 ResourceLoader::GetTextureSize(TextureID id)
 	if (flag < 0) return Vector2::Zero;
 	//¬Œ÷‚¾
 		return Vector2(static_cast<float>(x), static_cast<float>(y));
+}
+
+Vector2 ResourceLoader::GetTextureSize(AnimationID id)
+{
+	return animationsSize_[id];
 }
 
 void ResourceLoader::clearResources()

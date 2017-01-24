@@ -145,11 +145,17 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::DOOR_STAY_TEX, "./resources/sprite/DoorStay.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::DOOR_OPEN_TEX, "./resources/sprite/DoorOpen.png");
 
-
 	ResourceLoader::GetInstance().loadTexture(TextureID::STAGE_01_TEX, "./resources/sprite/Stage01.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::STAGE_02_TEX, "./resources/sprite/Stage02.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::STAGE_03_TEX, "./resources/sprite/Stage03.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::STAGE_04_TEX, "./resources/sprite/Stage04.png");
+
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_ZERO_TEX, "./resources/sprite/num0.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_ONE_TEX, "./resources/sprite/num1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_TWO_TEX, "./resources/sprite/num2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_THREE_TEX, "./resources/sprite/num3.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_FOUR_TEX, "./resources/sprite/num4.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_FIVE_TEX, "./resources/sprite/num5.png");
 
 	load_bgm_res();
 	load_se_res();
