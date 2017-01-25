@@ -316,6 +316,7 @@
     <ClInclude Include="sources\Scene\GameClear\GameClearScene.h" />
     <ClInclude Include="sources\Scene\GameEnd\GameEndScene.h" />
     <ClInclude Include="sources\Scene\GameOver\GameOverScene.h" />
+    <ClInclude Include="sources\Scene\GamePlay\ClearScreen.h" />
     <ClInclude Include="sources\Scene\GamePlay\GamePlayScene.h" />
     <ClInclude Include="sources\Scene\GamePlay\MoveScreen.h" />
     <ClInclude Include="sources\Scene\GamePlay\PauseScreen.h" />
@@ -458,6 +459,7 @@
     <ClCompile Include="sources\Scene\GameClear\GameClearScene.cpp" />
     <ClCompile Include="sources\Scene\GameEnd\GameEndScene.cpp" />
     <ClCompile Include="sources\Scene\GameOver\GameOverScene.cpp" />
+    <ClCompile Include="sources\Scene\GamePlay\ClearScreen.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\GamePlayScene.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\MoveScreen.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\PauseScreen.cpp" />

@@ -12,7 +12,7 @@
 class FloorSearchPoint;
 class BossEntry;
 class BossGaugeUI;
-class HelperUI;
+//class HelperUI;
 
 // ボスクラス
 class BaseBoss : public Actor {
@@ -167,7 +167,7 @@ private:
 	int animeNum_;
 	EnemyAnimation2D animation_;	// アニメーション
 	BossGaugeUI* bossGaugeUI_;		// ボスの体力
-	HelperUI* helperUI_;			// ヘルパーUI
+	//HelperUI* helperUI_;			// ヘルパーUI
 
 	float top_, bottom_, right_, left_;	// 判定用
 
