@@ -40,6 +40,8 @@ public:
 	void addFSP(FloorSearchPoint* fsp);
 	// 壁に沿った動き方
 	Vector2 getWallDirection();
+	// 壁移動時のアニメーションの方向を取得します
+	Vector2 getWallAnimaDirection();
 	// 方向を決めるか
 	void setIsDirection(bool isDirection);
 	// 壁オブジェクトを回して、合計値を返します
@@ -68,6 +70,7 @@ private:
 	Vector2 enemyDirection_;	// エネミーの方向
 	Vector2 playerVector_;		// 
 	Vector2 wsDirection_;		// 壁移動時の方向
+	Vector2 animaDirection_;	// 壁移動時のアニメーションの方向
 	// 四角形移動用コンテナ
 	typedef std::vector<float> WallMoveConteiner;
 	WallMoveConteiner wallMoveConteiner_;
@@ -77,9 +80,15 @@ private:
 	// 素数コンテナ
 	typedef std::vector<int> PrimeContainer;
 	PrimeContainer primeContainer_;
+	// アニメーション方向コンテナ
+	// <int, [Vector2, Vector2]>
+	typedef std::map<int, Vector2> animaDirectionMap;
+	animaDirectionMap animaDirectionMap_;
 	// 壁移動の方向コンテナ
 	typedef std::map<int, Vector2> WSPDirectionMap;
 	WSPDirectionMap wspDirectionMap_;
+	/*typedef std::map<int, Vector2> WSPDirectionMap;
+	WSPDirectionMap wspDirectionMap_;*/
 };
 
 #endif

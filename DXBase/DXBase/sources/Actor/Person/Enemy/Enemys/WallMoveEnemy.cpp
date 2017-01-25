@@ -62,6 +62,13 @@ void WallMoveEnemy::searchMove()
 		direction_ = enemyManager_.getWallDirection();
 		// 壁移動
 		position_ += direction_ * speed_ * deltaTimer_;
+		// アニメーションの再生
+		// false => 反時計周り
+		// 触れている床の位置で回す方向を変える
+		if (enemyManager_.getWallAnimaDirection().x < 0 ||
+			enemyManager_.getWallAnimaDirection().y < 0)
+			animation_.setIsReverse(false);
+		else animation_.setIsReverse(true);
 	}
 }
 

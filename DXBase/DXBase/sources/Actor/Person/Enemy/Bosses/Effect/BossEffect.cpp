@@ -43,8 +43,8 @@ void BossEffect::onDraw() const
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
 		pos,
-		texSize_ / 2 * scale_,
-		scale_);
+		texSize_ / 2,
+		Vector2::One * scale_);
 	body_.draw();
 }
 

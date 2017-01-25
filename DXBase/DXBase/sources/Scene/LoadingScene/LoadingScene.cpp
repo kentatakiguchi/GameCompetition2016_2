@@ -239,7 +239,9 @@ void LoadingScene::load_enemy_res(){
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_FLYINGENEMY_DAMAGE_TEX, "./resources/sprite/actor/enemy/Enemy02_damege.png", 256, 8, 3, 3);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_NEEDLEENEMY_TEX, "./resources/sprite/actor/enemy/Enemy03.png", 256, 8, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_WALLMOVEENEMY_TEX, "./resources/sprite/actor/enemy/Enemy04_Left.png", 256, 8, 4, 1);
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_EFFECT_DEAD_TEX, "./resources/sprite/actor/enemy/Enemy_Dead.png", Vector2(280, 800), 10, 12);
+	// エフェクト
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_EFFECT_COLLIDE_TEX, "./resources/sprite/actor/enemy/effect/syoutotu.png", 256, 5, 5);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::ENEMY_EFFECT_DEAD_TEX, "./resources/sprite/actor/enemy/effect/Enemy_Dead.png", Vector2(280, 800), 10, 12);
 }
 
 void LoadingScene::load_boss_res(){
@@ -259,7 +261,7 @@ void LoadingScene::load_boss_res(){
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_DAMAGE_BOKO_TEX, "./resources/sprite/actor/boss/Boss_damage_boko.png", 256, 8, 4);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_DEATH_TEX, "./resources/sprite/actor/boss/Boss_deth.png", 256, 8, 4);
 	//ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ATTACK_TEX, "./resources/sprite/actor/boss/effect/boss_attack.png", Vector2(544, 416), 5, 6);
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ATTACK_TEX, "./resources/sprite/actor/boss/effect/large_cell_256_256_attack_star.png", 256, 5, 6);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ATTACK_TEX, "./resources/sprite/actor/boss/effect/boss_attack_star.png", 256, 5, 6);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_BOKO_TEX, "./resources/sprite/actor/boss/effect/boss_boko.png", 512, 5, 6);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_DASH_TEX, "./resources/sprite/actor/boss/effect/dash.png", 256, 9, 7);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_PIYO_TEX, "./resources/sprite/actor/boss/effect/piyori.png", 256, 8, 7);

@@ -38,6 +38,12 @@ public:
 	virtual bool isLetOuted() = 0;
 	// ボスの口の侵入脱出を設定します
 	virtual void setEntry(const bool isEntry, const bool isLetOut) = 0;
+	// タイマが止まっているかを返します
+	virtual bool isStopTime() = 0;
+	// タイマを0にするかを設定します
+	virtual void setIsStopTime(const bool isTime) = 0;
+	// デルタタイムを取得します(元のタイムクラスから取得)
+	virtual float getDeltaTime() = 0;
 	virtual void SetPlayerPos(Vector2 pos) = 0;
 	//縦スクロール横スクロールするかどうか(引数 軸ごとにスクロールする場合は1、しない場合は0)
 	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos) =0;

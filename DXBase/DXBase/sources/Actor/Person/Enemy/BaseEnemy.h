@@ -133,6 +133,7 @@ protected:
 	float discoveryLenght_;			// プレイヤーに気づく距離
 	float playerLostLenght_;		// プレイヤーを見失う距離
 	float TexDegress_;				// テクスチャの角度
+	float hitTimer_;				// 衝突時の時間
 	Vector2 direction_;				// 方向
 	Vector2 prevDirection_;			// 過去の方向
 	bool isPlayer_;					// プレイヤーが存在するのか

@@ -77,22 +77,24 @@ void WallAttack::Refresh()
 // 床捜索状態です
 void WallAttack::floorSearch(float deltaTime)
 {
-	// 浮いている床に接地していれば、床を降りる	
-	if (floorName_ == "BossAreaFloor") {
-		// 計算して出てきた方向をかけて移動する
-		auto direction = 1.0f;
-		// ステージの大きさの半分より以下なら、左に移動する
-		if (position_.x <= CHIPSIZE * 20 / 2)
-			direction = -1.0f;
-		direction_.x = direction;
-		wsDirection_.x = direction_.x;
-		changeState(State::FloorGetOff, WAIT_NUMBER);
-	}
-	// そうでなければ、壁移動に遷移
-	if (floorName_ == "MovelessFloor") {
-		changeState(State::WallMove, WALLATTACK_DASH_NUMBER);
-		setAttackSecond();
-	}
+	//// 浮いている床に接地していれば、床を降りる	
+	//if (floorName_ == "BossAreaFloor") {
+	//	// 計算して出てきた方向をかけて移動する
+	//	auto direction = 1.0f;
+	//	// ステージの大きさの半分より以下なら、左に移動する
+	//	if (position_.x <= CHIPSIZE * 20 / 2)
+	//		direction = -1.0f;
+	//	direction_.x = direction;
+	//	wsDirection_.x = direction_.x;
+	//	changeState(State::FloorGetOff, WAIT_NUMBER);
+	//}
+	//// そうでなければ、壁移動に遷移
+	//if (floorName_ == "MovelessFloor") {
+	//	changeState(State::WallMove, WALLATTACK_DASH_NUMBER);
+	//	setAttackSecond();
+	//}
+	changeState(State::WallMove, WALLATTACK_DASH_NUMBER);
+	setAttackSecond();
 }
 
 // 床から降りる状態です
