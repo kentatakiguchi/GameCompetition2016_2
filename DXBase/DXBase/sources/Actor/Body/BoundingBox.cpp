@@ -119,9 +119,13 @@ void BoundingBox::draw(int spriteID, Matrix inv, int width, int height) const
 			Vector3 pos3 = Vector3(component_.point[3].x + (i*CHIPSIZE), component_.point[3].y + (x*CHIPSIZE)) * inv;
 
 			DrawGraph(static_cast<int>(pos0.x), static_cast<int>(pos0.y), spriteID, TRUE);
-
 		}
 	}
+
+	//Vector3 pos0 = Vector3(component_.point[0].x, component_.point[0].y) * inv;
+	//Vector3 pos1 = Vector3(component_.point[1].x, component_.point[1].y) * inv;
+	//Vector3 pos2 = Vector3(component_.point[2].x, component_.point[2].y) * inv;
+	//Vector3 pos3 = Vector3(component_.point[3].x, component_.point[3].y) * inv;
 
 	//DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
 	//DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));

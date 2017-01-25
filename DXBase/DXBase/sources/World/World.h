@@ -52,6 +52,12 @@ public:
 	bool isLetOuted() override;
 	// ボスの口の侵入脱出を設定します
 	void setEntry(const bool isEntry, const bool isLetOut) override;
+	// タイマが止まっているかを返します
+	bool isStopTime() override;
+	// タイマを0にするかを設定します
+	void setIsStopTime(const bool isTime) override;
+	// デルタタイムを取得します(元のタイムクラスから取得)
+	float getDeltaTime() override;
 	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos) override;
 	virtual ScroolJudge GetScroolJudge()override;
 	virtual void PlayerNotMove(bool flag) override {
@@ -113,8 +119,12 @@ private:
 	std::function<void(EventMessage, void*)> listener_;
 
 	bool is_clear_;
-
+	// 口に出入りしたか
 	bool isEntered_, isLetOuted_;
+	// 時間を止めるか
+	bool isStopTime_;
+	// 現在の時間
+	float deltaTime_;
 
 	ScroolJudge scrool_;
 	

@@ -9,6 +9,7 @@ enum class PlayerState_Enum_Union {
 	MOVE_BOTH,
 	HOLD,
 	HOLD_BOTH,
+	HOLD_AIR,
 	JUMP,
 	ATTACK, 
 	FREEZE,

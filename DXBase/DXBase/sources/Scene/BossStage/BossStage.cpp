@@ -146,6 +146,8 @@ void BossStage::draw() const {
 	backManager->Draw();
 	//world•`‰æ
 	world_->draw();
+	// ƒvƒŒƒCƒ„[‚ªÁ‚¦‚Ä‚ç•Ô‚·
+	if (player == nullptr) return;
 	Vector2 pos = player->getPosition()-Vector2(0,256+128);
 	hatenaAnm_.draw(pos,Vector2::Zero,Vector2(0.7,0.7),0);
 	isStopped_ ? pause_.draw() : move_.draw();

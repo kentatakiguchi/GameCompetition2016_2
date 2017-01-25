@@ -12,6 +12,7 @@
 class FloorSearchPoint;
 class BossEntry;
 class BossGaugeUI;
+class HelperUI;
 
 // ボスクラス
 class BaseBoss : public Actor {
@@ -122,6 +123,8 @@ private:
 	void addAnimation();
 	// ぴより状態の設定を行います
 	void setPiyori();
+	// ボスのアルファ値を設定します
+	void texAlpha(float deltaTime);
 
 protected:
 	int dp_;						// 耐久値
@@ -130,6 +133,7 @@ protected:
 	int flinchCount_;				// ひるむまでの回数
 	int piyoriCount_;				// ぴよる回数
 	int bokoCreateCount_;			// ボコエフェクト生成回数
+	int alpha_;						// ボスのα値
 	float stateTimer_;				// 状態の時間
 	float timer_;					// 現在の時間(最大値 1)
 	float deltaTimer_;				// 現在の時間(補間)
@@ -163,6 +167,7 @@ private:
 	int animeNum_;
 	EnemyAnimation2D animation_;	// アニメーション
 	BossGaugeUI* bossGaugeUI_;		// ボスの体力
+	HelperUI* helperUI_;			// ヘルパーUI
 
 	float top_, bottom_, right_, left_;	// 判定用
 

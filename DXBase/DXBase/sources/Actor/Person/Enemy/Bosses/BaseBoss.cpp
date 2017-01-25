@@ -10,6 +10,7 @@
 #include "Effect/ImportEffects.h"
 // ボスの体力表示
 #include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
+#include "../../../UIActor/HelperUI/HelperUI.h"
 
 // ボスクラス(ベース予定)
 BaseBoss::BaseBoss(
@@ -19,11 +20,12 @@ BaseBoss::BaseBoss(
 	Actor(world, "BaseEnemy", position,
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
 	dp_(10),
-	hp_(300),
+	hp_(200),
 	attackCount_(0),
 	flinchCount_(0),
 	piyoriCount_(5),
 	bokoCreateCount_(0),
+	alpha_(255),
 	stateTimer_(0.0f),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
@@ -46,6 +48,7 @@ BaseBoss::BaseBoss(
 	wspObj_(nullptr),
 	entryObj_(nullptr),
 	bossGaugeUI_(nullptr),
+	helperUI_(nullptr),
 	bossManager_(BossManager(world, position)),
 	top_(0.0f), bottom_(0.0f), right_(0.0f), left_(0.0f),
 	handle_(CreateFontToHandle(NULL, 50, 10, DX_FONTTYPE_NORMAL)),
@@ -57,18 +60,18 @@ BaseBoss::BaseBoss(
 	// 攻撃状態をコンテナに追加(攻撃順に追加する)
 	asContainer_.push_back(AttackState::JumpAttack);
 	asContainer_.push_back(AttackState::WallAttack);
-	asContainer_.push_back(AttackState::SpeacialAttack);
+	//asContainer_.push_back(AttackState::SpeacialAttack);
 	// 攻撃アニメーションコンテナ
 	asAnimations_.push_back(JUMP_UP_NUMBER);
 	asAnimations_.push_back(WALLATTACK_DASH_NUMBER);
-	asAnimations_.push_back(BREATH_NUMBER);
+	//asAnimations_.push_back(BREATH_NUMBER);
 	// ボスマネージャーに攻撃を追加
 	bossManager_.addAttack(std::make_shared<ThreeJumpAttack>(world_, position));
 	bossManager_.addAttack(std::make_shared<WallAttack>(world_, position));
-	bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
+	//bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
 	// 体力をロックするコンテナに追加
 	lockHps_.clear();
-	lockHps_.push_back(200);
+	//lockHps_.push_back(200);
 	lockHps_.push_back(100);
 	lockHps_.push_back(0);
 	// スターコンテナの初期化
@@ -97,6 +100,11 @@ BaseBoss::BaseBoss(
 	world_->addUIActor(bossUI);
 	bossGaugeUI_ = bossUI.get();
 	bossGaugeUI_->SetHp(hp_);
+	// ヘルパーUI
+	auto helperUI = std::make_shared<HelperUI>(world_, Vector2(200, 200));
+	world_->addUIActor(helperUI);
+	helperUI_ = helperUI.get();
+	//helperUI_->set
 	// 衝突判定を一回無くす
 	body_.enabled(false);
 }
@@ -148,6 +156,8 @@ void BaseBoss::onDraw() const
 	vec3Pos = vec3Pos * inv_;
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
+	// αブレンドの設定
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
 	animation_.draw(
 		pos - Vector2::Up * 10,
 		Vector2::One * (body_.GetCircle().getRadius()) + Vector2::Up * 20,
@@ -297,6 +307,8 @@ void BaseBoss::idel(float deltaTime)
 {
 	// プレイヤーが取得できていれば、エネミーマネージャーに位置などを入れる
 	setBMStatus();
+	// アルファ値の設定
+	texAlpha(deltaTime);
 	// 画像の方向を合わせる
 	animation_.changeDirType(direction_.x);
 	bossManager_.changeAttackNumber(attackCount_);
@@ -320,8 +332,10 @@ void BaseBoss::attack(float deltaTime)
 	switch (attackState_) {
 	case AttackState::JumpAttack: jumpAttack(deltaTime); break;
 	case AttackState::WallAttack: wallAttack(deltaTime); break;
-	case AttackState::SpeacialAttack: specialAttack(deltaTime); break;
+	//case AttackState::SpeacialAttack: specialAttack(deltaTime); break;
 	}
+	// アルファ値の設定
+	texAlpha(deltaTime);
 	// 攻撃が当たるかの判定を入れる
 	isAttackHit_ = bossManager_.IsAttackHit();
 }
@@ -863,4 +877,15 @@ void BaseBoss::setPiyori()
 	auto effect = std::make_shared<EntrySignEffect>(
 		world_, entryObj_->getPosition() - Vector2::Up * 150.0f);
 	world_->addActor(ActorGroup::Effect, effect);
+}
+
+// ボスのアルファ値を設定します
+void BaseBoss::texAlpha(float deltaTime)
+{
+	/*if (!isAttackHit_) {
+		if ((int)(stateTimer_ * 10) % 2 < 1) alpha_ -= (int)(deltaTime * 750);
+		else alpha_ += (int)(deltaTime * 750);
+		alpha_ = (int)(MathHelper::Clamp(alpha_, 100, 255));
+	}
+	else alpha_ = 255;*/
 }

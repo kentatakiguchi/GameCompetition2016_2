@@ -61,10 +61,9 @@ void GameOverScene::start() {
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_GAMEOVER), DX_PLAYTYPE_BACK);
 
 	mButtyAnim = PlayerAnimation2D("PlayerBody1");
-	mRettyAnim = PlayerAnimation2D("PlayerBody2");
-	mButtyAnim.change(PlayerAnimID::SWIM);
-	mRettyAnim.change(PlayerAnimID::SWIM);
-	mRettyAnim.change_dir(PlayerAnimID::SWIM, ActionType::Left);
+	mRettyAnim = PlayerAnimation2D("PlayerBody2", ActionType::Left);
+	mButtyAnim.change(PlayerAnimID::DEATH);
+	mRettyAnim.change(PlayerAnimID::DEATH);
 
 	//mCursorPos = Vector2(500, 500);
 	mCursorPos = Vector2(SCREEN_SIZE.x / 2 - 128, 500);
@@ -115,11 +114,13 @@ void GameOverScene::update() {
 	//	//ゴールポイントについた時点でシーンを遷移
 	//}
 
+	if (mButtyAnim.end_anim()) mButtyAnim.change(PlayerAnimID::DEATH, 0.0f);
+	if (mRettyAnim.end_anim()) mRettyAnim.change(PlayerAnimID::DEATH, 0.0f);
+
 	mButtyAnim.update(Time::GetInstance().deltaTime());
 	mRettyAnim.update(Time::GetInstance().deltaTime());
 
-	//mCursorPos = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f);
-	mCursorPos.y = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f).y;
+	mCursorPos = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f);
 }
 
 void GameOverScene::draw() const {

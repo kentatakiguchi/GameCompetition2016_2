@@ -10,7 +10,7 @@
 class Animation2D {
 public:
 	// コンストラクタ
-	Animation2D();
+	Animation2D(const ActionType& type = ActionType::Right);
 	// 更新処理
 	virtual void update(float deltaTime);
 	// アニメーションの終了フラグ

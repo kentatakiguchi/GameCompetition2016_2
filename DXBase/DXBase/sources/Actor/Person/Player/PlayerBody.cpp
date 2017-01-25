@@ -214,9 +214,9 @@ void PlayerBody::chase() {
 	}
 }
 
-void PlayerBody::gravity() {
+void PlayerBody::gravity(float amount) {
 	if (opponent_ == HitOpponent::FLOOR_TOP)gravity_ = Vector2(0, 0);
-	else gravity_ = Vector2(0, 9.8f) * 2;
+	else gravity_ = Vector2(0, 9.8f) * amount;
 }
 
 void PlayerBody::acc_gravity() {

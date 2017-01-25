@@ -2,11 +2,11 @@
 
 using namespace std;
 
-Animation2D::Animation2D() :
+Animation2D::Animation2D(const ActionType& type) :
 	id_(-1), frame_(0), timer_(0),
 	curr_anim_(-1), norm_anim_(-1), turn_anim_(-1), 
 	curr_speed_(1), norm_speed_(1), turn_speed_(2),
-	type_(ActionType::Right), type_stock_(ActionType::Right) {
+	type_(type), type_stock_(ActionType::Right) {
 }
 
 

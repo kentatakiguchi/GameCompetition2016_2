@@ -7,6 +7,7 @@
 #include "Elements/PlayerState_Jump.h"
 #include "Elements/PlayerState_Hold.h"
 #include "Elements/PlayerState_HoldBoth.h"
+#include "Elements/PlayerState_HoldAir.h"
 #include "Elements/PlayerState_Attack.h"
 #include "Elements/PlayerState_Freeze.h"
 #include "Elements/PlayerState_EventTime.h"

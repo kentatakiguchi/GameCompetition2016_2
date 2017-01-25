@@ -5,6 +5,7 @@
 #include "FloorSearchPoint.h"
 #include "PlayerSearchObj.h"
 #include "Bosses/Effect/EnemyDeadEffect.h"
+#include "Bosses/Effect/EnemyCollideEffect.h"
 //#include "DeadEnemy.h"
 
 BaseEnemy::BaseEnemy(
@@ -30,6 +31,7 @@ BaseEnemy::BaseEnemy(
 	prevDirection_(direction),
 	playerLength_(0.0f),
 	TexDegress_(0),
+	hitTimer_(0.0f),
 	isPlayer_(false),
 	isMove_(false),
 	isScreen_(false),
@@ -178,6 +180,10 @@ void BaseEnemy::onCollide(Actor & actor)
 		if (Vector2(actor.getPosition() - position_).Length() >= 
 			actor.getBody().GetCircle().getRadius() + scale_) return;
 		changeState(State::Dead, ENEMY_DAMAGE);
+		// エフェクトの追加(プレイヤーのチャージエフェクト)
+		world_->addActor(ActorGroup::Effect,
+			std::make_shared<EnemyCollideEffect>(world_, position_));
+		world_->setIsStopTime(true);
 		TexDegress_ = 0.0f;
 		isUseGravity_ = true;
 		return;
@@ -287,6 +293,21 @@ void BaseEnemy::deadMove()
 {
 	animation_.setIsLoop(false);
 	name_ = "";
+	if (hitTimer_ > 0.1f)
+		world_->setIsStopTime(false);
+	else {
+		world_->setIsStopTime(true);
+		// ポーズ中に止める処理
+		if (deltaTimer_ == 0.0f && world_->isStopTime())
+			hitTimer_ += world_->getDeltaTime();
+		//// ポーズ中に止める処理
+		//if (deltaTimer_ == 0.0f && !world_->isStopTime())
+		//	return;
+		//hitTimer_ += world_->getDeltaTime();
+		//world_->setIsStopTime(true);
+		return;
+	}
+	//world_->setIsStopTime(false);
 	// 所持しているオブジェクトの削除
 	for (auto i = objContainer_.begin(); i != objContainer_.end(); i++) {
 		auto a = *i;

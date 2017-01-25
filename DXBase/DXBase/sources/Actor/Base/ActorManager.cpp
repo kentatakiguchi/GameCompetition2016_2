@@ -10,6 +10,7 @@ ActorManager::ActorManager() {
 
 // èâä˙âª
 void ActorManager::initialize() {
+	actors_[ActorGroup::Effect] = std::make_shared<Actor>();
 	actors_[ActorGroup::Player] = std::make_shared<Actor>("PlayerManager");
 	actors_[ActorGroup::Player_Collider] = std::make_shared<Actor>();
 	actors_[ActorGroup::Player_AttackRange] = std::make_shared<Actor>();
@@ -17,7 +18,6 @@ void ActorManager::initialize() {
 	actors_[ActorGroup::Enemy_AttackRange] = std::make_shared<Actor>();
 	actors_[ActorGroup::EnemyBullet] = std::make_shared<Actor>();
 	actors_[ActorGroup::Enemy_Spawner] = std::make_shared<Actor>();
-	actors_[ActorGroup::Effect] = std::make_shared<Actor>();
 	actors_[ActorGroup::EffectBack] = std::make_shared<Actor>();
 	actors_[ActorGroup::BACKGRAUND] = std::make_shared<Actor>();
 	actors_[ActorGroup::Field] = std::make_shared<Actor>();

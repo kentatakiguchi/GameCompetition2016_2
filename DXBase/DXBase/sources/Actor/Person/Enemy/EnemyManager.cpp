@@ -14,8 +14,10 @@ EnemyManager::EnemyManager(const Vector2 position, const Vector2& direction) :
 	playerPosition_(Vector2::Zero),
 	threadPosition_(position + Vector2::Left * 100.0f),
 	enemyDirection_(Vector2::Zero),
-	wsDirection_(Vector2(-1.0f, 0.0f))
+	wsDirection_(Vector2(-1.0f, 0.0f)),
+	animaDirection_(wsDirection_)
 {
+	animaDirectionMap_.clear();
 	wspDirectionMap_.clear();
 	wallMoveConteiner_.push_back(0.0f);
 	wallMoveConteiner_.push_back(1.0f);
@@ -154,6 +156,8 @@ Vector2 EnemyManager::getWallDirection()
 		// 方向を決められる場合か、ヒット数が1の場合　かつ
 		// マップに入れてある値と同一ならば、方向を決める
 		if (isDirecion() && i->first == wspResult_) {
+			//wsDirection_ = wspDirectionMap_[wspResult_];
+			animaDirection_ = animaDirectionMap_[wspResult_];
 			wsDirection_ = wspDirectionMap_[wspResult_];
 			// 方向を決めたらfalseにする
 			isDirection_ = false;
@@ -163,6 +167,12 @@ Vector2 EnemyManager::getWallDirection()
 	// 過去のカウントを更新
 	wCollidePastCount_ = wCollideCount_;
 	return wsDirection_;
+}
+
+// 壁移動時のアニメーションの方向を取得します
+Vector2 EnemyManager::getWallAnimaDirection()
+{
+	return animaDirection_;
 }
 
 void EnemyManager::setIsDirection(bool isDirection)
@@ -298,4 +308,84 @@ void EnemyManager::addWSPDirection(const Vector2 & direction)
 	// 全部当たっている
 	//wspDirectionMap_[7718] = Vector2::Zero;
 	//wspDirectionMap_[7728] = Vector2::Zero;
+
+	// アニメーションの方向
+	animaDirectionMap_[211] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[511] = Vector2(0.0f, 1.0f);
+	animaDirectionMap_[1311] = Vector2(0.0f, 1.0f);
+	animaDirectionMap_[1911] = Vector2(0.0f, -1.0f);
+	// Y に移動量がある場合
+	animaDirectionMap_[221] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[521] = Vector2(-1.0f, 0.0f);
+	animaDirectionMap_[1321] = Vector2(-1.0f, 0.0f);
+	animaDirectionMap_[1921] = Vector2(1.0f, 0.0f);
+	// 1つのみ(上下左右) 3 7 11 17
+	animaDirectionMap_[311] = Vector2(direction.x, 0.0f);
+	animaDirectionMap_[721] = Vector2(0.0f, -direction.y);
+	animaDirectionMap_[1121] = Vector2(0.0f, direction.y);
+	animaDirectionMap_[1711] = Vector2(-direction.x, 0.0f);
+	// 3つ当たる(辺) 10 22 35 49
+	// Xに移動量がある
+	animaDirectionMap_[1013] = Vector2(direction.x, 0.0f);
+	animaDirectionMap_[2213] = Vector2(0.0f, direction.y);
+	animaDirectionMap_[3513] = Vector2(0.0f, direction.y);
+	animaDirectionMap_[4913] = Vector2(direction.x, 0.0f);
+	// Yに移動量がある
+	animaDirectionMap_[1023] = Vector2(direction.x, 0.0f);
+	animaDirectionMap_[2223] = Vector2(0.0f, direction.y);
+	animaDirectionMap_[3523] = Vector2(0.0f, direction.y);
+	animaDirectionMap_[4923] = Vector2(direction.x, 0.0f);
+	// 3つ当たる(隅の近辺) 12 19 27 47
+	// X に移動量がある場合
+	animaDirectionMap_[1213] = Vector2(0.0f, 1.0f);
+	animaDirectionMap_[1913] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[2713] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[4713] = Vector2(0.0f, 1.0f);
+	// Y に移動量がある場合
+	animaDirectionMap_[1223] = Vector2(-1.0f, 0.0f);
+	animaDirectionMap_[1923] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[2723] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[4723] = Vector2(-1.0f, 0.0f);
+	// 3つの(四隅の組み合わせ)当たる 20 28 34 37
+	// X に移動量がある場合
+	animaDirectionMap_[2013] = Vector2(0.0f, 1.0f);
+	animaDirectionMap_[2813] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[3413] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[3713] = Vector2(0.0f, 1.0f);
+	// Y に移動量がある場合
+	animaDirectionMap_[2023] = Vector2(-1.0f, 0.0f);
+	animaDirectionMap_[2823] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[3423] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[3723] = Vector2(-1.0f, 0.0f);
+	// 4つ当たる(隅) (0135) (0356) (2147) (2467) 
+	// X に移動量がある場合
+	animaDirectionMap_[2514] = Vector2(0.0f, 1.0f);
+	animaDirectionMap_[3814] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[3914] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[5214] = Vector2(0.0f, 1.0f);
+	// Y に移動量がある場合
+	animaDirectionMap_[2524] = Vector2(-1.0f, 0.0f);
+	animaDirectionMap_[3824] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[3924] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[5224] = Vector2(-1.0f, 0.0f);
+	// 5点当たる(隅) 30 40 58 65
+	// X に移動量がある場合
+	animaDirectionMap_[3015] = Vector2(0.0f, 1.0f);
+	animaDirectionMap_[4015] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[5815] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[6515] = Vector2(0.0f, 1.0f);
+	// Y に移動量がある場合
+	animaDirectionMap_[3025] = Vector2(-1.0f, 0.0f);
+	animaDirectionMap_[4025] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[5825] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[6525] = Vector2(-1.0f, 0.0f);
+	// 1つのみ当たらない 74 70 66 60
+	animaDirectionMap_[7417] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[7017] = Vector2(-1.0f, 0.0f);
+	animaDirectionMap_[6617] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[6017] = Vector2(0.0f, 1.0f);
+	animaDirectionMap_[7427] = Vector2(0.0f, -1.0f);
+	animaDirectionMap_[7027] = Vector2(-1.0f, 0.0f);
+	animaDirectionMap_[6627] = Vector2(1.0f, 0.0f);
+	animaDirectionMap_[6027] = Vector2(0.0f, 1.0f);
 }

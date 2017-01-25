@@ -176,6 +176,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\DashEffect.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyCollideEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyDeadEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\EntrySignEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\ImportEffects.h" />
@@ -229,6 +230,7 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\StatePath_Single.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_EventTime.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldAir.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_LeanBack.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.h" />
@@ -347,6 +349,7 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\DashEffect.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyCollideEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyDeadEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EntrySignEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\PiyoriEffect.cpp" />
@@ -388,6 +391,7 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_EventTime.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldAir.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_LeanBack.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.cpp" />

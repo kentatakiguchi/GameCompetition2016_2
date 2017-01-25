@@ -187,6 +187,7 @@ enum class AnimationID {
 	ENEMY_NEEDLEENEMY_TEX,
 	ENEMY_WALLMOVEENEMY_TEX,
 	// エネミーエフェクト
+	ENEMY_EFFECT_COLLIDE_TEX,
 	ENEMY_EFFECT_DEAD_TEX,
 
 	// ボスアニメーション

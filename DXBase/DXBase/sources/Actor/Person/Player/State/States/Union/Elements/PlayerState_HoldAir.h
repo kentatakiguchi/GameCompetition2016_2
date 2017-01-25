@@ -1,0 +1,19 @@
+#pragma once
+
+#include "../PlayerState_Union.h"
+
+class PlayerState_HoldAir : public PlayerState_Union {
+public:
+	PlayerState_HoldAir();
+private:
+	virtual void unique_init() override;
+	virtual void update(float deltaTime) override;
+	virtual void end() override;
+	virtual void key_input() override;
+	virtual void pad_input() override;
+private:
+	void move();
+private:
+	bool flag1_;
+	bool flag2_;
+};

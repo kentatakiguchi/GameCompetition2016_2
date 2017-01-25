@@ -7,9 +7,11 @@
 // コンストラクタ
 World::World() :
 	listener_([](EventMessage, void*) {}),
+	deltaTime_(0.0f),
 	is_clear_(false),
 	isEntered_(false),
 	isLetOuted_(false),
+	isStopTime_(false),
 	mNoPlayerMove(false) {
 	inv_ = Matrix::Identity;
 }
@@ -17,6 +19,8 @@ World::World() :
 // 更新
 void World::update(float deltaTime) {
 	//field_->update(deltaTime);
+	deltaTime_ = deltaTime;
+	if (isStopTime_) deltaTime = 0.0f;
 	actors_.update(deltaTime);
 
 	inv();
@@ -123,6 +127,24 @@ void World::setEntry(const bool isEntry, const bool isLetOut)
 {
 	isEntered_ = isEntry;
 	isLetOuted_ = isLetOut;
+}
+
+// タイマが止まっているかを返します
+bool World::isStopTime()
+{
+	return isStopTime_;
+}
+
+// タイマを0にするかを設定します
+void World::setIsStopTime(const bool isTime)
+{
+	isStopTime_ = isTime;
+}
+
+// デルタタイムを取得します(元のタイムクラスから取得)
+float World::getDeltaTime()
+{
+	return deltaTime_;
 }
 
 void World::SetScroolJudge(const Vector2& scroolJudge,const Vector2& scroolMinPos,const Vector2& scroolMaxPos)

@@ -161,8 +161,8 @@ bool BoundingCircle::intersects(BoundingCircle& other)
 			Vector2::Cross(CD, CA)*Vector2::Cross(CD, CB) < 0.0f)
 		{
 			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
-			OutputDebugString("stds");
-			OutputDebugString("\n");
+			//OutputDebugString("stds");
+			//OutputDebugString("\n");
 			return true;
 		}
 	}

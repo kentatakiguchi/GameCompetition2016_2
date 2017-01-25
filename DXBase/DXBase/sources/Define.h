@@ -66,7 +66,7 @@ const static float		PLAYER_MAX_NORMAL_LENGTH = CHIPSIZE * 2;
 // プレイヤーが伸びた場合の最大値
 const static float		PLAYER_MAX_STRETCH_LENGTH = CHIPSIZE * 3.5f;
 // プレイヤーの発射速度
-const static float		PLAYER_LAUNCH_POWER = 80.0f;
+const static float		PLAYER_LAUNCH_POWER = 150.0f;
 // プレイヤーのジャンプ速度
 const static float		PLAYER_JUMP_POWER = 30.0f;
 // プレイヤーの仰け反り速度

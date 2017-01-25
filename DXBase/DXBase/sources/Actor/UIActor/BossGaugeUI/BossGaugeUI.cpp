@@ -17,15 +17,15 @@ BossGaugeUI::BossGaugeUI(IWorld* world, const Vector2& position) :
 	state.Hp = 100.0f;
 	state.GaugeNum = 0;
 	gauges.push_back(state);
-	state.Color = Vector3(255, 0, 0);
+	state.Color = Vector3(255, 255, 0);
 	state.Hp = 100.0f;
 	state.GaugeNum = 1;
 	gauges.push_back(state);
-	state.Color = Vector3(255, 255, 0);
+	state.Color = Vector3(0, 255, 0);
 	state.Hp = 100.0f;
 	state.GaugeNum = 2;
 	gauges.push_back(state);
-	state.Color = Vector3(0, 255, 0);
+	state.Color = Vector3(0, 255, 255);
 	state.Hp = 100.0f;
 	state.GaugeNum = 3;
 	gauges.push_back(state);
