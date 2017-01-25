@@ -33,6 +33,9 @@ GamePlayScene::~GamePlayScene() {
 
 void GamePlayScene::start() {
 
+	clear_ = ClearScreen();
+	isClearStage_ = false;
+
 	deltaTime_ = Time::GetInstance().deltaTime();
 	stageTime_ = 0.0f;
 	////ステージを進める
@@ -149,6 +152,13 @@ void GamePlayScene::start() {
 }
 
 void GamePlayScene::update() {
+	if (isClearStage_) {
+		if (clear_.update(name_, nextScene_)) {
+			isEnd_ = true;
+		};
+		return;
+	}
+
 	if (stageFlag_) {
 		stageAlpha_ += Time::GetInstance().deltaTime();
 		if (stageAlpha_ >= 1.0f) {
@@ -173,7 +183,10 @@ void GamePlayScene::update() {
 		backManager->Update(deltaTime_);
 
 	auto player = world_->findActor("Player");
-	isEnd_ = player == nullptr || world_->is_clear();
+	
+	isClearStage_ = player == nullptr || world_->is_clear();
+	//isEnd_ = player == nullptr || world_->is_clear();
+	
 	if (player == nullptr) {
 		nextScene_ = Scene::GameOver;
 	}
@@ -189,7 +202,8 @@ void GamePlayScene::update() {
 		//}
 	}
 	if (!isEnd_) {
-		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
+		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_, isClearStage_); 
+		//isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
 	}
 }
 
@@ -205,6 +219,12 @@ void GamePlayScene::draw() const {
 	DrawGraph(pos.x, pos.y, ResourceLoader::GetInstance().getTextureID(stageTexs_[stage]),true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	backManager->BackDraw();
+
+	if (isClearStage_) {
+		clear_.draw();
+		return;
+	}
+
 	isStopped_ ? pause_.draw() : move_.draw();
 }
 

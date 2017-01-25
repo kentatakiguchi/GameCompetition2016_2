@@ -5,7 +5,8 @@
 class MoveScreen {
 public:
 	MoveScreen();
-	bool update(std::string name,Scene& next);
+	bool update(std::string name, Scene& next);
+	bool update(std::string name,Scene& next,bool& isClear);
 	void draw() const;
 private:
 	std::vector<std::string> changeTextList;

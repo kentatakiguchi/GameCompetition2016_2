@@ -7,6 +7,8 @@
 #include"PauseScreen.h"
 #include"MoveScreen.h"
 #include "../../ResourceLoader/ResourceLoader.h"
+#include"ClearScreen.h"
+
 class World;
 class BackGraundManager;
 class GamePlayScene : public IScene{
@@ -32,9 +34,12 @@ private:
 
 	bool isStopped_;
 
+	bool isClearStage_;
+
 	PauseScreen pause_;
 	MoveScreen move_;
-
+	ClearScreen clear_;
+	
 	//ステージ紹介のα
 	float stageAlpha_;
 	float stageTime_;

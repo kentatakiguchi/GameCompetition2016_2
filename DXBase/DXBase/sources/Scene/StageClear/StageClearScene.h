@@ -53,6 +53,8 @@ private:
 	PlayerAnimation2D mRettyAnim;
 	// ‘I‘ğ‚ÌÀ•W
 	Vector2 mCursorPos;
+
+	int Count_;
 };
 
 #endif

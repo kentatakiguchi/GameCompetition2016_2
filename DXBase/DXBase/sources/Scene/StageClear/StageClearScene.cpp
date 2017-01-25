@@ -73,6 +73,9 @@ void StageClearScene::start() {
 	targetPoint = 1;
 	sinCount = 0;
 	slideSize = 0;
+
+	Count_ = 120;
+
 	// 描画先画面を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 	// グラフィックのロード
@@ -152,29 +155,31 @@ void StageClearScene::update() {
 	//	slideSize = 0;
 	//}
 
-	if (targetPoint != 3)
+	//if (targetPoint != 3)
+	//{
+	//	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
+	//		targetPoint--;
+	//		sinCount = 0;
+	//		PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
+	//	}
+	//	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_DOWN)) {
+	//		targetPoint++;
+	//		sinCount = 0;
+	//		PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
+	//	}
+	//	targetPoint = min(max(targetPoint, 1), 2);
+
+
+
+	Count_--;
+		//if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))
+	if(Count_<=0)
 	{
-		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
-			targetPoint--;
-			sinCount = 0;
-			PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
-		}
-		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_DOWN)) {
-			targetPoint++;
-			sinCount = 0;
-			PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
-		}
-		targetPoint = min(max(targetPoint, 1), 2);
-
-
-		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE))
-		{
-			isEnd_ = true;
-			if (targetPoint == 1 && keeper_->getSceneName() == "stage04")targetPoint = 3;
-			PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
-
-		}
+		isEnd_ = true;
+		if (targetPoint == 1 && keeper_->getSceneName() == "stage04")targetPoint = 3;
+	PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
 	}
+	//}
 
 	mButtyAnim.update(Time::GetInstance().deltaTime());
 	mRettyAnim.update(Time::GetInstance().deltaTime());
@@ -198,35 +203,35 @@ void StageClearScene::draw() const {
 
 	anmer_.draw_e(Vector2(static_cast<float>(center), textPosList.at(0).y),Vector2::Zero,1.5);
 
-	for (auto lists : listBase) {
-		for (auto my : lists) {
-			if (count == 0)break;
+	//for (auto lists : listBase) {
+	//	for (auto my : lists) {
+	//		if (count == 0)break;
 
-			strLen = strlen(my.c_str());
-			strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+	//		strLen = strlen(my.c_str());
+	//		strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 
-			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
-			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
+	//		if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
+	//		//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 
-			if (count == targetPoint) {
-				DrawRotaGraph2(center, textPosList.at(count).y, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, 0, 1.5, 0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
-			}
-			else if (count>targetPoint) {
-				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, static_cast<int>(textPosList.at(count).y + ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
-			}
-			else {
-				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
-			}
+	//		if (count == targetPoint) {
+	//			DrawRotaGraph2(center, textPosList.at(count).y, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, 0, 1.5, 0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+	//		}
+	//		else if (count>targetPoint) {
+	//			DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, static_cast<int>(textPosList.at(count).y + ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+	//		}
+	//		else {
+	//			DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+	//		}
 
-			//DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+	//		//DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			heightPoint++;
-		}
-		forcount++;
-		count++;
-		heightPoint = 0;
-	}
+	//		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//		heightPoint++;
+	//	}
+	//	forcount++;
+	//	count++;
+	//	heightPoint = 0;
+	//}
 
 	//mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
 	//mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
