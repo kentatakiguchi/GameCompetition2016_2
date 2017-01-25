@@ -249,6 +249,7 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\StatePath_Union.h" />
     <ClInclude Include="sources\Actor\ScroolStop\ScroolStop.h" />
     <ClInclude Include="sources\Actor\TestPlayer\TestPlayer.h" />
+    <ClInclude Include="sources\Actor\Tubo\Tubo.h" />
     <ClInclude Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.h" />
     <ClInclude Include="sources\Actor\UIActor\HelperUI\HelperUI.h" />
     <ClInclude Include="sources\Animation\Base\Animation.h" />
@@ -270,6 +271,7 @@
     <ClInclude Include="sources\Field\MoveFloorRightLeft.h" />
     <ClInclude Include="sources\Field\MoveFloorUpDown.h" />
     <ClInclude Include="sources\Field\MovelessFloor.h" />
+    <ClInclude Include="sources\Field\MovelessFloorBreak.h" />
     <ClInclude Include="sources\Field\NavChip.h" />
     <ClInclude Include="sources\Field\SegmentFloor.h" />
     <ClInclude Include="sources\Field\StageClearPoint.h" />
@@ -402,6 +404,7 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.cpp" />
     <ClCompile Include="sources\Actor\ScroolStop\ScroolStop.cpp" />
     <ClCompile Include="sources\Actor\TestPlayer\TestPlayer.cpp" />
+    <ClCompile Include="sources\Actor\Tubo\Tubo.cpp" />
     <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
     <ClCompile Include="sources\Actor\UIActor\HelperUI\HelperUI.cpp" />
     <ClCompile Include="sources\Animation\Base\Animation.cpp" />
@@ -418,6 +421,7 @@
     <ClCompile Include="sources\Field\MoveFloorRightLeft.cpp" />
     <ClCompile Include="sources\Field\MoveFloorUpDown.cpp" />
     <ClCompile Include="sources\Field\MovelessFloor.cpp" />
+    <ClCompile Include="sources\Field\MovelessFloorBreak.cpp" />
     <ClCompile Include="sources\Field\NavChip.cpp" />
     <ClCompile Include="sources\Field\SegmentFloor.cpp" />
     <ClCompile Include="sources\Field\StageClearPoint.cpp" />

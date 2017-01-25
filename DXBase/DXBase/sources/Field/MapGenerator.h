@@ -24,6 +24,10 @@
 #include"../Actor/Person/Enemy/ImportEnemys.h"
 #include"../ResourceLoader/ResourceLoader.h"
 #include "../Actor/Door/Door.h"
+#include "MovelessFloorBreak.h"
+#include "../Actor/Tubo/Tubo.h"
+
+
 
 class MapGenerator {
 private:
@@ -173,9 +177,18 @@ public:
 						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
+				if (reader_.geti(rowN, colN) == 18) {
+					world_->addActor(ActorGroup::Tubo, std::make_shared<Tubo>(
+						world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE-1.0f)));
+					continue;
+				}
 
+				if (reader_.geti(rowN, colN) == 19) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloorBreak>(
+						ResourceLoader::GetInstance().getTextureID(TextureID::CHIP1_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					continue;
+				}
 				if (reader_.geti(rowN, colN) == 20) {
-					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
 						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_WOOD_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;

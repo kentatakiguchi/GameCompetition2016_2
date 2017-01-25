@@ -129,7 +129,7 @@ void TutorealScene::start()
 	//マップ生成
 	gener.create("./resources/file/" + name_ + ".csv", 0, 0);
 	//スクロールセット
-	world_->SetScroolJudge(Vector2(0, 0), Vector2(9999, 9999));
+	world_->SetScroolJudge(Vector2(0, 0),Vector2::Zero, Vector2(9999, 9999));
 	//プレイヤーコネクター
 	playerConnector_ = dynamic_cast<PlayerConnector*>(world_->findActor("PlayerConnector").get());
 }

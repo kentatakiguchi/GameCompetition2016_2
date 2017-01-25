@@ -52,7 +52,7 @@ public:
 	bool isLetOuted() override;
 	// ƒ{ƒX‚ÌŒû‚ÌN“ü’Eo‚ğİ’è‚µ‚Ü‚·
 	void setEntry(const bool isEntry, const bool isLetOut) override;
-	virtual void SetScroolJudge(Vector2 scroolJudge,Vector2 scroolStopPos) override;
+	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos) override;
 	virtual ScroolJudge GetScroolJudge()override;
 	virtual void PlayerNotMove(bool flag) override {
 		mNoPlayerMove = flag;

@@ -36,7 +36,7 @@ void BossStage::start() {
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>();
 
-	world_->SetScroolJudge(Vector2(1, 1), Vector2(3000, 8000));
+	world_->SetScroolJudge(Vector2(1, 1),Vector2::Zero, Vector2(3000, 8000));
 	MapGenerator gener = MapGenerator(world_.get());
 
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(),
@@ -57,7 +57,7 @@ void BossStage::start() {
 
 	// ƒ{ƒX‚ÌˆÊ’u‚ðÝ’è
 	boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, -150.0f), 0.0f);
-	world_->SetScroolJudge(Vector2(0, 0), Vector2(99999, 99999));
+	world_->SetScroolJudge(Vector2(0, 0),Vector2::Zero, Vector2(99999, 99999));
 
 
 	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);

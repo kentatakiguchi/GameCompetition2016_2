@@ -10,7 +10,9 @@ enum class EventMessage;
 struct ScroolJudge {
 	Vector2 scroolJudge;
 	//このポジションをプレイヤーが超えたら止まる
-	Vector2 scroolStop;
+	Vector2 scroolStopMax;
+	Vector2 scroolStopMin;
+
 };
 // ワールド抽象インターフェース
 class IWorld {
@@ -38,7 +40,7 @@ public:
 	virtual void setEntry(const bool isEntry, const bool isLetOut) = 0;
 	virtual void SetPlayerPos(Vector2 pos) = 0;
 	//縦スクロール横スクロールするかどうか(引数 軸ごとにスクロールする場合は1、しない場合は0)
-	virtual void SetScroolJudge(Vector2 scroolJudge, Vector2 scroolStopPos) =0;
+	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos) =0;
 	virtual ScroolJudge GetScroolJudge()=0;
 	//プレイヤーの操作不能にするかどうか
 	virtual void PlayerNotMove(bool flag) = 0;

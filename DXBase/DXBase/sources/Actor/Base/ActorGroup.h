@@ -14,6 +14,7 @@ enum class ActorGroup {
 	BACKGRAUND,
 	SCROOLSTOP,
 	PuyoVertex,
+	Tubo,               //ツボ
 	Field				//ステージ
 };
 

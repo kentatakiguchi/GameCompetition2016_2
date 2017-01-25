@@ -37,26 +37,16 @@ void KataokaScene::start()
 	MapGenerator gener = MapGenerator(world_.get());
 
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(),
-		gener.findStartPoint("./resources/file/" + name_ + ".csv")-Vector2(400,0)));
+		gener.findStartPoint("./resources/file/" + name_ + ".csv")));
 	//プレイヤーのスタート位置を設定
-	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv") - Vector2(400, 0));
+	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
 
 	gener.create("./resources/file/" + name_ + ".csv");
-	// ボスの取得
-	auto boss = std::make_shared<BaseBoss>(
-		world_.get(), Vector2(CHIPSIZE * 16 + 50, -150.0f));
-	world_->addActor(ActorGroup::Enemy, boss);
-	boss_ = boss.get();
-	// ボスの位置を設定
-	boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, -150.0f),0.0f);
 
-	world_->SetScroolJudge(Vector2(0, 0), Vector2(99999, 99999));
+	world_->SetScroolJudge(Vector2(1), Vector2::Zero, Vector2(10000, 10000));
+	world_->CollisitionOffOn(true);
 
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
-
-	world_->PlayerNotMove(true);
-	world_->CollisitionOffOn(false);
-	world_->clear(false);
 }
 
 void KataokaScene::update()
@@ -65,20 +55,6 @@ void KataokaScene::update()
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 	}
-	mIvemtTime += deltaTime_;
-	if (mIvemtTime <= 7.0f) {
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(150.0f, 0.0f));
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(150.0f, 0.0f));
-	}
-	else if (mIvemtTime >= 9.0f&&mIvemtTime<=15.0f) {
-		boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 8 - 5), 4.0f);
-	}
-	else if (boss_->isMovePosition()&&mIvemtTime>=15.0f) {
-		boss_->setIsBattle(true);
-		world_->PlayerNotMove(false);
-		world_->CollisitionOffOn(true);
-	}
-
 	world_->update(deltaTime_);
 
 	auto player = world_->findActor("Player");
@@ -86,12 +62,6 @@ void KataokaScene::update()
 	if (player == nullptr) {
 		nextScene_ = Scene::GameOver;
 	}
-
-
-	// ボスが死亡したら、クリアする
-	if (boss_->isSceneEnd())
-		world_->clear(true);
-
 
 	if (!isEnd_) {
 		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
@@ -118,5 +88,5 @@ bool KataokaScene::isEnd() const
 
 Scene KataokaScene::next() const
 {
-	return Scene::Title;
+	return Scene::Kataoka;
 }

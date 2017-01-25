@@ -23,6 +23,7 @@ void ActorManager::initialize() {
 	actors_[ActorGroup::Field] = std::make_shared<Actor>();
 	actors_[ActorGroup::SCROOLSTOP] = std::make_shared<Actor>("ScroolStop");
 	actors_[ActorGroup::PuyoVertex] = std::make_shared<Actor>();
+	actors_[ActorGroup::Tubo] = std::make_shared<Actor>();
 	root_.clearChildren();
 	root_.addChild(actors_[ActorGroup::Effect]);
 	root_.addChild(actors_[ActorGroup::EnemyBullet]);
@@ -37,6 +38,7 @@ void ActorManager::initialize() {
 	root_.addChild(actors_[ActorGroup::SCROOLSTOP]);
 	root_.addChild(actors_[ActorGroup::PuyoVertex]);
 	root_.addChild(actors_[ActorGroup::EffectBack]);
+	root_.addChild(actors_[ActorGroup::Tubo]);
 	velo = Vector2::Zero;
 }
 
@@ -92,6 +94,8 @@ void ActorManager::collide() {
 	actors_[ActorGroup::Enemy]->collideChildren(*actors_[ActorGroup::Player_Collider]);
 	actors_[ActorGroup::EnemyBullet]->collideChildren(*actors_[ActorGroup::Field]);
 	actors_[ActorGroup::PuyoVertex]->collideChildren(*actors_[ActorGroup::Field]);
+	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Tubo]);
+	actors_[ActorGroup::Tubo]->collideChildren(*actors_[ActorGroup::Field]);
 }
 
 void ActorManager::UiUpdate(float delta)

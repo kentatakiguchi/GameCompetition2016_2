@@ -18,7 +18,8 @@ void PlayerBodyCollider::onDraw() const{
 void PlayerBodyCollider::onCollide(Actor & other) {
 	if (other.getName() == "MovelessFloor"  ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
-		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor") {
+		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor"||
+		other.getName() == "MovelessFloorBreak"|| other.getName() == "Door") {
 		opponent_ = HitOpponent::FLOOR_HIT;
 		other_velocity_ = other.getBody().GetColliderVelocity();
 		other_position_ = other.getBody().GetBox().position_;

@@ -35,15 +35,15 @@ void GamePlayScene::start() {
 
 	deltaTime_ = Time::GetInstance().deltaTime();
 	stageTime_ = 0.0f;
-	//ステージを進める
-	if (keeper_->getSceneName() == "stage04")
-		stageNum_ = 1;
-	else if (keeper_->getSceneName() == "stage01")
-		stageNum_ = 2;
-	else if (keeper_->getSceneName() == "stage02")
-		stageNum_ = 3;
-	else if (keeper_->getSceneName() == "stage03")
-		stageNum_ = 4;
+	////ステージを進める
+	//if (keeper_->getSceneName() == "stage04")
+	//	
+	//else if (keeper_->getSceneName() == "stage01")
+	//	stageNum_ = 2;
+	//else if (keeper_->getSceneName() == "stage02")
+	//	stageNum_ = 3;
+	//else if (keeper_->getSceneName() == "stage03")
+	//	stageNum_ = 4;
 
 	isStopped_ = false;
 
@@ -73,15 +73,22 @@ void GamePlayScene::start() {
 
 
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
-	if (name_ == "stage01")
-		world_->SetScroolJudge(Vector2(1, 0), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, 1000.0f));
-	else if (name_ == "stage02")
-		world_->SetScroolJudge(Vector2(1, 1), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
-	else if (name_ == "stage03")
-		world_->SetScroolJudge(Vector2(0, 1), Vector2(SCREEN_SIZE.x / 2, csvSize.y*CHIPSIZE - SCREEN_SIZE.y / 2.0f));
-	else if (name_ == "stage04")
-		world_->SetScroolJudge(Vector2(1, 1), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
-
+	if (name_ == "stage01") {
+		stageNum_ = 1;
+		world_->SetScroolJudge(Vector2(1, 0), Vector2(CHIPSIZE*10,0.0f),Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, 1000.0f));
+	}
+	else if (name_ == "stage02") {
+		stageNum_ = 2;
+		world_->SetScroolJudge(Vector2(1, 1),Vector2::Zero, Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
+	}	
+	else if (name_ == "stage03") {
+		stageNum_ = 3;
+		world_->SetScroolJudge(Vector2(0, 1), Vector2::Zero, Vector2(SCREEN_SIZE.x / 2, csvSize.y*CHIPSIZE - SCREEN_SIZE.y / 2.0f));
+	}
+	else if (name_ == "stage04") {
+		stageNum_ = 4;
+		world_->SetScroolJudge(Vector2(1, 1), Vector2::Zero, Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
+	}
 
 	backManager = new BackGraundManager(world_.get());
 	if (name_ == "stage01") {
@@ -170,7 +177,6 @@ void GamePlayScene::update() {
 	if (player == nullptr) {
 		nextScene_ = Scene::GameOver;
 	}
-
 	if (world_->is_clear()) {
 
 		//if (name_ != "stage04")
