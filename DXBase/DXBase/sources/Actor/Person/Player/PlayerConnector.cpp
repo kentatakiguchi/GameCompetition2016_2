@@ -99,7 +99,11 @@ bool PlayerConnector::is_damaged() {
 	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
 	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
 	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
-	if (timer_ < 3.0f)return false;
+	if (timer_ <= 3.0f) {
+		is_main_target_enemy = false;
+		is_sub_target_enemy = false;
+		return false;
+	}
 	return !is_event_state && !is_leanback_state && !is_attack_state && (is_main_target_enemy || is_sub_target_enemy || for_debug);
 }
 

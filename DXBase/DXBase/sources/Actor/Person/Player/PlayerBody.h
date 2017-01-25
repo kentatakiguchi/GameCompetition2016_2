@@ -24,7 +24,7 @@ public:
 	void move(Vector2 vector);
 
 	void chase();
-	void gravity();
+	void gravity(float amount = 2);
 	void acc_gravity();
 
 	bool able_to_hold();

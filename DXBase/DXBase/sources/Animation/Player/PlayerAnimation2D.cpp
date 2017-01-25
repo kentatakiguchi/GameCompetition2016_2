@@ -2,7 +2,7 @@
 
 #include "../../ResourceLoader/ResourceLoader.h"
 
-PlayerAnimation2D::PlayerAnimation2D(const std::string& name) {
+PlayerAnimation2D::PlayerAnimation2D(const std::string& name, const ActionType& type) : Animation2D(type){
 	sprites_.clear();
 
 	if (name == "") return;

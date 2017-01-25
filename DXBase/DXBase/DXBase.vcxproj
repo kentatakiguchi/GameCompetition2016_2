@@ -229,6 +229,7 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\StatePath_Single.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_EventTime.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldAir.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_LeanBack.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.h" />
@@ -388,6 +389,7 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_EventTime.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldAir.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Jump.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_LeanBack.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_MoveBoth.cpp" />

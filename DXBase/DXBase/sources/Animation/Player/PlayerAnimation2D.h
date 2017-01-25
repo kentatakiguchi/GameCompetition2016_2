@@ -22,7 +22,7 @@ enum class PlayerAnimID {
 
 class PlayerAnimation2D : public Animation2D{
 public:
-	PlayerAnimation2D(const std::string& name = "");
+	PlayerAnimation2D(const std::string& name = "", const ActionType& type = ActionType::Right);
 	void add(const PlayerAnimID & id, const std::vector<int>& anims);
 	void change(const PlayerAnimID& id, const float& speed = 1.0f);
 	void change_dir(const PlayerAnimID& id, const ActionType& type);
