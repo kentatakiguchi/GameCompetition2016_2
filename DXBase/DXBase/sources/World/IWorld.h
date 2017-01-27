@@ -46,12 +46,13 @@ public:
 	virtual float getDeltaTime() = 0;
 	virtual void SetPlayerPos(Vector2 pos) = 0;
 	//縦スクロール横スクロールするかどうか(引数 軸ごとにスクロールする場合は1、しない場合は0)
-	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos) =0;
+	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos, bool flag = false) =0;
 	virtual ScroolJudge GetScroolJudge()=0;
 	//プレイヤーの操作不能にするかどうか
 	virtual void PlayerNotMove(bool flag) = 0;
 	//プレイヤーの操作不能にするかどうかを取得
 	virtual bool GetPlayerNotMove() = 0;
+	virtual Vector2 GetScreenPlayerPos()=0;
 	// メッセージの送信
 	virtual void sendMessage(EventMessage message, void* param = nullptr) = 0;
 	virtual Vector2 GetPlayerPos() = 0;
@@ -65,6 +66,8 @@ public:
 	//
 
 	virtual Vector2 GetInvVelo() = 0;
+	//
+	virtual void SetScreenPlayerPos(const Vector2& screenPos) = 0;
 	virtual Matrix InitializeInv(Vector2 position) = 0;
 
 	virtual void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness = 0.1f, float friction = 0.5f, float mass = 2.0f)const = 0;

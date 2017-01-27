@@ -58,7 +58,11 @@ public:
 	void setIsStopTime(const bool isTime) override;
 	// デルタタイムを取得します(元のタイムクラスから取得)
 	float getDeltaTime() override;
-	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos) override;
+	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos,bool flag=false) override;
+	virtual Vector2 GetScreenPlayerPos() override
+	{
+		return playerScreenPos_;
+	}
 	virtual ScroolJudge GetScroolJudge()override;
 	virtual void PlayerNotMove(bool flag) override {
 		mNoPlayerMove = flag;
@@ -96,6 +100,10 @@ public:
 	virtual Vector2 GetInvVelo() override {
 		return mVelo;
 	}
+	//スクリーン上のプレイヤーの表示位置
+	virtual void SetScreenPlayerPos(const Vector2& screenPos) override {
+		playerScreenPos_ = screenPos;
+	}
 
 	virtual Matrix InitializeInv(Vector2 position) override;
 
@@ -132,6 +140,8 @@ private:
 	
 	bool mNoPlayerMove;
 	bool colOffOn_;
+
+	Vector2 playerScreenPos_;
 
 public:
 

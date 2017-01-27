@@ -12,7 +12,7 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 	mFloor = dynamic_cast<Player*>(world->findActor("Player").get());
 }
 
-BackGraundManager::BackGraundManager():
+BackGraundManager::BackGraundManager() :
 	mWorld(nullptr)
 {
 }
@@ -21,7 +21,7 @@ BackGraundManager::~BackGraundManager()
 {
 }
 
-void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2,float heightY,bool frontGraund,bool stage2)
+void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2, float heightY, bool frontGraund, bool stage2)
 {
 	BackGraundState backState;
 	backState.stage2 = stage2;
@@ -30,14 +30,14 @@ void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2,float heightY
 	Vector2 size = backState.size;
 	//手前に表示するか
 	backState.frontGraundFlag = frontGraund;
-	
+
 	//ポジションと番号を設定
 	IndexPos indexPos;
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id1);
 	indexPos.position = Vector2(0, heightY);
 	backState.indexPos.push_back(indexPos);
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id2);
-	indexPos.position = Vector2(size.x,heightY);
+	indexPos.position = Vector2(size.x, heightY);
 	backState.indexPos.push_back(indexPos);
 	//入れる
 	backStates.push_back(backState);
@@ -81,7 +81,7 @@ void BackGraundManager::SetTateYokoBackGraund(TextureID id)
 
 }
 
-void BackGraundManager::SetUpBackGraund(TextureID id,int layer)
+void BackGraundManager::SetUpBackGraund(TextureID id, int layer)
 {
 	BackGraundState state;
 
@@ -132,7 +132,7 @@ void BackGraundManager::AllDeleteBackGraund()
 	backStates.clear();
 }
 
-void BackGraundManager::Update(float deltatime,bool title)
+void BackGraundManager::Update(float deltatime, bool title)
 {
 	//要素内が何もなかったりプレイヤーがnullだったらリターン
 	if (backStates.empty()) return;
@@ -179,7 +179,7 @@ void BackGraundManager::Update(float deltatime,bool title)
 		for (auto& j : i.indexPos) {
 			//プレイヤー速度加算(タイトル用もある)
 			if (!title)
-				j.position -= Vector2((mWorld->GetInvVelo()*(1.0f / i.layer)).x, mWorld->GetInvVelo().y);
+				j.position -= mWorld->GetInvVelo()*(1.0f / i.layer);
 			else
 				j.position -= Vector2(10, 0)*(1.0f / layerNum);
 
@@ -188,15 +188,11 @@ void BackGraundManager::Update(float deltatime,bool title)
 				j.position.x = size.x + size.x + j.position.x;
 			else if (j.position.x >= size.x)
 				j.position.x = -size.x - size.x + j.position.x;
-			//ステージが表示されているか
-			if (stageFlag)
-			{
 				//Y軸のループ
-				if (j.position.y <= -size.y)
-					j.position.y = size.y + size.y + j.position.y;
-				else if (j.position.y >= size.y)
-					j.position.y = -size.y - size.y + j.position.y;
-			}
+			if (j.position.y <= -size.y)
+				j.position.y = size.y + size.y + j.position.y;
+			else if (j.position.y >= size.y)
+				j.position.y = -size.y - size.y + j.position.y;
 		}
 	}
 
@@ -221,27 +217,27 @@ void BackGraundManager::Update(float deltatime,bool title)
 	//			i.position.y = -size.y - size.y + i.position.y;
 	//	}
 	//}
-	Vector2 size = downBackStates.size;
-	//地下系
-	for (auto& i : downBackStates.indexPos)
-	{
-		//プレイヤー速度加算
-		if(!title)
-		i.position += -mWorld->GetInvVelo();
-		//x軸のループ
-		if (i.position.x <= -size.x)
-			i.position.x = size.x + size.x + i.position.x;
-		else if (i.position.x >= size.x)
-			i.position.x = -size.x - size.x + i.position.x;
-		//Y軸のループ(地上が見えていなかった場合)
-		if (!stageFlag)
-		{
-			if (i.position.y <= -size.y)
-				i.position.y = size.y + size.y + i.position.y;
-			else if (i.position.y >= size.y)
-				i.position.y = -size.y - size.y + i.position.y;
-		}
-	}
+	//Vector2 size = downBackStates.size;
+	////地下系
+	//for (auto& i : downBackStates.indexPos)
+	//{
+	//	//プレイヤー速度加算
+	//	if (!title)
+	//		i.position += -mWorld->GetInvVelo();
+	//	//x軸のループ
+	//	if (i.position.x <= -size.x)
+	//		i.position.x = size.x + size.x + i.position.x;
+	//	else if (i.position.x >= size.x)
+	//		i.position.x = -size.x - size.x + i.position.x;
+	//	//Y軸のループ(地上が見えていなかった場合)
+	//	if (!stageFlag)
+	//	{
+	//		if (i.position.y <= -size.y)
+	//			i.position.y = size.y + size.y + i.position.y;
+	//		else if (i.position.y >= size.y)
+	//			i.position.y = -size.y - size.y + i.position.y;
+	//	}
+	//}
 }
 
 void BackGraundManager::TateUpdate(float deltaTime)
@@ -297,15 +293,15 @@ void BackGraundManager::Draw() const
 	{
 		for (auto& j : i.indexPos)
 		{
-			if(!i.frontGraundFlag)
-			DrawGraph(j.position.x, j.position.y, j.index, true);
+			if (!i.frontGraundFlag)
+				DrawGraph(j.position.x, j.position.y, j.index, true);
 		}
 	}
-	//地下の描写
-	for (auto& i : downBackStates.indexPos)
-	{
-		DrawGraph(i.position.x, i.position.y, i.index, true);
-	}
+	////地下の描写
+	//for (auto& i : downBackStates.indexPos)
+	//{
+	//	DrawGraph(i.position.x, i.position.y, i.index, true);
+	//}
 	//縦横のスクロール
 	for (auto& i : tateYokoState.indexPos)
 	{

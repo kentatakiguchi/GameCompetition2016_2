@@ -62,10 +62,12 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_6_TEX, "./resources/sprite/BackGraund/Stage2-6.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_7_TEX, "./resources/sprite/BackGraund/Stage2-7.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_8_TEX, "./resources/sprite/BackGraund/Stage2-8.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_9_TEX, "./resources/sprite/BackGraund/Stage2-9.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_10_TEX, "./resources/sprite/BackGraund/Stage2-10.png");
+	//ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_9_TEX, "./resources/sprite/BackGraund/Stage2-9.png");
+	//ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_10_TEX, "./resources/sprite/BackGraund/Stage2-10.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP1_TEX, "./resources/sprite/BackGraund/Stage2-Top1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP2_TEX, "./resources/sprite/BackGraund/Stage2-Top2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP3_TEX, "./resources/sprite/BackGraund/Stage2-Top3.png");
+
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::MOVIEBACK_TEX, "./resources/sprite/Tutoreal/MovieBack.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_BACK_TEX, "./resources/sprite/Tutoreal/tutorealFlame.png");

@@ -38,15 +38,6 @@ void GamePlayScene::start() {
 
 	deltaTime_ = Time::GetInstance().deltaTime();
 	stageTime_ = 0.0f;
-	////ステージを進める
-	//if (keeper_->getSceneName() == "stage04")
-	//	
-	//else if (keeper_->getSceneName() == "stage01")
-	//	stageNum_ = 2;
-	//else if (keeper_->getSceneName() == "stage02")
-	//	stageNum_ = 3;
-	//else if (keeper_->getSceneName() == "stage03")
-	//	stageNum_ = 4;
 
 	isStopped_ = false;
 
@@ -78,23 +69,24 @@ void GamePlayScene::start() {
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	if (name_ == "stage01") {
 		stageNum_ = 1;
-		world_->SetScroolJudge(Vector2(1, 0), Vector2(CHIPSIZE*10,0.0f),Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, 1000.0f));
+		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
 	}
 	else if (name_ == "stage02") {
 		stageNum_ = 2;
-		world_->SetScroolJudge(Vector2(1, 1),Vector2::Zero, Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
-	}	
+		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
+	}
 	else if (name_ == "stage03") {
 		stageNum_ = 3;
-		world_->SetScroolJudge(Vector2(0, 1), Vector2::Zero, Vector2(SCREEN_SIZE.x / 2, csvSize.y*CHIPSIZE - SCREEN_SIZE.y / 2.0f));
+		world_->SetScreenPlayerPos(SCREEN_SIZE/2);
+		world_->SetScroolJudge(Vector2(1, 1),  world_->GetPlayerPos(),Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) - (SCREEN_SIZE.y / 2)));
 	}
 	else if (name_ == "stage04") {
 		stageNum_ = 4;
-		world_->SetScroolJudge(Vector2(1, 1), Vector2::Zero, Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - PLAYER_SCREEN_POSITION.y)));
+		world_->SetScroolJudge(Vector2(0, 1), Vector2::Zero + world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)),true);
 	}
 
 	backManager = new BackGraundManager(world_.get());
-	if (name_ == "stage01") {
+	if (name_ == "stage01" || name_ == "stage02") {
 		//先にセットされたテクスチャほど奥に描写される
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX);
@@ -109,9 +101,9 @@ void GamePlayScene::start() {
 		//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 		//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 	}
-	else if (name_ == "stage02")
+	else if (name_ == "stage03")
 	{
-		float graundPos = csvSize.y*CHIPSIZE - SCREEN_SIZE.y - (PLAYER_SCREEN_POSITION.y - SCREEN_SIZE.y);
+		float graundPos = csvSize.y*CHIPSIZE-world_->GetScreenPlayerPos().y/2;
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_3_TEX, TextureID::BACKSTAGE2_3_TEX, graundPos, false, true);
@@ -120,24 +112,17 @@ void GamePlayScene::start() {
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_6_TEX, TextureID::BACKSTAGE2_6_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_7_TEX, TextureID::BACKSTAGE2_7_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_8_TEX, TextureID::BACKSTAGE2_8_TEX, graundPos, false, true);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_9_TEX, TextureID::BACKSTAGE2_9_TEX, graundPos, false, true);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_10_TEX, TextureID::BACKSTAGE2_10_TEX, graundPos, false, true);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP1_TEX, 4);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP2_TEX, 1);
+		//backManager->SetBackGraund(TextureID::BACKSTAGE2_9_TEX, TextureID::BACKSTAGE2_9_TEX, graundPos, false, true);
+		//backManager->SetBackGraund(TextureID::BACKSTAGE2_10_TEX, TextureID::BACKSTAGE2_10_TEX, graundPos, false, true);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP1_TEX, 8);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP2_TEX, 4);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP3_TEX, 1);
 	}
-	else if (name_ == "stage03")
+	else if (name_ == "stage04")
 	{
 		backManager->SetTateBackGraund(TextureID::BACKSTAGE3_1_TEX, TextureID::BACKSTAGE3_1_TEX);
 		backManager->SetTateBackGraund(TextureID::BACKSTAGE3_2_TEX, TextureID::BACKSTAGE3_2_TEX);
 	}
-	else if (name_ == "stage04")
-	{
-		backManager->SetBackGraund(TextureID::BACKSTAGE4_1_TEX, TextureID::BACKSTAGE4_1_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE4_2_TEX, TextureID::BACKSTAGE4_2_TEX);
-
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE4_1_TEX, 2);
-	}
-
 	world_->clear(false);
 
 	if (name_ != "stage04")
@@ -177,16 +162,16 @@ void GamePlayScene::update() {
 		isStopped_ = !isStopped_;
 	}
 	world_->update(deltaTime_);
-	if (name_ == "stage03")
+	if (name_ == "stage04")
 		backManager->TateUpdate(deltaTime_);
 	else
 		backManager->Update(deltaTime_);
 
 	auto player = world_->findActor("Player");
-	
+
 	isClearStage_ = player == nullptr || world_->is_clear();
 	//isEnd_ = player == nullptr || world_->is_clear();
-	
+
 	if (player == nullptr) {
 		nextScene_ = Scene::GameOver;
 	}
@@ -202,7 +187,7 @@ void GamePlayScene::update() {
 		//}
 	}
 	if (!isEnd_) {
-		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_, isClearStage_); 
+		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_, isClearStage_);
 		//isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
 	}
 }
@@ -213,10 +198,10 @@ void GamePlayScene::draw() const {
 	world_->draw();
 
 	int stage = stageNum_ - 1;
-	Vector2 size = ResourceLoader::GetInstance().GetTextureSize(stageTexs_[stage])/2;
-	Vector2 pos = SCREEN_SIZE/2 - size;
+	Vector2 size = ResourceLoader::GetInstance().GetTextureSize(stageTexs_[stage]) / 2;
+	Vector2 pos = SCREEN_SIZE / 2 - size;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0, 255, stageAlpha_));
-	DrawGraph(pos.x, pos.y, ResourceLoader::GetInstance().getTextureID(stageTexs_[stage]),true);
+	DrawGraph(pos.x, pos.y, ResourceLoader::GetInstance().getTextureID(stageTexs_[stage]), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	backManager->BackDraw();
 

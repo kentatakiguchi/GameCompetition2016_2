@@ -12,7 +12,8 @@ World::World() :
 	isEntered_(false),
 	isLetOuted_(false),
 	isStopTime_(false),
-	mNoPlayerMove(false) {
+	mNoPlayerMove(false),
+	playerScreenPos_(PLAYER_SCREEN_POSITION){
 	inv_ = Matrix::Identity;
 }
 
@@ -147,12 +148,15 @@ float World::getDeltaTime()
 	return deltaTime_;
 }
 
-void World::SetScroolJudge(const Vector2& scroolJudge,const Vector2& scroolMinPos,const Vector2& scroolMaxPos)
+void World::SetScroolJudge(const Vector2& scroolJudge,const Vector2& scroolMinPos,const Vector2& scroolMaxPos, bool flag)
 {
 	scrool_.scroolJudge = scroolJudge;
 	scrool_.scroolStopMin = scroolMinPos;
 	scrool_.scroolStopMax = scroolMaxPos;
-	InitializeInv(scroolMinPos);
+	if (!flag)
+		InitializeInv(scroolMinPos);
+	else
+		InitializeInv(scroolMaxPos);
 }
 
 ScroolJudge World::GetScroolJudge() {
@@ -172,14 +176,14 @@ void World::inv() {
 	float clampPosX = MathHelper::Clamp(playerMat.Translation().x, scrool.scroolStopMin.x, scrool.scroolStopMax.x);
 	float clampPosY = MathHelper::Clamp(playerMat.Translation().y, scrool.scroolStopMin.y, scrool.scroolStopMax.y);
 	if (scrool.scroolJudge.x == 0)
-		clampPosX = PLAYER_SCREEN_POSITION.x;
+		clampPosX = playerScreenPos_.x;
 	if (scrool.scroolJudge.y == 0)
-		clampPosY = PLAYER_SCREEN_POSITION.y;
+		clampPosY = playerScreenPos_.y;
 	playerMat.Translation(Vector3(clampPosX, clampPosY, 0.0f));
 
 	//行くべき位置を設定(matrix版)
 	resInv_ = Matrix::Invert(playerMat) *
-		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
+		Matrix::CreateTranslation(Vector3(playerScreenPos_.x, playerScreenPos_.y));
 	//行くべき位置を設定
 	Vector2 resPos = Vector2(resInv_.Translation().x, resInv_.Translation().y);
 	Vector2 pos = Vector2(inv_.Translation().x, inv_.Translation().y);
