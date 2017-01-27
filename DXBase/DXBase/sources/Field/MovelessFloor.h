@@ -23,7 +23,5 @@ private:
 	void onCollide(Actor& other);
 private:
 	int spriteID_;
-	int width_;
-	int height_;
 };
 

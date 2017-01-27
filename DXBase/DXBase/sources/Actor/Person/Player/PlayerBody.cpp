@@ -80,7 +80,8 @@ void PlayerBody::onDraw() const {
 
 	int graphNum = (int)ceil(PLAYER_DEAD_LIMIT - dead_limit_);
 	graphNum = min((int)PLAYER_DEAD_LIMIT, max(0, graphNum));
-	Vector2 drawPos = (position_+Vector2(-(CHIPSIZE/2),-(ResourceLoader::GetInstance().GetTextureSize(AnimationID::PLAYER_BUTTY_IDLE).y/2)))*inv_;
+	//Vector2 drawPos = (position_+Vector2(-(CHIPSIZE/2),-(ResourceLoader::GetInstance().GetTextureSize(AnimationID::PLAYER_BUTTY_IDLE).y/2)))*inv_;
+	Vector2 drawPos = SCREEN_SIZE *0.5f - ResourceLoader::GetInstance().GetTextureSize(NumIDs.at(graphNum))*0.5f;
 	DrawGraph( drawPos.x,drawPos.y, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
 	//DrawFormatString(0, 0, GetColor(255, 255, 255), "%f", PLAYER_DEAD_LIMIT-dead_limit_);
 }

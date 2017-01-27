@@ -158,8 +158,8 @@ void GameOverScene::draw() const {
 
 	//mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
 	//mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
-	mButtyAnim.draw(mCursorPos + Vector2::Left * 420, Vector2::Zero, 0.5f);
-	mRettyAnim.draw(mCursorPos + Vector2::Right * 580, Vector2::Zero, 0.5f);
+	mButtyAnim.draw(mCursorPos + Vector2::Left * 200, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 1000, Vector2::Zero, 0.5f);
 
 }
 

@@ -15,7 +15,8 @@ enum class ActorGroup {
 	SCROOLSTOP,
 	PuyoVertex,
 	Tubo,               //ツボ
-	Field				//ステージ
+	Field,				//ステージ
+	Item
 };
 
 #endif

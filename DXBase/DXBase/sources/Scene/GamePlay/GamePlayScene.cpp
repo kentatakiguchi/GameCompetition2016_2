@@ -26,6 +26,17 @@ GamePlayScene::GamePlayScene(SceneDataKeeper* keeper) :nextScene_(Scene::GameOve
 	stageTexs_.push_back(TextureID::STAGE_02_TEX);
 	stageTexs_.push_back(TextureID::STAGE_03_TEX);
 	stageTexs_.push_back(TextureID::STAGE_04_TEX);
+
+	numberTexes_.push_back(TextureID::NUMBER_ZERO_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_ONE_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_TWO_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_THREE_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_FOUR_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_FIVE_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_SIX_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_SEVEN_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_EIGHT_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_NINE_TEX);
 }
 
 GamePlayScene::~GamePlayScene() {
@@ -134,6 +145,8 @@ void GamePlayScene::start() {
 		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4), DX_PLAYTYPE_LOOP);
 		//PlaySoundFile("./resources/file/stage4_BGM.mp3", DX_PLAYTYPE_LOOP);
 	}
+
+	world_->setCount(keeper_->GetItemCount());
 }
 
 void GamePlayScene::update() {
@@ -169,10 +182,11 @@ void GamePlayScene::update() {
 
 	auto player = world_->findActor("Player");
 
-	isClearStage_ = player == nullptr || world_->is_clear();
+	isClearStage_ = world_->is_clear();
 	//isEnd_ = player == nullptr || world_->is_clear();
 
 	if (player == nullptr) {
+		isEnd_ = true;
 		nextScene_ = Scene::GameOver;
 	}
 	if (world_->is_clear()) {
@@ -190,6 +204,7 @@ void GamePlayScene::update() {
 		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_, isClearStage_);
 		//isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
 	}
+	keeper_->setItemCount(world_->getCount());
 }
 
 void GamePlayScene::draw() const {
@@ -210,10 +225,53 @@ void GamePlayScene::draw() const {
 		return;
 	}
 
+	DrawGraph(SCREEN_SIZE.x - CountPos - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x, 50, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
+
+	int drawNum = keeper_->GetItemCount();
+	int baseNum = keeper_->GetItemCount();
+	int posCount = 0;
+	std::vector<int> drawNumberList;
+
+	for (int i = 0;;) {
+
+		if (baseNum < 10) {
+			drawNumberList.push_back(baseNum);
+			//DrawGraph((SCREEN_SIZE.x - CountPos)
+			//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[baseNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[baseNum]), TRUE);
+			break;
+		}
+
+		drawNum = baseNum*0.1;
+		drawNum = drawNum * 10;
+		int textNum = baseNum - drawNum;
+
+		drawNumberList.push_back(textNum);
+		//DrawGraph((SCREEN_SIZE.x - CountPos) 
+		//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[textNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[textNum]), TRUE);
+
+		baseNum = baseNum*0.1;
+		posCount++;
+		//DrawFormatString(SCREEN_SIZE.x - 100, 50, GetColor(0, 0, 0), "%d", );
+	}
+	int drawPosCount = drawNumberList.size() - 1;
+	for (int i = 0; i < drawNumberList.size(); i++) {
+
+		DrawGraph((SCREEN_SIZE.x - CountPos)
+			+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
+
+		drawPosCount--;
+	}
+
 	isStopped_ ? pause_.draw() : move_.draw();
 }
 
 void GamePlayScene::end() {
+	if (!isClearStage_) {
+		world_->minusCount();
+		keeper_->setItemCount(world_->getCount());
+	}
+	world_->resetGetCount();
+
 	delete backManager;
 	if (name_ != "stage04")
 	{

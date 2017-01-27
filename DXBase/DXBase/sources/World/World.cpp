@@ -12,7 +12,7 @@ World::World() :
 	isEntered_(false),
 	isLetOuted_(false),
 	isStopTime_(false),
-	mNoPlayerMove(false),
+	mNoPlayerMove(false),itemCount_(0),getCount_(0),
 	playerScreenPos_(PLAYER_SCREEN_POSITION){
 	inv_ = Matrix::Identity;
 }

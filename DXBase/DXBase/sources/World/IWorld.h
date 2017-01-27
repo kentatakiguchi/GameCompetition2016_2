@@ -72,6 +72,14 @@ public:
 
 	virtual void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness = 0.1f, float friction = 0.5f, float mass = 2.0f)const = 0;
 
+	virtual void addCount(int i = 1) = 0;
+	virtual void setCount(int i) = 0;
+	virtual void minusCount() = 0;
+	virtual void resetCount() = 0;
+	virtual void resetGetCount() = 0;
+	virtual int getCount() = 0;
+	virtual int getGetCount() = 0;
+
 };
 
 #endif

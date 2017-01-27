@@ -48,6 +48,9 @@ private:
 	PlayerAnimation2D mRettyAnim;
 	// ‘I‘ğ‚ÌÀ•W
 	Vector2 mCursorPos;
+
+	std::vector<TextureID> numberTexes_;
+
 };
 
 #endif

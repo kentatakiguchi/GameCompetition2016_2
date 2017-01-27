@@ -40,6 +40,9 @@ private:
 	void onCollide(Actor& other);
 protected:
 	int rotate_;
+	int width_;
+	int height_;
+
 };
 
 #endif // !MAPCHIP_H_

@@ -26,7 +26,8 @@
 #include "../Actor/Door/Door.h"
 #include "MovelessFloorBreak.h"
 #include "../Actor/Tubo/Tubo.h"
-
+#include"../Actor/Item/Items.h"
+#include"../Field/ItemSpawnFloor.h"
 
 
 class MapGenerator {
@@ -97,11 +98,26 @@ public:
 		rowSize = reader_.rows();
 		colSize = reader_.columns();
 		std::vector<std::vector<bool>> baseBlockConnectChecker;
+		std::vector<std::vector<bool>> sticklessBlockConnectChecker;
+		std::vector<std::vector<bool>> bossBlockConnectChecker;
+		std::vector<std::vector<bool>> fWoodBlockConnectChecker;
+		std::vector<std::vector<bool>> fS4BlockConnectChecker;
+		std::vector<std::vector<bool>> fSubBlockConnectChecker;
 
 		baseBlockConnectChecker.resize(rowSize);
-		
+		sticklessBlockConnectChecker.resize(rowSize);
+		bossBlockConnectChecker.resize(rowSize);
+		fWoodBlockConnectChecker.resize(rowSize);
+		fS4BlockConnectChecker.resize(rowSize);
+		fSubBlockConnectChecker.resize(rowSize);
+
 		for (int i = 0; i < baseBlockConnectChecker.size();i++) {
 			baseBlockConnectChecker[i].resize(colSize);
+			sticklessBlockConnectChecker[i].resize(colSize);
+			bossBlockConnectChecker[i].resize(colSize);
+			fWoodBlockConnectChecker[i].resize(colSize);
+			fS4BlockConnectChecker[i].resize(colSize);
+			fSubBlockConnectChecker[i].resize(colSize);
 		}
 		
 		//OutputDebugString(std::to_string(baseBlockConnectChecker[0].size()).c_str());
@@ -134,18 +150,8 @@ public:
 						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
-				if (reader_.geti(rowN, colN) == 11) {
-					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorCenterUpDown>(
-						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
-					continue;
-				}
 				if (reader_.geti(rowN, colN) == 3) {
 					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorRightLeft>(
-						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
-					continue;
-				}
-				if (reader_.geti(rowN, colN) == 12) {
-					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorCenterRightLeft>(
 						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
@@ -168,18 +174,42 @@ public:
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 9) {
-					world_->addActor(ActorGroup::Field, std::make_shared<SticklessFloor>(
-						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STONE_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
-					continue;
+					//world_->addActor(ActorGroup::Field, std::make_shared<SticklessFloor>(
+					//	ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STONE_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+						
+					sticklessBlockConnectChecker[rowN][colN] = true;
+
+						continue;
 				}
 				if (reader_.geti(rowN, colN) == 10) {
-					world_->addActor(ActorGroup::Field, std::make_shared<BossAreaFloor>(
+					//world_->addActor(ActorGroup::Field, std::make_shared<BossAreaFloor>(
+					//	ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					bossBlockConnectChecker[rowN][colN] = true;
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 11) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorCenterUpDown>(
 						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 12) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorCenterRightLeft>(
+						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 16) {
+					world_->addActor(ActorGroup::Field, std::make_shared<ItemSpawnFloor>(
+						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]),world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 17) {
+					world_->addActor(ActorGroup::Item, std::make_shared<Items>(
+						world_, Vector2(colN*CHIPSIZE + 48, rowN*CHIPSIZE + 48)));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 18) {
 					world_->addActor(ActorGroup::Tubo, std::make_shared<Tubo>(
-						world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE-1.0f)));
+						world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE - 1.0f)));
 					continue;
 				}
 
@@ -201,8 +231,9 @@ public:
 				}
 				if (reader_.geti(rowN, colN) == 22) {
 					//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
-					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_SUB_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+					//	ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_SUB_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					fSubBlockConnectChecker[rowN][colN] = true;
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 30) {
@@ -692,10 +723,15 @@ public:
 			}
 		}
 		
-		CreateFloor(baseBlockConnectChecker, stagenum);
+		CreateFloor(baseBlockConnectChecker, stagenum, 1);
+		CreateFloor(sticklessBlockConnectChecker, stagenum, 9);
+		CreateFloor(bossBlockConnectChecker, stagenum, 10);
+		CreateFloor(fWoodBlockConnectChecker, stagenum, 20);
+		CreateFloor(fS4BlockConnectChecker, stagenum, 21);
+		CreateFloor(fSubBlockConnectChecker, stagenum, 22);
 	}
 private:
-	void CreateFloor(std::vector<std::vector<bool>> baseBlockConnectChecker,int stagenum) {
+	void CreateFloor(std::vector<std::vector<bool>> baseBlockConnectChecker,int stagenum,int blockType) {
 		int blockCount;
 		bool isFirst;
 		Vector2 startPosition;
@@ -710,9 +746,6 @@ private:
 
 			for (int x = 0; x < baseBlockConnectChecker[i].size(); x++) {
 				if (baseBlockConnectChecker[i][x]) {
-					
-
-
 
 					baseBlockConnectChecker[i][x] = false;
 					blockCount++;
@@ -727,10 +760,9 @@ private:
 						baseBlockConnectChecker[startPosition.y / CHIPSIZE][startPosition.x / CHIPSIZE] = true;
 						continue;
 					}
-
-					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, blockCount, 1));
-
+					//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						//ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, blockCount, 1));
+					CreateChip(blockType, stagenum, startPosition, blockCount,1);
 					blockCount = 0;
 					isFirst = true;
 				}
@@ -743,8 +775,9 @@ private:
 						continue;
 					}
 
-					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, blockCount, 1));
+					//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+					//	ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, blockCount, 1));
+					CreateChip(blockType, stagenum, startPosition, blockCount, 1);
 
 					blockCount = 0;
 					isFirst = true;
@@ -767,8 +800,9 @@ private:
 				}
 				else if (blockCount>0) {
 
-					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, 1, blockCount));
+					//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+					//	ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, 1, blockCount));
+					CreateChip(blockType, stagenum, startPosition, 1,blockCount);
 
 					blockCount = 0;
 					isFirst = true;
@@ -776,8 +810,9 @@ private:
 				if (x == baseBlockConnectChecker.size() - 1 && blockCount != 0)
 				{
 
-					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, 1, blockCount));
+					//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+					//	ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, startPosition, 1, blockCount));
+					CreateChip(blockType, stagenum, startPosition, 1, blockCount);
 
 					blockCount = 0;
 					isFirst = true;
@@ -787,6 +822,39 @@ private:
 		}
 
 	}
+
+	void CreateChip(int num,int stagenum,Vector2 position, int width=1,int height=1, Vector2 endPosition=Vector2::Zero) {
+		if (num == 1) {
+			world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+				ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, position, width, height));
+			return;
+		}
+		if (num == 9) {
+			world_->addActor(ActorGroup::Field, std::make_shared<SticklessFloor>(
+				ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STONE_TEX), world_, position, width, height));
+		}
+		if (num == 10) {
+			world_->addActor(ActorGroup::Field, std::make_shared<BossAreaFloor>(
+				ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_,position,width,height));
+		}
+		if (num == 20) {
+			world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+				ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_WOOD_TEX), world_, position, width, height));
+			return;
+		}
+		if (num == 21) {
+			//world_->addActor(ActorGroup::Field,std::make_shared<MovelessFloor>(chips[(reader_.geti(rowN, colN))], world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+			world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+				ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STAGE4_TEX), world_, position, width, height));
+			return;
+		}
+
+		if (num == 22) {
+			world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+				ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_SUB_TEX), world_, position, width, height));
+		}
+	}
+
 	void SetSegmentPoint(int rowN, int colN, Vector2& startPoint, Vector2& endPoint, pointSetState state)
 	{
 		startPoint = segmentStartPoints[reader_.geti(rowN, colN)];

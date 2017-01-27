@@ -20,6 +20,17 @@ MapChip(world, Vector2(position.x, position.y), "BossAreaFloor", CollisionBase(
 {
 	rotate_ = 0;
 }
+BossAreaFloor::BossAreaFloor(int spriteID, IWorld * world, Vector2 & position,int width,int height) :spriteID_(spriteID),
+MapChip(world, Vector2(position.x, position.y), "BossAreaFloor", CollisionBase(
+	Vector2{ position.x,position.y },
+	Vector2{ position.x - (CHIPSIZE),position.y },
+	Vector2{ position.x ,position.y - (CHIPSIZE) },
+	Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
+{
+	width_ = width;
+	height_ = height;
+	rotate_ = 0;
+}
 
 BossAreaFloor::BossAreaFloor(std::shared_ptr<BossAreaFloor> chip, IWorld * world, Vector2 & position) :spriteID_(-1),
 MapChip(world, Vector2(position.x, position.y), "BossAreaFloor", CollisionBase(
@@ -60,7 +71,7 @@ void BossAreaFloor::onUpdate(float deltaTime)
 
 void BossAreaFloor::onDraw() const
 {
-	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, rotate_, inv_);
+	spriteID_ == -1 ? body_.draw(inv_) : body_.draw(spriteID_, width_,height_, inv_);
 }
 
 void BossAreaFloor::onCollide(Actor & other)

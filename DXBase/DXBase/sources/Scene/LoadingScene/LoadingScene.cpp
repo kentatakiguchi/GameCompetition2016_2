@@ -158,6 +158,13 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_THREE_TEX, "./resources/sprite/num3.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_FOUR_TEX, "./resources/sprite/num4.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_FIVE_TEX, "./resources/sprite/num5.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_SIX_TEX, "./resources/sprite/num6.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_SEVEN_TEX, "./resources/sprite/num7.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_EIGHT_TEX, "./resources/sprite/num8.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_NINE_TEX, "./resources/sprite/num9.png");
+
+	ResourceLoader::GetInstance().loadTexture(TextureID::ITEM_TEX, "./resources/sprite/item.png");
+
 
 	load_bgm_res();
 	load_se_res();

@@ -46,6 +46,7 @@ private:
 	bool stageFlag_;
 	std::vector<TextureID> stageTexs_;
 	int stageNum_;
+	std::vector<TextureID> numberTexes_;
 };
 
 #endif

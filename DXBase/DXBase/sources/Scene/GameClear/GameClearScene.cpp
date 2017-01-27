@@ -28,7 +28,7 @@ GameClearScene::GameClearScene(SceneDataKeeper* keeper) :
 	std::vector<std::string> list2;
 	list2.push_back("ƒƒjƒ…[‚É–ß‚é");
 	listBase[1] = list2;
-	textPoses[1] = Vector2(500, 600);
+	textPoses[1] = Vector2(500, 800);
 	textPosList.push_back(textPoses[1]);
 	changeTextList.clear();
 	//OutputDebugString(listBase[0].at(0).c_str());
@@ -41,6 +41,16 @@ GameClearScene::GameClearScene(SceneDataKeeper* keeper) :
 
 	baseTitleBackID[0] = TextureID::TITLE_BACK4_TEX;
 
+	numberTexes_.push_back(TextureID::NUMBER_ZERO_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_ONE_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_TWO_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_THREE_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_FOUR_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_FIVE_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_SIX_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_SEVEN_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_EIGHT_TEX);
+	numberTexes_.push_back(TextureID::NUMBER_NINE_TEX);
 }
 
 GameClearScene::~GameClearScene() {
@@ -158,6 +168,43 @@ void GameClearScene::draw() const {
 		forcount++;
 		count++;
 		heightPoint = 0;
+	}
+
+	DrawGraph(SCREEN_SIZE.x/2 - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x, 600, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
+	
+	int drawNum = keeper_->GetItemCount();
+	int baseNum = keeper_->GetItemCount();
+	int posCount = 0;
+	std::vector<int> drawNumberList;
+
+	for (int i = 0;;) {
+
+		if (baseNum < 10) {
+			drawNumberList.push_back(baseNum);
+			//DrawGraph((SCREEN_SIZE.x - CountPos)
+			//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[baseNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[baseNum]), TRUE);
+			break;
+		}
+
+		drawNum = baseNum*0.1;
+		drawNum = drawNum * 10;
+		int textNum = baseNum - drawNum;
+
+		drawNumberList.push_back(textNum);
+		//DrawGraph((SCREEN_SIZE.x - CountPos) 
+		//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[textNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[textNum]), TRUE);
+
+		baseNum = baseNum*0.1;
+		posCount++;
+		//DrawFormatString(SCREEN_SIZE.x - 100, 50, GetColor(0, 0, 0), "%d", );
+	}
+	int drawPosCount = drawNumberList.size() - 1;
+	for (int i = 0; i < drawNumberList.size(); i++) {
+
+		DrawGraph((SCREEN_SIZE.x/2)
+			+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount, 600, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
+
+		drawPosCount--;
 	}
 	//DrawGraph(textPoses.at(targetPoint).x, textPoses.at(targetPoint).y, ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
 	//mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);

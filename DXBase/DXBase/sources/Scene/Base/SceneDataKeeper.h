@@ -16,9 +16,25 @@ public:
 	void setPlayerHP(int hp);
 	int getPlayerHP() const;
 	int getInt();
+	void setItemCount(int itemCount) {
+		itemCount_ = itemCount;
+	}
+	void addCount(int adds) {
+		itemCount_ += adds;
+	}
+	void ItemReset() {
+		itemCount_ = 0;
+	}
+	void ItemMinus(int minusCount) {
+		itemCount_ -= minusCount;
+	}
+	int GetItemCount() {
+		return itemCount_;
+	}
 private:
 	std::string previousSceneName_;
 	int hp_;
+	int itemCount_;
 };
 
 #endif

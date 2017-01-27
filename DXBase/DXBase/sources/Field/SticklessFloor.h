@@ -10,6 +10,7 @@ public:
 	//マップチップの生成
 	SticklessFloor(IWorld* world, Vector2& position);
 	SticklessFloor(int spriteID, IWorld* world, Vector2& position);
+	SticklessFloor(int spriteID, IWorld* world, Vector2& position, int width, int height);
 	SticklessFloor(std::shared_ptr<SticklessFloor> chip, IWorld* world, Vector2& position);
 	SticklessFloor(SticklessFloor& chip, IWorld* world, Vector2& position);
 	void set(Vector2& pos);

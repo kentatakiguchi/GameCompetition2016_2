@@ -95,11 +95,11 @@ void BoundingSegment::draw(int spriteID, Matrix inv) const {
 	int ysizeCou;
 	if (spriteID == ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI_TEX)) {
 		sprid = ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STAGE2_TEX);
-		ysizeCou = 23;
+		ysizeCou = 100;
 	}
 	if (spriteID == ResourceLoader::GetInstance().getTextureID(TextureID::SEGMENT_TRI2_TEX)) {
 		sprid = ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_STAGE4_TEX);
-		ysizeCou = 20;
+		ysizeCou = 100;
 	}
 	//Vector2 leftPos = Vector2(pos0.x, pos1.y);
 	//Vector2 rightPos = Vector2(posis.x, posis.y);
@@ -112,8 +112,8 @@ void BoundingSegment::draw(int spriteID, Matrix inv) const {
 	int tileCount = 0;
 	int yleCount = 0;
 	for (int yl = 0; yl < yleSpace; yl++) {
+		yleSpace = (pos1.y + CHIPSIZE * ysizeCou) - (pos1.y*yl);
 		if (yleSpace > (pos1.y + CHIPSIZE * ysizeCou))break;
-		yleSpace = (pos1.y+CHIPSIZE * ysizeCou) - (pos1.y*yl);
 
 		tileSpace = pos1.x - pos0.x;
 

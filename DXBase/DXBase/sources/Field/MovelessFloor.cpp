@@ -1,7 +1,7 @@
 #include "MovelessFloor.h"
 #include"../Input/InputMgr.h"
 
-MovelessFloor::MovelessFloor(IWorld * world, Vector2 & position) :spriteID_(-1),width_(1),height_(1),
+MovelessFloor::MovelessFloor(IWorld * world, Vector2 & position) :spriteID_(-1),
 	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE),position.y },
@@ -9,29 +9,32 @@ MovelessFloor::MovelessFloor(IWorld * world, Vector2 & position) :spriteID_(-1),
 		Vector2{ position.x - (CHIPSIZE ),position.y - (CHIPSIZE) }))
 {
 	rotate_ = 0;
+	width_=(1); height_=(1);
 }
 
-MovelessFloor::MovelessFloor(int spriteID, IWorld * world, Vector2 & position):spriteID_(spriteID), width_(1), height_(1),
+MovelessFloor::MovelessFloor(int spriteID, IWorld * world, Vector2 & position):spriteID_(spriteID),
 	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(
 		Vector2{ position.x,position.y },
 		Vector2{ position.x - (CHIPSIZE),position.y },
 		Vector2{ position.x ,position.y - (CHIPSIZE) },
 		Vector2{ position.x - (CHIPSIZE),position.y - (CHIPSIZE) }))
 {
+	width_ = (1); height_ = (1);
 	rotate_ = 0;
 }
 
-MovelessFloor::MovelessFloor(int spriteID, IWorld * world, Vector2 & position,int width,int height) :spriteID_(spriteID), width_(width), height_(height),
+MovelessFloor::MovelessFloor(int spriteID, IWorld * world, Vector2 & position,int width,int height) :spriteID_(spriteID),
 MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(
 	Vector2{ position.x,position.y },
 	Vector2{ position.x - (CHIPSIZE*width),position.y },
 	Vector2{ position.x ,position.y - (CHIPSIZE*height) },
 	Vector2{ position.x - (CHIPSIZE*width),position.y - (CHIPSIZE*height) }))
 {
+	width_ = width; height_ = height;
 	rotate_ = 0;
 }
 
-MovelessFloor::MovelessFloor(std::shared_ptr<MovelessFloor> chip, IWorld * world, Vector2 & position) :spriteID_(-1), width_(1), height_(1),
+MovelessFloor::MovelessFloor(std::shared_ptr<MovelessFloor> chip, IWorld * world, Vector2 & position) :spriteID_(-1),
 	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(
 		Vector2{ position.x ,position.y },
 		Vector2{ position.x - (CHIPSIZE ),position.y },
@@ -39,10 +42,11 @@ MovelessFloor::MovelessFloor(std::shared_ptr<MovelessFloor> chip, IWorld * world
 		Vector2{ position.x - (CHIPSIZE ),position.y - (CHIPSIZE) }
 		))
 {
+	width_ = (1); height_ = (1);
 	rotate_ = 0;
 }
 
-MovelessFloor::MovelessFloor(MovelessFloor & chip, IWorld * world, Vector2 & position) :spriteID_(-1), width_(1), height_(1),
+MovelessFloor::MovelessFloor(MovelessFloor & chip, IWorld * world, Vector2 & position) :spriteID_(-1),
 	MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(
 		Vector2{ position.x ,position.y },
 		Vector2{ position.x - (CHIPSIZE ),position.y },
@@ -50,6 +54,7 @@ MovelessFloor::MovelessFloor(MovelessFloor & chip, IWorld * world, Vector2 & pos
 		Vector2{ position.x - (CHIPSIZE ),position.y - (CHIPSIZE) }
 		))
 {
+	width_ = (1); height_ = (1);
 	rotate_ = 0;
 }
 

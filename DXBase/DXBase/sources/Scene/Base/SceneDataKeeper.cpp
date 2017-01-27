@@ -1,6 +1,6 @@
 #include "SceneDataKeeper.h"
 
-SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage04"), hp_(0)
+SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage04"), hp_(0),itemCount_(0)
 {
 }
 
@@ -18,7 +18,7 @@ void SceneDataKeeper::setSceneName(std::string name)
 	if (pos == std::string::npos) return;
 
 	previousSceneName_ = name;
-	OutputDebugString(name.c_str());
+	//OutputDebugString(name.c_str());
 }
 int SceneDataKeeper::getNextSceneName(std::string& name)
 {

@@ -113,7 +113,29 @@ public:
 	World(const World& other) = delete;
 	World& operator = (const World& other) = delete;
 
-
+	virtual void addCount(int i = 1)override {
+		itemCount_ += i;
+		getCount_ += i;
+	}
+	virtual void setCount(int i)override {
+		itemCount_ = i;
+	}
+	virtual void minusCount()override {
+		itemCount_ -= getCount_;
+	}
+	virtual void resetCount()override {
+		itemCount_ = 0;
+		getCount_ = 0;
+	}
+	virtual void resetGetCount()override {
+		getCount_ = 0;
+	}
+	virtual int getCount()override {
+		return itemCount_;
+	}
+	virtual int getGetCount()override {
+		return getCount_;
+	}
 private:
 	// アクターマネージャー
 	ActorManager	actors_;
@@ -143,6 +165,8 @@ private:
 
 	Vector2 playerScreenPos_;
 
+	int itemCount_;
+	int getCount_;
 public:
 
 	Matrix inv_;

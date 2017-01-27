@@ -10,6 +10,7 @@ public:
 	//マップチップの生成
 	BossAreaFloor(IWorld* world, Vector2& position);
 	BossAreaFloor(int spriteID, IWorld* world, Vector2& position);
+	BossAreaFloor(int spriteID, IWorld* world, Vector2& position, int width, int height);
 	BossAreaFloor(std::shared_ptr<BossAreaFloor> chip, IWorld* world, Vector2& position);
 	BossAreaFloor(BossAreaFloor& chip, IWorld* world, Vector2& position);
 	void set(Vector2& pos);

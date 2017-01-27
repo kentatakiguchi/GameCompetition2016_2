@@ -46,6 +46,8 @@ static const float LRMoveSpeed = 2;
 
 static const float UDMoveSpeed = 2;
 
+static const int CountPos = 500;
+
 /*** ‰i–ì ***/
 
 
