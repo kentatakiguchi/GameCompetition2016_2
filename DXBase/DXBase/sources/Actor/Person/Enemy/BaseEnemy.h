@@ -31,6 +31,12 @@ protected:
 	enum {
 		EFFECT_DEAD = 0
 	};
+	// SEID
+	enum {
+		SE_HAKKEN = 0,
+		SE_HITSTOP = 1,
+		SE_DEAD = 2
+	};
 	// 状態列挙
 	enum class State {
 		Idel,
@@ -117,6 +123,10 @@ protected:
 	virtual void addAnimation();
 	// プレイヤーとのX方向とY方向を計算し、画面外にいるかを返します
 	bool isScreen();
+	// ポーズ中にSEの停止を行います
+	void poseStopSE();
+	// ポーズ解除時にSEを再度再生します
+	void poseRestartSE();
 
 protected:
 	// メンバ変数
@@ -168,10 +178,16 @@ protected:
 	// 所持しているオブジェクトのコンテナ
 	typedef std::list<Actor*> ObjContainer;
 	ObjContainer objContainer_;
+	// SEハンドルコンテナ
+	typedef std::vector<int> SEContainer;
+	SEContainer seHandles_;
+	// 再生SEハンドルコンテナ
+	typedef std::list<int> PlaySEContainer;
+	PlaySEContainer playSEHandles_;
 	// 重力加速度
 	const float GRAVITY_ = 9.8f;
 	// SE
-	int seHandle_;
+	//int seHandle_;
 };
 
 #endif

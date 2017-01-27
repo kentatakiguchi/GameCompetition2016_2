@@ -125,6 +125,10 @@ private:
 	void setPiyori();
 	// ボスのアルファ値を設定します
 	void texAlpha(float deltaTime);
+	// ポーズ中にSEの停止を行います
+	void poseStopSE();
+	// ポーズ解除時にSEを再度再生します
+	void poseRestartSE();
 
 protected:
 	int dp_;						// 耐久値
@@ -183,6 +187,12 @@ private:
 	// スターエフェクト用コンテナ
 	typedef std::list<ActorPtr> StarContainer;
 	StarContainer stars_;
+	// SEハンドルコンテナ
+	typedef std::list<int> SEContainer;
+	SEContainer seHandles_;
+	// 再生SEハンドルコンテナ
+	typedef std::list<int> PlaySEContainer;
+	PlaySEContainer playSEHandles_;
 };
 
 #endif

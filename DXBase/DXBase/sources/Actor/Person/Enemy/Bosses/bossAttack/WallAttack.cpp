@@ -1,6 +1,5 @@
 #include "WallAttack.h"
 #include "../Effect/ImportEffects.h"
-#include <random>	// C++11の機能
 
 WallAttack::WallAttack() :
 	BossAttack(nullptr, Vector2::Zero),
@@ -149,6 +148,10 @@ void WallAttack::wallMove(float deltaTime)
 		animeAngle_ = angle + 90.0f;
 		direction_ = direction;
 		wsDirection_ = direction;
+		// SEの再生
+		PlaySoundMem(
+			ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_WALLATTACK),
+			DX_PLAYTYPE_BACK);
 	}
 }
 
@@ -188,15 +191,15 @@ void WallAttack::setAttackSecond()
 		aCount = 4;
 		flinchCount_ = 3;
 	}
-	// 乱数の取得
-	std::random_device random;
-	// メルセンヌツイスター法 後で調べる
-	// 初期Seed値を渡す
-	std::mt19937 mt(random());
-	// 範囲の指定(int型)
-	std::uniform_int_distribution<> aSecond(moveTimes_[aCount], moveTimes_[aCount + 1]);
+	//// 乱数の取得
+	//std::random_device random;
+	//// メルセンヌツイスター法 後で調べる
+	//// 初期Seed値を渡す
+	//std::mt19937 mt(random());
+	//// 範囲の指定(int型)
+	//std::uniform_int_distribution<> aSecond(moveTimes_[aCount], moveTimes_[aCount + 1]);
 	// 移動秒数を入れる
-	aSecond_ = aSecond(mt);
+	aSecond_ = getRandomInt(moveTimes_[aCount], moveTimes_[aCount + 1]);
 }
 
 // 状態の変更を行います

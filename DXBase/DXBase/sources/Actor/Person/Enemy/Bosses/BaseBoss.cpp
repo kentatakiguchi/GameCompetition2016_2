@@ -57,6 +57,8 @@ BaseBoss::BaseBoss(
 {
 	asContainer_.clear();
 	asAnimations_.clear();
+	seHandles_.clear();
+	playSEHandles_.clear();
 	// 攻撃状態をコンテナに追加(攻撃順に追加する)
 	asContainer_.push_back(AttackState::JumpAttack);
 	asContainer_.push_back(AttackState::WallAttack);
@@ -76,10 +78,17 @@ BaseBoss::BaseBoss(
 	lockHps_.push_back(0);
 	// スターコンテナの初期化
 	stars_.clear();
+	// SEハンドルの追加
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_CHAKUCHI));
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_DAMAGE));
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_JUMP));
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_WALLATTACK));
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO));
 	// アニメーションの追加
 	addAnimation();
 	animation_.changeAnimation(
 		static_cast<int>(WAIT_NUMBER));
+	// オブジェクトの追加
 	// 床捜索オブジェクト
 	auto wspObj = std::make_shared<FloorSearchPoint>(
 		world_, position_,
@@ -131,6 +140,9 @@ void BaseBoss::onUpdate(float deltaTime)
 	wspObj_->setPosition(position_);
 	// 状態の更新
 	updateState(deltaTime);
+	// SE
+	poseStopSE();
+	poseRestartSE();
 	// 接地(仮)
 	bossManager_.setIsGround(isGround_);
 	bossManager_.setIsBottom(isBottomHit_);
@@ -396,11 +408,16 @@ void BaseBoss::boko(float deltaTime)
 	}
 	else if (CheckSoundMem(se) == 0 && deltaTime > 0) {
 		// SEの再生(停止した箇所から再生)
-		PlaySoundMem(se, DX_PLAYTYPE_LOOP, false);
+		PlaySoundMem(se, DX_PLAYTYPE_BACK, false);
 	}
 	if (stateTimer_ < 2.0f) return;
 	direction_.x = -1.0f;
 	animation_.changeDirType(direction_.x);
+	// 出た瞬間にSE再生
+	if(world_->isEntered())
+		PlaySoundMem(
+			ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_DAMAGE),
+			DX_PLAYTYPE_BACK);
 	world_->setEntry(false, true);
 	entryObj_->setIsEntry(false);
 	// SEが再生中なら、止める
@@ -491,10 +508,10 @@ void BaseBoss::piyoriMove(float deltaTime)
 			changeState(State::Boko, DAMAGE_BOKO_NUMBER);
 			isAttackHit_ = false;
 			world_->setEntry(true, false);
-			// SEの再生
-			PlaySoundMem(
-				ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO),
-				DX_PLAYTYPE_LOOP);
+			//// SEの再生
+			//PlaySoundMem(
+			//	ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO),
+			//	DX_PLAYTYPE_LOOP);
 			return;
 		}
 	}
@@ -688,6 +705,9 @@ void BaseBoss::damage(const int damage, const Vector2& position, const float sca
 			//animation_.turnAnimation(DAMAGE_NUMBER, direction_.x);
 			animation_.changeDirType(direction_.x);
 			changeState(State::Damage, DAMAGE_NUMBER);
+			PlaySoundMem(
+				ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_DAMAGE),
+				DX_PLAYTYPE_BACK);
 			isAttackHit_ = false;
 		}
 	}
@@ -887,7 +907,36 @@ void BaseBoss::texAlpha(float deltaTime)
 	if (!isAttackHit_) {
 		if ((int)(stateTimer_ * 10) % 2 < 1) alpha_ -= (int)(deltaTime * 750);
 		else alpha_ += (int)(deltaTime * 750);
-		alpha_ = (int)(MathHelper::Clamp(alpha_, 100, 255));
+		alpha_ = (int)(MathHelper::Clamp((float)alpha_, 100, 255));
 	}
 	else alpha_ = 255;
+}
+
+void BaseBoss::poseStopSE()
+{
+	// 停止(ポーズ)していなかったら返す
+	if (deltaTimer_ > 0.0f) return;
+	if (playSEHandles_.size() != 0) return;
+	for (auto i = seHandles_.begin(); i != seHandles_.end(); i++) {
+		if (CheckSoundMem(*i) == 1) {
+			StopSoundMem(*i);
+			playSEHandles_.push_back(*i);
+		}
+	}
+}
+
+// ポーズ解除時にSEを再度再生します
+void BaseBoss::poseRestartSE()
+{
+	// サイズが0ならば返す
+	if (playSEHandles_.size() == 0) return;
+	//if (deltaTimer_ > 0.0f)
+	if (deltaTimer_ == 0.0f) return;
+	for (auto i = playSEHandles_.begin(); i != playSEHandles_.end(); i++) {
+		// 格納したSEを再度再生する
+		if (CheckSoundMem(*i) == 0)
+			PlaySoundMem(*i, DX_PLAYTYPE_BACK, false);
+	}
+	// 中身をクリアする
+	playSEHandles_.clear();
 }

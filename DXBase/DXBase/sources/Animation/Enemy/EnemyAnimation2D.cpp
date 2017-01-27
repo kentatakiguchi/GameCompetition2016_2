@@ -1,4 +1,5 @@
 #include "EnemyAnimation2D.h"
+#include <random>
 
 EnemyAnimation2D::EnemyAnimation2D() : 
 	prevFrame_(0),
@@ -145,6 +146,22 @@ void EnemyAnimation2D::preMotion()
 	if (turn_anim_ != -1 && end_anim())
 		isTurn_ = false;
 	back_to_pre_motion();
+}
+
+// アニメーションのタイムをランダムにします
+void EnemyAnimation2D::timeRandom()
+{
+	// 乱数の取得
+	std::random_device random;
+	// メルセンヌツイスター法 後で調べる
+	// 初期Seed値を渡す
+	std::mt19937 mt(random());
+	// 範囲の指定(int型)
+	//std::uniform_int_distribution<> aSpeed(moveTimes_[aCount], moveTimes_[aCount + 1]);
+	std::uniform_int_distribution<> rFrame(0, sprites_[curr_anim_].size() - 1);
+	//return count(mt);
+	frame_ = static_cast<unsigned int>(rFrame(mt));
+	timer_ = (float)rFrame(mt);
 }
 
 // アニメーションの向きを変えたかを返します(1f)

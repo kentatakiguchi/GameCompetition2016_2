@@ -2,7 +2,6 @@
 #include "../../Rock.h"
 #include "../Tornado.h"
 #include "../../../../../ResourceLoader/ResourceLoader.h"
-#include <random>	// C++11の機能
 
 DysonAttack::DysonAttack() : 
 	BossAttack(nullptr, Vector2::Zero),
@@ -53,19 +52,15 @@ void DysonAttack::dysonAttack(float deltaTime)
 	}
 	// 岩の生成
 	if ((int)(timer_ * 10) % 10 == 0 && !isRockCreate_) {
-		// 乱数の取得
-		std::random_device random;
-		// メルセンヌツイスター法 後で調べる
-		// 初期Seed値を渡す
-		std::mt19937 mt(random());
 		// 範囲の指定(int型)
 		int size = static_cast<int>(CHIPSIZE);
-		std::uniform_int_distribution<> aSecond(size * 2, size * 18);
+		//std::uniform_int_distribution<> aSecond(size * 2, size * 18);
 		// 岩の生成
 		for (int i = 0; i != 3; i++) {
 			// Xの生成位置を入れる
 			world_->addActor(ActorGroup::Enemy,
-				std::make_shared<Rock>(world_, Vector2((float)aSecond(mt), 200.0f)));
+				std::make_shared<Rock>(world_, 
+					Vector2((float)getRandomInt(size * 2, size * 18), 200.0f)));
 		}
 		isRockCreate_ = true;
 	}

@@ -15,8 +15,14 @@ public:
 	// 攻撃行動のリフレッシュを行います
 	virtual void Refresh() override;
 
+//protected:
+//	// ジャンプ時間を設定します
+//	void setJumpSpeed();
 protected:
-	float speed_;			// 速度
+	// 岩の生成
+	void createRock();
+
+protected:
 	float degrees_;			// 角度
 	float jumpPower_;		// ジャンプ力
 	float initJumpPower_;	// ジャンプ力(初期化)
@@ -26,6 +32,8 @@ protected:
 	bool isFirstJump_;		// 最初のジャンプか
 	bool isJumpEnd_;		// ジャンプ攻撃が終了したか
 	bool isIdel_;			// ジャンプ後の待機状態か
+	bool isRockCreate_;		// 岩を生成したか
+	Vector2 speed_;			// 速度
 
 private:
 	std::string otherName_;			// 衝突した相手側の名前

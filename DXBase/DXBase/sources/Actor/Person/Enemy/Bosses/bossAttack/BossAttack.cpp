@@ -1,4 +1,5 @@
 #include "BossAttack.h"
+#include <random>	// C++11の機能
 
 BossAttack::BossAttack() :
 	hp_(0),
@@ -239,4 +240,17 @@ bool BossAttack::isLoop()
 bool BossAttack::isReverse()
 {
 	return isAnimaReverse_;
+}
+
+int BossAttack::getRandomInt(int min, int max)
+{
+	// 乱数の取得
+	std::random_device random;
+	// メルセンヌツイスター法 後で調べる
+	// 初期Seed値を渡す
+	std::mt19937 mt(random());
+	// 範囲の指定(int型)
+	//std::uniform_int_distribution<> aSpeed(moveTimes_[aCount], moveTimes_[aCount + 1]);
+	std::uniform_int_distribution<> count(min, max);
+	return count(mt);
 }

@@ -54,8 +54,7 @@ BaseEnemy::BaseEnemy(
 	wsScript_(nullptr),
 	pricleObj_(nullptr),
 	enemyManager_(EnemyManager(position, direction)),
-	animation_(EnemyAnimation2D()),
-	seHandle_(0)
+	animation_(EnemyAnimation2D())
 {
 	// rayオブジェクトの追加
 	auto player = world_->findActor("PlayerBody1");
@@ -68,7 +67,11 @@ BaseEnemy::BaseEnemy(
 		isPlayer_ = true;
 	}
 	// SEの追加
-	seHandle_ = LoadSoundMem("./resources/sounds/enemy/enemy_hakkenn.mp3");
+	seHandles_.clear();
+	playSEHandles_.clear();
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_ENEMY_HAKKEN));
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_ENEMY_HITSTOP));
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_ENEMY_DEAD));
 }
 
 BaseEnemy::~BaseEnemy()
@@ -76,6 +79,8 @@ BaseEnemy::~BaseEnemy()
 	fspPositionContainer_.clear();
 	fspScaleContainer_.clear();
 	objContainer_.clear();
+	seHandles_.clear();
+	playSEHandles_.clear();
 }
 
 void BaseEnemy::Initialize()
@@ -125,6 +130,9 @@ void BaseEnemy::onUpdate(float deltaTime)
 	// 子のupdateが終わった後の処理
 	// 衝突関連の更新
 	updateCollide();
+	// SE
+	poseStopSE();
+	poseRestartSE();
 	// 画像の方向を合わせる
 	//animation_.turnAnimation(turnMotion_, direction_.x);
 	animation_.changeDirType(direction_.x);
@@ -179,10 +187,12 @@ void BaseEnemy::onCollide(Actor & actor)
 		//// 距離が長かったら返す
 		if (Vector2(actor.getPosition() - position_).Length() >= 
 			actor.getBody().GetCircle().getRadius() + scale_) return;
+		// 死亡
 		changeState(State::Dead, ENEMY_DAMAGE);
-		// エフェクトの追加(プレイヤーのチャージエフェクト)
+		// エフェクトの追加
 		world_->addActor(ActorGroup::Effect,
 			std::make_shared<EnemyCollideEffect>(world_, position_));
+		PlaySoundMem(seHandles_[SE_HITSTOP], DX_PLAYTYPE_BACK);
 		world_->setIsStopTime(true);
 		TexDegress_ = 0.0f;
 		isUseGravity_ = true;
@@ -231,7 +241,8 @@ void BaseEnemy::search()
 		psObj_->isPlayerLook()) {
 		changeState(State::Discovery, ENEMY_DISCOVERY);
 		// 発見SEの再生
-		PlaySoundMem(seHandle_, DX_PLAYTYPE_BACK);
+		//PlaySoundMem(seHandle_, DX_PLAYTYPE_BACK);
+		PlaySoundMem(seHandles_[SE_HAKKEN], DX_PLAYTYPE_BACK);
 		discoveryPosition_ = position_;
 	}
 }
@@ -318,6 +329,7 @@ void BaseEnemy::deadMove()
 	world_->addActor(ActorGroup::Effect,
 		std::make_shared<EnemyDeadEffect>(
 			world_, position_ - Vector2::Up * 325.0f, EFFECT_DEAD));
+	PlaySoundMem(seHandles_[SE_DEAD], DX_PLAYTYPE_BACK);
 	dead();
 }
 
@@ -574,4 +586,67 @@ bool BaseEnemy::isScreen()
 	isScreen_ = false;
 	// 画面外
 	return false;
+}
+
+// ポーズ中にSEの停止を行います
+void BaseEnemy::poseStopSE()
+{
+	// 停止(ポーズ)していなかったら返す
+	if (deltaTimer_ > 0.0f) return;
+	// ヒットストップしていたら返す
+	if (deltaTimer_ == 0.0f && world_->isStopTime()) return;
+	// 入っていなかったら返す
+	if (playSEHandles_.size() != 0) return;
+	for (auto i = seHandles_.begin(); i != seHandles_.end(); i++) {
+		if (CheckSoundMem(*i) == 1) {
+			StopSoundMem(*i);
+			playSEHandles_.push_back(*i);
+		}
+	}
+
+	// ヒットストップ中
+	// deltaTimer_ == 0.0f && world_->isStopTime()
+
+	// ポーズ中
+	// deltaTimer_ == 0.0f && !world_->isStopTime()
+
+	//for (auto i = seHandles_.begin(); i != seHandles_.end(); i++) {
+	//	//auto a = *i;
+	//	if(deltaTimer_ == 0.0f && !world_->isStopTime() && CheckSoundMem(*i) == 0)
+	//		PlaySoundMem(*i, DX_PLAYTYPE_LOOP, false);
+	//	else if (deltaTimer_ == 0.0f && !world_->isStopTime() && CheckSoundMem(*i) == 1)
+	//		StopSoundMem(*i);
+	//	/*if(deltaTimer_ >= 0.0f && world_->isStopTime() && CheckSoundMem(*i) == 0)
+	//		PlaySoundMem(*i, DX_PLAYTYPE_LOOP, false);
+	//	else if(deltaTimer_ == 0.0f && !world_->isStopTime() && CheckSoundMem(*i) == 1)
+	//		StopSoundMem(*i);*/
+	//}
+
+	//// デルタタイムが0以下なら、SEを一時停止する
+	//if (CheckSoundMem(windSE_) == 1 &&
+	//	deltaTime <= 0) {
+	//	StopSoundMem(windSE_);
+	//}
+	//else if (CheckSoundMem(windSE_) == 0 && deltaTime > 0) {
+	//	// SEの再生(停止した箇所から再生)
+	//	PlaySoundMem(windSE_, DX_PLAYTYPE_LOOP, false);
+	//}
+}
+
+// ポーズ解除時にSEを再度再生します
+void BaseEnemy::poseRestartSE()
+{
+	// サイズが0ならば返す
+	if (playSEHandles_.size() == 0) return;
+	//// ヒットストップしていなかったら返す
+	//if (deltaTimer_ > 0.0f && !world_->isStopTime()) return;
+	// ポーズ中なら返す
+	if (deltaTimer_ == 0.0f && !world_->isStopTime()) return;
+	for (auto i = playSEHandles_.begin(); i != playSEHandles_.end(); i++) {
+		// 格納したSEを再度再生する
+		if (CheckSoundMem(*i) == 0)
+			PlaySoundMem(*i, DX_PLAYTYPE_BACK, false);
+	}
+	// 中身をクリアする
+	playSEHandles_.clear();
 }

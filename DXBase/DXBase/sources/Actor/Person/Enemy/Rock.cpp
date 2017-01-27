@@ -3,12 +3,21 @@
 #include "../../../Define.h"
 
 Rock::Rock(IWorld * world, const Vector2 & position, const float bodyScale) : 
-	Actor(world, "BaseEnemy", position,
+	Actor(world, "Rock", position,
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
 	timer_(0.0f),
 	speed_(4.0f),
-	state_(State::Idel)
-{}
+	state_(State::Idel),
+	animeNum_(0),
+	animation_(EnemyAnimation2D())
+{
+	animation_.addAnimation(
+		animeNum_,
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_WAIT_TEX));
+	animation_.changeAnimation(animeNum_);
+	animation_.timeRandom();
+}
 
 void Rock::onUpdate(float deltaTime)
 {
@@ -19,6 +28,8 @@ void Rock::onUpdate(float deltaTime)
 	case State::Dead : deadMove(deltaTime); break;
 	}
 
+	animation_.update(deltaTime);
+
 	timer_ += deltaTime;
 }
 
@@ -26,13 +37,19 @@ void Rock::onDraw() const
 {
 	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
-	// 画像の表示
-	DrawExtendGraph(
+	// アニメーションの描画
+	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
+	//// 画像の表示
+	/*DrawExtendGraph(
 		(int)(vec3Pos.x - body_.GetCircle().getRadius()),
 		(int)(vec3Pos.y - body_.GetCircle().getRadius()),
-		(int)(vec3Pos.x + body_.GetCircle().getRadius()), 
+		(int)(vec3Pos.x + body_.GetCircle().getRadius()),
 		(int)(vec3Pos.y + body_.GetCircle().getRadius()),
-		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);
+		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), 1);*/
+	animation_.draw(
+		pos - Vector2::Up * 10,
+		Vector2::One * (256 / 2),
+		body_.GetCircle().getRadius() / (128.0f / 1.5f));
 }
 
 void Rock::onCollide(Actor & actor)

@@ -77,6 +77,10 @@ public:
 	bool isReverse();
 
 protected:
+	// ®”Œ^‚Ìƒ‰ƒ“ƒ_ƒ€”‚ğ•Ô‚µ‚Ü‚·
+	int getRandomInt(int min, int max);
+
+protected:
 	int hp_;					// ‘Ì—Í
 	int flinchCount_;			// ‚Ğ‚é‚Ş‚Ü‚Å‚Ì‰ñ”
 	float timer_;				// ŠÔ

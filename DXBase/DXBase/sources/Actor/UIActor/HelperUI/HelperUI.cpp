@@ -25,19 +25,20 @@ HelperUI::~HelperUI()
 void HelperUI::onUpdate(float deltaTime)
 {
 	// ”ÍˆÍŠO‚Ì–hŽ~ˆ—
-	if (textNum_ > drawTexes_.size() - 1 && textNum_ < 0)
+	auto size = drawTexes_.size();
+	if (textNum_ > size - 1 && textNum_ < 0)
 		textNum_ = 0;
 }
 
 void HelperUI::onDraw() const
 {
 	// ƒLƒƒƒ‰ƒNƒ^[‚Ì•`‰æ
-	DrawGraph(position_.x, position_.y,
+	DrawGraph((int)position_.x, (int)position_.y,
 		ResourceLoader::GetInstance().getTextureID(TextureID::ENEMY_NEEDLE_TEX), true);
 	// •¶Žš‚Ì•`‰æ
 	if (!isTextDraw_)return;
 	auto pos = Vector2::Right * 100.0f + position_;
-	DrawGraph(pos.x, pos.y,
+	DrawGraph((int)pos.x, (int)pos.y,
 		drawTexes_[textNum_], true);
 }
 

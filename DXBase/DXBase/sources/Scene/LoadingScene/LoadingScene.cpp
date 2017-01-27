@@ -262,7 +262,6 @@ void LoadingScene::load_boss_res(){
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_DAMAGE_TEX, "./resources/sprite/actor/boss/Boss_damege.png", Vector2(260, 256), 7, 2, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_DAMAGE_BOKO_TEX, "./resources/sprite/actor/boss/Boss_damage_boko.png", 256, 8, 4);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_DEATH_TEX, "./resources/sprite/actor/boss/Boss_deth.png", 256, 8, 4);
-	//ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ATTACK_TEX, "./resources/sprite/actor/boss/effect/boss_attack.png", Vector2(544, 416), 5, 6);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ATTACK_TEX, "./resources/sprite/actor/boss/effect/boss_attack_star.png", 256, 5, 3);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_BOKO_TEX, "./resources/sprite/actor/boss/effect/boss_boko.png", 512, 5, 6);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_DASH_TEX, "./resources/sprite/actor/boss/effect/dash.png", 256, 9, 7);
@@ -288,8 +287,15 @@ void LoadingScene::load_se_res(){
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_PUYON, "./resources/sounds/puyon.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_SHOT, "./resources/sounds/shot.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_SYOUTOTU, "./resources/sounds/syoutotu.mp3");
-
-	ResourceLoader::GetInstance().loadSound(SoundID::SE_HAKKEN, "./resources/sounds/enemy_hakkenn.mp3");
+	// “G
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_ENEMY_HAKKEN, "./resources/sounds/enemy/enemy_hakkenn.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_ENEMY_HITSTOP, "./resources/sounds/enemy/hitstop.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_ENEMY_DEAD, "./resources/sounds/enemy/kill_effect.mp3");
+	// ƒ{ƒX
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_CHAKUCHI, "./resources/sounds/boss/boss_chakuchi.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_DAMAGE, "./resources/sounds/boss/boss_dame.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_JUMP, "./resources/sounds/boss/boss_jump.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_WALLATTACK, "./resources/sounds/boss/boss2_attack.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_WIND, "./resources/sounds/boss/boss_wind.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_POKO, "./resources/sounds/boss/boss_poko.mp3");
 }

@@ -2,6 +2,7 @@
 #define ROCK_H_
 
 #include "../../Base/Actor.h"
+#include "../../../Animation/Enemy/EnemyAnimation2D.h"
 
 class Rock : public Actor {
 private:
@@ -32,6 +33,8 @@ private:
 	float speed_;	// ‘¬“x
 	float timer_;	// ŠÔ
 	State state_;	// ó‘Ô
+	int animeNum_;
+	EnemyAnimation2D animation_;
 };
 
 #endif
