@@ -6,6 +6,8 @@
 #include "PlayerSearchObj.h"
 #include "Bosses/Effect/EnemyDeadEffect.h"
 #include "Bosses/Effect/EnemyCollideEffect.h"
+// アイテム
+#include "../../Item/Items.h"
 //#include "DeadEnemy.h"
 
 BaseEnemy::BaseEnemy(
@@ -329,6 +331,9 @@ void BaseEnemy::deadMove()
 	world_->addActor(ActorGroup::Effect,
 		std::make_shared<EnemyDeadEffect>(
 			world_, position_ - Vector2::Up * 325.0f, EFFECT_DEAD));
+	// アイテムの生成
+	world_->addActor(ActorGroup::Item,
+		std::make_shared<Items>(world_, position_));
 	PlaySoundMem(seHandles_[SE_DEAD], DX_PLAYTYPE_BACK);
 	dead();
 }

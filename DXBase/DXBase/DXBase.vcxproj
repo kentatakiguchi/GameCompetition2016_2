@@ -171,6 +171,7 @@
     <ClInclude Include="sources\Actor\Body\ShapeType.h" />
     <ClInclude Include="sources\Actor\Collision\Collision.h" />
     <ClInclude Include="sources\Actor\Door\Door.h" />
+    <ClInclude Include="sources\Actor\Item\Items.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossAnimationNumber.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.h" />
@@ -266,6 +267,7 @@
     <ClInclude Include="sources\Field\ChipHeaders.h" />
     <ClInclude Include="sources\Field\CollidelessFloor.h" />
     <ClInclude Include="sources\Field\GameOverPoint.h" />
+    <ClInclude Include="sources\Field\ItemSpawnFloor.h" />
     <ClInclude Include="sources\Field\MapChip.h" />
     <ClInclude Include="sources\Field\MapGenerator.h" />
     <ClInclude Include="sources\Field\MoveFloorCenterRightLeft.h" />
@@ -420,6 +422,7 @@
     <ClCompile Include="sources\Field\BossAreaFloor.cpp" />
     <ClCompile Include="sources\Field\CollidelessFloor.cpp" />
     <ClCompile Include="sources\Field\GameOverPoint.cpp" />
+    <ClCompile Include="sources\Field\ItemSpawnFloor.cpp" />
     <ClCompile Include="sources\Field\MapChip.cpp" />
     <ClCompile Include="sources\Field\MoveFloorCenterRightLeft.cpp" />
     <ClCompile Include="sources\Field\MoveFloorCenterUpDown.cpp" />

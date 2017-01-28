@@ -549,6 +549,12 @@
     <ClInclude Include="sources\Scene\GamePlay\ClearScreen.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\Item\Items.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Field\ItemSpawnFloor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -966,6 +972,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Scene\GamePlay\ClearScreen.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Field\ItemSpawnFloor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
