@@ -15,25 +15,22 @@ public:
 	PlayerBody();
 	PlayerBody(IWorld* world, const std::string name, const Vector2& position);
 	~PlayerBody();
-	virtual void onUpdate(float deltaTime) override;
-	virtual void onDraw() const override;
-	virtual void onLateUpdate(float deltaTime) override;
 	virtual void onCollide(Actor& other) override;
 
+	virtual void onUpdate(float deltaTime) override;
+	virtual void onDraw() const override;
+	
 	void change_state(PlayerState_Enum_Single state);
-	void move(Vector2 vector);
 
-	void chase();
-	void gravity(float amount = 2);
-	void acc_gravity();
+	void collider();
+
+	Vector2& velocity();
+	void posUpdate(float deltaTime);
 
 	bool able_to_hold();
 	bool able_to_jump();
 	bool is_hit();
 
-	void hold_gravity();
-	void clamp();
-	void launch(Vector2 dir);
 	HitOpponent hitOpponent();
 	HitOpponent hit_partner();
 	HitOpponent hit_enemy();
@@ -45,13 +42,12 @@ public:
 	void set_partner(PlayerBodyPtr partner);
 	void set_hold_point();
 	bool dead_limit();
-	bool isInv();
 	void single_action(float deltaTime);
 	Vector2 get_partner_vector();
-	void create_attack_collider_();
-	void delete_attack_collider_();
 	void reset_dead_limit();
 	void count_dead_limit(float deltaTime);
+
+	Vector2& hit_vector();
 
 	PlayerAnimation2D& animation();
 
@@ -63,11 +59,8 @@ private:
 	PlayerStateMgr_Single stateMgr_;
 	PlayerAnimation2D animation_;
 
-	Vector2 input_;
 	Vector2 velocity_;
-	Vector2 gravity_;
 	Vector2 slope_;
-	Vector2 launch_;
 	PlayerBodyPtr partner_;
 	HitOpponent opponent_;
 	HitOpponent hit_partner_;
@@ -76,16 +69,13 @@ private:
 	float dead_limit_;
 	float timer_;
 	PlayerBodyCollPtr collider_;
-	PlayerBodyCollPtr attack_collider_;
+	//PlayerBodyCollPtr attack_collider_;
 
 	Vector2 v_;
 
 	float stiffness_;
 	float friction_;
 	float mass_;
-
-	Vector2 suction_;
-
 	std::map<int,TextureID> NumIDs;
 };
 

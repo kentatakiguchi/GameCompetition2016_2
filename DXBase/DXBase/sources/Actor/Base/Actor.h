@@ -46,6 +46,8 @@ public:
 	const std::string& getName() const;
 	// 座標を返す
 	Vector2 getPosition() const;
+	// 座標を取得
+	Vector2& position();
 	// 回転行列を返す
 	Matrix getRotate() const;
 	// 変換行列を返す

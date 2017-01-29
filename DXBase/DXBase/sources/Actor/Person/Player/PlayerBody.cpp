@@ -44,12 +44,12 @@ PlayerBody::~PlayerBody() {}
 
 void PlayerBody::onUpdate(float deltaTime) {
 
-	velocity_ = (input_ * PLAYER_SPEED + launch_ + gravity_ + suction_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
-	position_ += velocity_;
-	suction_ = 0.0f;
-	slope_.Length() > 0 ? slope_ -= slope_ / 20 : slope_ = Vector2::Zero;
+	//position_ += velocity_;
 
-	opponent_ = HitOpponent::NONE;
+	//velocity_ = (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
+	//slope_.Length() > 0 ? slope_ -= slope_ / 20 : slope_ = Vector2::Zero;
+
+	//opponent_ = HitOpponent::NONE;
 
 	animation_.update(deltaTime);
 
@@ -60,46 +60,41 @@ void PlayerBody::onUpdate(float deltaTime) {
 			timer_ = 0;
 		}
 	}
+
 }
 
 void PlayerBody::onDraw() const {
-	//body_.draw(inv_);
+	//DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_RADIUS, GetColor(255, 255, 255), 0);
 
-	//SetFontSize(32);
-	//DrawFormatString(static_cast<int>((position_ * inv_).x) + 30, static_cast<int>((position_ * inv_).y), GetColor(255, 255, 255), "%f", dead_limit_);
+	//body_.draw(inv_);
 
 	//DrawFormatString(100, 900, GetColor(0, 0, 0), "„« : %f", stiffness_);
 	//DrawFormatString(100, 950, GetColor(0, 0, 0), "–€ŽC : %f", friction_);
 	//DrawFormatString(100, 1000, GetColor(0, 0, 0), "Ž¿—Ê : %f", mass_);
 
 	if (world_->isEntered())return;
-	animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
 
+	if (dead_limit_ > 0) {
+		int graphNum = (int)ceil(PLAYER_DEAD_LIMIT - dead_limit_);
+		graphNum = min((int)PLAYER_DEAD_LIMIT, max(0, graphNum));
+		Vector2 drawPos = (position_ + Vector2(-(CHIPSIZE / 2), -(ResourceLoader::GetInstance().GetTextureSize(AnimationID::PLAYER_BUTTY_IDLE).y / 2)))*inv_;
+		DrawGraph(drawPos.x, drawPos.y, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
+		//DrawFormatString(0, 0, GetColor(255, 255, 255), "%f", PLAYER_DEAD_LIMIT-dead_limit_);
 
-	if (dead_limit_ <= 0)return;
+		if (static_cast<int>(dead_limit_ * 1000) % 2 == 1) return;
 
-	int graphNum = (int)ceil(PLAYER_DEAD_LIMIT - dead_limit_);
-	graphNum = min((int)PLAYER_DEAD_LIMIT, max(0, graphNum));
-	//Vector2 drawPos = (position_+Vector2(-(CHIPSIZE/2),-(ResourceLoader::GetInstance().GetTextureSize(AnimationID::PLAYER_BUTTY_IDLE).y/2)))*inv_;
-	Vector2 drawPos = SCREEN_SIZE *0.5f - ResourceLoader::GetInstance().GetTextureSize(NumIDs.at(graphNum))*0.5f;
-	DrawGraph( drawPos.x,drawPos.y, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
-	//DrawFormatString(0, 0, GetColor(255, 255, 255), "%f", PLAYER_DEAD_LIMIT-dead_limit_);
-}
-
-void PlayerBody::onLateUpdate(float deltaTime) {
-	collider_->pos_update(position_);
-	if (attack_collider_ != nullptr)attack_collider_->pos_update(position_);
-	//collider_->reset_velocity();
-	input_ = Vector2::Zero;
-	gravity_ = Vector2::Zero;
-	launch_ = Vector2::Zero;
+		animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
+	}
+	else {
+		animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
+	}
 }
 
 void PlayerBody::onCollide(Actor & other) {
 	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" ||
-		other.getName() == "Door"|| other.getName() == "MovelessFloorBreak") {
+		other.getName() == "Door" || other.getName() == "MovelessFloorBreak") {
 		auto pos = body_.GetCircle().previousPosition_;
 
 		auto t_left = other.getBody().GetBox().component_.point[0];
@@ -117,39 +112,44 @@ void PlayerBody::onCollide(Actor & other) {
 		opponent_ = HitOpponent::FLOOR_HIT;
 
 		if (top >= 0 && left <= 0 && right <= 0) {
-			position_.y = t_left.y - PLAYER_RADIUS;
+			velocity_.y = 0;
+			position_.y = t_left.y - PLAYER_RADIUS;// (PLAYER_RADIUS + 0.5f);
 			opponent_ = HitOpponent::FLOOR_TOP;
 		}
-		if (bottom >= 0 && left <= 0 && right <= 0) {
-			position_.y = b_right.y + PLAYER_RADIUS;
+		else if (bottom >= 0 && left <= 0 && right <= 0) {
+			velocity_.y = 0;
+			position_.y = b_right.y + PLAYER_RADIUS;// (PLAYER_RADIUS + 0.5f);
 		}
-		if (right >= 0 && top <= 0 && bottom <= 0) {
-			position_.x = t_right.x + PLAYER_RADIUS;
+		else if (right >= 0 && top <= 0 && bottom <= 0) {
+			velocity_.x = 0;
+			position_.x = t_right.x + PLAYER_RADIUS;// (PLAYER_RADIUS + 0.5f);
 		}
-		if (left >= 0 && top <= 0 && bottom <= 0) {
-			position_.x = b_left.x - PLAYER_RADIUS;
+		else if (left >= 0 && top <= 0 && bottom <= 0) {
+			velocity_.x = 0;
+			position_.x = b_left.x - PLAYER_RADIUS;// (PLAYER_RADIUS + 0.5f);
 		}
-		if (left <= 0 && right <= 0 && top <= 0 && bottom <= 0) {
-			Vector2 vec = (pos - center).Normalize();
-			position_ = center + vec * (t_left - center).Length();
-			if (vec.Length() <= 0) position_ = center + Vector2::Down * (t_left - center).Length();
-		}
+		//if (left <= 0 && right <= 0 && top <= 0 && bottom <= 0) {
+		//	velocity_ = Vector2::Zero;
+		//	Vector2 vec = (pos - center).Normalize();
+		//	position_ = center + vec * (t_left - center).Length();
+		//	if (vec.Length() <= 0) position_ = center + Vector2::Down * (t_left - center).Length();
+		//}
 	}
 	if (other.getName() == "StageClearPoint") {
 		if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) {
-
 			hit_enemy_ = HitOpponent::CLEAR;
 		}
 	}
 	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
-		hit_enemy_ = HitOpponent::ENEMY;
+		if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) {
+			hit_enemy_ = HitOpponent::ENEMY;
+		}
 	}
 
 	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
 		(getName() == "PlayerBody2" && other.getName() == "PlayerBody1Collider")) {
-		if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) || 
-			stateMgr_.get_state(PlayerState_Enum_Single::MOVE) || 
-			stateMgr_.get_state(PlayerState_Enum_Single::JUMP)) {
+		if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) ||
+			stateMgr_.get_state(PlayerState_Enum_Single::MOVE)) {
 			hit_partner_ = HitOpponent::PARTNER;
 		}
 	}
@@ -188,40 +188,23 @@ void PlayerBody::onCollide(Actor & other) {
 		if (moves.y > 0)slope_ = SLIP_SPEED * (positionPoint - targetPoint).Normalize();
 		//if (moves.y > 0)slope_ = SLIP_SPEED * segPoint;
 	}
-
-	if (other.getName() == "Tornado") {
-		suction_ = (other.getPosition() - position_).Normalize() * 100;
-	}
 }
 
 void PlayerBody::change_state(PlayerState_Enum_Single state) {
 	stateMgr_.change(*this, state);
 }
 
-void PlayerBody::move(Vector2 vector) {
-	input_ = vector;
+void PlayerBody::collider(){	
+	collider_->position() = position_;
+	//if (attack_collider_ != nullptr)attack_collider_->pos_update(position_);
 }
 
-void PlayerBody::chase() {
-	if (partner_ == nullptr || Vector2::Distance(Vector2::Zero, input_) > 0)return;
-	auto cntr = std::dynamic_pointer_cast<PlayerConnector>(world_->findActor("PlayerConnector"));
-	if (cntr == nullptr)return;
-	//if (cntr->length_sum() <= PLAYER_MAX_NORMAL_LENGTH)return;
-	if (name_ == "PlayerBody1"/* && (position_ - cntr->get_point(0)).Length() > PLAYER_MIN_DIV_LENGTH*/) {
-		Vector2::Spring(position_, cntr->get_point(0), v_, stiffness_, friction_, mass_);
-	}
-	if (name_ == "PlayerBody2"/* && (position_ - cntr->get_point(PLAYER_CNTR_DIV_NUM - 1)).Length() > PLAYER_MIN_DIV_LENGTH*/) {
-		Vector2::Spring(position_, cntr->get_point(PLAYER_CNTR_DIV_NUM - 1), v_, stiffness_, friction_, mass_);
-	}
+Vector2& PlayerBody::velocity() {
+	return velocity_;
 }
 
-void PlayerBody::gravity(float amount) {
-	if (opponent_ == HitOpponent::FLOOR_TOP)gravity_ = Vector2(0, 0);
-	else gravity_ = Vector2(0, 9.8f) * amount;
-}
-
-void PlayerBody::acc_gravity() {
-
+void PlayerBody::posUpdate(float deltaTime) {
+	position_ += velocity_ * deltaTime * static_cast<float>(GetRefreshRate());
 }
 
 bool PlayerBody::able_to_hold() {
@@ -234,21 +217,6 @@ bool PlayerBody::able_to_jump() {
 
 bool PlayerBody::is_hit() {
 	return opponent_ == HitOpponent::FLOOR_TOP || opponent_ == HitOpponent::FLOOR_HIT;
-}
-
-void PlayerBody::hold_gravity() {
-	if (Vector2::Distance(Vector2::Zero, input_) <= 0)gravity();
-}
-
-void PlayerBody::clamp() {
-	auto cntr = std::dynamic_pointer_cast<PlayerConnector>(world_->findActor("PlayerConnector"));
-	if (cntr == nullptr)return;
-	if (name_ == "PlayerBody1") position_ = Vector2::ClampTarget(position_, cntr->get_point(0), PLAYER_MAX_DIV_LENGTH);
-	if (name_ == "PlayerBody2") position_ = Vector2::ClampTarget(position_, cntr->get_point(PLAYER_CNTR_DIV_NUM - 1), PLAYER_MAX_DIV_LENGTH);
-}
-
-void PlayerBody::launch(Vector2 dir) {
-	launch_ = dir;
 }
 
 HitOpponent PlayerBody::hitOpponent() {
@@ -275,7 +243,7 @@ void PlayerBody::reset_enemy() {
 	hit_enemy_ = HitOpponent::NONE;
 }
 
-void PlayerBody::reset_slope(){
+void PlayerBody::reset_slope() {
 	slope_ = Vector2::Zero;
 }
 
@@ -296,26 +264,12 @@ bool PlayerBody::dead_limit() {
 	return dead_limit_ >= PLAYER_DEAD_LIMIT;
 }
 
-bool PlayerBody::isInv() {
-	return dead_limit_ <= PLAYER_INV_TIME;
-}
-
 void PlayerBody::single_action(float deltaTime) {
 	stateMgr_.action(*this, deltaTime);
 }
 
 Vector2 PlayerBody::get_partner_vector() {
-	return (partner_->getPosition() - position_).Horizontal().Normalize();
-}
-
-void PlayerBody::create_attack_collider_() {
-	auto collider = std::make_shared<PlayerBodyCollider>(world_, std::string("PlayerAttack"));
-	world_->addActor(ActorGroup::Player_Collider, collider);
-	attack_collider_ = collider;
-}
-
-void PlayerBody::delete_attack_collider_() {
-	attack_collider_->dead();
+	return (partner_->getPosition() - position_).Normalize();
 }
 
 void PlayerBody::reset_dead_limit() {
@@ -327,12 +281,15 @@ void PlayerBody::count_dead_limit(float deltaTime) {
 	dead_limit_ += deltaTime;
 }
 
+Vector2& PlayerBody::hit_vector(){
+	return collider_->other_velocity();
+}
+
 PlayerAnimation2D & PlayerBody::animation() {
 	return animation_;
 }
 
-void PlayerBody::ForcedMove(Vector2 velocity)
-{
+void PlayerBody::ForcedMove(Vector2 velocity) {
 	position_ += velocity*Time::GetInstance().deltaTime();
 }
 

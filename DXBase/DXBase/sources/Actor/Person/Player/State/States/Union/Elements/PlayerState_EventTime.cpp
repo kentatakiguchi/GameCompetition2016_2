@@ -1,6 +1,6 @@
 #include "PlayerState_EventTime.h"
 
-PlayerState_EventTime::PlayerState_EventTime(){}
+PlayerState_EventTime::PlayerState_EventTime(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 
 void PlayerState_EventTime::unique_init(){
 	butty_->animation().change(PlayerAnimID::IDLE);
@@ -18,6 +18,6 @@ void PlayerState_EventTime::end(){
 	retty_->reset_enemy();
 }
 
-void PlayerState_EventTime::key_input(){}
+void PlayerState_EventTime::key_input(float deltaTime){}
 
-void PlayerState_EventTime::pad_input(){}
+void PlayerState_EventTime::pad_input(float deltaTime){}

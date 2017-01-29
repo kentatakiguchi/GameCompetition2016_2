@@ -26,7 +26,9 @@ public:
 	// 全てのステートに共通する初期化処理
 	virtual void common_init(Actor& actor, const ActionType& type) override;
 	// 入力処理
-	virtual void input() override;
+	virtual void input(float deltaTime) override;
+	// 入力処理
+	virtual void common_update(float deltaTime) override;
 	// ステートの変更処理
 	virtual void change(const StateElement& element) override;
 	// ステートが終了したか否か
@@ -38,9 +40,9 @@ protected:
 	bool is_retty();
 private:
 	// キー入力処理
-	virtual void key_input();
+	virtual void key_input(float deltaTime);
 	// パッド入力処理
-	virtual void pad_input();
+	virtual void pad_input(float deltaTime);
 protected:
 	// ステートの要素
 	StateElement element_;

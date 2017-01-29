@@ -2,15 +2,19 @@
 
 #include "../PlayerState_Union.h"
 
+#include "../../../../PlayerPtr.h"
+
+#include "../../../../PlayerBodyCollider.h"
+
 class PlayerState_Attack : public PlayerState_Union {
 public:
-	PlayerState_Attack();
+	PlayerState_Attack(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty);
 private:
 	virtual void unique_init() override;
 	virtual void update(float deltaTime) override;
 	virtual void end() override;
-	virtual void key_input() override;
-	virtual void pad_input() override;
+	virtual void key_input(float deltaTime) override;
+	virtual void pad_input(float deltaTime) override;
 private:
 	Vector2 dir_;
 	Vector2 launch_dir_;
@@ -22,6 +26,8 @@ private:
 		
 	Vector2 gravity_;
 	float gra_easeing_;
+
+	PlayerBodyCollPtr attackColl_;
 };
 
 //#pragma once

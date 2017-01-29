@@ -1,6 +1,6 @@
 #include "PlayerState_Freeze.h"
 
-PlayerState_Freeze::PlayerState_Freeze(){}
+PlayerState_Freeze::PlayerState_Freeze(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 
 void PlayerState_Freeze::unique_init(){
 	butty_->animation().change(PlayerAnimID::IDLE);
@@ -22,18 +22,12 @@ void PlayerState_Freeze::update(float deltaTime){
 
 void PlayerState_Freeze::end(){}
 
-void PlayerState_Freeze::key_input(){
-	//if (move_keyR()) change(PlayerState_Enum_Union::MOVE, ActionType::Right);
-	//if (move_keyL()) change(PlayerState_Enum_Union::MOVE, ActionType::Left);
-
+void PlayerState_Freeze::key_input(float deltaTime){
 	if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 	if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 }
 
-void PlayerState_Freeze::pad_input(){
-	//if (move_padR()) change(PlayerState_Enum_Union::MOVE, ActionType::Right);
-	//if (move_padL()) change(PlayerState_Enum_Union::MOVE, ActionType::Left);
-
+void PlayerState_Freeze::pad_input(float deltaTime){
 	if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 	if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 }

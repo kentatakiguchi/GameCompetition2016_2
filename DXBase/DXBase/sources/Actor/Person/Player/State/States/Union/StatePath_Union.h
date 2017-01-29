@@ -2,7 +2,7 @@
 
 #include "Elements/PlayerState_StandBy.h"
 #include "Elements/PlayerState_Idle.h"
-#include "Elements/PlayerState_Move.h"
+#include "Elements/PlayerState_MoveEach.h"
 #include "Elements/PlayerState_MoveBoth.h"
 #include "Elements/PlayerState_Jump.h"
 #include "Elements/PlayerState_Hold.h"

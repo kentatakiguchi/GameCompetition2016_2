@@ -13,11 +13,13 @@
 class PlayerState_Union : public IState {
 public:
 	// コンストラクタ
-	PlayerState_Union();
+	PlayerState_Union(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty);
 	// 全てのステートに共通する初期化処理
 	virtual void common_init(Actor& actor, const ActionType& type) override;
 	// 入力処理
-	virtual void input() override;
+	virtual void input(float deltaTime) override;
+	// 入力処理
+	virtual void common_update(float deltaTime) override;
 	// ステートが終了したか否か
 	virtual bool isEnd() override;
 	// 次のステートの要素
@@ -26,9 +28,9 @@ private:
 	// ステートの変更処理
 	virtual void change(const StateElement& element) override;
 	// キー入力処理
-	virtual void key_input();
+	virtual void key_input(float deltaTime);
 	// パッド入力処理
-	virtual void pad_input();
+	virtual void pad_input(float deltaTime);
 protected:
 	// ステートの変更処理
 	void change(const PlayerState_Enum_Union& id, const ActionType& type = ActionType::None);
@@ -45,6 +47,9 @@ protected:
 	bool move_padR();
 	bool move_padL();
 	bool jump_pad();
+	// スライムの弾性表現
+	void chase(Vector2 &position, int pointIndex);
+	Vector2 clamp(const Vector2 &position, int pointIndex);
 protected:
 	// ステートの要素
 	StateElement element_;
@@ -54,8 +59,8 @@ protected:
 	bool isEnd_;
 	// タイマー
 	float timer_;
-	// プレイヤーポインタ
-	//Player* player_;
+	// ばね補正速度
+	Vector2 velocity_;
 	// プレイヤーポインタ
 	PlayerConnector* cntr_;
 	// プレイヤーポインタ

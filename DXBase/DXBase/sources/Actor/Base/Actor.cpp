@@ -48,6 +48,7 @@ void Actor::late_update(float deltaTime) {
 	if (world_ != nullptr)inv_ = world_->GetInv();
 	onLateUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.late_update(deltaTime); });
+	body_.MovePos(position_);
 }
 
 // ï`âÊ
@@ -84,6 +85,10 @@ const std::string& Actor::getName() const {
 
 // ç¿ïWÇï‘Ç∑
 Vector2 Actor::getPosition() const {
+	return position_;
+}
+
+Vector2 & Actor::position(){
 	return position_;
 }
 

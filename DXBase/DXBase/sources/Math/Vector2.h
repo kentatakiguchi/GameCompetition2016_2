@@ -72,6 +72,7 @@ Vector2& operator /= (Vector2& v, float s);
 // ２項演算子オーバーロード
 Vector2 operator + (Vector2 v1, const Vector2& v2);
 Vector2 operator - (Vector2 v1, const Vector2& v2);
+Vector2 operator * (Vector2 v1, Vector2 v2);
 Vector2 operator * (Vector2 v, float s);
 Vector2 operator * (float s, Vector2 v);
 Vector2 operator / (Vector2 v, float s);

@@ -50,10 +50,16 @@ static const int CountPos = 500;
 
 /*** 永野 ***/
 
-
+/* 一般的なパラメータ */
+// 重力の値
+static const float		GRAVITY = 9.8f;
+// 符号(+)
+static const int		SIGN_PLUS = 1;
+// 符号(-)
+static const int		SIGN_MINUS = -1;
 
 /* プレイヤーパラメータ系統 */
-//プレイヤーのデフォルトの開始位置
+// プレイヤーのデフォルトの開始位置
 static const Vector2	START_POS = Vector2(700, 1500);
 // プレイヤーの表示位置
 const static Vector2	PLAYER_SCREEN_POSITION = Vector2(SCREEN_SIZE.x * 0.5f, SCREEN_SIZE.y * 0.75f);
@@ -68,7 +74,7 @@ const static float		PLAYER_MAX_NORMAL_LENGTH = CHIPSIZE * 2;
 // プレイヤーが伸びた場合の最大値
 const static float		PLAYER_MAX_STRETCH_LENGTH = CHIPSIZE * 3.5f;
 // プレイヤーの発射速度
-const static float		PLAYER_LAUNCH_POWER = 150.0f;
+const static float		PLAYER_LAUNCH_POWER = 120.0f;
 // プレイヤーのジャンプ速度
 const static float		PLAYER_JUMP_POWER = 30.0f;
 // プレイヤーの仰け反り速度
@@ -87,6 +93,13 @@ const static float		PLAYER_MIN_DIV_LENGTH = PLAYER_MAX_NORMAL_LENGTH / static_ca
 const static float		PLAYER_MAX_DIV_LENGTH = PLAYER_MAX_STRETCH_LENGTH / static_cast<float>(PLAYER_CNTR_DIV_NUM + 1);
 // プレイヤーの坂速度
 const static float		SLIP_SPEED = 70.0f;
+// プレイヤーのバネ剛性
+const static float		SPRING_STIFFNESS = 4.0f;
+// プレイヤーのバネ摩擦力
+const static float		SPRING_FRICTION = 0.1f;
+// プレイヤーのバネ質量
+const static float		SPRING_MASS = 0.8f;
+
 
 
 

@@ -9,10 +9,7 @@ PlayerBodyCollider::~PlayerBodyCollider(){}
 void PlayerBodyCollider::onUpdate(float deltaTime){
 	opponent_ = HitOpponent::NONE;
 
-	other_velocity_ = Vector2::Zero;
-}
-
-void PlayerBodyCollider::onDraw() const{
+	//other_velocity_ = Vector2::Zero;
 }
 
 void PlayerBodyCollider::onCollide(Actor & other) {
@@ -29,15 +26,20 @@ void PlayerBodyCollider::onCollide(Actor & other) {
 	}
 }
 
-void PlayerBodyCollider::pos_update(Vector2 parent_pos){
-	position_ = parent_pos;
+void PlayerBodyCollider::onDraw() const{
+	//DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_COLLIDER_RADIUS, GetColor(255, 255, 255), 0);
+	//
+	//if(name_ == "PlayerAttackCollider")DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_COLLIDER_RADIUS, GetColor(255, 255, 255));
+}
+
+void PlayerBodyCollider::reset_param(){
 }
 
 void PlayerBodyCollider::reset_pos(){
 	other_position_ = Vector2::Zero;
 }
 
-Vector2 PlayerBodyCollider::other_velocity(){
+Vector2& PlayerBodyCollider::other_velocity(){
 	return other_velocity_;
 }
 

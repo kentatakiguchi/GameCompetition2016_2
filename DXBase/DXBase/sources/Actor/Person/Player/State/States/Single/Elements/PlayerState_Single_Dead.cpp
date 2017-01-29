@@ -9,12 +9,16 @@ void PlayerState_Single_Dead::unique_init(){
 void PlayerState_Single_Dead::update(float deltaTime){
 	if (body_->animation().end_anim())body_->dead();
 
-	body_->gravity();
+	Vector2 gravity = Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
+
+	body_->position() += gravity;
+
+	//body_->gravity();
 }
 
 void PlayerState_Single_Dead::end(){}
 
-void PlayerState_Single_Dead::key_input(){}
+void PlayerState_Single_Dead::key_input(float deltaTime){}
 
-void PlayerState_Single_Dead::pad_input(){}
+void PlayerState_Single_Dead::pad_input(float deltaTime){}
 

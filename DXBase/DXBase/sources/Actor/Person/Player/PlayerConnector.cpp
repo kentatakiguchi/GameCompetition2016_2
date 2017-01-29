@@ -9,15 +9,17 @@
 
 #include "../../../Game/Time.h"
 
-PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, PlayerBodyPtr butty, PlayerBodyPtr retty) :
+PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, PlayerBodyPtr& butty, PlayerBodyPtr& retty) :
 	Actor(world, "PlayerConnector", position, CollisionBase()), butty_(butty), retty_(retty),
 	mPower(0.0f),
 	mPuyoTimer(0.0f),
 	mPuyoFlag(false),
-	timer_(0){
+	timer_(0),
+	stateMgr_(butty, retty){
 	// ポイントの生成
 	create_point(PLAYER_CNTR_DIV_NUM);
 	stateMgr_.change(*this, PlayerState_Enum_Union::STAND_BY);
+
 	Vector2 texSize = ResourceLoader::GetInstance().GetTextureSize(TextureID::PUYO_TEST_TEX);
 	//inv();
 	mPuyo = new PuyoTextureK(world, TextureID::PUYO_TEST_TEX, position_*inv_, 1, 0);
@@ -36,18 +38,29 @@ void PlayerConnector::onUpdate(float deltaTime) {
 		if (stateMgr_.currentActionType(ActionType::Left)) {
 			auto point = std::dynamic_pointer_cast<PlayerBodyPoint>(points[i]);
 			point->attract_update(deltaTime);
+			point->clamp_update(SIGN_MINUS);
+			point->clamp_update(SIGN_PLUS);
 		}
 		else {
 			auto point = std::dynamic_pointer_cast<PlayerBodyPoint>(points[points.size() - 1 - i]);
 			point->attract_update(deltaTime);
+			point->clamp_update(SIGN_PLUS);
+			point->clamp_update(SIGN_MINUS);
 		}
 	}
+
+	butty_->collider();
+	retty_->collider();
+	stateMgr_.action(*this, deltaTime);
+	butty_->hit_vector() = Vector2::Zero;
+	retty_->hit_vector() = Vector2::Zero;
 
 	if (is_damaged()) {
 		world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_EXP, 5.0f, 3.0f));
 		dead();
 	}
 	if (is_cleared()) world_->clear(true);
+	
 	//ぷよテクスチャUPdate
 	puyoUpdate();
 }
@@ -55,23 +68,9 @@ void PlayerConnector::onUpdate(float deltaTime) {
 void PlayerConnector::onDraw() const {
 	if (world_->isEntered())return;
 
+	//retty_->draw();
+	//butty_->draw();
 	mPuyo->PuyoDraw();
-}
-
-PlayerBodyPtr PlayerConnector::blue_body() {
-	return butty_;
-}
-
-PlayerBodyPtr PlayerConnector::red_body() {
-	return retty_;
-}
-
-PlayerStateMgr_Union& PlayerConnector::state_mgr() {
-	return stateMgr_;
-}
-
-void PlayerConnector::state_update(float deltaTime) {
-	stateMgr_.action(*this, deltaTime);
 }
 
 void PlayerConnector::create_point(int point_num) {
@@ -82,26 +81,18 @@ void PlayerConnector::create_point(int point_num) {
 	}
 }
 
-float PlayerConnector::length_sum() {
-	float sum = 0;
-	float len1 = Vector2::Distance(butty_->position_, get_point(0));
-	float len2 = Vector2::Distance(retty_->position_, get_point(points.size() - 1));
-	for (unsigned int i = 0; i < points.size() - 1; i++) {
-		sum += Vector2::Distance(points[i]->getPosition(), points[i + 1]->getPosition());
-	}
-	return sum + len1 + len2;
-}
-
 bool PlayerConnector::is_damaged() {
 	bool is_attack_state = stateMgr_.get_state(PlayerState_Enum_Union::ATTACK);
 	bool is_event_state = stateMgr_.get_state(PlayerState_Enum_Union::EVENT);
 	bool is_leanback_state = stateMgr_.get_state(PlayerState_Enum_Union::LEAN_BACK);
+
 	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
 	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
+
 	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
 	if (timer_ <= 3.0f) {
-		is_main_target_enemy = false;
-		is_sub_target_enemy = false;
+		butty_->reset_enemy();
+		retty_->reset_enemy();
 		return false;
 	}
 	return !is_event_state && !is_leanback_state && !is_attack_state && (is_main_target_enemy || is_sub_target_enemy || for_debug);

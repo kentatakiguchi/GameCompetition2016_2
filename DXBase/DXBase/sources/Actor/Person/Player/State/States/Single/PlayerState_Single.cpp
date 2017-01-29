@@ -18,8 +18,12 @@ void PlayerState_Single::common_init(Actor& actor, const ActionType& type) {
 	body_ = dynamic_cast<PlayerBody*>(&actor);
 }
 
-void PlayerState_Single::input(){
-	InputMgr::GetInstance().isConnectGamePad() ? pad_input() : key_input();
+void PlayerState_Single::input(float deltaTime){
+	InputMgr::GetInstance().isConnectGamePad() ? pad_input(deltaTime) : key_input(deltaTime);
+}
+
+void PlayerState_Single::common_update(float deltaTime){
+	body_->velocity() = Vector2::One;
 }
 
 // ステートの変更処理
@@ -46,7 +50,7 @@ bool PlayerState_Single::is_retty(){
 	return keys_.right == KeyCode::D;
 }
 
-void PlayerState_Single::key_input(){}
+void PlayerState_Single::key_input(float deltaTime){}
 
-void PlayerState_Single::pad_input(){}
+void PlayerState_Single::pad_input(float deltaTime){}
 

@@ -32,8 +32,5 @@ private:
 	PlayerBodyPtr butty_;
 	// body(ê‘)
 	PlayerBodyPtr retty_;
-	// 
-	int input_count_;
-
 };
 

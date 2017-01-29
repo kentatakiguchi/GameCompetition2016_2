@@ -1,6 +1,6 @@
 #include "PlayerState_HoldBoth.h"
 
-PlayerState_HoldBoth::PlayerState_HoldBoth() {}
+PlayerState_HoldBoth::PlayerState_HoldBoth(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 
 void PlayerState_HoldBoth::unique_init() {
 	butty_->animation().change(PlayerAnimID::HOLD);
@@ -14,7 +14,7 @@ void PlayerState_HoldBoth::update(float deltaTime) {
 
 void PlayerState_HoldBoth::end() {}
 
-void PlayerState_HoldBoth::key_input(){
+void PlayerState_HoldBoth::key_input(float deltaTime){
 
 	if (!InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT)) {
 		change(PlayerState_Enum_Union::HOLD, ActionType::Left);
@@ -24,7 +24,7 @@ void PlayerState_HoldBoth::key_input(){
 	}
 }
 
-void PlayerState_HoldBoth::pad_input(){
+void PlayerState_HoldBoth::pad_input(float deltaTime){
 
 	if (!InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1)) {
 		change(PlayerState_Enum_Union::HOLD, ActionType::Left);

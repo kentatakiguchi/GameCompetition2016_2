@@ -2,7 +2,7 @@
 
 #include "../../../../Effect/PlayerEffectObj.h"
 
-PlayerState_HoldAir::PlayerState_HoldAir(){}
+PlayerState_HoldAir::PlayerState_HoldAir(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 
 void PlayerState_HoldAir::unique_init(){
 	if (element_.type_ == ActionType::Right) {
@@ -48,16 +48,16 @@ void PlayerState_HoldAir::update(float deltaTime){
 		if (InputMgr::GetInstance().AnalogPadVectorR().x < 0) butty_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Left);
 	}
 
-	move();
+	move(deltaTime);
 }
 
 void PlayerState_HoldAir::end(){
 	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_NOBI));
 }
 
-void PlayerState_HoldAir::key_input(){
-	if (element_.type_ == ActionType::Right) retty_->move(InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S) * 7.5f);
-	if (element_.type_ == ActionType::Left) butty_->move(InputMgr::GetInstance().KeyVector() * 7.5f);
+void PlayerState_HoldAir::key_input(float deltaTime){
+	if (element_.type_ == ActionType::Right) retty_->position() += InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S) * 7.5f * retty_->velocity() * PLAYER_SPEED * deltaTime * static_cast<float>(GetRefreshRate());
+	if (element_.type_ == ActionType::Left)  butty_->position() += InputMgr::GetInstance().KeyVector() * 7.5f * butty_->velocity() * PLAYER_SPEED * deltaTime * static_cast<float>(GetRefreshRate());
 
 	if (!InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && element_.type_ == ActionType::Right) {
 		if (retty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.7f)change(PlayerState_Enum_Union::ATTACK, ActionType::Right);
@@ -76,9 +76,9 @@ void PlayerState_HoldAir::key_input(){
 	}
 }
 
-void PlayerState_HoldAir::pad_input(){
-	if (element_.type_ == ActionType::Right) retty_->move(InputMgr::GetInstance().AnalogPadVectorL() * 7.5f);
-	if (element_.type_ == ActionType::Left)  butty_->move(InputMgr::GetInstance().AnalogPadVectorR() * 7.5f);
+void PlayerState_HoldAir::pad_input(float deltaTime){
+	if (element_.type_ == ActionType::Right) retty_->position() += InputMgr::GetInstance().AnalogPadVectorL() * 7.5f * retty_->velocity() * PLAYER_SPEED * deltaTime * static_cast<float>(GetRefreshRate());
+	if (element_.type_ == ActionType::Left)  butty_->position() += InputMgr::GetInstance().AnalogPadVectorR() * 7.5f * butty_->velocity() * PLAYER_SPEED * deltaTime * static_cast<float>(GetRefreshRate());
 
 	if (!InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && element_.type_ == ActionType::Right) {
 		if (retty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.7f)change(PlayerState_Enum_Union::ATTACK, ActionType::Right);
@@ -89,26 +89,26 @@ void PlayerState_HoldAir::pad_input(){
 		else change(PlayerState_Enum_Union::IDLE);
 	}
 
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1) && element_.type_ == ActionType::Left) {
+	if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && element_.type_ == ActionType::Left) {
 		if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH);
 	}
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1) && element_.type_ == ActionType::Right) {
+	if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1) && element_.type_ == ActionType::Right) {
 		if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH);
 	}
 }
 
-void PlayerState_HoldAir::move(){
+void PlayerState_HoldAir::move(float deltaTime){
+	Vector2 gravity = Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
+	
+	butty_->position() += gravity / 2 * retty_->velocity();
+	retty_->position() += gravity / 2 * butty_->velocity();
+
 	if (element_.type_ == ActionType::Left) {
-		butty_->hold_gravity();
-		butty_->clamp();
+		butty_->position() = clamp(butty_->position(), 0);
 	}
 	if (element_.type_ == ActionType::Right) {
-		retty_->hold_gravity();
-		retty_->clamp();
+		retty_->position() = clamp(retty_->position(), PLAYER_CNTR_DIV_NUM - 1);
 	}
-
-	retty_->gravity(1);
-	butty_->gravity(1);
 
 	retty_->reset_slope();
 	butty_->reset_slope();

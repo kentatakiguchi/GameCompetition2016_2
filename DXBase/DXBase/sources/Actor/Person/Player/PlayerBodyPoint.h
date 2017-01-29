@@ -19,9 +19,10 @@ public:
 	virtual void onCollide(Actor& other) override;
 	// 引力更新処理
 	void attract_update(float deltaTime);
-private:
-	// 引力
-	void attraction(const int index, Vector2& velocity);
+	// 引力更新処理
+	void clamp_update(int index);
+	// ばねテスト処理
+	void spring_test();
 private:
 	// 自身のindex番号
 	int index_;

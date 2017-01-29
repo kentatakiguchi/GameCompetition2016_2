@@ -14,9 +14,7 @@ PlayerBodyPoint::PlayerBodyPoint(IWorld * world, const Vector2 & position, const
 PlayerBodyPoint::~PlayerBodyPoint(){}
 
 // 更新処理
-void PlayerBodyPoint::onUpdate(float deltaTime) {
-	//attract_update(deltaTime);
-}
+void PlayerBodyPoint::onUpdate(float deltaTime) {}
 
 // 描画処理
 void PlayerBodyPoint::onDraw() const{
@@ -62,42 +60,35 @@ void PlayerBodyPoint::onCollide(Actor & other){
 
 // 引力更新処理
 void PlayerBodyPoint::attract_update(float deltaTime){
-	//attraction(index_ + 1, v2_);
-	//attraction(index_ - 1, v1_);
-	//position_ += v1_ + v2_ + Vector2(0, 9.8f) / 10;
-
 	auto cntr = std::dynamic_pointer_cast<PlayerConnector>(world_->findActor("PlayerConnector"));
 	if (cntr == nullptr)return;
-	//if (cntr->length_sum() > PLAYER_MAX_NORMAL_LENGTH) {
+
 	v1_ = Vector2::Spring_v(position_, cntr->get_point(index_ + 1), v1_, stiffness_, friction_, mass_);
 	v2_ = Vector2::Spring_v(position_, cntr->get_point(index_ - 1), v2_, stiffness_, friction_, mass_);
-	//}
-	position_ += (v1_ + v2_ + Vector2(0, 9.8f) / 5) * deltaTime * 60;
-
-	position_ = Vector2::ClampTarget(position_, cntr->get_point(index_ + 1), PLAYER_MAX_DIV_LENGTH);
-	position_ = Vector2::ClampTarget(position_, cntr->get_point(index_ - 1), PLAYER_MAX_DIV_LENGTH);
-
-
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::Z))stiffness_ += 0.01f;
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::X))stiffness_ -= 0.01f;
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::C))friction_ += 0.01f;
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::V))friction_ -= 0.01f;
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::B))mass_ += 0.01f;
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))mass_ -= 0.01f;
-
-	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
-	//	stiffness_ = 3.0f;
-	//	friction_ = 0.1f;
-	//	mass_ = 0.8f;
-	//}
+	position_ += (v1_ + v2_ + Vector2::Up * GRAVITY / 5) * deltaTime * static_cast<float>(GetRefreshRate());
 }
 
-// 引力
-void PlayerBodyPoint::attraction(const int index, Vector2 & velocity){
+void PlayerBodyPoint::clamp_update(int sign){
 	auto cntr = std::dynamic_pointer_cast<PlayerConnector>(world_->findActor("PlayerConnector"));
-	//if ((position_ - cntr->get_point(index)).Length() <= PLAYER_MIN_DIV_LENGTH)return;
-	velocity  = Vector2::Spring_v(position_, cntr->get_point(index), velocity, stiffness_, friction_, mass_);
-	position_ = Vector2::ClampTarget(position_, cntr->get_point(index), PLAYER_MAX_DIV_LENGTH);
+	if (cntr == nullptr)return;
+
+	position_ = Vector2::ClampTarget(position_, cntr->get_point(index_ + sign), PLAYER_MAX_DIV_LENGTH);
 }
+
+void PlayerBodyPoint::spring_test(){
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::Z))stiffness_ += 0.01f;
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::X))stiffness_ -= 0.01f;
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::C))friction_ += 0.01f;
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::V))friction_ -= 0.01f;
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::B))mass_ += 0.01f;
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::N))mass_ -= 0.01f;
+
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::M)) {
+		stiffness_ = 3.0f;
+		friction_ = 0.1f;
+		mass_ = 0.8f;
+	}
+}
+
 
 

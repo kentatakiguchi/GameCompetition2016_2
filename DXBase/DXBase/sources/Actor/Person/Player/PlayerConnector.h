@@ -12,23 +12,18 @@
 class PlayerConnector : public Actor {
 public:
 	// コンストラクタ
-	PlayerConnector(IWorld* world, const Vector2 & position, PlayerBodyPtr butty, PlayerBodyPtr retty);
+	PlayerConnector(IWorld* world, const Vector2 & position, PlayerBodyPtr& butty, PlayerBodyPtr& retty);
 	// デストラクタ
 	~PlayerConnector();
-	// 更新処理
-	virtual void onUpdate(float deltaTime) override;
+	//// 更新処理
+	//virtual void onUpdate(float deltaTime) override;
+
+	// 継承無視の更新処理
+	void onUpdate(float deltaTime);
 	// 描画処理
 	virtual void onDraw() const override;
-	// body取得(青)
-	PlayerBodyPtr blue_body();
-	// body取得(赤)
-	PlayerBodyPtr red_body();
-	// 
-	PlayerStateMgr_Union& state_mgr();
 
-	void state_update(float deltaTime);
 	void create_point(int point_num = 0);
-	float length_sum();
 
 	Vector2 get_point(int index);
 public:

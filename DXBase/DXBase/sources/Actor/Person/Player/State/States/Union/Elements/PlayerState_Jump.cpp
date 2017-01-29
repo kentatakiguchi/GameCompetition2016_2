@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-PlayerState_Jump::PlayerState_Jump(){}
+PlayerState_Jump::PlayerState_Jump(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 
 void PlayerState_Jump::unique_init(){
 	butty_->reset_opponent();
@@ -11,8 +11,6 @@ void PlayerState_Jump::unique_init(){
 	dir_ = Vector2::Down;
 	power_ = PLAYER_JUMP_POWER;
 	gra_easeing_ = 0;
-	butty_->launch(dir_ * power_);
-	retty_->launch(dir_ * power_);
 }
 
 void PlayerState_Jump::update(float deltaTime) {
@@ -21,8 +19,8 @@ void PlayerState_Jump::update(float deltaTime) {
 	//gra_easeing_ = EasingInExpo(timer_);
 	dir_.y = std::min<float>(dir_.y + 0.1f, 1)/* * gra_easeing_*/;
 
-	butty_->launch(dir_ * power_);
-	retty_->launch(dir_ * power_);
+	butty_->position() += dir_ * power_ * deltaTime * static_cast<float>(GetRefreshRate());
+	retty_->position() += dir_ * power_ * deltaTime * static_cast<float>(GetRefreshRate());
 
 	if (butty_->able_to_jump() || retty_->able_to_jump()) {
 		change(PlayerState_Enum_Union::IDLE);
@@ -36,13 +34,13 @@ void PlayerState_Jump::end(){
 	retty_->reset_slope();
 }
 
-void PlayerState_Jump::key_input(){
-	butty_->move(InputMgr::GetInstance().KeyVector_R().Horizontal() / 2);
-	retty_->move(InputMgr::GetInstance().KeyVector_L().Horizontal() / 2);
+void PlayerState_Jump::key_input(float deltaTime){
+	butty_->position() += InputMgr::GetInstance().KeyVector_R().Horizontal() / 2 * PLAYER_SPEED * butty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
+	retty_->position() += InputMgr::GetInstance().KeyVector_L().Horizontal() / 2 * PLAYER_SPEED * retty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
 }
 
-void PlayerState_Jump::pad_input(){
-	butty_->move(InputMgr::GetInstance().AnalogPadVectorR().Horizontal() / 2);
-	retty_->move(InputMgr::GetInstance().AnalogPadVectorL().Horizontal() / 2);
+void PlayerState_Jump::pad_input(float deltaTime){
+	butty_->position() += InputMgr::GetInstance().AnalogPadVectorR().Horizontal() / 2 * PLAYER_SPEED * butty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
+	retty_->position() += InputMgr::GetInstance().AnalogPadVectorL().Horizontal() / 2 * PLAYER_SPEED * retty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
 }
 

@@ -25,9 +25,11 @@ public:
 	// 各状態独自の初期化
 	virtual void unique_init() = 0;
 	// 入力処理
-	virtual void input() = 0;
+	virtual void input(float deltaTime) = 0;
 	// 更新処理
 	virtual void update(float deltaTime) = 0;
+	// 更新処理
+	virtual void common_update(float deltaTime) = 0;
 	// 状態の変更
 	virtual void change(const StateElement& element) = 0;
 	// 終了を返す

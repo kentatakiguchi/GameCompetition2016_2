@@ -7,7 +7,7 @@
 
 // コンストラクタ
 Player::Player(IWorld * world, const Vector2 & position) :
-	Actor(world, "Player", position, CollisionBase()), input_count_(0) {
+	Actor(world, "Player", position, CollisionBase()) {
 	// bodyの生成
 	create_bodys();
 	// コネクタの生成
@@ -19,7 +19,7 @@ Player::~Player() {}
 
 // 更新処理
 void Player::onUpdate(float deltaTime) {
-	// 座標を中心に固定
+	// 座標を二つのプレイヤーの中心に固定
 	position_ = center();
 
 	// 指定stateの更新
@@ -59,45 +59,31 @@ void Player::update_state(float deltaTime) {
 			if (butty_->isDead() && retty_->isDead()) dead();
 		}
 	}
-	else std::dynamic_pointer_cast<PlayerConnector>(cntr)->state_update(deltaTime);
+	else std::dynamic_pointer_cast<PlayerConnector>(cntr)->onUpdate(deltaTime);// state_update(deltaTime);
 
-	if (position_.y >= 96 * 60)dead();
+	if (position_.y >= CHIPSIZE * 60)dead();
 }
 
 // 接続処理
 void Player::connect() {
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_PUYON), DX_PLAYTYPE_BACK);
 	addChild(std::make_shared<PlayerConnector>(world_, position_, butty_, retty_));
-	input_count_ = 0;
 }
 
 // 接続可能かどうか
 bool Player::is_connectable() {
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) ||
-		InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) ||
-		InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1) ||
-		InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1)) {
-		input_count_++;
-	}
-
 	bool is_main_target_partner = butty_->hit_partner() == HitOpponent::PARTNER;
 	bool is_sub_target_partner = retty_->hit_partner() == HitOpponent::PARTNER;
-	bool for_debug = false;	//InputMgr::GetInstance().IsKeyDown(KeyCode::C);
 
-	return (input_count_ >= 10 || is_main_target_partner || is_sub_target_partner || for_debug);
+	return is_main_target_partner || is_sub_target_partner;
 }
 
 // 死亡したかどうか
 bool Player::is_dead() {
 	bool is_main_dead = butty_->dead_limit();
-	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
-	bool is_main_invincible = butty_->isInv();
-
 	bool is_sub_dead = retty_->dead_limit();
-	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
-	bool is_sub_invincible = retty_->isInv();
 
-	return (is_main_dead && is_sub_dead) || (is_main_target_enemy && !is_main_invincible) || (is_sub_target_enemy && !is_sub_invincible);
+	return is_main_dead && is_sub_dead;
 }
 
 

@@ -8,13 +8,14 @@ void PlayerState_Single_Move::unique_init(){
 }
 
 void PlayerState_Single_Move::update(float deltaTime){
+
 	if (InputMgr::GetInstance().AnalogPadVectorR().x > 0 && is_butty()) body_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Right);
 	if (InputMgr::GetInstance().AnalogPadVectorR().x < 0 && is_butty()) body_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Left);
 	if (InputMgr::GetInstance().AnalogPadVectorL().x > 0 && is_retty()) body_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Right);
 	if (InputMgr::GetInstance().AnalogPadVectorL().x < 0 && is_retty()) body_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Left);
 
 	body_->count_dead_limit(deltaTime);
-	body_->gravity();
+	//body_->gravity();
 }
 
 void PlayerState_Single_Move::end(){
@@ -24,18 +25,27 @@ void PlayerState_Single_Move::end(){
 	//body_->reset_partner();
 }
 
-void PlayerState_Single_Move::key_input(){
-	body_->move(InputMgr::GetInstance().KeyVector(keys_.right, keys_.left, keys_.up, keys_.down).Horizontal());
+void PlayerState_Single_Move::key_input(float deltaTime){
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) || InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT)) {
+		body_->position() += body_->get_partner_vector() * 2 * deltaTime * static_cast<float>(GetRefreshRate()); //move(body_->get_partner_vector() * 2);
+	}
 
-	if (InputMgr::GetInstance().IsKeyDown(keys_.up))change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
+	//body_->move(InputMgr::GetInstance().KeyVector(keys_.right, keys_.left, keys_.up, keys_.down).Horizontal());
+
+	//if (InputMgr::GetInstance().IsKeyDown(keys_.up))change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
 }
 
-void PlayerState_Single_Move::pad_input(){
-	Vector2 vector = Vector2::Zero;
-	if (is_butty())vector = InputMgr::GetInstance().AnalogPadVectorR();
-	if (is_retty())vector = InputMgr::GetInstance().AnalogPadVectorL();
-	body_->move(vector.Horizontal());
+void PlayerState_Single_Move::pad_input(float deltaTime){
+	if (is_retty())return;
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1) || InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1)) {
+		body_->position() += body_->get_partner_vector() * 2 * deltaTime * static_cast<float>(GetRefreshRate()); //move(body_->get_partner_vector() * 2);
+	}
 
-	if (InputMgr::GetInstance().AnalogPadVectorR().y <= -1 && is_butty()) change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
-	if (InputMgr::GetInstance().AnalogPadVectorL().y <= -1 && is_retty()) change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
+	//Vector2 vector = Vector2::Zero;
+	//if (is_butty())vector = InputMgr::GetInstance().AnalogPadVectorR();
+	//if (is_retty())vector = InputMgr::GetInstance().AnalogPadVectorL();
+	//body_->move(vector.Horizontal());
+
+	//if (InputMgr::GetInstance().AnalogPadVectorR().y <= -1 && is_butty()) change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
+	//if (InputMgr::GetInstance().AnalogPadVectorL().y <= -1 && is_retty()) change(StateElement((unsigned int)PlayerState_Enum_Single::JUMP));
 }

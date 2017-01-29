@@ -11,7 +11,7 @@ enum class PlayerState_Enum_Union {
 	HOLD_BOTH,
 	HOLD_AIR,
 	JUMP,
-	ATTACK, 
+	ATTACK,
 	FREEZE,
 	EVENT,
 	LEAN_BACK
@@ -23,7 +23,6 @@ enum class PlayerState_Enum_Single {
 	STAND_BY,
 	IDLE,
 	MOVE,
-	JUMP,
 	DEAD,
 	LEAN_BACK
 };

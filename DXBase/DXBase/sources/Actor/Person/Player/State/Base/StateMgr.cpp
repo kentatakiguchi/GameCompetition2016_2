@@ -8,9 +8,11 @@ StateMgr::StateMgr() : currentState_(std::make_shared<State_Dammy>()), element_(
 // 更新処理
 void StateMgr::action(Actor& actor, float deltaTime) {
 	// 入力処理
-	currentState_->input();
+	currentState_->input(deltaTime);
 	// 更新処理
 	currentState_->update(deltaTime);
+	// 更新処理
+	currentState_->common_update(deltaTime);
 	// 終了判定がtrueになった場合ステートを変更
 	if (currentState_->isEnd()) changeState(actor, currentState_->next());
 }
