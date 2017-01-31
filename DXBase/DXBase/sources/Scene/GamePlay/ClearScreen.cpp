@@ -35,7 +35,8 @@ void ClearScreen::draw() const
 	DrawGraph(0, 0, ResourceLoader::GetInstance().getTextureID(TextureID::PAUSE_BACK_TEX), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	int strLen, strWidth, center, count, heightPoint;
+	int center, count, heightPoint;
+	//int strLen, strWidth, center, count, heightPoint;
 	count = 0;
 	heightPoint = 0;
 	int forcount = 0;

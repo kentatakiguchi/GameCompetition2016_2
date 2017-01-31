@@ -155,7 +155,7 @@ void SceneChange::update()
 		randL = std::uniform_int_distribution<>(0, numberMap.size() - 1);
 
 	}
-	anmer_.update_e(0.016,isArrive_);
+	anmer_.update_e(0.016f,isArrive_);
 
 }
 
@@ -176,7 +176,7 @@ void SceneChange::draw() const
 	for (int i = 0; i < slimeCount; i++) {
 		//SetDrawBright(slimeColors.at(i).Red, slimeColors.at(i).Green, slimeColors.at(i).Blue);
 
-		anmer_.draw_e(i,slimes.at(i),0,1,Vector3(slimeColors.at(i).Red, slimeColors.at(i).Green, slimeColors.at(i).Blue));
+		anmer_.draw_e(i,slimes.at(i),Vector2::Zero,1,Vector3((float)slimeColors.at(i).Red, (float)slimeColors.at(i).Green, (float)slimeColors.at(i).Blue));
 		//DrawGraph(static_cast<int>(slimes.at(i).x), static_cast<int>(slimes.at(i).y), ResourceLoader::GetInstance().getTextureID(TextureID::CHANGE_SCENE_TEX), TRUE);
 		//SetDrawBright(255, 255, 255);
 	}

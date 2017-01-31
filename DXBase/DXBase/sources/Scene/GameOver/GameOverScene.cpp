@@ -136,14 +136,14 @@ void GameOverScene::draw() const {
 			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 
-			if (count == targetPoint) {
-				DrawRotaGraph2(center, textPosList.at(count).y, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, 0, 1.5, 0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			if (count == targetPoint||(targetPoint==3&&count==1)) {
+				DrawRotaGraph2(center, (int)textPosList.at(count).y, (int)(ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2), 0, 1.5, 0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
-			else if (count>targetPoint) {
-				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, static_cast<int>(textPosList.at(count).y + ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			else if (count>targetPoint||(targetPoint==3&&count!=0)) {
+				DrawGraph((int)(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2), static_cast<int>(textPosList.at(count).y + ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
 			else {
-				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+				DrawGraph((int)(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2), static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
 
 			//DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
@@ -158,8 +158,10 @@ void GameOverScene::draw() const {
 
 	//mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
 	//mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
-	mButtyAnim.draw(mCursorPos + Vector2::Left * 200, Vector2::Zero, 0.5f);
-	mRettyAnim.draw(mCursorPos + Vector2::Right * 1000, Vector2::Zero, 0.5f);
+	Vector2 ysetVect = Vector2(0, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(targetPoint)).y / 4);
+	
+	mButtyAnim.draw(mCursorPos + Vector2::Left * 200+ysetVect, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 1000+ysetVect, Vector2::Zero, 0.5f);
 
 }
 

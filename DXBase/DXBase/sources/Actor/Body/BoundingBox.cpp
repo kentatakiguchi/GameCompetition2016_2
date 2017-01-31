@@ -66,10 +66,10 @@ void BoundingBox::draw(Matrix inv) const {
 
 	//DrawBox(static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos3.x), static_cast<int>(pos3.y), GetColor(255, 255, 255), TRUE);
 
-	DrawLine(pos0.x, pos0.y, pos1.x, pos1.y, GetColor(255, 0, 0));
-	DrawLine(pos1.x, pos1.y, pos3.x, pos3.y, GetColor(255, 0, 0));
-	DrawLine(pos0.x, pos0.y, pos2.x, pos2.y, GetColor(255, 0, 0));
-	DrawLine(pos2.x, pos2.y, pos3.x, pos3.y, GetColor(255, 0, 0));
+	DrawLine((int)pos0.x, (int)pos0.y, (int)pos1.x, (int)pos1.y, GetColor(255, 0, 0));
+	DrawLine((int)pos1.x, (int)pos1.y, (int)pos3.x, (int)pos3.y, GetColor(255, 0, 0));
+	DrawLine((int)pos0.x, (int)pos0.y, (int)pos2.x, (int)pos2.y, GetColor(255, 0, 0));
+	DrawLine((int)pos2.x, (int)pos2.y, (int)pos3.x, (int)pos3.y, GetColor(255, 0, 0));
 
 	//DrawBox(component_.point[0].x, component_.point[0].y,
 	//	component_.point[3].x, component_.point[3].y, GetColor(255, 0, 0), FALSE);

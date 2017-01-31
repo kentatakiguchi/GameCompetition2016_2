@@ -38,7 +38,7 @@ void SceneChangeAnm::update_e(float deltaTime,const std::map<int,bool>& slimelis
 				mainUc_[count]++;
 				mainUcT_[count] = 2;
 			}
-		if (mainUc_[count] >= sprites_[curr_anim_].size())mainc_[count] = 0;
+		if (mainUc_[count] >= (int)sprites_[curr_anim_].size())mainc_[count] = 0;
 		}
 		else {
 			mainc_[count]= 0;
@@ -60,7 +60,7 @@ void SceneChangeAnm::draw_e(int num,const Vector2 & position, const Vector2 & or
 	float radian = MathHelper::ToRadians(0);
 	
 
-	if (type_ == ActionType::Right)DrawRotaGraph3(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(origin.x), static_cast<int>(origin.y),1, 1, radian, sprites_.at(curr_anim_).at((mainc_.at(num))), TRUE, FALSE);
-	if (type_ == ActionType::Left) DrawRotaGraph3(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(origin.x), static_cast<int>(origin.y), 1,1, radian, sprites_.at(curr_anim_).at((mainc_.at(num))), TRUE, TRUE);
+	if (type_ == ActionType::Right)DrawRotaGraph3((int)position.x, (int)position.y, (int)origin.x, (int)origin.y,1, 1, radian, sprites_.at(curr_anim_).at(((int)mainc_.at(num))), TRUE, FALSE);
+	if (type_ == ActionType::Left) DrawRotaGraph3(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(origin.x), static_cast<int>(origin.y), 1,1, radian, sprites_.at(curr_anim_).at(((int)mainc_.at(num))), TRUE, TRUE);
 	SetDrawBright(255, 255, 255);
 }

@@ -195,7 +195,8 @@ void StageClearScene::draw() const {
 	//DrawGraph(-slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[1]), TRUE);
 	backManager->Draw();
 
-	int strLen, strWidth, center, count, heightPoint;
+	int center, count, heightPoint;
+	//int strLen, strWidth, center, count, heightPoint;
 	count = 0;
 	heightPoint = 0;
 	int forcount = 0;
@@ -235,8 +236,10 @@ void StageClearScene::draw() const {
 
 	//mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
 	//mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
-	mButtyAnim.draw(mCursorPos + Vector2::Left * 420, Vector2::Zero, 0.5f);
-	mRettyAnim.draw(mCursorPos + Vector2::Right * 580, Vector2::Zero, 0.5f);
+	Vector2 ysetVect = Vector2(0, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(targetPoint)).y / 4);
+
+	mButtyAnim.draw(mCursorPos + Vector2::Left * 420+ysetVect, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 580+ysetVect, Vector2::Zero, 0.5f);
 
 	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 	//DrawGraph(static_cast<int>(textPoses.at(targetPoint).x), static_cast<int>(textPoses.at(targetPoint).y), ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);

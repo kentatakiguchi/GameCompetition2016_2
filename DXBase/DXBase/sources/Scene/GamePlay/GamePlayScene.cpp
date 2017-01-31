@@ -222,8 +222,8 @@ void GamePlayScene::draw() const {
 	int stage = stageNum_ - 1;
 	Vector2 size = ResourceLoader::GetInstance().GetTextureSize(stageTexs_[stage]) / 2;
 	Vector2 pos = SCREEN_SIZE / 2 - size;
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0, 255, stageAlpha_));
-	DrawGraph(pos.x, pos.y, ResourceLoader::GetInstance().getTextureID(stageTexs_[stage]), true);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)MathHelper::Lerp(0.f, 255.f, stageAlpha_));
+	DrawGraph((int)pos.x, (int)pos.y, ResourceLoader::GetInstance().getTextureID(stageTexs_[stage]), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	backManager->BackDraw();
 
@@ -232,7 +232,7 @@ void GamePlayScene::draw() const {
 		return;
 	}
 
-	DrawGraph(SCREEN_SIZE.x - CountPos - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x, 50, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
+	DrawGraph((int)(SCREEN_SIZE.x - CountPos - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x), 50, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
 
 	int drawNum = keeper_->GetItemCount();
 	int baseNum = keeper_->GetItemCount();
@@ -248,7 +248,7 @@ void GamePlayScene::draw() const {
 			break;
 		}
 
-		drawNum = baseNum*0.1;
+		drawNum = (int)(baseNum*0.1);
 		drawNum = drawNum * 10;
 		int textNum = baseNum - drawNum;
 
@@ -256,15 +256,15 @@ void GamePlayScene::draw() const {
 		//DrawGraph((SCREEN_SIZE.x - CountPos) 
 		//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[textNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[textNum]), TRUE);
 
-		baseNum = baseNum*0.1;
+		baseNum = (int)(baseNum*0.1);
 		posCount++;
 		//DrawFormatString(SCREEN_SIZE.x - 100, 50, GetColor(0, 0, 0), "%d", );
 	}
 	int drawPosCount = drawNumberList.size() - 1;
-	for (int i = 0; i < drawNumberList.size(); i++) {
+	for (int i = 0; i < (int)drawNumberList.size(); i++) {
 
-		DrawGraph((SCREEN_SIZE.x - CountPos)
-			+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
+		DrawGraph((int)((SCREEN_SIZE.x - CountPos)
+			+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount), 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
 
 		drawPosCount--;
 	}

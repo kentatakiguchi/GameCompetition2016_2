@@ -181,7 +181,7 @@ void MainMenuScene::start() {
 	titleTexs.push_back(id2);
 	titleTexs.push_back(id3);
 	//backManagerの初期化
-	for (int i = 0; i < titleTexs[0].size(); i++) {
+	for (int i = 0; i < (int)titleTexs[0].size(); i++) {
 		backManager->SetBackGraund(titleTexs[0][i], titleTexs[0][i]);
 	}
 
@@ -247,7 +247,7 @@ void MainMenuScene::update() {
 			//現在の背景を全部消す
 			backManager->AllDeleteBackGraund();
 			//新しい背景をセット
-			for (int i = 0; i < titleTexs[backNum_].size(); i++) {
+			for (int i = 0; i < (int)titleTexs[backNum_].size(); i++) {
 				backManager->SetBackGraund(titleTexs[backNum_][i], titleTexs[backNum_][i]);
 			}
 			//一回入ったら次が来るまで入らないようにする
@@ -426,7 +426,7 @@ void MainMenuScene::draw() const {
 	backManager->Draw();
 	//α値を0から180で線形補間をしてそれをsinに持っていきその結果を0から255に線形補間する
 	float alpha = MathHelper::Lerp(0.0f, 255.0f, MathHelper::Sin(MathHelper::Lerp(0, 180, titleBackAlpha_)));
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA,alpha);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
 	/*if (isDrawAlphaBack_)*/DrawGraph(0, 0, ResourceLoader::GetInstance().getTextureID(TextureID::TITLE_BACK_ALPHA_TEX), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -453,16 +453,16 @@ void MainMenuScene::draw() const {
 			if (count == 0) {
 				int psizex = 80;
 				int psizey = 80;
-				DrawExtendGraph(center - (748+psizex / 2), textPosList.at(count).y, center + (748+psizex / 2), textPosList.at(count).y + 155+psizey, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_TITLE_TEX), TRUE);
+				DrawExtendGraph((int)(center - (748+psizex / 2)), (int)textPosList.at(count).y, (int)(center + (748+psizex / 2)), (int)(textPosList.at(count).y + 155+psizey), ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_TITLE_TEX), TRUE);
 			}
 			else if (count == targetPoint) {
-				DrawRotaGraph2(center, textPosList.at(count).y, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x/2, 0, 1.5,0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+				DrawRotaGraph2(center, (int)textPosList.at(count).y, (int)(ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x/2), 0, 1.5,0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
 			else if(count>targetPoint){
-				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x/2, static_cast<int>(textPosList.at(count).y+ ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+				DrawGraph((int)(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x/2), static_cast<int>(textPosList.at(count).y+ ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
 			else {
-				DrawGraph(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x/2, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+				DrawGraph((int)(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x/2), static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			heightPoint++;
@@ -475,9 +475,10 @@ void MainMenuScene::draw() const {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alphaCou[1]);
 	}
 
-
-	mButtyAnim.draw(mCursorPos + Vector2::Left * 420, Vector2::Zero, 0.5f);
-	mRettyAnim.draw(mCursorPos + Vector2::Right * 580, Vector2::Zero, 0.5f);
+	Vector2 ysetVect = Vector2(0, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(targetPoint)).y/4);
+	
+	mButtyAnim.draw(mCursorPos + Vector2::Left * 420+ ysetVect, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 580+ ysetVect, Vector2::Zero, 0.5f);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 

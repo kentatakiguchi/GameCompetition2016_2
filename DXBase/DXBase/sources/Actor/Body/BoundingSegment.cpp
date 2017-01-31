@@ -86,7 +86,7 @@ void BoundingSegment::draw(int spriteID, Matrix inv) const {
 
 	//DrawModiGraph(static_cast<int>(pos1.x), static_cast<int>(pos1.y), static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos0.x), static_cast<int>(pos0.y), static_cast<int>(pos0.x), static_cast<int>(pos1.y), spriteID, TRUE);
 	//DrawModiGraph(pos1.x, pos1.y, pos0.x, pos0.y, pos0.x, pos0.y, pos0.x, pos1.y, spriteID, TRUE);
-	DrawModiGraph(pos0.x, pos0.y, pos1.x, pos1.y, pos1.x, pos1.y, pos0.x, pos1.y,  spriteID, TRUE);
+	DrawModiGraph((int)pos0.x, (int)pos0.y, (int)pos1.x, (int)pos1.y, (int)pos1.x, (int)pos1.y, (int)pos0.x, (int)pos1.y,  spriteID, TRUE);
 	
 
 	//posis = Vector3(posis.x, CHIPSIZE * 55)*inv;
@@ -108,14 +108,14 @@ void BoundingSegment::draw(int spriteID, Matrix inv) const {
 	Vector2 piecePos;
 
 	int tileSpace;
-	int yleSpace = (pos1.y+CHIPSIZE*ysizeCou)-pos1.y;
+	int yleSpace = (int)((pos1.y+CHIPSIZE*ysizeCou)-pos1.y);
 	int tileCount = 0;
 	int yleCount = 0;
 	for (int yl = 0; yl < yleSpace; yl++) {
-		yleSpace = (pos1.y + CHIPSIZE * ysizeCou) - (pos1.y*yl);
+		yleSpace = (int)((pos1.y + CHIPSIZE * ysizeCou) - (pos1.y*yl));
 		if (yleSpace > (pos1.y + CHIPSIZE * ysizeCou))break;
 
-		tileSpace = pos1.x - pos0.x;
+		tileSpace = (int)(pos1.x - pos0.x);
 
 		tileCount = 0;
 
@@ -123,11 +123,11 @@ void BoundingSegment::draw(int spriteID, Matrix inv) const {
 
 			piecePos = Vector2(pos0.x + CHIPSIZE*tileCount, pos1.y+CHIPSIZE*yleCount);
 
-			DrawGraph(piecePos.x, piecePos.y, sprid, TRUE);
+			DrawGraph((int)piecePos.x, (int)piecePos.y, sprid, TRUE);
 
 			tileCount++;
 
-			tileSpace -= CHIPSIZE;
+			tileSpace -= (int)CHIPSIZE;
 		}
 		yleCount++;
 	}

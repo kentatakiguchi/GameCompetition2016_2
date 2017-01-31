@@ -43,7 +43,7 @@ public:
 		Vector3 ItemPos = Vector3(itemDefPos.x,itemDefPos.y);
 		Vector3 center = center.Lerp(drawPos,ItemPos,lCount);
 		//Vector3 center= Vector3(position_.Lerp(position_, Vector2(SCREEN_SIZE.x - 100 - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x / 2, 50), lCount).x, position_.Lerp(position_, Vector2(SCREEN_SIZE.x - 100 - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x / 2, 50), lCount).y)*inv_;
-		DrawRotaGraph2(center.x, center.y,ResourceLoader::GetInstance().GetTextureSize(spriteType_).x/2, ResourceLoader::GetInstance().GetTextureSize(spriteType_).y/2,size_,0, spriteID_, TRUE);
+		DrawRotaGraph2((int)center.x, (int)center.y, (int)ResourceLoader::GetInstance().GetTextureSize(spriteType_).x/2, (int)ResourceLoader::GetInstance().GetTextureSize(spriteType_).y/2,size_,0, spriteID_, TRUE);
 		//DrawGraph(center.x, center.y, spriteID_, TRUE);
 	}
 	virtual void onCollide(Actor& other) override{

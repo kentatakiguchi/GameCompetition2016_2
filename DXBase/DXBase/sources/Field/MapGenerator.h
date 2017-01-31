@@ -111,7 +111,7 @@ public:
 		fS4BlockConnectChecker.resize(rowSize);
 		fSubBlockConnectChecker.resize(rowSize);
 
-		for (int i = 0; i < baseBlockConnectChecker.size();i++) {
+		for (int i = 0; i < (int)baseBlockConnectChecker.size();i++) {
 			baseBlockConnectChecker[i].resize(colSize);
 			sticklessBlockConnectChecker[i].resize(colSize);
 			bossBlockConnectChecker[i].resize(colSize);
@@ -739,12 +739,12 @@ private:
 		std::vector<std::vector<bool>> posit;
 
 		
-		for (int i = 0; i < baseBlockConnectChecker.size(); i++) {
+		for (int i = 0; i < (int)baseBlockConnectChecker.size(); i++) {
 
 			blockCount = 0;
 			isFirst = true;
 
-			for (int x = 0; x < baseBlockConnectChecker[i].size(); x++) {
+			for (int x = 0; x < (int)baseBlockConnectChecker[i].size(); x++) {
 				if (baseBlockConnectChecker[i][x]) {
 
 					baseBlockConnectChecker[i][x] = false;
@@ -757,7 +757,7 @@ private:
 					if (blockCount == 1) {
 						blockCount = 0;
 						isFirst = true;
-						baseBlockConnectChecker[startPosition.y / CHIPSIZE][startPosition.x / CHIPSIZE] = true;
+						baseBlockConnectChecker[(int)(startPosition.y / CHIPSIZE)][(int)(startPosition.x / CHIPSIZE)] = true;
 						continue;
 					}
 					//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
@@ -771,7 +771,7 @@ private:
 					if (blockCount == 1) {
 						blockCount = 0;
 						isFirst = true;
-						baseBlockConnectChecker[startPosition.y / CHIPSIZE][startPosition.x / CHIPSIZE] = true;
+						baseBlockConnectChecker[(int)(startPosition.y / CHIPSIZE)][(int)(startPosition.x / CHIPSIZE)] = true;
 						continue;
 					}
 
@@ -785,12 +785,12 @@ private:
 				}
 			}
 		}
-		for (int i = 0; i < baseBlockConnectChecker[0].size(); i++) {
+		for (int i = 0; i < (int)baseBlockConnectChecker[0].size(); i++) {
 
 			blockCount = 0;
 			isFirst = true;
 
-			for (int x = 0; x < baseBlockConnectChecker.size(); x++) {
+			for (int x = 0; x < (int)baseBlockConnectChecker.size(); x++) {
 				if (baseBlockConnectChecker[x][i]) {
 					baseBlockConnectChecker[x][i] = false;
 					blockCount++;
