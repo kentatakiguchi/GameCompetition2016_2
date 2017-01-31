@@ -188,7 +188,7 @@ void World::inv() {
 	Vector2 resPos = Vector2(resInv_.Translation().x, resInv_.Translation().y);
 	Vector2 pos = Vector2(inv_.Translation().x, inv_.Translation().y);
 
-	Spring(pos, resPos, velo);
+	Spring(pos, resPos, velo,0.2f);
 	//補正された移動マトリックス代入
 	inv_ = Matrix::CreateTranslation(Vector3(
 		pos.x*scrool.scroolJudge.x,
