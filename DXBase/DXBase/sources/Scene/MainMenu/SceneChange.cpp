@@ -10,7 +10,7 @@ static const Vector2 SSlimeSize = Vector2(290, 130);
 static const float defPosY= -100;
 static const int LineSize = 8;
 SceneChange::SceneChange():isMainMenu_(false),isEnd_(true),isSlimeMax_(true),slimeCount(0),timeCount(SdefTime),deltaTime_(0),slimesetline(0), switchCount(0), mt(random_()),
-rand256(0, 255), randR(100, 255), randG(100, 255), randB(0, 200),randL(0, LineSize-1),changeCount(0)
+rand256(0, 255), randR(100, 255), randG(100, 200), randB(0, 50),randL(0, LineSize-1),changeCount(0)
 {
 	spawnPoses[0][0] = (Vector2((SSlimeSize.x - SSlimePadd)*(-0.5f), defPosY));
 	spawnPoses[0][1] = (Vector2((SSlimeSize.x - SSlimePadd) * 0.5f, defPosY));
