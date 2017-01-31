@@ -555,6 +555,30 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\PlayerState_HoldBoth.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Wall\PlayerState_HoldBegin.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Wall\PlayerState_HoldFull.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Wall\PlayerState_HoldSwim.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Base\PlayerState_HoldBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Air\PlayerState_HoldAirBegin.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Air\PlayerState_HoldAirFull.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Air\PlayerState_HoldAirSwim.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -975,6 +999,30 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\PlayerState_HoldBoth.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Wall\PlayerState_HoldBegin.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Wall\PlayerState_HoldFull.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Wall\PlayerState_HoldSwim.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Base\PlayerState_HoldBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Air\PlayerState_HoldAirBegin.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Air\PlayerState_HoldAirFull.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Air\PlayerState_HoldAirSwim.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
