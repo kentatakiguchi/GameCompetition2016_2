@@ -71,8 +71,6 @@ void PuyoCollision::onLateUpdate(float deltaTime)
 
 void PuyoCollision::onDraw() const
 {
-	//DrawLine((mCenter*inv_).x, (mCenter*inv_).y, (mIntersection*inv_).x, (mIntersection*inv_).y, GetColor(255, 0, 0));
-	//DrawLine((mCenter*inv_).x, (mCenter*inv_).y, (position_*inv_).x,(position_*inv_).y, GetColor(0, 0, 0));
 	//for (int i = 0; i < 3; i++) {
 	//	DrawCircle((mIntersections[i] *inv_).x, (mIntersections[i] *inv_).y, 5, GetColor(0, 0, 255));
 	//}

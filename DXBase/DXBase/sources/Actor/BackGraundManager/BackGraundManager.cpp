@@ -3,9 +3,13 @@
 #include "../Person/Player/Player.h"
 #include "../../Actor/Person/Player/PlayerBody.h"
 #include "../../World/IWorld.h"
+#include "../../Game/Time.h"
+#include "../../Define.h"
 BackGraundManager::BackGraundManager(IWorld * world) :
 	stageFlag(true),
-	mWorld(world)
+	mWorld(world),
+	konohaTimer(0.0f),
+	konohaRandTime(1.0f)
 {
 	////プレイヤー変換
 	//mPlayer = dynamic_cast<PlayerBody*>(world->findActor("Player").get());
@@ -134,6 +138,9 @@ void BackGraundManager::AllDeleteBackGraund()
 
 void BackGraundManager::Update(float deltatime, bool title)
 {
+	//木の葉アップデート
+	if (!title)
+		konohaUpdate();
 	//要素内が何もなかったりプレイヤーがnullだったらリターン
 	if (backStates.empty()) return;
 	//背景階層の数を取得
@@ -188,7 +195,7 @@ void BackGraundManager::Update(float deltatime, bool title)
 				j.position.x = size.x + size.x + j.position.x;
 			else if (j.position.x >= size.x)
 				j.position.x = -size.x - size.x + j.position.x;
-				//Y軸のループ
+			//Y軸のループ
 			if (j.position.y <= -size.y)
 				j.position.y = size.y + size.y + j.position.y;
 			else if (j.position.y >= size.y)
@@ -264,18 +271,18 @@ void BackGraundManager::TateUpdate(float deltaTime)
 		}
 		layerNum--;
 	}
-	//縦でのスクロールの場合横背景のx軸ループはない
-	for (auto& i : tateYokoState.indexPos)
-	{
-		Vector2 size = tateYokoState.size;
-		//プレイヤー速度加算
-		i.position += -mWorld->GetInvVelo();
-		//Y軸のループ(地上が見えていなかった場合)
-		if (i.position.y <= -size.y)
-			i.position.y = size.y + size.y + i.position.y;
-		else if (i.position.y >= size.y)
-			i.position.y = -size.y - size.y + i.position.y;
-	}
+	////縦でのスクロールの場合横背景のx軸ループはない
+	//for (auto& i : tateYokoState.indexPos)
+	//{
+	//	Vector2 size = tateYokoState.size;
+	//	//プレイヤー速度加算
+	//	i.position += -mWorld->GetInvVelo();
+	//	//Y軸のループ(地上が見えていなかった場合)
+	//	if (i.position.y <= -size.y)
+	//		i.position.y = size.y + size.y + i.position.y;
+	//	else if (i.position.y >= size.y)
+	//		i.position.y = -size.y - size.y + i.position.y;
+	//}
 }
 
 void BackGraundManager::Draw() const
@@ -311,6 +318,11 @@ void BackGraundManager::Draw() const
 
 void BackGraundManager::BackDraw() const
 {
+	//木の葉の描写
+	for (auto& i : konohaStates) {
+		DrawGraph(i.position.x+i.lerpPosition.x, i.position.y+i.lerpPosition.y, i.index, true);
+	}
+
 	//地上の描写
 	for (auto& i : backStates)
 	{
@@ -334,4 +346,42 @@ void BackGraundManager::Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, 
 	velo = friction * (velo + acceleration);
 
 	pos = pos + velo;
+}
+
+void BackGraundManager::AddKonoha(const TextureID& id)
+{
+	konohaIds.push_back(id);
+}
+
+void BackGraundManager::konohaUpdate()
+{
+	konohaTimer += Time::GetInstance().deltaTime();
+	if (konohaTimer >= konohaRandTime) {
+		//この葉の出現位置を設定
+		int randNum = rand() % konohaIds.size();
+		int randPosX = rand() % (int)(SCREEN_SIZE.x + 2048.0f);
+		int randPosY = rand() % 256;
+		konohaRandTime = rand() % 3;
+		randPosX -= 1024.0f;
+		randPosY -= 128.0f;
+		//木の葉ステータスに代入
+		KonohaState state;
+		state.index = ResourceLoader::GetInstance().getTextureID(konohaIds[randNum]);
+		state.position = Vector2(randPosX, randPosY);
+		konohaStates.push_back(state);
+		konohaTimer = 0.0f;
+	}
+
+	//木の葉の挙動
+	if (konohaStates.empty()) return;
+
+	for (auto& i : konohaStates) {
+
+		i.lerpTimer += 0.5f*Time::GetInstance().deltaTime();
+		i.velo.y += 7.0f; Time::GetInstance().deltaTime();
+		i.velo -= mWorld->GetInvVelo();
+		float x = MathHelper::Lerp(-128, 128, MathHelper::Sin(MathHelper::Lerp(0,180, i.lerpTimer)));
+		float y = MathHelper::Lerp(-128, 64, MathHelper::Sin(MathHelper::Lerp(0, 180, i.lerpTimer)));
+		i.lerpPosition = Vector2(x, y)+i.velo;
+	}
 }

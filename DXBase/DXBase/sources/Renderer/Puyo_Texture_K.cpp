@@ -177,7 +177,9 @@ void PuyoTextureK::PuyoDraw()
 	//	}
 	//}
 
-	//DrawCircle(test.x + 100, test.y + 100, 10, GetColor(255, 255, 0));
+	//DrawCircle(mPlayerPos1.x, mPlayerPos1.y, 2, GetColor(255, 255, 0));
+	//DrawCircle(mPlayerPos2.x, mPlayerPos2.y, 2, GetColor(255, 255, 0));
+
 	//DrawFormatString(500,128, GetColor(255, 255, 255), "ç¿ïW:%f,%f",test.x,test.y);
 
 

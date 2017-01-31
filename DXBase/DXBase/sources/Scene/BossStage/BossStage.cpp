@@ -89,23 +89,24 @@ void BossStage::update() {
 		isStopped_ = !isStopped_;
 	}
 	//ƒCƒxƒ“ƒgŠÖŒW
-	mIvemtTime += deltaTime_;
-	if (mIvemtTime <= 7.0f) {
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(150.0f, 0.0f));
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(150.0f, 0.0f));
-	}
-	else if (mIvemtTime > 7.0f&&mIvemtTime <= 8) {
-		hatenaAnm_.change_param(0, 1.0f);
-	}
-	else if (mIvemtTime >= 9.0f&&mIvemtTime <= 15.0f) {
-		boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 8 - 5), 4.0f);
-	}
-	else if (boss_->isMovePosition() && mIvemtTime >= 15.0f) {
-		boss_->setIsBattle(true);
-		world_->PlayerNotMove(false);
-		world_->CollisitionOffOn(true);
-		door_->DoorOpen(false);
-
+	if (!isStopped_) {
+		mIvemtTime += deltaTime_;
+		if (mIvemtTime <= 7.0f) {
+			dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(150.0f, 0.0f));
+			dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(150.0f, 0.0f));
+		}
+		else if (mIvemtTime > 7.0f&&mIvemtTime <= 8) {
+			hatenaAnm_.change_param(0, 1.0f);
+		}
+		else if (mIvemtTime >= 9.0f&&mIvemtTime <= 15.0f) {
+			boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 8 - 5), 4.0f);
+		}
+		else if (boss_->isMovePosition() && mIvemtTime >= 15.0f) {
+			boss_->setIsBattle(true);
+			world_->PlayerNotMove(false);
+			world_->CollisitionOffOn(true);
+			door_->DoorOpen(false);
+		}
 	}
 
 	if (hatenaAnm_.end_anim()) hatenaAnm_.change_param(0, 0.0f);

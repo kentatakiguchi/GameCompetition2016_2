@@ -1,6 +1,7 @@
 #pragma once
 #include "../../ResourceLoader/ResourceLoader.h"
 #include <list>
+#include <vector>
 #include "../../Math/Vector2.h"
 #include "../../World/IWorld.h"
 #include "../../Field/MovelessFloor.h"
@@ -12,7 +13,13 @@ struct IndexPos
 	int index;
 	Vector2 position;
 };
-
+struct KonohaState {
+	Vector2 position = Vector2::Zero;
+	Vector2 lerpPosition = Vector2::Zero;
+	Vector2 velo = Vector2::Zero;
+	int index;
+	float lerpTimer = 0.0f;
+};
 struct BackGraundState
 {
 	//テクスチャid
@@ -37,16 +44,15 @@ public:
 	BackGraundManager();
 	~BackGraundManager();
 	//背景を設定する（ロードしたテクスチャ限定）
-	void SetBackGraund(TextureID id1,TextureID id2,float heightY=0.0f,bool frontGraund=false,bool stage2=false);
+	void SetBackGraund(TextureID id1, TextureID id2, float heightY = 0.0f, bool frontGraund = false, bool stage2 = false);
 	//縦の背景を設定する（ロードしたテクスチャ限定）
 	void SetTateBackGraund(TextureID id1, TextureID id2);
 	//縦の横の背景を設定する(ロードしたテクスチャ限定)
 	void SetTateYokoBackGraund(TextureID id1);
 	//背景（空）を設定する（ロードしたテクスチャ限定）
-	void SetUpBackGraund(TextureID id,int layer);
+	void SetUpBackGraund(TextureID id, int layer);
 	//地面を設定する(ロードしたテクスチャ限定)
 	void SetDownBackGraund(TextureID id);
-
 
 	//背景を全部消す
 	void AllDeleteBackGraund();
@@ -60,8 +66,12 @@ public:
 	void BackDraw()const;
 
 	//バネ
-	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness=0.05f, float friction=0.5f, float mass=2.0f);
-
+	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness = 0.05f, float friction = 0.5f, float mass = 2.0f);
+public:
+	//この葉の初期設定
+	void AddKonoha(const TextureID& id);
+private:
+	void konohaUpdate();
 private:
 	//ワールド
 	IWorld* mWorld;
@@ -77,4 +87,12 @@ private:
 	BackGraundState downBackStates;
 	//縦スクロールの横の背景
 	BackGraundState tateYokoState;
+	//このはのID
+	std::vector<TextureID> konohaIds;
+	//このはステート
+	std::list<KonohaState>konohaStates;
+	//このはタイマー
+	float konohaTimer;
+	//このはランダムタイム
+	float konohaRandTime;
 };
