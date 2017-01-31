@@ -62,11 +62,11 @@ void PlayerState_Union::pad_input(float deltaTime){}
 
 // キー系フラグ
 bool PlayerState_Union::holdable_keyR(){
-	return InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) && butty_->able_to_hold();
+	return InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && butty_->able_to_hold();
 }
 
 bool PlayerState_Union::holdable_keyL() {
-	return InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT) && retty_->able_to_hold();
+	return InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && retty_->able_to_hold();
 }
 
 bool PlayerState_Union::move_keyR(){

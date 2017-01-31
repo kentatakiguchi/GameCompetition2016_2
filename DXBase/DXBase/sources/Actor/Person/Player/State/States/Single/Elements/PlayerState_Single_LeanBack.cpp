@@ -21,9 +21,9 @@ void PlayerState_Single_LeanBack::unique_init(){
 void PlayerState_Single_LeanBack::update(float deltaTime) {
 	dir_.y += 0.1f;
 
-	body_->position() += dir_ * power_* deltaTime * static_cast<float>(GetRefreshRate());;
+	body_->position() += dir_ * power_* deltaTime * static_cast<float>(GetRefreshRate());
 
-	if (body_->is_hit()) {
+	if (body_->able_to_jump()) {
 		change(StateElement((unsigned int)PlayerState_Enum_Single::IDLE));
 	}
 }

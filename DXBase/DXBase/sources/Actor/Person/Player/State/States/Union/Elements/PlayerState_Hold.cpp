@@ -61,8 +61,8 @@ void PlayerState_Hold::end(){
 
 // ƒL[“ü—Íˆ—
 void PlayerState_Hold::key_input(float deltaTime){
-	if (element_.type_ == ActionType::Right) retty_->position() += InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S) * 7.5f * retty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
-	if (element_.type_ == ActionType::Left)  butty_->position() += InputMgr::GetInstance().KeyVector() * 7.5f * butty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
+	if (element_.type_ == ActionType::Right) retty_->position() += InputMgr::GetInstance().KeyVector(KeyCode::D, KeyCode::A, KeyCode::W, KeyCode::S) * 7.5f * PLAYER_SPEED * retty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
+	if (element_.type_ == ActionType::Left)  butty_->position() += InputMgr::GetInstance().KeyVector() * 7.5f * PLAYER_SPEED * butty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
 
 	if (!InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && element_.type_ == ActionType::Right) {
 		if (retty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.8f)change(PlayerState_Enum_Union::ATTACK, ActionType::Right);
