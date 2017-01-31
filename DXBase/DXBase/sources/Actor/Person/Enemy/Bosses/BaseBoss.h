@@ -137,6 +137,7 @@ protected:
 	int flinchCount_;				// ひるむまでの回数
 	int piyoriCount_;				// ぴよる回数
 	int bokoCreateCount_;			// ボコエフェクト生成回数
+	int miniBossCreateCount_;		// ミニボス生成回数
 	int alpha_;						// ボスのα値
 	float stateTimer_;				// 状態の時間
 	float timer_;					// 現在の時間(最大値 1)

@@ -156,7 +156,6 @@ Vector2 EnemyManager::getWallDirection()
 		// 方向を決められる場合か、ヒット数が1の場合　かつ
 		// マップに入れてある値と同一ならば、方向を決める
 		if (isDirecion() && i->first == wspResult_) {
-			//wsDirection_ = wspDirectionMap_[wspResult_];
 			animaDirection_ = animaDirectionMap_[wspResult_];
 			wsDirection_ = wspDirectionMap_[wspResult_];
 			// 方向を決めたらfalseにする

@@ -37,8 +37,6 @@ public:
 	void timeRandom();
 	// アニメーションの向きを変えたかを返します(1f)
 	bool isBeginTurn();
-	//// アニメーションを逆再生したかを返します(1f)
-	//bool isReverse();
 
 public:
 	int prevFrame_;			// 1f前のフレーム
@@ -46,10 +44,7 @@ public:
 	bool isStop_;			// アニメーションを止めるか
 	bool isTurn_;			// 振り向きアニメーションをしたか
 	bool isBeginTurn_;		// 振り向きアニメーションをしたか(1f)
-	//bool isPrevTurn_;		// 過去に振り向きアニメーションをしたか
 	bool isReverse_;		// 逆再生するか
-	//bool isPrevReverse_;	// 過去の逆再生
-	//bool isRev_;
 };
 
 

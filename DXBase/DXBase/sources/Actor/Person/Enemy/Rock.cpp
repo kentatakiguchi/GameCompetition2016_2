@@ -78,10 +78,6 @@ void Rock::onCollide(Actor & actor)
 	if (getFloorName != NULL) {
 		changeState(State::Dead, RUN_NUMBER);
 		// 位置の更新
-		//auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-		//vec3Pos = vec3Pos * inv_;
-		//// アニメーションの描画
-		//texPos_ = Vector2(vec3Pos.x, vec3Pos.y) - Vector2::Down * 50.0f;
 		setTexPosition(-50.0f);
 		// 中点を下にする
 		orizin_ = Vector2::One * (256.0f / 2.0f) + Vector2::Up * 100.0f;

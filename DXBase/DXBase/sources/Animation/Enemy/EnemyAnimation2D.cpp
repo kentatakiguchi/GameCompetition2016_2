@@ -6,10 +6,7 @@ EnemyAnimation2D::EnemyAnimation2D() :
 	isLoop_(true),
 	isStop_(false),
 	isTurn_(false),
-	//isPrevTurn_(isTurn_),
-	isReverse_(false)
-	/*isPrevReverse_(isReverse_),
-	isRev_(false)*/{}
+	isReverse_(false){}
 
 EnemyAnimation2D::~EnemyAnimation2D()
 {
@@ -24,13 +21,6 @@ void EnemyAnimation2D::update(float deltaTime)
 	// 更新
 	if (curr_anim_ >= 15 || curr_anim_ <= -1) return;
 	frame_ = static_cast<int>(timer_) % sprites_[curr_anim_].size();
-	//// ループしないなら
-	//if (!isLoop_) {
-	//	// 過去のフレームが現在のフレームよりも大きいなら、
-	//	// フレームを最大値にする
-	//	/*if (prevFrame_ > frame_)
-	//	frame_ = sprites_[anim_num_].size();*/
-	//}
 	id_ = sprites_[curr_anim_][frame_];
 	auto timer = deltaTime * curr_speed_ * 60.0f / sprites_[curr_anim_].size() * 10;
 	// 逆再生するならば、値を反転する
@@ -55,11 +45,6 @@ void EnemyAnimation2D::update(float deltaTime)
 			}
 		}
 	}
-
-	/*if (isPrevReverse_ != isReverse_)
-		isRev_ = true;
-	else isRev_ = false;
-	isPrevReverse_ = isReverse_;*/
 	isBeginTurn_ = false;
 	if (isTurn_)
 		isBeginTurn_ = true;
@@ -98,7 +83,6 @@ void EnemyAnimation2D::turnAnimation(int id, float direction)
 	if (direction >= 0)
 		type = ActionType::Left;
 	change_dir_type(id, type);
-	//isTurn_ = true;
 }
 
 // アニメーションを振り向きアニメーションを行わずに画像を反転します
@@ -157,7 +141,6 @@ void EnemyAnimation2D::timeRandom()
 	// 初期Seed値を渡す
 	std::mt19937 mt(random());
 	// 範囲の指定(int型)
-	//std::uniform_int_distribution<> aSpeed(moveTimes_[aCount], moveTimes_[aCount + 1]);
 	std::uniform_int_distribution<> rFrame(0, sprites_[curr_anim_].size() - 1);
 	//return count(mt);
 	frame_ = static_cast<unsigned int>(rFrame(mt));
@@ -169,9 +152,3 @@ bool EnemyAnimation2D::isBeginTurn()
 {
 	return isBeginTurn_;
 }
-
-//// アニメーションを逆再生したかを返します(1f)
-//bool EnemyAnimation2D::isReverse()
-//{
-//	return isRev_;
-//}

@@ -186,8 +186,6 @@ protected:
 	PlaySEContainer playSEHandles_;
 	// d—Í‰Á‘¬“x
 	const float GRAVITY_ = 9.8f;
-	// SE
-	//int seHandle_;
 };
 
 #endif

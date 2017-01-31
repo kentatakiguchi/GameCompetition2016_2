@@ -8,7 +8,6 @@
 #include "Bosses/Effect/EnemyCollideEffect.h"
 // アイテム
 #include "../../Item/Items.h"
-//#include "DeadEnemy.h"
 
 BaseEnemy::BaseEnemy(
 	IWorld * world,
@@ -109,7 +108,6 @@ void BaseEnemy::Initialize()
 	addAnimation();
 	animation_.changeAnimation(ENEMY_WALK);
 	animation_.changeDirType(direction_.x);
-	//animation_.turnAnimation(turnMotion_, direction_.x);
 }
 
 void BaseEnemy::onUpdate(float deltaTime)
@@ -136,7 +134,6 @@ void BaseEnemy::onUpdate(float deltaTime)
 	poseStopSE();
 	poseRestartSE();
 	// 画像の方向を合わせる
-	//animation_.turnAnimation(turnMotion_, direction_.x);
 	animation_.changeDirType(direction_.x);
 }
 
@@ -243,7 +240,6 @@ void BaseEnemy::search()
 		psObj_->isPlayerLook()) {
 		changeState(State::Discovery, ENEMY_DISCOVERY);
 		// 発見SEの再生
-		//PlaySoundMem(seHandle_, DX_PLAYTYPE_BACK);
 		PlaySoundMem(seHandles_[SE_HAKKEN], DX_PLAYTYPE_BACK);
 		discoveryPosition_ = position_;
 	}
@@ -259,7 +255,6 @@ void BaseEnemy::discovery()
 	if (isGround_ && stateTimer_ >= 0.2f) {
 		changeState(State::Chase, ENEMY_ATTACK);
 		turnMotion_ = ENEMY_ATTACKTURN;
-		//animation_.turnAnimation(ENEMY_ATTACK);
 		isUseGravity_ = true;
 	}
 }
@@ -273,9 +268,6 @@ void BaseEnemy::chase()
 	speed_ = initSpeed_ * 1.5f;
 	// 追跡行動
 	chaseMove();
-	// 画像の方向を合わせる
-	/*if (direction_.x != prevDirection_.x)
-	animation_.turnAnimation(turnMotion_, direction_.x);*/
 	// プレイヤーが追跡距離外か、プレイヤーの間にブロックがあるなら、
 	// 捜索状態に遷移
 	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 100.0f &&
@@ -313,11 +305,6 @@ void BaseEnemy::deadMove()
 		// ポーズ中に止める処理
 		if (deltaTimer_ == 0.0f && world_->isStopTime())
 			hitTimer_ += world_->getDeltaTime();
-		//// ポーズ中に止める処理
-		//if (deltaTimer_ == 0.0f && !world_->isStopTime())
-		//	return;
-		//hitTimer_ += world_->getDeltaTime();
-		//world_->setIsStopTime(true);
 		return;
 	}
 	//world_->setIsStopTime(false);
@@ -608,34 +595,6 @@ void BaseEnemy::poseStopSE()
 			playSEHandles_.push_back(*i);
 		}
 	}
-
-	// ヒットストップ中
-	// deltaTimer_ == 0.0f && world_->isStopTime()
-
-	// ポーズ中
-	// deltaTimer_ == 0.0f && !world_->isStopTime()
-
-	//for (auto i = seHandles_.begin(); i != seHandles_.end(); i++) {
-	//	//auto a = *i;
-	//	if(deltaTimer_ == 0.0f && !world_->isStopTime() && CheckSoundMem(*i) == 0)
-	//		PlaySoundMem(*i, DX_PLAYTYPE_LOOP, false);
-	//	else if (deltaTimer_ == 0.0f && !world_->isStopTime() && CheckSoundMem(*i) == 1)
-	//		StopSoundMem(*i);
-	//	/*if(deltaTimer_ >= 0.0f && world_->isStopTime() && CheckSoundMem(*i) == 0)
-	//		PlaySoundMem(*i, DX_PLAYTYPE_LOOP, false);
-	//	else if(deltaTimer_ == 0.0f && !world_->isStopTime() && CheckSoundMem(*i) == 1)
-	//		StopSoundMem(*i);*/
-	//}
-
-	//// デルタタイムが0以下なら、SEを一時停止する
-	//if (CheckSoundMem(windSE_) == 1 &&
-	//	deltaTime <= 0) {
-	//	StopSoundMem(windSE_);
-	//}
-	//else if (CheckSoundMem(windSE_) == 0 && deltaTime > 0) {
-	//	// SEの再生(停止した箇所から再生)
-	//	PlaySoundMem(windSE_, DX_PLAYTYPE_LOOP, false);
-	//}
 }
 
 // ポーズ解除時にSEを再度再生します
@@ -643,8 +602,6 @@ void BaseEnemy::poseRestartSE()
 {
 	// サイズが0ならば返す
 	if (playSEHandles_.size() == 0) return;
-	//// ヒットストップしていなかったら返す
-	//if (deltaTimer_ > 0.0f && !world_->isStopTime()) return;
 	// ポーズ中なら返す
 	if (deltaTimer_ == 0.0f && !world_->isStopTime()) return;
 	for (auto i = playSEHandles_.begin(); i != playSEHandles_.end(); i++) {

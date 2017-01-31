@@ -2,14 +2,16 @@
 #include "../../../../ResourceLoader/ResourceLoader.h"
 #include "../../../Base/ActorGroup.h"
 #include "../../../Body/CollisionBase.h"
-#include "../../../../Define.h"
+#include "../FloorSearchPoint.h"
 #include "BossManager.h"
 #include "BossEntry.h"
-#include "../FloorSearchPoint.h"
+#include "MiniBoss.h"
 #include "bossAttack/importBossAttack.h"
 #include "Effect/ImportEffects.h"
 // ボスの体力表示
 #include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
+#include "../../../../Define.h"
+#include <random>
 //#include "../../../UIActor/HelperUI/HelperUI.h"
 
 // ボスクラス(ベース予定)
@@ -25,6 +27,7 @@ BaseBoss::BaseBoss(
 	flinchCount_(0),
 	piyoriCount_(5),
 	bokoCreateCount_(0),
+	miniBossCreateCount_(0),
 	alpha_(255),
 	stateTimer_(0.0f),
 	timer_(0.0f),
@@ -143,6 +146,12 @@ void BaseBoss::onUpdate(float deltaTime)
 	// SE
 	poseStopSE();
 	poseRestartSE();
+
+	// 仮
+	/*auto mini = std::make_shared<MiniBossEffect>(
+		world_, position_);
+	world_->addActor(ActorGroup::Effect, mini);*/
+
 	// 接地(仮)
 	bossManager_.setIsGround(isGround_);
 	bossManager_.setIsBottom(isBottomHit_);
@@ -436,8 +445,29 @@ void BaseBoss::boko(float deltaTime)
 void BaseBoss::deadMove(float deltaTime)
 {
 	animation_.setIsLoop(false);
+	if (stateTimer_ < 3.0f) return;
+	// ミニボスの生成
+	if (isEffectCreate_ && miniBossCreateCount_ < 30 && 
+		(int)effectCreateTimer_ % 10 <= 5) {
+		// 乱数の取得
+		std::random_device random;
+		// メルセンヌツイスター法 後で調べる
+		// 初期Seed値を渡す
+		std::mt19937 mt(random());
+		// 範囲の指定(int型)
+		std::uniform_int_distribution<> count(40, 80);
+		auto miniBoss = std::make_shared<MiniBoss>(
+			world_, Vector2(position_.x, 1020), (float)count(mt) / 100);
+		world_->addActor(ActorGroup::EnemyBullet, miniBoss);
+		miniBossCreateCount_++;
+		isEffectCreate_ = false;
+	}
+	else if ((int)effectCreateTimer_ % 10 > 5) {
+		isEffectCreate_ = true;
+	}
+	effectCreateTimer_ += deltaTimer_;
 	// 死亡から一定時間経過なら、シーンを終了させる
-	if (stateTimer_ >= 3.0f)
+	if (stateTimer_ >= 8.0f)
 		isSceneEnd_ = true;
 }
 

@@ -87,8 +87,6 @@ private:
 	// •ÇˆÚ“®‚Ì•ûŒüƒRƒ“ƒeƒi
 	typedef std::map<int, Vector2> WSPDirectionMap;
 	WSPDirectionMap wspDirectionMap_;
-	/*typedef std::map<int, Vector2> WSPDirectionMap;
-	WSPDirectionMap wspDirectionMap_;*/
 };
 
 #endif
