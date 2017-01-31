@@ -13,6 +13,7 @@ GameOverScene::GameOverScene(SceneDataKeeper* keeper) :
 	textIDs[0] = TextureID::TEXT_GAMEOVER_TEX;
 	textIDs[1] = TextureID::TEXT_RETRY_TEX;
 	textIDs[2] = TextureID::TEXT_MENUBACK_TEX;
+	textIDs[3] = TextureID::TEXT_RETRY_TEX;
 
 
 	int listNum = 0;
@@ -139,7 +140,7 @@ void GameOverScene::draw() const {
 			if (count == targetPoint||(targetPoint==3&&count==1)) {
 				DrawRotaGraph2(center, (int)textPosList.at(count).y, (int)(ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2), 0, 1.5, 0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
-			else if (count>targetPoint||(targetPoint==3&&count!=0)) {
+			else if (count>targetPoint||targetPoint==3&&count!=0) {
 				DrawGraph((int)(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2), static_cast<int>(textPosList.at(count).y + ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
 			else {
