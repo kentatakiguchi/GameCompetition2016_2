@@ -15,12 +15,12 @@ LoadingScene::~LoadingScene(){
 void LoadingScene::start(){
 
 	//ここにローディング専用のリソースを読み込む
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::SCENE_CHANGE_SLIME_ANM, "./resources/sprite/slimeanm.png", Vector2(256, 256), 8, 4, 2);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::LORDING_SLIME_ANM, "./resources/sprite/slimeanmColor.png", Vector2(256, 256), 8, 4, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::LOADING, "./resources/sprite/loading_anim.png", Vector2(623.0f, 120.0f), 3, 8, 0);
 
 	// アニメーション生成
 	mLoadAnim.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::LOADING));
-	mLoadPuyo.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::SCENE_CHANGE_SLIME_ANM));
+	mLoadPuyo.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::LORDING_SLIME_ANM));
 	mLoadAnim.change_param(0);
 	mLoadPuyo.change_param(0);
 	//DerivationGraphと動画読み込みが非同期読み込みに対応していないため
@@ -35,7 +35,7 @@ void LoadingScene::start(){
 	load_player_res();
 	load_enemy_res();
 	load_boss_res();
-
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::SCENE_CHANGE_SLIME_ANM, "./resources/sprite/slimeanm.png", Vector2(256, 256), 8, 4, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_CLOSE, "./resources/sprite/DoorAnimClose.png", Vector2(320, 384), 6, 4, 1);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_OPEN, "./resources/sprite/DoorAnimOpen.png", Vector2(320, 384), 6, 4, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::HATENA, "./resources/sprite/hatena.png", Vector2(256, 256), 8, 5, 1);
