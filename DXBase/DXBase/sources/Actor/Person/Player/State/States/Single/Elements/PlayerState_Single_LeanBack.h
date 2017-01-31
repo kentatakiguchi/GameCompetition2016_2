@@ -12,4 +12,5 @@ private:
 private:
 	Vector2 dir_;
 	float power_;
+	Vector2 firstPos_;
 };

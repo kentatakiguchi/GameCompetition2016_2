@@ -130,10 +130,12 @@ void PlayerBody::onCollide(Actor & other) {
 }
 
 void PlayerBody::commonCollide(Actor & other){
+	if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) && name_ == "PlayerBody1")return;
 	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" ||
-		other.getName() == "Door" || other.getName() == "MovelessFloorBreak") {
+		other.getName() == "Door" || other.getName() == "MovelessFloorBreak" ||
+		other.getName() == "Tubo") {
 		auto pos = body_.GetCircle().previousPosition_;
 
 		auto t_left = other.getBody().GetBox().component_.point[0];
@@ -226,6 +228,11 @@ void PlayerBody::unionCollide(Actor & other){
 		dumpTimer_ = 0;
 		animation_.change(PlayerAnimID::DIV_MOVE);
 	}
+	//if (other.getName() == "Tubo") {
+	//	if (world_->isEntered())return;
+	//	world_->setEntry(true, false);
+	//}
+
 }
 
 void PlayerBody::singleCollide(Actor & other){
@@ -318,6 +325,7 @@ bool PlayerBody::dead_limit() {
 
 void PlayerBody::single_action(float deltaTime) {
 	stateMgr_.action(*this, deltaTime);
+	collider();
 }
 
 Vector2 PlayerBody::get_partner_vector() {

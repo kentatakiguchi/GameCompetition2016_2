@@ -164,6 +164,8 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_NINE_TEX, "./resources/sprite/num9.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::ITEM_TEX, "./resources/sprite/item.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::VASE_TEX, "./resources/sprite/vase.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::GOAL_TEX, "./resources/sprite/goal.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::HAPPA1_1_TEX, "./resources/sprite/Happa/Happa1-1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::HAPPA1_2_TEX, "./resources/sprite/Happa/Happa1-2.png");

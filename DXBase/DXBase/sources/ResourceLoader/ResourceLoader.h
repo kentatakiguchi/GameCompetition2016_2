@@ -148,6 +148,8 @@ enum class TextureID {
 	HAPPA3_2_TEX,
 
 	ITEM_TEX,
+	VASE_TEX,
+	GOAL_TEX,
 };
 
 enum class AnimationID {

@@ -16,4 +16,6 @@ private:
 	bool mDownFlag;
 	Vector2 mPosition;
 	Vector2 mVelo;
+
+	float timer_;
 };

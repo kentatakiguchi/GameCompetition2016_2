@@ -13,5 +13,7 @@ private:
 	virtual void pad_input(float deltaTime) override;
 private:
 	void move(float deltaTime);
+
+	Vector2 target_;
 };
 
