@@ -142,6 +142,11 @@ enum class TextureID {
 	STAGE_03_TEX,
 	STAGE_04_TEX,
 
+	HAPPA1_1_TEX,
+	HAPPA1_2_TEX,
+	HAPPA3_1_TEX,
+	HAPPA3_2_TEX,
+
 	ITEM_TEX,
 };
 
@@ -279,6 +284,6 @@ private:
 	std::unordered_map<TextureID, int> textures_;
 	std::unordered_map<SoundID, int> sounds_;
 	std::unordered_map<AnimationID, std::vector<int>> animations_;
-	std::unordered_map <AnimationID,Vector2> animationsSize_;
+	std::unordered_map <AnimationID, Vector2> animationsSize_;
 
 };

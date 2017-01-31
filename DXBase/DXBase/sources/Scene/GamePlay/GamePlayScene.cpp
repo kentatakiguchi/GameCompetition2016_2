@@ -109,6 +109,10 @@ void GamePlayScene::start() {
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, 0.0f, true);
 
+		backManager->AddKonoha(TextureID::HAPPA1_1_TEX);
+		backManager->AddKonoha(TextureID::HAPPA1_2_TEX);
+
+
 		//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 		//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 	}
@@ -128,6 +132,9 @@ void GamePlayScene::start() {
 		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP1_TEX, 8);
 		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP2_TEX, 4);
 		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP3_TEX, 1);
+
+		backManager->AddKonoha(TextureID::HAPPA3_1_TEX);
+		backManager->AddKonoha(TextureID::HAPPA3_2_TEX);
 	}
 	else if (name_ == "stage04")
 	{

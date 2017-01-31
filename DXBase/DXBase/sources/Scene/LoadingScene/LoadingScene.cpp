@@ -165,6 +165,10 @@ void LoadingScene::start(){
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::ITEM_TEX, "./resources/sprite/item.png");
 
+	ResourceLoader::GetInstance().loadTexture(TextureID::HAPPA1_1_TEX, "./resources/sprite/Happa/Happa1-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::HAPPA1_2_TEX, "./resources/sprite/Happa/Happa1-2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::HAPPA3_1_TEX, "./resources/sprite/Happa/Happa3-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::HAPPA3_2_TEX, "./resources/sprite/Happa/Happa3-2.png");
 
 	load_bgm_res();
 	load_se_res();

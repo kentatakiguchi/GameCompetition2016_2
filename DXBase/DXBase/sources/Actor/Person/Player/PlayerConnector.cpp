@@ -125,51 +125,58 @@ void PlayerConnector::puyoUpdate() {
 	Vector2 vec2 = retty_->getPosition() - Vector2(x, y);
 
 	mPower = vec1.Length();
-	//¶‚Ì‚â‚Â‚ªˆø‚Á’£‚Á‚Ä‚é
-	if (stateMgr_.currentActionType(ActionType::Right) &&
-		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
-		mPuyoResPos = vec2*0.3f;
-		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower*0.4f, 175.0f);
-		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
-		mPuyoTimer = 0.0f;
-		mPuyoFlag = true;
-	}
-	//‰E‚Ì‚â‚Â‚ªˆø‚Á’£‚Á‚Ä‚é
-	else if (stateMgr_.currentActionType(ActionType::Left) &&
-		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
-		mPuyoResPos = vec1*0.3f;
-		mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower*0.4f, 175.0f);
-		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
-		mPuyoTimer = 0.0f;
-		mPuyoFlag = true;
-	}
-	//“¯Žž‰Ÿ‚µ
-	else if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD_BOTH))
-	{
-		mPuyoResPos = Vector2::Zero;
-		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
-		mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 200.0f);
-		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 200.0f);
-	}
-	//‰½‚à‚µ‚Ä‚¢‚È‚¢
-	else
-	{
-		mPuyoResPos = Vector2::Zero;
-		if (!mPuyoFlag) {
-			mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 175.0f);
-			mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 175.0f);
-		}
-		mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
-	}
 
-	Vector2::Spring(mPuyoPos, mPuyoResPos, mPuyoVelo, 0.2f);
-	//”ò‚ÔuŠÔ‚Í—Í‚ð‚Ç‚±‚à‰Á‚¦‚È‚¢
-	if (mPuyoFlag) {
-		mPuyoTimer += Time::GetInstance().deltaTime();
-		if (mPuyoTimer >= 0.5f) {
-			mPuyoFlag = false;
-		}
-	}
+	mPuyoResPos = Vector2::Zero;
+	mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 3.0f, 175.0f);
+	mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 3.0f, 175.0f);
+	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
+
+
+	//¶‚Ì‚â‚Â‚ªˆø‚Á’£‚Á‚Ä‚é
+	//if (stateMgr_.currentActionType(ActionType::Right) &&
+	//	stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
+	//	mPuyoResPos = vec2*0.3f;
+	//	mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower*0.4f, 175.0f);
+	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
+	//	mPuyoTimer = 0.0f;
+	//	mPuyoFlag = true;
+	//}
+	////‰E‚Ì‚â‚Â‚ªˆø‚Á’£‚Á‚Ä‚é
+	//else if (stateMgr_.currentActionType(ActionType::Left) &&
+	//	stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD)) {
+	//	mPuyoResPos = vec1*0.3f;
+	//	mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower*0.4f, 175.0f);
+	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
+	//	mPuyoTimer = 0.0f;
+	//	mPuyoFlag = true;
+	//}
+	////“¯Žž‰Ÿ‚µ
+	//else if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD_BOTH))
+	//{
+	//	mPuyoResPos = Vector2::Zero;
+	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
+	//	mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 200.0f);
+	//	mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 200.0f);
+	//}
+	////‰½‚à‚µ‚Ä‚¢‚È‚¢
+	//else
+	//{
+	//	mPuyoResPos = Vector2::Zero;
+	//	if (!mPuyoFlag) {
+	//		mPuyo->PuyoAddPowerEx(vec2.Normalize(), vec2, mPower / 7.0f, 175.0f);
+	//		mPuyo->PuyoAddPowerEx(vec1.Normalize(), vec1, mPower / 7.0f, 175.0f);
+	//	}
+	//	mPuyo->SetPosition(posVec2 + mPuyoPos, 1.0f, 0.0f, center);
+	//}
+
+	Vector2::Spring(mPuyoPos, mPuyoResPos, mPuyoVelo, 0.3f);
+	////”ò‚ÔuŠÔ‚Í—Í‚ð‚Ç‚±‚à‰Á‚¦‚È‚¢
+	//if (mPuyoFlag) {
+	//	mPuyoTimer += Time::GetInstance().deltaTime();
+	//	if (mPuyoTimer >= 0.5f) {
+	//		mPuyoFlag = false;
+	//	}
+	//}
 	//‹——£‚ª330‚¾‚Á‚½‚½‚ß
 	float dis = Vector2::Distance(butty_->getPosition(), retty_->getPosition()) / 330.0f;
 	color = Vector3(255, MathHelper::Lerp(255, 0, dis), MathHelper::Lerp(255, 0, dis));

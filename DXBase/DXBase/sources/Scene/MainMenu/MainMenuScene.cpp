@@ -161,10 +161,12 @@ void MainMenuScene::start() {
 	id.push_back(TextureID::BACKSTAGE1_7_TEX);
 	id.push_back(TextureID::BACKSTAGE1_8_TEX);
 	BackTitles id2;
+	id2.push_back(TextureID::BACKSTAGE2_TOP1_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_1_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_2_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_3_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_4_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_TOP2_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_5_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_6_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_7_TEX);
@@ -174,6 +176,7 @@ void MainMenuScene::start() {
 	BackTitles id3;
 	id3.push_back(TextureID::BACKSTAGE4_1_TEX);
 	id3.push_back(TextureID::BACKSTAGE4_2_TEX);
+
 	titleTexs.push_back(id);
 	titleTexs.push_back(id2);
 	titleTexs.push_back(id3);
