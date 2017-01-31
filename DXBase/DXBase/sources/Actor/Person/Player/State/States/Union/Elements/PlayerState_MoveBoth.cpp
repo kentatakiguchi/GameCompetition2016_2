@@ -29,8 +29,8 @@ void PlayerState_MoveBoth::key_input(float deltaTime){
 	if (InputMgr::GetInstance().KeyVector_L().x < 0) retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
 	
 	// 入力による移動処理
-	butty_->position() += InputMgr::GetInstance().KeyVector_R().Horizontal() * PLAYER_SPEED * butty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
-	retty_->position() += InputMgr::GetInstance().KeyVector_L().Horizontal() * PLAYER_SPEED * retty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
+	butty_->position() += InputMgr::GetInstance().KeyVector_R().Horizontal() * speed_b(deltaTime);
+	retty_->position() += InputMgr::GetInstance().KeyVector_L().Horizontal() * speed_r(deltaTime);
 
 	// ジャンプ処理
 	if (jump_key()) change(PlayerState_Enum_Union::JUMP);
@@ -52,8 +52,8 @@ void PlayerState_MoveBoth::pad_input(float deltaTime) {
 	if (InputMgr::GetInstance().AnalogPadVectorL().x < 0) retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
 
 	// 入力による移動処理
-	butty_->position() += InputMgr::GetInstance().AnalogPadVectorR().Horizontal() * PLAYER_SPEED * butty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
-	retty_->position() += InputMgr::GetInstance().AnalogPadVectorL().Horizontal() * PLAYER_SPEED * retty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
+	butty_->position() += InputMgr::GetInstance().AnalogPadVectorR().Horizontal() * speed_b(deltaTime);
+	retty_->position() += InputMgr::GetInstance().AnalogPadVectorL().Horizontal() * speed_r(deltaTime);
 
 	// ジャンプ処理
 	if (jump_pad()) change(PlayerState_Enum_Union::JUMP);

@@ -66,6 +66,18 @@ void PlayerConnector::onUpdate(float deltaTime) {
 	}
 	if (is_cleared()) world_->clear(true);
 
+	//if (timer_ <= 3.0f) {
+	//	if (timer_ > 0) {
+	//		if ((int)(timer_ * 10) % 2 < 1) alpha_ -= (int)(Time::GetInstance().deltaTime() * 60 * 20);
+	//		else alpha_ += (int)(Time::GetInstance().deltaTime() * 60 * 20);
+	//		butty_->alpha_ = (int)(MathHelper::Clamp((float)alpha_, 100, 255));
+	//		retty_->alpha_ = (int)(MathHelper::Clamp((float)alpha_, 100, 255));
+	//	}
+	//	else {
+	//		butty_->alpha_ = 255;
+	//		retty_->alpha_ = 255;
+	//	}
+	//}
 }
 
 void PlayerConnector::onDraw() const {
@@ -185,7 +197,7 @@ void PlayerConnector::puyoUpdate() {
 	color = Vector3(255, MathHelper::Lerp(255, 0, dis), MathHelper::Lerp(255, 0, dis));
 
 	mPuyo->PuyoPlayerPos(butty_->getPosition()*inv_, retty_->getPosition()*inv_, color,
-		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD));
+		stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD) || stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::HOLD_FULL));
 	mPuyo->PuyoUpdate();
 }
 

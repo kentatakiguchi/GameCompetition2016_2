@@ -17,7 +17,7 @@ void PlayerState_Union::common_init(Actor& actor, const ActionType& type){
 	element_ = StateElement(-1, type);
 	timer_ = 0;
 	isEnd_ = false;
-	velocity_ = Vector2::Zero;
+	////velocity_ = Vector2::Zero;
 
 	cntr_ = dynamic_cast<PlayerConnector*>(&actor);
 }
@@ -102,6 +102,14 @@ bool PlayerState_Union::jump_pad() {
 	return InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L2) && InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R2);
 }
 
+Vector2 PlayerState_Union::speed_b(float deltaTime){
+	return butty_->velocity() * PLAYER_SPEED * butty_->dump() * deltaTime * static_cast<float>(GetRefreshRate());
+}
+
+Vector2 PlayerState_Union::speed_r(float deltaTime){
+	return retty_->velocity() * PLAYER_SPEED * retty_->dump() * deltaTime * static_cast<float>(GetRefreshRate());
+}
+
 void PlayerState_Union::chase(Vector2 &position, int pointIndex){
 	Vector2::Spring(position, cntr_->get_point(pointIndex), velocity_, SPRING_STIFFNESS, SPRING_FRICTION, SPRING_MASS);
 }
@@ -109,6 +117,3 @@ void PlayerState_Union::chase(Vector2 &position, int pointIndex){
 Vector2 PlayerState_Union::clamp(const Vector2 &position, int pointIndex) {
 	return Vector2::ClampTarget(position, cntr_->get_point(pointIndex), PLAYER_MAX_DIV_LENGTH);
 }
-
-
-

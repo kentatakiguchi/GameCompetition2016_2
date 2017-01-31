@@ -73,6 +73,8 @@ const static float		PLAYER_COLLIDER_RADIUS = PLAYER_RADIUS * 1.25f;
 const static float		PLAYER_MAX_NORMAL_LENGTH = CHIPSIZE * 2;
 // プレイヤーが伸びた場合の最大値
 const static float		PLAYER_MAX_STRETCH_LENGTH = CHIPSIZE * 3.5f;
+// プレイヤーが伸びた場合の最大値
+const static float		PLAYER_SWIM_LENGTH = PLAYER_MAX_STRETCH_LENGTH * 0.4f;
 // プレイヤーの発射速度
 const static float		PLAYER_LAUNCH_POWER = 120.0f;
 // プレイヤーのジャンプ速度

@@ -20,7 +20,8 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	stiffness_(4.0f),
 	friction_(0.1f),
 	mass_(0.8f),
-	stateMgr_(name) {
+	stateMgr_(name),
+	bodyDump_(1){
 
 	change_state(PlayerState_Enum_Single::STAND_BY);
 
@@ -54,12 +55,23 @@ void PlayerBody::onUpdate(float deltaTime) {
 	animation_.update(deltaTime);
 
 	if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) {
-		timer_ += deltaTime * 60;
+		timer_ += deltaTime * static_cast<float>(GetRefreshRate());
 		if (timer_ >= 60) {
 			world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_MOVE, 5.0f, 0.5f));
 			timer_ = 0;
 		}
 	}
+
+	if (bodyDump_ != 1.0f) {
+		dumpTimer_ += deltaTime * static_cast<float>(GetRefreshRate());
+		if (dumpTimer_ >= 5.0f) {
+			bodyDump_ = 1.0f;
+			dumpTimer_ = 0;
+			animation_.change(PlayerAnimID::IDLE);
+		}
+	}
+
+	alpheUpdate(deltaTime);
 
 }
 
@@ -74,6 +86,7 @@ void PlayerBody::onDraw() const {
 
 	if (world_->isEntered())return;
 
+
 	if (dead_limit_ > 0) {
 		int graphNum = (int)ceil(PLAYER_DEAD_LIMIT - dead_limit_);
 		graphNum = min((int)PLAYER_DEAD_LIMIT, max(0, graphNum));
@@ -81,16 +94,42 @@ void PlayerBody::onDraw() const {
 		DrawGraph(drawPos.x, drawPos.y, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
 		//DrawFormatString(0, 0, GetColor(255, 255, 255), "%f", PLAYER_DEAD_LIMIT-dead_limit_);
 
-		if (static_cast<int>(dead_limit_ * 1000) % 2 == 1) return;
+		//if (static_cast<int>(dead_limit_ * 1000) % 2 == 1) return;
 
+		//int alpha = 0;
+			
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
 		animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 	}
 	else {
 		animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
 	}
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
+	animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+}
+
+void PlayerBody::alpheUpdate(float deltaTime){
+	if (dead_limit_ > 0) {
+		if ((int)(dead_limit_ * 10) % 2 < 1) alpha_ -= (int)(Time::GetInstance().deltaTime() * 60 * 20);
+		else alpha_ += (int)(Time::GetInstance().deltaTime() * 60 * 20);
+		alpha_ = (int)(MathHelper::Clamp((float)alpha_, 100, 255));
+	}
+	else {
+		alpha_ = 255;
+	}
 }
 
 void PlayerBody::onCollide(Actor & other) {
+	commonCollide(other);
+
+	if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) unionCollide(other);
+	else singleCollide(other);
+}
+
+void PlayerBody::commonCollide(Actor & other){
 	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" ||
@@ -135,24 +174,6 @@ void PlayerBody::onCollide(Actor & other) {
 		//	if (vec.Length() <= 0) position_ = center + Vector2::Down * (t_left - center).Length();
 		//}
 	}
-	if (other.getName() == "StageClearPoint") {
-		if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) {
-			hit_enemy_ = HitOpponent::CLEAR;
-		}
-	}
-	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
-		if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) {
-			hit_enemy_ = HitOpponent::ENEMY;
-		}
-	}
-
-	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
-		(getName() == "PlayerBody2" && other.getName() == "PlayerBody1Collider")) {
-		if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) ||
-			stateMgr_.get_state(PlayerState_Enum_Single::MOVE)) {
-			hit_partner_ = HitOpponent::PARTNER;
-		}
-	}
 
 	Vector2 myCenter, segCenter, segPoint, targetPoint, targetVec;
 	float posReset;
@@ -179,14 +200,41 @@ void PlayerBody::onCollide(Actor & other) {
 		targetVec = targetVec.Normalize();
 
 		Vector2 posCenter = position_ - segCenter;
-		Vector2 positionPoint = (segPoint)* ((segPoint.x*posCenter.x) + (segPoint.y*posCenter.y));
+		Vector2 positionPoint = (segPoint)* ((segPoint.x * posCenter.x) + (segPoint.y * posCenter.y));
 
-		position_ = (segCenter + positionPoint) + (targetVec*body_.GetCircle().component_.radius);
-
+		Vector2 vec = other.body_.GetSegment().component_.point[0] - other.body_.GetSegment().component_.point[1];
+		vec.y = std::abs(vec.y);
 		Vector2 moves = position_ - body_.GetCircle().previousPosition_;
+		position_ = (segCenter + positionPoint) + (targetVec * body_.GetCircle().component_.radius);
+		if (moves.y > 0)position_ += vec.Normalize() * 50;
 
-		if (moves.y > 0)slope_ = SLIP_SPEED * (positionPoint - targetPoint).Normalize();
+		//if (moves.y > 0)slope_ = SLIP_SPEED * (positionPoint - targetPoint).Normalize();
+		//if (moves.y > 0)position_ += 40 * (positionPoint - targetPoint).Normalize();
 		//if (moves.y > 0)slope_ = SLIP_SPEED * segPoint;
+	}
+}
+
+void PlayerBody::unionCollide(Actor & other){
+	if (other.getName() == "StageClearPoint") {
+		hit_enemy_ = HitOpponent::CLEAR;
+	}
+	if (other.getName() == "BaseEnemy" || other.getName() == "GameOverPoint") {
+		hit_enemy_ = HitOpponent::ENEMY;
+	}
+	if (other.getName() == "MiniBoss") {
+		bodyDump_ = std::max<float>(bodyDump_ - 0.25f, 0.2f);
+		dumpTimer_ = 0;
+		animation_.change(PlayerAnimID::DIV_MOVE);
+	}
+}
+
+void PlayerBody::singleCollide(Actor & other){
+	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
+		(getName() == "PlayerBody2" && other.getName() == "PlayerBody1Collider")) {
+		if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) ||
+			stateMgr_.get_state(PlayerState_Enum_Single::MOVE)) {
+			hit_partner_ = HitOpponent::PARTNER;
+		}
 	}
 }
 
@@ -201,6 +249,10 @@ void PlayerBody::collider(){
 
 Vector2& PlayerBody::velocity() {
 	return velocity_;
+}
+
+float & PlayerBody::dump(){
+	return bodyDump_;
 }
 
 void PlayerBody::posUpdate(float deltaTime) {
@@ -284,6 +336,7 @@ void PlayerBody::count_dead_limit(float deltaTime) {
 Vector2& PlayerBody::hit_vector(){
 	return collider_->other_velocity();
 }
+
 
 PlayerAnimation2D & PlayerBody::animation() {
 	return animation_;

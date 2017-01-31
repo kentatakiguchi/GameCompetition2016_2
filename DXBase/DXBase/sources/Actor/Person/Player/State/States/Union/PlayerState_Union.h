@@ -48,6 +48,8 @@ protected:
 	bool move_padL();
 	bool jump_pad();
 	// ƒXƒ‰ƒCƒ€‚Ì’e«•\Œ»
+	Vector2 speed_b(float deltaTime);
+	Vector2 speed_r(float deltaTime);
 	void chase(Vector2 &position, int pointIndex);
 	Vector2 clamp(const Vector2 &position, int pointIndex);
 protected:

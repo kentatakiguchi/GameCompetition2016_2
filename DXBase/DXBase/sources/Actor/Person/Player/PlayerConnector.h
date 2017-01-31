@@ -41,7 +41,6 @@ private:
 	PlayerBodyPtr butty_;
 	PlayerBodyPtr retty_;
 	std::vector<PlayerBodyPointPtr> points;
-
 	//ぷよテクスチャ
 	PuyoTextureK* mPuyo;
 	//ひっぱる力

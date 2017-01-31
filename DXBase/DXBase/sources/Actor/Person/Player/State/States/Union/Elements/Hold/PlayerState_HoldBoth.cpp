@@ -9,13 +9,11 @@ void PlayerState_HoldBoth::unique_init() {
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_SYOUTOTU), DX_PLAYTYPE_BACK);
 }
 
-void PlayerState_HoldBoth::update(float deltaTime) {
-}
+void PlayerState_HoldBoth::update(float deltaTime) {}
 
 void PlayerState_HoldBoth::end() {}
 
 void PlayerState_HoldBoth::key_input(float deltaTime){
-
 	if (!InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT)) {
 		change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 	}
@@ -25,7 +23,6 @@ void PlayerState_HoldBoth::key_input(float deltaTime){
 }
 
 void PlayerState_HoldBoth::pad_input(float deltaTime){
-
 	if (!InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1)) {
 		change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 	}

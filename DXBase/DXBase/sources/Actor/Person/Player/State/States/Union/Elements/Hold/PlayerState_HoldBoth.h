@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../PlayerState_Union.h"
+#include "../../PlayerState_Union.h"
 
 class PlayerState_HoldBoth : public PlayerState_Union {
 public:

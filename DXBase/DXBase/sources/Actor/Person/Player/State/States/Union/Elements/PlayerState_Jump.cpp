@@ -35,12 +35,12 @@ void PlayerState_Jump::end(){
 }
 
 void PlayerState_Jump::key_input(float deltaTime){
-	butty_->position() += InputMgr::GetInstance().KeyVector_R().Horizontal() / 2 * PLAYER_SPEED * butty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
-	retty_->position() += InputMgr::GetInstance().KeyVector_L().Horizontal() / 2 * PLAYER_SPEED * retty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
+	butty_->position() += InputMgr::GetInstance().KeyVector_R().Horizontal() / 2 * speed_b(deltaTime);
+	retty_->position() += InputMgr::GetInstance().KeyVector_L().Horizontal() / 2 * speed_r(deltaTime);
 }
 
 void PlayerState_Jump::pad_input(float deltaTime){
-	butty_->position() += InputMgr::GetInstance().AnalogPadVectorR().Horizontal() / 2 * PLAYER_SPEED * butty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
-	retty_->position() += InputMgr::GetInstance().AnalogPadVectorL().Horizontal() / 2 * PLAYER_SPEED * retty_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
+	butty_->position() += InputMgr::GetInstance().AnalogPadVectorR().Horizontal() / 2 * speed_b(deltaTime);
+	retty_->position() += InputMgr::GetInstance().AnalogPadVectorL().Horizontal() / 2 * speed_r(deltaTime);
 }
 

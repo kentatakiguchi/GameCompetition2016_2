@@ -15,16 +15,22 @@ public:
 	PlayerBody();
 	PlayerBody(IWorld* world, const std::string name, const Vector2& position);
 	~PlayerBody();
-	virtual void onCollide(Actor& other) override;
-
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
-	
+	virtual void onCollide(Actor& other) override;
+
+	void commonCollide(Actor& other);
+	void singleCollide(Actor& other);
+	void unionCollide(Actor& other);
+
+	void alpheUpdate(float deltaTime);
+
 	void change_state(PlayerState_Enum_Single state);
 
 	void collider();
 
 	Vector2& velocity();
+	float& dump();
 	void posUpdate(float deltaTime);
 
 	bool able_to_hold();
@@ -72,6 +78,8 @@ private:
 	//PlayerBodyCollPtr attack_collider_;
 
 	Vector2 v_;
+	float bodyDump_;
+	float dumpTimer_;
 
 	float stiffness_;
 	float friction_;
