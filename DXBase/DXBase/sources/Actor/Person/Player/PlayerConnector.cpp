@@ -31,6 +31,11 @@ PlayerConnector::~PlayerConnector() {
 }
 
 void PlayerConnector::onUpdate(float deltaTime) {
+	//ぷよテクスチャUPdate
+	puyoUpdate();
+	
+	if (world_->GetPlayerNotMove()) return;
+
 	timer_ += deltaTime;
 	position_ = (butty_->getPosition() + retty_->getPosition()) / 2;
 
@@ -60,9 +65,7 @@ void PlayerConnector::onUpdate(float deltaTime) {
 		dead();
 	}
 	if (is_cleared()) world_->clear(true);
-	
-	//ぷよテクスチャUPdate
-	puyoUpdate();
+
 }
 
 void PlayerConnector::onDraw() const {

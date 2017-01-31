@@ -9,6 +9,8 @@ void PlayerState_StandBy::unique_init(){
 	change(PlayerState_Enum_Union::IDLE);
 }
 
-void PlayerState_StandBy::update(float deltaTime){}
+void PlayerState_StandBy::update(float deltaTime){
+
+}
 
 void PlayerState_StandBy::end(){}

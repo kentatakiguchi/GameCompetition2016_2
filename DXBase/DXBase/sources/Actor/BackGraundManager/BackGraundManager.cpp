@@ -355,6 +355,8 @@ void BackGraundManager::AddKonoha(const TextureID& id)
 
 void BackGraundManager::konohaUpdate()
 {
+	//木の葉の挙動
+	if (konohaStates.empty()) return;
 	konohaTimer += Time::GetInstance().deltaTime();
 	if (konohaTimer >= konohaRandTime) {
 		//この葉の出現位置を設定
@@ -372,8 +374,7 @@ void BackGraundManager::konohaUpdate()
 		konohaTimer = 0.0f;
 	}
 
-	//木の葉の挙動
-	if (konohaStates.empty()) return;
+
 
 	for (auto& i : konohaStates) {
 
