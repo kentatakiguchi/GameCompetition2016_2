@@ -402,9 +402,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\StatePath_Single.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Move.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Collision\Collision.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -424,12 +421,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.h">
@@ -875,9 +866,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerStateMgr_Single.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Move.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Animation\Player\PlayerEffect2D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -894,12 +882,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Freeze.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Hold.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldBoth.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.cpp">
@@ -981,9 +963,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Tubo\Tubo.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_HoldAir.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyCollideEffect.cpp">

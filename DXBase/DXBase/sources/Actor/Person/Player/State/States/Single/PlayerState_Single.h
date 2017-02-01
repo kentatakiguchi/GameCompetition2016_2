@@ -29,6 +29,10 @@ public:
 	virtual void input(float deltaTime) override;
 	// 入力処理
 	virtual void common_update(float deltaTime) override;
+	// 衝突処理
+	virtual void collide(const Actor & other) override;
+	// 描画処理
+	virtual void draw()const override;
 	// ステートの変更処理
 	virtual void change(const StateElement& element) override;
 	// ステートが終了したか否か

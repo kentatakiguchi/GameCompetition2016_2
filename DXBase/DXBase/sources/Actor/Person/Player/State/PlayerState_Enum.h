@@ -26,7 +26,6 @@ enum class PlayerState_Enum_Single {
 	DAMMY,
 	STAND_BY,
 	IDLE,
-	MOVE,
 	DEAD,
 	LEAN_BACK
 };

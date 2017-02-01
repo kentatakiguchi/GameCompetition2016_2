@@ -51,9 +51,24 @@ void Tubo::onCollide(Actor & other)
 {
 	if (other.getName() == "PlayerBody1"||
 		other.getName() == "PlayerBody2") {
-		if (timer_ >= 5.0f)return;
-		world_->setEntry(true, false);
-		mDownFlag = true;
+		if (timer_ > 0.0f)return;
+
+		auto pos = other.body_.GetCircle().previousPosition_;
+
+		auto t_left  = body_.GetBox().component_.point[0];
+		auto t_right = body_.GetBox().component_.point[1];
+		auto b_left  = body_.GetBox().component_.point[2];
+		auto b_right = body_.GetBox().component_.point[3];
+
+		auto top = Vector2::Cross((t_left - t_right).Normalize(), (pos - t_right));
+		auto right = Vector2::Cross((t_right - b_right).Normalize(), (pos - b_right));
+		auto bottom = Vector2::Cross((b_right - b_left).Normalize(), (pos - b_left));
+		auto left = Vector2::Cross((b_left - t_left).Normalize(), (pos - t_left));
+
+		if (top >= 0 && left <= 0 && right <= 0) {
+			world_->setEntry(true, false);
+			mDownFlag = true;
+		}
 	}
 	//if (other.getName() == "MovelessFloorBreak") {
 	//	////’x‚­‚È‚é

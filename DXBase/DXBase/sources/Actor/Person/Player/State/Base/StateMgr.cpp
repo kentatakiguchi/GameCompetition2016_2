@@ -17,6 +17,18 @@ void StateMgr::action(Actor& actor, float deltaTime) {
 	if (currentState_->isEnd()) changeState(actor, currentState_->next());
 }
 
+// 衝突処理
+void StateMgr::collide(const Actor & other){
+	// 衝突処理
+	currentState_->collide(other);
+}
+
+// 描画処理
+void StateMgr::draw() const{
+	// 描画処理
+	currentState_->draw();
+}
+
 // ステートの追加
 void StateMgr::addState(const int& state, const IStatePtr& scene) {
 	states_[(unsigned int)state] = scene;

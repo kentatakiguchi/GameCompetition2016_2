@@ -226,7 +226,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\Base\StateMgr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Dead.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.h" />
-    <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Move.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\PlayerStateMgr_Single.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\StatePath_Single.h" />
@@ -396,7 +395,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Dead.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.cpp" />
-    <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Move.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerStateMgr_Single.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\PlayerState_Single.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Air\PlayerState_HoldAirBegin.cpp" />

@@ -12,6 +12,8 @@ private:
 	virtual void unique_init() override;
 	// 更新処理	
 	virtual void update(float deltaTime) override;
+	// 衝突処理
+	virtual void collide(const Actor & other) override {}
 	// 終了時処理
 	virtual void end() override;
 	// キー入力処理

@@ -55,11 +55,7 @@ void Player::update_state(float deltaTime) {
 		butty_->single_action(deltaTime);
 		retty_->single_action(deltaTime);
 		if (is_connectable()) connect();
-		if (is_dead()) {
-			butty_->change_state(PlayerState_Enum_Single::DEAD);
-			retty_->change_state(PlayerState_Enum_Single::DEAD);
-			if (butty_->isDead() && retty_->isDead()) dead();
-		}
+		if (is_dead()) dead();
 	}
 	else std::dynamic_pointer_cast<PlayerConnector>(cntr)->onUpdate(deltaTime);// state_update(deltaTime);
 
@@ -74,18 +70,15 @@ void Player::connect() {
 
 // Ú‘±‰Â”\‚©‚Ç‚¤‚©
 bool Player::is_connectable() {
-	bool is_main_target_partner = butty_->hit_partner() == HitOpponent::PARTNER;
-	bool is_sub_target_partner = retty_->hit_partner() == HitOpponent::PARTNER;
+	bool is_main_standby = butty_->stateMgr().currentState((unsigned int)PlayerState_Enum_Single::STAND_BY);
+	bool is_sub_standby = retty_->stateMgr().currentState((unsigned int)PlayerState_Enum_Single::STAND_BY);
 
-	return is_main_target_partner || is_sub_target_partner;
+	return is_main_standby || is_sub_standby;
 }
 
 // €–S‚µ‚½‚©‚Ç‚¤‚©
 bool Player::is_dead() {
-	bool is_main_dead = butty_->dead_limit();
-	bool is_sub_dead = retty_->dead_limit();
-
-	return is_main_dead && is_sub_dead;
+	return butty_->isDead() && retty_->isDead();
 }
 
 

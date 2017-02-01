@@ -5,7 +5,6 @@
 #include "PlayerBodyCollider.h"
 #include "PlayerConnector.h"
 
-#include "Effect/PlayerEffectObj.h"
 
 #include "../../../Game/Time.h"
 
@@ -15,14 +14,12 @@ PlayerBody::PlayerBody() {}
 
 PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & position) :
 	Actor(world, name, position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS)),
-	dead_limit_(0),
 	timer_(0),
 	stiffness_(4.0f),
 	friction_(0.1f),
 	mass_(0.8f),
 	stateMgr_(name),
 	bodyDump_(1){
-
 	change_state(PlayerState_Enum_Single::STAND_BY);
 
 	auto collider = std::make_shared<PlayerBodyCollider>(world_, name_);
@@ -33,12 +30,7 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	animation_ = PlayerAnimation2D(name_);
 	animation_.change(PlayerAnimID::IDLE, 2.0f);
 
-	NumIDs[0] = TextureID::NUMBER_ZERO_TEX;
-	NumIDs[1] = TextureID::NUMBER_ONE_TEX;
-	NumIDs[2] = TextureID::NUMBER_TWO_TEX;
-	NumIDs[3] = TextureID::NUMBER_THREE_TEX;
-	NumIDs[4] = TextureID::NUMBER_FOUR_TEX;
-	NumIDs[5] = TextureID::NUMBER_FIVE_TEX;
+	alpha_ = 255;
 }
 
 PlayerBody::~PlayerBody() {}
@@ -55,11 +47,7 @@ void PlayerBody::onUpdate(float deltaTime) {
 	animation_.update(deltaTime);
 
 	if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) {
-		timer_ += deltaTime * static_cast<float>(GetRefreshRate());
-		if (timer_ >= 60) {
-			world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_MOVE, 5.0f, 0.5f));
-			timer_ = 0;
-		}
+
 	}
 
 	if (bodyDump_ != 1.0f) {
@@ -70,9 +58,6 @@ void PlayerBody::onUpdate(float deltaTime) {
 			animation_.change(PlayerAnimID::IDLE);
 		}
 	}
-
-	alpheUpdate(deltaTime);
-
 }
 
 void PlayerBody::onDraw() const {
@@ -80,57 +65,26 @@ void PlayerBody::onDraw() const {
 
 	//body_.draw(inv_);
 
-	//DrawFormatString(100, 900, GetColor(0, 0, 0), "„« : %f", stiffness_);
-	//DrawFormatString(100, 950, GetColor(0, 0, 0), "–€ŽC : %f", friction_);
-	//DrawFormatString(100, 1000, GetColor(0, 0, 0), "Ž¿—Ê : %f", mass_);
-
 	if (world_->isEntered())return;
 
-
-	if (dead_limit_ > 0) {
-		int graphNum = (int)ceil(PLAYER_DEAD_LIMIT - dead_limit_);
-		graphNum = min((int)PLAYER_DEAD_LIMIT, max(0, graphNum));
-		Vector2 drawPos = (position_ + Vector2(-(CHIPSIZE / 2), -(ResourceLoader::GetInstance().GetTextureSize(AnimationID::PLAYER_BUTTY_IDLE).y / 2)))*inv_;
-		DrawGraph(drawPos.x, drawPos.y, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
-		//DrawFormatString(0, 0, GetColor(255, 255, 255), "%f", PLAYER_DEAD_LIMIT-dead_limit_);
-
-		//if (static_cast<int>(dead_limit_ * 1000) % 2 == 1) return;
-
-		//int alpha = 0;
-			
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
-		animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
-	}
-	else {
-		animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
-	}
+	stateMgr_.draw();
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
 	animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }
 
-void PlayerBody::alpheUpdate(float deltaTime){
-	if (dead_limit_ > 0) {
-		if ((int)(dead_limit_ * 10) % 2 < 1) alpha_ -= (int)(Time::GetInstance().deltaTime() * 60 * 20);
-		else alpha_ += (int)(Time::GetInstance().deltaTime() * 60 * 20);
-		alpha_ = (int)(MathHelper::Clamp((float)alpha_, 100, 255));
-	}
-	else {
-		alpha_ = 255;
-	}
-}
-
 void PlayerBody::onCollide(Actor & other) {
+	stateMgr_.collide(other);
+
 	commonCollide(other);
 
 	if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) unionCollide(other);
-	else singleCollide(other);
 }
 
 void PlayerBody::commonCollide(Actor & other){
-	if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) && name_ == "PlayerBody1")return;
+	//if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) && name_ == "PlayerBody1")return;
+
 	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" ||
@@ -228,30 +182,18 @@ void PlayerBody::unionCollide(Actor & other){
 		dumpTimer_ = 0;
 		animation_.change(PlayerAnimID::DIV_MOVE);
 	}
-	//if (other.getName() == "Tubo") {
-	//	if (world_->isEntered())return;
-	//	world_->setEntry(true, false);
-	//}
-
-}
-
-void PlayerBody::singleCollide(Actor & other){
-	if ((getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
-		(getName() == "PlayerBody2" && other.getName() == "PlayerBody1Collider")) {
-		if (stateMgr_.get_state(PlayerState_Enum_Single::IDLE) ||
-			stateMgr_.get_state(PlayerState_Enum_Single::MOVE)) {
-			hit_partner_ = HitOpponent::PARTNER;
-		}
-	}
 }
 
 void PlayerBody::change_state(PlayerState_Enum_Single state) {
 	stateMgr_.change(*this, state);
 }
 
+PlayerStateMgr_Single & PlayerBody::stateMgr(){
+	return stateMgr_;
+}
+
 void PlayerBody::collider(){	
 	collider_->position() = position_;
-	//if (attack_collider_ != nullptr)attack_collider_->pos_update(position_);
 }
 
 Vector2& PlayerBody::velocity() {
@@ -260,10 +202,6 @@ Vector2& PlayerBody::velocity() {
 
 float & PlayerBody::dump(){
 	return bodyDump_;
-}
-
-void PlayerBody::posUpdate(float deltaTime) {
-	position_ += velocity_ * deltaTime * static_cast<float>(GetRefreshRate());
 }
 
 bool PlayerBody::able_to_hold() {
@@ -282,20 +220,12 @@ HitOpponent PlayerBody::hitOpponent() {
 	return opponent_;
 }
 
-HitOpponent PlayerBody::hit_partner() {
-	return hit_partner_;
-}
-
 HitOpponent PlayerBody::hit_enemy() {
 	return hit_enemy_;
 }
 
 void PlayerBody::reset_opponent() {
 	opponent_ = HitOpponent::NONE;
-}
-
-void PlayerBody::reset_partner() {
-	hit_partner_ = HitOpponent::NONE;
 }
 
 void PlayerBody::reset_enemy() {
@@ -319,32 +249,17 @@ void PlayerBody::set_hold_point() {
 	collider_->reset_pos();
 }
 
-bool PlayerBody::dead_limit() {
-	return dead_limit_ >= PLAYER_DEAD_LIMIT;
-}
-
 void PlayerBody::single_action(float deltaTime) {
 	stateMgr_.action(*this, deltaTime);
-	collider();
 }
 
 Vector2 PlayerBody::get_partner_vector() {
 	return (partner_->getPosition() - position_).Normalize();
 }
 
-void PlayerBody::reset_dead_limit() {
-	dead_limit_ = 0;
-}
-
-void PlayerBody::count_dead_limit(float deltaTime) {
-	if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY) || stateMgr_.get_state(PlayerState_Enum_Single::LEAN_BACK))return;
-	dead_limit_ += deltaTime;
-}
-
 Vector2& PlayerBody::hit_vector(){
 	return collider_->other_velocity();
 }
-
 
 PlayerAnimation2D & PlayerBody::animation() {
 	return animation_;

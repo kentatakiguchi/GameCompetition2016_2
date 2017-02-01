@@ -17,7 +17,6 @@ void PlayerState_Union::common_init(Actor& actor, const ActionType& type){
 	element_ = StateElement(-1, type);
 	timer_ = 0;
 	isEnd_ = false;
-	////velocity_ = Vector2::Zero;
 
 	cntr_ = dynamic_cast<PlayerConnector*>(&actor);
 }
@@ -35,6 +34,14 @@ void PlayerState_Union::common_update(float deltaTime){
 	butty_->position() = Vector2::Clamp(butty_->position(), Vector2::One * PLAYER_RADIUS, Vector2::One * 10000);
 	retty_->position() = Vector2::Clamp(retty_->position(), Vector2::One * PLAYER_RADIUS, Vector2::One * 10000);
 }
+
+// 衝突処理
+
+void PlayerState_Union::collide(const Actor & other) {}
+
+// 描画処理
+
+void PlayerState_Union::draw() const {}
 
 // ステートの変更処理
 void PlayerState_Union::change(const StateElement& element){

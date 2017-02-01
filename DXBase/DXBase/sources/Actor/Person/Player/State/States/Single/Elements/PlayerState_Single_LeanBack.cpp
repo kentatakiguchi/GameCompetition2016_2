@@ -17,7 +17,6 @@ void PlayerState_Single_LeanBack::unique_init(){
 	
 	firstPos_ = body_->getPosition();
 
-
 	power_ = PLAYER_LEANBACK_POWER;
 
 	body_->position() += dir_ * power_;
@@ -35,8 +34,6 @@ void PlayerState_Single_LeanBack::update(float deltaTime) {
 }
 
 void PlayerState_Single_LeanBack::end(){
-	body_->reset_dead_limit();
-
 	body_->reset_enemy();
 
 	body_->reset_slope();

@@ -20,6 +20,10 @@ public:
 	virtual void input(float deltaTime) override;
 	// 入力処理
 	virtual void common_update(float deltaTime) override;
+	// 衝突処理
+	virtual void collide(const Actor & other) override;
+	// 描画処理
+	virtual void draw()const override;
 	// ステートが終了したか否か
 	virtual bool isEnd() override;
 	// 次のステートの要素

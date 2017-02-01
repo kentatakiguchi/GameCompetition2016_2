@@ -13,6 +13,10 @@ public:
 public:
 	// 更新処理
 	void action(Actor& actor, float deltaTime) ;
+	// 衝突処理
+	void collide(const Actor & other);
+	// 描画処理
+	void draw()const;
 	// 現在のステート
 	bool currentState(const int& state = 0);
 	// 現在のステート

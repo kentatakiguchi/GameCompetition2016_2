@@ -12,8 +12,6 @@ void PlayerState_Single_Dead::update(float deltaTime){
 	Vector2 gravity = Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
 
 	body_->position() += gravity;
-
-	//body_->gravity();
 }
 
 void PlayerState_Single_Dead::end(){}
