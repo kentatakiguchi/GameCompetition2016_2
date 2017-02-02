@@ -36,6 +36,7 @@ void LoadingScene::start(){
 	load_enemy_res();
 	load_boss_res();
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::SCENE_CHANGE_SLIME_ANM, "./resources/sprite/slimeanm.png", Vector2(256, 256), 8, 4, 2);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::ITEM_ANM, "./resources/sprite/itemanm.png", Vector2(96, 96),2,2,0);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_CLOSE, "./resources/sprite/DoorAnimClose.png", Vector2(320, 384), 6, 4, 1);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_OPEN, "./resources/sprite/DoorAnimOpen.png", Vector2(320, 384), 6, 4, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::HATENA, "./resources/sprite/hatena.png", Vector2(256, 256), 8, 5, 1);

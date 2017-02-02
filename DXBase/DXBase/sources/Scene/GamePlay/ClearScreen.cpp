@@ -20,8 +20,9 @@ bool ClearScreen::update(std::string name, Scene& next)
 	Count_--;
 	ints += 10;
 	if (Count_<=0) {
-		if (name == "stage04")next = Scene::BossStage01;
-		else next = Scene::GamePlay;
+		next = Scene::StageClear;
+		//if (name == "stage04")next = Scene::BossStage01;
+		//else next = Scene::GamePlay;
 		
 		return true;
 	}
