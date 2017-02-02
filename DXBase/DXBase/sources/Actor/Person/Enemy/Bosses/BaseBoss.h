@@ -8,6 +8,7 @@
 #include "../../../../Animation/Enemy/EnemyAnimation2D.h"
 #include "BossAnimationNumber.h"
 #include "BossManager.h"
+#include "MiniBossManager.h"
 
 class FloorSearchPoint;
 class BossEntry;
@@ -17,13 +18,13 @@ class BossGaugeUI;
 // ボスクラス
 class BaseBoss : public Actor {
 protected:
-	// モーション番号
-	enum {
-		BOSS_IDLE = 0,
-		BOSS_ATTACK = 1,
-		BOSS_FLINCH = 2,
-		BOSS_DEAD = 3,
-	};
+	//// モーション番号
+	//enum {
+	//	BOSS_IDLE = 0,
+	//	BOSS_ATTACK = 1,
+	//	BOSS_FLINCH = 2,
+	//	BOSS_DEAD = 3,
+	//};
 	// 攻撃行動の番号
 	enum {
 		ATTACK_JUMPATTACK_NUMBER = 0,
@@ -39,7 +40,9 @@ protected:
 		Flinch,
 		Piyori,
 		Boko,
-		Dead
+		Dead,
+		LiftIdel,
+		LiftMove
 	};
 	// 攻撃状態の列挙
 	enum class AttackState {
@@ -97,6 +100,10 @@ protected:
 	void deadMove(float deltaTime);
 	// ぴより行動
 	void piyoriMove(float deltaTime);
+	// 持ち上げ待機状態
+	void liftIdel(float deltaTime);
+	// 持ち上げ移動状態
+	void liftMove(float deltaTime);
 
 // 攻撃行動
 protected:
@@ -145,6 +152,7 @@ protected:
 	float damageTimer_;				// 次に被弾までの時間
 	float angle_;					// 角度(時計周り)
 	float effectCreateTimer_;		// エフェクト生成時間(間隔)
+	float liftCount_;
 	bool isGround_;					// 接地しているか
 	bool isBottomHit_;				// 壁の下側に当たったか
 	//bool isHit_;					// プレイヤー本体に当たるか
@@ -155,6 +163,7 @@ protected:
 	int handle_;					// デバッグハンドル
 	FloorSearchPoint* wspObj_;		// 壁捜索オブジェクト
 	BossEntry* entryObj_;			// ボス入口オブジェクト
+	MiniBossManager mbManager_;
 	BossManager bossManager_;		// ボスマネージャー
 	// 攻撃状態のコンテナ
 	typedef std::vector<AttackState> AttackStateContainer;

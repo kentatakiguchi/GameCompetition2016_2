@@ -39,6 +39,7 @@ public:
 protected:
 	EnemyAnimation2D animation_;
 
+	int alpha_;			// 透明度
 	float scale_;		// 大きさ
 	bool isLoop_;		// ループするか
 	Vector2 texSize_;	// テクスチャの大きさ

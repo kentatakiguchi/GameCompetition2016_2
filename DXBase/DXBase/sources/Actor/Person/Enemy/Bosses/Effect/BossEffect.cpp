@@ -10,6 +10,7 @@ BossEffect::BossEffect(
 	const bool isLoop) :
 	Actor(world, name, position,CollisionBase()),
 	animation_(EnemyAnimation2D()),
+	alpha_(255),
 	scale_(1.0f),
 	isLoop_(isLoop),
 	texSize_(texSize)
@@ -41,11 +42,13 @@ void BossEffect::onDraw() const
 	vec3Pos = vec3Pos * inv_;
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
+	// αブレンドの設定
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
 	animation_.draw(
 		pos,
 		texSize_ / 2,
 		Vector2::One * scale_);
-	body_.draw();
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }
 
 void BossEffect::onCollide(Actor & actor){}

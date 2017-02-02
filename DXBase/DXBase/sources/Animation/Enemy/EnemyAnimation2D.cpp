@@ -132,6 +132,11 @@ void EnemyAnimation2D::preMotion()
 	back_to_pre_motion();
 }
 
+void EnemyAnimation2D::stopAnime()
+{
+	isStop_ = true;
+}
+
 // アニメーションのタイムをランダムにします
 void EnemyAnimation2D::timeRandom()
 {

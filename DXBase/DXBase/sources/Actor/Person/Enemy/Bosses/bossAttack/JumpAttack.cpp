@@ -75,7 +75,7 @@ void JumpAttack::attack(float deltaTime)
 		auto addPos = Vector2::Left * 40.0f;
 		if (!isRockCreate_) {
 			world_->addActor(ActorGroup::Effect,
-				std::make_shared<BokoEffect>(world_, position_ + addPos, 3.0f));
+				std::make_shared<BokoEffect>(world_, position_ + addPos, 255, 3.0f));
 			// Šâ‚Ì¶¬
 			createRock();
 			// ’…’n‚ÉUŒ‚”»’è’Ç‰Á

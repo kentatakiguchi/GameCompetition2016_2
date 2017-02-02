@@ -35,6 +35,7 @@ BaseBoss::BaseBoss(
 	damageTimer_(0.0f),
 	angle_(0.0f),
 	effectCreateTimer_(0.0f),
+	liftCount_(0.0f),
 	isGround_(false),
 	isBottomHit_(false),
 	isAttackHit_(false),
@@ -50,6 +51,7 @@ BaseBoss::BaseBoss(
 	animation_(EnemyAnimation2D()),
 	wspObj_(nullptr),
 	entryObj_(nullptr),
+	mbManager_(MiniBossManager()),
 	bossGaugeUI_(nullptr),
 	//helperUI_(nullptr),
 	bossManager_(BossManager(world, position)),
@@ -112,11 +114,6 @@ BaseBoss::BaseBoss(
 	world_->addUIActor(bossUI);
 	bossGaugeUI_ = bossUI.get();
 	bossGaugeUI_->SetHp(hp_);
-	//// ヘルパーUI
-	//auto helperUI = std::make_shared<HelperUI>(world_, Vector2(200, 200));
-	//world_->addUIActor(helperUI);
-	//helperUI_ = helperUI.get();
-	//helperUI_->set
 	// 衝突判定を一回無くす
 	body_.enabled(false);
 }
@@ -195,6 +192,10 @@ void BaseBoss::onCollide(Actor & actor)
 	// プログラムを書いて、コメントアウトする
 	// マップのブロックに当たったら、処理を行う
 	//if (actorName == "MovelessFloor")
+	if (state_ == State::LiftMove && actorName == "Door") {
+		actor.dead();
+		return;
+	}
 	// 空中に浮かぶ床に当たったら、ひるみカウントを加算する
 	if (getFloorName != NULL || actorName == "Door") {
 		// 位置の補間
@@ -205,6 +206,7 @@ void BaseBoss::onCollide(Actor & actor)
 	// プレイヤーの攻撃に当たらない場合は返す
 	if (!isAttackHit_ || damageTimer_ > 0 || attackCount_ == 2) return;
 	if (state_ == State::Flinch) return;
+	if (hp_ <= 0) return;
 	// プレイヤーの攻撃範囲に当たった場合の処理
 	if (actorName == "PlayerAttackCollider") {
 		// カウントを減らす
@@ -265,7 +267,7 @@ void BaseBoss::updateState(float deltaTime)
 	// 現在は使用不可
 	player_ = world_->findActor("PlayerBody1");
 	// 体力が0以下になったら死亡
-	if (hp_ <= 0) {
+	if (hp_ <= 0 && state_ != State::LiftIdel && state_ != State::LiftMove) {
 		name_ = "DeadBoss";
 		isAttackHit_ = false;
 		changeState(State::Dead, DEATH_NUMBER);
@@ -281,6 +283,8 @@ void BaseBoss::updateState(float deltaTime)
 	case State::Piyori: piyori(deltaTime); break;
 	case State::Boko: boko(deltaTime); break;
 	case State::Dead: deadMove(deltaTime); break;
+	case State::LiftIdel: liftIdel(deltaTime); break;
+	case State::LiftMove: liftMove(deltaTime); break;
 	}
 
 	stateTimer_ += deltaTime;
@@ -289,8 +293,11 @@ void BaseBoss::updateState(float deltaTime)
 void BaseBoss::changeState(State state, int num)
 {
 	// アニメーションの変更
-	animation_.setIsLoop(true);
-	animation_.changeAnimation(static_cast<int>(num));
+	if (animeNum_ != num) {
+		animation_.setIsLoop(true);
+		animation_.changeAnimation(static_cast<int>(num));
+	}
+	animeNum_ = num;
 	alpha_ = 255;
 	// 同じ状態なら返す
 	if (state_ == state) return;
@@ -369,7 +376,6 @@ void BaseBoss::damage(float deltaTime)
 	name_ = "DamageBoss";
 	animation_.setIsLoop(false);
 	if (stateTimer_ > 0.5f) {
-		animation_.setIsLoop(true);
 		changeState(State::Idel, WAIT_NUMBER);
 		isAttackHit_ = false;
 		name_ = "BaseEnemy";
@@ -401,7 +407,7 @@ void BaseBoss::boko(float deltaTime)
 		// エフェクトの追加
 		auto addPos = Vector2::One * -40.0f;
 		world_->addActor(ActorGroup::Effect,
-			std::make_shared<BokoEffect>(world_, position_ + addPos));
+			std::make_shared<BokoEffect>(world_, position_ + addPos, (int)(255 * 0.7f)));
 		bokoCreateCount_++;
 		isEffectCreate_ = false;
 	}
@@ -437,7 +443,7 @@ void BaseBoss::boko(float deltaTime)
 		bokoCreateCount_ = 0;
 		effectCreateTimer_ = 0.0f;
 		isEffectCreate_ = true;
-		isAttackHit_ = true;
+		isAttackHit_ = false;
 		changeState(State::Idel, WAIT_NUMBER);
 	}
 }
@@ -445,6 +451,8 @@ void BaseBoss::boko(float deltaTime)
 void BaseBoss::deadMove(float deltaTime)
 {
 	animation_.setIsLoop(false);
+	// 重力
+	position_.y += 9.8f * deltaTimer_;
 	if (stateTimer_ < 3.0f) return;
 	// ミニボスの生成
 	if (isEffectCreate_ && miniBossCreateCount_ < 30 && 
@@ -459,6 +467,7 @@ void BaseBoss::deadMove(float deltaTime)
 		auto miniBoss = std::make_shared<MiniBoss>(
 			world_, Vector2(position_.x, 1020), (float)count(mt) / 100);
 		world_->addActor(ActorGroup::EnemyBullet, miniBoss);
+		mbManager_.addMiniBoss(miniBoss.get());
 		miniBossCreateCount_++;
 		isEffectCreate_ = false;
 	}
@@ -466,9 +475,11 @@ void BaseBoss::deadMove(float deltaTime)
 		isEffectCreate_ = true;
 	}
 	effectCreateTimer_ += deltaTimer_;
-	// 死亡から一定時間経過なら、シーンを終了させる
-	if (stateTimer_ >= 8.0f)
-		isSceneEnd_ = true;
+
+	if (miniBossCreateCount_ >= 30) {
+		mbManager_.backToSanity();
+		changeState(State::LiftIdel, DEATH_NUMBER);
+	}
 }
 
 // ぴより行動
@@ -563,6 +574,32 @@ void BaseBoss::piyoriMove(float deltaTime)
 	}
 	stars_.clear();
 	effectCreateTimer_ = 0.0f;
+}
+
+// 持ち上げ待機状態
+void BaseBoss::liftIdel(float deltaTime)
+{
+	if (!mbManager_.isMiniBossAllBP()) return;
+	mbManager_.bossLift();
+	if (liftCount_ < 40.0f) {
+		auto power = 5.0f * (deltaTime * 60.0f);
+		liftCount_ += power;
+		position_.y -= power;
+	}
+	if (mbManager_.isLiftEnd()) {
+		changeState(State::LiftMove, DEATH_NUMBER);
+	}
+}
+
+// 持ち上げ移動状態
+void BaseBoss::liftMove(float deltaTime)
+{
+	auto speed = 20.0f;
+	position_.x += -speed * (deltaTime * 60.0f);
+	mbManager_.LiftMove(speed);
+	// 死亡から一定時間経過なら、シーンを終了させる
+	if (stateTimer_ >= 2.0f)
+	isSceneEnd_ = true;
 }
 
 void BaseBoss::jumpAttack(float deltaTime)

@@ -69,8 +69,8 @@ void Rock::onDraw() const
 
 void Rock::onCollide(Actor & actor)
 {
-	// くっつき状態なら返す
-	if (state_ == State::Adhere || state_ == State::Dead) return;
+	// 死亡状態なら返す
+	if (state_ == State::Dead) return;
 	auto actorName = actor.getName();
 	auto getPlayerName = strstr(actorName.c_str(), "PlayerBody");
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
@@ -83,8 +83,17 @@ void Rock::onCollide(Actor & actor)
 		orizin_ = Vector2::One * (256.0f / 2.0f) + Vector2::Up * 100.0f;
 		// プレイヤーと逆の方向を向く
 		animation_.changeDirType(getPlayerDirection().x);
-		body_.enabled(false);
+		//body_.enabled(false);
+		return;
 	}
+	// プレイヤーの攻撃に当たったら死亡
+	if (actorName == "PlayerAttackCollider") {
+		changeState(State::Dead, DEAD_NUMBER);
+		body_.enabled(false);
+		return;
+	}
+	// くっつき状態なら返す
+	if (state_ == State::Adhere) return;
 	// プレイヤー関連のオブジェクトに当たったら
 	if (getPlayerName != NULL) {
 		changeState(State::Adhere, ADHERE_NUMBER);
@@ -145,6 +154,7 @@ void Rock::adhere(float deltaTime)
 // 死亡状態
 void Rock::deadMove(float deltaTime)
 {
+	name_ = "DeadMiniBoss";
 	size_ -= deltaTime;
 	size_ = max(0.0f, size_);
 	if (size_ == 0.0f)

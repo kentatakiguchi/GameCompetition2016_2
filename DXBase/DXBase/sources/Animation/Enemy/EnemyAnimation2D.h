@@ -33,6 +33,7 @@ public:
 	void setIsReverse(bool isReverse);
 	// 
 	void preMotion();
+	void stopAnime();
 	// アニメーションのタイムをランダムにします
 	void timeRandom();
 	// アニメーションの向きを変えたかを返します(1f)

@@ -570,6 +570,15 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Air\PlayerState_HoldAirSwim.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Item\ItemAnm.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Scene\StageClear\SceneChangeBossAnm.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -1002,6 +1011,15 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Air\PlayerState_HoldAirSwim.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Item\ItemAnm.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Scene\StageClear\SceneChangeBossAnm.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

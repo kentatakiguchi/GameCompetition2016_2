@@ -8,7 +8,8 @@ public:
 	BokoEffect(
 		IWorld* world,
 		const Vector2&  position,
-		float speed = 1.0f);
+		const int alpha = 255,
+		const float speed = 1.0f);
 
 };
 

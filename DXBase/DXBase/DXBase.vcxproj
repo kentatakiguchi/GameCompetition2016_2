@@ -171,6 +171,7 @@
     <ClInclude Include="sources\Actor\Body\ShapeType.h" />
     <ClInclude Include="sources\Actor\Collision\Collision.h" />
     <ClInclude Include="sources\Actor\Door\Door.h" />
+    <ClInclude Include="sources\Actor\Item\ItemAnm.h" />
     <ClInclude Include="sources\Actor\Item\Items.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossAnimationNumber.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\PiyoriEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ImportBosses.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ShockWave.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.h" />
     <ClInclude Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.h" />
@@ -332,6 +334,7 @@
     <ClInclude Include="sources\Scene\MainMenu\MainMenuScene.h" />
     <ClInclude Include="sources\Scene\MainMenu\SceneChange.h" />
     <ClInclude Include="sources\Scene\MainMenu\SceneChangeAnm.h" />
+    <ClInclude Include="sources\Scene\StageClear\SceneChangeBossAnm.h" />
     <ClInclude Include="sources\Scene\StageClear\StageClearScene.h" />
     <ClInclude Include="sources\Scene\StageClear\StageClearTextAnm.h" />
     <ClInclude Include="sources\Scene\TeamLogoScene\TeamLogoScene.h" />
@@ -353,6 +356,7 @@
     <ClCompile Include="sources\Actor\Body\CollisionBase.cpp" />
     <ClCompile Include="sources\Actor\Collision\Collision.cpp" />
     <ClCompile Include="sources\Actor\Door\Door.cpp" />
+    <ClCompile Include="sources\Actor\Item\ItemAnm.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.cpp" />
@@ -362,6 +366,7 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EntrySignEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\PiyoriEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\ShockWave.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.cpp" />
@@ -480,6 +485,7 @@
     <ClCompile Include="sources\Scene\MainMenu\MainMenuScene.cpp" />
     <ClCompile Include="sources\Scene\MainMenu\SceneChange.cpp" />
     <ClCompile Include="sources\Scene\MainMenu\SceneChangeAnm.cpp" />
+    <ClCompile Include="sources\Scene\StageClear\SceneChangeBossAnm.cpp" />
     <ClCompile Include="sources\Scene\StageClear\StageClearScene.cpp" />
     <ClCompile Include="sources\Scene\StageClear\StageClearTextAnm.cpp" />
     <ClCompile Include="sources\Scene\TeamLogoScene\TeamLogoScene.cpp" />
