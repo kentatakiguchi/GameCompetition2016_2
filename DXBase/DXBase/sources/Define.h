@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Math/Math.h"
 
 /* ウインドウ系統 */

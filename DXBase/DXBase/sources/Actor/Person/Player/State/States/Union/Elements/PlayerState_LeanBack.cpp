@@ -3,7 +3,13 @@
 PlayerState_LeanBack::PlayerState_LeanBack(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 
 void PlayerState_LeanBack::unique_init(){
-	dir_ = Vector2(-1, -1);
+	if (element_.type_ == ActionType::Right) {
+		dir_ = Vector2(1, -1);
+	}
+	if (element_.type_ == ActionType::Left) {
+		dir_ = Vector2(-1, -1);
+	}
+
 	power_ = PLAYER_LEANBACK_POWER;
 
 	butty_->reset_opponent();

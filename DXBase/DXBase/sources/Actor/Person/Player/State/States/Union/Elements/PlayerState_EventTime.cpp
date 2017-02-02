@@ -9,7 +9,7 @@ void PlayerState_EventTime::unique_init(){
 
 void PlayerState_EventTime::update(float deltaTime) {
 	if (cntr_->getWorld()->isLetOuted()) {
-		change(PlayerState_Enum_Union::LEAN_BACK);
+		change(PlayerState_Enum_Union::LEAN_BACK, ActionType::Left);
 	}
 }
 

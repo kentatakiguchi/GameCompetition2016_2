@@ -19,7 +19,7 @@ BaseBoss::BaseBoss(
 	IWorld * world,
 	const Vector2 & position,
 	const float bodyScale) :
-	Actor(world, "BaseEnemy", position,
+	Actor(world, "Boss", position,
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
 	dp_(10),
 	hp_(200),

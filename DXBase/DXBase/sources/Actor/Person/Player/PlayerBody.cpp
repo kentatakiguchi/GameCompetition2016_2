@@ -182,6 +182,9 @@ void PlayerBody::unionCollide(Actor & other){
 		dumpTimer_ = 0;
 		animation_.change(PlayerAnimID::DIV_MOVE);
 	}
+	if (other.getName() == "Boss") {
+		hit_enemy_ = HitOpponent::BOSS;
+	}
 }
 
 void PlayerBody::change_state(PlayerState_Enum_Single state) {

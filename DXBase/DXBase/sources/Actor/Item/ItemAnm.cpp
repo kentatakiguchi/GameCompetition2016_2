@@ -19,7 +19,6 @@ void ItemAnm::update_e(float deltaTime) {
 
 void ItemAnm::draw_e(const Vector2 & position, const Vector2 & origin, const float & scale)const {
 	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
-
 	Vector2 drawPos = Vector2(position.x - ((ResourceLoader::GetInstance().GetTextureSize(AnimationID::ITEM_ANM).x / 2)*scale), position.y);
 
 	draw(drawPos, origin, scale);

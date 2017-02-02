@@ -54,6 +54,15 @@ void PlayerState_Attack::update(float deltaTime) {
 	if (element_.type_ == ActionType::Right) attackColl_->position() = butty_->getPosition();
 	if (element_.type_ == ActionType::Left)	 attackColl_->position() = retty_->getPosition();
 
+	if (butty_->hit_enemy() == HitOpponent::BOSS || retty_->hit_enemy() == HitOpponent::BOSS) {
+		if (launch_dir_.x > 0) {
+			change(PlayerState_Enum_Union::LEAN_BACK, ActionType::Left);
+		}
+		else {
+			change(PlayerState_Enum_Union::LEAN_BACK, ActionType::Right);
+		}
+	}
+
 	if (cntr_->getWorld()->isEntered()) change(PlayerState_Enum_Union::EVENT);
 }
 

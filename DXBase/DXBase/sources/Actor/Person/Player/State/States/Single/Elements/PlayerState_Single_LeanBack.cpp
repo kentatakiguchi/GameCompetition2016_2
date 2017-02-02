@@ -14,20 +14,14 @@ void PlayerState_Single_LeanBack::unique_init(){
 		if (body_->name_ == "PlayerBody1")dir_.x = 1;
 		else dir_.x = -1;
 	}
-	
 	firstPos_ = body_->getPosition();
-
 	power_ = PLAYER_LEANBACK_POWER;
-
-	body_->position() += dir_ * power_;
-
+	body_->position() += dir_ * body_->velocity() * power_;
 }
 
 void PlayerState_Single_LeanBack::update(float deltaTime) {
 	dir_.y += 0.1f;
-
-	body_->position() += dir_ * power_* deltaTime * static_cast<float>(GetRefreshRate());
-
+	body_->position() += dir_ * body_->velocity() * power_ * deltaTime * static_cast<float>(GetRefreshRate());
 	if ((body_->getPosition().y > firstPos_.y || body_->able_to_jump()) && dir_.y > 0) {
 		change(StateElement((unsigned int)PlayerState_Enum_Single::IDLE));
 	}
@@ -35,7 +29,7 @@ void PlayerState_Single_LeanBack::update(float deltaTime) {
 
 void PlayerState_Single_LeanBack::end(){
 	body_->reset_enemy();
-
 	body_->reset_slope();
 }
+
 

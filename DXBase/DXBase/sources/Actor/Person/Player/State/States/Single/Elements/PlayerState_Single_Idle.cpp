@@ -38,8 +38,12 @@ void PlayerState_Single_Idle::collide(const Actor & other){
 void PlayerState_Single_Idle::draw() const {
 	int graphNum = (int)ceil(PLAYER_DEAD_LIMIT - timer_);
 	graphNum = min((int)PLAYER_DEAD_LIMIT, max(0, graphNum));
-	Vector2 drawPos = (body_->getPosition() + Vector2(-(CHIPSIZE / 2), -(ResourceLoader::GetInstance().GetTextureSize(AnimationID::PLAYER_BUTTY_IDLE).y / 2)))* body_->inv_;
-	DrawGraph(drawPos.x, drawPos.y, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
+	//Vector2 drawPos = (body_->getPosition() + Vector2(-(CHIPSIZE / 2), -(ResourceLoader::GetInstance().GetTextureSize(AnimationID::PLAYER_BUTTY_IDLE).y / 2)))* body_->inv_;
+	//DrawGraph(drawPos.x, drawPos.y, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
+	
+	DrawRotaGraph(static_cast<int>(SCREEN_SIZE.x) / 2, static_cast<int>(SCREEN_SIZE.y) / 2, (((MathHelper::Sin(timer_ * 60.0f * 5.5f) + 1.0f) * 0.5f) + 1.0f) * 2.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
+
+	//DrawGraph(static_cast<int>(SCREEN_SIZE.x) / 2, static_cast<int>(SCREEN_SIZE.y) / 2, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
 	//DrawFormatString(0, 0, GetColor(255, 255, 255), "%f", PLAYER_DEAD_LIMIT-dead_limit_);
 }
 
@@ -60,11 +64,9 @@ void PlayerState_Single_Idle::pad_input(float deltaTime) {
 }
 
 void PlayerState_Single_Idle::move(float deltaTime){
-	body_->position() = Vector2::Lerp(body_->position(), target_, 0.2f);
-
+	body_->position().x = MathHelper::Lerp(body_->position().x, target_.x, 0.2f);
 	Vector2 gravity = Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
-
 	body_->position() += gravity;
-
 }
+
 

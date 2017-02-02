@@ -6,6 +6,7 @@ enum class HitOpponent {
 	FLOOR_TOP,
 	FLOOR_HIT,
 	ENEMY,
+	BOSS,
 	CLEAR,
 	ITEM
 };
