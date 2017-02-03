@@ -65,10 +65,26 @@ void MiniBoss::onCollide(Actor & actor)
 	auto actorName = actor.getName();
 	//床関連のオブジェクトに当たっているなら
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
-	// ドアを壊す
-	if (state_ == State::RunAway && actorName == "Door") {
-		actor.dead();
-		return;
+	if (actorName == "Door") {
+		// ドアを壊す
+		if (state_ == State::RunAway) {
+			actor.dead();
+			auto se =
+				ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_CHAKUCHI);
+			if (CheckSoundMem(se) == 0)
+				PlaySoundMem(se, DX_PLAYTYPE_BACK);
+			return;
+		}
+		else if (state_ == State::Approach) {
+			// 目的の位置にたどり着けない場合は、到達したことにする。
+			groundClamp(actor);
+			/*if (std::abs(position_.x - bossPositionRX_) < 100.0f) {
+				isBossPosition_ = true;
+				animation_.setIsLoop(false);
+				animation_.stopAnime();
+			}*/
+			return;
+		}
 	}
 	// マップのブロックに当たったら、処理を行う
 	if (getFloorName != NULL || actorName == "Door") {
@@ -123,7 +139,22 @@ void MiniBoss::Confusion(float deltaTime)
 
 	// 混乱状態でなければ、落ち着き状態に遷移
 	if (!isConfusion_) {
-		changeState(State::CalmDown, MINI_BOSS_RUN);
+		//changeState(State::CalmDown, MINI_BOSS_RUN);
+		auto boss = world_->findActor("DeadBoss");
+		if (boss == nullptr) {
+			changeState(State::Approach, MINI_BOSS_RUN);
+			return;
+		}
+		auto posX = (int)boss->position().x;
+		// 乱数の取得
+		std::random_device random;
+		// メルセンヌツイスター法 後で調べる
+		// 初期Seed値を渡す
+		std::mt19937 mt(random());
+		// 範囲の指定(int型)
+		std::uniform_int_distribution<> bpos(-100, 100);
+		bossPositionRX_ = (float)(posX + bpos(mt));
+		changeState(State::Approach, MINI_BOSS_RUN);
 	}
 }
 
@@ -234,6 +265,13 @@ void MiniBoss::groundClamp(Actor& actor)
 			position_.x = topRight.x + body_.GetCircle().getRadius();
 			isHit = true;
 		}
+		if (state_ == State::Approach) {
+			if (std::abs(position_.x - bossPositionRX_) < 100.0f) {
+				isBossPosition_ = true;
+				animation_.setIsLoop(false);
+				animation_.stopAnime();
+			}
+		}
 	}
 
 	if (isHit) return;
@@ -270,6 +308,13 @@ void MiniBoss::groundClamp(Actor& actor)
 		// 右に補間
 		if (right > -actor.getBody().GetBox().getWidth() / 2.0f)
 			position_.x = topRight.x + body_.GetCircle().getRadius();
+		if (state_ == State::Approach) {
+			if (std::abs(position_.x - bossPositionRX_) < 100.0f) {
+				isBossPosition_ = true;
+				animation_.setIsLoop(false);
+				animation_.stopAnime();
+			}
+		}
 	}
 }
 

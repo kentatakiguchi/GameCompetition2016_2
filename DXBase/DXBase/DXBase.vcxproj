@@ -177,6 +177,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BossWingEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\DashEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyCollideEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyDeadEffect.h" />

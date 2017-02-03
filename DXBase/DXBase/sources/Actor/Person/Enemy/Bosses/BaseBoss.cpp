@@ -33,9 +33,11 @@ BaseBoss::BaseBoss(
 	timer_(0.0f),
 	deltaTimer_(0.0f),
 	damageTimer_(0.0f),
+	liftMoveTiemr_(0.0f),
 	angle_(0.0f),
 	effectCreateTimer_(0.0f),
 	liftCount_(0.0f),
+	bgmVolume_(1.0f),
 	isGround_(false),
 	isBottomHit_(false),
 	isAttackHit_(false),
@@ -56,7 +58,6 @@ BaseBoss::BaseBoss(
 	//helperUI_(nullptr),
 	bossManager_(BossManager(world, position)),
 	top_(0.0f), bottom_(0.0f), right_(0.0f), left_(0.0f),
-	handle_(CreateFontToHandle(NULL, 50, 10, DX_FONTTYPE_NORMAL)),
 	movePos_(Vector2::Zero),
 	moveSpeed_(0.0f)
 {
@@ -194,6 +195,10 @@ void BaseBoss::onCollide(Actor & actor)
 	//if (actorName == "MovelessFloor")
 	if (state_ == State::LiftMove && actorName == "Door") {
 		actor.dead();
+		auto se =
+			ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_CHAKUCHI);
+		if (CheckSoundMem(se) == 0)
+			PlaySoundMem(se, DX_PLAYTYPE_BACK);
 		return;
 	}
 	// 空中に浮かぶ床に当たったら、ひるみカウントを加算する
@@ -264,7 +269,9 @@ bool BaseBoss::isMovePosition()
 
 void BaseBoss::updateState(float deltaTime)
 {
-	// 現在は使用不可
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::G)) {
+		hp_ = 0;
+	}
 	player_ = world_->findActor("PlayerBody1");
 	// 体力が0以下になったら死亡
 	if (hp_ <= 0 && state_ != State::LiftIdel && state_ != State::LiftMove) {
@@ -451,6 +458,18 @@ void BaseBoss::boko(float deltaTime)
 void BaseBoss::deadMove(float deltaTime)
 {
 	animation_.setIsLoop(false);
+	// 音量の調整
+	auto bgm = ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5);
+	if (CheckSoundMem(bgm) == 1) {
+		bgmVolume_ -= deltaTime * 0.5f;
+		bgmVolume_ = max(bgmVolume_, 0.0f);
+		ChangeVolumeSoundMem(255 * bgmVolume_, bgm);
+		// 音量が0になったら止める
+		if (bgmVolume_ == 0.0f) {
+			StopSoundMem(bgm);
+			ChangeVolumeSoundMem(255, bgm);
+		}
+	}
 	// 重力
 	position_.y += 9.8f * deltaTimer_;
 	if (stateTimer_ < 3.0f) return;
@@ -598,8 +617,11 @@ void BaseBoss::liftMove(float deltaTime)
 	position_.x += -speed * (deltaTime * 60.0f);
 	mbManager_.LiftMove(speed);
 	// 死亡から一定時間経過なら、シーンを終了させる
-	if (stateTimer_ >= 2.0f)
-	isSceneEnd_ = true;
+	if (position_.x < 0.0f) {
+		liftMoveTiemr_ += deltaTime;
+		if (liftMoveTiemr_ >= 1.0f)
+			isSceneEnd_ = true;
+	}
 }
 
 void BaseBoss::jumpAttack(float deltaTime)
