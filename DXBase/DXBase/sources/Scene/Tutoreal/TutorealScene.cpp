@@ -19,41 +19,41 @@ TutorealScene::TutorealScene() :
 	name1.csvName = "tutoreal01";
 	name1.movieID = MOVIE_ID::TEST_MOVE;
 	name1.textIDs.push_back(TextureID::TUTOREAL1_1_TXT_TEX);
-	name1.textIDs.push_back(TextureID::TUTOREAL1_2_TXT_TEX);
-	name1.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_1_TEX);
-	name1.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_2_TEX);
-	name1.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_3_TEX);
+	//name1.textIDs.push_back(TextureID::TUTOREAL1_2_TXT_TEX);
+	//name1.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_1_TEX);
+	//name1.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_2_TEX);
+	//name1.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_3_TEX);
 	//2番
 	TutorealName name2;
-	name2.csvName = "tutoreal01";
+	name2.csvName = "tutoreal02";
 	name2.movieID = MOVIE_ID::TEST_MOVE;
 	name2.textIDs.push_back(TextureID::TUTOREAL2_1_TXT_TEX);
-	name2.textIDs.push_back(TextureID::TUTOREAL2_2_TXT_TEX);
-	name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_1_TEX);
-	name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_2_TEX);
-	name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_3_TEX);
+	//name2.textIDs.push_back(TextureID::TUTOREAL2_2_TXT_TEX);
+	//name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_1_TEX);
+	//name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_2_TEX);
+	//name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_3_TEX);
 	//3番
 	TutorealName name3;
-	name3.csvName = "tutoreal01";
+	name3.csvName = "tutoreal03";
 	name3.movieID = MOVIE_ID::TEST_MOVE;
 	name3.textIDs.push_back(TextureID::TUTOREAL3_1_TXT_TEX);
-	name3.textIDs.push_back(TextureID::TUTOREAL3_2_TXT_TEX);
-	name3.timeCountIDs.push_back(TextureID::TUTOREAL_COUNT_1_TEX);
-	name3.timeCountIDs.push_back(TextureID::TUTOREAL_COUNT_2_TEX);
-	//4番
-	TutorealName name4;
-	name4.csvName = "tutoreal02";
-	name4.movieID = MOVIE_ID::TEST_MOVE;
-	name4.textIDs.push_back(TextureID::TUTOREAL4_1_TXT_TEX);
-	name4.textIDs.push_back(TextureID::TUTOREAL4_2_TXT_TEX);
-	//name4.textIDs.push_back(TextureID::)
-	name4.textIDs.push_back(TextureID::TUTOREAL4_3_TXT_TEX);
+	//name3.textIDs.push_back(TextureID::TUTOREAL3_2_TXT_TEX);
+	//name3.timeCountIDs.push_back(TextureID::TUTOREAL_COUNT_1_TEX);
+	//name3.timeCountIDs.push_back(TextureID::TUTOREAL_COUNT_2_TEX);
+	////4番
+	//TutorealName name4;
+	//name4.csvName = "tutoreal02";
+	//name4.movieID = MOVIE_ID::TEST_MOVE;
+	//name4.textIDs.push_back(TextureID::TUTOREAL4_1_TXT_TEX);
+	//name4.textIDs.push_back(TextureID::TUTOREAL4_2_TXT_TEX);
+	////name4.textIDs.push_back(TextureID::)
+	//name4.textIDs.push_back(TextureID::TUTOREAL4_3_TXT_TEX);
 
 	//設定したやつを入れる
 	tutorels_.push_back(name1);
 	tutorels_.push_back(name2);
 	tutorels_.push_back(name3);
-	tutorels_.push_back(name4);
+	//tutorels_.push_back(name4);
 
 	//サイズを入れる
 	tutorealSize_ = tutorels_.size();
@@ -129,7 +129,7 @@ void TutorealScene::start()
 	//マップ生成
 	gener.create("./resources/file/" + name_ + ".csv", 0, 0);
 	//スクロールセット
-	world_->SetScroolJudge(Vector2(0, 0),Vector2::Zero, Vector2(9999, 9999));
+	world_->SetScroolJudge(Vector2(0, 0), Vector2::Zero, Vector2(9999, 9999));
 	//プレイヤーコネクター
 	playerConnector_ = dynamic_cast<PlayerConnector*>(world_->findActor("PlayerConnector").get());
 }
@@ -137,7 +137,7 @@ void TutorealScene::start()
 void TutorealScene::update()
 {
 	//Tを押したらチュートリアル動画が再生される
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T)&&!isClear_) {
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T) && !isClear_) {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 		isMovie_ = !isMovie_;
@@ -147,8 +147,13 @@ void TutorealScene::update()
 		}
 	}
 	//補間時間関係
-	if (isMovie_) movieMoveTime_ += 90 * Time::GetInstance().deltaTime();
-	else movieMoveTime_ -= 90 * Time::GetInstance().deltaTime();
+	if (isMovie_) {
+		movieMoveTime_ += 90 * Time::GetInstance().deltaTime();
+		playerUpCount_ -= movieMoveTime_ / 90.0f;
+	}
+	else {
+		movieMoveTime_ -= 90 * Time::GetInstance().deltaTime();
+	}
 
 	//クランプ
 	movieMoveTime_ = MathHelper::Clamp(movieMoveTime_, 0.0f, 90.0f);
@@ -161,6 +166,15 @@ void TutorealScene::update()
 	//移動を線形補間
 	moviePos_ = Vector2::Lerp(movieResPos1_, movieResPos2_, MathHelper::Sin(movieMoveTime_));
 
+	if (world_->findActor("Player")->getPosition().y <= 600.0f) {
+		playerUpCount_ -= 3.0f* Time::GetInstance().deltaTime();
+	}
+	else {
+		if(!isMovie_)
+		playerUpCount_ += 3.0f*Time::GetInstance().deltaTime();
+	}
+	playerUpCount_ = MathHelper::Clamp(playerUpCount_, 0.0f, 1.0f);
+	playerUpAlpha_ = MathHelper::Lerp(0.0f, 255.0f, playerUpCount_);
 	//クリアー関係
 	if (isClear_&&endTutorealCount_ != 3) {
 		clearTime_ += Time::GetInstance().deltaTime();
@@ -170,7 +184,7 @@ void TutorealScene::update()
 		else
 			feedAlpha_ += 2.0f*Time::GetInstance().deltaTime();
 
-		if (feedAlpha_ <= 0.0f) tutorealTexCount_ = 1;
+		if (feedAlpha_ <= 0.0f) /*tutorealTexCount_ = 1*/;
 
 		if (clearTime_ >= 4.0f) isEnd_ = true;
 	}
@@ -215,14 +229,16 @@ void TutorealScene::draw() const
 
 	//αブレンド
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, playerUpAlpha_);
 	//テキスト部分
 	Vector2 size = ResourceLoader::GetInstance().GetTextureSize(TextureID::TUTOREAL_BACK_TEX)*0.93f / 2.0f;
 	DrawRotaGraphF(32 + size.x, 16 + size.y, 0.93f, 0, ResourceLoader::GetInstance().getTextureID(TextureID::TUTOREAL_BACK_TEX), TRUE);
-	if (isClear_)SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0, 255, feedAlpha_));
+	//if (isClear_)SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0, 255, feedAlpha_));
 	DrawGraph(64, 64, ResourceLoader::GetInstance().getTextureID(tutorealTexs_[tutorealTexCount_]), TRUE);
-	//時間とカウント部分
-	if (!tutorealTimes_.empty() && (int)stickTime_ != -1 && (int)endCount_ != -1)
-		DrawGraph(32, 256 + 128, ResourceLoader::GetInstance().getTextureID(tutorealTimes_[countAndTime_]), TRUE);
+	////時間とカウント部分
+	//if (!tutorealTimes_.empty() && (int)stickTime_ != -1 && (int)endCount_ != -1)
+	//	DrawGraph(32, 256 + 128, ResourceLoader::GetInstance().getTextureID(tutorealTimes_[countAndTime_]), TRUE);
 	//αブレンド終わり
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
 
@@ -256,25 +272,26 @@ Scene TutorealScene::next() const
 
 bool TutorealScene::EndTutoreal(int num)
 {
-	switch (num)
-	{
-	case 0: {
-		return Tutoreal1();
-		break;
-	}
-	case 1: {
-		return Tutoreal2();
-		break;
-	}
-	case 2: {
-		return Tutoreal3();
-		break;
-	}
-	case 3: {
-		return Tutoreal4();
-		break;
-	}
-	}
+	if (world_->findActors(ActorGroup::Item).empty())isClear_ = true;
+	//switch (num)
+	//{
+	//case 0: {
+
+	//	break;
+	//}
+	//case 1: {
+	//	if (world_->getCount() >= 1)return true;
+	//	break;
+	//}
+	//case 2: {
+	//	if (world_->getCount() >= 1)return true;
+	//	break;
+	//}
+	//case 3: {
+	//	if (world_->getCount() >= 1)return true;
+	//	break;
+	//}
+	//}
 	return false;
 }
 

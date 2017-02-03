@@ -423,7 +423,7 @@ void MainMenuScene::draw() const {
 	//DrawGraph(-slideSize, 0, ResourceLoader::GetInstance().getTextureID(currentTitleBackID[1]), TRUE);
 	
 	//”wŒiDraw
-	backManager->Draw();
+	backManager->Draw(true);
 	//ƒ¿’l‚ğ0‚©‚ç180‚ÅüŒ`•âŠÔ‚ğ‚µ‚Ä‚»‚ê‚ğsin‚É‚Á‚Ä‚¢‚«‚»‚ÌŒ‹‰Ê‚ğ0‚©‚ç255‚ÉüŒ`•âŠÔ‚·‚é
 	float alpha = MathHelper::Lerp(0.0f, 255.0f, MathHelper::Sin(MathHelper::Lerp(0, 180, titleBackAlpha_)));
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);

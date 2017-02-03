@@ -91,4 +91,7 @@ private:
 	bool tutoreal4Flag;
 	//プレイヤーコネクター
 	PlayerConnector* playerConnector_;
+	//プレイヤーが上に居たら
+	float playerUpAlpha_;
+	float playerUpCount_;
 };

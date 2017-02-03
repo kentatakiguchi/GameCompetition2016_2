@@ -47,13 +47,12 @@ void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2, float height
 	backStates.push_back(backState);
 }
 
-void BackGraundManager::SetTateBackGraund(TextureID id1, TextureID id2)
+void BackGraundManager::SetTateBackGraund(TextureID id1, TextureID id2,const Vector2& scale)
 {
 	BackGraundState backState;
 	//サイズを追加
 	backState.size = ResourceLoader::GetInstance().GetTextureSize(id1);
 	Vector2 size = backState.size;
-
 	IndexPos indexPos;
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id1);
 	indexPos.position = Vector2::Zero;
@@ -173,7 +172,6 @@ void BackGraundManager::Update(float deltatime, bool title)
 				stageFlag = false;
 			else
 				stageFlag = true;
-
 		}
 		layerNum--;
 	}
@@ -285,7 +283,7 @@ void BackGraundManager::TateUpdate(float deltaTime)
 	//}
 }
 
-void BackGraundManager::Draw() const
+void BackGraundManager::Draw(bool title) const
 {
 	//空の描写
 	for (auto& i : upBackStates)
@@ -356,7 +354,7 @@ void BackGraundManager::AddKonoha(const TextureID& id)
 void BackGraundManager::konohaUpdate()
 {
 	//木の葉の挙動
-	if (konohaStates.empty()) return;
+	if (konohaIds.empty()) return;
 	konohaTimer += Time::GetInstance().deltaTime();
 	if (konohaTimer >= konohaRandTime) {
 		//この葉の出現位置を設定

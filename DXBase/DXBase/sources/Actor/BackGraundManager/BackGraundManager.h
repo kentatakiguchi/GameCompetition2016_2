@@ -30,6 +30,8 @@ struct BackGraundState
 	Vector2 size = Vector2::Zero;
 	//2つ画像を張るための座標
 	std::list<IndexPos> indexPos;
+	//画像のスケール
+	Vector2 scale = Vector2(1, 1);
 	//レイヤー
 	int layer;
 	//stage2か
@@ -46,7 +48,7 @@ public:
 	//背景を設定する（ロードしたテクスチャ限定）
 	void SetBackGraund(TextureID id1, TextureID id2, float heightY = 0.0f, bool frontGraund = false, bool stage2 = false);
 	//縦の背景を設定する（ロードしたテクスチャ限定）
-	void SetTateBackGraund(TextureID id1, TextureID id2);
+	void SetTateBackGraund(TextureID id1, TextureID id2, const Vector2& scale=Vector2(1.0f,1.0f));
 	//縦の横の背景を設定する(ロードしたテクスチャ限定)
 	void SetTateYokoBackGraund(TextureID id1);
 	//背景（空）を設定する（ロードしたテクスチャ限定）
@@ -61,7 +63,7 @@ public:
 	//縦用スクロールUpdate
 	void TateUpdate(float deltaTime);
 
-	void Draw() const;
+	void Draw(bool title=false) const;
 
 	void BackDraw()const;
 
