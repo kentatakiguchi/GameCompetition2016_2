@@ -14,17 +14,16 @@ World::World() :
 	isStopTime_(false),
 	mNoPlayerMove(false),itemCount_(0),getCount_(0),
 	playerScreenPos_(PLAYER_SCREEN_POSITION){
-	inv_ = Matrix::Identity;
 }
 
 // 更新
 void World::update(float deltaTime) {
 	//field_->update(deltaTime);
+	inv();
 	deltaTime_ = deltaTime;
 	if (isStopTime_) deltaTime = 0.0f;
 	actors_.update(deltaTime);
 
-	inv();
 
 	//camera_->update(deltaTime);
 	//light_->update(deltaTime);
@@ -153,10 +152,10 @@ void World::SetScroolJudge(const Vector2& scroolJudge,const Vector2& scroolMinPo
 	scrool_.scroolJudge = scroolJudge;
 	scrool_.scroolStopMin = scroolMinPos;
 	scrool_.scroolStopMax = scroolMaxPos;
-	if (!flag)
-		InitializeInv(scroolMinPos);
-	else
-		InitializeInv(scroolMaxPos);
+	//if (!flag)
+	//	InitializeInv(scroolMinPos);
+	//else
+	//	InitializeInv(scroolMaxPos);
 }
 
 ScroolJudge World::GetScroolJudge() {
@@ -212,9 +211,9 @@ Matrix World::InitializeInv(Vector2 position)
 	playerMat.Translation(Vector3(position.x, position.y, 0.0f));
 
 	inv_ = Matrix::Invert(playerMat) *
-		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
+		Matrix::CreateTranslation(Vector3(playerScreenPos_.x, playerScreenPos_.y));
 	resInv_ = Matrix::Invert(playerMat) *
-		Matrix::CreateTranslation(Vector3(PLAYER_SCREEN_POSITION.x, PLAYER_SCREEN_POSITION.y));
+		Matrix::CreateTranslation(Vector3(playerScreenPos_.x, playerScreenPos_.y));
 
 	//1フレーム後の座標
 	mCurPos = Vector2(inv_.Translation().x, inv_.Translation().y);

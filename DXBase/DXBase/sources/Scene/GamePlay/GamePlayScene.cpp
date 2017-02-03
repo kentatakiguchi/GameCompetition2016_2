@@ -93,21 +93,23 @@ void GamePlayScene::start() {
 	}
 	else if (name_ == "stage04") {
 		stageNum_ = 4;
-		world_->SetScroolJudge(Vector2(0, 1), Vector2::Zero + world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)),true);
+		world_->SetScreenPlayerPos(SCREEN_SIZE / 2);
+		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE-(SCREEN_SIZE.x-world_->GetScreenPlayerPos().x),csvSize.y*CHIPSIZE-(SCREEN_SIZE.y-world_->GetScreenPlayerPos().y)));
 	}
 
 	backManager = new BackGraundManager(world_.get());
 	if (name_ == "stage01" || name_ == "stage02") {
+		float graundPos = -(world_->GetScreenPlayerPos().y);
 		//先にセットされたテクスチャほど奥に描写される
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_1_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, 0.0f, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX,graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_1_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX, graundPos);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX, graundPos*1.5f);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, graundPos*2.5f, true);
 
 		backManager->AddKonoha(TextureID::HAPPA1_1_TEX);
 		backManager->AddKonoha(TextureID::HAPPA1_2_TEX);
@@ -138,8 +140,8 @@ void GamePlayScene::start() {
 	}
 	else if (name_ == "stage04")
 	{
-		backManager->SetTateBackGraund(TextureID::BACKSTAGE3_1_TEX, TextureID::BACKSTAGE3_1_TEX);
-		backManager->SetTateBackGraund(TextureID::BACKSTAGE3_2_TEX, TextureID::BACKSTAGE3_2_TEX);
+		backManager->SetBackGraund(TextureID::BACKSTAGE4_1_TEX,TextureID::BACKSTAGE4_1_TEX);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE4_1_TEX,1);
 	}
 	world_->clear(false);
 
@@ -182,10 +184,8 @@ void GamePlayScene::update() {
 		isStopped_ = !isStopped_;
 	}
 	world_->update(deltaTime_);
-	if (name_ == "stage04")
-		backManager->TateUpdate(deltaTime_);
-	else
-		backManager->Update(deltaTime_);
+
+	backManager->Update(deltaTime_);
 
 	auto player = world_->findActor("Player");
 
