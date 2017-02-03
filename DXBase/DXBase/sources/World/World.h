@@ -116,6 +116,8 @@ public:
 	virtual void addCount(int i = 1)override {
 		itemCount_ += i;
 		getCount_ += i;
+		itemCount_ = max(itemCount_, 0);
+		getCount_ = max(getCount_, 0);
 	}
 	virtual void setCount(int i)override {
 		itemCount_ = i;

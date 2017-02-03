@@ -27,6 +27,7 @@
 #include "MovelessFloorBreak.h"
 #include "../Actor/Tubo/Tubo.h"
 #include"../Actor/Item/Items.h"
+#include"../Actor/Item/BadItems.h"
 #include"../Field/ItemSpawnFloor.h"
 
 
@@ -195,6 +196,11 @@ public:
 				if (reader_.geti(rowN, colN) == 12) {
 					world_->addActor(ActorGroup::Field, std::make_shared<MoveFloorCenterRightLeft>(
 						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 15) {
+					world_->addActor(ActorGroup::Item, std::make_shared<BadItems>(
+						world_, Vector2(colN*CHIPSIZE + 48, rowN*CHIPSIZE + 48)));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 16) {

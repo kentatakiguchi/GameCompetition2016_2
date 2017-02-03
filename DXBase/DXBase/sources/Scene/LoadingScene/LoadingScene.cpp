@@ -37,10 +37,11 @@ void LoadingScene::start(){
 	load_boss_res();
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::SCENE_CHANGE_SLIME_ANM, "./resources/sprite/slimeanm.png", Vector2(256, 256), 8, 4, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ITEM_ANM, "./resources/sprite/itemanm.png", Vector2(96, 96),10,6,0);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::ITEM_MINUS_ANM, "./resources/sprite/itemanm2.png", Vector2(96, 96), 10, 6, 0);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_CLOSE, "./resources/sprite/DoorAnimClose.png", Vector2(320, 384), 6, 4, 1);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::DOOR_OPEN, "./resources/sprite/DoorAnimOpen.png", Vector2(320, 384), 6, 4, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::HATENA, "./resources/sprite/hatena.png", Vector2(256, 256), 8, 5, 1);
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::TEXT_STAGECLEAR_ANM_TEX, "./resources/sprite/Text/stageclear_anim.png", Vector2(640, 320), 6, 7, 2);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::TEXT_STAGECLEAR_ANM_TEX, "./resources/sprite/Text/stageclear_anim.png", Vector2(640, 200), 6, 7, 2);
 	ResourceLoader::GetInstance().loadTexture(TextureID::PUYO_TEST_TEX, "./resources/sprite/en1.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_1_TEX, "./resources/sprite/BackGraund/Stage1-1.png");
@@ -53,15 +54,15 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_7_TEX, "./resources/sprite/BackGraund/Stage1-7.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE1_8_TEX, "./resources/sprite/BackGraund/Stage1-8.png");
 
-	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_1_TEX, "./resources/sprite/BackGraund/Stage1-1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_2_TEX, "./resources/sprite/BackGraund/Stage1-2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_3_TEX, "./resources/sprite/BackGraund/Stage1-3.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_4_TEX, "./resources/sprite/BackGraund/Stage1-4.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_5_TEX, "./resources/sprite/BackGraund/Stage1-5.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_6_1_TEX, "./resources/sprite/BackGraund/Stage1-6-1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_6_2_TEX, "./resources/sprite/BackGraund/Stage1-6-2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_7_TEX, "./resources/sprite/BackGraund/Stage1-7.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_8_TEX, "./resources/sprite/BackGraund/Stage1-8.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_1_TEX, "./resources/sprite/BackGraund/BackMgrTex/Stage1-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_2_TEX, "./resources/sprite/BackGraund/BackMgrTex/Stage1-2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_3_TEX, "./resources/sprite/BackGraund/BackMgrTex/Stage1-3.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_4_TEX, "./resources/sprite/BackGraund/BackMgrTex/Stage1-4.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_5_TEX, "./resources/sprite/BackGraund/BackMgrTex/Stage1-5.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_6_1_TEX, "./resources/sprite/BackGraund/BackMgrTex/Stage1-6-1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_6_2_TEX, "./resources/sprite/BackGraund/BackMgrTex/Stage1-6-2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_7_TEX, "./resources/sprite/BackGraund/BackMgrTex/Stage1-7.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::MGR_BACKSTAGE1_8_TEX, "./resources/sprite/BackGraund/BackMgrTex/Stage1-8.png");
 
 
 
@@ -162,6 +163,7 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_NINE_TEX, "./resources/sprite/num9.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::ITEM_TEX, "./resources/sprite/item.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::ITEM_MINUS_TEX, "./resources/sprite/item2.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::VASE_TEX, "./resources/sprite/vase.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::GOAL_TEX, "./resources/sprite/goal.png");
 
@@ -170,6 +172,11 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::HAPPA3_1_TEX, "./resources/sprite/Happa/Happa3-1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::HAPPA3_2_TEX, "./resources/sprite/Happa/Happa3-2.png");
 
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOARD_NULL_TEX, "./resources/sprite/kanban0.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOARD_STAGE2_TEX, "./resources/sprite/kanban01.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOARD_STAGE3_TEX, "./resources/sprite/kanban02.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BOARD_STAGE4_TEX, "./resources/sprite/kanban03.png");
+	
 	load_bgm_res();
 	load_se_res();
 	//îÒìØä˙ì«Ç›çûÇ›èIóπ

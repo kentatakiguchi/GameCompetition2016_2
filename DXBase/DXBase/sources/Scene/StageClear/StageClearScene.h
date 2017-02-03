@@ -33,6 +33,28 @@ private:
 	SceneChangeBossAnm anmer_;
 	//ƒ{ƒX‚Ì•`‰æˆÊ’u
 	Vector2 bossPosition;
+	Vector2 BoardPosition;
+
+	BackGraundManager* backManager;
+
+	std::vector<TextureID> BoardTexes;
+
+	int backNum_;
+	int boardNum_;
+	
+	typedef std::vector<TextureID> BackTitles;
+	std::vector<BackTitles> titleTexs;
+
+	float speedx;
+	float speedy;
+
+	float stopx;
+
+	float bossRotate;
+
+	bool isArrive_;
+	bool isFirstIdle;
+	bool isFirstJump;
 };
 
 #endif

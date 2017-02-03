@@ -158,8 +158,13 @@ enum class TextureID {
 	HAPPA3_2_TEX,
 
 	ITEM_TEX,
+	ITEM_MINUS_TEX,
 	VASE_TEX,
 	GOAL_TEX,
+	BOARD_NULL_TEX,
+	BOARD_STAGE2_TEX,
+	BOARD_STAGE3_TEX,
+	BOARD_STAGE4_TEX,
 };
 
 enum class AnimationID {
@@ -170,6 +175,7 @@ enum class AnimationID {
 	SCENE_CHANGE_SLIME_ANM,
 	LORDING_SLIME_ANM,
 	ITEM_ANM,
+	ITEM_MINUS_ANM,
 	//ドアアニメーション
 	DOOR_OPEN,
 	DOOR_CLOSE,
