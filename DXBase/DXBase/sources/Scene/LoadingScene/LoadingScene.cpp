@@ -93,22 +93,9 @@ void LoadingScene::start(){
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::ENEMY_NEEDLE_TEX, "./resources/sprite/Needle.png");
 
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL1_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText1-1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL1_2_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText1-2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL2_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText2-1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL2_2_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText2-2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL3_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText3-1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL3_2_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText3-2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL4_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText4-1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL4_2_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText4-2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL4_3_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText4-3.png");
-
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_TIME_1_TEX, "./resources/sprite/Tutoreal/TutorealTime1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_TIME_2_TEX, "./resources/sprite/Tutoreal/TutorealTime2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_TIME_3_TEX, "./resources/sprite/Tutoreal/TutorealTime3.png");
-
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_COUNT_1_TEX, "./resources/sprite/Tutoreal/TutorealCount1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_COUNT_2_TEX, "./resources/sprite/Tutoreal/TutorealCount2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL1_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText1.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL2_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText2.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL3_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText3.png");
 
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_GAUGE_IN_TEX, "./resources/sprite/BossGaugeIn.png");
