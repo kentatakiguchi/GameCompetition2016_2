@@ -57,7 +57,7 @@ public:
 		if (ismyHit_)return;
 		body_.enabled(false);
 		ismyHit_ = true;
-		ChangeNextPlayVolumeSoundMem(70, ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN));
+		ChangeNextPlayVolumeSoundMem(180, ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN));
 		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN), DX_PLAYTYPE_BACK);
 	}
 	int spriteID_;
