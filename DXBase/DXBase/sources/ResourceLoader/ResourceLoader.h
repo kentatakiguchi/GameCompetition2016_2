@@ -255,6 +255,7 @@ enum class SoundID {
 	SE_BOSS_POKO,
 	BGM_GAMEOVER,
 	BGM_STAGECLEAR,
+	SE_GETCOIN,
 };
 enum MOVIE_ID {
 	TEST_MOVE,

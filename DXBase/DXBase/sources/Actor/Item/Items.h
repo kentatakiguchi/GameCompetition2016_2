@@ -36,7 +36,7 @@ public:
 			}
 		}
 		else {
-			anmer_.update_e(deltaTime);
+			anmer_.update_e(deltaTime*10);
 		}
 	}
 	virtual void onDraw()const override{
@@ -57,6 +57,8 @@ public:
 		if (ismyHit_)return;
 		body_.enabled(false);
 		ismyHit_ = true;
+		ChangeNextPlayVolumeSoundMem(70, ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN));
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN), DX_PLAYTYPE_BACK);
 	}
 	int spriteID_;
 	float size_;
