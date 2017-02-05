@@ -141,6 +141,7 @@ protected:
 	int dp_;						// 耐久値
 	int hp_;						// 体力
 	unsigned int attackCount_;		// 攻撃行動するカウント
+	unsigned int currentACount_;
 	int flinchCount_;				// ひるむまでの回数
 	int piyoriCount_;				// ぴよる回数
 	int bokoCreateCount_;			// ボコエフェクト生成回数
@@ -162,6 +163,7 @@ protected:
 	bool isSceneEnd_;				// シーンを終了させるか
 	bool isBattle_;					// 戦闘を行うか
 	bool isEffectCreate_;			// エフェクトを生成するか
+	bool isACountDecision_;
 	FloorSearchPoint* wspObj_;		// 壁捜索オブジェクト
 	BossEntry* entryObj_;			// ボス入口オブジェクト
 	MiniBossManager mbManager_;

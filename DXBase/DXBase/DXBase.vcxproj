@@ -186,6 +186,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\EntrySignEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\ImportEffects.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\PiyoriEffect.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\ScatterWingEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ImportBosses.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.h" />
@@ -364,11 +365,13 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BossWingEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\DashEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyCollideEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EnemyDeadEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\EntrySignEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\PiyoriEffect.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\ScatterWingEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\ShockWave.cpp" />

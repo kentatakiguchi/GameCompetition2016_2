@@ -6,5 +6,6 @@
 #include "DashEffect.h"
 #include "PiyoriEffect.h"
 #include "EntrySignEffect.h"
+#include "ScatterWingEffect.h"
 
 #endif

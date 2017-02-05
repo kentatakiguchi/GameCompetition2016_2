@@ -24,6 +24,7 @@ BaseBoss::BaseBoss(
 	dp_(10),
 	hp_(200),
 	attackCount_(0),
+	currentACount_(attackCount_),
 	flinchCount_(0),
 	piyoriCount_(5),
 	bokoCreateCount_(0),
@@ -214,10 +215,14 @@ void BaseBoss::onCollide(Actor & actor)
 	if (hp_ <= 0) return;
 	// プレイヤーの攻撃範囲に当たった場合の処理
 	if (actorName == "PlayerAttackCollider") {
-		// カウントを減らす
-		piyoriCount_--;
 		// ダメージ処理
-		damage(30, actor.getPosition(), 2.0f);
+		auto d = 30;
+		// カウントを減らす
+		if (attackCount_ == 0)
+			piyoriCount_--;
+		else if (attackCount_ == 1)
+			d = 30 / 2;
+		damage(d, actor.getPosition(), 2.0f);
 		// ボスマネージャーに設定
 		bossManager_.setCollideObj(actor);
 		return;
@@ -277,6 +282,10 @@ void BaseBoss::updateState(float deltaTime)
 	if (hp_ <= 0 && state_ != State::LiftIdel && state_ != State::LiftMove) {
 		name_ = "DeadBoss";
 		isAttackHit_ = false;
+		// エフェクトの削除
+		auto effect = world_->findActor("EntrySignEffect");
+		if (effect != nullptr)
+			effect->dead();
 		changeState(State::Dead, DEATH_NUMBER);
 	}
 	// 状態の更新
@@ -348,13 +357,30 @@ void BaseBoss::idel(float deltaTime)
 	texAlpha(deltaTime);
 	// 画像の方向を合わせる
 	animation_.changeDirType(direction_.x);
-	bossManager_.changeAttackNumber(attackCount_);
+	//bossManager_.changeAttackNumber(attackCount_);
+	if (!isACountDecision_) {
+		// 攻撃行動のカウントで行動を決める
+		currentACount_ = attackCount_;
+		if (attackCount_ != 0) {
+			// 乱数の取得
+			std::random_device random;
+			// メルセンヌツイスター法 後で調べる
+			// 初期Seed値を渡す
+			std::mt19937 mt(random());
+			// 範囲の指定(int型)
+			std::uniform_int_distribution<> count(0, 1);
+			currentACount_ = count(mt);
+		}
+		bossManager_.changeAttackNumber(currentACount_);
+		isACountDecision_ = true;
+	}
 	// 一定時間経過で攻撃状態に遷移
 	if (stateTimer_ >= 5.0f) {
 		// 攻撃行動のカウントで行動を決める
 		changeAttackState(
-			asContainer_[attackCount_],
-			asAnimations_[attackCount_]);
+			asContainer_[currentACount_],
+			asAnimations_[currentACount_]);
+		isACountDecision_ = false;
 		return;
 	}
 	// 重力
@@ -380,19 +406,20 @@ void BaseBoss::attack(float deltaTime)
 // ダメージ状態
 void BaseBoss::damage(float deltaTime)
 {
-	name_ = "DamageBoss";
+	//name_ = "DamageBoss";
 	animation_.setIsLoop(false);
 	if (stateTimer_ > 0.5f) {
 		changeState(State::Idel, WAIT_NUMBER);
 		isAttackHit_ = false;
-		name_ = "BaseEnemy";
+		//name_ = "BaseEnemy";
+		name_ = "Boss";
 	}
 }
 
 // 怯み状態
 void BaseBoss::flinch(float deltaTime)
 {
-	name_ = "flinchBoss";
+	name_ = "FlinchBoss";
 	flinchCount_ = 0;
 	// 行動
 	piyoriMove(deltaTime);
@@ -401,7 +428,7 @@ void BaseBoss::flinch(float deltaTime)
 // ぴより状態
 void BaseBoss::piyori(float deltaTime)
 {
-	name_ = "piyoriBoss";
+	name_ = "PiyoriBoss";
 	piyoriCount_ = 5;
 	piyoriMove(deltaTime);
 }
@@ -446,7 +473,8 @@ void BaseBoss::boko(float deltaTime)
 	if (CheckSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO)) == 1)
 		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO));
 	if (stateTimer_ >= 3.0f) {
-		name_ = "BaseEnemy";
+		//name_ = "BaseEnemy";
+		name_ = "Boss";
 		bokoCreateCount_ = 0;
 		effectCreateTimer_ = 0.0f;
 		isEffectCreate_ = true;
@@ -558,7 +586,10 @@ void BaseBoss::piyoriMove(float deltaTime)
 			// カウントを減らす
 			piyoriCount_--;
 			// ダメージ処理
-			damage(30, entryObj_->getPosition(), 0.8f);
+			auto d = 30;
+			if (attackCount_ == 1)
+				d = 30 / 2;
+			damage(d, entryObj_->getPosition(), 0.8f);
 			return;
 		}
 		else if (state_ == State::Piyori) {
@@ -578,7 +609,8 @@ void BaseBoss::piyoriMove(float deltaTime)
 	// 一定時間経過で待機状態に遷移
 	if (stateTimer_ < 5.0f) return;
 	changeState(State::Idel, WAIT_NUMBER);
-	name_ = "BaseEnemy";
+	//name_ = "BaseEnemy";
+	name_ = "Boss";
 	isAttackHit_ = true;
 	entryObj_->setIsEntry(false);
 	isEffectCreate_ = true;
@@ -722,7 +754,8 @@ void BaseBoss::specialAttack(float deltaTime)
 	animation_.setIsReverse(bossManager_.isAnimeReverse());
 
 	if (bossManager_.isAttackEnd()) {
-		name_ = "BaseEnemy";
+		//name_ = "BaseEnemy";
+		name_ = "Boss";
 		changeState(State::Idel, WAIT_NUMBER);
 		// 攻撃が当たるかの判定を入れる
 		isAttackHit_ = true;
@@ -772,6 +805,9 @@ void BaseBoss::damage(const int damage, const Vector2& position, const float sca
 	// エフェクトの生成
 	world_->addActor(ActorGroup::Effect,
 		std::make_shared<AttackEffect>(world_, position, scale));
+	// 羽エフェクトの生成
+	world_->addActor(ActorGroup::Effect,
+		std::make_shared<ScatterWingEffect>(world_, position));
 	// 耐久値が0になったら、ぴよる
 	if (piyoriCount_ <= 0) {
 		changeState(State::Piyori, PIYO_NUMBER);

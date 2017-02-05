@@ -74,6 +74,14 @@ void Rock::onCollide(Actor & actor)
 	auto actorName = actor.getName();
 	auto getPlayerName = strstr(actorName.c_str(), "PlayerBody");
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
+	// プレイヤーの攻撃に当たったら死亡
+	if (actorName == "PlayerAttackCollider") {
+		changeState(State::Dead, DEAD_NUMBER);
+		body_.enabled(false);
+		return;
+	}
+	// くっつき状態なら返す
+	if (state_ == State::Adhere) return;
 	// 床に当たったら、消滅
 	if (getFloorName != NULL) {
 		changeState(State::Dead, RUN_NUMBER);
@@ -86,14 +94,6 @@ void Rock::onCollide(Actor & actor)
 		//body_.enabled(false);
 		return;
 	}
-	// プレイヤーの攻撃に当たったら死亡
-	if (actorName == "PlayerAttackCollider") {
-		changeState(State::Dead, DEAD_NUMBER);
-		body_.enabled(false);
-		return;
-	}
-	// くっつき状態なら返す
-	if (state_ == State::Adhere) return;
 	// プレイヤー関連のオブジェクトに当たったら
 	if (getPlayerName != NULL) {
 		changeState(State::Adhere, ADHERE_NUMBER);
