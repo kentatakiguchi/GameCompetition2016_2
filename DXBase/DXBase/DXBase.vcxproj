@@ -171,6 +171,8 @@
     <ClInclude Include="sources\Actor\Body\ShapeType.h" />
     <ClInclude Include="sources\Actor\Collision\Collision.h" />
     <ClInclude Include="sources\Actor\Door\Door.h" />
+    <ClInclude Include="sources\Actor\Item\BadItemAnm.h" />
+    <ClInclude Include="sources\Actor\Item\BadItems.h" />
     <ClInclude Include="sources\Actor\Item\ItemAnm.h" />
     <ClInclude Include="sources\Actor\Item\Items.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossAnimationNumber.h" />
@@ -357,6 +359,7 @@
     <ClCompile Include="sources\Actor\Body\CollisionBase.cpp" />
     <ClCompile Include="sources\Actor\Collision\Collision.cpp" />
     <ClCompile Include="sources\Actor\Door\Door.cpp" />
+    <ClCompile Include="sources\Actor\Item\BadItemAnm.cpp" />
     <ClCompile Include="sources\Actor\Item\ItemAnm.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.cpp" />

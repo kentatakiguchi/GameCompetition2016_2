@@ -101,7 +101,9 @@ void GamePlayScene::start() {
 	if (name_ == "stage01" || name_ == "stage02") {
 		float graundPos = -(world_->GetScreenPlayerPos().y);
 		//先にセットされたテクスチャほど奥に描写される
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX,graundPos);
+		//backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX,graundPos);
+		backManager->BossFlag(true);
+
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos);
 		backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos);
@@ -113,13 +115,14 @@ void GamePlayScene::start() {
 
 		backManager->AddKonoha(TextureID::HAPPA1_1_TEX);
 		backManager->AddKonoha(TextureID::HAPPA1_2_TEX);
-
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE1_1_TEX, 8);
 
 		//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
 		//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
 	}
 	else if (name_ == "stage03")
 	{
+		backManager->BossFlag(true);
 		float graundPos = csvSize.y*CHIPSIZE-world_->GetScreenPlayerPos().y/2;
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX, graundPos, false, true);

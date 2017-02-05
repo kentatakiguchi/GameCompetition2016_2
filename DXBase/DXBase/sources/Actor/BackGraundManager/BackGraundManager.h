@@ -5,6 +5,7 @@
 #include "../../Math/Vector2.h"
 #include "../../World/IWorld.h"
 #include "../../Field/MovelessFloor.h"
+#include "../../Scene/StageClear/SceneChangeBossAnm.h"
 class TestPlayer;
 class Player;
 
@@ -72,8 +73,12 @@ public:
 public:
 	//この葉の初期設定
 	void AddKonoha(const TextureID& id);
+	//ボスを出現される場合はtrue
+	void BossFlag(bool flag=false);
 private:
 	void konohaUpdate();
+	//ボスのUpdate
+	void BossUpdate();
 private:
 	//ワールド
 	IWorld* mWorld;
@@ -97,4 +102,14 @@ private:
 	float konohaTimer;
 	//このはランダムタイム
 	float konohaRandTime;
+	//背景のボスのアニメーション
+	SceneChangeBossAnm anim;
+	//ボス出現時間
+	float bossTimer;
+	//ボス出現周期カウント
+	float bossCount;
+	//ボスポジション
+	Vector2 bossPos;
+	//ボスが出現するかどうか
+	bool bossFlag;
 };

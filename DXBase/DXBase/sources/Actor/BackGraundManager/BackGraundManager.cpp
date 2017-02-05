@@ -9,11 +9,18 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 	stageFlag(true),
 	mWorld(world),
 	konohaTimer(0.0f),
-	konohaRandTime(1.0f)
+	konohaRandTime(1.0f),
+	bossCount(60.0f),
+	bossTimer(0.0f),
+	bossFlag(false)
 {
 	////プレイヤー変換
 	//mPlayer = dynamic_cast<PlayerBody*>(world->findActor("Player").get());
-	mFloor = dynamic_cast<Player*>(world->findActor("Player").get());
+	//mFloor = dynamic_cast<Player*>(world->findActor("Player").get());
+	//ボスアニメーション生成
+	anim = SceneChangeBossAnm();
+
+	bossPos = Vector2(SCREEN_SIZE.x + 128.0f, SCREEN_SIZE.y / 3);
 }
 
 BackGraundManager::BackGraundManager() :
@@ -47,7 +54,7 @@ void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2, float height
 	backStates.push_back(backState);
 }
 
-void BackGraundManager::SetTateBackGraund(TextureID id1, TextureID id2,const Vector2& scale)
+void BackGraundManager::SetTateBackGraund(TextureID id1, TextureID id2, const Vector2& scale)
 {
 	BackGraundState backState;
 	//サイズを追加
@@ -243,6 +250,8 @@ void BackGraundManager::Update(float deltatime, bool title)
 	//			i.position.y = -size.y - size.y + i.position.y;
 	//	}
 	//}
+	if (!title&&bossFlag)
+		BossUpdate();
 }
 
 void BackGraundManager::TateUpdate(float deltaTime)
@@ -286,11 +295,15 @@ void BackGraundManager::TateUpdate(float deltaTime)
 void BackGraundManager::Draw(bool title) const
 {
 	//空の描写
+	int count = 0;
 	for (auto& i : upBackStates)
 	{
+		count++;
 		for (auto& j : i.indexPos)
 		{
 			DrawGraph(j.position.x, j.position.y, j.index, true);
+			if (count == 1)
+				anim.draw_e(bossPos, Vector2::Zero, 0.75f, 0.0f);
 		}
 	}
 	//地上の描写
@@ -302,6 +315,7 @@ void BackGraundManager::Draw(bool title) const
 				DrawGraph(j.position.x, j.position.y, j.index, true);
 		}
 	}
+
 	////地下の描写
 	//for (auto& i : downBackStates.indexPos)
 	//{
@@ -318,7 +332,7 @@ void BackGraundManager::BackDraw() const
 {
 	//木の葉の描写
 	for (auto& i : konohaStates) {
-		DrawGraph(i.position.x+i.lerpPosition.x, i.position.y+i.lerpPosition.y, i.index, true);
+		DrawGraph(i.position.x + i.lerpPosition.x, i.position.y + i.lerpPosition.y, i.index, true);
 	}
 
 	//地上の描写
@@ -351,6 +365,11 @@ void BackGraundManager::AddKonoha(const TextureID& id)
 	konohaIds.push_back(id);
 }
 
+void BackGraundManager::BossFlag(bool flag)
+{
+	bossFlag = flag;
+}
+
 void BackGraundManager::konohaUpdate()
 {
 	//木の葉の挙動
@@ -375,12 +394,29 @@ void BackGraundManager::konohaUpdate()
 
 
 	for (auto& i : konohaStates) {
-
 		i.lerpTimer += 0.5f*Time::GetInstance().deltaTime();
 		i.velo.y += 7.0f; Time::GetInstance().deltaTime();
 		i.velo -= mWorld->GetInvVelo();
-		float x = MathHelper::Lerp(-128, 128, MathHelper::Sin(MathHelper::Lerp(0,180, i.lerpTimer)));
+		float x = MathHelper::Lerp(-128, 128, MathHelper::Sin(MathHelper::Lerp(0, 180, i.lerpTimer)));
 		float y = MathHelper::Lerp(-128, 64, MathHelper::Sin(MathHelper::Lerp(0, 180, i.lerpTimer)));
-		i.lerpPosition = Vector2(x, y)+i.velo;
+		i.lerpPosition = Vector2(x, y) + i.velo;
 	}
+}
+
+void BackGraundManager::BossUpdate()
+{
+	bossTimer += Time::GetInstance().deltaTime();
+
+	bossPos.x += 170.0f*Time::GetInstance().deltaTime();
+	anim.Turn();
+	anim.setIdle();
+
+	if (bossPos.x >= SCREEN_SIZE.x + 256.0f && (bossTimer >= bossCount)) {
+		bossPos.x = -128.0f;
+		bossTimer = 0.0f;
+	}
+
+	bossPos -= mWorld->GetInvVelo() / 20.0f;
+
+	anim.update_e(Time::GetInstance().deltaTime());
 }
