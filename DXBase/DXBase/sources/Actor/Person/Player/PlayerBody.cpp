@@ -4,7 +4,7 @@
 
 #include "PlayerBodyCollider.h"
 #include "PlayerConnector.h"
-
+#include "../../../Field/Field.h"
 
 #include "../../../Game/Time.h"
 
@@ -44,6 +44,8 @@ void PlayerBody::onUpdate(float deltaTime) {
 
 	//opponent_ = HitOpponent::NONE;
 
+	Vector2 aaa = world_->getField()->calcColl(position_);
+	
 	animation_.update(deltaTime);
 
 	if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) {
@@ -58,6 +60,8 @@ void PlayerBody::onUpdate(float deltaTime) {
 			animation_.change(PlayerAnimID::IDLE);
 		}
 	}
+
+	cntr_ = findCildren(std::string("PlayerConnector"));
 }
 
 void PlayerBody::onDraw() const {
@@ -66,12 +70,8 @@ void PlayerBody::onDraw() const {
 	//body_.draw(inv_);
 
 	if (world_->isEntered())return;
-
-	stateMgr_.draw();
-
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
-	animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) return;
+	drawBody();
 }
 
 void PlayerBody::onCollide(Actor & other) {
@@ -80,6 +80,14 @@ void PlayerBody::onCollide(Actor & other) {
 	commonCollide(other);
 
 	if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) unionCollide(other);
+}
+
+void PlayerBody::drawBody() const{
+	stateMgr_.draw();
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
+	animation_.draw(position_ * inv_, Vector2::One * 128, 0.5f);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }
 
 void PlayerBody::commonCollide(Actor & other){

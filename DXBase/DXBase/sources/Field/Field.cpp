@@ -1,5 +1,7 @@
 #include "Field.h"
 
+#include "../Define.h"
+
 #include <algorithm>
 
 // コンストラクタ
@@ -37,7 +39,8 @@ unsigned int Field::modelHandle(){
 	return 0;
 }
 
-FieldEnum Field::calcColl(Vector2& position)
-{
-	return FieldEnum();
+Vector2 Field::calcColl(Vector2& position){
+	Vector2 cell = position / CHIPSIZE;
+
+	return cell;
 }

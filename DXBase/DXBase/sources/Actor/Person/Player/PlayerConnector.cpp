@@ -83,8 +83,8 @@ void PlayerConnector::onUpdate(float deltaTime) {
 void PlayerConnector::onDraw() const {
 	if (world_->isEntered())return;
 
-	//retty_->draw();
-	//butty_->draw();
+	retty_->drawBody();
+	butty_->drawBody();
 	mPuyo->PuyoDraw();
 }
 

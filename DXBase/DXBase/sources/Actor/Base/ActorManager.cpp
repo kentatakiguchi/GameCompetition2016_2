@@ -2,7 +2,6 @@
 #include "ActorGroup.h"
 
 #include "../Body/ShapeType.h"
-#include "../TestPlayer/TestPlayer.h"
 // コンストラクタ
 ActorManager::ActorManager() {
 	initialize();

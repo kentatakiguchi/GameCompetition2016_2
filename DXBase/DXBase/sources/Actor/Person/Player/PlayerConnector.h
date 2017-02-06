@@ -23,6 +23,8 @@ public:
 	// •`‰æˆ—
 	virtual void onDraw() const override;
 
+	void drawCntr() const;
+
 	void create_point(int point_num = 0);
 
 	Vector2 get_point(int index);

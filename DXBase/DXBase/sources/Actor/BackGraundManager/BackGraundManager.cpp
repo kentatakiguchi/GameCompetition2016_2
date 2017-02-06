@@ -1,5 +1,4 @@
 #include "BackGraundManager.h"
-#include "../TestPlayer/TestPlayer.h"
 #include "../Person/Player/Player.h"
 #include "../../Actor/Person/Player/PlayerBody.h"
 #include "../../World/IWorld.h"

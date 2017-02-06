@@ -18,6 +18,8 @@ public:
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
 
+	void drawBody() const;
+
 	void commonCollide(Actor& other);
 	void unionCollide(Actor& other);
 
@@ -65,6 +67,8 @@ private:
 	float timer_;
 	PlayerBodyCollPtr collider_;
 	//PlayerBodyCollPtr attack_collider_;
+
+	ActorPtr cntr_;
 
 	Vector2 v_;
 	float bodyDump_;

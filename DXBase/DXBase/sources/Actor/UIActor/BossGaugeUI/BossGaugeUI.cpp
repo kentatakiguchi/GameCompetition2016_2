@@ -72,8 +72,7 @@ void BossGaugeUI::onDraw() const
 	//ゲージ外
 	DrawGraph(position_.x, position_.y, ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_GAUGE_OUT_TEX), TRUE);
 	//ゲージ中
-	for (auto i : gauges)
-	{
+	for (auto i : gauges){
 		SetDrawBright(i.Color.x, i.Color.y, i.Color.z);
 		DrawRectGraphF(position_.x, position_.y, 0, 0, i.Hp*mTexDivision, textureSize.y,
 		ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_GAUGE_IN_TEX), TRUE, FALSE);

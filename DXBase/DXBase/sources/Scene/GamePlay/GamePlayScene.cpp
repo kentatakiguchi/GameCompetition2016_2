@@ -11,7 +11,6 @@
 #include "../../Actor/Person/Enemy/Enemys/WallTurnEnemy.h"
 #include "../../Field/MapGenerator.h"
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
-#include "../../Actor/TestPlayer/TestPlayer.h"
 #include <memory>
 #include <random>
 
@@ -68,7 +67,7 @@ void GamePlayScene::start() {
 	//	handleMessage(msg, param);
 	//}
 	//);
-	//world_->addField(std::make_shared<Field>(ResourceLoader::GetInstance().getModelID(ModelID::STAGE), ResourceLoader::GetInstance().getModelID(ModelID::STAGE_COLL), ResourceLoader::GetInstance().getModelID(ModelID::SKYDOME)));
+	world_->addField(std::make_shared<Field>("./resources/file/" + name_ + ".csv", 0, 0, stg));
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), gener.findStartPoint("./resources/file/" + name_ + ".csv")));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));

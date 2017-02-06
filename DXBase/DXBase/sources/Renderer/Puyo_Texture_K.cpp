@@ -168,7 +168,7 @@ void PuyoTextureK::PuyoDraw()
 		}
 	}
 	//êFÇñﬂÇ∑
-	SetDrawBright(0, 0, 0);
+	SetDrawBright(255, 255, 255);
 	//for (int y = 0; y <= loopY; y++)
 	//{
 	//	for (int x = 0; x <= loopX; x++)
@@ -461,7 +461,7 @@ void PuyoTextureK::PuyoAddPowerEx(Vector2 vec, Vector2 velo, float power, float 
 	}
 	//DrawCircle(commonVertexH[x_][y_].position.x + mPosition.x, commonVertexH[x_][y_].position.y + mPosition.y, 5, GetColor(255, 0, 0));
 	//PuyoAddPowerDxSub(x_, y_, velo, power);
-	DrawFormatString(500, 128, GetColor(255, 255, 255), "velo:%f,%f", velo.x, velo.y);
+	//DrawFormatString(500, 128, GetColor(255, 255, 255), "velo:%f,%f", velo.x, velo.y);
 }
 void PuyoTextureK::PuyoTimerZero()
 {

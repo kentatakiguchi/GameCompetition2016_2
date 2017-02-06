@@ -18,7 +18,7 @@ public:
 	// 描画処理
 	void draw()const;
 	// 現在のステート
-	bool currentState(const int& state = 0);
+	bool currentState(const int& state = 0)const;
 	// 現在のステート
 	bool currentActionType(const ActionType& type = ActionType::None);
 	// 現在の状態の要素

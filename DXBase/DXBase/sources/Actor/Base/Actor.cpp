@@ -1,6 +1,6 @@
 #include "Actor.h"
 #include <algorithm>
-#include "../TestPlayer/TestPlayer.h"
+#include "../../World/World.h"
 #include "../../Input/KeyCode.h"
 #include "../../Math/MathHelper.h"
 #include "../../Define.h"

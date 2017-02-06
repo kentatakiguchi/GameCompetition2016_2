@@ -24,7 +24,7 @@ public:
 
 	unsigned int modelHandle();
 
-	FieldEnum calcColl(Vector2& position);
+	Vector2 calcColl(Vector2& position);
 	// ÉRÉsÅ[ã÷é~
 	Field(const Field& other) = delete;
 	Field& operator = (const Field& other) = delete;

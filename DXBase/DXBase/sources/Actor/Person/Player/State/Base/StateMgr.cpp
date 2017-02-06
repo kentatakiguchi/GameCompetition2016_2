@@ -49,7 +49,7 @@ void StateMgr::changeState(Actor& actor, const IState::StateElement& element) {
 }
 
 // 現在のステート
-bool StateMgr::currentState(const int& state) {
+bool StateMgr::currentState(const int& state) const {
 	return element_.state_ == state;
 }
 

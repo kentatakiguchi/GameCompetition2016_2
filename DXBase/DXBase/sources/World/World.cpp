@@ -1,6 +1,5 @@
 #include "World.h"
 #include "../Field/Field.h"
-#include "../Actor/TestPlayer/TestPlayer.h"
 #include "../Actor/Person/Player/Player.h"
 #include "../Actor/ScroolStop/ScroolStop.h"
 #include"../Actor/Person/Player/PlayerBody.h"
