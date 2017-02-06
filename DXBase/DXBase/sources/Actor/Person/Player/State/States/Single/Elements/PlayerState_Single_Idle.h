@@ -21,5 +21,8 @@ private:
 	Vector2 target_;
 
 	std::map<int, TextureID> NumIDs;
+
+	TextureID button_R1_;
+	TextureID button_L1_;
 };
 

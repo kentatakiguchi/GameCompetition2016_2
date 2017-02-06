@@ -35,6 +35,7 @@ void LoadingScene::start(){
 	load_player_res();
 	load_enemy_res();
 	load_boss_res();
+	load_ui_res();
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::SCENE_CHANGE_SLIME_ANM, "./resources/sprite/slimeanm.png", Vector2(256, 256), 8, 4, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ITEM_ANM, "./resources/sprite/itemanm.png", Vector2(96, 96),10,6,0);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ITEM_MINUS_ANM, "./resources/sprite/itemanm2.png", Vector2(96, 96), 10, 6, 0);
@@ -284,6 +285,15 @@ void LoadingScene::load_boss_res(){
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_PIYO_TEX, "./resources/sprite/actor/boss/effect/piyori.png", 256, 8, 7);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ATTACK_SUIKOMI_30_TEX, "./resources/sprite/actor/boss/effect/suikomi_30.png", Vector2(256, 512), 5, 6);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::BOSS_EFFECT_ENTRY_SIGN_TEX, "./resources/sprite/actor/boss/effect/chance_anim.png", Vector2(320, 321), 6, 4);
+}
+
+
+void LoadingScene::load_ui_res() {
+	ResourceLoader::GetInstance().loadTexture(TextureID::HURRY_TEX, "./resources/sprite/UI/HurryUP.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BUTTON_R1_PUSH_TEX, "./resources/sprite/UI/button/R1_push.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BUTTON_L1_PUSH_TEX, "./resources/sprite/UI/button/L1_push.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BUTTON_R1_UP_TEX, "./resources/sprite/UI/button/R1_up.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::BUTTON_L1_UP_TEX, "./resources/sprite/UI/button/L1_up.png");
 }
 
 void LoadingScene::load_bgm_res(){

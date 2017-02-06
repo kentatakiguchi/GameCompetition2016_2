@@ -78,8 +78,6 @@ public:
 	void setMotion(unsigned int motion);
 	// Transform‚Ìİ’è
 	void setTransform(Vector2 pos, Matrix rot);
-	// ”ÍˆÍŠO
-	bool isOutOfRange()const ;
 	// World‚Ìæ“¾
 	IWorld* getWorld();
 	//Body‚Ìæ“¾ return:CollisionBase

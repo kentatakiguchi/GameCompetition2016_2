@@ -317,6 +317,7 @@
     <ClInclude Include="sources\Renderer\Renderer.h" />
     <ClInclude Include="sources\resource.h" />
     <ClInclude Include="sources\ResourceLoader\Movie.h" />
+    <ClInclude Include="sources\ResourceLoader\ResourceID.h" />
     <ClInclude Include="sources\ResourceLoader\ResourceLoader.h" />
     <ClInclude Include="sources\Scene\Base\IScene.h" />
     <ClInclude Include="sources\Scene\Base\IScenePtr.h" />

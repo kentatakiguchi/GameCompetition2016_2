@@ -14,12 +14,7 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, co
 	dead_(false),
 	alpha_(0.0f){
 	inv_ = world_->GetInv();
-	//inv_ = Matrix::Identity;
-	//if(world->findActor("Player")==nullptr)
-	//	InitializeInv(world_->GetPlayerPos());
-	//else
-	//	InitializeInv(world->findActor("Player").get()->getPosition());
-	body_.setPosition({ position_.x, position_.y });
+	body_.setPosition(position_);
 }
 
 // コンストラクタ
@@ -37,14 +32,10 @@ void Actor::update(float deltaTime) {
 	if (world_ != nullptr) body_.enabled(world_->GetCollisitionOffOn());
 	onUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.update(deltaTime); });
-	//移動update
-	//ActorMove();
 	body_.MovePos(position_);
 }
 
 void Actor::late_update(float deltaTime) {
-	//body_.MovePos(position_);
-	//inv();
 	if (world_ != nullptr)inv_ = world_->GetInv();
 	onLateUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.late_update(deltaTime); });
@@ -126,8 +117,7 @@ ActorPtr Actor::findCildren(std::function<bool(const Actor&)> fn) {
 
 // 子の衝突判定
 void Actor::collideChildren(Actor& other) {
-	eachChildren(
-		[&](Actor& my) {
+	eachChildren([&](Actor& my) {
 		other.eachChildren([&](Actor& target) { my.collide(target); });
 	});
 }
@@ -135,8 +125,7 @@ void Actor::collideChildren(Actor& other) {
 // 子の衝突判定
 void Actor::collideSibling() {
 	for (auto i = children_.begin(); i != children_.end(); ++i) {
-		std::for_each(std::next(i), children_.end(),
-			[&](const ActorPtr& actor) { (*i)->collide(*actor); });
+		std::for_each(std::next(i), children_.end(),[&](const ActorPtr& actor) { (*i)->collide(*actor); });
 	}
 }
 
@@ -147,16 +136,12 @@ void Actor::addChild(const ActorPtr& child) {
 
 // 子を巡回
 void Actor::eachChildren(std::function<void(Actor&)>  fn) {
-	std::for_each(
-		children_.begin(), children_.end(),
-		[&](const ActorPtr& child) { fn(*child); });
+	std::for_each(children_.begin(), children_.end(), [&](const ActorPtr& child) { fn(*child); });
 }
 
 // 子を巡回 (const版）
 void Actor::eachChildren(std::function<void(const Actor&)> fn) const {
-	std::for_each(
-		children_.begin(), children_.end(),
-		[&](const ActorPtr& child) { fn(*child); });
+	std::for_each(children_.begin(), children_.end(), [&](const ActorPtr& child) { fn(*child); });
 }
 
 // 子を削除
@@ -167,8 +152,7 @@ void Actor::removeChildren() {
 
 // 子を削除
 void Actor::removeChildren(std::function<bool(Actor&)> fn) {
-	children_.remove_if(
-		[&](const ActorPtr& child) { return fn(*child); });
+	children_.remove_if([&](const ActorPtr& child) { return fn(*child); });
 }
 
 // 子を消去
@@ -187,14 +171,6 @@ void Actor::setMotion(const unsigned int motion) {
 void Actor::setTransform(Vector2 pos, Matrix rot) {
 	position_ = pos;
 	rotation_ = rot;
-}
-
-bool Actor::isOutOfRange()const {
-	auto player = world_->findActor("Player");
-	if (player == nullptr)return true;
-	float dis = Vector2::Distance(player->getPosition(), position_);
-	if (dis > SCREEN_SIZE.x)return true;
-	return false;
 }
 
 IWorld* Actor::getWorld() {
@@ -225,28 +201,9 @@ void Actor::onDraw() const {
 }
 
 // 衝突した
-void Actor::onCollide(Actor&) {
-	//body_.draw(inv_);
-	//dead();
-}
+void Actor::onCollide(Actor&) {}
 
 // 衝突判定
 bool Actor::isCollide(Actor& other) {
 	return body_.intersects(other.body_);
 }
-//void Actor::Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness, float friction, float mass)const
-//{
-//	// バネの伸び具合を計算
-//	Vector2 stretch = (pos - resPos);
-//	// バネの力を計算
-//	Vector2 force = -stiffness * stretch;
-//	// 加速度を追加
-//	Vector2 acceleration = force / mass;
-//	// 移動速度を計算
-//	velo = friction * (velo + acceleration);
-//
-//	pos = pos + velo;
-//}
-
-
-// end of file

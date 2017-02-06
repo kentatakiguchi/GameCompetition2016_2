@@ -59,11 +59,11 @@ IState::StateElement PlayerState_Single::next() const {
 	return next_element_;
 }
 
-bool PlayerState_Single::is_butty(){
+bool PlayerState_Single::is_butty() const{
 	return keys_.right == KeyCode::RIGHT;
 }
 
-bool PlayerState_Single::is_retty(){
+bool PlayerState_Single::is_retty()const {
 	return keys_.right == KeyCode::D;
 }
 

@@ -40,8 +40,8 @@ public:
 	// 次のステートの要素
 	virtual StateElement next() const override;
 protected:
-	bool is_butty();
-	bool is_retty();
+	bool is_butty() const;
+	bool is_retty() const;
 private:
 	// キー入力処理
 	virtual void key_input(float deltaTime);

@@ -182,7 +182,8 @@ void PlayerBody::unionCollide(Actor & other){
 		dumpTimer_ = 0;
 		animation_.change(PlayerAnimID::DIV_MOVE);
 	}
-	if (other.getName() == "Boss") {
+	if (other.getName() == "Boss" || other.getName() == "FlinchBoss" ||
+		other.getName() == "PiyoriBoss" || other.getName() == "BokoBoss") {
 		hit_enemy_ = HitOpponent::BOSS;
 	}
 }
