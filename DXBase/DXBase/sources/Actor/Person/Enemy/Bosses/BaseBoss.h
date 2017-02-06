@@ -154,6 +154,7 @@ protected:
 	float liftMoveTiemr_;			// 持ち上げ時の時間
 	float angle_;					// 角度(時計周り)
 	float effectCreateTimer_;		// エフェクト生成時間(間隔)
+	float mbTimer_;					// ミニボス生成時間
 	float liftCount_;				// 持ち上げカウント
 	float bgmVolume_;				// BGMの音量
 	bool isGround_;					// 接地しているか
@@ -163,7 +164,7 @@ protected:
 	bool isSceneEnd_;				// シーンを終了させるか
 	bool isBattle_;					// 戦闘を行うか
 	bool isEffectCreate_;			// エフェクトを生成するか
-	bool isACountDecision_;
+	bool isACountDecision_;			// 
 	FloorSearchPoint* wspObj_;		// 壁捜索オブジェクト
 	BossEntry* entryObj_;			// ボス入口オブジェクト
 	MiniBossManager mbManager_;

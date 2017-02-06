@@ -6,13 +6,13 @@
 #include "BossManager.h"
 #include "BossEntry.h"
 #include "MiniBoss.h"
+#include "MiniBoss/FlyingMiniBoss.h"
 #include "bossAttack/importBossAttack.h"
 #include "Effect/ImportEffects.h"
 // ボスの体力表示
 #include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
 #include "../../../../Define.h"
 #include <random>
-//#include "../../../UIActor/HelperUI/HelperUI.h"
 
 // ボスクラス(ベース予定)
 BaseBoss::BaseBoss(
@@ -37,6 +37,7 @@ BaseBoss::BaseBoss(
 	liftMoveTiemr_(0.0f),
 	angle_(0.0f),
 	effectCreateTimer_(0.0f),
+	mbTimer_(4.0f),
 	liftCount_(0.0f),
 	bgmVolume_(1.0f),
 	isGround_(false),
@@ -146,10 +147,36 @@ void BaseBoss::onUpdate(float deltaTime)
 	poseStopSE();
 	poseRestartSE();
 
-	// 仮
-	/*auto mini = std::make_shared<MiniBossEffect>(
-		world_, position_);
-	world_->addActor(ActorGroup::Effect, mini);*/
+	if (attackCount_ == 1) {
+		mbTimer_ = max(mbTimer_ - deltaTime, 0.0f);
+		if (mbTimer_ == 0.0f) {
+			// 乱数の取得
+			std::random_device random;
+			// メルセンヌツイスター法 後で調べる
+			// 初期Seed値を渡す
+			std::mt19937 mt(random());
+			// 範囲の指定(int型)
+			std::uniform_int_distribution<> time(40, 100);
+			mbTimer_ = time(mt) / 10.0f;
+			// 方向
+			std::uniform_int_distribution<> dir(0, 1);
+			auto direction = Vector2::One;
+			// (float)getRandomInt(size * 2, size * 18)
+			int chipsize = static_cast<int>(CHIPSIZE);
+			auto pos = Vector2::Zero;
+			if (dir(mt) == 0) {
+				direction.x = -1.0f;
+				pos.x = chipsize * 18;
+			}
+			else pos.x = chipsize * 2;
+			std::uniform_int_distribution<> posY(250, 700);
+			pos.y = (float)posY(mt);
+			// ミニボス(浮遊)の生成
+			auto miniBoss = std::make_shared<FlyingMiniBoss>(
+				world_, pos, direction);
+			world_->addActor(ActorGroup::Enemy, miniBoss);
+		}
+	}
 
 	// 接地(仮)
 	bossManager_.setIsGround(isGround_);

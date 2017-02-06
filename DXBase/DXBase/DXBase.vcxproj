@@ -190,6 +190,8 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ImportBosses.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\AdhereMiniBoss.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FlyingMiniBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ShockWave.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.h" />
     <ClInclude Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.h" />
@@ -374,6 +376,8 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\ScatterWingEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\AdhereMiniBoss.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FlyingMiniBoss.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\ShockWave.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.cpp" />
