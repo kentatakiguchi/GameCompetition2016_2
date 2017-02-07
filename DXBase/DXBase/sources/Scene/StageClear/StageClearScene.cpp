@@ -139,7 +139,7 @@ void StageClearScene::update() {
 
 		floorPosition_ += floorSpeed;
 		if (floorPosition_ > CHIPSIZE) {
-			int def = floorPosition_-CHIPSIZE;
+			int def = (int)(floorPosition_-CHIPSIZE);
 			floorPosition_ = def;
 		}
 	}
@@ -154,7 +154,7 @@ void StageClearScene::update() {
 		
 		stopx= min(max(stopx, 0), 1);
 
-		speedx += 1.5-stopx;
+		speedx += 1.5f-stopx;
 		//speedx = min(max(speedx,0),1);
 		
 		float lerpPos = speedx*0.05;

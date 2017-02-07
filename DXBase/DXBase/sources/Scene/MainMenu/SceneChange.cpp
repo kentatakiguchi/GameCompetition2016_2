@@ -10,7 +10,7 @@ static const Vector2 SSlimeSize = Vector2(290, 130);
 static const float defPosY= -100;
 static const int LineSize = 8;
 SceneChange::SceneChange():isMainMenu_(false),isEnd_(true),isSlimeMax_(true),slimeCount(0),timeCount(SdefTime),deltaTime_(0),slimesetline(0), switchCount(0), mt(random_()),
-rand256(0, 255), randR(170, 255), randG(150, 190), randB(0, 0),randL(0, LineSize-1),changeCount(0)
+rand256(0, 255), randR(150, 255), randG(150, 200), randB(0, 0),randL(0, LineSize-1),changeCount(0)
 {
 	spawnPoses[0][0] = (Vector2((SSlimeSize.x - SSlimePadd)*(-0.5f), defPosY));
 	spawnPoses[0][1] = (Vector2((SSlimeSize.x - SSlimePadd) * 0.5f, defPosY));
@@ -78,6 +78,7 @@ void SceneChange::start(std::string next,std::string tonexScene)
 
 			count++;
 		}
+
 }
 
 void SceneChange::update()
@@ -143,6 +144,41 @@ void SceneChange::update()
 
 		if(numberMap.size()>0)numberMap.erase(numberMap.begin()+ setInt);
 
+		//生成されたスライムが使用するカラーパレットの種類を決定する
+		{
+			std::uniform_int_distribution<> colorP = std::uniform_int_distribution<>(0, 5);
+			int colorPalletNum = colorP(mt);
+			if (colorPalletNum == 0) {
+				randR = std::uniform_int_distribution<>(100, 120);
+				randG = std::uniform_int_distribution<>(150, 200);
+				randB = std::uniform_int_distribution<>(150, 200);
+			}
+			else if (colorPalletNum == 1) {
+				randR = std::uniform_int_distribution<>(100, 180);
+				randG = std::uniform_int_distribution<>(200, 255);
+				randB = std::uniform_int_distribution<>(0, 0);
+			}
+			else if (colorPalletNum == 2) {
+				randR = std::uniform_int_distribution<>(200, 255);
+				randG = std::uniform_int_distribution<>(100, 170);
+				randB = std::uniform_int_distribution<>(0, 0);
+			}
+			else if (colorPalletNum == 3) {
+				randR = std::uniform_int_distribution<>(0, 0);
+				randG = std::uniform_int_distribution<>(130, 200);
+				randB = std::uniform_int_distribution<>(130, 200);
+			}
+			else if (colorPalletNum == 4) {
+				randR = std::uniform_int_distribution<>(255, 255);
+				randG = std::uniform_int_distribution<>(50, 130);
+				randB = std::uniform_int_distribution<>(0, 70);
+			}
+			else if (colorPalletNum == 5) {
+				randR = std::uniform_int_distribution<>(0, 150);
+				randG = std::uniform_int_distribution<>(200, 250);
+				randB = std::uniform_int_distribution<>(0, 50);
+			}
+		}
 		slimeColors[slimeCount] = ChangeSColor(randR(mt), randG(mt), randB(mt));
 		slimeCount++;
 		switchCount++;

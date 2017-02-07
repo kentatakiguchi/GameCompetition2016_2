@@ -325,30 +325,30 @@ void MainMenuScene::update() {
 			PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
 
 		}
-		if (InputMgr::GetInstance().IsKeyDown(KeyCode::A))
-		{
-			//ステージ1へ
-			keeper_->setSceneName("stage04");
-			isEnd_ = true;
-		}
-		if (InputMgr::GetInstance().IsKeyDown(KeyCode::S))
-		{
-			//ステージ2へ
-			keeper_->setSceneName("stage01");
-			isEnd_ = true;
-		}
-		if (InputMgr::GetInstance().IsKeyDown(KeyCode::D))
-		{
-			//ステージ3へ
-			keeper_->setSceneName("stage02");
-			isEnd_ = true;
-		}
-		if (InputMgr::GetInstance().IsKeyDown(KeyCode::D))
-		{
-			//ステージ4へ
-			keeper_->setSceneName("stage03");
-			isEnd_ = true;
-		}
+		//if (InputMgr::GetInstance().IsKeyDown(KeyCode::A))
+		//{
+		//	//ステージ1へ
+		//	keeper_->setSceneName("stage04");
+		//	isEnd_ = true;
+		//}
+		//if (InputMgr::GetInstance().IsKeyDown(KeyCode::S))
+		//{
+		//	//ステージ2へ
+		//	keeper_->setSceneName("stage01");
+		//	isEnd_ = true;
+		//}
+		//if (InputMgr::GetInstance().IsKeyDown(KeyCode::D))
+		//{
+		//	//ステージ3へ
+		//	keeper_->setSceneName("stage02");
+		//	isEnd_ = true;
+		//}
+		//if (InputMgr::GetInstance().IsKeyDown(KeyCode::D))
+		//{
+		//	//ステージ4へ
+		//	keeper_->setSceneName("stage03");
+		//	isEnd_ = true;
+		//}
 
 		if (alphaCou[1] <= 255 && isArrive.at(0)) {
 			alphaCou[1] += alphadefSpeeds[1];
