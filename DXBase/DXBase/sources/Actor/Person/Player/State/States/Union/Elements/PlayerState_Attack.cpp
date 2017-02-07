@@ -19,7 +19,7 @@ void PlayerState_Attack::unique_init(){
 		chase_dir_ = Vector2::Normalize(butty_->getPosition() - retty_->getPosition());
 	}
 	launch_power_ = PLAYER_LAUNCH_POWER;
-	chase_power_ = PLAYER_LAUNCH_POWER * 0.75f;
+	chase_power_ = PLAYER_LAUNCH_POWER * 0.65f;
 	launch_dir_easeing_ = 0;
 	chase_dir_easeing_ = 0;
 	gra_easeing_ = 0;
@@ -35,7 +35,7 @@ void PlayerState_Attack::update(float deltaTime) {
 	//timer_ = std::min<float>(timer_ + deltaTime, 1);
 
 	launch_dir_easeing_ = -EasingOutExpo(timer_ * 0.7f) + 1;
-	chase_dir_easeing_ = EasingSinCurve(std::max<float>(timer_ - 0.1f, 0) * 3);
+	chase_dir_easeing_ = EasingSinCurve(std::max<float>(timer_ - 0.1f, 0) * 3.0f);
 	gra_easeing_ = std::min<float>(EasingInExpo(timer_ * 0.8f), 1);
 
 	if (element_.type_ == ActionType::Right) {

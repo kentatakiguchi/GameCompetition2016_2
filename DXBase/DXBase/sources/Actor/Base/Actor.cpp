@@ -39,6 +39,7 @@ void Actor::late_update(float deltaTime) {
 	if (world_ != nullptr)inv_ = world_->GetInv();
 	onLateUpdate(deltaTime);
 	eachChildren([&](Actor& child) { child.late_update(deltaTime); });
+	if (world_ != nullptr)hitField(world_->getField());
 	body_.MovePos(position_);
 }
 
@@ -51,6 +52,7 @@ void Actor::draw() const {
 
 // è’ìÀîªíË
 void Actor::collide(Actor& other) {
+	if (world_ != nullptr)hitField(world_->getField());
 	if (isCollide(other)) {
 		onCollide(other);
 		other.onCollide(*this);
@@ -202,6 +204,8 @@ void Actor::onDraw() const {
 
 // è’ìÀÇµÇΩ
 void Actor::onCollide(Actor&) {}
+
+void Actor::hitField(const FieldPtr & field){}
 
 // è’ìÀîªíË
 bool Actor::isCollide(Actor& other) {

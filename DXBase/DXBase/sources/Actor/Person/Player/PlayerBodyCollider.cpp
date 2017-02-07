@@ -1,5 +1,7 @@
 #include "PlayerBodyCollider.h"
 
+#include "../../../Field/Field.h"
+
 PlayerBodyCollider::PlayerBodyCollider(IWorld * world, std::string& name):
 	Actor(world, name + "Collider", Vector2::Zero, CollisionBase(Vector2(0, 0), PLAYER_COLLIDER_RADIUS)){
 }
@@ -10,6 +12,11 @@ void PlayerBodyCollider::onUpdate(float deltaTime){
 	opponent_ = HitOpponent::NONE;
 
 	//other_velocity_ = Vector2::Zero;
+
+	//if (world_->getField() == nullptr)return;
+	if (world_->getField()->hitCheck(position_) == FieldEnum::Field) {
+		opponent_ = HitOpponent::FLOOR_HIT;
+	}
 }
 
 void PlayerBodyCollider::onCollide(Actor & other) {

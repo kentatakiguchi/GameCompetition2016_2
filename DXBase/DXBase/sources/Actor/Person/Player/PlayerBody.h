@@ -17,6 +17,7 @@ public:
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onDraw() const override;
 	virtual void onCollide(Actor& other) override;
+	virtual void hitField(const FieldPtr& field)override;
 
 	void drawBody() const;
 

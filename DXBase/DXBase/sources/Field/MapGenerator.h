@@ -225,8 +225,8 @@ public:
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 20) {
-					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-						ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_WOOD_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+					//	ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_WOOD_TEX), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 21) {
@@ -831,8 +831,8 @@ private:
 
 	void CreateChip(int num,int stagenum,Vector2 position, int width=1,int height=1, Vector2 endPosition=Vector2::Zero) {
 		if (num == 1) {
-			world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-				ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, position, width, height));
+			//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+			//	ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, position, width, height));
 			return;
 		}
 		if (num == 9) {
@@ -844,8 +844,8 @@ private:
 				ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_,position,width,height));
 		}
 		if (num == 20) {
-			world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
-				ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_WOOD_TEX), world_, position, width, height));
+			//world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+			//	ResourceLoader::GetInstance().getTextureID(TextureID::FLOOR_WOOD_TEX), world_, position, width, height));
 			return;
 		}
 		if (num == 21) {

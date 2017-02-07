@@ -2,6 +2,7 @@
 
 #include "PlayerConnector.h"
 
+#include "../../../Field/Field.h"
 // コンストラクタ
 PlayerBodyPoint::PlayerBodyPoint(IWorld * world, const Vector2 & position, const int& index) :
 	Actor(world, "BodyPoint" , position, CollisionBase(Vector2(0, 0), PLAYER_RADIUS * 0.2f)), index_(index),
@@ -14,7 +15,10 @@ PlayerBodyPoint::PlayerBodyPoint(IWorld * world, const Vector2 & position, const
 PlayerBodyPoint::~PlayerBodyPoint(){}
 
 // 更新処理
-void PlayerBodyPoint::onUpdate(float deltaTime) {}
+void PlayerBodyPoint::onUpdate(float deltaTime) {
+	//if (world_->getField() == nullptr)return;
+		world_->getField()->calcColl(position_, body_.GetCircle().previousPosition_);
+}
 
 // 描画処理
 void PlayerBodyPoint::onDraw() const{

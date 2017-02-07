@@ -30,7 +30,7 @@ void World::update(float deltaTime) {
 
 // •`‰æ
 void World::draw() const {
-	//field_->draw();
+	field_->draw(inv_);
 	//camera_->draw();
 	//light_->draw();
 	actors_.draw();

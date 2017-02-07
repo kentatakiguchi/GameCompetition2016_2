@@ -1,3 +1,4 @@
+#include "Collision.h"
 //#include "Collision.h"
 //
 //bool CollisionUtil::Intersects_Segment_Segment(Vector2 thisstart, Vector2 thisend, Vector2 otherstart, Vector2 otherend)
@@ -272,3 +273,22 @@
 //	}
 //	return false;
 //}
+
+bool Collision::seg_seg(const Vector2 & v1p1, const Vector2 & v1p2, const Vector2 & v2p1, const Vector2 & v2p2){
+
+	Vector2 AB = v1p2 - v1p1;
+	Vector2 AC, AD, CD, CA, CB;
+
+	AC = v1p2 - v2p1;
+	AD = v1p2 - v2p2;
+	CD = v2p1 - v2p2;
+	CA = v2p1 - v1p2;
+	CB = v2p1 - v1p1;
+
+	if (Vector2::Cross(AB, AC) * Vector2::Cross(AB, AD) <= 0.0f &&
+		Vector2::Cross(CD, CA) * Vector2::Cross(CD, CB) <= 0.0f){
+		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+		return true;
+	}
+	return false;
+}

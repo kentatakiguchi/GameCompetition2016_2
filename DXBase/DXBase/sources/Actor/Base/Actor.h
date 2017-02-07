@@ -4,6 +4,7 @@
 #include "DxLib.h"
 
 #include "ActorPtr.h"
+#include "../../Field/FieldPtr.h"
 #include "../../Input/InputMgr.h"
 #include "../../Math/Math.h"
 #include "../Body/Body.h"
@@ -99,16 +100,14 @@ private:
 	virtual void onDraw() const;
 	// è’ìÀÇµÇΩ
 	virtual void onCollide(Actor& other);
+	// è’ìÀÇµÇΩ
+	virtual void hitField(const FieldPtr& field);
 public:
 	// è’ìÀîªíË
 	bool isCollide(Actor& other);
 	void translate(Vector2& position) {
 		body_.translate(position);
 	}
-
-//private:
-//	void Spring(Vector2& pos, Vector2& resPos, Vector2& velo, float stiffness=0.1f, float friction=0.5f, float mass=2.0f)const;
-
 public:
 	// ÉèÅ[ÉãÉh
 	IWorld*				world_;

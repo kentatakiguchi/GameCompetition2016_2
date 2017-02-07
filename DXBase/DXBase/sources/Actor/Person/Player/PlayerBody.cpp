@@ -44,8 +44,6 @@ void PlayerBody::onUpdate(float deltaTime) {
 
 	//opponent_ = HitOpponent::NONE;
 
-	Vector2 aaa = world_->getField()->calcColl(position_);
-	
 	animation_.update(deltaTime);
 
 	if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) {
@@ -61,7 +59,6 @@ void PlayerBody::onUpdate(float deltaTime) {
 		}
 	}
 
-	cntr_ = findCildren(std::string("PlayerConnector"));
 }
 
 void PlayerBody::onDraw() const {
@@ -80,6 +77,10 @@ void PlayerBody::onCollide(Actor & other) {
 	commonCollide(other);
 
 	if (stateMgr_.get_state(PlayerState_Enum_Single::STAND_BY)) unionCollide(other);
+}
+
+void PlayerBody::hitField(const FieldPtr& field){
+	field->calcColl(position_, body_.GetCircle().previousPosition_, velocity_);
 }
 
 void PlayerBody::drawBody() const{
