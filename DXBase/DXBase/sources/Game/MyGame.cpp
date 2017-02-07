@@ -7,7 +7,7 @@
 #include "../Scene/LoadingScene/LoadingScene.h"
 #include "../Scene/GamePlay/GamePlayScene.h"
 #include "../Scene/GameOver/GameOverScene.h"
-#include "../Scene/KataokaScene/KataokaScene.h"
+//#include "../Scene/KataokaScene/KataokaScene.h"
 #include "../Scene/StageClear/StageClearScene.h"
 #include "../Scene/GameClear/GameClearScene.h"
 #include "../Scene/BossStage/BossStage.h"
@@ -33,7 +33,7 @@ void MyGame::start(){
 	sceneMgr_.add(Scene::GameClear, std::make_shared<GameClearScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::StageClear, std::make_shared<StageClearScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::BossStage01, std::make_shared<BossStage>(&dataKeeper_));
-	sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>(&dataKeeper_));
+	//sceneMgr_.add(Scene::Kataoka, std::make_shared<KataokaScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Credit, std::make_shared<CreditScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GameEnd, std::make_shared<GameEndScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Logo, std::make_shared<TeamLogoScene>(&dataKeeper_));

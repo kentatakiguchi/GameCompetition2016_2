@@ -335,7 +335,6 @@
     <ClInclude Include="sources\Scene\GamePlay\GamePlayScene.h" />
     <ClInclude Include="sources\Scene\GamePlay\MoveScreen.h" />
     <ClInclude Include="sources\Scene\GamePlay\PauseScreen.h" />
-    <ClInclude Include="sources\Scene\KataokaScene\KataokaScene.h" />
     <ClInclude Include="sources\Scene\LoadingScene\LoadingScene.h" />
     <ClInclude Include="sources\Scene\MainMenu\MainMenuScene.h" />
     <ClInclude Include="sources\Scene\MainMenu\SceneChange.h" />
@@ -490,7 +489,6 @@
     <ClCompile Include="sources\Scene\GamePlay\GamePlayScene.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\MoveScreen.cpp" />
     <ClCompile Include="sources\Scene\GamePlay\PauseScreen.cpp" />
-    <ClCompile Include="sources\Scene\KataokaScene\KataokaScene.cpp" />
     <ClCompile Include="sources\Scene\LoadingScene\LoadingScene.cpp" />
     <ClCompile Include="sources\Scene\MainMenu\MainMenuScene.cpp" />
     <ClCompile Include="sources\Scene\MainMenu\SceneChange.cpp" />

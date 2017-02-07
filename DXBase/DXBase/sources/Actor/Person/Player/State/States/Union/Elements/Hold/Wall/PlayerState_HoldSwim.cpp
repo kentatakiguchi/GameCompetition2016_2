@@ -13,7 +13,7 @@ void PlayerState_HoldSwim::onUpdate(float deltaTime){
 	if (retty_->distance() < PLAYER_SWIM_LENGTH) {
 		change(PlayerState_Enum_Union::HOLD, element_.type_);
 	}
-	if (retty_->distance() >= PLAYER_MAX_STRETCH_LENGTH * 0.7f) {
+	else if (retty_->distance() > PLAYER_MAX_STRETCH_LENGTH * 0.8f) {
 		change(PlayerState_Enum_Union::HOLD_FULL, element_.type_);
 	}
 }

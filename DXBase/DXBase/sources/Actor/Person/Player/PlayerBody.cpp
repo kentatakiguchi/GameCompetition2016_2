@@ -33,7 +33,9 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	alpha_ = 255;
 }
 
-PlayerBody::~PlayerBody() {}
+PlayerBody::~PlayerBody() {
+	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_NOBI));
+}
 
 void PlayerBody::onUpdate(float deltaTime) {
 
@@ -117,27 +119,21 @@ void PlayerBody::commonCollide(Actor & other){
 
 		if (top >= 0 && left <= 0 && right <= 0) {
 			velocity_.y = 0;
-			position_.y = t_left.y - PLAYER_RADIUS;// (PLAYER_RADIUS + 0.5f);
+			position_.y = t_left.y - PLAYER_RADIUS;
 			opponent_ = HitOpponent::FLOOR_TOP;
 		}
 		else if (bottom >= 0 && left <= 0 && right <= 0) {
 			velocity_.y = 0;
-			position_.y = b_right.y + PLAYER_RADIUS;// (PLAYER_RADIUS + 0.5f);
+			position_.y = b_right.y + PLAYER_RADIUS;
 		}
 		else if (right >= 0 && top <= 0 && bottom <= 0) {
 			velocity_.x = 0;
-			position_.x = t_right.x + PLAYER_RADIUS;// (PLAYER_RADIUS + 0.5f);
+			position_.x = t_right.x + PLAYER_RADIUS;
 		}
 		else if (left >= 0 && top <= 0 && bottom <= 0) {
 			velocity_.x = 0;
-			position_.x = b_left.x - PLAYER_RADIUS;// (PLAYER_RADIUS + 0.5f);
+			position_.x = b_left.x - PLAYER_RADIUS;
 		}
-		//if (left <= 0 && right <= 0 && top <= 0 && bottom <= 0) {
-		//	velocity_ = Vector2::Zero;
-		//	Vector2 vec = (pos - center).Normalize();
-		//	position_ = center + vec * (t_left - center).Length();
-		//	if (vec.Length() <= 0) position_ = center + Vector2::Down * (t_left - center).Length();
-		//}
 	}
 
 	Vector2 myCenter, segCenter, segPoint, targetPoint, targetVec;
@@ -145,8 +141,6 @@ void PlayerBody::commonCollide(Actor & other){
 	if (other.name_ == "SegmentCollider") {
 		opponent_ = HitOpponent::FLOOR_TOP;
 
-		//線分はpositionを中心に取る
-		//Vector2 myCenter = Vector2(previousPosition.x,previousPosition.y);
 		//相手の線分の中心
 		segCenter = other.position_;
 		//自分の前の位置-相手の中心

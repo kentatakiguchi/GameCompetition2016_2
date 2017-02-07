@@ -13,7 +13,7 @@ void PlayerState_HoldFull::onInit(){
 
 // XVˆ—	
 void PlayerState_HoldFull::onUpdate(float deltaTime){
-	if (retty_->distance() < PLAYER_MAX_STRETCH_LENGTH * 0.6f) {
+	if (retty_->distance() < PLAYER_MAX_STRETCH_LENGTH * 0.5f) {
 		change(PlayerState_Enum_Union::HOLD_SWIM, element_.type_);
 	}
 }

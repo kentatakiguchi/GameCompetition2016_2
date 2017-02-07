@@ -56,8 +56,8 @@ void PlayerState_Single_Idle::draw() const {
 
 	DrawRotaGraph(static_cast<int>(screen_center.x), static_cast<int>(screen_center.y), (((MathHelper::Sin(timer_ * 60.0f * 5.5f) + 1.0f) * 0.5f) + 1.0f) * 2.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
 	DrawRotaGraph(static_cast<int>(screen_center.x), static_cast<int>(screen_center.y) - 300, (((MathHelper::Sin(timer_ * 60.0f * 5.5f) + 1.0f) * 0.5f) + 1.0f), 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::HURRY_TEX), TRUE);
-	DrawRotaGraph(static_cast<int>(screen_center.x) + 500, static_cast<int>(screen_center.y), 1.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(button_R1_), TRUE);
-	DrawRotaGraph(static_cast<int>(screen_center.x) - 500, static_cast<int>(screen_center.y), 1.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(button_L1_), TRUE);
+	DrawRotaGraph(static_cast<int>(screen_center.x) + 500, static_cast<int>(screen_center.y), 1.5f, 0.0f, ResourceLoader::GetInstance().getTextureID(button_R1_), TRUE);
+	DrawRotaGraph(static_cast<int>(screen_center.x) - 500, static_cast<int>(screen_center.y), 1.5f, 0.0f, ResourceLoader::GetInstance().getTextureID(button_L1_), TRUE);
 
 	//DrawGraph(static_cast<int>(SCREEN_SIZE.x) / 2, static_cast<int>(SCREEN_SIZE.y) / 2, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
 	//DrawFormatString(0, 0, GetColor(255, 255, 255), "%f", PLAYER_DEAD_LIMIT-dead_limit_);

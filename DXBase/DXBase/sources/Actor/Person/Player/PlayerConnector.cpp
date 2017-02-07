@@ -101,8 +101,10 @@ bool PlayerConnector::is_damaged() {
 	bool is_event_state = stateMgr_.get_state(PlayerState_Enum_Union::EVENT);
 	bool is_leanback_state = stateMgr_.get_state(PlayerState_Enum_Union::LEAN_BACK);
 
-	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY;
-	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY;
+	bool is_main_target_enemy = butty_->hit_enemy() == HitOpponent::ENEMY ||
+								butty_->hit_enemy() == HitOpponent::BOSS;
+	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY ||
+								retty_->hit_enemy() == HitOpponent::BOSS;
 
 	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
 	if (timer_ <= 3.0f) {
