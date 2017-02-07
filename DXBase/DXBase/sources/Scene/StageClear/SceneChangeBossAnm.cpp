@@ -4,11 +4,12 @@
 
 #include <algorithm>
 
-SceneChangeBossAnm::SceneChangeBossAnm() :
-	alpha_(255), isFirstIdle(false), isFirstJump(false) {
+SceneChangeBossAnm::SceneChangeBossAnm(float speed) :
+	alpha_(255), isFirstIdle(false), isFirstJump(false),
+	mAnimSpeed(speed){
 	add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::BOSS_WAIT_TEX));
 	add_anim(1, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::BOSS_WALLATTACK_DASHJUMP_TEX));
-	change_param(1, 1);
+	change_param(1, mAnimSpeed);
 	change_dir_type(0, ActionType::Left);
 	//add(PlayerEffectID::SEP_EXP, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::PLAYER_EFFECT_SEP_EXP));
 	//add(PlayerEffectID::SEP_MOVE, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::PLAYER_EFFECT_SEP_MOVE));
@@ -32,11 +33,11 @@ void SceneChangeBossAnm::update_e(float deltaTime) {
 void SceneChangeBossAnm::Turn()
 {
 	if (isFirstIdle) {
-		change_param(0, 1);
+		change_param(0, mAnimSpeed);
 		isFirstIdle = false;
 	}
 	if (isFirstJump) {
-		change_param(1, 1);
+		change_param(1, mAnimSpeed);
 		isFirstJump = false;
 	}
 

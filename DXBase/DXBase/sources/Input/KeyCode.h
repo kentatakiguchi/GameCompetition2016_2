@@ -50,6 +50,7 @@ enum Buttons {
 	BUTTON_R1,
 	BUTTON_L2,
 	BUTTON_R2,
+	BUTTON_SELECT
 
 
 

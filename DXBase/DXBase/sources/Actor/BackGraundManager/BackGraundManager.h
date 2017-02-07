@@ -104,6 +104,8 @@ private:
 	float konohaRandTime;
 	//背景のボスのアニメーション
 	SceneChangeBossAnm anim;
+	//ボスの子分アニメーション
+	SceneChangeBossAnm childanim;
 	//ボス出現時間
 	float bossTimer;
 	//ボス出現周期カウント
@@ -112,4 +114,8 @@ private:
 	Vector2 bossPos;
 	//ボスが出現するかどうか
 	bool bossFlag;
+	//ボスの子分ポジション
+	std::vector<Vector2> mBossChilds;
+	//子分が出現するかフラグ
+	int mChildFlag;
 };

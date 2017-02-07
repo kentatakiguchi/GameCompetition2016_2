@@ -7,7 +7,7 @@
 
 class SceneChangeBossAnm : public Animation2D {
 public:
-	SceneChangeBossAnm();
+	SceneChangeBossAnm(float speed = 1.0f);
 	//void add(const PlayerEffectID & id, const std::vector<int>& anims);
 	//void change(const PlayerEffectID& id, const float& speed = 1.0f);
 	void update_e(float deltaTime);
@@ -23,4 +23,5 @@ private:
 	float alpha_;
 	bool isFirstIdle;
 	bool isFirstJump;
+	float mAnimSpeed;
 };

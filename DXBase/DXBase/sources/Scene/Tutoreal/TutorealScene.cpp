@@ -137,7 +137,7 @@ void TutorealScene::start()
 void TutorealScene::update()
 {
 	//Tを押したらチュートリアル動画が再生される
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::T) && !isClear_) {
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_SELECT) && !isClear_) {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 		isMovie_ = !isMovie_;

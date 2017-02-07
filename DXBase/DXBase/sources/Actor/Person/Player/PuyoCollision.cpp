@@ -60,7 +60,7 @@ void PuyoCollision::onUpdate(float deltaTime)
 		mVec = 0.0f;
 	}
 
-	Vector2::Spring(mIntersection, mResIntersection, mVelo, 0.5f);
+	Vector2::Spring(mIntersection, mResIntersection, mVelo, 0.5f,0.6f,2.5f);
 	//ƒtƒ‰ƒO‰Šú‰»
 	mIsCol = false;
 }
