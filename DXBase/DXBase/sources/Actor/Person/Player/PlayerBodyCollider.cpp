@@ -14,9 +14,9 @@ void PlayerBodyCollider::onUpdate(float deltaTime){
 	//other_velocity_ = Vector2::Zero;
 
 	//if (world_->getField() == nullptr)return;
-	if (world_->getField()->hitCheck(position_) == FieldEnum::Field) {
-		opponent_ = HitOpponent::FLOOR_HIT;
-	}
+	//if (world_->getField()->hitCheck(position_) == FieldEnum::Field) {
+	//	opponent_ = HitOpponent::FLOOR_HIT;
+	//}
 }
 
 void PlayerBodyCollider::onCollide(Actor & other) {

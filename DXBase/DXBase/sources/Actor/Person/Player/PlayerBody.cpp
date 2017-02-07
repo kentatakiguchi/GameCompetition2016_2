@@ -80,7 +80,7 @@ void PlayerBody::onCollide(Actor & other) {
 }
 
 void PlayerBody::hitField(const FieldPtr& field){
-	field->calcColl(position_, body_.GetCircle().previousPosition_, velocity_);
+	//field->calcColl(position_, body_.GetCircle().previousPosition_, velocity_);
 }
 
 void PlayerBody::drawBody() const{
