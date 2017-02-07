@@ -46,8 +46,8 @@ void Time::draw_fps(){
 	}
 	else
 		FpsTime_i++;//現在何周目かカウント
-	if (Fps != 0)
-		DrawFormatString(1760, 960, GetColor(255, 255, 255), "FPS %.1f", Fps); //fpsを表示
+	//if (Fps != 0)
+	//	DrawFormatString(1760, 960, GetColor(255, 255, 255), "FPS %.1f", Fps); //fpsを表示
 }
 
 

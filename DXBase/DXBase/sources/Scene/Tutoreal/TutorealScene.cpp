@@ -17,7 +17,7 @@ TutorealScene::TutorealScene() :
 	//1番
 	TutorealName name1;
 	name1.csvName = "tutoreal01";
-	name1.movieID = MOVIE_ID::TEST_MOVE;
+	name1.movieID = MOVIE_ID::TUTPREAL_01_MOVIE;
 	name1.textIDs.push_back(TextureID::TUTOREAL1_1_TXT_TEX);
 	//name1.textIDs.push_back(TextureID::TUTOREAL1_2_TXT_TEX);
 	//name1.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_1_TEX);
@@ -26,7 +26,7 @@ TutorealScene::TutorealScene() :
 	//2番
 	TutorealName name2;
 	name2.csvName = "tutoreal02";
-	name2.movieID = MOVIE_ID::TEST_MOVE;
+	name2.movieID = MOVIE_ID::TUTPREAL_02_MOVIE;
 	name2.textIDs.push_back(TextureID::TUTOREAL2_1_TXT_TEX);
 	//name2.textIDs.push_back(TextureID::TUTOREAL2_2_TXT_TEX);
 	//name2.timeCountIDs.push_back(TextureID::TUTOREAL_TIME_1_TEX);
@@ -35,7 +35,7 @@ TutorealScene::TutorealScene() :
 	//3番
 	TutorealName name3;
 	name3.csvName = "tutoreal03";
-	name3.movieID = MOVIE_ID::TEST_MOVE;
+	name3.movieID = MOVIE_ID::TUTPREAL_03_MOVIE;
 	name3.textIDs.push_back(TextureID::TUTOREAL3_1_TXT_TEX);
 	//name3.textIDs.push_back(TextureID::TUTOREAL3_2_TXT_TEX);
 	//name3.timeCountIDs.push_back(TextureID::TUTOREAL_COUNT_1_TEX);
@@ -55,11 +55,31 @@ TutorealScene::TutorealScene() :
 	tutorels_.push_back(name3);
 	//tutorels_.push_back(name4);
 
+	Vector2 center = SCREEN_SIZE / 2;
+
+	starPoss_.push_back(Vector2(400, 300));
+	starPoss_.push_back(Vector2(750, 400));
+	starPoss_.push_back(Vector2(1200, 300));
+	starPoss_.push_back(Vector2(1500, 400));
+	starPoss_.push_back(Vector2(1300, 600));
+	starPoss_.push_back(Vector2(580, 700));
+	starPoss_.push_back(Vector2(900, 730));
+	starPoss_.push_back(Vector2(800, 740));
+	starPoss_.push_back(Vector2(1030, 530));
+	starPoss_.push_back(Vector2(1470, 840));
+	starPoss_.push_back(Vector2(1360, 570));
 	//サイズを入れる
 	tutorealSize_ = tutorels_.size();
 
 
-
+	starState_.clear();
+	for (const auto& i : starPoss_) {
+		StarState state;
+		state.position = i;
+		state.angle = GetRand(360);
+		state.Scale = (GetRand(100) / 100.0f) + 0.8f;
+		starState_.push_back(state);
+	}
 }
 
 TutorealScene::~TutorealScene()
@@ -81,6 +101,8 @@ void TutorealScene::start()
 	attackRagCount_ = 0.0f;
 	clearTime_ = 0.0f;
 	feedAlpha_ = 1.0f;
+	mMovieAlpha = 1.0f;
+	mClerAlpha = 0.0f;
 	//終わるフラグの番号を設定
 	endTutorealCount_ = tutorealRoopCount_;
 	//α値を初期化
@@ -132,10 +154,16 @@ void TutorealScene::start()
 	world_->SetScroolJudge(Vector2(0, 0), Vector2::Zero, Vector2(9999, 9999));
 	//プレイヤーコネクター
 	playerConnector_ = dynamic_cast<PlayerConnector*>(world_->findActor("PlayerConnector").get());
+	starAnim_.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::ITEM_ANM));
+	starAnim_.change_param(0, 2.0f);
 }
 
 void TutorealScene::update()
 {
+	if (!Movie::GetInstance().IsPlay(movieId_)) {
+		Movie::GetInstance().Seek(movieId_, 0.0f);
+		Movie::GetInstance().Play(movieId_);
+	}
 	//Tを押したらチュートリアル動画が再生される
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_SELECT) && !isClear_) {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
@@ -146,6 +174,7 @@ void TutorealScene::update()
 			Movie::GetInstance().Seek(movieId_, 0.0f);
 		}
 	}
+
 	//補間時間関係
 	if (isMovie_) {
 		movieMoveTime_ += 90 * Time::GetInstance().deltaTime();
@@ -165,16 +194,18 @@ void TutorealScene::update()
 	size_ = MathHelper::Lerp(0.2f, 0.8f, MathHelper::Sin(movieMoveTime_));
 	//移動を線形補間
 	moviePos_ = Vector2::Lerp(movieResPos1_, movieResPos2_, MathHelper::Sin(movieMoveTime_));
+	//クリアーしてたらプレイヤーをみない
+	if (!isClear_) {
+		if (world_->findActor("Player")->getPosition().y <= 700.0f) {
+			playerUpCount_ -= 3.0f* Time::GetInstance().deltaTime();
+		}
+		else {
+			if (!isMovie_)
+				playerUpCount_ += 3.0f*Time::GetInstance().deltaTime();
+		}
+	}
 
-	if (world_->findActor("Player")->getPosition().y <= 600.0f) {
-		playerUpCount_ -= 3.0f* Time::GetInstance().deltaTime();
-	}
-	else {
-		if(!isMovie_)
-		playerUpCount_ += 3.0f*Time::GetInstance().deltaTime();
-	}
-	playerUpCount_ = MathHelper::Clamp(playerUpCount_, 0.0f, 1.0f);
-	playerUpAlpha_ = MathHelper::Lerp(0.0f, 255.0f, playerUpCount_);
+
 	//クリアー関係
 	if (isClear_&&endTutorealCount_ != 3) {
 		clearTime_ += Time::GetInstance().deltaTime();
@@ -221,10 +252,27 @@ void TutorealScene::update()
 
 	if (!isStopped_)
 		world_->update(deltaTime_);
+
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_START)) {
+		nextScene_ = Scene::MainMenu;
+		isEnd_ = true;
+	}
+
+	if (isClear_) {
+		mMovieAlpha -= 3.0f*Time::GetInstance().deltaTime();
+		playerUpCount_ -= 3.0f*Time::GetInstance().deltaTime();
+		mClerAlpha += 3.0f* Time::GetInstance().deltaTime();
+	}
+	mClerAlpha = MathHelper::Clamp(mClerAlpha, 0.0f, 2.0f);
+	playerUpCount_ = MathHelper::Clamp(playerUpCount_, 0.0f, 1.0f);
+	playerUpAlpha_ = MathHelper::Lerp(0.0f, 255.0f, playerUpCount_);
+
+	starAnim_.update(Time::GetInstance().deltaTime());
 }
 
 void TutorealScene::draw() const
 {
+	DrawGraph(0, 0, ResourceLoader::GetInstance().getTextureID(TextureID::TITLE_BACK_TEX), true);
 	world_->draw();
 
 	//αブレンド
@@ -240,14 +288,25 @@ void TutorealScene::draw() const
 	//if (!tutorealTimes_.empty() && (int)stickTime_ != -1 && (int)endCount_ != -1)
 	//	DrawGraph(32, 256 + 128, ResourceLoader::GetInstance().getTextureID(tutorealTimes_[countAndTime_]), TRUE);
 	//αブレンド終わり
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
-
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0.0f, 255.0f, mMovieAlpha));
 	//動画
 	Movie::GetInstance().DrawRotaMovie(movieId_, moviePos_, size_);
-
 	//動画の後ろの画像
 	int id = ResourceLoader::GetInstance().getTextureID(TextureID::MOVIEBACK_TEX);
 	DrawRotaGraph(moviePos_.x, moviePos_.y, size_, 0.0f, id, TRUE);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0.0f, 255.0f, mClerAlpha));
+
+	for (const auto& i : starState_) {
+		starAnim_.draw(i.position, Vector2::Zero, Vector2(i.Scale, i.Scale), i.angle);
+	}
+
+	DrawRotaGraph((SCREEN_SIZE / 2).x, (SCREEN_SIZE / 2).y, mClerAlpha, 0.0f,
+		ResourceLoader::GetInstance().getTextureID(TextureID::TUTOREAL_CLER_TEX), TRUE);
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
+
+
 }
 
 void TutorealScene::end()

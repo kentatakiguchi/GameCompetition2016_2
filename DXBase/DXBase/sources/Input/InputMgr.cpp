@@ -92,7 +92,8 @@ void InputMgr::RegistKeyCode(){
 
 	ButtonName[Buttons::BUTTON_CIRCLE] = PAD_INPUT_2;
 	ButtonName[Buttons::BUTTON_CROSS] = PAD_INPUT_3;
-	ButtonName[Buttons::BUTTON_START] = PAD_INPUT_10;
+	ButtonName[Buttons::BUTTON_START] = PAD_INPUT_9;
+	ButtonName[Buttons::BUTTON_SELECT] = PAD_INPUT_10;
 	ButtonName[Buttons::BUTTON_L1] = PAD_INPUT_7;
 	ButtonName[Buttons::BUTTON_R1] = PAD_INPUT_8;
 	ButtonName[Buttons::BUTTON_L2] = PAD_INPUT_5;

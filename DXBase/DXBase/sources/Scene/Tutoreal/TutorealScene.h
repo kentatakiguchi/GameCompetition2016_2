@@ -6,6 +6,7 @@
 #include <string>
 #include "../GamePlay/MoveScreen.h"
 #include "../GamePlay/PauseScreen.h"
+#include "../../Animation/Base/Animation2D.h"
 class PlayerConnector;
 
 struct TutorealName {
@@ -14,7 +15,12 @@ struct TutorealName {
 	std::vector<TextureID> textIDs;
 	std::vector<TextureID> timeCountIDs;
 };
-
+struct StarState {
+	Vector2 position;
+	float Scale;
+	float alpha;
+	float angle;
+};
 
 class World;
 class TutorealScene : public IScene {
@@ -94,4 +100,13 @@ private:
 	//プレイヤーが上に居たら
 	float playerUpAlpha_;
 	float playerUpCount_;
+	//動画のα値
+	float mMovieAlpha;
+	//チュートリアルクリアーのサイズ
+	float mClerScale;
+	//チュートリアルクリアーのα
+	float mClerAlpha;
+	std::vector<StarState> starState_;
+	std::vector<Vector2>starPoss_;
+	Animation2D starAnim_;
 };

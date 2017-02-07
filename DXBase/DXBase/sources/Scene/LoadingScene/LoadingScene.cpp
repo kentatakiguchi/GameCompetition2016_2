@@ -23,11 +23,11 @@ void LoadingScene::start(){
 	mLoadPuyo.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::LORDING_SLIME_ANM));
 	mLoadAnim.change_param(0);
 	mLoadPuyo.change_param(0);
-	//DerivationGraph‚Æ“®‰æ“Ç‚İ‚İ‚ª”ñ“¯Šú“Ç‚İ‚İ‚É‘Î‰‚µ‚Ä‚¢‚È‚¢‚½‚ß
-
+	//“®‰æ“Ç‚İ‚İ‚ª”ñ“¯Šú“Ç‚İ‚İ‚É‘Î‰‚µ‚Ä‚¢‚È‚¢‚½‚ß
 	//“®‰æ
-	//Movie::GetInstance().Load(MOVIE_ID::TEST_MOVE, "./resources/Movie/Test.wmv");
-	//Movie::GetInstance().Load(MOVIE_ID::TEST2_MOVIE, "./resources/Movie/Test2.avi");
+	Movie::GetInstance().Load(MOVIE_ID::TUTPREAL_01_MOVIE, "./resources/Movie/tutorial01.wmv");
+	Movie::GetInstance().Load(MOVIE_ID::TUTPREAL_02_MOVIE, "./resources/Movie/tutorial02.wmv");
+	Movie::GetInstance().Load(MOVIE_ID::TUTPREAL_03_MOVIE, "./resources/Movie/tutorial03.wmv");
 	//”ñ“¯Šú“Ç‚İ‚İ‚ğŠJn
 	SetUseASyncLoadFlag(TRUE);
 	
@@ -96,6 +96,8 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL1_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL2_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText2.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL3_1_TXT_TEX, "./resources/sprite/Tutoreal/TutorealText3.png");
+
+	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_CLER_TEX, "./resources/sprite/Tutoreal/TutorealCler.png");
 
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::BOSS_GAUGE_IN_TEX, "./resources/sprite/BossGaugeIn.png");
