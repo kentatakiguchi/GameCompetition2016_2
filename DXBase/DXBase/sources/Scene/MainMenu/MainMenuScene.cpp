@@ -300,6 +300,8 @@ void MainMenuScene::update() {
 	//	}
 	//}
 
+	if (isEnd_)return;
+
 	if (!isTitle_)
 	{
 		if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {

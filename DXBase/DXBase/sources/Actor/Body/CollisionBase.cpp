@@ -191,8 +191,8 @@ void CollisionBase::RotateBox(int rotation)
 	//movePoint[3].x = (turn.x * 32);
 	//movePoint[3].y = (turn.y * 16);
 
-	for (int i = 0; i < 4; i++)
-		DrawFormatString(static_cast<int>(movePoint[i].x), static_cast<int>(movePoint[i].y), GetColor(255, 255, 255), "%d", i);
+	for (int i = 0; i < 4; i++){}
+		//DrawFormatString(static_cast<int>(movePoint[i].x), static_cast<int>(movePoint[i].y), GetColor(255, 255, 255), "%d", i);
 	//leng = (position_ - movePoint[1].Normalize()).Length();
 	//movePoint[1] = turn + Vector2(1, 1)*leng;
 	//leng = (position_ - movePoint[2].Normalize()).Length();

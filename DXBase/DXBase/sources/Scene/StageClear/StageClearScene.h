@@ -38,10 +38,14 @@ private:
 	BackGraundManager* backManager;
 
 	std::vector<TextureID> BoardTexes;
+	std::vector<TextureID> BlockTexes;
 
 	int backNum_;
 	int boardNum_;
+	int blockNum_;
 	
+	int floorPosition_;
+
 	typedef std::vector<TextureID> BackTitles;
 	std::vector<BackTitles> titleTexs;
 

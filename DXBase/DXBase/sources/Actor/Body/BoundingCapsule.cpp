@@ -77,7 +77,7 @@ bool BoundingCapsule::intersects(BoundingBox & other)
 		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
 			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
-			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			//DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 			return true;
 		}
 	}
@@ -269,7 +269,7 @@ bool BoundingCapsule::intersects(BoundingCapsule & other){
 		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
 			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
-			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			//DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 			return true;
 		}
 	}
@@ -390,7 +390,7 @@ bool BoundingCapsule::intersects(BoundingSegment & other) {
 	if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
 		OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 	{
-		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+		//DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 		return true;
 	}
 
@@ -503,7 +503,7 @@ bool BoundingCapsule::intersects(BoundingCircle & other)
 	if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
 		OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 	{
-		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+		//DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 		return true;
 	}
 

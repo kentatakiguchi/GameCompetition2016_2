@@ -81,7 +81,7 @@ bool BoundingCircle::intersects(BoundingBox & other)
 		if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
 			OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 		{
-			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			//DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 			return true;
 		}
 	}
@@ -160,7 +160,7 @@ bool BoundingCircle::intersects(BoundingCircle& other)
 		if (Vector2::Cross(AB, AC)*Vector2::Cross(AB, AD) <= 0.0f&&
 			Vector2::Cross(CD, CA)*Vector2::Cross(CD, CB) < 0.0f)
 		{
-			DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+			//DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 			//OutputDebugString("stds");
 			//OutputDebugString("\n");
 			return true;
@@ -191,7 +191,7 @@ bool BoundingCircle::intersects(BoundingCapsule & other) {
 	if (Vector2::Cross(AB, AC)*Vector2::Cross(AB, AD) <= 0.0f&&
 		Vector2::Cross(CD, CA)*Vector2::Cross(CD, CB) < 0.0f)
 	{
-		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+		//DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 		OutputDebugString("stds");
 		OutputDebugString("\n");
 		return true;
@@ -272,7 +272,7 @@ bool BoundingCircle::intersects(BoundingSegment & other) {
 	if (Vector2::Cross(AB, AC)*Vector2::Cross(AB, AD) <= 0.0f&&
 		Vector2::Cross(CD, CA)*Vector2::Cross(CD, CB) < 0.0f)
 	{
-		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+		//DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 		OutputDebugString("stds");
 		OutputDebugString("\n");
 		return true;
@@ -351,7 +351,7 @@ bool BoundingCircle::isIntersectThisRayToOtherLineSegment(BoundingSegment & othe
 	if (OuterProduct(AB, AC)*OuterProduct(AB, AD) <= 0.0f&&
 		OuterProduct(CD, CA)*OuterProduct(CD, CB) < 0.0f)
 	{
-		DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
+		//DrawFormatString(400, 400, GetColor(255, 255, 255), "deta");
 		return true;
 	}
 

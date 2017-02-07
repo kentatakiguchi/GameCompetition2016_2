@@ -7,6 +7,8 @@
 
 static const Vector2 BaseBossPosition = Vector2(-250, 500);
 static const int MaxRotate = 60;
+static const int blockCount = 30;
+static const int floorSpeed = 5;
 
 StageClearScene::StageClearScene(SceneDataKeeper* keeper){
 	isEnd_ = false;
@@ -17,6 +19,11 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper){
 	BoardTexes.push_back(TextureID::BOARD_STAGE3_TEX);
 	BoardTexes.push_back(TextureID::BOARD_STAGE4_TEX);
 	BoardTexes.push_back(TextureID::BOARD_NULL_TEX);
+
+	BlockTexes.push_back(TextureID::FLOOR_STAGE1_TEX);
+	BlockTexes.push_back(TextureID::FLOOR_STAGE2_TEX);
+	BlockTexes.push_back(TextureID::FLOOR_STAGE3_TEX);
+	BlockTexes.push_back(TextureID::FLOOR_STAGE4_TEX);
 }
 
 StageClearScene::~StageClearScene() {
@@ -28,6 +35,8 @@ void StageClearScene::start() {
 
 	backManager = new BackGraundManager();
 	backNum_ = 0;
+	floorPosition_ = 0;
+
 	isArrive_ = false;
 	isFirstIdle = true;
 	isFirstJump = true;
@@ -66,17 +75,21 @@ void StageClearScene::start() {
 	if (keeper_->getSceneName() == "stage01") {
 		backNum_ = 0;
 		boardNum_ = 0;
+		blockNum_ = 0;
 	}
 	if (keeper_->getSceneName() == "stage02") {
 		backNum_ = 0;
 		boardNum_ = 1;
+		blockNum_ = 1;
 	}
 	if (keeper_->getSceneName() == "stage03"){
 		backNum_ = 1;
 		boardNum_ = 2;
+		blockNum_ = 2;
 	}if (keeper_->getSceneName() == "stage04") {
 		backNum_ = 2;
 		boardNum_ = 3;
+		blockNum_ = 3;
 	}
 	for (int i = 0; i < (int)titleTexs[backNum_].size(); i++) {
 		backManager->SetBackGraund(titleTexs[backNum_][i], titleTexs[backNum_][i]);
@@ -114,11 +127,22 @@ void StageClearScene::start() {
 }
 void StageClearScene::update() {
 
+	if (InputMgr::GetInstance().IsPushButton()) {
+		isEnd_ = true;
+	}
+
 	//アニメーションの更新
 	anmer_.update_e(Time::GetInstance().deltaTime());
 
-	if(!isArrive_)backManager->Update(0, true);
+	if (!isArrive_) {
+		backManager->Update(0, true);
 
+		floorPosition_ += floorSpeed;
+		if (floorPosition_ > CHIPSIZE) {
+			int def = floorPosition_-CHIPSIZE;
+			floorPosition_ = def;
+		}
+	}
 	//経過時間の更新
 	mIvemtTime += Time::GetInstance().deltaTime();
 	//～1秒の間は何もしない
@@ -189,6 +213,10 @@ void StageClearScene::draw() const {
 	//World(プレイヤー)の描画
 	backManager->Draw();
 	
+	for (int i = 0; i < blockCount; i++)
+	{
+		DrawGraph(i*CHIPSIZE-floorPosition_, 950, ResourceLoader::GetInstance().getTextureID(BlockTexes[blockNum_]), TRUE);
+	}
 
 	world_->draw();
 
