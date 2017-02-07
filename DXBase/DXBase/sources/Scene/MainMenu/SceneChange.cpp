@@ -9,6 +9,7 @@ static const float SSlimePadd = 46;
 static const Vector2 SSlimeSize = Vector2(290, 130);
 static const float defPosY= -100;
 static const int LineSize = 8;
+static const int colorMaxIndex = 12;
 SceneChange::SceneChange():isMainMenu_(false),isEnd_(true),isSlimeMax_(true),slimeCount(0),timeCount(SdefTime),deltaTime_(0),slimesetline(0), switchCount(0), mt(random_()),
 rand256(0, 255), randR(150, 255), randG(150, 200), randB(0, 0),randL(0, LineSize-1),changeCount(0)
 {
@@ -34,6 +35,48 @@ rand256(0, 255), randR(150, 255), randG(150, 200), randB(0, 0),randL(0, LineSize
 	//spawnPoses[1][8] = (Vector2((((SSlimeSize.x - SSlimePadd) * 8.5) - (SSlimeSize.x / 2) + SSlimePadd), 0));
 
 	allSizes = spawnPoses[0].size() + spawnPoses[1].size();
+
+	randMaster.resize(colorMaxIndex+1);
+	randMaster[0].push_back(std::uniform_int_distribution<>(100, 120));
+	randMaster[0].push_back(std::uniform_int_distribution<>(150, 200));
+	randMaster[0].push_back(std::uniform_int_distribution<>(150, 200));
+	randMaster[1].push_back(std::uniform_int_distribution<>(100, 180));
+	randMaster[1].push_back(std::uniform_int_distribution<>(200, 255));
+	randMaster[1].push_back(std::uniform_int_distribution<>(0, 0));
+	randMaster[2].push_back(std::uniform_int_distribution<>(200, 255));
+	randMaster[2].push_back(std::uniform_int_distribution<>(100, 170));
+	randMaster[2].push_back(std::uniform_int_distribution<>(0, 0));
+	randMaster[3].push_back(std::uniform_int_distribution<>(0, 0));
+	randMaster[3].push_back(std::uniform_int_distribution<>(130, 200));
+	randMaster[3].push_back(std::uniform_int_distribution<>(130, 200));
+	randMaster[4].push_back(std::uniform_int_distribution<>(255, 255));
+	randMaster[4].push_back(std::uniform_int_distribution<>(50, 130));
+	randMaster[4].push_back(std::uniform_int_distribution<>(0, 70));
+	randMaster[5].push_back(std::uniform_int_distribution<>(0, 150));
+	randMaster[5].push_back(std::uniform_int_distribution<>(200, 250));
+	randMaster[5].push_back(std::uniform_int_distribution<>(0, 50));
+	randMaster[6].push_back(std::uniform_int_distribution<>(230, 255));
+	randMaster[6].push_back(std::uniform_int_distribution<>(170, 210));
+	randMaster[6].push_back(std::uniform_int_distribution<>(40, 100));
+	randMaster[7].push_back(std::uniform_int_distribution<>(230, 255));
+	randMaster[7].push_back(std::uniform_int_distribution<>(100, 150));
+	randMaster[7].push_back(std::uniform_int_distribution<>(0, 0));
+	randMaster[8].push_back(std::uniform_int_distribution<>(50, 100));
+	randMaster[8].push_back(std::uniform_int_distribution<>(150, 200));
+	randMaster[8].push_back(std::uniform_int_distribution<>(0, 0));
+	randMaster[9].push_back(std::uniform_int_distribution<>(200, 255));
+	randMaster[9].push_back(std::uniform_int_distribution<>(0, 50));
+	randMaster[9].push_back(std::uniform_int_distribution<>(0, 50));
+	randMaster[10].push_back(std::uniform_int_distribution<>(150, 200));
+	randMaster[10].push_back(std::uniform_int_distribution<>(200, 255));
+	randMaster[10].push_back(std::uniform_int_distribution<>(30, 100));
+	randMaster[11].push_back(std::uniform_int_distribution<>(150, 220));
+	randMaster[11].push_back(std::uniform_int_distribution<>(50, 120));
+	randMaster[11].push_back(std::uniform_int_distribution<>(130, 180));
+	randMaster[12].push_back(std::uniform_int_distribution<>(212, 212));
+	randMaster[12].push_back(std::uniform_int_distribution<>(212, 212));
+	randMaster[12].push_back(std::uniform_int_distribution<>(212, 212));
+
 }
 
 void SceneChange::start(std::string next,std::string tonexScene)
@@ -75,7 +118,6 @@ void SceneChange::start(std::string next,std::string tonexScene)
 		int count=0;
 		for (auto i : isArrive_) {
 			isArrive_[count] = false;
-
 			count++;
 		}
 
@@ -146,40 +188,11 @@ void SceneChange::update()
 
 		//生成されたスライムが使用するカラーパレットの種類を決定する
 		{
-			std::uniform_int_distribution<> colorP = std::uniform_int_distribution<>(0, 5);
+			std::uniform_int_distribution<> colorP = std::uniform_int_distribution<>(0, colorMaxIndex);
 			int colorPalletNum = colorP(mt);
-			if (colorPalletNum == 0) {
-				randR = std::uniform_int_distribution<>(100, 120);
-				randG = std::uniform_int_distribution<>(150, 200);
-				randB = std::uniform_int_distribution<>(150, 200);
-			}
-			else if (colorPalletNum == 1) {
-				randR = std::uniform_int_distribution<>(100, 180);
-				randG = std::uniform_int_distribution<>(200, 255);
-				randB = std::uniform_int_distribution<>(0, 0);
-			}
-			else if (colorPalletNum == 2) {
-				randR = std::uniform_int_distribution<>(200, 255);
-				randG = std::uniform_int_distribution<>(100, 170);
-				randB = std::uniform_int_distribution<>(0, 0);
-			}
-			else if (colorPalletNum == 3) {
-				randR = std::uniform_int_distribution<>(0, 0);
-				randG = std::uniform_int_distribution<>(130, 200);
-				randB = std::uniform_int_distribution<>(130, 200);
-			}
-			else if (colorPalletNum == 4) {
-				randR = std::uniform_int_distribution<>(255, 255);
-				randG = std::uniform_int_distribution<>(50, 130);
-				randB = std::uniform_int_distribution<>(0, 70);
-			}
-			else if (colorPalletNum == 5) {
-				randR = std::uniform_int_distribution<>(0, 150);
-				randG = std::uniform_int_distribution<>(200, 250);
-				randB = std::uniform_int_distribution<>(0, 50);
-			}
+			useRand_.push_back(colorPalletNum);
 		}
-		slimeColors[slimeCount] = ChangeSColor(randR(mt), randG(mt), randB(mt));
+		slimeColors[slimeCount] = ChangeSColor(randMaster[useRand_[slimeCount]].at(0)(mt), randMaster[useRand_[slimeCount]].at(1)(mt), randMaster[useRand_[slimeCount]].at(2)(mt));
 		slimeCount++;
 		switchCount++;
 		// /8=7

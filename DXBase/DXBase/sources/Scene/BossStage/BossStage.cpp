@@ -13,6 +13,7 @@
 #include "../../Actor/Person/Player/PlayerBody.h"
 
 //const Vector2 START_POS = Vector2(300, 900);
+static const int rotateSpeed = 10;
 
 BossStage::BossStage(SceneDataKeeper* keeper) :
 	nextScene_(Scene::GameOver),
@@ -80,6 +81,28 @@ void BossStage::start() {
 
 	hatenaAnm_.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::HATENA));
 	hatenaAnm_.change_param(0, 0.0f);
+
+	keeper_->setItemCount(200);
+
+	isStarDraw_ = false;
+	starPosition_.clear();
+	starRotate_.clear();
+	rotateRange_.clear();
+	alphaStats.clear();
+	int starCountSize=(int)(keeper_->GetItemCount()/100);
+	starPosition_.resize(starCountSize);
+	starRotate_.resize(starCountSize);
+	rotateRange_.resize(starCountSize);
+	alphaStats.resize(starCountSize);
+	int RollCount = 0;
+	for (int i = 0; i < starRotate_.size(); i++) {
+		starRotate_[i] = RollCount;
+		RollCount += (int)(360 / starRotate_.size());
+		rotateRange_[i] = 200;
+		alphaStats[i] = 255;
+	}
+	anmer_ = ItemAnm();
+
 }
 
 void BossStage::update() {
@@ -101,7 +124,27 @@ void BossStage::update() {
 		else if (mIvemtTime >= 9.0f&&mIvemtTime <= 15.0f) {
 			boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, CHIPSIZE * 8 - 5), 4.0f);
 		}
-		else if (boss_->isMovePosition() && mIvemtTime >= 15.0f) {
+		else if (mIvemtTime >= 15.0f&&mIvemtTime <= 17.0f) {
+			isStarDraw_ = true;
+			anmer_.update_e(deltaTime_);
+			for (int i = 0; i < starPosition_.size(); i++) {
+				starPosition_[i] = player->getPosition();
+				starRotate_[i]+= rotateSpeed;
+				rotateRange_[i]-=4.f;
+
+				Vector2 plusPosition;
+				Vector2 mathPosition = Vector2::Up*rotateRange_[i];
+				plusPosition.x = mathPosition.x * cosf(starRotate_[i] * MathHelper::Pi / 180) - mathPosition.y * sinf(starRotate_[i] * MathHelper::Pi / 180);
+				plusPosition.y = mathPosition.x * sinf(starRotate_[i] * MathHelper::Pi / 180) + mathPosition.y * cosf(starRotate_[i] * MathHelper::Pi / 180);
+				plusPosition.x = plusPosition.x * 2;
+
+				starPosition_[i] += plusPosition;
+
+				if (rotateRange_[i] <= 70)alphaStats[i] -= 30;
+			}
+		}
+		else if (boss_->isMovePosition() && mIvemtTime >= 17.0f) {
+			isStarDraw_ = false;
 			boss_->setIsBattle(true);
 			world_->PlayerNotMove(false);
 			world_->CollisitionOffOn(true);
@@ -151,6 +194,13 @@ void BossStage::draw() const {
 	if (player == nullptr) return;
 	Vector2 pos = player->getPosition()-Vector2(0,256+128);
 	hatenaAnm_.draw(pos,Vector2::Zero,Vector2(0.7,0.7),0);
+	if (isStarDraw_) {
+		for (int i = 0; i < starPosition_.size(); i++) {
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, alphaStats[i]);
+			anmer_.draw_e(starPosition_[i]);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+	}
 	isStopped_ ? pause_.draw() : move_.draw();
 
 }

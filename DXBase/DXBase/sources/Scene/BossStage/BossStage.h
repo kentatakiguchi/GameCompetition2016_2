@@ -9,6 +9,8 @@
 #include "../../Animation/Base/Animation2D.h"
 #include "../../Actor/Door/Door.h"
 #include "../../Animation/Base/Animation2D.h"
+#include"../../Actor/Item/ItemAnm.h"
+
 class World;
 class BackGraundManager;
 class BaseBoss;
@@ -47,6 +49,13 @@ private:
 	ActorPtr player;
 
 	Animation2D hatenaAnm_;
+
+	std::vector<Vector2> starPosition_;
+	std::vector<int> starRotate_;
+	std::vector<int> alphaStats;
+	bool isStarDraw_;
+	ItemAnm anmer_;
+	std::vector<float> rotateRange_;
 };
 
 #endif

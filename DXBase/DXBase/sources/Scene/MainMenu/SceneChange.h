@@ -63,7 +63,9 @@ private:
 	std::uniform_int_distribution<> randB;
 	std::uniform_int_distribution<> rand256;
 	std::uniform_int_distribution<> randL;
-
+	
+	std::vector<std::vector<std::uniform_int_distribution<>>> randMaster;
+	std::vector<int> useRand_;
 	//MainMenu以外のシーンをフェードイン,アウトさせるための値
 	int changeCount;
 
