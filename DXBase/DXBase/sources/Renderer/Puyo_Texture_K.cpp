@@ -130,7 +130,7 @@ void PuyoTextureK::PuyoUpdate()
 					(MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*
 					commonVertexH[x][y].velocity.y + mat.Translation().y - textureSize.y / 2) + mPosition + commonVertexH[x][y].colWallVec; /*+ (commonVertexH[x][y].colWallVec*commonVertexH[x][y].colWallPower)*/;
 
-			Vector2::Spring(commonVertexH[x][y].position, commonVertexH[x][y].springResPos, commonVertexH[x][y].springVelocity, 0.7f);
+			Vector2::Spring(commonVertexH[x][y].position, commonVertexH[x][y].springResPos, commonVertexH[x][y].springVelocity, 0.4f);
 
 			//commonVertexH[x][y].position.x =
 			//	(MathHelper::Sin(commonVertexH[x][y].time)*commonVertexH[x][y].num)*

@@ -17,9 +17,20 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 	//mPlayer = dynamic_cast<PlayerBody*>(world->findActor("Player").get());
 	//mFloor = dynamic_cast<Player*>(world->findActor("Player").get());
 	//ボスアニメーション生成
-	anim = SceneChangeBossAnm();
+	if (bossFlag) {
+		anim = SceneChangeBossAnm();
+		childanim = SceneChangeBossAnm(4.0f);
+		mChildFlag = rand() % 2;
+	}
 
 	bossPos = Vector2(SCREEN_SIZE.x + 128.0f, SCREEN_SIZE.y / 3);
+	mBossChilds.push_back(Vector2(-64, -64));
+	mBossChilds.push_back(Vector2(-90, 20));
+	mBossChilds.push_back(Vector2(-256, 0));
+	mBossChilds.push_back(Vector2(-89, 70));
+	mBossChilds.push_back(Vector2(-189, -30));
+	mBossChilds.push_back(Vector2(-200, 96));
+	mBossChilds.push_back(Vector2(-230, -55));
 }
 
 BackGraundManager::BackGraundManager() :
@@ -301,8 +312,13 @@ void BackGraundManager::Draw(bool title) const
 		for (auto& j : i.indexPos)
 		{
 			DrawGraph(j.position.x, j.position.y, j.index, true);
-			if (count == 1)
+			if (count == 1 && bossFlag) {
+				if (mChildFlag == 1)
+					for (const auto& i : mBossChilds) {
+						childanim.draw_e(bossPos + i, Vector2::Zero, 0.2f, 0.0f);
+					}
 				anim.draw_e(bossPos, Vector2::Zero, 0.75f, 0.0f);
+			}
 		}
 	}
 	//地上の描写
@@ -409,13 +425,16 @@ void BackGraundManager::BossUpdate()
 	bossPos.x += 170.0f*Time::GetInstance().deltaTime();
 	anim.Turn();
 	anim.setIdle();
-
+	childanim.Turn();
+	childanim.setIdle();
 	if (bossPos.x >= SCREEN_SIZE.x + 256.0f && (bossTimer >= bossCount)) {
 		bossPos.x = -128.0f;
+		mChildFlag = rand() % 3;
 		bossTimer = 0.0f;
 	}
 
 	bossPos -= mWorld->GetInvVelo() / 20.0f;
 
 	anim.update_e(Time::GetInstance().deltaTime());
+	childanim.update_e(Time::GetInstance().deltaTime()*3.0f);
 }
