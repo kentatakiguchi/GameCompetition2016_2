@@ -110,7 +110,7 @@ void WallMoveEnemy::addWSPPosition()
 void WallMoveEnemy::addWSPScale()
 {
 	// ŠÔŠu‚ð‹ó‚¯‚é
-	auto addScale = -0.5f;
+	auto addScale = 0.0f;
 	// 0
 	fspScaleContainer_.push_back(addScale_);
 	// 1

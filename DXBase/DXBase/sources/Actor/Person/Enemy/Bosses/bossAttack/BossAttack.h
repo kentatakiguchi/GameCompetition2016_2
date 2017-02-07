@@ -7,6 +7,7 @@
 #include "../../../../../World/IWorld.h"
 #include "./../../../../Base/ActorGroup.h"
 #include <string>
+#include <random>	// C++11の機能
 
 // ボス攻撃クラス(ベース)
 class BossAttack {
@@ -106,10 +107,10 @@ protected:
 	Vector2 pPosition_;			// プレイヤーの位置
 	Vector2 pDirection_;		// プレイヤーとの方向
 	Vector2 pNormDirection_;	// プレイヤーとの方向
-	IWorld* world_;
-
-	int animeNum_;
-	Actor* collideObj_;
+	IWorld* world_;				// ワールドポインタ
+	int animeNum_;				// アニメーション番号
+	Actor* collideObj_;			// 衝突したオブジェクト
+	std::mt19937 mt_;			// 乱数の初期seed
 };
 
 #endif

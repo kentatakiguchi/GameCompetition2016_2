@@ -12,7 +12,6 @@
 // ボスの体力表示
 #include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
 #include "../../../../Define.h"
-#include <random>
 
 // ボスクラス(ベース予定)
 BaseBoss::BaseBoss(
@@ -30,6 +29,8 @@ BaseBoss::BaseBoss(
 	bokoCreateCount_(0),
 	miniBossCreateCount_(0),
 	alpha_(255),
+	starCount_(0),
+	allStarCount_(0),
 	stateTimer_(0.0f),
 	timer_(0.0f),
 	deltaTimer_(0.0f),
@@ -57,11 +58,10 @@ BaseBoss::BaseBoss(
 	entryObj_(nullptr),
 	mbManager_(MiniBossManager()),
 	bossGaugeUI_(nullptr),
-	//helperUI_(nullptr),
 	bossManager_(BossManager(world, position)),
-	top_(0.0f), bottom_(0.0f), right_(0.0f), left_(0.0f),
 	movePos_(Vector2::Zero),
-	moveSpeed_(0.0f)
+	moveSpeed_(0.0f),
+	mt_(std::mt19937())
 {
 	asContainer_.clear();
 	asAnimations_.clear();
@@ -70,15 +70,12 @@ BaseBoss::BaseBoss(
 	// 攻撃状態をコンテナに追加(攻撃順に追加する)
 	asContainer_.push_back(AttackState::JumpAttack);
 	asContainer_.push_back(AttackState::WallAttack);
-	//asContainer_.push_back(AttackState::SpeacialAttack);
 	// 攻撃アニメーションコンテナ
 	asAnimations_.push_back(JUMP_UP_NUMBER);
 	asAnimations_.push_back(WALLATTACK_DASH_NUMBER);
-	//asAnimations_.push_back(BREATH_NUMBER);
 	// ボスマネージャーに攻撃を追加
 	bossManager_.addAttack(std::make_shared<ThreeJumpAttack>(world_, position));
 	bossManager_.addAttack(std::make_shared<WallAttack>(world_, position));
-	//bossManager_.addAttack(std::make_shared<DysonAttack>(world_, position));
 	// 体力をロックするコンテナに追加
 	lockHps_.clear();
 	//lockHps_.push_back(200);
@@ -117,6 +114,13 @@ BaseBoss::BaseBoss(
 	world_->addUIActor(bossUI);
 	bossGaugeUI_ = bossUI.get();
 	bossGaugeUI_->SetHp(hp_);
+	// 初期seedの確定
+	// 乱数の取得
+	std::random_device random;
+	// メルセンヌツイスター法 後で調べる
+	std::mt19937 mt(random());
+	// 初期Seed値を渡す
+	mt_ = mt;
 	// 衝突判定を一回無くす
 	body_.enabled(false);
 }
@@ -146,38 +150,13 @@ void BaseBoss::onUpdate(float deltaTime)
 	// SE
 	poseStopSE();
 	poseRestartSE();
-
-	if (attackCount_ == 1) {
+	if (attackCount_ == 1 && 
+		(state_ != State::Dead && state_ != State::LiftIdel && 
+			state_ != State::LiftMove)) {
 		mbTimer_ = max(mbTimer_ - deltaTime, 0.0f);
-		if (mbTimer_ == 0.0f) {
-			// 乱数の取得
-			std::random_device random;
-			// メルセンヌツイスター法 後で調べる
-			// 初期Seed値を渡す
-			std::mt19937 mt(random());
-			// 範囲の指定(int型)
-			std::uniform_int_distribution<> time(40, 100);
-			mbTimer_ = time(mt) / 10.0f;
-			// 方向
-			std::uniform_int_distribution<> dir(0, 1);
-			auto direction = Vector2::One;
-			// (float)getRandomInt(size * 2, size * 18)
-			int chipsize = static_cast<int>(CHIPSIZE);
-			auto pos = Vector2::Zero;
-			if (dir(mt) == 0) {
-				direction.x = -1.0f;
-				pos.x = chipsize * 18;
-			}
-			else pos.x = chipsize * 2;
-			std::uniform_int_distribution<> posY(250, 700);
-			pos.y = (float)posY(mt);
-			// ミニボス(浮遊)の生成
-			auto miniBoss = std::make_shared<FlyingMiniBoss>(
-				world_, pos, direction);
-			world_->addActor(ActorGroup::Enemy, miniBoss);
-		}
+		// ミニボスの生成
+		createMiniBoss();
 	}
-
 	// 接地(仮)
 	bossManager_.setIsGround(isGround_);
 	bossManager_.setIsBottom(isBottomHit_);
@@ -217,10 +196,7 @@ void BaseBoss::onCollide(Actor & actor)
 	auto actorName = actor.getName();
 	//床関連のオブジェクトに当たっているなら
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
-	// ブロックの下側にぶつかったら、落ちるようにする?
-	// プログラムを書いて、コメントアウトする
-	// マップのブロックに当たったら、処理を行う
-	//if (actorName == "MovelessFloor")
+	// 運ばれる状態なら、ドアを壊す
 	if (state_ == State::LiftMove && actorName == "Door") {
 		actor.dead();
 		auto se =
@@ -229,7 +205,7 @@ void BaseBoss::onCollide(Actor & actor)
 			PlaySoundMem(se, DX_PLAYTYPE_BACK);
 		return;
 	}
-	// 空中に浮かぶ床に当たったら、ひるみカウントを加算する
+	// マップのブロックに当たったら、補間処理を行う
 	if (getFloorName != NULL || actorName == "Door") {
 		// 位置の補間
 		groundClamp(actor);
@@ -237,18 +213,18 @@ void BaseBoss::onCollide(Actor & actor)
 		return;
 	}
 	// プレイヤーの攻撃に当たらない場合は返す
-	if (!isAttackHit_ || damageTimer_ > 0 || attackCount_ == 2) return;
+	if (!isAttackHit_ || damageTimer_ > 0) return;
 	if (state_ == State::Flinch) return;
 	if (hp_ <= 0) return;
 	// プレイヤーの攻撃範囲に当たった場合の処理
 	if (actorName == "PlayerAttackCollider") {
 		// ダメージ処理
-		auto d = 30;
-		// カウントを減らす
-		if (attackCount_ == 0)
-			piyoriCount_--;
-		else if (attackCount_ == 1)
-			d = 30 / 2;
+		auto addDamage = 0.0f;
+		if (allStarCount_ != 0)
+			addDamage = starCount_ / (float)allStarCount_;
+		auto d = (int)(3 + 27 * addDamage);
+		if (attackCount_ == 1)
+			d /= 2;
 		damage(d, actor.getPosition(), 2.0f);
 		// ボスマネージャーに設定
 		bossManager_.setCollideObj(actor);
@@ -282,6 +258,13 @@ void BaseBoss::movePosition(float deltaTime)
 void BaseBoss::setIsBattle(bool isBattle)
 {
 	isBattle_ = isBattle;
+}
+
+// 星の獲得数を設定します
+void BaseBoss::setStarCount(const int count, const int all)
+{
+	starCount_ = count;
+	allStarCount_ = all;
 }
 
 // 目的の位置を設定します
@@ -388,16 +371,9 @@ void BaseBoss::idel(float deltaTime)
 	if (!isACountDecision_) {
 		// 攻撃行動のカウントで行動を決める
 		currentACount_ = attackCount_;
-		if (attackCount_ != 0) {
-			// 乱数の取得
-			std::random_device random;
-			// メルセンヌツイスター法 後で調べる
-			// 初期Seed値を渡す
-			std::mt19937 mt(random());
-			// 範囲の指定(int型)
-			std::uniform_int_distribution<> count(0, 1);
-			currentACount_ = count(mt);
-		}
+		// 例外が出たために補間	
+		if (attackCount_ != 0)
+			currentACount_ = getRandomInt(0, 1);
 		bossManager_.changeAttackNumber(currentACount_);
 		isACountDecision_ = true;
 	}
@@ -469,6 +445,9 @@ void BaseBoss::boko(float deltaTime)
 		auto addPos = Vector2::One * -40.0f;
 		world_->addActor(ActorGroup::Effect,
 			std::make_shared<BokoEffect>(world_, position_ + addPos, (int)(255 * 0.7f)));
+		// 羽エフェクトの生成
+		world_->addActor(ActorGroup::Effect,
+			std::make_shared<ScatterWingEffect>(world_, position_ - Vector2::Up * 150.0f));
 		bokoCreateCount_++;
 		isEffectCreate_ = false;
 	}
@@ -531,15 +510,8 @@ void BaseBoss::deadMove(float deltaTime)
 	// ミニボスの生成
 	if (isEffectCreate_ && miniBossCreateCount_ < 30 && 
 		(int)effectCreateTimer_ % 10 <= 5) {
-		// 乱数の取得
-		std::random_device random;
-		// メルセンヌツイスター法 後で調べる
-		// 初期Seed値を渡す
-		std::mt19937 mt(random());
-		// 範囲の指定(int型)
-		std::uniform_int_distribution<> count(40, 80);
 		auto miniBoss = std::make_shared<MiniBoss>(
-			world_, Vector2(position_.x, 1020), (float)count(mt) / 100);
+			world_, Vector2(position_.x, 1020), (float)getRandomInt(40, 80) / 100);
 		world_->addActor(ActorGroup::EnemyBullet, miniBoss);
 		mbManager_.addMiniBoss(miniBoss.get());
 		miniBossCreateCount_++;
@@ -611,7 +583,7 @@ void BaseBoss::piyoriMove(float deltaTime)
 		// 状態によって行動を変える
 		if (state_ == State::Flinch) {
 			// カウントを減らす
-			piyoriCount_--;
+			piyoriCount_ = max(piyoriCount_--, 0);
 			// ダメージ処理
 			auto d = 30;
 			if (attackCount_ == 1)
@@ -626,10 +598,6 @@ void BaseBoss::piyoriMove(float deltaTime)
 			changeState(State::Boko, DAMAGE_BOKO_NUMBER);
 			isAttackHit_ = false;
 			world_->setEntry(true, false);
-			//// SEの再生
-			//PlaySoundMem(
-			//	ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO),
-			//	DX_PLAYTYPE_LOOP);
 			return;
 		}
 	}
@@ -713,7 +681,6 @@ void BaseBoss::wallAttack(float deltaTime)
 	animation_.changeAnimation(
 		static_cast<int>(bossManager_.getAnimaNum()));
 	animation_.setIsLoop(bossManager_.isAnimeLoop());
-	//animation_.turnAnimation(WALLATTACK_DASH_NUMBER, Vector2::Left.x);
 	animation_.changeDirType(Vector2::Left.x);
 	// 攻撃動作中なら、壁捜索オブジェクトなどの判定をONにする
 	if (bossManager_.isAttackStart()) {
@@ -775,13 +742,11 @@ void BaseBoss::specialAttack(float deltaTime)
 	animation_.changeAnimation(
 		static_cast<int>(bossManager_.getAnimaNum()));
 	animation_.setIsLoop(bossManager_.isAnimeLoop());
-	//animation_.setIsLoop(false);
 	animation_.changeDirType(bossManager_.getAttackDirection().x);
 	// アニメーションの逆再生を変更
 	animation_.setIsReverse(bossManager_.isAnimeReverse());
 
 	if (bossManager_.isAttackEnd()) {
-		//name_ = "BaseEnemy";
 		name_ = "Boss";
 		changeState(State::Idel, WAIT_NUMBER);
 		// 攻撃が当たるかの判定を入れる
@@ -820,11 +785,13 @@ void BaseBoss::setBMStatus()
 // 指定した値のダメージ量を加算します
 void BaseBoss::damage(const int damage, const Vector2& position, const float scale)
 {
-	hp_ -= damage;
 	// 体力がロックよりも小さくなったら補間する
-	if (hp_ < lockHps_[attackCount_]) {
-		hp_ = lockHps_[attackCount_];
-	}
+	hp_ = max(hp_ - damage, lockHps_[attackCount_]);
+	// カウントを減らす
+	if (attackCount_ == 0)
+		piyoriCount_--;
+	if (hp_ > lockHps_[attackCount_])
+		piyoriCount_ = 1;
 	damageTimer_ = 1.0f;
 	// 待機中に攻撃を受けたら次の行動までに攻撃を受けないようにする
 	if (state_ == State::Idel)
@@ -837,13 +804,13 @@ void BaseBoss::damage(const int damage, const Vector2& position, const float sca
 		std::make_shared<ScatterWingEffect>(world_, position));
 	// 耐久値が0になったら、ぴよる
 	if (piyoriCount_ <= 0) {
+		if (hp_ > lockHps_[attackCount_]) return;
 		changeState(State::Piyori, PIYO_NUMBER);
 		// 衝突するかどうかの bool を全てtrueにする
 		piyoriCount_ = 5;
 		setBMStatus();
 		// 画像の方向を合わせる
 		animation_.setIsLoop(true);
-		//animation_.turnAnimation(DAMAGE_NUMBER, direction_.x);
 		animation_.changeDirType(direction_.x);
 		bossManager_.attackRefresh();
 		// 怯み状態の設定
@@ -854,7 +821,6 @@ void BaseBoss::damage(const int damage, const Vector2& position, const float sca
 		if (state_ == State::Idel || state_ == State::Flinch) {
 			setBMStatus();
 			// 画像の方向を合わせる
-			//animation_.turnAnimation(DAMAGE_NUMBER, direction_.x);
 			animation_.changeDirType(direction_.x);
 			changeState(State::Damage, DAMAGE_NUMBER);
 			PlaySoundMem(
@@ -887,11 +853,6 @@ void BaseBoss::groundClamp(Actor& actor)
 		(topRight - bottomRight).Normalize(), (pos - bottomRight));
 	auto left = Vector2::Cross(
 		(bottomLeft - topLeft).Normalize(), (pos - topLeft));
-
-	top_ = top;
-	bottom_ = bottom;
-	right_ = right;
-	left_ = left;
 	// 過去の位置
 	// Y方向に位置を補間する
 	if (left < 0 &&
@@ -1082,7 +1043,6 @@ void BaseBoss::poseRestartSE()
 {
 	// サイズが0ならば返す
 	if (playSEHandles_.size() == 0) return;
-	//if (deltaTimer_ > 0.0f)
 	if (deltaTimer_ == 0.0f) return;
 	for (auto i = playSEHandles_.begin(); i != playSEHandles_.end(); i++) {
 		// 格納したSEを再度再生する
@@ -1091,4 +1051,43 @@ void BaseBoss::poseRestartSE()
 	}
 	// 中身をクリアする
 	playSEHandles_.clear();
+}
+
+// 浮遊ミニボスの生成を行います
+void BaseBoss::createMiniBoss()
+{
+	if (mbTimer_ > 0.0f) return;
+	mbTimer_ = getRandomInt(40, 100) / 10.0f;
+	// 方向
+	//auto direction = Vector2::One;
+	int chipsize = static_cast<int>(CHIPSIZE);
+	auto pos = Vector2::Zero;
+	auto count = getRandomInt(0, 2);
+	if (count < 2) {
+		// 左辺・右辺に生成
+		if (count == 0) {
+			//direction.x = -1.0f;
+			pos.x = chipsize * 18;
+		}
+		else if (count == 1) {
+			pos.x = chipsize * 2;
+		}
+		pos.y = (float)getRandomInt(chipsize * 2, chipsize * 7);
+	}
+	else if (count == 2) {
+		// 上辺に生成
+		pos.y = chipsize * 2;
+		pos.x = (float)getRandomInt(chipsize * 2, chipsize * 18);
+	}
+	// ミニボス(浮遊)の生成
+	auto miniBoss = std::make_shared<FlyingMiniBoss>(world_, pos);
+	world_->addActor(ActorGroup::Enemy, miniBoss);
+}
+
+// ランダムの値を取得します
+int BaseBoss::getRandomInt(const int min, const int max)
+{
+	// 範囲の指定(int型)
+	std::uniform_int_distribution<> value(min, max);
+	return value(mt_);
 }

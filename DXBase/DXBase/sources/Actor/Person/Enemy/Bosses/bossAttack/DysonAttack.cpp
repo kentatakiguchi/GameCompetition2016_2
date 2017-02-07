@@ -54,7 +54,6 @@ void DysonAttack::dysonAttack(float deltaTime)
 	if ((int)(timer_ * 10) % 10 == 0 && !isRockCreate_) {
 		// ”ÍˆÍ‚Ìw’è(intŒ^)
 		int size = static_cast<int>(CHIPSIZE);
-		//std::uniform_int_distribution<> aSecond(size * 2, size * 18);
 		// Šâ‚Ì¶¬
 		for (int i = 0; i != 3; i++) {
 			// X‚Ì¶¬ˆÊ’u‚ğ“ü‚ê‚é

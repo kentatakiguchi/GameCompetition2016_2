@@ -158,20 +158,3 @@ void JumpAttack::createRock()
 				Vector2((float)getRandomInt(size * 2, size * 18), 200.0f)));
 	}
 }
-
-//// ジャンプ時間を設定します
-//void JumpAttack::setJumpSpeed()
-//{
-//	//// 乱数の取得
-//	//std::random_device random;
-//	//// メルセンヌツイスター法 後で調べる
-//	//// 初期Seed値を渡す
-//	//std::mt19937 mt(random());
-//	//// 範囲の指定(int型)
-//	////std::uniform_int_distribution<> aSpeed(moveTimes_[aCount], moveTimes_[aCount + 1]);
-//	//// 速度の設定
-//	//std::uniform_int_distribution<> aSpeed(10, 20);
-//	// 移動速度を入れる
-//	//aSecond_ = aSecond(mt);
-//	speed_.y = (float)getRandomInt(10, 20) * 0.1f;
-//}

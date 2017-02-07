@@ -1,5 +1,4 @@
 #include "BossAttack.h"
-#include <random>	// C++11の機能
 
 BossAttack::BossAttack() :
 	hp_(0),
@@ -27,7 +26,8 @@ BossAttack::BossAttack() :
 	pDirection_(Vector2::Zero),
 	pNormDirection_(Vector2::Zero),
 	animeNum_(WAIT_NUMBER),
-	collideObj_(nullptr)
+	collideObj_(nullptr),
+	mt_(std::mt19937())
 {}
 
 BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
@@ -56,8 +56,16 @@ BossAttack::BossAttack(IWorld* world, const Vector2 & position) :
 	pNormDirection_(Vector2::One),
 	world_(world),
 	animeNum_(WAIT_NUMBER),
-	collideObj_(nullptr)
-{}
+	collideObj_(nullptr),
+	mt_(std::mt19937())
+{
+	// 乱数の取得
+	std::random_device random;
+	// メルセンヌツイスター法 後で調べる
+	// 初期Seed値を渡す
+	std::mt19937 mt(random());
+	mt_ = mt;
+}
 
 BossAttack::~BossAttack(){}
 
@@ -242,15 +250,10 @@ bool BossAttack::isReverse()
 	return isAnimaReverse_;
 }
 
+// ランダムの値を取得します
 int BossAttack::getRandomInt(int min, int max)
 {
-	// 乱数の取得
-	std::random_device random;
-	// メルセンヌツイスター法 後で調べる
-	// 初期Seed値を渡す
-	std::mt19937 mt(random());
 	// 範囲の指定(int型)
-	//std::uniform_int_distribution<> aSpeed(moveTimes_[aCount], moveTimes_[aCount + 1]);
-	std::uniform_int_distribution<> count(min, max);
-	return count(mt);
+	std::uniform_int_distribution<> value(min, max);
+	return value(mt_);
 }

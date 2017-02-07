@@ -1,6 +1,5 @@
 #include "BossWingEffect.h"
 #include "../../../../../ResourceLoader/ResourceLoader.h"
-#include <random>
 
 BossWingEffect::BossWingEffect(
 	IWorld * world, 
@@ -17,31 +16,31 @@ BossWingEffect::BossWingEffect(
 	alpha_(255.0f),
 	isTexTurn_(false),
 	direction_(Vector2::One),
-	state_(State::FlyOut)
+	color_(Vector3::Zero),
+	state_(State::FlyOut),
+	mt_(std::mt19937())
 {
 	// 乱数の取得
 	std::random_device random;
 	// メルセンヌツイスター法 後で調べる
 	// 初期Seed値を渡す
 	std::mt19937 mt(random());
-	// 範囲の指定(int型)
-	std::uniform_int_distribution<> count(0, 1);
-	if (count(mt) > 0)
+	mt_ = mt;
+	if (getRandomInt(0, 1) > 0)
 		direction_.x = 1;
 	else {
 		direction_.x = -1;
 		isTexTurn_ = true;
 	}
 	// 角度
-	//MathHelper::Cos();
-	std::uniform_int_distribution<> degree(20, 180 - 20);
-	degree_ = degree(mt);
+	degree_ = getRandomInt(20, 180 - 20);
 	// 力
-	std::uniform_int_distribution<> power(200, 400);
-	flyPower_ = power(mt) / 10.0f;
+	flyPower_ = getRandomInt(200, 400) / 10.0f;
 	// 回転速度
-	std::uniform_int_distribution<> rota(30, 40);
-	rotaSpeed_ = rota(mt) / 10.0f;
+	rotaSpeed_ = getRandomInt(30, 40) / 10.0f;
+	// 色
+	color_ = Vector3::One * 255;
+	color_.y = getRandomInt(0, 255);
 }
 
 void BossWingEffect::onUpdate(float deltaTime)
@@ -66,12 +65,14 @@ void BossWingEffect::onDraw() const
 	auto scale = 16.0f;
 	// αブレンドの設定
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_);
+	SetDrawBright((int)color_.x, (int)color_.y, (int)color_.z);
 	DrawRotaGraph3(
 		(int)pos.x, (int)pos.y,
 		(int)body_.GetCircle().getRadius(), (int)body_.GetCircle().getRadius(),
 		body_.GetCircle().getRadius() / scale,
 		body_.GetCircle().getRadius() / scale, MathHelper::ToRadians(texDegree_),
 		ResourceLoader::GetInstance().getTextureID(TextureID::BOSS_WING_TEX), 1, isTexTurn_);
+	SetDrawBright(255, 255, 255);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }
 
@@ -254,4 +255,12 @@ void  BossWingEffect::groundClamp(Actor & actor)
 		if (right > -actor.getBody().GetBox().getWidth() / 2.0f)
 			position_.x = topRight.x + body_.GetCircle().getRadius();
 	}
+}
+
+// ランダムの値を取得します
+int BossWingEffect::getRandomInt(const int min, const int max)
+{
+	// 範囲の指定(int型)
+	std::uniform_int_distribution<> value(min, max);
+	return value(mt_);
 }

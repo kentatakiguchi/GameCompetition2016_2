@@ -70,6 +70,7 @@ protected:
 	std::string playerName_;		// プレイヤーの名前
 	Vector2 texPos_;				// テクスチャの位置
 	Vector2 orizin_;				// 中点
+	Vector2 prevPlayerDirection_;	// プレイヤーとの過去の方向
 	State state_;					// 状態
 	EnemyAnimation2D animation_;	// アニメーション
 };

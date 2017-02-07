@@ -53,11 +53,10 @@ void BossStage::start() {
 
 	gener.create("./resources/file/" + name_ + ".csv");
 
-
 	boss_ = boss.get();
-
 	// ƒ{ƒX‚ÌˆÊ’u‚ðÝ’è
 	boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, -150.0f), 0.0f);
+	boss->setStarCount(keeper_->GetItemCount(), 600);
 	world_->SetScroolJudge(Vector2(0, 0),Vector2::Zero, Vector2(99999, 99999));
 
 

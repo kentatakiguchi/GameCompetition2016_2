@@ -18,6 +18,7 @@ AdhereMiniBoss::AdhereMiniBoss(
 	playerName_(""),
 	texPos_(Vector2::Zero),
 	orizin_(Vector2::One * (256 / 2)),
+	prevPlayerDirection_(Vector2::Zero),
 	state_(State::Idel),
 	animation_(EnemyAnimation2D())
 {
@@ -120,6 +121,9 @@ void AdhereMiniBoss::idel(float deltaTime)
 {
 	if (timer_ < 0.5f) return;
 	changeState(State::Move, WAIT_NUMBER);
+	auto player = world_->findActor("PlayerBody1");
+	auto distance = player->getPosition() - position_;
+	prevPlayerDirection_ = distance.Normalize();
 }
 
 void AdhereMiniBoss::move(float deltaTime){}

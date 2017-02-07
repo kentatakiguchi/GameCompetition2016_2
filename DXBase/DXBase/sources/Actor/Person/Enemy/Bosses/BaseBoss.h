@@ -9,6 +9,7 @@
 #include "BossAnimationNumber.h"
 #include "BossManager.h"
 #include "MiniBossManager.h"
+#include <random>
 
 class FloorSearchPoint;
 class BossEntry;
@@ -74,6 +75,8 @@ public:
 	bool isMovePosition();
 	// 戦闘を開始するかを返します
 	void setIsBattle(bool isBattle);
+	// 星の獲得数を設定します
+	void setStarCount(const int count, const int all);
 
 protected:
 	// 状態の更新
@@ -136,6 +139,10 @@ private:
 	void poseStopSE();
 	// ポーズ解除時にSEを再度再生します
 	void poseRestartSE();
+	// 浮遊ミニボスの生成を行います
+	void createMiniBoss();
+	// ランダムの値を取得します
+	int getRandomInt(const int min, const int max);
 
 protected:
 	int dp_;						// 耐久値
@@ -147,6 +154,8 @@ protected:
 	int bokoCreateCount_;			// ボコエフェクト生成回数
 	int miniBossCreateCount_;		// ミニボス生成回数
 	int alpha_;						// ボスのα値
+	int starCount_;					// プレイヤーの取得している星の合計数
+	int allStarCount_;				// 全体での星の合計数
 	float stateTimer_;				// 状態の時間
 	float timer_;					// 現在の時間(最大値 1)
 	float deltaTimer_;				// 現在の時間(補間)
@@ -159,7 +168,6 @@ protected:
 	float bgmVolume_;				// BGMの音量
 	bool isGround_;					// 接地しているか
 	bool isBottomHit_;				// 壁の下側に当たったか
-	//bool isHit_;					// プレイヤー本体に当たるか
 	bool isAttackHit_;				// プレイヤーの攻撃に当たるか
 	bool isSceneEnd_;				// シーンを終了させるか
 	bool isBattle_;					// 戦闘を行うか
@@ -185,9 +193,7 @@ private:
 	int animeNum_;
 	EnemyAnimation2D animation_;	// アニメーション
 	BossGaugeUI* bossGaugeUI_;		// ボスの体力
-	//HelperUI* helperUI_;			// ヘルパーUI
-
-	float top_, bottom_, right_, left_;	// 判定用
+	std::mt19937 mt_;				// 乱数の初期seed
 
 	Vector2 movePos_;
 	float moveSpeed_;

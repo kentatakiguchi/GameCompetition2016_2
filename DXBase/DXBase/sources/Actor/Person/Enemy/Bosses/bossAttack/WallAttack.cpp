@@ -160,7 +160,6 @@ void WallAttack::wallAttack(float deltaTime)
 {
 	auto speed = speed_ * 7.0f;
 	isAnimaLoop_ = false;
-	//animeNum_ = BossAnimationNumber::WALLATTACK_DASHJUMP_NUMBER;
 	// プレイヤーの居た位置に向かって飛ぶ
 	position_ += prevPlayerDistance_ * speed * (deltaTime * 60.0f);
 	// 保険(すぐに衝突したことになる)
@@ -191,13 +190,6 @@ void WallAttack::setAttackSecond()
 		aCount = 4;
 		flinchCount_ = 3;
 	}
-	//// 乱数の取得
-	//std::random_device random;
-	//// メルセンヌツイスター法 後で調べる
-	//// 初期Seed値を渡す
-	//std::mt19937 mt(random());
-	//// 範囲の指定(int型)
-	//std::uniform_int_distribution<> aSecond(moveTimes_[aCount], moveTimes_[aCount + 1]);
 	// 移動秒数を入れる
 	aSecond_ = getRandomInt(moveTimes_[aCount], moveTimes_[aCount + 1]);
 }
