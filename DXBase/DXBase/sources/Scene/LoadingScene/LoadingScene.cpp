@@ -81,6 +81,7 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP2_TEX, "./resources/sprite/BackGraund/Stage2-Top2.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP3_TEX, "./resources/sprite/BackGraund/Stage2-Top3.png");
 
+	ResourceLoader::GetInstance().loadTexture(TextureID::GAMEOVER_TEX, "./resources/sprite/GameOver.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::MOVIEBACK_TEX, "./resources/sprite/Tutoreal/MovieBack.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_BACK_TEX, "./resources/sprite/Tutoreal/tutorealFlame.png");

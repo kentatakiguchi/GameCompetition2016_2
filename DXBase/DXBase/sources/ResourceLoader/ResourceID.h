@@ -167,6 +167,7 @@ enum class TextureID {
 	BOARD_STAGE2_TEX,
 	BOARD_STAGE3_TEX,
 	BOARD_STAGE4_TEX,
+	GAMEOVER_TEX
 };
 
 enum class AnimationID {

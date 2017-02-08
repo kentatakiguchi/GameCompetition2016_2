@@ -93,6 +93,7 @@ void TutorealScene::start()
 	isMovie_ = false;
 	isClear_ = false;
 	tutoreal4Flag = false;
+	isPlayerUp_ = false;
 	tutorealTexCount_ = 0;
 	resTutorealTexCount_ = 0;
 	countAndTime_ = 0;
@@ -165,7 +166,7 @@ void TutorealScene::update()
 		Movie::GetInstance().Play(movieId_);
 	}
 	//Tを押したらチュートリアル動画が再生される
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_SELECT) && !isClear_) {
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_SELECT) && !isClear_&&!isPlayerUp_) {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 		isMovie_ = !isMovie_;
@@ -197,11 +198,17 @@ void TutorealScene::update()
 	//クリアーしてたらプレイヤーをみない
 	if (!isClear_) {
 		if (world_->findActor("Player")->getPosition().y <= 700.0f) {
+			isPlayerUp_ = true;
 			playerUpCount_ -= 3.0f* Time::GetInstance().deltaTime();
+			if (!isMovie_)
+				mMovieAlpha -= 3.0f*Time::GetInstance().deltaTime();
 		}
 		else {
+			isPlayerUp_ = false;
+			mMovieAlpha += 3.0f*Time::GetInstance().deltaTime();
 			if (!isMovie_)
 				playerUpCount_ += 3.0f*Time::GetInstance().deltaTime();
+
 		}
 	}
 
@@ -266,7 +273,7 @@ void TutorealScene::update()
 	mClerAlpha = MathHelper::Clamp(mClerAlpha, 0.0f, 2.0f);
 	playerUpCount_ = MathHelper::Clamp(playerUpCount_, 0.0f, 1.0f);
 	playerUpAlpha_ = MathHelper::Lerp(0.0f, 255.0f, playerUpCount_);
-
+	mMovieAlpha = MathHelper::Clamp(mMovieAlpha, 0.0f, 1.0f);
 	starAnim_.update(Time::GetInstance().deltaTime());
 }
 
