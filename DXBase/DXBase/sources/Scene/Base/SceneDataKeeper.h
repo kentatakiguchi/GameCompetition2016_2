@@ -85,6 +85,36 @@ public:
 	void DamageMinus(int minusCount) {
 		damageCount_ -= minusCount;
 	}
+	void resultJumpSet(int result) {
+		jumpCountResult_ += result;
+	}
+	int resultJumpGet() {
+		return jumpCountResult_;
+	}
+	void addResultJump(int jumpCountResult) {
+		jumpCountResult_ += jumpCountResult;
+	}
+	void resultJumpReset() {
+		jumpCountResult_ = 0;
+	}
+	void resultJumpMinus(int minusCount) {
+		jumpCountResult_ -= minusCount;
+	}
+	void resultDamageSet(int result) {
+		damageCountResult_ += result;
+	}
+	int resultDamageGet() {
+		return damageCountResult_;
+	}
+	void addResultDamage(int damageCountResult) {
+		damageCountResult_ += damageCountResult;
+	}
+	void resultDamageReset() {
+		damageCountResult_ = 0;
+	}
+	void resultDamageMinus(int minusCount) {
+		damageCountResult_ -= minusCount;
+	}
 
 private:
 	std::string previousSceneName_;
@@ -92,7 +122,9 @@ private:
 	int itemCount_;
 	std::vector<int> maxItemCount_;
 	int jumpCount_;
+	int jumpCountResult_;
 	int damageCount_;
+	int damageCountResult_;
 };
 
 #endif

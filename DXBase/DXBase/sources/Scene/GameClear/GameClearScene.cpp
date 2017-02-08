@@ -170,7 +170,7 @@ void GameClearScene::draw() const {
 		heightPoint = 0;
 	}
 
-	DrawGraph((int)(SCREEN_SIZE.x/2 - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x), 600, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
+	DrawGraph((int)(SCREEN_SIZE.x/2 - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x), 450, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
 	
 	int drawNum = keeper_->GetItemCount();
 	int baseNum = keeper_->GetItemCount();
@@ -202,10 +202,82 @@ void GameClearScene::draw() const {
 	for (int i = 0; i < (int)drawNumberList.size(); i++) {
 
 		DrawGraph((int)((SCREEN_SIZE.x/2)
-			+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount), 600, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
+			+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount), 450, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
 
 		drawPosCount--;
 	}
+
+	///////////
+	drawNum = keeper_->resultJumpGet();
+	baseNum = keeper_->resultJumpGet();
+	posCount = 0;
+	drawNumberList.clear();
+
+	for (int i = 0;;) {
+
+		if (baseNum < 10) {
+			drawNumberList.push_back(baseNum);
+			//DrawGraph((SCREEN_SIZE.x - CountPos)
+			//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[baseNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[baseNum]), TRUE);
+			break;
+		}
+
+		drawNum = (int)(baseNum*0.1);
+		drawNum = drawNum * 10;
+		int textNum = baseNum - drawNum;
+
+		drawNumberList.push_back(textNum);
+		//DrawGraph((SCREEN_SIZE.x - CountPos) 
+		//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[textNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[textNum]), TRUE);
+
+		baseNum = (int)(baseNum*0.1);
+		posCount++;
+		//DrawFormatString(SCREEN_SIZE.x - 100, 50, GetColor(0, 0, 0), "%d", );
+	}
+	drawPosCount = drawNumberList.size() - 1;
+	for (int i = 0; i < (int)drawNumberList.size(); i++) {
+
+		DrawGraph((int)((SCREEN_SIZE.x / 2)
+			+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount), 570, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
+
+		drawPosCount--;
+	}
+
+	drawNum = keeper_->resultDamageGet();
+	baseNum = keeper_->resultDamageGet();
+	posCount = 0;
+	drawNumberList.clear();
+
+	for (int i = 0;;) {
+
+		if (baseNum < 10) {
+			drawNumberList.push_back(baseNum);
+			//DrawGraph((SCREEN_SIZE.x - CountPos)
+			//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[baseNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[baseNum]), TRUE);
+			break;
+		}
+
+		drawNum = (int)(baseNum*0.1);
+		drawNum = drawNum * 10;
+		int textNum = baseNum - drawNum;
+
+		drawNumberList.push_back(textNum);
+		//DrawGraph((SCREEN_SIZE.x - CountPos) 
+		//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[textNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[textNum]), TRUE);
+
+		baseNum = (int)(baseNum*0.1);
+		posCount++;
+		//DrawFormatString(SCREEN_SIZE.x - 100, 50, GetColor(0, 0, 0), "%d", );
+	}
+	drawPosCount = drawNumberList.size() - 1;
+	for (int i = 0; i < (int)drawNumberList.size(); i++) {
+
+		DrawGraph((int)((SCREEN_SIZE.x / 2)
+			+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount), 720, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
+
+		drawPosCount--;
+	}
+	/////////
 	//DrawGraph(textPoses.at(targetPoint).x, textPoses.at(targetPoint).y, ResourceLoader::GetInstance().getTextureID(TextureID::SELECT_TARGET_TEX), TRUE);
 	//mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
 	//mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);

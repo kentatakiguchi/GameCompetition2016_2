@@ -164,11 +164,15 @@ void GamePlayScene::start() {
 	}
 
 	world_->setCount(keeper_->GetItemCount());
+	keeper_->jumpReset();
+	keeper_->DamageReset();
 }
 
 void GamePlayScene::update() {
 	//keeper_->addJumpCount(1);
 	//world_->keeper_->addDamageCount(1);
+
+	
 
 	if (isClearStage_) {
 		if (clear_.update(name_, nextScene_)) {

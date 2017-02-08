@@ -224,6 +224,8 @@ void MainMenuScene::start() {
 	mCursorPos = Vector2(SCREEN_SIZE.x/2-128, 500);
 
 	keeper_->ItemReset();
+	keeper_->resultJumpReset();
+	keeper_->resultDamageReset();
 }
 
 void MainMenuScene::update() {

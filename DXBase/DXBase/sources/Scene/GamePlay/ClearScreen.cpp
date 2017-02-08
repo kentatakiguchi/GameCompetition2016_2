@@ -34,7 +34,8 @@ bool ClearScreen::update(std::string name, Scene& next)
 		next = Scene::StageClear;
 		//if (name == "stage04")next = Scene::BossStage01;
 		//else next = Scene::GamePlay;
-		
+		keeper_->addResultJump(keeper_->getJumpCount());
+		keeper_->addResultDamage(keeper_->getDamageCount());
 		return true;
 	}
 	return false;
