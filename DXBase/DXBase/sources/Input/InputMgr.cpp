@@ -118,7 +118,9 @@ bool InputMgr::IsPushButton(){
 		if(i != 0)return true;
 	}
 	for (auto i : ButtonName) {
-		if (current_button_state!=0)return true;
+		if (i.first == BUTTON_UP || i.first == BUTTON_DOWN || i.first == BUTTON_RIGHT || i.first == BUTTON_LEFT)continue;
+
+		if ((current_button_state&i.second) != 0)return true;
 	}
 	return false;
 }

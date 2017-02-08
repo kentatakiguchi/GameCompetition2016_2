@@ -43,7 +43,7 @@ GamePlayScene::~GamePlayScene() {
 
 void GamePlayScene::start() {
 
-	clear_ = ClearScreen();
+	clear_ = ClearScreen(keeper_);
 	isClearStage_ = false;
 
 	deltaTime_ = Time::GetInstance().deltaTime();
@@ -56,7 +56,7 @@ void GamePlayScene::start() {
 	stageFlag_ = true;
 
 	//SetDrawScreen(DX_SCREEN_BACK);
-	world_ = std::make_shared<World>();
+	world_ = std::make_shared<World>(keeper_);
 	world_->CollisitionOffOn(true);
 	MapGenerator gener = MapGenerator(world_.get());
 	int stg = keeper_->getNextSceneName(name_);
@@ -74,26 +74,32 @@ void GamePlayScene::start() {
 
 	gener.create("./resources/file/" + name_ + ".csv", 0, 0, stg);
 
-
-
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	if (name_ == "stage01") {
 		stageNum_ = 1;
 		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
+		
+		keeper_->setMaxItemCount(gener.getItemCount(), 1);
 	}
 	else if (name_ == "stage02") {
 		stageNum_ = 2;
 		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
+	
+		keeper_->setMaxItemCount(gener.getItemCount(), 2);
 	}
 	else if (name_ == "stage03") {
 		stageNum_ = 3;
 		world_->SetScreenPlayerPos(SCREEN_SIZE/2);
 		world_->SetScroolJudge(Vector2(1, 1),  world_->GetPlayerPos(),Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) - (SCREEN_SIZE.y / 2)));
+	
+		keeper_->setMaxItemCount(gener.getItemCount(), 3);
 	}
 	else if (name_ == "stage04") {
 		stageNum_ = 4;
 		world_->SetScreenPlayerPos(SCREEN_SIZE / 2);
 		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE-(SCREEN_SIZE.x-world_->GetScreenPlayerPos().x),csvSize.y*CHIPSIZE-(SCREEN_SIZE.y-world_->GetScreenPlayerPos().y)));
+	
+		keeper_->setMaxItemCount(gener.getItemCount(), 4);
 	}
 
 	backManager = new BackGraundManager(world_.get());
@@ -161,6 +167,9 @@ void GamePlayScene::start() {
 }
 
 void GamePlayScene::update() {
+	//keeper_->addJumpCount(1);
+	//world_->keeper_->addDamageCount(1);
+
 	if (isClearStage_) {
 		if (clear_.update(name_, nextScene_)) {
 			isEnd_ = true;

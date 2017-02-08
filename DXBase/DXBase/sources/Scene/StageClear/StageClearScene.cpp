@@ -76,20 +76,24 @@ void StageClearScene::start() {
 		backNum_ = 0;
 		boardNum_ = 0;
 		blockNum_ = 0;
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
 	}
 	if (keeper_->getSceneName() == "stage02") {
 		backNum_ = 0;
 		boardNum_ = 1;
 		blockNum_ = 1;
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
 	}
 	if (keeper_->getSceneName() == "stage03"){
 		backNum_ = 1;
 		boardNum_ = 2;
 		blockNum_ = 2;
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4), DX_PLAYTYPE_LOOP);
 	}if (keeper_->getSceneName() == "stage04") {
 		backNum_ = 2;
 		boardNum_ = 3;
 		blockNum_ = 3;
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
 	}
 	for (int i = 0; i < (int)titleTexs[backNum_].size(); i++) {
 		backManager->SetBackGraund(titleTexs[backNum_][i], titleTexs[backNum_][i]);
@@ -97,12 +101,12 @@ void StageClearScene::start() {
 
 
 	//Worldを生成し、プレイヤーを追加
-	world_ = std::make_shared<World>();
-	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), Vector2(-400, 900)));
+	world_ = std::make_shared<World>(keeper_);
+	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), Vector2(-400, 850)));
 
 	//プレイヤーは自動での移動、判定等は行わないようにする
 	world_->PlayerNotMove(true);
-	world_->CollisitionOffOn(false);
+	world_->CollisitionOffOn(true);
 
 	//経過時間の初期化
 	mIvemtTime = 0;
@@ -124,6 +128,13 @@ void StageClearScene::start() {
 	bossRotate = MaxRotate;
 
 	BoardPosition = SCREEN_SIZE-Vector2(0,ResourceLoader::GetInstance().GetTextureSize(BoardTexes[boardNum_]).y);
+
+	for (int i = 0; i < 30; i++) {
+		world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+			//ResourceLoader::GetInstance().getTextureID(TextureID::GOAL_TEX), world_.get(), Vector2(i*CHIPSIZE, 950)));
+			ResourceLoader::GetInstance().getTextureID(TextureID::BOARD_NULL_TEX), world_.get(), Vector2(i*CHIPSIZE, 950)));
+	}
+
 }
 void StageClearScene::update() {
 
@@ -215,7 +226,8 @@ void StageClearScene::draw() const {
 	
 	for (int i = 0; i < blockCount; i++)
 	{
-		DrawGraph(i*CHIPSIZE-floorPosition_, 950, ResourceLoader::GetInstance().getTextureID(BlockTexes[blockNum_]), TRUE);
+		DrawGraph(i*CHIPSIZE - floorPosition_, 950, ResourceLoader::GetInstance().getTextureID(BlockTexes[blockNum_]), TRUE);
+		DrawGraph(i*CHIPSIZE-floorPosition_, 950+CHIPSIZE, ResourceLoader::GetInstance().getTextureID(BlockTexes[blockNum_]), TRUE);
 	}
 
 	world_->draw();
@@ -228,6 +240,17 @@ void StageClearScene::draw() const {
 }
 
 void StageClearScene::end() {
+	if (keeper_->getSceneName() == "stage01") {
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
+	}
+	if (keeper_->getSceneName() == "stage02") {
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
+	}
+	if (keeper_->getSceneName() == "stage03") {
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4));
+	}if (keeper_->getSceneName() == "stage04") {
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
+	}
 }
 
 bool StageClearScene::isEnd() const {

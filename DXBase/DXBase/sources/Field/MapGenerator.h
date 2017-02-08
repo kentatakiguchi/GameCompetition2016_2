@@ -206,11 +206,13 @@ public:
 				if (reader_.geti(rowN, colN) == 16) {
 					world_->addActor(ActorGroup::Field, std::make_shared<ItemSpawnFloor>(
 						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]),world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					itemCount++;
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 17) {
 					world_->addActor(ActorGroup::Item, std::make_shared<Items>(
 						world_, Vector2(colN*CHIPSIZE + 48, rowN*CHIPSIZE + 48)));
+					itemCount++;
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 18) {
@@ -249,11 +251,13 @@ public:
 				if (reader_.geti(rowN, colN) == 50) {
 					// クリボーエネミー
 					world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), -1.0f));
+					itemCount++;
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 51) {
 					// クリボーエネミー
 					world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
+					itemCount++;
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 52) {
@@ -269,11 +273,13 @@ public:
 				if (reader_.geti(rowN, colN) == 54) {
 					// ハネクリボーエネミー
 					world_->addActor(ActorGroup::Enemy, std::make_shared<FlyingEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), -1.0f));
+					itemCount++;
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 55) {
 					// ハネクリボーエネミー
 					world_->addActor(ActorGroup::Enemy, std::make_shared<FlyingEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
+					itemCount++;
 					continue;
 				}
 				if (reader_.geti(rowN, colN) == 56) {
@@ -736,6 +742,11 @@ public:
 		CreateFloor(fS4BlockConnectChecker, stagenum, 21);
 		CreateFloor(fSubBlockConnectChecker, stagenum, 22);
 	}
+
+	int getItemCount() {
+		return itemCount;
+	}
+
 private:
 	void CreateFloor(std::vector<std::vector<bool>> baseBlockConnectChecker,int stagenum,int blockType) {
 		int blockCount;
@@ -881,7 +892,6 @@ private:
 			endPoint = segmentStartPoints[reader_.geti(rowN, colN)] + endSet;
 		}
 	}
-
 private:
 	//CSVのデータを引き出すためのクラス
 	CsvReader reader_;
@@ -896,6 +906,7 @@ private:
 
 	int rowSize;
 	int colSize;
+	int itemCount;
 };
 
 #endif // !MapGenerator

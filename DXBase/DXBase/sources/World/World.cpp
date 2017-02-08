@@ -4,7 +4,7 @@
 #include "../Actor/ScroolStop/ScroolStop.h"
 #include"../Actor/Person/Player/PlayerBody.h"
 // コンストラクタ
-World::World() :
+World::World(SceneDataKeeper* keeper) :
 	listener_([](EventMessage, void*) {}),
 	deltaTime_(0.0f),
 	is_clear_(false),
@@ -12,7 +12,8 @@ World::World() :
 	isLetOuted_(false),
 	isStopTime_(false),
 	mNoPlayerMove(false),itemCount_(0),getCount_(0),
-	playerScreenPos_(PLAYER_SCREEN_POSITION){
+	playerScreenPos_(PLAYER_SCREEN_POSITION),
+	keeper_(keeper){
 }
 
 // 更新

@@ -123,7 +123,7 @@ void TutorealScene::start()
 	//ポーズしない
 	isStopped_ = false;
 	//ワールド
-	world_ = std::make_shared<World>();
+	world_ = std::make_shared<World>(keeper_);
 	MapGenerator gener = MapGenerator(world_.get());
 	//ネームをセット
 	name_ = tutorels_[tutorealRoopCount_].csvName;

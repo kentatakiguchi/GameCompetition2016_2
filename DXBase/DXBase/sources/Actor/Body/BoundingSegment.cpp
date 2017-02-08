@@ -113,8 +113,10 @@ void BoundingSegment::draw(int spriteID, Matrix inv) const {
 	int yleCount = 0;
 	for (int yl = 0; yl < yleSpace; yl++) {
 		yleSpace = (int)((pos1.y + CHIPSIZE * ysizeCou) - (pos1.y*yl));
-		if (yleSpace > (pos1.y + CHIPSIZE * ysizeCou))break;
-
+		if (yleSpace > ((pos1.y + CHIPSIZE * (ysizeCou))+CHIPSIZE*25))
+		{
+			break;
+		}
 		tileSpace = (int)(pos1.x - pos0.x);
 
 		tileCount = 0;

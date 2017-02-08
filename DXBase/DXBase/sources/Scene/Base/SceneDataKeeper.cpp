@@ -1,10 +1,11 @@
 #include "SceneDataKeeper.h"
 
-SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage04"), hp_(0),itemCount_(0)
+SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage04"), hp_(0),itemCount_(0),jumpCount_(0),damageCount_(0)
 {
+	maxItemCount_.resize(5);
 }
 
-SceneDataKeeper::SceneDataKeeper(std::string name):previousSceneName_(name),hp_(0)
+SceneDataKeeper::SceneDataKeeper(std::string name):previousSceneName_(name),hp_(0), itemCount_(0), jumpCount_(0), damageCount_(0)
 {
 }
 

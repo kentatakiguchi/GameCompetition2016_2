@@ -41,6 +41,8 @@ void CreditScene::start() {
 	SetDrawScreen(DX_SCREEN_BACK);
 	timeCount = 3;
 
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU), DX_PLAYTYPE_LOOP);
+
 	creditPosY = 1080;
 }
 
@@ -83,7 +85,9 @@ void CreditScene::draw() const {
 	DrawGraph(0, creditPosY, ResourceLoader::GetInstance().getTextureID(TextureID::CREDIT_TEX), TRUE);
 }
 
-void CreditScene::end() {}
+void CreditScene::end() {
+	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU));
+}
 
 bool CreditScene::isEnd() const {
 	return isEnd_;

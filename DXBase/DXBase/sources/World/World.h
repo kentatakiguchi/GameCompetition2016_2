@@ -7,13 +7,14 @@
 #include <functional>
 #include <vector>
 #include "../Actor/Base/ActorGroup.h"
+#include"../Scene/Base/SceneDataKeeper.h"
 
 enum class EventMessage;
 
 class World : public IWorld {
 public:
 	// コンストラクタ
-	World();
+	World(SceneDataKeeper* keeper);
 	// 更新
 	void update(float deltaTime);
 	// 描画
@@ -183,7 +184,7 @@ public:
 	//1フレーム後
 	Vector2 mCurPos;
 	
-
+	SceneDataKeeper* keeper_;
 };
 
 #endif

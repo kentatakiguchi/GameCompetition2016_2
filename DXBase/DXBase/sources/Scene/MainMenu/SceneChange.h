@@ -68,7 +68,7 @@ private:
 	std::vector<int> useRand_;
 	//MainMenu以外のシーンをフェードイン,アウトさせるための値
 	int changeCount;
-
+	int soundVol;
 	bool isMainMenu_;
 
 	SceneChangeAnm anmer_;

@@ -35,7 +35,7 @@ void BossStage::start() {
 	deltaTime_ = Time::GetInstance().deltaTime();
 	isStopped_ = false;
 	SetDrawScreen(DX_SCREEN_BACK);
-	world_ = std::make_shared<World>();
+	world_ = std::make_shared<World>(keeper_);
 
 	world_->SetScroolJudge(Vector2(1, 1),Vector2::Zero, Vector2(3000, 8000));
 	MapGenerator gener = MapGenerator(world_.get());
@@ -80,8 +80,6 @@ void BossStage::start() {
 
 	hatenaAnm_.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::HATENA));
 	hatenaAnm_.change_param(0, 0.0f);
-
-	keeper_->setItemCount(200);
 
 	isStarDraw_ = false;
 	starPosition_.clear();
