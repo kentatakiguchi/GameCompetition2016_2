@@ -25,9 +25,9 @@ void LoadingScene::start(){
 	mLoadPuyo.change_param(0);
 	//“®‰æ“Ç‚İ‚İ‚ª”ñ“¯Šú“Ç‚İ‚İ‚É‘Î‰‚µ‚Ä‚¢‚È‚¢‚½‚ß
 	//“®‰æ
-	//Movie::GetInstance().Load(MOVIE_ID::TUTPREAL_01_MOVIE, "./resources/Movie/tutorial01.wmv");
-	//Movie::GetInstance().Load(MOVIE_ID::TUTPREAL_02_MOVIE, "./resources/Movie/tutorial02.wmv");
-	//Movie::GetInstance().Load(MOVIE_ID::TUTPREAL_03_MOVIE, "./resources/Movie/tutorial03.wmv");
+	Movie::GetInstance().Load(MOVIE_ID::TUTPREAL_01_MOVIE, "./resources/Movie/tutorial01.wmv");
+	Movie::GetInstance().Load(MOVIE_ID::TUTPREAL_02_MOVIE, "./resources/Movie/tutorial02.wmv");
+	Movie::GetInstance().Load(MOVIE_ID::TUTPREAL_03_MOVIE, "./resources/Movie/tutorial03.wmv");
 	//”ñ“¯Šú“Ç‚İ‚İ‚ğŠJn
 	SetUseASyncLoadFlag(TRUE);
 	
