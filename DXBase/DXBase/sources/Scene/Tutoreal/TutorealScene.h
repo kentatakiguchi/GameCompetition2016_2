@@ -109,4 +109,6 @@ private:
 	std::vector<StarState> starState_;
 	std::vector<Vector2>starPoss_;
 	Animation2D starAnim_;
+	//ƒvƒŒƒCƒ„[‚ªã‚É‚¢‚é‚©
+	bool isPlayerUp_;
 };

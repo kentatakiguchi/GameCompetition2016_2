@@ -20,6 +20,9 @@ public:
 	void draw(const Vector2& position, const Vector2& origin = Vector2::Zero, const float& scale = 1, const float& degree = 0, const Vector3& color = Vector3(255, 255, 255)) const;
 	// 座標,軸,拡大率,回転角度(度数法),
 	void draw(const Vector2& position, const Vector2& origin = Vector2::Zero, const Vector2& scale = Vector2::One, const float& degree = 0, const Vector3& color = Vector3(255, 255, 255)) const;
+	//反転付き
+	void drawTurn(const Vector2& position, const Vector2& origin = Vector2::Zero, const float& scale = 1, const float& degree = 0, const Vector3& color = Vector3(255, 255, 255),bool reversal=false) const;
+
 public:
 	void add_anim(const int & id, const std::vector<int>& anims);
 	// アニメーションの変更(速度のみ変更も可能)

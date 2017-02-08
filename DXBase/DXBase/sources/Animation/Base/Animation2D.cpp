@@ -73,4 +73,14 @@ void Animation2D::draw(const Vector2& position, const Vector2& origin, const Vec
 	SetDrawBright(255, 255, 255);
 }
 
+void Animation2D::drawTurn(const Vector2 & position, const Vector2 & origin, const float & scale, const float & degree, const Vector3 & color, bool reversal) const
+{
+	SetDrawBright(static_cast<int>(color.x), static_cast<int>(color.y), static_cast<int>(color.z));
+	//度数法→弧度法に変換
+	float radian = MathHelper::ToRadians(degree);
+	DrawRotaGraph3(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(origin.x), static_cast<int>(origin.y), scale, scale, radian, id_, TRUE, reversal);
+	SetDrawBright(255, 255, 255);
+
+}
+
 

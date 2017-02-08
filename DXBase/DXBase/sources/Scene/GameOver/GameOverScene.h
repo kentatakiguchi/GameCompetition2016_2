@@ -28,8 +28,12 @@ private:
 	// キャラアニメーション
 	PlayerAnimation2D mButtyAnim;
 	PlayerAnimation2D mRettyAnim;
+	Animation2D mBossAnim;
+	Vector2 mBossPos;
 	// 選択時の座標
 	Vector2 mCursorPos;
+	float mBossScale;
+	float mBossCount;
 };
 
 #endif

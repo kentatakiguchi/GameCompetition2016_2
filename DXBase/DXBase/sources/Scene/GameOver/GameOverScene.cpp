@@ -9,7 +9,7 @@ GameOverScene::GameOverScene(SceneDataKeeper* keeper) :
 	nextScene[1] = GamePlay;
 	nextScene[2] = MainMenu;
 	nextScene[3] = BossStage01;
-	
+
 	textIDs[0] = TextureID::TEXT_GAMEOVER_TEX;
 	textIDs[1] = TextureID::TEXT_RETRY_TEX;
 	textIDs[2] = TextureID::TEXT_MENUBACK_TEX;
@@ -40,10 +40,9 @@ GameOverScene::GameOverScene(SceneDataKeeper* keeper) :
 	textPoses[2] = Vector2(500, 700);
 	textPosList.push_back(textPoses[2]);
 	changeTextList.clear();
-
 }
 
-GameOverScene::~GameOverScene(){
+GameOverScene::~GameOverScene() {
 
 }
 
@@ -67,7 +66,12 @@ void GameOverScene::start() {
 	mRettyAnim.change(PlayerAnimID::DEATH);
 
 	//mCursorPos = Vector2(500, 500);
+	mBossPos = Vector2(SCREEN_SIZE / 2);
 	mCursorPos = Vector2(SCREEN_SIZE.x / 2 - 128, 500);
+	mBossAnim.add_anim(10, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::BOSS_WALLATTACK_DASH_TEX));
+	mBossAnim.change_param(10, 1);
+	mBossCount = 0.0f;
+	mBossScale = 1.0f;
 }
 
 void GameOverScene::update() {
@@ -118,13 +122,28 @@ void GameOverScene::update() {
 	if (mButtyAnim.end_anim()) mButtyAnim.change(PlayerAnimID::DEATH, 0.0f);
 	if (mRettyAnim.end_anim()) mRettyAnim.change(PlayerAnimID::DEATH, 0.0f);
 
+
+	//‰ñ‚Á‚Ä‚¢‚éƒ{ƒX‚ÌŠÖŒW
+	mBossCount += 100.0f*Time::GetInstance().deltaTime();
+	mBossPos = ((Vector2(MathHelper::Sin(mBossCount)*288.0f, MathHelper::Cos(mBossCount)*32.0f)) + SCREEN_SIZE / 2) - Vector2(32, 0);
+	mBossScale = MathHelper::Lerp(1.5f, 1.9f, MathHelper::Sin(mBossCount + 90.0f));
+
 	mButtyAnim.update(Time::GetInstance().deltaTime());
 	mRettyAnim.update(Time::GetInstance().deltaTime());
-
+	mBossAnim.update(Time::GetInstance().deltaTime());
 	mCursorPos = Vector2::Lerp(mCursorPos, textPoses.at(targetPoint), 0.5f);
 }
 
 void GameOverScene::draw() const {
+	if (MathHelper::Cos(mBossCount) >= 0.0f) {
+		DrawGraph(0, 0, ResourceLoader::GetInstance().getTextureID(TextureID::GAMEOVER_TEX), true);
+		mBossAnim.drawTurn(mBossPos - Vector2(128, 182), Vector2::Zero, mBossScale, 0, Vector3(70, 70, 70), true);
+	}
+	else {
+		mBossAnim.drawTurn(mBossPos - Vector2(128, 182), Vector2::Zero, mBossScale, 0, Vector3(70, 70, 70), false);
+		DrawGraph(0, 0, ResourceLoader::GetInstance().getTextureID(TextureID::GAMEOVER_TEX), true);
+	}
+
 	int strLen, strWidth, center, count, heightPoint;
 	count = 0;
 	heightPoint = 0;
@@ -137,10 +156,10 @@ void GameOverScene::draw() const {
 			//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
 			if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
 
-			if (count == targetPoint||(targetPoint==3&&count==1)) {
-				DrawRotaGraph2(center, (int)textPosList.at(count).y, (int)(ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2),0, 1.5, 0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
+			if (count == targetPoint || (targetPoint == 3 && count == 1)) {
+				DrawRotaGraph2(center, (int)textPosList.at(count).y, (int)(ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2), 0, 1.5, 0, ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
-			else if (count>targetPoint||targetPoint==3&&count!=0) {
+			else if (count > targetPoint || targetPoint == 3 && count != 0) {
 				DrawGraph((int)(center - ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).x / 2), static_cast<int>(textPosList.at(count).y + ResourceLoader::GetInstance().GetTextureSize(textIDs.at(count)).y / 2), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
 			}
 			else {
@@ -160,10 +179,9 @@ void GameOverScene::draw() const {
 	//mButtyAnim.draw(mCursorPos, Vector2::Zero, 0.5f);
 	//mRettyAnim.draw(mCursorPos + Vector2::Right * 780, Vector2::Zero, 0.5f);
 	Vector2 ysetVect = Vector2(0, ResourceLoader::GetInstance().GetTextureSize(textIDs.at(targetPoint)).y / 4);
-	
-	mButtyAnim.draw(mCursorPos + Vector2::Left * 120+ysetVect, Vector2::Zero, 0.5f);
-	mRettyAnim.draw(mCursorPos + Vector2::Right * 920+ysetVect, Vector2::Zero, 0.5f);
 
+	mButtyAnim.draw(mCursorPos + Vector2::Left * 120 + ysetVect, Vector2::Zero, 0.5f);
+	mRettyAnim.draw(mCursorPos + Vector2::Right * 920 + ysetVect, Vector2::Zero, 0.5f);
 }
 
 void GameOverScene::end() {
