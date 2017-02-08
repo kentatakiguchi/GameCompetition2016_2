@@ -289,13 +289,17 @@ void BaseBoss::updateState(float deltaTime)
 	}
 	player_ = world_->findActor("PlayerBody1");
 	// 体力が0以下になったら死亡
-	if (hp_ <= 0 && state_ != State::LiftIdel && state_ != State::LiftMove) {
+	if (hp_ <= 0 && state_ != State::Dead && 
+		state_ != State::LiftIdel && state_ != State::LiftMove) {
 		name_ = "DeadBoss";
 		isAttackHit_ = false;
 		// エフェクトの削除
 		auto effect = world_->findActor("EntrySignEffect");
 		if (effect != nullptr)
 			effect->dead();
+		PlaySoundMem(
+			ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_DEAD),
+			DX_PLAYTYPE_BACK);
 		changeState(State::Dead, DEATH_NUMBER);
 	}
 	// 状態の更新
@@ -492,10 +496,13 @@ void BaseBoss::boko(float deltaTime)
 void BaseBoss::deadMove(float deltaTime)
 {
 	animation_.setIsLoop(false);
-	// 音量の調整
+	// 重力
+	position_.y += 9.8f * deltaTimer_;
+	if (stateTimer_ < 3.0f) return;
+	// BGMの音量の調整
 	auto bgm = ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5);
 	if (CheckSoundMem(bgm) == 1) {
-		bgmVolume_ -= deltaTime * 0.5f;
+		bgmVolume_ -= deltaTime / 4.0f;
 		bgmVolume_ = max(bgmVolume_, 0.0f);
 		ChangeVolumeSoundMem(255 * bgmVolume_, bgm);
 		// 音量が0になったら止める
@@ -504,9 +511,6 @@ void BaseBoss::deadMove(float deltaTime)
 			ChangeVolumeSoundMem(255, bgm);
 		}
 	}
-	// 重力
-	position_.y += 9.8f * deltaTimer_;
-	if (stateTimer_ < 3.0f) return;
 	// ミニボスの生成
 	if (isEffectCreate_ && miniBossCreateCount_ < 30 && 
 		(int)effectCreateTimer_ % 10 <= 5) {

@@ -46,10 +46,8 @@ void JumpAttack::attack(float deltaTime)
 
 	if (collideObj_ != nullptr)
 		otherName_ = collideObj_->getName();
-	// 前回衝突したオブジェクトの名前を更新
-	prevOtherName_ = otherName_;
-	otherName_ = "";
-	collideObj_ = nullptr;
+	if (otherName_ == "PlayerAttackCollider")
+		isAttackHit_ = false;
 	if (!isFirstJump_) {
 		// 方向の設定
 		auto distance = pPosition_ - position_;
@@ -107,6 +105,10 @@ void JumpAttack::attack(float deltaTime)
 	// リキャスト状態でなければジャンプ攻撃
 	if (recastTimer_ == initRecastTimer_)
 		jump(deltaTime);
+	// 前回衝突したオブジェクトの名前を更新
+	prevOtherName_ = otherName_;
+	otherName_ = "";
+	collideObj_ = nullptr;
 }
 
 // ジャンプ攻撃

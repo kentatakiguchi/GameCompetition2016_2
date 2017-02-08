@@ -34,5 +34,6 @@ void ThreeJumpAttack::attack(float deltaTime)
 void ThreeJumpAttack::Refresh()
 {
 	JumpAttack::Refresh();
+	isAttackHit_ = true;
 	jumpCount_ = initJumpCount_;
 }

@@ -324,6 +324,11 @@ void LoadingScene::load_se_res(){
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_DAMAGE, "./resources/sounds/boss/boss_dame.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_JUMP, "./resources/sounds/boss/boss_jump.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_WALLATTACK, "./resources/sounds/boss/boss2_attack.mp3");
+	SetCreateSoundPitchRate(600.0f);
+	SetCreateSoundTimeStretchRate(3.0f);
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_DEAD, "./resources/sounds/boss/boss_dame.mp3");
+	SetCreateSoundTimeStretchRate(1.0f);
+	SetCreateSoundPitchRate(0.0f);
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_WIND, "./resources/sounds/boss/boss_wind.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_POKO, "./resources/sounds/boss/boss_poko.mp3");
 
