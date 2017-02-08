@@ -4,6 +4,10 @@ ResourceLoader::ResourceLoader() {
 }
 
 ResourceLoader::~ResourceLoader() {
+	models_.clear();
+	textures_.clear();
+	sounds_.clear();
+	animations_.clear();
 }
 
 ResourceLoader & ResourceLoader::GetInstance() {
@@ -12,26 +16,26 @@ ResourceLoader & ResourceLoader::GetInstance() {
 }
 
 void ResourceLoader::loadModel(const ModelID& id, const char* file_name) {
+	int handle = MV1LoadModel(file_name);
+
+	if (handle == -1) throw std::string("ファイルは存在しません");
+
 	//if (MV1LoadModel(file_name) == -1)DxLib_End();
-	models_[id] = MV1LoadModel(file_name);
+	models_[id] = handle;
 }
 
 void ResourceLoader::loadTexture(const TextureID& id, const char* file_name) {
+	int handle = LoadGraph(file_name);
+
+	if (handle == -1) throw std::string("ファイルは存在しません");
+
+	textures_[id] = handle;
 	//if (LoadGraph(file_name) == -1)DxLib_End();
-	textures_[id] = LoadGraph(file_name);
+	//textures_[id] = LoadGraph(file_name);
 }
 
-void ResourceLoader::loadAnimation(const AnimationID & id, const char * file_name, const Vector2 & size, const int & row, const int & column, const int & surplus)
-{
-	//int handle = LoadGraph(file_name);
-	//for (int i = 0; i < column; ++i) {
-	//	for (int j = 0; j < ((i < column - 1) ? row : row - surplus); ++j) {
-	//		// 切り取る左上の座標
-	//		Vector2 src = Vector2(j * size.x, i * size.y);
-
-
-	//	}
-	//}
+void ResourceLoader::loadAnimation(const AnimationID & id, const char * file_name, const Vector2 & size, const int & row, const int & column, const int & surplus){
+	if (LoadGraph(file_name) == -1) throw std::string("ファイルは存在しません");
 
 	animationsSize_[id] = size;
 
@@ -47,7 +51,11 @@ void ResourceLoader::loadAnimation(const AnimationID& id, const char * file_name
 }
 
 void ResourceLoader::loadSound(const SoundID& id, const char * file_name){
-	sounds_[id] = LoadSoundMem(file_name);
+	int handle = LoadSoundMem(file_name);
+
+	if (handle == -1) throw std::string("ファイルは存在しません");
+
+	sounds_[id] = handle;
 }
 
 int ResourceLoader::getModelID(const ModelID& id) {

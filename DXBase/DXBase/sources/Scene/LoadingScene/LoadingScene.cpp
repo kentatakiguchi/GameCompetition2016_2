@@ -244,8 +244,8 @@ void LoadingScene::load_player_res(){
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::PLAYER_RETTY_TURN,		"./resources/sprite/actor/player/retty/r_turn.png",			256, 8, 2, 5);
 
 	//エフェクト
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::PLAYER_EFFECT_SEP_MOVE,"./resources/sprite/actor/effect/Separation_move.png",		256, 8, 6, 0);
-	ResourceLoader::GetInstance().loadAnimation(AnimationID::PLAYER_EFFECT_SEP_EXP, "./resources/sprite/actor/effect/Separation.png",			256, 7, 9, 6);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::PLAYER_EFFECT_SEP_MOVE,"./resources/sprite/actor/effect/Separation_move.png",		256, 7, 9, 6);
+	ResourceLoader::GetInstance().loadAnimation(AnimationID::PLAYER_EFFECT_SEP_EXP, "./resources/sprite/actor/effect/Separation.png",			256, 8, 6, 0);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::PLAYER_EFFECT_SHOUGEKI, "./resources/sprite/actor/effect/large_cell_256_256_syougeki_sun2.png", 256, 5, 5, 0);
 }
 

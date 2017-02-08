@@ -1,5 +1,7 @@
 #include "PlayerState_Single_Idle.h"
 
+#include "../../../../Effect/PlayerEffectObj.h"
+
 PlayerState_Single_Idle::PlayerState_Single_Idle(const Keys& keys) : PlayerState_Single(keys) {
 	NumIDs[0] = TextureID::NUMBER_ZERO_TEX;
 	NumIDs[1] = TextureID::NUMBER_ONE_TEX;
@@ -30,7 +32,9 @@ void PlayerState_Single_Idle::update(float deltaTime){
 	if (timer_ >= PLAYER_DEAD_LIMIT) {
 		change(StateElement((unsigned int)PlayerState_Enum_Single::DEAD));
 	}
-
+	if (static_cast<int>(timer_ * 60) % 60 == 0) {
+		body_->getWorld()->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(body_->getWorld(), body_->getPosition(), PlayerEffectID::SEP_MOVE, 5.0f, 0.5f));
+	}
 	if ((int)(timer_ * 10) % 2 < 1) body_->alpha_ -= (int)(deltaTime * static_cast<float>(GetRefreshRate()) * 20);
 	else body_->alpha_ += deltaTime * static_cast<float>(GetRefreshRate()) * 20;
 	body_->alpha_ = MathHelper::Clamp(body_->alpha_, 100, 255);
@@ -69,15 +73,15 @@ void PlayerState_Single_Idle::end(){
 }
 
 void PlayerState_Single_Idle::key_input(float deltaTime){
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) || InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT)) {
-		target_ += body_->get_partner_vector() * 20 * deltaTime * static_cast<float>(GetRefreshRate());
-	}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) || InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT)) {
+	//	target_ += body_->get_partner_vector() * 20 / body_->getWorld()->GetKeeper()->getDamageCount() * deltaTime * static_cast<float>(GetRefreshRate());
+	//}
 
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT)) {
-		target_ += body_->get_partner_vector() * 20 * deltaTime * static_cast<float>(GetRefreshRate());
+		target_ += body_->get_partner_vector() * 20 / body_->getWorld()->GetKeeper()->getDamageCount() * deltaTime * static_cast<float>(GetRefreshRate());
 	}
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT)) {
-		target_ += body_->get_partner_vector() * 20 * deltaTime * static_cast<float>(GetRefreshRate());
+		target_ += body_->get_partner_vector() * 20 / body_->getWorld()->GetKeeper()->getDamageCount() * deltaTime * static_cast<float>(GetRefreshRate());
 	}
 
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT)) {
@@ -96,10 +100,10 @@ void PlayerState_Single_Idle::key_input(float deltaTime){
 
 void PlayerState_Single_Idle::pad_input(float deltaTime) {
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1)) {
-		target_ += body_->get_partner_vector() * 20 * deltaTime * static_cast<float>(GetRefreshRate());
+		target_ += body_->get_partner_vector() * 20 / body_->getWorld()->GetKeeper()->getDamageCount() * deltaTime * static_cast<float>(GetRefreshRate());
 	}
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1)) {
-		target_ += body_->get_partner_vector() * 20 * deltaTime * static_cast<float>(GetRefreshRate());
+		target_ += body_->get_partner_vector() * 20 / body_->getWorld()->GetKeeper()->getDamageCount() * deltaTime * static_cast<float>(GetRefreshRate());
 	}
 
 	if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1)) {

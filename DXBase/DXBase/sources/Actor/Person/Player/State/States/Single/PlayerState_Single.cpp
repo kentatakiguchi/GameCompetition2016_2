@@ -27,9 +27,7 @@ void PlayerState_Single::input(float deltaTime){
 void PlayerState_Single::common_update(float deltaTime){
 
 	timer_ += deltaTime;
-	if (static_cast<int>(timer_) % 60 == 0) {
-		body_->getWorld()->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(body_->getWorld(), body_->getPosition(), PlayerEffectID::SEP_MOVE, 5.0f, 0.5f));
-	}
+
 
 	body_->collider();
 	body_->velocity() = Vector2::One;

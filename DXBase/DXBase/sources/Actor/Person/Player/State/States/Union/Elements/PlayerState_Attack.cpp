@@ -28,6 +28,8 @@ void PlayerState_Attack::unique_init(){
 	auto attackColl = std::make_shared<PlayerBodyCollider>(cntr_->getWorld(), std::string("PlayerAttack"));
 	cntr_->getWorld()->addActor(ActorGroup::Player_Collider, attackColl);
 	attackColl_ = attackColl;
+
+	cntr_->getWorld()->GetKeeper()->addJumpCount(1);
 }
 
 void PlayerState_Attack::update(float deltaTime) {

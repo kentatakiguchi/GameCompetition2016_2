@@ -139,6 +139,9 @@ public:
 	virtual int getGetCount()override {
 		return getCount_;
 	}
+	virtual SceneDataKeeper* GetKeeper()override {
+		return keeper_;
+	}
 private:
 	// アクターマネージャー
 	ActorManager	actors_;

@@ -3,6 +3,7 @@
 
 #include "../Actor/Base/Actor.h"
 #include "../Field/FieldPtr.h"
+#include"../Scene/Base/SceneDataKeeper.h"
 #include <string>
 #include <vector>
 enum class ActorGroup;
@@ -53,6 +54,7 @@ public:
 	//プレイヤーの操作不能にするかどうかを取得
 	virtual bool GetPlayerNotMove() = 0;
 	virtual Vector2 GetScreenPlayerPos()=0;
+	virtual SceneDataKeeper* GetKeeper() = 0;
 	// メッセージの送信
 	virtual void sendMessage(EventMessage message, void* param = nullptr) = 0;
 	virtual Vector2 GetPlayerPos() = 0;
