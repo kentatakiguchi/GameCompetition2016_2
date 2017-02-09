@@ -1,9 +1,13 @@
 #include "HurryUpUI.h"
 
 #include "../../../ResourceLoader/ResourceLoader.h"
+#include "../../../Input/InputMgr.h"
+#include "../../../Define.h"
+#include "../../../World/IWorld.h"
 
 HurryUpUI::HurryUpUI(IWorld * world) :
-	ActorUI(world, Vector2::Zero){
+	ActorUI(world, Vector2::Zero),
+	timer_(0.0f){
 	NumIDs[0] = TextureID::NUMBER_ZERO_TEX;
 	NumIDs[1] = TextureID::NUMBER_ONE_TEX;
 	NumIDs[2] = TextureID::NUMBER_TWO_TEX;
@@ -46,8 +50,9 @@ void HurryUpUI::onUpdate(float deltaTime){
 		button_R1_ = TextureID::BUTTON_R1_UP_TEX;
 	}
 
-	//auto cntr = world_->findActor(std::string("PlayerConnector"));
-	//if (cntr != nullptr) dead();
+	auto cntr = world_->findActor(std::string("PlayerConnector"));
+	if (cntr == nullptr)return;
+		dead();
 }
 
 void HurryUpUI::onDraw() const{

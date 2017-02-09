@@ -5,17 +5,13 @@
 
 #include "ActorPtr.h"
 #include "../../Field/FieldPtr.h"
-#include "../../Input/InputMgr.h"
 #include "../../Math/Math.h"
-#include "../Body/Body.h"
 #include "../Body/BoundingBox.h"
 #include "../Body/BoundingCapsule.h"
 #include "../Body/BoundingCircle.h"
 #include "../Body/BoundingSegment.h"
 #include"..//Body/CollisionBase.h"
-#include "../../Define.h"
 #include <string>
-#include <memory>
 #include <functional>
 #include <forward_list>
 
@@ -75,8 +71,6 @@ public:
 	void clearChildren();
 	//子を取得
 	std::forward_list<ActorPtr> getChildren();
-	// モーションの設定
-	void setMotion(unsigned int motion);
 	// Transformの設定
 	void setTransform(Vector2 pos, Matrix rot);
 	// Worldの取得
@@ -105,9 +99,7 @@ private:
 public:
 	// 衝突判定
 	bool isCollide(Actor& other);
-	void translate(Vector2& position) {
-		body_.translate(position);
-	}
+	void translate(Vector2& position);
 public:
 	// ワールド
 	IWorld*				world_;
@@ -121,10 +113,6 @@ public:
 	CollisionBase		body_;
 	// 死亡フラグ
 	bool				dead_;
-	// モデルハンドル
-	unsigned int		modelHandle_;
-	// モーションID
-	unsigned int		motion_;
 
 	float				alpha_;
 

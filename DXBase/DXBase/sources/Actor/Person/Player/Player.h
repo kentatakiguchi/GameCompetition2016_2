@@ -32,5 +32,6 @@ private:
 	PlayerBodyPtr butty_;
 	// body(ê‘)
 	PlayerBodyPtr retty_;
+	Vector2 prePos_;
 };
 

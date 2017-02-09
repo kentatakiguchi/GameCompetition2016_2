@@ -8,6 +8,8 @@
 #include "../../../Player.h"
 #include "../../../PlayerBody.h"
 
+#include "../../../../../../Input/KeyCode.h"
+
 // 各プレイヤーステートの基底クラス
 class PlayerState_Single : public IState {
 public:

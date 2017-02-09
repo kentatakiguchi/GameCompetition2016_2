@@ -1,5 +1,8 @@
 #include "PlayerState_HoldBase.h"
 
+#include "../../../../../../../../../Define.h"
+#include "../../../../../../../../../Input/InputMgr.h"
+
 PlayerState_HoldBase::PlayerState_HoldBase(const PlayerBodyPtr & butty, const PlayerBodyPtr & retty) : PlayerState_Union(butty, retty) {}
 
 void PlayerState_HoldBase::unique_init(){

@@ -2,12 +2,9 @@
 #define WORLD_H_
 
 #include "IWorld.h"
+#include "ScrollJudge.h"
 #include "../Actor/Base/ActorManager.h"
-#include "../Field/FieldPtr.h"
-#include <functional>
-#include <vector>
-#include "../Actor/Base/ActorGroup.h"
-#include"../Scene/Base/SceneDataKeeper.h"
+#include "../Scene/Base/SceneDataKeeper.h"
 
 enum class EventMessage;
 

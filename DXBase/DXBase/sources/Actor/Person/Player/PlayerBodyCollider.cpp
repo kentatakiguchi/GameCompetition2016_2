@@ -2,6 +2,8 @@
 
 #include "../../../Field/Field.h"
 
+#include "../../../Define.h"
+
 PlayerBodyCollider::PlayerBodyCollider(IWorld * world, std::string& name):
 	Actor(world, name + "Collider", Vector2::Zero, CollisionBase(Vector2(0, 0), PLAYER_COLLIDER_RADIUS)){
 }

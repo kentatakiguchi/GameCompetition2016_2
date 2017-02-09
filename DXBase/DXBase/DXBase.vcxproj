@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="sources\Actor\BackGraundManager\BackGraundManager.h" />
+    <ClInclude Include="sources\Actor\BackGraundManager\ScroolJudge.h" />
     <ClInclude Include="sources\Actor\Base\Actor.h" />
     <ClInclude Include="sources\Actor\Base\ActorGroup.h" />
     <ClInclude Include="sources\Actor\Base\ActorManager.h" />
@@ -347,6 +348,7 @@
     <ClInclude Include="sources\Scene\Tutoreal\TutorealScene.h" />
     <ClInclude Include="sources\World\IWorld.h" />
     <ClInclude Include="sources\World\IWorldPtr.h" />
+    <ClInclude Include="sources\World\ScrollJudge.h" />
     <ClInclude Include="sources\World\World.h" />
   </ItemGroup>
   <ItemGroup>

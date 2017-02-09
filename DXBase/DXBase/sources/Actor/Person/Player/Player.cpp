@@ -5,9 +5,14 @@
 #include "PlayerBody.h"
 #include "PlayerConnector.h"
 
+#include "../../../Define.h"
+ 
+#include "../../../Scene/Base/SceneDataKeeper.h"
+
 // コンストラクタ
 Player::Player(IWorld * world, const Vector2 & position) :
-	Actor(world, "Player", position, CollisionBase()) {
+	Actor(world, "Player", position, CollisionBase()),
+	prePos_(Vector2::Zero){
 	// bodyの生成
 	create_bodys();
 	// コネクタの生成
@@ -22,6 +27,9 @@ void Player::onUpdate(float deltaTime) {
 	// 座標を二つのプレイヤーの中心に固定
 	position_ = center();
 
+	world_->GetKeeper()->addMoveDistance(Vector2::Distance(position_, prePos_));
+
+	prePos_ = position_;
 	// 指定stateの更新
 	if (!world_->GetPlayerNotMove()) {
 		update_state(deltaTime);

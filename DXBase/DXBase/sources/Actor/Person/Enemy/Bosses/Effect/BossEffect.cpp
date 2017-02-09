@@ -10,7 +10,7 @@ BossEffect::BossEffect(
 	const bool isLoop) :
 	Actor(world, name, position,CollisionBase()),
 	animation_(EnemyAnimation2D()),
-	alpha_(255),
+	//alpha_(255),
 	scale_(1.0f),
 	isLoop_(isLoop),
 	texSize_(texSize)

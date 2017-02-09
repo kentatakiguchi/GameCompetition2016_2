@@ -4,16 +4,7 @@
 #include "DxLib.h"
 
 #include "ActorPtr.h"
-#include "../../Input/InputMgr.h"
 #include "../../Math/Math.h"
-#include "../../Animation/Base/Animation.h"
-#include "../../Define.h"
-#include "../../Math/Vector2.h"
-#include "../../World/IWorld.h"
-#include <string>
-#include <memory>
-#include <functional>
-#include <forward_list>
 
 class IWorld;
 

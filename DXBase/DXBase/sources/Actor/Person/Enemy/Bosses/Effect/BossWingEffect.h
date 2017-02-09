@@ -48,7 +48,7 @@ private:
 	float stateTimer_;	// 状態タイマ
 	float bezierTimer_;	// ベジェタイマ
 	float flyPower_;	// 排出時の力
-	float alpha_;		// テクスチャの透明度
+	//float alpha_;		// テクスチャの透明度
 	bool isTexTurn_;	// テクスチャを反転するか
 	Vector2 direction_;	// 方向
 	Vector3 color_;

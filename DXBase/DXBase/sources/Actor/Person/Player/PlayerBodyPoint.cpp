@@ -2,6 +2,10 @@
 
 #include "PlayerConnector.h"
 
+#include "../../../Input/InputMgr.h"
+
+#include "../../../Define.h"
+
 #include "../../../Field/Field.h"
 // コンストラクタ
 PlayerBodyPoint::PlayerBodyPoint(IWorld * world, const Vector2 & position, const int& index) :

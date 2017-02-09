@@ -2,11 +2,13 @@
 
 #include "../../../../Effect/PlayerEffectObj.h"
 #include "../../../../../../UIActor/HurryUpUI/HurryUpUI.h"
+#include "../../../../../../../Input/InputMgr.h"
+#include "../../../../../../../Define.h"
+#include "../../../../../../../Scene/Base/SceneDataKeeper.h"
 
 PlayerState_Single_Idle::PlayerState_Single_Idle(const Keys& keys) : PlayerState_Single(keys) {}
 
 void PlayerState_Single_Idle::unique_init(){
-	body_->getWorld()->addUIActor(std::make_shared<HurryUpUI>(body_->getWorld()));
 
 	body_->reset_enemy();
 	body_->animation().change(PlayerAnimID::DIV_IDLE);
@@ -19,6 +21,10 @@ void PlayerState_Single_Idle::unique_init(){
 	else {
 		body_->animation().change_dir(PlayerAnimID::DIV_IDLE, ActionType::Left);
 	}
+
+	if (is_butty())return;
+
+	body_->getWorld()->addUIActor(std::make_shared<HurryUpUI>(body_->getWorld()));
 }
 
 void PlayerState_Single_Idle::update(float deltaTime){
@@ -43,30 +49,19 @@ void PlayerState_Single_Idle::collide(const Actor & other){
 }
 
 void PlayerState_Single_Idle::draw() const {
-	if (is_butty())return;
-
-	//DrawGraph(static_cast<int>(SCREEN_SIZE.x) / 2, static_cast<int>(SCREEN_SIZE.y) / 2, ResourceLoader::GetInstance().getTextureID(NumIDs.at(graphNum)), TRUE);
-	//DrawFormatString(0, 0, GetColor(255, 255, 255), "%f", PLAYER_DEAD_LIMIT-dead_limit_);
 }
 
 void PlayerState_Single_Idle::end(){
-
 	body_->alpha_ = 255.0f;
 }
 
 void PlayerState_Single_Idle::key_input(float deltaTime){
-	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT) || InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT)) {
-	//	target_ += body_->get_partner_vector() * 20 / body_->getWorld()->GetKeeper()->getDamageCount() * deltaTime * static_cast<float>(GetRefreshRate());
-	//}
-
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT)) {
 		target_ += body_->get_partner_vector() * 20 / body_->getWorld()->GetKeeper()->getDamageCount() * deltaTime * static_cast<float>(GetRefreshRate());
 	}
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT)) {
 		target_ += body_->get_partner_vector() * 20 / body_->getWorld()->GetKeeper()->getDamageCount() * deltaTime * static_cast<float>(GetRefreshRate());
 	}
-
-
 }
 
 void PlayerState_Single_Idle::pad_input(float deltaTime) {

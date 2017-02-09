@@ -1,6 +1,10 @@
 #include "PlayerState_HoldAirFull.h"
 
 #include "../../../../../../Effect/PlayerEffectObj.h"
+#include "../../../../../../../../../Input/InputMgr.h"
+
+#include "../../../../../../../../../Define.h"
+#include "../../../../../../../../../Scene/Base/SceneDataKeeper.h"
 
 // コンストラクタ
 PlayerState_HoldAirFull::PlayerState_HoldAirFull(const PlayerBodyPtr & butty, const PlayerBodyPtr & retty) : PlayerState_HoldBase(butty, retty) {}
@@ -13,6 +17,8 @@ void PlayerState_HoldAirFull::onInit() {
 
 // 更新処理	
 void PlayerState_HoldAirFull::onUpdate(float deltaTime) {
+	cntr_->getWorld()->GetKeeper()->addChargeTime(deltaTime);
+
 	if (retty_->distance() < PLAYER_MAX_STRETCH_LENGTH * 0.6f) {
 		change(PlayerState_Enum_Union::HOLD_AIR_SWIM, element_.type_);
 	}

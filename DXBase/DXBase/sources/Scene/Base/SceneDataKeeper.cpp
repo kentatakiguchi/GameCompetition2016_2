@@ -1,5 +1,7 @@
 #include "SceneDataKeeper.h"
 
+#include <algorithm>
+
 SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage04"), hp_(0),itemCount_(0),jumpCount_(0),damageCount_(0)
 {
 	maxItemCount_.resize(5);
@@ -142,23 +144,28 @@ int SceneDataKeeper::getComboCount(int comboNum) {
 	return datas_[currentSceneName_].comboCount_[comboNum];
 }
 
-void SceneDataKeeper::setComboCount(int jumpCount, int comboNum)
-{
-	datas_[currentSceneName_].comboCount_[comboNum]=jumpCount;
+void SceneDataKeeper::setComboCount(int jumpCount, int comboNum){
+	datas_[currentSceneName_].comboCount_[comboNum] = jumpCount;
 }
 
-void SceneDataKeeper::addComboCount(int jumpCount, int comboNum)
-{
-	datas_[currentSceneName_].comboCount_[comboNum]+=jumpCount;
+void SceneDataKeeper::addComboCount(int jumpCount, int comboNum){
+	datas_[currentSceneName_].currentCombo_ += jumpCount;
+	
+	if (maxComboGet() < datas_[currentSceneName_].currentCombo_) {
+		maxComboSet(datas_[currentSceneName_].currentCombo_);
+	}
+	
+	//datas_[currentSceneName_].comboCount_[comboNum] += jumpCount;
 }
 
-void SceneDataKeeper::comboReset(int comboNum)
-{
-	datas_[currentSceneName_].comboCount_[comboNum]=0;
+void SceneDataKeeper::comboReset(int comboNum){
+	int combo = std::min<int>(datas_[currentSceneName_].currentCombo_, 5);
+	datas_[currentSceneName_].comboCount_[combo] += 1;
+
+	datas_[currentSceneName_].currentCombo_ = 0;
 }
 
-void SceneDataKeeper::comboMinus(int minusCount, int comboNum)
-{
+void SceneDataKeeper::comboMinus(int minusCount, int comboNum){
 	datas_[currentSceneName_].comboCount_[comboNum] -= minusCount;
 }
 

@@ -13,7 +13,7 @@ BossWingEffect::BossWingEffect(
 	stateTimer_(0.0f),
 	bezierTimer_(0.0f),
 	flyPower_(0.0f),
-	alpha_(255.0f),
+	//alpha_(255.0f),
 	isTexTurn_(false),
 	direction_(Vector2::One),
 	color_(Vector3::Zero),

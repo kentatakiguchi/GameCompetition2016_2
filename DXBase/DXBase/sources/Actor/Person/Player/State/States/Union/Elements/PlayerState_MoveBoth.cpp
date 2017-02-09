@@ -1,5 +1,8 @@
 #include "PlayerState_MoveBoth.h"
 
+#include "../../../../../../../Define.h"
+#include "../../../../../../../Input/InputMgr.h"
+
 // コンストラクタ
 PlayerState_MoveBoth::PlayerState_MoveBoth(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 

@@ -1,5 +1,8 @@
 #include "PlayerState_Jump.h"
 
+#include "../../../../../../../Define.h"
+#include "../../../../../../../Input/InputMgr.h"
+
 #include <algorithm>
 
 PlayerState_Jump::PlayerState_Jump(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}

@@ -3,8 +3,11 @@
 #include <memory>
 #include "../ResourceLoader/ResourceLoader.h"
 #include "../Math/Vector2.h"
+#include "../Math/Vector3.h"
 #include "../Math/Matrix.h"
 #include "../World/IWorld.h"
+#include "../Actor/Base/Actor.h"
+
 struct VertexPos {
 	//ç∂è„
 	Vector2 LeftTopPos=Vector2::Zero;

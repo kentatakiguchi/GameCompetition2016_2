@@ -3,6 +3,8 @@
 
 #include "../../ResourceLoader/ResourceLoader.h"
 
+#include "../../Define.h"
+
 Tubo::Tubo(IWorld * world, const Vector2 & position) :
 	Actor(world, "Tubo", position, CollisionBase(
 		Vector2{ position.x ,position.y },

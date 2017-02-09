@@ -7,7 +7,7 @@
 #include "../Actor/Base/ActorGroup.h"
 #include "../Actor/Person/Player/PuyoCollision.h"
 //一応正方形で考える
-const int SplitSize = 32.0f;
+const int SplitSize = 32;
 
 PuyoTextureK::PuyoTextureK(IWorld* world, TextureID tex, Vector2 pos, Vector2 scale, float rotate) :
 	mWorld(world),
@@ -23,8 +23,8 @@ PuyoTextureK::PuyoTextureK(IWorld* world, TextureID tex, Vector2 pos, Vector2 sc
 	mResColor(Vector3::Zero),
 	mIsHold(false)
 {
-	loopX = textureSize.x / SplitSize;
-	loopY = textureSize.y / SplitSize;
+	loopX = static_cast<int>(textureSize.x / SplitSize);
+	loopY = static_cast<int>(textureSize.y / SplitSize);
 	//動かない頂点をセット
 	PuyoVertexSetInit();
 	//グラフィックの設定

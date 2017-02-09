@@ -1,5 +1,7 @@
 #include "PlayerState_Idle.h"
 
+#include "../../../../../../../Define.h"
+
 // コンストラクタ
 PlayerState_Idle::PlayerState_Idle(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {
 }

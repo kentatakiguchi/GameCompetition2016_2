@@ -1,5 +1,9 @@
 #include "PlayerState_HoldBegin.h"
 
+#include "../../../../../../../../../Define.h"
+#include "../../../../../../../../../Input/InputMgr.h"
+#include "../../../../../../../../../Scene/Base/SceneDataKeeper.h"
+
 // コンストラクタ
 PlayerState_HoldBegin::PlayerState_HoldBegin(const PlayerBodyPtr & butty, const PlayerBodyPtr & retty) : PlayerState_HoldBase(butty, retty) {}
 
@@ -18,6 +22,7 @@ void PlayerState_HoldBegin::onInit(){
 	// くっつき時効果音再生
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_SYOUTOTU), DX_PLAYTYPE_BACK);
 
+	cntr_->getWorld()->GetKeeper()->addHoldCount(1);
 }
 
 // 更新処理	

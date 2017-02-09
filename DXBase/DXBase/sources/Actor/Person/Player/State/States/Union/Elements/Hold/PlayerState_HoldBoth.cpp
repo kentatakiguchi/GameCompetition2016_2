@@ -1,5 +1,7 @@
 #include "PlayerState_HoldBoth.h"
 
+#include "../../../../../../../../Input/InputMgr.h"
+
 PlayerState_HoldBoth::PlayerState_HoldBoth(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 
 void PlayerState_HoldBoth::unique_init() {

@@ -12,6 +12,6 @@ private:
 	virtual void end() override;
 	virtual void key_input(float deltaTime) override;
 	virtual void pad_input(float deltaTime) override;
-private:
-	float timer_;
+//private:
+//	float timer_;
 };

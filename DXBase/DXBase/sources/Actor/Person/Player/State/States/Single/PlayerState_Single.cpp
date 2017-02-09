@@ -1,5 +1,7 @@
 #include "PlayerState_Single.h"
 
+#include "../../../../../../Input/InputMgr.h"
+
 #include "../../../Effect/PlayerEffectObj.h"
 
 // コンストラクタ

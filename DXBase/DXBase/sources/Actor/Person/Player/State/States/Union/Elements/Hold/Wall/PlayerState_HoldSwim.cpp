@@ -1,5 +1,9 @@
 #include "PlayerState_HoldSwim.h"
 
+#include "../../../../../../../../../Define.h"
+#include "../../../../../../../../../Input/InputMgr.h"
+#include "../../../../../../../../../Scene/Base/SceneDataKeeper.h"
+
 // コンストラクタ
 PlayerState_HoldSwim::PlayerState_HoldSwim(const PlayerBodyPtr & butty, const PlayerBodyPtr & retty) : PlayerState_HoldBase(butty, retty) {}
 
@@ -10,6 +14,8 @@ void PlayerState_HoldSwim::onInit(){
 
 // 更新処理	
 void PlayerState_HoldSwim::onUpdate(float deltaTime){
+	cntr_->getWorld()->GetKeeper()->addChargeTime(deltaTime);
+
 	if (retty_->distance() < PLAYER_SWIM_LENGTH) {
 		change(PlayerState_Enum_Union::HOLD, element_.type_);
 	}

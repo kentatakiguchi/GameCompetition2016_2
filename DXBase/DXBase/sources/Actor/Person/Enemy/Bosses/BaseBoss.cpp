@@ -28,7 +28,7 @@ BaseBoss::BaseBoss(
 	piyoriCount_(5),
 	bokoCreateCount_(0),
 	miniBossCreateCount_(0),
-	alpha_(255),
+	//alpha_(255),
 	starCount_(0),
 	allStarCount_(0),
 	stateTimer_(0.0f),

@@ -1,5 +1,7 @@
 #include "PlayerState_LeanBack.h"
 
+#include "../../../../../../../Define.h"
+
 PlayerState_LeanBack::PlayerState_LeanBack(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 
 void PlayerState_LeanBack::unique_init(){

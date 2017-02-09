@@ -1,6 +1,8 @@
 #include "Tornado.h"
 #include "../../../../ResourceLoader/ResourceLoader.h"
 
+#include "../../../../Define.h"
+
 Tornado::Tornado(IWorld * world, const Vector2 & position, const Vector2& bodyScale) :
 	Actor(world, "Tornado", position,
 		CollisionBase(

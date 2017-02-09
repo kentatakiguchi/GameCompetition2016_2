@@ -7,7 +7,11 @@
 
 #include "../Player/Effect/PlayerEffectObj.h"
 
+#include "../../../Define.h"
+#include "../../../Input/InputMgr.h"
+
 #include "../../../Game/Time.h"
+#include "../../../Scene/Base/SceneDataKeeper.h"
 
 PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, PlayerBodyPtr& butty, PlayerBodyPtr& retty) :
 	Actor(world, "PlayerConnector", position, CollisionBase()), butty_(butty), retty_(retty),

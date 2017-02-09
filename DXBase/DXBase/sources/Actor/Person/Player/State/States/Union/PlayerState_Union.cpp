@@ -1,6 +1,7 @@
 #include "PlayerState_Union.h"
 
 #include "../../../../../../Define.h"
+#include "../../../../../../Input/InputMgr.h"
 
 // コンストラクタ
 PlayerState_Union::PlayerState_Union(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) :

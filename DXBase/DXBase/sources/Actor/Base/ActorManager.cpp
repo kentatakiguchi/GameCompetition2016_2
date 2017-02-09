@@ -40,7 +40,6 @@ void ActorManager::initialize() {
 	root_.addChild(actors_[ActorGroup::EffectBack]);
 	root_.addChild(actors_[ActorGroup::Tubo]);
 	root_.addChild(actors_[ActorGroup::Item]);
-	velo = Vector2::Zero;
 }
 
 // XV
@@ -105,6 +104,10 @@ void ActorManager::UiUpdate(float delta)
 	for (auto& i : uiActors_)
 	{
 		i->update(delta);
+
+		if (i->isDead()) {
+			uiActors_.remove(i);
+		}
 	}
 
 }

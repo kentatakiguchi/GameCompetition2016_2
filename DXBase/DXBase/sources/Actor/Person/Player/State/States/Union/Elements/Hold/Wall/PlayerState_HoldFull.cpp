@@ -2,6 +2,10 @@
 
 #include "../../../../../../Effect/PlayerEffectObj.h"
 
+#include "../../../../../../../../../Define.h"
+#include "../../../../../../../../../Input/InputMgr.h"
+#include "../../../../../../../../../Scene/Base/SceneDataKeeper.h"
+
 // コンストラクタ
 PlayerState_HoldFull::PlayerState_HoldFull(const PlayerBodyPtr & butty, const PlayerBodyPtr & retty) : PlayerState_HoldBase(butty, retty) {}
 
@@ -13,6 +17,8 @@ void PlayerState_HoldFull::onInit(){
 
 // 更新処理	
 void PlayerState_HoldFull::onUpdate(float deltaTime){
+	cntr_->getWorld()->GetKeeper()->addChargeTime(deltaTime);
+
 	if (retty_->distance() < PLAYER_MAX_STRETCH_LENGTH * 0.5f) {
 		change(PlayerState_Enum_Union::HOLD_SWIM, element_.type_);
 	}

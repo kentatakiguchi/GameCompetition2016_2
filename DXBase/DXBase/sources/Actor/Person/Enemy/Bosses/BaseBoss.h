@@ -153,7 +153,7 @@ protected:
 	int piyoriCount_;				// ぴよる回数
 	int bokoCreateCount_;			// ボコエフェクト生成回数
 	int miniBossCreateCount_;		// ミニボス生成回数
-	int alpha_;						// ボスのα値
+	//int alpha_;						// ボスのα値
 	int starCount_;					// プレイヤーの取得している星の合計数
 	int allStarCount_;				// 全体での星の合計数
 	float stateTimer_;				// 状態の時間

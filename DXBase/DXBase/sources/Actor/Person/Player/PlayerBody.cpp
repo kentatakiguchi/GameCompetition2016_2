@@ -8,6 +8,8 @@
 
 #include "../../../Game/Time.h"
 
+#include "../../../Define.h"
+
 #include <algorithm>
 
 PlayerBody::PlayerBody() {}

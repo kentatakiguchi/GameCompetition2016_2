@@ -117,6 +117,34 @@ void Field::calcCurColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 			field = FieldEnum::Field;
 		}
 	}
+	////ç∂è„
+	//if (existCheck(row_t, column_l)) {
+	//	Vector2 bottom_r = Vector2(column_p, row_p) * CHIPSIZE;
+	//	if (Vector2::DistanceSquared(bottom_r, curPos) < PLAYER_RADIUS * PLAYER_RADIUS) {
+	//		curPos = bottom_r + Vector2::One * PLAYER_RADIUS;
+	//	}
+	//}
+	////âEè„
+	//if (existCheck(row_t, column_r)) {
+	//	Vector2 bottom_l = Vector2(column_p + 1, row_p) * CHIPSIZE;
+	//	if (Vector2::DistanceSquared(bottom_l, curPos) < PLAYER_RADIUS * PLAYER_RADIUS) {
+	//		curPos = bottom_l + Vector2(-1, 1) * PLAYER_RADIUS;
+	//	}
+	//}
+	////ç∂â∫
+	//if (existCheck(row_b, column_l)) {
+	//	Vector2 top_r = Vector2(column_p, row_p + 1) * CHIPSIZE;
+	//	if (Vector2::DistanceSquared(top_r, curPos) < PLAYER_RADIUS * PLAYER_RADIUS) {
+	//		curPos = top_r + Vector2(1, -1) * PLAYER_RADIUS;
+	//	}
+	//}
+	////âEâ∫
+	//if (existCheck(row_t, column_r)) {
+	//	Vector2 top_l = Vector2(column_p + 1, row_p + 1) * CHIPSIZE;
+	//	if (Vector2::DistanceSquared(top_l, curPos) < PLAYER_RADIUS * PLAYER_RADIUS) {
+	//		curPos = top_l - Vector2::One * PLAYER_RADIUS;
+	//	}
+	//}
 }
 
 void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& field, Vector2& velocity) {

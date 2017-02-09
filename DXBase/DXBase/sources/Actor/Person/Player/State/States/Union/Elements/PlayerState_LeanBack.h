@@ -13,7 +13,7 @@ private:
 	virtual void key_input(float deltaTime) override;
 	virtual void pad_input(float deltaTime) override;
 private:
-	float timer_;
+	//float timer_;
 	Vector2 dir_;
 	float power_;
 

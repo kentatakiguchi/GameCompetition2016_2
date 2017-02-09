@@ -1,8 +1,9 @@
 #include "World.h"
+
 #include "../Field/Field.h"
-#include "../Actor/Person/Player/Player.h"
 #include "../Actor/ScroolStop/ScroolStop.h"
-#include"../Actor/Person/Player/PlayerBody.h"
+#include "../Define.h"
+
 // コンストラクタ
 World::World(SceneDataKeeper* keeper) :
 	listener_([](EventMessage, void*) {}),
@@ -23,7 +24,6 @@ void World::update(float deltaTime) {
 	deltaTime_ = deltaTime;
 	if (isStopTime_) deltaTime = 0.0f;
 	actors_.update(deltaTime);
-
 
 	//camera_->update(deltaTime);
 	//light_->update(deltaTime);

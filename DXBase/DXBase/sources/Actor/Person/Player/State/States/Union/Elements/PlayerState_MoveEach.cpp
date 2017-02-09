@@ -1,5 +1,8 @@
 #include "PlayerState_MoveEach.h"
 
+#include "../../../../../../../Define.h"
+#include "../../../../../../../Input/InputMgr.h"
+
 // コンストラクタ
 PlayerState_MoveEach::PlayerState_MoveEach(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 

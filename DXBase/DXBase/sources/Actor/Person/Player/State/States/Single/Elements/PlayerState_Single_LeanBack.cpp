@@ -1,5 +1,7 @@
 #include "PlayerState_Single_LeanBack.h"
 
+#include "../../../../../../../Define.h"
+
 PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(const Keys& keys) : PlayerState_Single(keys) {}
 
 void PlayerState_Single_LeanBack::unique_init(){

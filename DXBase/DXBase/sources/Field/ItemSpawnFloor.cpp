@@ -1,6 +1,7 @@
 #include "ItemSpawnFloor.h"
-#include"../Input/InputMgr.h"
-#include"../Actor/Item/Items.h"
+#include "../Input/InputMgr.h"
+#include "../Actor/Item/Items.h"
+#include "../Actor/Base/ActorGroup.h"
 
 ItemSpawnFloor::ItemSpawnFloor(IWorld * world, Vector2 & position) :spriteID_(-1), width_(1), height_(1), isHit_(false),
 MapChip(world, Vector2(position.x, position.y), "MovelessFloor", CollisionBase(

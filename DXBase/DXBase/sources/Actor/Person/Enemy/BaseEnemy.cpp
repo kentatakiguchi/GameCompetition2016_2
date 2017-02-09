@@ -6,6 +6,8 @@
 #include "PlayerSearchObj.h"
 #include "Bosses/Effect/EnemyDeadEffect.h"
 #include "Bosses/Effect/EnemyCollideEffect.h"
+#include"../../../Scene/Base/SceneDataKeeper.h"
+
 // アイテム
 #include "../../Item/Items.h"
 #include <cmath>
@@ -334,7 +336,7 @@ void BaseEnemy::changeState(State state, unsigned int motion)
 {
 	state_ = state;
 	stateTimer_ = 0.0f;
-	motion_ = motion;
+	//motion_ = motion;
 	// アニメーションの変更
 	animation_.changeAnimation(motion);
 }

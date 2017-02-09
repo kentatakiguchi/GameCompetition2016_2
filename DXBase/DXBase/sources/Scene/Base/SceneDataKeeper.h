@@ -13,13 +13,14 @@ private:
 		int itemCount_;
 		int maxItemCount_;
 		int maxCombo_;
+		int currentCombo_;
 		std::vector<int> comboCount_;
 		int damageCount_;
 		int holdCount_;
 		int moveDistance_;
 		int plusStar_;
 		int minusStar_;
-		int chargeTime_;
+		float chargeTime_;
 		int enemyCount_;
 	};
 public:
@@ -140,12 +141,12 @@ public:
 	}
 
 	int getChargeTime() {
-		return datas_[currentSceneName_].chargeTime_;
+		return static_cast<int>(datas_[currentSceneName_].chargeTime_);
 	}
-	void setChargeTime(int co) {
+	void setChargeTime(float co) {
 		datas_[currentSceneName_].chargeTime_ = co;
 	}
-	void addChargeTime(int co) {
+	void addChargeTime(float co) {
 		datas_[currentSceneName_].chargeTime_ += co;
 	}
 	void resetChargeTime() {

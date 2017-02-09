@@ -1,9 +1,12 @@
 #include "Actor.h"
-#include <algorithm>
+
 #include "../../World/World.h"
 #include "../../Input/KeyCode.h"
 #include "../../Math/MathHelper.h"
 #include "../../Define.h"
+
+#include <algorithm>
+
 // コンストラクタ
 Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, const CollisionBase& body) :
 	world_(world),
@@ -12,7 +15,7 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, co
 	rotation_(Matrix::Identity),
 	body_(body),
 	dead_(false),
-	alpha_(0.0f){
+	alpha_(255.0f){
 	inv_ = world_->GetInv();
 	body_.setPosition(position_);
 }
@@ -25,7 +28,6 @@ Actor::Actor(const std::string& name) :
 	rotation_(Matrix::Identity),
 	dead_(false) {
 }
-
 
 // 更新
 void Actor::update(float deltaTime) {
@@ -164,10 +166,6 @@ std::forward_list<ActorPtr> Actor::getChildren(){
 	return children_;
 }
 
-void Actor::setMotion(const unsigned int motion) {
-	motion_ = motion;
-}
-
 void Actor::setTransform(Vector2 pos, Matrix rot) {
 	position_ = pos;
 	rotation_ = rot;
@@ -208,4 +206,8 @@ void Actor::hitField(const FieldPtr & field){}
 // 衝突判定
 bool Actor::isCollide(Actor& other) {
 	return body_.intersects(other.body_);
+}
+
+void Actor::translate(Vector2 & position) {
+	body_.translate(position);
 }

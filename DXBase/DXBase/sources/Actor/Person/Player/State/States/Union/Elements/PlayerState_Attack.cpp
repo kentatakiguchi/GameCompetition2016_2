@@ -1,5 +1,9 @@
 #include "PlayerState_Attack.h"
 
+#include "../../../../../../../Define.h"
+#include "../../../../../../../Input/InputMgr.h"
+#include "../../../../../../../Scene/Base/SceneDataKeeper.h"
+
 #include <algorithm>
 
 PlayerState_Attack::PlayerState_Attack(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
@@ -29,7 +33,7 @@ void PlayerState_Attack::unique_init(){
 	cntr_->getWorld()->addActor(ActorGroup::Player_Collider, attackColl);
 	attackColl_ = attackColl;
 
-	//cntr_->getWorld()->GetKeeper()->addJumpCount(1);
+	cntr_->getWorld()->GetKeeper()->addComboCount(1, 1);
 }
 
 void PlayerState_Attack::update(float deltaTime) {

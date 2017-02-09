@@ -1,5 +1,9 @@
 #include "PlayerState_HoldAirBegin.h"
 
+#include "../../../../../../../../../Input/InputMgr.h"
+
+#include "../../../../../../../../../Define.h"
+
 // コンストラクタ
 PlayerState_HoldAirBegin::PlayerState_HoldAirBegin(const PlayerBodyPtr & butty, const PlayerBodyPtr & retty) : PlayerState_HoldBase(butty, retty) {}
 

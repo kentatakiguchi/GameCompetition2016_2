@@ -1,5 +1,7 @@
 #include "PlayerState_Single_Dead.h"
 
+#include "../../../../../../../Define.h"
+
 PlayerState_Single_Dead::PlayerState_Single_Dead(const Keys & keys) : PlayerState_Single(keys) {}
 
 void PlayerState_Single_Dead::unique_init(){

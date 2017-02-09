@@ -1,20 +1,20 @@
 #ifndef IWORLD_H_
 #define IWORLD_H_
 
-#include "../Actor/Base/Actor.h"
+#include "../Actor/Base/ActorPtr.h"
 #include "../Field/FieldPtr.h"
-#include"../Scene/Base/SceneDataKeeper.h"
 #include <string>
-#include <vector>
+#include <forward_list>
+
 enum class ActorGroup;
 enum class EventMessage;
-struct ScroolJudge {
-	Vector2 scroolJudge;
-	//このポジションをプレイヤーが超えたら止まる
-	Vector2 scroolStopMax;
-	Vector2 scroolStopMin;
 
-};
+struct Vector2;
+struct Matrix;
+struct ScroolJudge;
+
+class SceneDataKeeper;
+
 // ワールド抽象インターフェース
 class IWorld {
 public:
@@ -46,17 +46,20 @@ public:
 	// デルタタイムを取得します(元のタイムクラスから取得)
 	virtual float getDeltaTime() = 0;
 	virtual void SetPlayerPos(Vector2 pos) = 0;
-	//縦スクロール横スクロールするかどうか(引数 軸ごとにスクロールする場合は1、しない場合は0)
+	// 縦スクロール横スクロールするかどうか(引数 軸ごとにスクロールする場合は1、しない場合は0)
 	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos, bool flag = false) =0;
 	virtual ScroolJudge GetScroolJudge()=0;
-	//プレイヤーの操作不能にするかどうか
+	// プレイヤーの操作不能にするかどうか
 	virtual void PlayerNotMove(bool flag) = 0;
-	//プレイヤーの操作不能にするかどうかを取得
+	// プレイヤーの操作不能にするかどうかを取得
 	virtual bool GetPlayerNotMove() = 0;
+	// 画面上のプレイヤーの座標
 	virtual Vector2 GetScreenPlayerPos()=0;
+	// データキーパーの取得
 	virtual SceneDataKeeper* GetKeeper() = 0;
 	// メッセージの送信
 	virtual void sendMessage(EventMessage message, void* param = nullptr) = 0;
+	//
 	virtual Vector2 GetPlayerPos() = 0;
 	virtual Matrix GetInv() = 0;
 
