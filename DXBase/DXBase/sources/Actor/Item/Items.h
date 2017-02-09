@@ -32,6 +32,7 @@ public:
 			if (lCount >= 1)
 			{
 				world_->addCount();
+				world_->GetKeeper()->addPlusStar(1);
 				dead();
 			}
 		}

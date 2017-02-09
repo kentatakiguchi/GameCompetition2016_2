@@ -168,6 +168,18 @@ public:
 	void resetEnemyCount() {
 		datas_[currentSceneName_].enemyCount_ = 0;
 	}
+	void resetDatas(std::string stage="") {
+		if (stage == "") {
+			for (auto i : datas_) {
+				datas_[i.first] = StageDatas();
+				datas_[i.first].comboCount_.resize(6);
+			}
+		}
+		else {
+			datas_[stage] = StageDatas();
+			datas_[stage].comboCount_.resize(6);
+		}
+	}
 private:
 	std::map<std::string,StageDatas> datas_;
 

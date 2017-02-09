@@ -138,9 +138,9 @@ void ClearScreen::draw() const
 	DrawGraph(textPositions.at("YellowStar").x, textPositions.at("YellowStar").y, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_STAR_COUNT_TEX), TRUE);
 	DrawGraph(textPositions.at("YellowStarMult").x, textPositions.at("YellowStarMult").y, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_MULTIPLY_TEX), TRUE);
 	if (keeper_->GetMaxItemCount() != 0) {
-	drawNum = keeper_->getPlusStar()/keeper_->GetMaxItemCount();
-	baseNum = keeper_->getPlusStar() / keeper_->GetMaxItemCount();
-	multAddCount += keeper_->getPlusStar() / keeper_->GetMaxItemCount();
+	drawNum = (float)keeper_->getPlusStar()/keeper_->GetMaxItemCount()*10;
+	baseNum = (float)keeper_->getPlusStar() / keeper_->GetMaxItemCount()*10;
+	multAddCount += (float)keeper_->getPlusStar() / keeper_->GetMaxItemCount()*10;
 	}
 	else {
 		drawNum = 0;

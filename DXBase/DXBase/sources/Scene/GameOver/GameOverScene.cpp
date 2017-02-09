@@ -53,6 +53,7 @@ void GameOverScene::start() {
 	targetPoint = 1;
 	sinCount = 0;
 
+	keeper_->resetDatas(keeper_->getSceneName());
 	if (keeper_->getSceneName() == "stage01") keeper_->setSceneName("stage04");
 	else if (keeper_->getSceneName() == "stage02") keeper_->setSceneName("stage01");
 	else if (keeper_->getSceneName() == "stage03") keeper_->setSceneName("stage02");

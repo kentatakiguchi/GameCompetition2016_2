@@ -226,6 +226,7 @@ void MainMenuScene::start() {
 	//keeper_->ItemReset();
 	//keeper_->resultJumpReset();
 	//keeper_->resultDamageReset();
+	keeper_->resetDatas();
 }
 
 void MainMenuScene::update() {
