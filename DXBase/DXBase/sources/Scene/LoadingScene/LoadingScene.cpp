@@ -36,6 +36,13 @@ void LoadingScene::start(){
 	load_enemy_res();
 	load_boss_res();
 	load_ui_res();
+
+
+	ResourceLoader::GetInstance().loadTexture(TextureID::RESULT_BACL_TEX, "./resources/sprite/ResultBack.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::KIRIKABU_TEX, "./resources/sprite/kirikabu.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBERS_TEX, "./resources/sprite/num.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::HUKIDASI_TEX, "./resources/sprite/hukidasi.png");
+
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::SCENE_CHANGE_SLIME_ANM, "./resources/sprite/slimeanm.png", Vector2(256, 256), 8, 4, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ITEM_ANM, "./resources/sprite/itemanm.png", Vector2(96, 96),10,6,0);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::ITEM_MINUS_ANM, "./resources/sprite/itemanm2.png", Vector2(96, 96), 10, 6, 0);

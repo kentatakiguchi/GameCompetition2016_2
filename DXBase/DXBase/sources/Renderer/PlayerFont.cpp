@@ -1,6 +1,7 @@
 #include "PlayerFont.h"
 #include "../Game/Time.h"
 #include "../ResourceLoader/ResourceLoader.h"
+
 PlayerFont::PlayerFont(IWorld* world, const Vector2 & pos) :
 	world_(world),
 	isPlayFont_(false),
