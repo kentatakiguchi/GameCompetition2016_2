@@ -45,7 +45,9 @@ void PlayerSearchObj::onCollide(Actor & actor)
 }
 
 // 敵とプレイヤーの位置を設定します
-void PlayerSearchObj::setPosition(const Vector2 & enemyPosition, const Vector2 & playerPosition)
+void PlayerSearchObj::setPosition(
+	const Vector2 & enemyPosition, 
+	const Vector2 & playerPosition)
 {
 	enemyPosition_ = enemyPosition;
 	playerPosition_ = playerPosition;
@@ -54,12 +56,5 @@ void PlayerSearchObj::setPosition(const Vector2 & enemyPosition, const Vector2 &
 // プレイヤーが見えているかを返します
 bool PlayerSearchObj::isPlayerLook()
 {
-	//auto blockLen = (enemyPosition_ - blockPosition_).Length();
-	//auto playerLen = (enemyPosition_ - playerPosition_).Length();
-	//// プレイヤーとの距離との距離が短かったら、trueを返す
-	//if (playerLen < blockLen)
-	//	return true;
-	//return false;
-
 	return !isBlockHit_;
 }

@@ -73,7 +73,8 @@ void FloorTurnEnemy::chaseMove()
 {
 	// 通常時よりも速めにする
 	auto speed = speed_;
-	auto distance = position_.x - player_->getPosition().x;
+	auto distance = position_.x - enemyManager_.getPlayerPosition(discoveryNumber_).x;
+	//player_->getPosition().x;
 	//// プレイヤーの軸付近に来たら止まる
 	if (std::abs(distance) < speed) return;
 	// プレイヤーとの位置で、速度を補正する
@@ -81,7 +82,8 @@ void FloorTurnEnemy::chaseMove()
 		speed = std::abs(distance);
 	// 追跡
 	// プレイヤーとのX軸が同一の場合おかしくなる
-	direction_.x = -enemyManager_.getPlayerDirection().x;
-	position_.x += enemyManager_.getPlayerDirection().x * -speed * deltaTimer_;
+	direction_.x = -enemyManager_.getPlayerDirection(discoveryNumber_).x;
+	position_.x += enemyManager_.getPlayerDirection(discoveryNumber_).x *
+		-speed * deltaTimer_;
 	pricleObj_->setAddPosition(Vector2((scale_ + 1.0f), 0.0f));
 }

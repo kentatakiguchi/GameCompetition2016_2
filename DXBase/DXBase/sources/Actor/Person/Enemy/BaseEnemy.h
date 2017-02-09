@@ -14,7 +14,6 @@
 class CollisionBase;
 class FloorSearchPoint;
 class Prickle;
-class PlayerSearchObj;
 
 class BaseEnemy : public Actor {
 protected:
@@ -36,6 +35,11 @@ protected:
 		SE_HAKKEN = 0,
 		SE_HITSTOP = 1,
 		SE_DEAD = 2
+	};
+	// プレイヤー番号
+	enum {
+		PLAYER_RED_NUMBER = 0,
+		PLAYER_BLUE_NUMBER = 1
 	};
 	// 状態列挙
 	enum class State {
@@ -136,6 +140,7 @@ protected:
 	int ap_;						// アタックポイント
 	int texSize_;					// テクスチャを切り抜きする大きさ
 	int turnMotion_;
+	int discoveryNumber_;			// 発見番号
 	float speed_;					// 移動速度
 	float initSpeed_;				// 初期の移動速度
 	float scale_;					// 大きさ
@@ -162,12 +167,10 @@ protected:
 	State state_;					// 状態
 	Vector2 discoveryPosition_;		// 発見したときの位置
 	Vector2 addTexPosition_;		// テクスチャの表示位置の追加
-	ActorPtr player_;				// プレイヤー
 	EnemyManager enemyManager_;		// エネミーマネージャー
 	FloorSearchPoint* fspScript_;	// 床捜索オブジェクト
 	FloorSearchPoint* wsScript_;		// 壁捜索オブジェクト
 	Prickle* pricleObj_;			// トゲのオブジェクト
-	PlayerSearchObj* psObj_;		// 線分衝突判定用オブジェクト
 	EnemyAnimation2D animation_;	// アニメーション
 	// 捜索オブジェクトの位置コンテナ
 	typedef std::vector<Vector2> FSPPositionContainer;

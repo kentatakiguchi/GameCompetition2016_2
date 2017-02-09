@@ -1,7 +1,12 @@
 #include "EnemyManager.h"
 #include "FloorSearchPoint.h"
+#include "PlayerSearchObj.h"
+#include "../../Base/ActorGroup.h"
 
-EnemyManager::EnemyManager(const Vector2 position, const Vector2& direction) :
+EnemyManager::EnemyManager(
+	IWorld * world, 
+	const Vector2 position, 
+	const Vector2& direction) :
 	distance_(1),
 	wspResult_(0),
 	wCollideCount_(0),
@@ -11,11 +16,11 @@ EnemyManager::EnemyManager(const Vector2 position, const Vector2& direction) :
 	boxMoveCount(0.0f),
 	isDirection_(true),
 	enemyPosition_(position),
-	playerPosition_(Vector2::Zero),
 	threadPosition_(position + Vector2::Left * 100.0f),
 	enemyDirection_(Vector2::Zero),
 	wsDirection_(Vector2(-1.0f, 0.0f)),
-	animaDirection_(wsDirection_)
+	animaDirection_(wsDirection_),
+	world_(world)
 {
 	animaDirectionMap_.clear();
 	wspDirectionMap_.clear();
@@ -34,6 +39,9 @@ EnemyManager::EnemyManager(const Vector2 position, const Vector2& direction) :
 	primeContainer_.push_back(1900);
 	// 壁移動の方向をマップに追加
 	addWSPDirection(direction);
+	// 位置コンテナの初期化
+	positiones_.clear();
+	psObjs.clear();
 }
 
 EnemyManager::~EnemyManager(){}
@@ -63,6 +71,12 @@ Vector2 EnemyManager::cliffMove(bool isFloor)
 	return posi;
 }
 
+// プレイヤーの位置を取得します
+Vector2 EnemyManager::getPlayerPosition(const int number)
+{
+	return positiones_[number];
+}
+
 // 指定したオブジェクトとの距離を返します
 float EnemyManager::getLength(const Vector2 & otherPosition)
 {
@@ -71,17 +85,17 @@ float EnemyManager::getLength(const Vector2 & otherPosition)
 }
 
 // プレイヤーとの距離を返します
-float EnemyManager::getPlayerLength()
+float EnemyManager::getPlayerLength(const int number)
 {
 	// プレイヤーの位置を取得
-	return getLength(playerPosition_);
+	return getLength(positiones_[number]);
 }
 
 // 敵からプレイヤーに伸ばしたベクトルを返します
-Vector2 EnemyManager::getPlayerVector()
+Vector2 EnemyManager::getPlayerVector(const int number)
 {
-	playerVector_ = playerPosition_ - enemyPosition_;
-	return Vector2(std::abs(playerVector_.x), std::abs(playerVector_.y));
+	auto vector = positiones_[number] - enemyPosition_;
+	return Vector2(std::abs(vector.x), std::abs(vector.y));
 }
 
 // 指定したオブジェクトとの方向を単位ベクトルで取得します
@@ -107,9 +121,9 @@ Vector2 EnemyManager::getDirection(const Vector2& otherPosition)
 }
 
 // プレイヤーとの方向を単位ベクトルで取得します
-Vector2 EnemyManager::getPlayerDirection()
+Vector2 EnemyManager::getPlayerDirection(const int number)
 {
-	return getDirection(playerPosition_);
+	return getDirection(positiones_[number]);
 }
 
 // 指定したオブジェクトとの方向を、正規化されたベクトルで取得します
@@ -121,17 +135,18 @@ Vector2 EnemyManager::getNormalizeDirection(const Vector2 & otherPosition)
 }
 
 // プレイヤーとの方向を正規化されたベクトルで取得します
-Vector2 EnemyManager::getPlayerNormalizeDirection()
+Vector2 EnemyManager::getPlayerNormalizeDirection(const int number)
 {
 	// 方向の計算
-	return getNormalizeDirection(playerPosition_);
+	return getNormalizeDirection(positiones_[number]);
 }
 
 //　敵自身とプレイヤーの位置を入れます
-void EnemyManager::setEMPosition(const Vector2& enemyPosition, const Vector2& playerPosition, const Vector2 direction)
+void EnemyManager::setEMPosition(
+	const Vector2& enemyPosition,  
+	const Vector2& direction)
 {
 	enemyPosition_ = enemyPosition;
-	playerPosition_ = playerPosition;
 	enemyDirection_ = direction;
 }
 
@@ -387,4 +402,37 @@ void EnemyManager::addWSPDirection(const Vector2 & direction)
 	animaDirectionMap_[7027] = Vector2(-1.0f, 0.0f);
 	animaDirectionMap_[6627] = Vector2(1.0f, 0.0f);
 	animaDirectionMap_[6027] = Vector2(0.0f, 1.0f);
+}
+
+// プレイヤーの位置を設定します
+void EnemyManager::setPlayerPosition(const int number, const Vector2& position)
+{
+	positiones_[number] = position;
+	psObjs[number]->setPosition(enemyPosition_, position);
+}
+
+// プレイヤー捜索オブジェクトの追加を行います
+void EnemyManager::setPSObj(const int number, const Vector2 & position)
+{
+	auto psObj = std::make_shared<PlayerSearchObj>(
+		world_, position, positiones_[number]);
+	world_->addActor(ActorGroup::EnemyBullet, psObj);
+	psObjs[number] = psObj.get();
+}
+
+// プレイヤー捜索オブジェクトの取得
+PlayerSearchObj * EnemyManager::getPSObj(const int number)
+{
+	return psObjs[number];
+}
+
+// 所持しているオブジェクトの削除を行います
+void EnemyManager::deleteObj()
+{
+	for (auto i = psObjs.begin(); i != psObjs.end(); i++) {
+		auto a = *i;
+		a.second->dead();
+		psObjs[i->first] = nullptr;
+	}
+	psObjs.clear();
 }

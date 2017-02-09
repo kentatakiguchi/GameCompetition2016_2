@@ -1,16 +1,20 @@
 #ifndef ENEMY_MANAGER_H_
 #define ENEMY_MANAGER_H_
 
-//#include "../../../World/IWorld.h"
 #include "../../../Math/Math.h"
 #include <vector>
 #include <map>
 
 class FloorSearchPoint;
+class PlayerSearchObj;
+class IWorld;
 
 class EnemyManager{
 public:
-	EnemyManager(const Vector2 position, const Vector2& direction = Vector2(-1.0f, -1.0f));
+	EnemyManager(
+		IWorld* world,
+		const Vector2 position, 
+		const Vector2& direction = Vector2(-1.0f, -1.0f));
 	~EnemyManager();
 	// 更新
 	void update(float deltaTime);
@@ -18,22 +22,26 @@ public:
 	Vector2 wallMove();
 	// 崖を避ける動き方
 	Vector2 cliffMove(bool isFloor);
+	// プレイヤーの位置を取得します
+	Vector2 getPlayerPosition(const int number);
 	// 指定したオブジェクトとの距離を返します
 	float getLength(const Vector2& otherPosition);
 	// プレイヤーとの距離を返します
-	float getPlayerLength();
+	float getPlayerLength(const int number);
 	// 敵からプレイヤーに伸ばしたベクトルを返します
-	Vector2 getPlayerVector();
+	Vector2 getPlayerVector(const int number);
 	// 指定したオブジェクトとの方向を単位ベクトルで取得します
 	Vector2 getDirection(const Vector2& otherPosition);
 	// プレイヤーとの方向を単位ベクトルで取得します
-	Vector2 getPlayerDirection();
+	Vector2 getPlayerDirection(const int number);
 	// 指定したオブジェクトとの方向を、正規化されたベクトルで取得します
 	Vector2 getNormalizeDirection(const Vector2& otherPosition);
 	// プレイヤーとの方向を正規化されたベクトルで取得します
-	Vector2 getPlayerNormalizeDirection();
+	Vector2 getPlayerNormalizeDirection(const int number);
 	//　敵自身とプレイヤーの位置を入れます
-	void setEMPosition(const Vector2& enemyPosition, const Vector2& playerPosition, const Vector2 direction);
+	void setEMPosition(
+		const Vector2& enemyPosition,
+		const Vector2& direction);
 	// 糸の支点の位置取得
 	Vector2 getThreadPoint();
 	// 捜索オブジェクトの設定
@@ -54,6 +62,14 @@ public:
 	bool isDirecion();
 	// 壁移動の方向を追加します
 	void addWSPDirection(const Vector2& direction);
+	// プレイヤーの位置を設定します
+	void setPlayerPosition(const int number, const Vector2& position);
+	// プレイヤー捜索オブジェクトの追加を行います
+	void setPSObj(const int number, const Vector2 & position);
+	// プレイヤー捜索オブジェクトの追加を行います
+	PlayerSearchObj* getPSObj(const int number);
+	// 所持しているオブジェクトの削除を行います
+	void deleteObj();
 
 private:
 	int distance_;				// 方向
@@ -65,12 +81,17 @@ private:
 	float boxMoveCount;			// 四角形移動カウント
 	bool isDirection_;			// 方向を代入するか
 	Vector2 enemyPosition_;		// 敵の位置
-	Vector2 playerPosition_;	// プレイヤーの位置
 	Vector2 threadPosition_;	// 糸の位置
 	Vector2 enemyDirection_;	// エネミーの方向
-	Vector2 playerVector_;		// 
 	Vector2 wsDirection_;		// 壁移動時の方向
 	Vector2 animaDirection_;	// 壁移動時のアニメーションの方向
+	IWorld* world_;				// ワールド
+	// プレイヤー判別用コンテナ
+	typedef std::map<int, Vector2> PlayerPositionMap;
+	PlayerPositionMap positiones_;
+	// プレイヤー捜索オブジェクトコンテナ
+	typedef std::map<int, PlayerSearchObj*> PSObjMap;
+	PSObjMap psObjs;
 	// 四角形移動用コンテナ
 	typedef std::vector<float> WallMoveConteiner;
 	WallMoveConteiner wallMoveConteiner_;

@@ -68,19 +68,33 @@ void FlyingEnemy::search()
 	if (!isPlayer_) return;
 	// 一定距離内で、プレイヤーとの間にブロックがなかったら
 	// 追跡する
-	if (enemyManager_.getPlayerLength() <= discoveryLenght_ &&
-		psObj_->isPlayerLook()) {
-		changeState(State::Chase, ENEMY_ATTACK);
-		discoveryPosition_ = position_;
-		// 過去の位置を入れる
-		auto player = world_->findActor("PlayerBody1");
-		pastPosition_ = player->getPosition();
-		pricleObj_->setDirection(enemyManager_.getDirection(pastPosition_));
-		// 回転
-		if (enemyManager_.getDirection(pastPosition_).x < 0)
-			TexDegress_ = 90;
-		else TexDegress_ = 270;
+	for (int i = 0; i != 1; i++) {
+		auto a = enemyManager_.getPlayerNormalizeDirection(i);
+		auto b = Vector2::Right * direction_;
+		auto radius = std::atan2f(b.x * a.y - a.x * b.y, a.x * b.x + a.y * b.y);
+		auto deg = MathHelper::ToDegrees(radius);
+		// 追跡する
+		// psObj_->isPlayerLook()
+		if (enemyManager_.getPlayerLength(i) <= discoveryLenght_ &&
+			std::abs(deg) <= 30.0f &&
+			enemyManager_.getPSObj(i)->isPlayerLook()) {
+			changeState(State::Chase, ENEMY_ATTACK);
+			discoveryPosition_ = position_;
+			// 過去の位置を入れる
+			auto player = world_->findActor("PlayerBody1");
+			pastPosition_ = player->getPosition();
+			pricleObj_->setDirection(enemyManager_.getDirection(pastPosition_));
+			// 回転
+			if (enemyManager_.getDirection(pastPosition_).x < 0)
+				TexDegress_ = 90;
+			else TexDegress_ = 270;
+			break;
+		}
 	}
+	/*if (enemyManager_.getPlayerLength() <= discoveryLenght_ &&
+		psObj_->isPlayerLook()) {
+		
+	}*/
 }
 
 void FlyingEnemy::discovery(){}

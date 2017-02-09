@@ -8,6 +8,7 @@
 #include "Bosses/Effect/EnemyCollideEffect.h"
 // アイテム
 #include "../../Item/Items.h"
+#include <cmath>
 
 BaseEnemy::BaseEnemy(
 	IWorld * world,
@@ -25,6 +26,7 @@ BaseEnemy::BaseEnemy(
 	ap_(0),
 	texSize_(256),
 	turnMotion_(ENEMY_WALK),
+	discoveryNumber_(0),
 	speed_(1.0f),
 	initSpeed_(speed_),
 	scale_(bodyScale),
@@ -49,24 +51,16 @@ BaseEnemy::BaseEnemy(
 	state_(State::Idel),
 	discoveryPosition_(Vector2::Zero),
 	addTexPosition_(Vector2(0.0f, 40.0f)),
-	player_(nullptr),
-	psObj_(nullptr),
 	fspScript_(nullptr),
 	wsScript_(nullptr),
 	pricleObj_(nullptr),
-	enemyManager_(EnemyManager(position, direction)),
+	enemyManager_(EnemyManager(world, position, direction)),
 	animation_(EnemyAnimation2D())
 {
 	// rayオブジェクトの追加
-	auto player = world_->findActor("PlayerBody1");
-	if (player != nullptr) {
-		auto ray = std::make_shared<PlayerSearchObj>(
-			world_, position_, player->getPosition());
-		world_->addActor(ActorGroup::EnemyBullet, ray);
-		psObj_ = &*ray;
-		objContainer_.push_back(psObj_);
-		isPlayer_ = true;
-	}
+	enemyManager_.setPSObj(PLAYER_RED_NUMBER, position_);
+	enemyManager_.setPSObj(PLAYER_BLUE_NUMBER, position_);
+	isPlayer_ = true;
 	// SEの追加
 	seHandles_.clear();
 	playSEHandles_.clear();
@@ -188,6 +182,8 @@ void BaseEnemy::onCollide(Actor & actor)
 			actor.getBody().GetCircle().getRadius() + scale_) return;
 		// 死亡
 		changeState(State::Dead, ENEMY_DAMAGE);
+		// 関数の追加
+		world_->GetKeeper()->addEnemyCount(1);
 		// エフェクトの追加
 		world_->addActor(ActorGroup::Effect,
 			std::make_shared<EnemyCollideEffect>(world_, position_));
@@ -212,7 +208,6 @@ void BaseEnemy::idle()
 {
 	// プレイヤーとの距離を計算して、
 	// スクリーンの幅の半分 + 敵の大きさよりちいさいなら動く
-	auto a = enemyManager_.getPlayerLength();
 	if (isScreen())
 		changeState(State::Search, ENEMY_WALK);
 }
@@ -230,18 +225,23 @@ void BaseEnemy::search()
 	if (!isPlayer_) return;
 	// 一定距離内で、プレイヤーとの間にブロックがなかったら
 	// 角度
-	auto a = enemyManager_.getPlayerNormalizeDirection();
-	auto b = Vector2::Left * direction_.x;
-	auto radius = std::atan2(b.y - a.y, b.x - a.x);
-	auto deg = radius * 180.0f / MathHelper::Pi;
-	// 追跡する
-	if (enemyManager_.getPlayerLength() <= discoveryLenght_ &&
-		std::abs(deg) <= 30.0f &&
-		psObj_->isPlayerLook()) {
-		changeState(State::Discovery, ENEMY_DISCOVERY);
-		// 発見SEの再生
-		PlaySoundMem(seHandles_[SE_HAKKEN], DX_PLAYTYPE_BACK);
-		discoveryPosition_ = position_;
+	for (int i = 0; i != 2; i++) {
+		auto a = enemyManager_.getPlayerNormalizeDirection(i);
+		auto b = Vector2::Right * direction_;
+		auto radius = std::atan2f(b.x * a.y - a.x * b.y, a.x * b.x + a.y * b.y);
+		auto deg = MathHelper::ToDegrees(radius);
+		// 追跡する
+		auto isPl = enemyManager_.getPSObj(i)->isPlayerLook();
+		if (enemyManager_.getPlayerLength(i) <= discoveryLenght_ &&
+			std::abs(deg) <= 30.0f &&
+			isPl) {
+			changeState(State::Discovery, ENEMY_DISCOVERY);
+			// 発見SEの再生
+			PlaySoundMem(seHandles_[SE_HAKKEN], DX_PLAYTYPE_BACK);
+			discoveryPosition_ = position_;
+			discoveryNumber_ = i;
+			break;
+		}
 	}
 }
 
@@ -270,8 +270,9 @@ void BaseEnemy::chase()
 	chaseMove();
 	// プレイヤーが追跡距離外か、プレイヤーの間にブロックがあるなら、
 	// 捜索状態に遷移
-	if (enemyManager_.getPlayerLength() > discoveryLenght_ + 100.0f &&
-		!psObj_->isPlayerLook()) {
+	if (enemyManager_.getPlayerLength(discoveryNumber_) > 
+			discoveryLenght_ + 100.0f &&
+		enemyManager_.getPSObj(discoveryNumber_)) {
 		changeState(State::Search, ENEMY_WALK);
 		turnMotion_ = ENEMY_WALKTURN;
 	}
@@ -307,13 +308,13 @@ void BaseEnemy::deadMove()
 			hitTimer_ += world_->getDeltaTime();
 		return;
 	}
-	//world_->setIsStopTime(false);
+	if (!animation_.isEndAnimation()) return;
 	// 所持しているオブジェクトの削除
 	for (auto i = objContainer_.begin(); i != objContainer_.end(); i++) {
 		auto a = *i;
 		a->dead();
 	}
-	if (!animation_.isEndAnimation()) return;
+	enemyManager_.deleteObj();
 	// 死亡エフェクトの追加
 	world_->addActor(ActorGroup::Effect,
 		std::make_shared<EnemyDeadEffect>(
@@ -349,12 +350,17 @@ void BaseEnemy::setObjPosition()
 // プレイヤーを捜索します
 void BaseEnemy::findPlayer()
 {
-	// プレイヤーがいなければ待機状態
-	if (player_ == nullptr) {
-		changeState(State::Idel, ENEMY_WALK);
-		isPlayer_ = false;
-		return;
+	for (int i = 0; i != 2; i++) {
+		auto name = "PlayerBody" + std::to_string(i + 1);
+		auto player = world_->findActor(name);
+		if (player != nullptr) {
+			isPlayer_ = true;
+			return;
+		}
 	}
+	changeState(State::Idel, ENEMY_WALK);
+	isPlayer_ = false;
+	return;
 }
 
 void BaseEnemy::searchMove(){}
@@ -402,11 +408,13 @@ int BaseEnemy::getScale()
 void BaseEnemy::updateState(float deltaTime)
 {
 	// プレイヤーの捜索
-	player_ = world_->findActor("PlayerBody1");
-	// プレイヤーが取得できれば、エネミーマネージャーに位置を入れる
-	if (player_ != nullptr) {
-		enemyManager_.setEMPosition(position_, player_->getPosition(), direction_);
-		psObj_->setPosition(position_, player_->getPosition());
+	enemyManager_.setEMPosition(position_, direction_);
+	for (int i = 0; i != 2; i++) {
+		auto name = "PlayerBody" + std::to_string(i + 1);
+		auto player = world_->findActor(name);
+		if (player != nullptr) {
+			enemyManager_.setPlayerPosition(i, player->getPosition());
+		}
 	}
 
 	switch (state_)
@@ -568,15 +576,17 @@ void BaseEnemy::addAnimation()
 // プレイヤーとのX方向とY方向を計算し、画面外にいるかを返します
 bool BaseEnemy::isScreen()
 {
-	if (std::abs(enemyManager_.getPlayerVector().x) <= 
-		(SCREEN_SIZE.x - SCREEN_SIZE.x / 12) + body_.GetBox().getWidth() &&
-		std::abs(enemyManager_.getPlayerVector().y) <= 
-		(SCREEN_SIZE.y - SCREEN_SIZE.x / 12) + body_.GetBox().getHeight()) {
-		isScreen_ = true;
-		return true;
+	for (int i = 0; i != 2; i++) {
+		if (std::abs(enemyManager_.getPlayerVector(i).x) <=
+			(SCREEN_SIZE.x - SCREEN_SIZE.x / 12) + body_.GetBox().getWidth() &&
+			std::abs(enemyManager_.getPlayerVector(i).y) <=
+			(SCREEN_SIZE.y - SCREEN_SIZE.x / 12) + body_.GetBox().getHeight()) {
+			isScreen_ = true;
+			return true;
+		}
 	}
-	isScreen_ = false;
 	// 画面外
+	isScreen_ = false;
 	return false;
 }
 

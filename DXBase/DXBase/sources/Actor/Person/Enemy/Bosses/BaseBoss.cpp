@@ -284,9 +284,6 @@ bool BaseBoss::isMovePosition()
 
 void BaseBoss::updateState(float deltaTime)
 {
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::G)) {
-		hp_ = 0;
-	}
 	player_ = world_->findActor("PlayerBody1");
 	// 体力が0以下になったら死亡
 	if (hp_ <= 0 && state_ != State::Dead && 
@@ -589,9 +586,9 @@ void BaseBoss::piyoriMove(float deltaTime)
 			// カウントを減らす
 			piyoriCount_ = max(piyoriCount_--, 0);
 			// ダメージ処理
-			auto d = 30;
+			auto d = 50;
 			if (attackCount_ == 1)
-				d = 30 / 2;
+				d = 30;
 			damage(d, entryObj_->getPosition(), 0.8f);
 			return;
 		}
