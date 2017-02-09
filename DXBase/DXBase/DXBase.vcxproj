@@ -267,6 +267,7 @@
     <ClInclude Include="sources\Actor\Tubo\Tubo.h" />
     <ClInclude Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.h" />
     <ClInclude Include="sources\Actor\UIActor\HelperUI\HelperUI.h" />
+    <ClInclude Include="sources\Actor\UIActor\HurryUpUI\HurryUpUI.h" />
     <ClInclude Include="sources\Animation\Base\Animation.h" />
     <ClInclude Include="sources\Animation\Base\Animation2D.h" />
     <ClInclude Include="sources\Animation\Enemy\EnemyAnimation2D.h" />
@@ -437,6 +438,7 @@
     <ClCompile Include="sources\Actor\Tubo\Tubo.cpp" />
     <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
     <ClCompile Include="sources\Actor\UIActor\HelperUI\HelperUI.cpp" />
+    <ClCompile Include="sources\Actor\UIActor\HurryUpUI\HurryUpUI.cpp" />
     <ClCompile Include="sources\Animation\Base\Animation.cpp" />
     <ClCompile Include="sources\Animation\Base\Animation2D.cpp" />
     <ClCompile Include="sources\Animation\Enemy\EnemyAnimation2D.cpp" />

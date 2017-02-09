@@ -2,8 +2,6 @@
 
 #include "../PlayerState_Single.h"
 
-#include<map>
-
 class PlayerState_Single_Idle : public PlayerState_Single {
 public:
 	PlayerState_Single_Idle(const Keys& keys);
@@ -19,10 +17,5 @@ private:
 	void move(float deltaTime);
 
 	Vector2 target_;
-
-	std::map<int, TextureID> NumIDs;
-
-	TextureID button_R1_;
-	TextureID button_L1_;
 };
 

@@ -4,8 +4,23 @@
 #include<DxLib.h>
 #include<vector>
 
-
 class SceneDataKeeper {
+private:
+	struct StageDatas {
+		std::string previousSceneName_;
+		int hp_;
+		int itemCount_;
+		std::vector<int> maxItemCount_;
+		int maxCombo_;
+		std::vector<int> comboCount_;
+		int damageCount_;
+		int holdCount_;
+		int moveDistance_;
+		int plusStar_;
+		int minusStar_;
+		int chargeTime_;
+		int enemyCount_;
+	};
 public:
 	SceneDataKeeper();
 	SceneDataKeeper(std::string name);
@@ -18,105 +33,40 @@ public:
 	void setPlayerHP(int hp);
 	int getPlayerHP() const;
 	int getInt();
-	void setItemCount(int itemCount) {
-		itemCount_ = itemCount;
-	}
-	void addCount(int adds) {
-		itemCount_ += adds;
-	}
-	void ItemReset() {
-		itemCount_ = 0;
-	}
-	void ItemMinus(int minusCount) {
-		itemCount_ -= minusCount;
-	}
-	int GetItemCount() {
-		return itemCount_;
-	}
+	void setItemCount(int itemCount);
+	void addCount(int adds);
+	void ItemReset();
+	void ItemMinus(int minusCount);
+	int GetItemCount();
 	//0Ç»ÇÁëSïîÇÃçáåv
-	int GetMaxItemCount(int num=0) {
-		if (num == 0) {
-			int mas=0;
-			for(int i = 0; i < maxItemCount_.size(); i++) {
-				mas += maxItemCount_[i];
-			}
-			return mas;
-		}
-		return maxItemCount_[num];
-	}
-	void setMaxItemCount(int max, int num) {
-		maxItemCount_[num] = max;
-	}
-	void addMaxItemCount(int add, int num) {
-		maxItemCount_[num] += add;
-	}
-	void resetMaxItemCount() {
-		for (int i = 0; i < maxItemCount_.size(); i++) {
-			maxItemCount_[i] = 0;
-		}
-	}
-	int getJumpCount() {
-		return jumpCount_;
-	}
-	void setJumpCount(int jumpCount) {
-		jumpCount_ = jumpCount;
-	}
-	void addJumpCount(int jumpCount) {
-		jumpCount_ += jumpCount;
-	}
-	void jumpReset() {
-		jumpCount_ = 0;
-	}
-	void jumpMinus(int minusCount) {
-		jumpCount_ -= minusCount;
-	}
-	int getDamageCount() {
-		return damageCount_;
-	}
-	void setDamageCount(int damageCount) {
-		damageCount_ = damageCount;
-	}
-	void addDamageCount(int damageCount) {
-		damageCount_ += damageCount;
-	}
-	void DamageReset() {
-		damageCount_ = 0;
-	}
-	void DamageMinus(int minusCount) {
-		damageCount_ -= minusCount;
-	}
-	void resultJumpSet(int result) {
-		jumpCountResult_ += result;
-	}
-	int resultJumpGet() {
-		return jumpCountResult_;
-	}
-	void addResultJump(int jumpCountResult) {
-		jumpCountResult_ += jumpCountResult;
-	}
-	void resultJumpReset() {
-		jumpCountResult_ = 0;
-	}
-	void resultJumpMinus(int minusCount) {
-		jumpCountResult_ -= minusCount;
-	}
-	void resultDamageSet(int result) {
-		damageCountResult_ += result;
-	}
-	int resultDamageGet() {
-		return damageCountResult_;
-	}
-	void addResultDamage(int damageCountResult) {
-		damageCountResult_ += damageCountResult;
-	}
-	void resultDamageReset() {
-		damageCountResult_ = 0;
-	}
-	void resultDamageMinus(int minusCount) {
-		damageCountResult_ -= minusCount;
-	}
+	int GetMaxItemCount(int num = 0);
+	void setMaxItemCount(int max, int num);
+	void addMaxItemCount(int add, int num);
+	void resetMaxItemCount();
+	int getJumpCount();
+	void setJumpCount(int jumpCount);
+	void addJumpCount(int jumpCount);
+	void jumpReset();
+	void jumpMinus(int minusCount);
+	int getDamageCount();
+	void setDamageCount(int damageCount);
+	void addDamageCount(int damageCount);
+	void DamageReset();
+	void DamageMinus(int minusCount);
+	void resultJumpSet(int result);
+	int resultJumpGet();
+	void addResultJump(int jumpCountResult);
+	void resultJumpReset();
+	void resultJumpMinus(int minusCount);
+	void resultDamageSet(int result);
+	int resultDamageGet();
+	void addResultDamage(int damageCountResult);
+	void resultDamageReset();
+	void resultDamageMinus(int minusCount);
 
 private:
+	std::vector<StageDatas> datas_;
+
 	std::string previousSceneName_;
 	int hp_;
 	int itemCount_;

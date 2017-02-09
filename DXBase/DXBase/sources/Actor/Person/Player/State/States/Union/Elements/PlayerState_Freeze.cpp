@@ -14,11 +14,6 @@ void PlayerState_Freeze::unique_init(){
 void PlayerState_Freeze::update(float deltaTime){
 	timer_ += deltaTime;
 
-	//// butty‚Ì’ÇÕŒvŽZ
-	//chase(butty_->position(), 0);
-	//// retty‚Ì’ÇÕŒvŽZ
-	//chase(retty_->position(), PLAYER_CNTR_DIV_NUM - 1);
-
 	if (timer_ >= PLAYER_FREEZE_TIME) change(PlayerState_Enum_Union::IDLE);
 }
 

@@ -8,9 +8,7 @@ BossGaugeUI::BossGaugeUI(IWorld* world, const Vector2& position) :
 	velo(0),
 	mHp(250),
 	mResHp(mHp),
-	mGaugeHp(100)
-{
-
+	mGaugeHp(100){
 	//ゲージ情報をセット
 	GaugeState state;
 	state.Color = Vector3(255, 255, 255);
