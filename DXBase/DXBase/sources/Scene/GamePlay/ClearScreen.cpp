@@ -34,8 +34,8 @@ bool ClearScreen::update(std::string name, Scene& next)
 		next = Scene::StageClear;
 		//if (name == "stage04")next = Scene::BossStage01;
 		//else next = Scene::GamePlay;
-		keeper_->addResultJump(keeper_->getJumpCount());
-		keeper_->addResultDamage(keeper_->getDamageCount());
+		//keeper_->addResultJump(keeper_->getJumpCount());
+		//keeper_->addResultDamage(keeper_->getDamageCount());
 		return true;
 	}
 	return false;
@@ -95,8 +95,8 @@ void ClearScreen::draw() const
 	}
 
 
-	drawNum = keeper_->getJumpCount();
-	baseNum = keeper_->getJumpCount();
+	//drawNum = keeper_->getJumpCount();
+	//baseNum = keeper_->getJumpCount();
 	posCount = 0;
 	drawNumberList.clear();
 

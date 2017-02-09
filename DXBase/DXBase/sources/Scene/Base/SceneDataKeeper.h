@@ -3,6 +3,7 @@
 #include<string>
 #include<DxLib.h>
 #include<vector>
+#include<map>
 
 class SceneDataKeeper {
 private:
@@ -10,7 +11,7 @@ private:
 		std::string previousSceneName_;
 		int hp_;
 		int itemCount_;
-		std::vector<int> maxItemCount_;
+		int maxItemCount_;
 		int maxCombo_;
 		std::vector<int> comboCount_;
 		int damageCount_;
@@ -30,6 +31,9 @@ public:
 	int getNextSceneName(std::string& name);
 	//直前のシーン名を受け取ります return:直前のシーン名(std::string)
 	std::string getSceneName()const;
+	void setCurrentSceneName(std::string name) {
+		currentSceneName_ = name;
+	}
 	void setPlayerHP(int hp);
 	int getPlayerHP() const;
 	int getInt();
@@ -38,36 +42,134 @@ public:
 	void ItemReset();
 	void ItemMinus(int minusCount);
 	int GetItemCount();
+	int GetItemCount(std::string stage) {
+		return datas_[stage].itemCount_;
+	}
 	//0なら全部の合計
-	int GetMaxItemCount(int num = 0);
-	void setMaxItemCount(int max, int num);
-	void addMaxItemCount(int add, int num);
+	int GetMaxItemCount(std::string stage="");
+	int SceneDataKeeper::GetMaxItemCount() {
+		return datas_[currentSceneName_].maxItemCount_;
+	}
+	void setMaxItemCount(int max, std::string stage);
+	void addMaxItemCount(int add, std::string stage);
 	void resetMaxItemCount();
-	int getJumpCount();
-	void setJumpCount(int jumpCount);
-	void addJumpCount(int jumpCount);
-	void jumpReset();
-	void jumpMinus(int minusCount);
+	//comboNumがコンボ数
+	int getComboCount(int comboNum);
+	void setComboCount(int jumpCount,int comboNum);
+	void addComboCount(int jumpCount,int comboNum);
+	void comboReset(int comboNum);
+	void comboMinus(int minusCount,int comboNum);
 	int getDamageCount();
 	void setDamageCount(int damageCount);
 	void addDamageCount(int damageCount);
 	void DamageReset();
 	void DamageMinus(int minusCount);
-	void resultJumpSet(int result);
-	int resultJumpGet();
-	void addResultJump(int jumpCountResult);
-	void resultJumpReset();
-	void resultJumpMinus(int minusCount);
-	void resultDamageSet(int result);
+	void maxComboSet(int result);
+	int maxComboGet();
+	void addmaxCombo(int jumpCountResult);
+	void maxComboReset();
+	void maxComboMinus(int minusCount);
 	int resultDamageGet();
-	void addResultDamage(int damageCountResult);
-	void resultDamageReset();
-	void resultDamageMinus(int minusCount);
+	
+	void setstring(std::string stage) {
+		datas_[currentSceneName_].previousSceneName_ = stage;
+	}
+
+	int getHoldCount() {
+		datas_[currentSceneName_].holdCount_;
+	}
+	void setHoldCount(int co) {
+		datas_[currentSceneName_].holdCount_ = co;
+	}
+	void addHoldCount(int co) {
+		datas_[currentSceneName_].holdCount_ += co;
+	}
+	void minusHoldCount(int co) {
+		datas_[currentSceneName_].holdCount_ -= co;
+	}
+	void resetHoldCount() {
+		datas_[currentSceneName_].holdCount_ = 0;
+	}
+
+	int getMoveDistance() {
+		datas_[currentSceneName_].moveDistance_;
+	}
+	void setMoveDistance(int co) {
+		datas_[currentSceneName_].moveDistance_ = co;
+	}
+	void addMoveDistance(int co) {
+		datas_[currentSceneName_].moveDistance_ += co;
+	}
+	void minusMoveDistance(int co) {
+		datas_[currentSceneName_].moveDistance_ -= co;
+	}
+	void resetMoveDistance() {
+		datas_[currentSceneName_].moveDistance_ = 0;
+	}
+
+	int getPlusStar() {
+		datas_[currentSceneName_].plusStar_;
+	}
+	void setPlusStar(int co) {
+		datas_[currentSceneName_].plusStar_ = co;
+	}
+	void addPlusStar(int co) {
+		datas_[currentSceneName_].plusStar_ += co;
+	}
+	void minusPlusStar(int co) {
+		datas_[currentSceneName_].plusStar_ -= co;
+	}
+	void resetPlusStar() {
+		datas_[currentSceneName_].plusStar_ = 0;
+	}
+
+	int getMinusStar() {
+		datas_[currentSceneName_].minusStar_;
+	}
+	void setMinusStar(int co) {
+		datas_[currentSceneName_].minusStar_ = co;
+	}
+	void addMinusStar(int co) {
+		datas_[currentSceneName_].minusStar_ += co;
+	}
+	void minusMinusStar(int co) {
+		datas_[currentSceneName_].minusStar_ -= co;
+	}
+	void resetMinusStar() {
+		datas_[currentSceneName_].minusStar_ = 0;
+	}
+
+	int getChargeTime() {
+		datas_[currentSceneName_].chargeTime_;
+	}
+	void setChargeTime(int co) {
+		datas_[currentSceneName_].chargeTime_ = co;
+	}
+	void resetChargeTime() {
+		datas_[currentSceneName_].chargeTime_ = 0;
+	}
+	
+	int getEnemyCount() {
+		datas_[currentSceneName_].enemyCount_;
+	}
+	void setEnemyCount(int co) {
+		datas_[currentSceneName_].enemyCount_ = co;
+	}
+	void addEnemyCount(int co) {
+		datas_[currentSceneName_].enemyCount_ += co;
+	}
+	void minusEnemyCount(int co) {
+		datas_[currentSceneName_].enemyCount_ -= co;
+	}
+	void resetEnemyCount() {
+		datas_[currentSceneName_].enemyCount_ = 0;
+	}
 
 private:
-	std::vector<StageDatas> datas_;
+	std::map<std::string,StageDatas> datas_;
 
 	std::string previousSceneName_;
+	std::string currentSceneName_;
 	int hp_;
 	int itemCount_;
 	std::vector<int> maxItemCount_;

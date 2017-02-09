@@ -56,6 +56,9 @@ private:
 	bool isStarDraw_;
 	ItemAnm anmer_;
 	std::vector<float> rotateRange_;
+
+	int maxStarCount_;
+	int myStarCount_;
 };
 
 #endif

@@ -11,7 +11,7 @@ void PlayerState_Idle::unique_init(){
 	// rettyのアニメーションをIDLEに変更
 	retty_->animation().change(PlayerAnimID::IDLE);
 
-	cntr_->getWorld()->GetKeeper()->setJumpCount(0);
+	//cntr_->getWorld()->GetKeeper()->setJumpCount(0);
 }
 
 // 更新処理

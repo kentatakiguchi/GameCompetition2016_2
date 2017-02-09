@@ -75,129 +75,145 @@ int SceneDataKeeper::getInt(){
 }
 
 void SceneDataKeeper::setItemCount(int itemCount) {
-	itemCount_ = itemCount;
+	//itemCount_ = itemCount;
+	datas_[currentSceneName_].itemCount_ = itemCount;
 }
 
 void SceneDataKeeper::addCount(int adds) {
-	itemCount_ += adds;
+	//itemCount_ += adds;
+	datas_[currentSceneName_].itemCount_ += adds;
 }
 
 void SceneDataKeeper::ItemReset() {
-	itemCount_ = 0;
+	//itemCount_ = 0;
+	datas_[currentSceneName_].itemCount_ = 0;
 }
 
 void SceneDataKeeper::ItemMinus(int minusCount) {
-	itemCount_ -= minusCount;
+	//itemCount_ -= minusCount;
+	datas_[currentSceneName_].itemCount_ -= minusCount;
 }
 
 int SceneDataKeeper::GetItemCount() {
-	return itemCount_;
+	//return itemCount_;
+	return datas_[currentSceneName_].itemCount_;
 }
 
 //0Ç»ÇÁëSïîÇÃçáåv
 
-int SceneDataKeeper::GetMaxItemCount(int num) {
-	if (num == 0) {
+int SceneDataKeeper::GetMaxItemCount(std::string stage) {
+	if (stage == "") {
 		int mas = 0;
-		for (int i = 0; i < maxItemCount_.size(); i++) {
-			mas += maxItemCount_[i];
+		for (auto i:datas_) {
+			mas += i.second.maxItemCount_;
 		}
 		return mas;
 	}
-	return maxItemCount_[num];
+	//return maxItemCount_[num];
+	return datas_[stage].maxItemCount_;
 }
 
-void SceneDataKeeper::setMaxItemCount(int max, int num) {
-	maxItemCount_[num] = max;
+void SceneDataKeeper::setMaxItemCount(int max,std::string stage) {
+	//maxItemCount_[num] = max;
+	datas_[currentSceneName_].maxItemCount_=max;
 }
 
-void SceneDataKeeper::addMaxItemCount(int add, int num) {
-	maxItemCount_[num] += add;
+void SceneDataKeeper::addMaxItemCount(int add, std::string stage) {
+	//maxItemCount_[num] += add;
+	datas_[currentSceneName_].maxItemCount_ += add;
 }
 
 void SceneDataKeeper::resetMaxItemCount() {
-	for (int i = 0; i < maxItemCount_.size(); i++) {
-		maxItemCount_[i] = 0;
+	for (int i = 0; i < datas_.size(); i++) {
+		datas_[currentSceneName_].maxItemCount_ = 0;
 	}
 }
 
-int SceneDataKeeper::getJumpCount() {
-	return jumpCount_;
+int SceneDataKeeper::getComboCount(int comboNum) {
+	//return jumpCount_;
+	if (comboNum < 2)comboNum = 0;
+	if (comboNum > 5)comboNum = 5;
+
+	return datas_[currentSceneName_].comboCount_[comboNum];
 }
 
-void SceneDataKeeper::setJumpCount(int jumpCount) {
-	jumpCount_ = jumpCount;
+void SceneDataKeeper::setComboCount(int jumpCount, int comboNum)
+{
+	datas_[currentSceneName_].comboCount_[comboNum]=jumpCount;
 }
 
-void SceneDataKeeper::addJumpCount(int jumpCount) {
-	jumpCount_ += jumpCount;
+void SceneDataKeeper::addComboCount(int jumpCount, int comboNum)
+{
+	datas_[currentSceneName_].comboCount_[comboNum]+=jumpCount;
 }
 
-void SceneDataKeeper::jumpReset() {
-	jumpCount_ = 0;
+void SceneDataKeeper::comboReset(int comboNum)
+{
+	datas_[currentSceneName_].comboCount_[comboNum]=0;
 }
 
-void SceneDataKeeper::jumpMinus(int minusCount) {
-	jumpCount_ -= minusCount;
+void SceneDataKeeper::comboMinus(int minusCount, int comboNum)
+{
+	datas_[currentSceneName_].comboCount_[comboNum] -= minusCount;
 }
+
 
 int SceneDataKeeper::getDamageCount() {
-	return damageCount_;
+	//return damageCount_;
+	return datas_[currentSceneName_].damageCount_;
 }
 
 void SceneDataKeeper::setDamageCount(int damageCount) {
-	damageCount_ = damageCount;
+	//damageCount_ = damageCount;
+	datas_[currentSceneName_].damageCount_ = damageCount;
 }
 
 void SceneDataKeeper::addDamageCount(int damageCount) {
-	damageCount_ += damageCount;
+	//damageCount_ += damageCount;
+	datas_[currentSceneName_].damageCount_ += damageCount;
 }
 
 void SceneDataKeeper::DamageReset() {
-	damageCount_ = 0;
+	//damageCount_ = 0;
+	datas_[currentSceneName_].damageCount_ = 0;
 }
 
 void SceneDataKeeper::DamageMinus(int minusCount) {
-	damageCount_ -= minusCount;
+	//damageCount_ -= minusCount;
+	datas_[currentSceneName_].damageCount_ -= minusCount;
 }
 
-void SceneDataKeeper::resultJumpSet(int result) {
-	jumpCountResult_ += result;
+void SceneDataKeeper::maxComboSet(int result)
+{
+	datas_[currentSceneName_].maxCombo_ = result;
 }
 
-int SceneDataKeeper::resultJumpGet() {
-	return jumpCountResult_;
+int SceneDataKeeper::maxComboGet()
+{
+	return datas_[currentSceneName_].maxCombo_;
 }
 
-void SceneDataKeeper::addResultJump(int jumpCountResult) {
-	jumpCountResult_ += jumpCountResult;
+void SceneDataKeeper::addmaxCombo(int jumpCountResult)
+{
+	datas_[currentSceneName_].maxCombo_ += jumpCountResult;
 }
 
-void SceneDataKeeper::resultJumpReset() {
-	jumpCountResult_ = 0;
+void SceneDataKeeper::maxComboReset()
+{
+	datas_[currentSceneName_].maxCombo_ = 0;
 }
 
-void SceneDataKeeper::resultJumpMinus(int minusCount) {
-	jumpCountResult_ -= minusCount;
-}
-
-void SceneDataKeeper::resultDamageSet(int result) {
-	damageCountResult_ += result;
+void SceneDataKeeper::maxComboMinus(int minusCount)
+{
+	datas_[currentSceneName_].maxCombo_ -= minusCount;
 }
 
 int SceneDataKeeper::resultDamageGet() {
-	return damageCountResult_;
-}
-
-void SceneDataKeeper::addResultDamage(int damageCountResult) {
-	damageCountResult_ += damageCountResult;
-}
-
-void SceneDataKeeper::resultDamageReset() {
-	damageCountResult_ = 0;
-}
-
-void SceneDataKeeper::resultDamageMinus(int minusCount) {
-	damageCountResult_ -= minusCount;
+	//return damageCountResult_;
+	int mas = 0;
+	for (auto i:datas_) {
+		mas += i.second.damageCount_;
+	}
+	return mas;
 }
 

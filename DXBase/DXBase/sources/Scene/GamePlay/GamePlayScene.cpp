@@ -74,32 +74,34 @@ void GamePlayScene::start() {
 
 	gener.create("./resources/file/" + name_ + ".csv", 0, 0, stg);
 
+	keeper_->setCurrentSceneName(name_);
+
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	if (name_ == "stage01") {
 		stageNum_ = 1;
 		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
 		
-		keeper_->setMaxItemCount(gener.getItemCount(), 1);
+		keeper_->setMaxItemCount(gener.getItemCount(), name_);
 	}
 	else if (name_ == "stage02") {
 		stageNum_ = 2;
 		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
 	
-		keeper_->setMaxItemCount(gener.getItemCount(), 2);
+		keeper_->setMaxItemCount(gener.getItemCount(), name_);
 	}
 	else if (name_ == "stage03") {
 		stageNum_ = 3;
 		world_->SetScreenPlayerPos(SCREEN_SIZE/2);
 		world_->SetScroolJudge(Vector2(1, 1),  world_->GetPlayerPos(),Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) - (SCREEN_SIZE.y / 2)));
 	
-		keeper_->setMaxItemCount(gener.getItemCount(), 3);
+		keeper_->setMaxItemCount(gener.getItemCount(), name_);
 	}
 	else if (name_ == "stage04") {
 		stageNum_ = 4;
 		world_->SetScreenPlayerPos(SCREEN_SIZE / 2);
 		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE-(SCREEN_SIZE.x-world_->GetScreenPlayerPos().x),csvSize.y*CHIPSIZE-(SCREEN_SIZE.y-world_->GetScreenPlayerPos().y)));
 	
-		keeper_->setMaxItemCount(gener.getItemCount(), 4);
+		keeper_->setMaxItemCount(gener.getItemCount(), name_);
 	}
 
 	backManager = new BackGraundManager(world_.get());
@@ -164,8 +166,8 @@ void GamePlayScene::start() {
 	}
 
 	world_->setCount(keeper_->GetItemCount());
-	keeper_->jumpReset();
-	keeper_->DamageReset();
+	//keeper_->jumpReset();
+	//keeper_->DamageReset();
 }
 
 void GamePlayScene::update() {

@@ -100,6 +100,18 @@ void BossStage::start() {
 	}
 	anmer_ = ItemAnm();
 
+	maxStarCount_ = 0;
+	myStarCount_ = 0;
+	maxStarCount_ += keeper_->GetMaxItemCount("stage01");
+	maxStarCount_ += keeper_->GetMaxItemCount("stage02");
+	maxStarCount_ += keeper_->GetMaxItemCount("stage03");
+	maxStarCount_ += keeper_->GetMaxItemCount("stage04");
+	myStarCount_ += keeper_->GetItemCount("stage01");
+	myStarCount_ += keeper_->GetItemCount("stage02");
+	myStarCount_ += keeper_->GetItemCount("stage03");
+	myStarCount_ += keeper_->GetItemCount("stage04");
+
+	
 }
 
 void BossStage::update() {

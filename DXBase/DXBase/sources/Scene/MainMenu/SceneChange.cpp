@@ -120,7 +120,7 @@ void SceneChange::start(std::string next,std::string tonexScene)
 			isArrive_[count] = false;
 			count++;
 		}
-
+		soundVol = 255;
 }
 
 void SceneChange::update()
@@ -128,6 +128,13 @@ void SceneChange::update()
 
 	if (isEnd_)return;
 
+
+	ChangeVolumeSoundMem(soundVol, ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
+	ChangeVolumeSoundMem(soundVol, ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4));
+	ChangeVolumeSoundMem(soundVol, ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
+	ChangeVolumeSoundMem(soundVol, ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU));
+	
+		
 	if (!isMainMenu_) {
 		changeCount++;
 		if (!isMainMenu_) {

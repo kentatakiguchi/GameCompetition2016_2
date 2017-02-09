@@ -208,8 +208,8 @@ void GameClearScene::draw() const {
 	}
 
 	///////////
-	drawNum = keeper_->resultJumpGet();
-	baseNum = keeper_->resultJumpGet();
+	//drawNum = keeper_->resultJumpGet();
+	//baseNum = keeper_->resultJumpGet();
 	posCount = 0;
 	drawNumberList.clear();
 
