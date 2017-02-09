@@ -145,6 +145,9 @@ public:
 	void setChargeTime(int co) {
 		datas_[currentSceneName_].chargeTime_ = co;
 	}
+	void addChargeTime(int co) {
+		datas_[currentSceneName_].chargeTime_ += co;
+	}
 	void resetChargeTime() {
 		datas_[currentSceneName_].chargeTime_ = 0;
 	}
@@ -164,7 +167,6 @@ public:
 	void resetEnemyCount() {
 		datas_[currentSceneName_].enemyCount_ = 0;
 	}
-
 private:
 	std::map<std::string,StageDatas> datas_;
 
