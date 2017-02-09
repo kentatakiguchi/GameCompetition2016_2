@@ -16,14 +16,31 @@ public:
 	// 実行
 	int run() {
 		GameDevice device(width_, height_, rate_, window_, fps_);
+
+
+		LPCSTR font_path = "./resources/file/nikumaru.ttf"; // 読み込むフォントファイルのパス
+		if (AddFontResourceEx(font_path, FR_PRIVATE, NULL) > 0) {
+		}
+		else {
+			// フォント読込エラー処理
+			MessageBox(NULL, "フォント読込失敗", "", MB_OK);
+		}
+		ChangeFont("07にくまるフォント");
 		start();
 		// キーが押されるまでループします
 		while (isRunning()){
 			update();
 			draw();
+
 			device.flip();
 		}
 		end();
+		if (RemoveFontResourceEx(font_path, FR_PRIVATE, NULL)) {
+		}
+		else {
+			MessageBox(NULL, "remove failure", "", MB_OK);
+		}
+
 		DxLib_End();	//DXLib使用終了処理
 		return 0;	//ソフト終了
 	}
