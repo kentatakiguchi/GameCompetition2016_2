@@ -179,6 +179,23 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::BOARD_STAGE3_TEX, "./resources/sprite/kanban02.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BOARD_STAGE4_TEX, "./resources/sprite/kanban03.png");
 	
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_COMBO2_TEX, "./resources/sprite/result/2combo.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_COMBO3_TEX, "./resources/sprite/result/3combo.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_COMBO4_TEX, "./resources/sprite/result/4combo.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_COMBO5_TEX, "./resources/sprite/result/5combo.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_CHARGETIME_TEX, "./resources/sprite/result/charge_time.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_GETSTAR_TEX, "./resources/sprite/result/get_star.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MAXCOMBO_TEX, "./resources/sprite/result/max_combo.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MINUS_MULT_TEX, "./resources/sprite/result/minus.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MULTIPLY_TEX, "./resources/sprite/result/Multiply.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_NoENEMY_DEATH_TEX, "./resources/sprite/result/noenemydeath.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MINUS_STAR_COUNT_TEX, "./resources/sprite/result/purplestar_count.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_STAR_COUNT_TEX, "./resources/sprite/result/yellowstar_count.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_DAMAGE_COUNT_TEX, "./resources/sprite/result/sprit_count.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_STICK_COUNT_TEX, "./resources/sprite/result/stick_count.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_TOTAL_TEX, "./resources/sprite/result/totle.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_WALK_BLOCK_COUNT_TEX, "./resources/sprite/result/walk_blockcount.png");
+
 	load_bgm_res();
 	load_se_res();
 	//îÒìØä˙ì«Ç›çûÇ›èIóπ

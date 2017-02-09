@@ -46,7 +46,7 @@ public:
 		return datas_[stage].itemCount_;
 	}
 	//0‚È‚ç‘S•”‚Ì‡Œv
-	int GetMaxItemCount(std::string stage="");
+	int GetMaxItemCount(std::string stage);
 	int SceneDataKeeper::GetMaxItemCount() {
 		return datas_[currentSceneName_].maxItemCount_;
 	}
@@ -76,7 +76,7 @@ public:
 	}
 
 	int getHoldCount() {
-		datas_[currentSceneName_].holdCount_;
+		return datas_[currentSceneName_].holdCount_;
 	}
 	void setHoldCount(int co) {
 		datas_[currentSceneName_].holdCount_ = co;
@@ -92,7 +92,7 @@ public:
 	}
 
 	int getMoveDistance() {
-		datas_[currentSceneName_].moveDistance_;
+		return datas_[currentSceneName_].moveDistance_;
 	}
 	void setMoveDistance(int co) {
 		datas_[currentSceneName_].moveDistance_ = co;
@@ -108,7 +108,7 @@ public:
 	}
 
 	int getPlusStar() {
-		datas_[currentSceneName_].plusStar_;
+		return datas_[currentSceneName_].plusStar_;
 	}
 	void setPlusStar(int co) {
 		datas_[currentSceneName_].plusStar_ = co;
@@ -140,7 +140,7 @@ public:
 	}
 
 	int getChargeTime() {
-		datas_[currentSceneName_].chargeTime_;
+		return datas_[currentSceneName_].chargeTime_;
 	}
 	void setChargeTime(int co) {
 		datas_[currentSceneName_].chargeTime_ = co;
@@ -153,7 +153,7 @@ public:
 	}
 	
 	int getEnemyCount() {
-		datas_[currentSceneName_].enemyCount_;
+		return datas_[currentSceneName_].enemyCount_;
 	}
 	void setEnemyCount(int co) {
 		datas_[currentSceneName_].enemyCount_ = co;

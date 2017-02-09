@@ -102,6 +102,7 @@ void BossStage::start() {
 
 	maxStarCount_ = 0;
 	myStarCount_ = 0;
+	//stage0‚ª’Ç‰Á‚³‚ê‚é‚©‚çA‚Ü‚½•ÏX‚ ‚è
 	maxStarCount_ += keeper_->GetMaxItemCount("stage01");
 	maxStarCount_ += keeper_->GetMaxItemCount("stage02");
 	maxStarCount_ += keeper_->GetMaxItemCount("stage03");
