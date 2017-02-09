@@ -40,7 +40,7 @@ MainMenuScene::MainMenuScene(SceneDataKeeper* keeper) :
 	defposlist[4] = 620;
 	defposlist[5] = 450;
 
-	nextScene[1] = GamePlay;
+	nextScene[1] = FirstGamePlay;
 	nextScene[2] = Tutoreal;
 	nextScene[3] = Credit;
 	nextScene[4] = GameEnd;

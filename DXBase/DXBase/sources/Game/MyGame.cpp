@@ -6,6 +6,7 @@
 
 #include "../Scene/LoadingScene/LoadingScene.h"
 #include "../Scene/GamePlay/GamePlayScene.h"
+#include "../Scene/FirstGamePlay/FirstGamePlayScene.h"
 #include "../Scene/GameOver/GameOverScene.h"
 //#include "../Scene/KataokaScene/KataokaScene.h"
 #include "../Scene/StageClear/StageClearScene.h"
@@ -28,6 +29,7 @@ MyGame::~MyGame(){}
 void MyGame::start(){
 	sceneMgr_.add(Scene::Loading, std::make_shared<LoadingScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::MainMenu, std::make_shared<MainMenuScene>(&dataKeeper_));
+	sceneMgr_.add(Scene::FirstGamePlay, std::make_shared<FirstGamePlayScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GamePlay, std::make_shared<GamePlayScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GameOver, std::make_shared<GameOverScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::GameClear, std::make_shared<GameClearScene>(&dataKeeper_));

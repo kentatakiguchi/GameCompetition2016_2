@@ -60,6 +60,10 @@ void GamePlayScene::start() {
 	world_->CollisitionOffOn(true);
 	MapGenerator gener = MapGenerator(world_.get());
 	int stg = keeper_->getNextSceneName(name_);
+	if (stg == 0) {
+		name_ = "stage01";
+		stg = 1;
+	}
 	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
 
 	//world_->addEventMessageListener(

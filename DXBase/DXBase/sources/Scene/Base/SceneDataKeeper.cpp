@@ -4,6 +4,7 @@ SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage04"), hp_(0),itemCo
 {
 	maxItemCount_.resize(5);
 	datas_.clear();
+	datas_["stage00"].comboCount_.resize(6);
 	datas_["stage01"].comboCount_.resize(6);
 	datas_["stage02"].comboCount_.resize(6);
 	datas_["stage03"].comboCount_.resize(6);

@@ -9,6 +9,7 @@ enum Scene {
 	MainMenu,
 	Title,
 	Credit,
+	FirstGamePlay,
 	GamePlay,
 	GameOver,
 	StageClear,

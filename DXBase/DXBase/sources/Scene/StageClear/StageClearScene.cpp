@@ -19,10 +19,12 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper){
 	BoardTexes.push_back(TextureID::BOARD_STAGE3_TEX);
 	BoardTexes.push_back(TextureID::BOARD_STAGE4_TEX);
 	BoardTexes.push_back(TextureID::BOARD_NULL_TEX);
+	BoardTexes.push_back(TextureID::BOARD_NULL_TEX);
 
 	BlockTexes.push_back(TextureID::FLOOR_STAGE1_TEX);
 	BlockTexes.push_back(TextureID::FLOOR_STAGE2_TEX);
 	BlockTexes.push_back(TextureID::FLOOR_STAGE3_TEX);
+	BlockTexes.push_back(TextureID::FLOOR_STAGE4_TEX);
 	BlockTexes.push_back(TextureID::FLOOR_STAGE4_TEX);
 }
 
@@ -89,11 +91,18 @@ void StageClearScene::start() {
 		boardNum_ = 2;
 		blockNum_ = 2;
 		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4), DX_PLAYTYPE_LOOP);
-	}if (keeper_->getSceneName() == "stage04") {
+	}
+	if (keeper_->getSceneName() == "stage04") {
 		backNum_ = 2;
 		boardNum_ = 3;
 		blockNum_ = 3;
 		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
+	}
+	if (keeper_->getSceneName() == "stage00") {
+		backNum_ = 0;
+		boardNum_ = 4;
+		blockNum_ = 4;
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
 	}
 	for (int i = 0; i < (int)titleTexs[backNum_].size(); i++) {
 		backManager->SetBackGraund(titleTexs[backNum_][i], titleTexs[backNum_][i]);
@@ -248,7 +257,11 @@ void StageClearScene::end() {
 	}
 	if (keeper_->getSceneName() == "stage03") {
 		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4));
-	}if (keeper_->getSceneName() == "stage04") {
+	}
+	if (keeper_->getSceneName() == "stage04") {
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
+	}
+	if (keeper_->getSceneName() == "stage00") {
 		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
 	}
 }

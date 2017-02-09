@@ -137,9 +137,15 @@ void ClearScreen::draw() const
 		textPositions.at("5DashMultCount").x, textPositions.at("5DashMultCount").y);
 	DrawGraph(textPositions.at("YellowStar").x, textPositions.at("YellowStar").y, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_STAR_COUNT_TEX), TRUE);
 	DrawGraph(textPositions.at("YellowStarMult").x, textPositions.at("YellowStarMult").y, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_MULTIPLY_TEX), TRUE);
+	if (keeper_->GetMaxItemCount() != 0) {
 	drawNum = keeper_->getPlusStar()/keeper_->GetMaxItemCount();
 	baseNum = keeper_->getPlusStar() / keeper_->GetMaxItemCount();
 	multAddCount += keeper_->getPlusStar() / keeper_->GetMaxItemCount();
+	}
+	else {
+		drawNum = 0;
+		baseNum = 0;
+	}
 	drawNumber(drawNum, baseNum,
 		textPositions.at("YellowStarMultCount").x, textPositions.at("YellowStarMultCount").y);
 	DrawGraph(textPositions.at("4Dash").x, textPositions.at("4Dash").y, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_COMBO4_TEX), TRUE);
