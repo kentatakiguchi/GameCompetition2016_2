@@ -4,6 +4,8 @@
 #include "../../Define.h"
 #include "../../ResourceLoader/Movie.h"
 
+#include "../../Renderer/NumberTexture.h"
+
 LoadingScene::LoadingScene(SceneDataKeeper* keeper):
 isEnd_(false){
 }
@@ -17,7 +19,7 @@ void LoadingScene::start(){
 	//ここにローディング専用のリソースを読み込む
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::LORDING_SLIME_ANM, "./resources/sprite/slimeanmColor.png", Vector2(256, 256), 8, 4, 2);
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::LOADING, "./resources/sprite/loading_anim.png", Vector2(623.0f, 120.0f), 3, 8, 0);
-
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBERS_TEX, "./resources/sprite/num.png");
 	// アニメーション生成
 	mLoadAnim.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::LOADING));
 	mLoadPuyo.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::LORDING_SLIME_ANM));
@@ -38,7 +40,6 @@ void LoadingScene::start(){
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::RESULT_BACL_TEX, "./resources/sprite/ResultBack.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::KIRIKABU_TEX, "./resources/sprite/kirikabu.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBERS_TEX, "./resources/sprite/num.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::HUKIDASI_TEX, "./resources/sprite/hukidasi.png");
 
 	ResourceLoader::GetInstance().loadAnimation(AnimationID::SCENE_CHANGE_SLIME_ANM, "./resources/sprite/slimeanm.png", Vector2(256, 256), 8, 4, 2);
@@ -217,10 +218,11 @@ void LoadingScene::start(){
 
 	load_bgm_res();
 	load_se_res();
+
 	//非同期読み込み終了
 	SetUseASyncLoadFlag(FALSE);
-
-
+	allCount_ = GetASyncLoadNum();
+	now_ = 0.0f;
 	//---Updateテスト用---
 	mPosition = SCREEN_SIZE - Vector2(623, 120);
 	isEnd_ = false;
@@ -232,16 +234,18 @@ void LoadingScene::update(){
 	mAngle += 10.0f*Time::GetInstance().deltaTime();
 	mLoadAnim.update(Time::GetInstance().deltaTime());
 	mLoadPuyo.update(Time::GetInstance().deltaTime());
+	now_ = 100 - (int)(((float)GetASyncLoadNum() / (float)allCount_)*100.0f);
 	//読み込み処理が終わっていたら
-	if (GetASyncLoadNum()==0&&ProcessMessage()==0) {
+	if (GetASyncLoadNum() == 0 && ProcessMessage() == 0) {
 		isEnd_ = true;
 	}
 }
 
 void LoadingScene::draw() const{
 	mLoadAnim.draw(mPosition - Vector2(0, 1) * 20, Vector2::Zero, 1.0f);
+	NumberTexture num = NumberTexture(TextureID::NUMBERS_TEX, 96, 96);
+	num.draw2(mPosition - Vector2(106, -26), now_, 3, Vector3(255, 255, 255), 0.3f);
 	mLoadPuyo.draw(mPosition - Vector2(128, 48), Vector2::Zero, 0.5f);
-	//DrawRotaGraph(static_cast<int>(mPosition.x - 60.0f), static_cast<int>(mPosition.y + 25.0f), 0.3f, mAngle, ResourceLoader::GetInstance().getTextureID(TextureID::PUYO_TEST_TEX), TRUE);
 }
 
 void LoadingScene::end(){

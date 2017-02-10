@@ -30,4 +30,6 @@ private:
 	float mAngle;
 	Animation2D mLoadAnim;
 	Animation2D mLoadPuyo;
+	int now_;
+	int allCount_;
 };
