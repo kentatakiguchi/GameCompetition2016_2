@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage04"), hp_(0),itemCount_(0),jumpCount_(0),damageCount_(0)
+SceneDataKeeper::SceneDataKeeper() :currentSceneName_("stage00"),previousSceneName_("stage04"), hp_(0),itemCount_(0),jumpCount_(0),damageCount_(0)
 {
 	maxItemCount_.resize(7);
 	datas_.clear();
