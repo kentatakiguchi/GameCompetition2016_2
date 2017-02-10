@@ -25,6 +25,13 @@ PlayerTxt::PlayerTxt(char * fileName, int lineNum)
 			txt.erase(txt.begin());
 			state.txt = txt;
 		}
+		else if (txt[0] == 'c') {
+			state.speekPlayer = PlayerEnum::COCOCO;
+			prePlayer_ = PlayerEnum::COCOCO;
+			//îªï ópÇÃï∂éöÇçÌèú
+			txt.erase(txt.begin());
+			state.txt = txt;
+		}
 		else {
 			state.lineFlag = true;
 			state.txt = txt;
@@ -130,6 +137,10 @@ void PlayerTxt::Draw(const Vector2& pos, float size)
 	else if (txts_[speekCount_].speekPlayer == PlayerEnum::RETTY) {
 		DrawFormatString(pos.x, pos.y, GetColor(255, 0, 0), drawTxt_.c_str());
 		DrawFormatString(pos.x, pos.y + size, GetColor(255, 0, 0), drawLineTxt_.c_str());
+	}
+	else if (txts_[speekCount_].speekPlayer == PlayerEnum::COCOCO) {
+		DrawFormatString(pos.x, pos.y, GetColor(255, 0, 0), drawTxt_.c_str());
+		DrawFormatString(pos.x, pos.y + size, GetColor(255, 0, 255), drawLineTxt_.c_str());
 	}
 }
 

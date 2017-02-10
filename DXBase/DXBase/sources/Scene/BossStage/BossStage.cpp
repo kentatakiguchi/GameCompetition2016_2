@@ -129,6 +129,7 @@ void BossStage::update() {
 			dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(150.0f, 0.0f));
 		}
 		else if (mIvemtTime > 7.0f&&mIvemtTime <= 8) {
+			door_->DoorOpen(false);
 			hatenaAnm_.change_param(0, 1.0f);
 		}
 		else if (mIvemtTime >= 9.0f&&mIvemtTime <= 15.0f) {
@@ -158,7 +159,6 @@ void BossStage::update() {
 			boss_->setIsBattle(true);
 			world_->PlayerNotMove(false);
 			world_->CollisitionOffOn(true);
-			door_->DoorOpen(false);
 		}
 	}
 
@@ -170,7 +170,7 @@ void BossStage::update() {
 
 
 	// ボスが死亡したら、クリアする
-	if (boss_->isSceneEnd())
+	if (boss_->isSceneEnd()||InputMgr::GetInstance().IsKeyDown(KeyCode::J))
 		world_->clear(true);
 
 	player = world_->findActor("Player");
@@ -187,7 +187,7 @@ void BossStage::update() {
 		//}
 		//else
 		//{
-			nextScene_ = Scene::GameClear;
+			nextScene_ = Scene::Bonus;
 		//}
 	}
 	if (!isEnd_) {

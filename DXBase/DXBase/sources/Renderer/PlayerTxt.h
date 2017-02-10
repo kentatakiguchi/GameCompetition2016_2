@@ -4,7 +4,8 @@
 enum PlayerEnum
 {
 	BUTTY,
-	RETTY
+	RETTY,
+	COCOCO
 };
 class PlayerTxt {
 public:

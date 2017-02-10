@@ -37,21 +37,26 @@ private:
 	//
 	Actor* playerB;
 	Actor* playerR;
+	Actor* bossC;
 	//プレイヤーの座標
 	Vector2 playerPosB;
 	Vector2 playerPosR;
+	Vector2 bossPosC;
 	//吹き出しの座標を入れます
 	Vector2 fontPosB_;
 	Vector2 fontPosR_;
-
+	Vector2 fontPosC_;
+	//α値
+	float alphaB_;
+	float alphaR_;
+	float alphaC_;
 	std::map<TxtEvent, PlayerTxtPtr> eventFonts_;
 
 	//現在しているイベント
 	TxtEvent nowEvent_;
 
 	bool isPlayFont_;
-	float alphaB_;
-	float alphaR_;
+
 
 	Vector2 textSize_;
 
