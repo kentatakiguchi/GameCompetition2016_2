@@ -2,6 +2,7 @@
 
 #include "../Base/IScene.h"
 #include <memory>
+#include <vector>
 class World;
 class BackGraundManager;
 class BonusStage : public IScene {
@@ -20,6 +21,8 @@ private:
 	// ÉèÅ[ÉãÉh
 	WorldPtr	world_;
 
+	std::vector<int>points_;
+
 	BackGraundManager* backManager;
 	Scene nextScene_;
 	Vector2 creditSize_;
@@ -27,12 +30,18 @@ private:
 
 	Vector2 kiriTexSize_;
 	int point_;
-	int bonusPoint_;
-
-	float pointTime_;
+	int drawPoint_;
+	int pointCount_;
+	float pointRandomTime_;
+	float pointDrawTime_;
 
 	float resultAlpha_;
 
 	bool isResult_;
+
+	bool pointDrawFlag_;
+
+	//Ç©ÇØÇÈî{êî
+	int scaleNum;
 };
 
