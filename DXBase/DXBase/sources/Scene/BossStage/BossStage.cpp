@@ -87,7 +87,7 @@ void BossStage::start() {
 	// ¯ŠÖ˜A
 	startPositiones_.clear();
 	stars_.clear();
-	starCount_ = (int)(keeper_->GetItemCount() / 100);
+	starCount_ = (int)(keeper_->GetItemCount("All") / 100);
 	starCount_ = (int)MathHelper::Clamp((float)starCount_, 1.0f, 5.0f);
 	isCreateStar_ = false;
 	isIdelEnd_ = false;
