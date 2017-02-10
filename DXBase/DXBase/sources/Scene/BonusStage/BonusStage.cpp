@@ -22,6 +22,7 @@ BonusStage::~BonusStage()
 
 void BonusStage::start()
 {
+	keeper_->setCurrentSceneName(name_);
 	isResult_ = false;
 
 	bonusPoint_ = 0;
@@ -64,7 +65,6 @@ void BonusStage::start()
 	kiriTexSize_ = ResourceLoader::GetInstance().GetTextureSize(TextureID::KIRIKABU_TEX);
 	
 	keeper_->addMaxItemCount(gener.getItemCount(), name_);
-	keeper_->setCurrentSceneName(name_);
 }
 
 void BonusStage::update()

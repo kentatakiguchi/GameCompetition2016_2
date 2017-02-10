@@ -12,6 +12,8 @@
 // ボスの体力表示
 #include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
 #include "../../../../Define.h"
+// デバッグ
+#include "../../../../Input/InputMgr.h"
 
 // ボスクラス(ベース予定)
 BaseBoss::BaseBoss(
@@ -285,6 +287,10 @@ bool BaseBoss::isMovePosition()
 
 void BaseBoss::updateState(float deltaTime)
 {
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::G)) {
+		hp_ = 0;
+	}
+
 	player_ = world_->findActor("PlayerBody1");
 	// 体力が0以下になったら死亡
 	if (hp_ <= 0 && state_ != State::Dead && 
@@ -516,6 +522,9 @@ void BaseBoss::deadMove(float deltaTime)
 			world_, Vector2(position_.x, 1020), (float)getRandomInt(40, 80) / 100);
 		world_->addActor(ActorGroup::EnemyBullet, miniBoss);
 		mbManager_.addMiniBoss(miniBoss.get());
+		PlaySoundMem(
+			ResourceLoader::GetInstance().getSoundID(SoundID::SE_MINIBOSS_CRY),
+			DX_PLAYTYPE_BACK);
 		miniBossCreateCount_++;
 		isEffectCreate_ = false;
 	}

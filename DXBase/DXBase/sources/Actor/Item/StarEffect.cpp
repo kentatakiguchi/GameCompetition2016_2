@@ -115,7 +115,7 @@ void StarEffect::positionMove(float deltaTime)
 void StarEffect::rotateMove(float deltaTime)
 {
 	degree_ += deltaTime * (speed_ / 2);
-	texDegree_ += deltaTime * 60.0f;
+	texDegree_ += 10.0f * deltaTime * 60.0f;
 	position_.x += speed_ * cosf(degree_) * 2.0f * (deltaTime * 60.0f);
 	position_.y += speed_ * sinf(degree_) * (deltaTime * 60.0f);
 }
@@ -123,7 +123,7 @@ void StarEffect::rotateMove(float deltaTime)
 void StarEffect::imbide(float deltaTime)
 {
 	degree_ += deltaTime * (speed_ / 2);
-	texDegree_ += deltaTime * 60.0f;
+	texDegree_ += 10.0f * deltaTime * 60.0f;
 	scale_ -= Vector2::One * 4.0f * deltaTime;
 	scale_.x = max(scale_.x, 0.0f);
 	scale_.y = max(scale_.y, 0.0f);

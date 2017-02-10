@@ -40,7 +40,8 @@ void FloorTurnEnemy::beginUpdate(float deltaTime){}
 void FloorTurnEnemy::update(float deltaTime)
 {
 	// 床捜索オブジェクトが何も触れていなくて、接地している場合
-	if (!fspObj_->isGround() && isGround_) {
+	// 追跡状態の場合は行わない
+	if (!fspObj_->isGround() && isGround_ && state_ != State::Chase) {
 		direction_.x *= -1;
 	}
 	// 崖捜索オブジェクトの更新

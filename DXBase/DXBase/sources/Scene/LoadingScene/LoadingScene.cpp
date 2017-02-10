@@ -370,6 +370,12 @@ void LoadingScene::load_se_res(){
 	SetCreateSoundPitchRate(0.0f);
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_WIND, "./resources/sounds/boss/boss_wind.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BOSS_POKO, "./resources/sounds/boss/boss_poko.mp3");
+	// ミニボス
+	SetCreateSoundPitchRate(600.0f * 1.5f);
+	SetCreateSoundTimeStretchRate(0.85f);
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_MINIBOSS_CRY, "./resources/sounds/boss/boss_dame.mp3");
+	SetCreateSoundTimeStretchRate(1.0f);
+	SetCreateSoundPitchRate(0.0f);
 
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_GETCOIN, "./resources/sounds/coin.mp3");
 
