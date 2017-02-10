@@ -24,11 +24,14 @@ void BonusStage::start()
 {
 	keeper_->setCurrentSceneName(name_);
 	isResult_ = false;
-
-	bonusPoint_ = 0;
+	pointDrawFlag_ = false;
+	drawPoint_ = 0;
 	resultAlpha_ = 0.0f;
 	point_ = 0;
-	pointTime_ = 0.0f;
+	pointCount_ = 0;
+	pointRandomTime_ = 0.0f;
+	pointDrawTime_ = 0.0f;
+	scaleNum = 1;
 	nextScene_ = Scene::MainMenu;
 	world_ = std::make_shared<World>(keeper_);
 	world_->CollisitionOffOn(true);
@@ -39,7 +42,7 @@ void BonusStage::start()
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
 	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
-	
+
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), gener.findStartPoint("./resources/file/" + name_ + ".csv")));
 
 	creditSize_ = ResourceLoader::GetInstance().GetTextureSize(TextureID::CREDIT_TEX);
@@ -63,8 +66,9 @@ void BonusStage::start()
 	backManager->SetUpBackGraund(TextureID::BACKSTAGE1_1_TEX, 8);
 
 	kiriTexSize_ = ResourceLoader::GetInstance().GetTextureSize(TextureID::KIRIKABU_TEX);
-	
+
 	keeper_->addMaxItemCount(gener.getItemCount(), name_);
+
 }
 
 void BonusStage::update()
@@ -72,14 +76,26 @@ void BonusStage::update()
 	if (!isResult_)
 		creditPos_.y -= 1000.0f*Time::GetInstance().deltaTime();
 	else {
-		pointTime_ += Time::GetInstance().deltaTime();
-		point_ = GetRand(99999999);
-		resultAlpha_ += Time::GetInstance().deltaTime();
-		if (pointTime_ >= 4.0f)
-			point_ = keeper_->GetMaxItemCount("All");
-		if (pointTime_ >= 8.0f) {
-			isEnd_ = true;
+		if (!pointDrawFlag_) {
+			point_ = 12345;
+			int pointLeng = std::to_string(point_).length();
+			int num = 1;
+			for (int i = 0; i < pointLeng; i++) {
+				points_.push_back(point_ / num % 10);
+				num *= 10;
+			}
+			pointDrawFlag_ = true;
 		}
+		else {
+			resultAlpha_ += Time::GetInstance().deltaTime();
+			pointDrawTime_ += Time::GetInstance().deltaTime();
+			pointRandomTime_ += Time::GetInstance().deltaTime();
+			if (pointDrawTime_ >= 0.5f&&points_.size()>pointCount_&&pointRandomTime_ >= 4.0f) {
+				pointDrawTime_ = 0.0f;
+				pointCount_++;
+			}
+		}
+
 	}
 
 
@@ -107,9 +123,20 @@ void BonusStage::draw() const
 		//NumberTexture bonus = NumberTexture(TextureID::NUMBERS_TEX, 96, 96);
 		//bonus.draw2(Vector2(SCREEN_SIZE.x / 2 - 182, SCREEN_SIZE.y / 2 + 128), bonusPoint_, 4, Vector3(255, 255, 255));
 		NumberTexture all = NumberTexture(TextureID::NUMBERS_TEX, 96, 96);
-		all.draw2(Vector2(SCREEN_SIZE.x / 2 - 192, SCREEN_SIZE.y / 2), point_, 8, Vector3(255, 255, 255));
-		Vector2 size = Vector2(SCREEN_SIZE.x / 2 - 192 - 96, SCREEN_SIZE.y / 2);
-		DrawGraph(size.x, size.y, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), true);
+		int size = 8;
+		for (int i = 0; i < size - pointCount_; i++) {
+			Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 384, SCREEN_SIZE.y / 2) + Vector2(96 * i, 0);
+			if (points_.size() - 1 >= pointCount_)
+				all.draw2(pos, GetRand(9), 1, Vector3(255, 255, 255));
+			else
+				all.draw2(pos, 0, 1, Vector3(255, 255, 255));
+		}
+		for (int i = 0; i < pointCount_; i++) {
+			Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 384, SCREEN_SIZE.y / 2) + Vector2(96 * ((size - i) - 1), 0);
+			all.draw2(pos, points_[i], 1, Vector3(255, 255, 255), 1.0f);
+		}
+		Vector2 sizetext = Vector2(SCREEN_SIZE.x / 2 - 384 - 96, SCREEN_SIZE.y / 2);
+		DrawGraph(sizetext.x, sizetext.y, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), true);
 		//DrawGraph(300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);
 		//DrawGraph(SCREEN_SIZE.x -kiriTexSize_.x- 300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
