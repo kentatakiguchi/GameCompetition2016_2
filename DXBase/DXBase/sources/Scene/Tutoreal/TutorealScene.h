@@ -26,7 +26,7 @@ struct StarState {
 class World;
 class TutorealScene : public IScene {
 public:
-	TutorealScene();
+	TutorealScene(SceneDataKeeper* keeper);
 	~TutorealScene();
 	virtual void start() override;
 	virtual void update() override;

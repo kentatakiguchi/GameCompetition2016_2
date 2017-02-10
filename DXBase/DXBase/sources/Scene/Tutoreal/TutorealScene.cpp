@@ -8,9 +8,10 @@
 #include "../../Input/InputMgr.h"
 #include "../../Math/MathHelper.h"
 #include "../../Actor/Person/Player/PlayerConnector.h"
-TutorealScene::TutorealScene() :
+TutorealScene::TutorealScene(SceneDataKeeper* keeper) :
 	tutorealRoopCount_(0)
 {
+	keeper_ = keeper;
 	isEnd_ = false;
 	deltaTime_ = 1.0f / 60.0f;
 	//チュートリアル設定
