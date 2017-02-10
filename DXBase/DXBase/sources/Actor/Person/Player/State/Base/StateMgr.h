@@ -10,6 +10,8 @@ class StateMgr{
 public:
 	// コンストラクタ
 	StateMgr();
+	// コンストラクタ
+	virtual ~StateMgr();
 public:
 	// 更新処理
 	void action(Actor& actor, float deltaTime) ;

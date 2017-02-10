@@ -5,6 +5,10 @@
 // コンストラクタ
 StateMgr::StateMgr() : currentState_(std::make_shared<State_Dammy>()), element_(-1){}
 
+StateMgr::~StateMgr()
+{
+}
+
 // 更新処理
 void StateMgr::action(Actor& actor, float deltaTime) {
 	// 入力処理

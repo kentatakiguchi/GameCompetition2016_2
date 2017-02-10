@@ -9,6 +9,10 @@ Animation2D::Animation2D(const ActionType& type) :
 	type_(type), type_stock_(ActionType::Right) {
 }
 
+Animation2D::~Animation2D()
+{
+}
+
 
 void Animation2D::add_anim(const int & id, const std::vector<int>& anims) {
 	sprites_[id] = anims;
