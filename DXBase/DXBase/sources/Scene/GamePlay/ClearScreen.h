@@ -27,9 +27,9 @@ public:
 				drawNumberList.push_back(baseNum);
 				//DrawGraph((SCREEN_SIZE.x - CountPos)
 				//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[baseNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[baseNum]), TRUE);
-				//break;
-				baseNum = 0;
-				continue;
+				break;
+				//baseNum = 0;
+				//continue;
 			}
 
 			drawNum = (int)(baseNum*0.1);
@@ -51,7 +51,16 @@ public:
 			DrawGraph(posx +ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount,posy, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
 			drawPosCount--;
 		}
-
+	}
+	void LoopNumber(int posx,int posy,int useLoopType,int maxSize=3) const{
+		int LoopCount = useLoopType;
+		for (int i = 0; i < maxSize; i++) {
+			DrawGraph(posx + ResourceLoader::GetInstance().GetTextureSize(numberTexes_[NumberForLoop_[LoopCount]]).x*i, posy, ResourceLoader::GetInstance().getTextureID(numberTexes_[NumberForLoop_[LoopCount]]), TRUE);
+			LoopCount++;
+			if (LoopCount > 9) {
+				LoopCount=0;
+			}
+		}
 	}
 private:
 	std::vector<std::string> changeTextList;
@@ -67,4 +76,19 @@ private:
 	SceneDataKeeper* keeper_;
 	int Count_;
 	int ints;
+
+	float drawNumberController_;
+
+	std::vector<int> NumberForLoop_;
+
+	std::map<std::string, bool> isDraw_;
+	std::map<std::string, bool> isBaseDraw_;
+	std::vector<std::string> nameList;
+	std::vector<std::string> nameBaseList;
+	int usingIntCount;
+	int usingBaseIntCount;
+
+	bool isFirst_;
+	bool buttonLock_;
+	int buttonLockCount_;
 };

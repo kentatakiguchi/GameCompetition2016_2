@@ -4,13 +4,15 @@
 
 SceneDataKeeper::SceneDataKeeper() :previousSceneName_("stage04"), hp_(0),itemCount_(0),jumpCount_(0),damageCount_(0)
 {
-	maxItemCount_.resize(5);
+	maxItemCount_.resize(7);
 	datas_.clear();
 	datas_["stage00"].comboCount_.resize(6);
 	datas_["stage01"].comboCount_.resize(6);
 	datas_["stage02"].comboCount_.resize(6);
 	datas_["stage03"].comboCount_.resize(6);
 	datas_["stage04"].comboCount_.resize(6);
+	datas_["bossStage01"].comboCount_.resize(6);
+	datas_["tutoreal01"].comboCount_.resize(6);
 }
 
 SceneDataKeeper::SceneDataKeeper(std::string name):previousSceneName_(name),hp_(0), itemCount_(0), jumpCount_(0), damageCount_(0){
