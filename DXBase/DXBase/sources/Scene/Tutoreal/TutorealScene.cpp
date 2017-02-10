@@ -17,6 +17,7 @@ TutorealScene::TutorealScene() :
 	//1番
 	TutorealName name1;
 	name1.csvName = "tutoreal01";
+	name1.moviePas = "./resources/Movie/tutorial01.wmv";
 	name1.movieID = MOVIE_ID::TUTPREAL_01_MOVIE;
 	name1.textIDs.push_back(TextureID::TUTOREAL1_1_TXT_TEX);
 	//name1.textIDs.push_back(TextureID::TUTOREAL1_2_TXT_TEX);
@@ -26,6 +27,7 @@ TutorealScene::TutorealScene() :
 	//2番
 	TutorealName name2;
 	name2.csvName = "tutoreal02";
+	name2.moviePas = "./resources/Movie/tutorial02.wmv";
 	name2.movieID = MOVIE_ID::TUTPREAL_02_MOVIE;
 	name2.textIDs.push_back(TextureID::TUTOREAL2_1_TXT_TEX);
 	//name2.textIDs.push_back(TextureID::TUTOREAL2_2_TXT_TEX);
@@ -35,6 +37,7 @@ TutorealScene::TutorealScene() :
 	//3番
 	TutorealName name3;
 	name3.csvName = "tutoreal03";
+	name3.moviePas = "./resources/Movie/tutorial03.wmv";
 	name3.movieID = MOVIE_ID::TUTPREAL_03_MOVIE;
 	name3.textIDs.push_back(TextureID::TUTOREAL3_1_TXT_TEX);
 	//name3.textIDs.push_back(TextureID::TUTOREAL3_2_TXT_TEX);
@@ -123,6 +126,8 @@ void TutorealScene::start()
 	nextScene_ = Scene::Tutoreal;
 	//ポーズしない
 	isStopped_ = false;
+	//
+	Movie::GetInstance().Load(tutorels_[tutorealRoopCount_].movieID,tutorels_[tutorealRoopCount_].moviePas);
 	//ワールド
 	world_ = std::make_shared<World>(keeper_);
 	MapGenerator gener = MapGenerator(world_.get());
@@ -322,6 +327,7 @@ void TutorealScene::end()
 	Movie::GetInstance().Seek(movieId_, 0.0f);
 	//再生ストップ
 	Movie::GetInstance().Stop(movieId_);
+	Movie::GetInstance().Clear();
 	//チュートリアルの進みをリセット
 	if (nextScene_ == Scene::MainMenu) tutorealRoopCount_ = 0;
 }

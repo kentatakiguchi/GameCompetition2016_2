@@ -12,6 +12,7 @@ class PlayerConnector;
 struct TutorealName {
 	std::string csvName;
 	MOVIE_ID movieID;
+	std::string moviePas;
 	std::vector<TextureID> textIDs;
 	std::vector<TextureID> timeCountIDs;
 };
