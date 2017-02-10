@@ -262,7 +262,7 @@ void StageClearScene::end() {
 		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
 	}
 	if (keeper_->getSceneName() == "stage00") {
-		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
 	}
 }
 

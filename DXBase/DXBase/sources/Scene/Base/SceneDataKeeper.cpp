@@ -109,7 +109,7 @@ int SceneDataKeeper::GetItemCount() {
 //0‚È‚ç‘S•”‚Ì‡Œv
 
 int SceneDataKeeper::GetMaxItemCount(std::string stage) {
-	if (stage == "") {
+	if (stage == "All") {
 		int mas = 0;
 		for (auto i:datas_) {
 			mas += i.second.maxItemCount_;

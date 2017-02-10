@@ -47,6 +47,7 @@ public:
 		return datas_[stage].itemCount_;
 	}
 	//0なら全部の合計
+	//引数に"All"を入れると全ステージの合計が返ってくる
 	int GetMaxItemCount(std::string stage);
 	int SceneDataKeeper::GetMaxItemCount() {
 		return datas_[currentSceneName_].maxItemCount_;
