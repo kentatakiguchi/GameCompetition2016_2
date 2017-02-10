@@ -8,6 +8,6 @@ BokoEffect::BokoEffect(
 	BossEffect(world, "BokoEffect", position, Vector2(512, 512),
 		EFFECT_BOKO, AnimationID::BOSS_EFFECT_BOKO_TEX)
 {
-	alpha_ = alpha;
+	alpha_ = (float)alpha;
 	animation_.setSpeed(speed);
 }

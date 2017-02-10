@@ -1,4 +1,5 @@
 #include "WallMoveEnemy.h"
+#include "../EnemyHeaderImport.h"
 #include "../FloorSearchPoint.h"
 
 WallMoveEnemy::WallMoveEnemy(

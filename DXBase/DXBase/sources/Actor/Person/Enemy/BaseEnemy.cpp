@@ -1,12 +1,13 @@
 #include "BaseEnemy.h"
 #include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../Base/ActorGroup.h"
-#include"../../Body/CollisionBase.h"
+#include "../../Body/CollisionBase.h"
 #include "FloorSearchPoint.h"
 #include "PlayerSearchObj.h"
 #include "Bosses/Effect/EnemyDeadEffect.h"
 #include "Bosses/Effect/EnemyCollideEffect.h"
-#include"../../../Scene/Base/SceneDataKeeper.h"
+#include "../../../Scene/Base/SceneDataKeeper.h"
+#include "EnemyHeaderImport.h"
 
 // ƒAƒCƒeƒ€
 #include "../../Item/Items.h"

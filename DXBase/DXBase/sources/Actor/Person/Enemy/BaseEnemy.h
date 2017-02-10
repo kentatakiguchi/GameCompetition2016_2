@@ -2,12 +2,7 @@
 #define BASE_ENEMY_H_
 
 #include "../../Base/Actor.h"
-#include "../../../Animation/Base/Animation2D.h"
-#include "../../../World/IWorld.h"
-#include "../../../Math/Math.h"
-#include "../../../Define.h"
 #include "EnemyManager.h"
-#include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../../Animation/Enemy/EnemyAnimation2D.h"
 #include <vector>
 

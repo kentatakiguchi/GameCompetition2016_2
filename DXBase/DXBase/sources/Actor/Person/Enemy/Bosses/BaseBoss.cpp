@@ -183,7 +183,8 @@ void BaseBoss::onDraw() const
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	// αブレンドの設定
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
+	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_);
 	animation_.draw(
 		pos - Vector2::Up * 10,
 		Vector2::One * (body_.GetCircle().getRadius()) + Vector2::Up * 20,
@@ -500,8 +501,8 @@ void BaseBoss::deadMove(float deltaTime)
 	auto bgm = ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5);
 	if (CheckSoundMem(bgm) == 1) {
 		bgmVolume_ -= deltaTime / 4.0f;
-		bgmVolume_ = max(bgmVolume_, 0.0f);
-		ChangeVolumeSoundMem(255 * bgmVolume_, bgm);
+		bgmVolume_ = (float)max(bgmVolume_, 0.0f);
+		ChangeVolumeSoundMem((int)(255 * bgmVolume_), bgm);
 		// 音量が0になったら止める
 		if (bgmVolume_ == 0.0f) {
 			StopSoundMem(bgm);
@@ -1020,8 +1021,9 @@ void BaseBoss::texAlpha(float deltaTime)
 {
 	if (!isAttackHit_) {
 		if ((int)(stateTimer_ * 10) % 2 < 1) alpha_ -= (int)(deltaTime * 750);
-		else alpha_ += (int)(deltaTime * 750);
-		alpha_ = (int)(MathHelper::Clamp((float)alpha_, 100, 255));
+		else alpha_ += deltaTime * 750;
+		//  alpha_ += (int)(deltaTime * 750);
+		alpha_ = MathHelper::Clamp((float)alpha_, 100, 255);
 	}
 	else alpha_ = 255;
 }
@@ -1068,16 +1070,16 @@ void BaseBoss::createMiniBoss()
 		// 左辺・右辺に生成
 		if (count == 0) {
 			//direction.x = -1.0f;
-			pos.x = chipsize * 18;
+			pos.x = chipsize * 18.0f;
 		}
 		else if (count == 1) {
-			pos.x = chipsize * 2;
+			pos.x = chipsize * 2.0f;
 		}
 		pos.y = (float)getRandomInt(chipsize * 2, chipsize * 7);
 	}
 	else if (count == 2) {
 		// 上辺に生成
-		pos.y = chipsize * 2;
+		pos.y = chipsize * 2.0f;
 		pos.x = (float)getRandomInt(chipsize * 2, chipsize * 18);
 	}
 	// ミニボス(浮遊)の生成

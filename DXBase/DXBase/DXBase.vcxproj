@@ -176,6 +176,7 @@
     <ClInclude Include="sources\Actor\Item\BadItems.h" />
     <ClInclude Include="sources\Actor\Item\ItemAnm.h" />
     <ClInclude Include="sources\Actor\Item\Items.h" />
+    <ClInclude Include="sources\Actor\Item\StarEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossAnimationNumber.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\AdhereMiniBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FlyingMiniBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ShockWave.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\EnemyHeaderImport.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.h" />
     <ClInclude Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\BaseEnemy.h" />
@@ -372,6 +374,7 @@
     <ClCompile Include="sources\Actor\Door\Door.cpp" />
     <ClCompile Include="sources\Actor\Item\BadItemAnm.cpp" />
     <ClCompile Include="sources\Actor\Item\ItemAnm.cpp" />
+    <ClCompile Include="sources\Actor\Item\StarEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.cpp" />

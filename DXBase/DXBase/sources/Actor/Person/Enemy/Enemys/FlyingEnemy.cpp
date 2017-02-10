@@ -1,5 +1,6 @@
 #include "FlyingEnemy.h"
 #include "../../../Base/ActorGroup.h"
+#include "../EnemyHeaderImport.h"
 #include "../FloorSearchPoint.h"
 #include "Prickle.h"
 #include "../PlayerSearchObj.h"

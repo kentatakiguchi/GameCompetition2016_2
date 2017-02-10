@@ -33,14 +33,14 @@ BossWingEffect::BossWingEffect(
 		isTexTurn_ = true;
 	}
 	// äpìx
-	degree_ = getRandomInt(20, 180 - 20);
+	degree_ = (float)getRandomInt(20, 180 - 20);
 	// óÕ
 	flyPower_ = getRandomInt(200, 400) / 10.0f;
 	// âÒì]ë¨ìx
 	rotaSpeed_ = getRandomInt(30, 40) / 10.0f;
 	// êF
 	color_ = Vector3::One * 255;
-	color_.y = getRandomInt(0, 255);
+	color_.y = (float)getRandomInt(0, 255);
 }
 
 void BossWingEffect::onUpdate(float deltaTime)

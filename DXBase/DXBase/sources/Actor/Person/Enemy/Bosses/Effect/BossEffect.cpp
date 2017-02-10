@@ -43,7 +43,7 @@ void BossEffect::onDraw() const
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	// αブレンドの設定
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_);
 	animation_.draw(
 		pos,
 		texSize_ / 2,

@@ -2,6 +2,7 @@
 #include "../../../Base/ActorGroup.h"
 #include "../FloorSearchPoint.h"
 #include "Prickle.h"
+#include "../EnemyHeaderImport.h"
 
 #include "../Bosses/Effect/EnemyDeadEffect.h"
 

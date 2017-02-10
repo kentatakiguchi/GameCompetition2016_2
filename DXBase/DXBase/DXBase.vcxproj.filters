@@ -621,6 +621,12 @@
     <ClInclude Include="sources\Scene\FirstGamePlay\FirstGamePlayScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\EnemyHeaderImport.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Item\StarEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -1092,6 +1098,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Scene\FirstGamePlay\FirstGamePlayScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Item\StarEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

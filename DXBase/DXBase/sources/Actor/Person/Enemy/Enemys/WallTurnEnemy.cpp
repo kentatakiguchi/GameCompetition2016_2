@@ -1,4 +1,5 @@
 #include "WallTurnEnemy.h"
+#include "../EnemyHeaderImport.h"
 #include "../../../Base/ActorGroup.h"
 #include "../FloorSearchPoint.h"
 #include "Prickle.h"

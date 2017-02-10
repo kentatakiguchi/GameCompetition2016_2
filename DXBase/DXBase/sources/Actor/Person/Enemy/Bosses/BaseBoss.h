@@ -14,7 +14,6 @@
 class FloorSearchPoint;
 class BossEntry;
 class BossGaugeUI;
-//class HelperUI;
 
 // ボスクラス
 class BaseBoss : public Actor {

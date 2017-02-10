@@ -56,7 +56,7 @@ void MiniBoss::onDraw() const
 	auto size = 256;
 	animation_.draw(
 		position_, 
-		Vector2(size / 2, size / 1.5f),
+		Vector2(size / 2.0f, size / 1.5f),
 		scale_);
 }
 

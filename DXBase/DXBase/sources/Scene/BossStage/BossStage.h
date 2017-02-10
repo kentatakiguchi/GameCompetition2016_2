@@ -10,10 +10,12 @@
 #include "../../Actor/Door/Door.h"
 #include "../../Animation/Base/Animation2D.h"
 #include"../../Actor/Item/ItemAnm.h"
+#include <list>
 
 class World;
 class BackGraundManager;
 class BaseBoss;
+class StarEffect;
 
 class BossStage : public IScene {
 public:
@@ -25,6 +27,12 @@ public:
 	virtual void end() override;
 	virtual bool isEnd() const override;
 	virtual Scene next() const override;
+	// 星の位置の設定
+	void setStartPosition(const Vector2& position);
+	// 星の生成
+	void createStars();
+	// 星の更新
+	void updateStars();
 
 private:
 	using WorldPtr = std::shared_ptr<World>;
@@ -49,11 +57,14 @@ private:
 	ActorPtr player;
 
 	Animation2D hatenaAnm_;
+	// 星関連
+	int starCount_;
+	bool isCreateStar_;
+	bool isIdelEnd_;
+	std::vector<Vector2> startPositiones_;
+	typedef std::list<StarEffect*> StarContainer;
+	StarContainer stars_;
 
-	std::vector<Vector2> starPosition_;
-	std::vector<int> starRotate_;
-	std::vector<int> alphaStats;
-	bool isStarDraw_;
 	ItemAnm anmer_;
 	std::vector<float> rotateRange_;
 
