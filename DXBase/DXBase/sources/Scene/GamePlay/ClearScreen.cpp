@@ -15,16 +15,29 @@ ClearScreen::ClearScreen(SceneDataKeeper* keeper):keeper_(keeper), drawNumberCon
 	usingBaseIntCount = 2;
 	anmer_ = StageClearTextAnm();
 	
-	numberTexes_.push_back(TextureID::NUMBER_ZERO_TEX);
-	numberTexes_.push_back(TextureID::NUMBER_ONE_TEX);
-	numberTexes_.push_back(TextureID::NUMBER_TWO_TEX);
-	numberTexes_.push_back(TextureID::NUMBER_THREE_TEX);
-	numberTexes_.push_back(TextureID::NUMBER_FOUR_TEX);
-	numberTexes_.push_back(TextureID::NUMBER_FIVE_TEX);
-	numberTexes_.push_back(TextureID::NUMBER_SIX_TEX);
-	numberTexes_.push_back(TextureID::NUMBER_SEVEN_TEX);
-	numberTexes_.push_back(TextureID::NUMBER_EIGHT_TEX);
-	numberTexes_.push_back(TextureID::NUMBER_NINE_TEX);
+	numberTexes_.resize(2);
+
+	numberTexes_[0].push_back(TextureID::NUMBER_ZERO_TEX);
+	numberTexes_[0].push_back(TextureID::NUMBER_ONE_TEX);
+	numberTexes_[0].push_back(TextureID::NUMBER_TWO_TEX);
+	numberTexes_[0].push_back(TextureID::NUMBER_THREE_TEX);
+	numberTexes_[0].push_back(TextureID::NUMBER_FOUR_TEX);
+	numberTexes_[0].push_back(TextureID::NUMBER_FIVE_TEX);
+	numberTexes_[0].push_back(TextureID::NUMBER_SIX_TEX);
+	numberTexes_[0].push_back(TextureID::NUMBER_SEVEN_TEX);
+	numberTexes_[0].push_back(TextureID::NUMBER_EIGHT_TEX);
+	numberTexes_[0].push_back(TextureID::NUMBER_NINE_TEX);
+
+	numberTexes_[1].push_back(TextureID::NUMBER_R_ZERO_TEX);
+	numberTexes_[1].push_back(TextureID::NUMBER_R_ONE_TEX);
+	numberTexes_[1].push_back(TextureID::NUMBER_R_TWO_TEX);
+	numberTexes_[1].push_back(TextureID::NUMBER_R_THREE_TEX);
+	numberTexes_[1].push_back(TextureID::NUMBER_R_FOUR_TEX);
+	numberTexes_[1].push_back(TextureID::NUMBER_R_FIVE_TEX);
+	numberTexes_[1].push_back(TextureID::NUMBER_R_SIX_TEX);
+	numberTexes_[1].push_back(TextureID::NUMBER_R_SEVEN_TEX);
+	numberTexes_[1].push_back(TextureID::NUMBER_R_EIGHT_TEX);
+	numberTexes_[1].push_back(TextureID::NUMBER_R_NINE_TEX);
 
 	int center = static_cast<int>(SCREEN_SIZE.x) / 2;
 	
@@ -79,8 +92,8 @@ ClearScreen::ClearScreen(SceneDataKeeper* keeper):keeper_(keeper), drawNumberCon
 	textPositions["EnemyBonus"] = Vector2(1000, basePos + rightDefPosCount*RightSpaceSize);
 	rightDefPosCount++;
 
-	textPositions["EnemyBonusMult"] = Vector2(1050, basePos + rightDefPosCount*RightSpaceSize);
-	textPositions["EnemyBonusMultCount"] = Vector2(1200, basePos + rightDefPosCount*RightSpaceSize);
+	textPositions["EnemyBonusMult"] = Vector2(1050, basePos + rightDefPosCount*RightSpaceSize+50);
+	textPositions["EnemyBonusMultCount"] = Vector2(1200, basePos + rightDefPosCount*RightSpaceSize+50);
 	textPositions["DamageCount"] = Vector2(80, basePos + leftDefPosCount*LeftSpaceSize);
 	textPositions["DamageCountMinus"] = Vector2(550, basePos + leftDefPosCount*LeftSpaceSize);
 	textPositions["DamageCountMinusCount"] = Vector2(700, basePos + leftDefPosCount*LeftSpaceSize);
@@ -95,8 +108,8 @@ ClearScreen::ClearScreen(SceneDataKeeper* keeper):keeper_(keeper), drawNumberCon
 	textPositions["Total"] = Vector2(center - 114 / 2, 850);
 	textPositions["TotalMult"] = Vector2(1350, 850);
 	textPositions["TotalMultCount"] = Vector2(1520, 850);
-	textPositions["TotalGetStar"] = Vector2(550, 950);
-	textPositions["TotalGetStarCount"] = Vector2(700, 950);
+	textPositions["TotalGetStar"] = Vector2(center-ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x/2, 950);
+	textPositions["TotalGetStarCount"] = Vector2(center+ ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x / 2, 950);
 
 	isDraw_["stageclear"] = false;
 	isDraw_["getStar"] = false;
@@ -285,8 +298,8 @@ bool ClearScreen::update(std::string name, Scene& next)
 		isDraw_[nameList[usingIntCount]]=true;
 		usingIntCount++;
 		usingBaseIntCount++;
-		if (usingIntCount > nameList.size())usingIntCount = nameList.size() - 1;
-		if (usingBaseIntCount > nameBaseList.size())usingBaseIntCount = nameBaseList.size() - 1;
+		if (usingIntCount >= nameList.size())usingIntCount = nameList.size() - 1;
+		if (usingBaseIntCount >= nameBaseList.size())usingBaseIntCount = nameBaseList.size() - 1;
 		drawNumberController_ = 0;
 	}
 	for (int i = 0; i < NumberForLoop_.size(); i++) {
@@ -335,10 +348,10 @@ void ClearScreen::draw() const
 	int baseNum = keeper_->GetItemCount();
 	if (isDraw_.at("getStarStarCount")) {
 		drawNumber(drawNum, baseNum,
-			textPositions.at("getStarStarCount").x, textPositions.at("getStarStarCount").y);
+			textPositions.at("getStarStarCount").x, textPositions.at("getStarStarCount").y,0);
 	}
 	else {
-		LoopNumber(textPositions.at("getStarStarCount").x, textPositions.at("getStarStarCount").y, setLoopNum);
+		LoopNumber(textPositions.at("getStarStarCount").x, textPositions.at("getStarStarCount").y, setLoopNum,0);
 		setLoopNum++;
 		if (setLoopNum > 9) {
 			setLoopNum = 0;
@@ -573,10 +586,10 @@ void ClearScreen::draw() const
 		baseNum = multAddCount;
 		if (isDraw_.at("TotalMultCount")) {
 			drawNumber(drawNum, baseNum,
-				textPositions.at("TotalMultCount").x, textPositions.at("TotalMultCount").y);
+				textPositions.at("TotalMultCount").x, textPositions.at("TotalMultCount").y,0);
 		}
 		else {
-			LoopNumber(textPositions.at("TotalMultCount").x, textPositions.at("TotalMultCount").y, setLoopNum);
+			LoopNumber(textPositions.at("TotalMultCount").x, textPositions.at("TotalMultCount").y, setLoopNum,0);
 			setLoopNum++;
 			if (setLoopNum > 9) {
 				setLoopNum = 0;
@@ -590,10 +603,10 @@ void ClearScreen::draw() const
 		baseNum = multAddCount*keeper_->GetItemCount();
 		if (isDraw_.at("TotalGetStarCount")) {
 			drawNumber(drawNum, baseNum,
-				textPositions.at("TotalGetStarCount").x, textPositions.at("TotalGetStarCount").y);
+				textPositions.at("TotalGetStarCount").x, textPositions.at("TotalGetStarCount").y,0);
 		}
 		else {
-			LoopNumber(textPositions.at("TotalGetStarCount").x, textPositions.at("TotalGetStarCount").y, setLoopNum);
+			LoopNumber(textPositions.at("TotalGetStarCount").x, textPositions.at("TotalGetStarCount").y, setLoopNum,0);
 			setLoopNum++;
 			if (setLoopNum > 9) {
 				setLoopNum = 0;

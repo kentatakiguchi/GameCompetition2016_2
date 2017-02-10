@@ -53,6 +53,14 @@ void GameOverScene::start() {
 	targetPoint = 1;
 	sinCount = 0;
 
+	if (keeper_->getSceneName() == "stage00")
+	{
+		nextScene[1] = FirstGamePlay;
+	}
+	else {
+		nextScene[1] = GamePlay;
+	}
+	
 	keeper_->resetDatas(keeper_->getSceneName());
 	if (keeper_->getSceneName() == "stage01") keeper_->setSceneName("stage04");
 	else if (keeper_->getSceneName() == "stage02") keeper_->setSceneName("stage01");
@@ -73,6 +81,7 @@ void GameOverScene::start() {
 	mBossAnim.change_param(10, 1);
 	mBossCount = 0.0f;
 	mBossScale = 1.0f;
+
 }
 
 void GameOverScene::update() {

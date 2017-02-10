@@ -170,6 +170,17 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_SEVEN_TEX, "./resources/sprite/num7.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_EIGHT_TEX, "./resources/sprite/num8.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_NINE_TEX, "./resources/sprite/num9.png");
+	
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_ZERO_TEX, "./resources/sprite/num0_r.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_ONE_TEX, "./resources/sprite/num1_r.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_TWO_TEX, "./resources/sprite/num2_r.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_THREE_TEX, "./resources/sprite/num3_r.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_FOUR_TEX, "./resources/sprite/num4_r.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_FIVE_TEX, "./resources/sprite/num5_r.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_SIX_TEX, "./resources/sprite/num6_r.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_SEVEN_TEX, "./resources/sprite/num7_r.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_EIGHT_TEX, "./resources/sprite/num8_r.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::NUMBER_R_NINE_TEX, "./resources/sprite/num9_r.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::ITEM_TEX, "./resources/sprite/item.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::ITEM_MINUS_TEX, "./resources/sprite/item2.png");
@@ -202,6 +213,9 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_STICK_COUNT_TEX, "./resources/sprite/result/stick_count.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_TOTAL_TEX, "./resources/sprite/result/totle.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_WALK_BLOCK_COUNT_TEX, "./resources/sprite/result/walk_blockcount.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_RANK_A_TEX, "./resources/sprite/result/rank_a.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_RANK_B_TEX, "./resources/sprite/result/rank_b.png");
+	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_RANK_C_TEX, "./resources/sprite/result/rank_c.png");
 
 	load_bgm_res();
 	load_se_res();
@@ -240,7 +254,7 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::BossStage01;
+	return Scene::Logo;
 }
 
 void LoadingScene::load_player_res(){

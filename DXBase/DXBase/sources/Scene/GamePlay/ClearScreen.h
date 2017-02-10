@@ -17,7 +17,8 @@ public:
 	bool isCounT() const{
 		return Count_ <= 0;
 	};
-	void drawNumber(int drawNum, int baseNum,int posx,int posy,int maxSize=3) const{
+	//1‚Å”’A0‚ÅÔ
+	void drawNumber(int drawNum, int baseNum,int posx,int posy,int NumTexType=1,int maxSize=3) const{
 		int posCount = 0;
 		std::vector<int> drawNumberList;
 
@@ -48,14 +49,14 @@ public:
 		int drawPosCount = drawNumberList.size() - 1;
 		for (int i = 0; i < (int)drawNumberList.size(); i++) {
 
-			DrawGraph(posx +ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount,posy, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
+			DrawGraph(posx +ResourceLoader::GetInstance().GetTextureSize(numberTexes_[NumTexType][drawNumberList[i]]).x*drawPosCount,posy, ResourceLoader::GetInstance().getTextureID(numberTexes_[NumTexType][drawNumberList[i]]), TRUE);
 			drawPosCount--;
 		}
 	}
-	void LoopNumber(int posx,int posy,int useLoopType,int maxSize=3) const{
+	void LoopNumber(int posx,int posy,int useLoopType, int NumTexType = 1,int maxSize=3) const{
 		int LoopCount = useLoopType;
 		for (int i = 0; i < maxSize; i++) {
-			DrawGraph(posx + ResourceLoader::GetInstance().GetTextureSize(numberTexes_[NumberForLoop_[LoopCount]]).x*i, posy, ResourceLoader::GetInstance().getTextureID(numberTexes_[NumberForLoop_[LoopCount]]), TRUE);
+			DrawGraph(posx + ResourceLoader::GetInstance().GetTextureSize(numberTexes_[NumTexType][NumberForLoop_[LoopCount]]).x*i, posy, ResourceLoader::GetInstance().getTextureID(numberTexes_[NumTexType][NumberForLoop_[LoopCount]]), TRUE);
 			LoopCount++;
 			if (LoopCount > 9) {
 				LoopCount=0;
@@ -70,7 +71,7 @@ private:
 
 	std::map<std::string, Vector2> textPositions;
 
-	std::vector<TextureID> numberTexes_;
+	std::vector<std::vector<TextureID>> numberTexes_;
 
 	StageClearTextAnm anmer_;
 	SceneDataKeeper* keeper_;
