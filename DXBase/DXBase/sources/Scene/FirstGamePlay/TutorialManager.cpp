@@ -73,12 +73,6 @@ void TutorialManager::update(IWorld* world, float deltaTime){
 
 	stepText(deltaTime);
 
-	//if (isTutorialEnd() && timer_ >= 5.0f) {
-	//	world->is_clear();
-	//}
-
-
-
 	if (contents_[currentTutorial_][currentTurn_].speaker == "b") {
 		drawPos_ = butty->getPosition() * world->GetInv() - Vector2(-100, 300);
 		color_ = GetColor(0, 0, 255);
@@ -90,15 +84,15 @@ void TutorialManager::update(IWorld* world, float deltaTime){
 }
 
 void TutorialManager::draw() const{
-	int size = 100;
-	SetFontSize(64);
+	int size = 64;
+	SetFontSize(size);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);//MathHelper::Lerp(0.0f, 255.0f, alpha_));
 	DrawRotaGraph(drawPos_.x, drawPos_.y, 2.0f/*MathHelper::Lerp(0.0f, 2.0f, alpha_)*/, 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::HUKIDASI_TEX), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
 
-	DrawFormatString(drawPos_.x - 350, drawPos_.y - 100, color_, text1_.c_str());
-	DrawFormatString(drawPos_.x - 350, drawPos_.y - 100 + size, color_, text2_.c_str());
+	DrawFormatString(drawPos_.x - 375, drawPos_.y - 100, color_, text1_.c_str());
+	DrawFormatString(drawPos_.x - 375, drawPos_.y - 100 + size, color_, text2_.c_str());
 }
 
 void TutorialManager::changeTutorial(){
