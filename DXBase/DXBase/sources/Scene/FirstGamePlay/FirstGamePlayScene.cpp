@@ -99,18 +99,21 @@ void FirstGamePlayScene::start() {
 	world_->clear(false);
 
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
-	playerFont_ = new PlayerFont(world_.get(), Vector2::Zero);
+	//playerFont_ = new PlayerFont(world_.get(), Vector2::Zero);
 
-	playerFont_->AddEvent(TxtEvent::START_EVENT, "./resources/file/Txt/Start.txt", 5);
-	playerFont_->AddEvent(TxtEvent::STARGET_EVENT, "./resources/file/Txt/StarGet.txt", 2);
-	playerFont_->AddEvent(TxtEvent::GOOL_EVENT, "./resources/file/Txt/Gool.txt", 4);
+	//playerFont_->AddEvent(TxtEvent::START_EVENT, "./resources/file/Txt/Start.txt", 5);
+	//playerFont_->AddEvent(TxtEvent::STARGET_EVENT, "./resources/file/Txt/StarGet.txt", 2);
+	//playerFont_->AddEvent(TxtEvent::GOOL_EVENT, "./resources/file/Txt/Gool.txt", 4);
 
-	playerFont_->ChangeFont(TxtEvent::START_EVENT);
-	playerFont_->StartFont();
+	//playerFont_->ChangeFont(TxtEvent::START_EVENT);
+	//playerFont_->StartFont();
 
 	world_->PlayerNotMove(true);
 	eventFlag1_ = true;
 	eventFlag2_ = true;
+
+	tutorialMgr_.load_csv("./resources/file/stage00_come.csv");
+	tutorialMgr_.init(world_.get());
 }
 
 void FirstGamePlayScene::update() {
@@ -121,20 +124,20 @@ void FirstGamePlayScene::update() {
 		};
 		return;
 	}
-	if (!playerFont_->GetEndFont()) world_->PlayerNotMove(false);
-	if (keeper_->GetItemCount() >= 1 && eventFlag1_) {
-		eventFlag1_ = false;
-		playerFont_->ChangeFont(TxtEvent::STARGET_EVENT);
-		playerFont_->StartFont();
-	}
-	if (world_->is_clear() && eventFlag2_) {
-		eventFlag2_ = false;
-		playerFont_->ChangeFont(TxtEvent::GOOL_EVENT);
-		playerFont_->StartFont();
-	}
-	if (!eventFlag2_&&!playerFont_->GetEndFont()) {
-		isClearStage_ = world_->is_clear();
-	}
+	//if (!playerFont_->GetEndFont()) world_->PlayerNotMove(false);
+	//if (keeper_->GetItemCount() >= 1 && eventFlag1_) {
+	//	eventFlag1_ = false;
+	//	playerFont_->ChangeFont(TxtEvent::STARGET_EVENT);
+	//	playerFont_->StartFont();
+	//}
+	//if (world_->is_clear() && eventFlag2_) {
+	//	eventFlag2_ = false;
+	//	playerFont_->ChangeFont(TxtEvent::GOOL_EVENT);
+	//	playerFont_->StartFont();
+	//}
+	//if (!eventFlag2_&&!playerFont_->GetEndFont()) {
+	//	isClearStage_ = world_->is_clear();
+	//}
 
 
 	if (stageFlag_) {
@@ -177,7 +180,13 @@ void FirstGamePlayScene::update() {
 	}
 	keeper_->setItemCount(world_->getCount());
 	//ここまでゲームが終了しているかの判別
-	playerFont_->Update();
+	//playerFont_->Update();
+
+	tutorialMgr_.update(world_.get(), Time::GetInstance().deltaTime());
+
+	if (tutorialMgr_.isTutorialEnd()) {
+		isClearStage_ = true;
+	}
 }
 
 void FirstGamePlayScene::draw() const {
@@ -186,7 +195,8 @@ void FirstGamePlayScene::draw() const {
 	world_->draw();
 
 	backManager->BackDraw();
-	playerFont_->Draw();
+	//playerFont_->Draw();
+	tutorialMgr_.draw();
 
 	//クリア時はClear専用のシーンを表示
 	if (isClearStage_) {
@@ -239,7 +249,7 @@ void FirstGamePlayScene::draw() const {
 
 void FirstGamePlayScene::end() {
 	delete backManager;
-	delete playerFont_;
+	//delete playerFont_;
 	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
 }
 

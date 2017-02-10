@@ -190,8 +190,11 @@ void PlayerBody::commonCollide(Actor & other){
 		Vector2 vec = other.body_.GetSegment().component_.point[0] - other.body_.GetSegment().component_.point[1];
 		vec.y = std::abs(vec.y);
 		Vector2 moves = position_ - body_.GetCircle().previousPosition_;
-		position_ = (segCenter + positionPoint) + (targetVec * body_.GetCircle().component_.radius);
-		if (moves.y > 0)position_ += vec.Normalize() * 50;
+
+		float speed = 50.0f;
+		if (moves.y > 0)speed = 50.0f;
+		position_ = Vector2::Lerp(position_, (segCenter + positionPoint) + (targetVec * body_.GetCircle().component_.radius) + vec.Normalize() * speed, 0.7f);
+		//if (moves.y > 0)position_ = Vector2::Lerp(position_, position_ + vec.Normalize() * 50, 0.7f);
 
 		//if (moves.y > 0)slope_ = SLIP_SPEED * (positionPoint - targetPoint).Normalize();
 		//if (moves.y > 0)position_ += 40 * (positionPoint - targetPoint).Normalize();

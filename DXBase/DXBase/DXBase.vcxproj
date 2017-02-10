@@ -338,6 +338,7 @@
     <ClInclude Include="sources\Scene\BossStage\BossStage.h" />
     <ClInclude Include="sources\Scene\Credit\CreditScene.h" />
     <ClInclude Include="sources\Scene\FirstGamePlay\FirstGamePlayScene.h" />
+    <ClInclude Include="sources\Scene\FirstGamePlay\TutorialManager.h" />
     <ClInclude Include="sources\Scene\GameClear\GameClearScene.h" />
     <ClInclude Include="sources\Scene\GameEnd\GameEndScene.h" />
     <ClInclude Include="sources\Scene\GameOver\GameOverScene.h" />
@@ -501,6 +502,7 @@
     <ClCompile Include="sources\Scene\BossStage\BossStage.cpp" />
     <ClCompile Include="sources\Scene\Credit\CreditScene.cpp" />
     <ClCompile Include="sources\Scene\FirstGamePlay\FirstGamePlayScene.cpp" />
+    <ClCompile Include="sources\Scene\FirstGamePlay\TutorialManager.cpp" />
     <ClCompile Include="sources\Scene\GameClear\GameClearScene.cpp" />
     <ClCompile Include="sources\Scene\GameEnd\GameEndScene.cpp" />
     <ClCompile Include="sources\Scene\GameOver\GameOverScene.cpp" />

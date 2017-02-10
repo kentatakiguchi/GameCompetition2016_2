@@ -8,6 +8,7 @@
 #include "../../ResourceLoader/ResourceLoader.h"
 #include"../GamePlay/ClearScreen.h"
 #include "../../Renderer/PlayerFont.h"
+#include "TutorialManager.h"
 
 class World;
 class BackGraundManager;
@@ -39,7 +40,7 @@ private:
 	PauseScreen pause_;
 	MoveScreen move_;
 	ClearScreen clear_;
-	PlayerFont* playerFont_;
+	//PlayerFont* playerFont_;
 
 	bool eventFlag1_;
 	bool eventFlag2_;
@@ -48,5 +49,7 @@ private:
 	float stageTime_;
 	bool stageFlag_;
 	std::vector<TextureID> numberTexes_;
+
+	TutorialManager tutorialMgr_;
 };
 
