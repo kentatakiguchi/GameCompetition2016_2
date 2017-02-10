@@ -25,7 +25,7 @@ StageClearScene::StageClearScene(SceneDataKeeper* keeper){
 	BlockTexes.push_back(TextureID::FLOOR_STAGE2_TEX);
 	BlockTexes.push_back(TextureID::FLOOR_STAGE3_TEX);
 	BlockTexes.push_back(TextureID::FLOOR_STAGE4_TEX);
-	BlockTexes.push_back(TextureID::FLOOR_STAGE4_TEX);
+	BlockTexes.push_back(TextureID::FLOOR_STAGE1_TEX);
 }
 
 StageClearScene::~StageClearScene() {
@@ -74,35 +74,37 @@ void StageClearScene::start() {
 	titleTexs.push_back(id2);
 	titleTexs.push_back(id3);
 
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_INTER), DX_PLAYTYPE_LOOP);
+
 	if (keeper_->getSceneName() == "stage01") {
 		backNum_ = 0;
 		boardNum_ = 0;
 		blockNum_ = 0;
-		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
+		//PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
 	}
 	if (keeper_->getSceneName() == "stage02") {
 		backNum_ = 0;
 		boardNum_ = 1;
 		blockNum_ = 1;
-		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
+		//PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
 	}
 	if (keeper_->getSceneName() == "stage03"){
 		backNum_ = 1;
 		boardNum_ = 2;
 		blockNum_ = 2;
-		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4), DX_PLAYTYPE_LOOP);
+		//PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4), DX_PLAYTYPE_LOOP);
 	}
 	if (keeper_->getSceneName() == "stage04") {
 		backNum_ = 2;
 		boardNum_ = 3;
 		blockNum_ = 3;
-		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
+	//	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5), DX_PLAYTYPE_LOOP);
 	}
 	if (keeper_->getSceneName() == "stage00") {
 		backNum_ = 0;
 		boardNum_ = 4;
 		blockNum_ = 4;
-		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
+		//PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
 	}
 	for (int i = 0; i < (int)titleTexs[backNum_].size(); i++) {
 		backManager->SetBackGraund(titleTexs[backNum_][i], titleTexs[backNum_][i]);
@@ -249,21 +251,22 @@ void StageClearScene::draw() const {
 }
 
 void StageClearScene::end() {
-	if (keeper_->getSceneName() == "stage01") {
-		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
-	}
-	if (keeper_->getSceneName() == "stage02") {
-		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
-	}
-	if (keeper_->getSceneName() == "stage03") {
-		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4));
-	}
-	if (keeper_->getSceneName() == "stage04") {
-		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
-	}
-	if (keeper_->getSceneName() == "stage00") {
-		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
-	}
+	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_INTER));
+	//if (keeper_->getSceneName() == "stage01") {
+	//	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
+	//}
+	//if (keeper_->getSceneName() == "stage02") {
+	//	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
+	//}
+	//if (keeper_->getSceneName() == "stage03") {
+	//	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_4));
+	//}
+	//if (keeper_->getSceneName() == "stage04") {
+	//	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_5));
+	//}
+	//if (keeper_->getSceneName() == "stage00") {
+	//	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
+	//}
 }
 
 bool StageClearScene::isEnd() const {

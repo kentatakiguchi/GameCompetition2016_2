@@ -342,6 +342,7 @@ void LoadingScene::load_bgm_res(){
 	ResourceLoader::GetInstance().loadSound(SoundID::BGM_STAGE_5, "./resources/sounds/bgm/stage5_BGM.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::BGM_STAGECLEAR, "./resources/sounds/menuse/stageClear.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::BGM_GAMEOVER, "./resources/sounds/menuse/gameover.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::BGM_INTER, "./resources/sounds/makuma_BGM.mp3");
 
 }
 
@@ -379,5 +380,9 @@ void LoadingScene::load_se_res(){
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_RESULT_ROLL, "./resources/sounds/score_up.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_RESULT_SHOW, "./resources/sounds/score_den.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_RESULT_SHOWMAX, "./resources/sounds/score_den.mp3");
+	
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_RESULT_RANKC, "./resources/sounds/rank01.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_RESULT_RANKB, "./resources/sounds/rank02.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_RESULT_RANKA, "./resources/sounds/rank03.mp3");
 
 }

@@ -116,4 +116,7 @@ private:
 	int drawLastDraw_;
 
 	bool isMusic_;
+
+	bool isRankSoundCheckFirst_;
+	int rankSoundCheckCount_;
 };

@@ -295,10 +295,16 @@ ClearScreen::ClearScreen(SceneDataKeeper* keeper):keeper_(keeper), drawNumberCon
 	isRankDraw_ = false;
 
 	isSoundFirst_ = true;
+	isRankSoundCheckFirst_ = true;
+	rankSoundCheckCount_ = 0;
 }
 
 bool ClearScreen::update(std::string name, Scene& next)
 {
+	rankSoundCheckCount_--;
+	if (rankSoundCheckCount_ <= 0) {
+		isRankSoundCheckFirst_ = false;
+	}
 	if (!isMusic_) {
 		ChangeNextPlayVolumeSoundMem(150,ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL));
 		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL), DX_PLAYTYPE_LOOP);
@@ -319,12 +325,13 @@ bool ClearScreen::update(std::string name, Scene& next)
 			//PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOW), DX_PLAYTYPE_BACK);
 			//isStarDraw_[1] = true;
 		//}
-		if (drawNumberController_ > 0.9&&!isStarDraw_[2]) {
-			PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOW), DX_PLAYTYPE_BACK);
+		if (drawNumberController_ > 1.8&&!isStarDraw_[2]) {
 			isRankDraw_ = true;
 			isStarDraw_[0] = true;
 			isStarDraw_[1] = true;
 			isStarDraw_[2] = true;
+			rankSoundCheckCount_ = 1;
+			isRankSoundCheckFirst_ = true;
 		}
 	}
 	if (buttonLockCount_ <= 0)buttonLock_ = false;
@@ -680,6 +687,7 @@ void ClearScreen::draw() const
 	}
 	if (baseNum < 100000) {
 		if (isRankDraw_) {
+			if (isRankSoundCheckFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_RANKC), DX_PLAYTYPE_BACK);
 			DrawGraph(RankPosx, RankPosy, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_RANK_C_TEX), TRUE);
 		}
 		if (isStarDraw_[0]) {
@@ -689,6 +697,7 @@ void ClearScreen::draw() const
 	}
 	else if (baseNum < 500000) {
 		if (isRankDraw_) {
+			if (isRankSoundCheckFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_RANKB), DX_PLAYTYPE_BACK);
 			DrawGraph(RankPosx, RankPosy, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_RANK_B_TEX), TRUE);
 		}
 		if (isStarDraw_[0]) {
@@ -702,6 +711,7 @@ void ClearScreen::draw() const
 	}
 	else {
 		if (isRankDraw_) {
+			if (isRankSoundCheckFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_RANKA), DX_PLAYTYPE_BACK);
 			DrawGraph(RankPosx, RankPosy, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_RANK_A_TEX), TRUE);
 		}
 		if (isStarDraw_[0]) {

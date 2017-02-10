@@ -71,7 +71,7 @@ void FirstGamePlayScene::start() {
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<FloorTurnEnemy>(world_.get(), START_POS + Vector2(200, -200)));
 	//world_->addActor(ActorGroup::Enemy, std::make_shared<WallTrunEnemy>(world_.get(), Vector2(250, 325)));
 
-	gener.create("./resources/file/" + name_ + ".csv", 0, 0);
+	gener.create("./resources/file/" + name_ + ".csv", 0, 0,1);
 
 	//scenedatakeeperにこのステージの名前を渡す
 	keeper_->setCurrentSceneName(name_);
