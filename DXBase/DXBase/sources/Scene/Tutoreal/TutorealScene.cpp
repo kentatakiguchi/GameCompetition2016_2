@@ -68,10 +68,10 @@ TutorealScene::TutorealScene(SceneDataKeeper* keeper) :
 	starPoss_.push_back(Vector2(1300, 600));
 	starPoss_.push_back(Vector2(580, 700));
 	starPoss_.push_back(Vector2(900, 730));
-	starPoss_.push_back(Vector2(800, 740));
+	starPoss_.push_back(Vector2(400, 800));
 	starPoss_.push_back(Vector2(1030, 530));
 	starPoss_.push_back(Vector2(1470, 840));
-	starPoss_.push_back(Vector2(1360, 570));
+	starPoss_.push_back(Vector2(1360, 670));
 	//サイズを入れる
 	tutorealSize_ = tutorels_.size();
 
@@ -133,6 +133,8 @@ void TutorealScene::start()
 	//ワールド
 	world_ = std::make_shared<World>(keeper_);
 	MapGenerator gener = MapGenerator(world_.get());
+	if (tutorealRoopCount_==0)
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
 	//ネームをセット
 	name_ = tutorels_[tutorealRoopCount_].csvName;
 	//チュートリアル動画をセット
@@ -164,6 +166,7 @@ void TutorealScene::start()
 	playerConnector_ = dynamic_cast<PlayerConnector*>(world_->findActor("PlayerConnector").get());
 	starAnim_.add_anim(0, ResourceLoader::GetInstance().getAnimationIDs(AnimationID::ITEM_ANM));
 	starAnim_.change_param(0, 2.0f);
+	
 }
 
 void TutorealScene::update()
@@ -177,6 +180,7 @@ void TutorealScene::update()
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 		isMovie_ = !isMovie_;
+		PlaySound("./resources/sounds/menuse/menu_decision.mp3", DX_PLAYTYPE_BACK);
 		if (isMovie_) {
 			Movie::GetInstance().Stop(movieId_);
 			Movie::GetInstance().Seek(movieId_, 0.0f);
@@ -275,6 +279,7 @@ void TutorealScene::update()
 	if (isClear_) {
 		mMovieAlpha -= 3.0f*Time::GetInstance().deltaTime();
 		playerUpCount_ -= 3.0f*Time::GetInstance().deltaTime();
+		if (mClerAlpha == 0.0f)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGECLEAR), DX_PLAYTYPE_BACK);
 		mClerAlpha += 3.0f* Time::GetInstance().deltaTime();
 	}
 	mClerAlpha = MathHelper::Clamp(mClerAlpha, 0.0f, 2.0f);
@@ -330,8 +335,12 @@ void TutorealScene::end()
 	//再生ストップ
 	Movie::GetInstance().Stop(movieId_);
 	Movie::GetInstance().Clear();
+
 	//チュートリアルの進みをリセット
-	if (nextScene_ == Scene::MainMenu) tutorealRoopCount_ = 0;
+	if (nextScene_ == Scene::MainMenu) {
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
+		tutorealRoopCount_ = 0;
+	}
 }
 
 bool TutorealScene::isEnd() const

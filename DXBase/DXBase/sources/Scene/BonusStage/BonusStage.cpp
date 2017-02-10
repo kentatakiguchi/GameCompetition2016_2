@@ -68,6 +68,7 @@ void BonusStage::start()
 	kiriTexSize_ = ResourceLoader::GetInstance().GetTextureSize(TextureID::KIRIKABU_TEX);
 
 	keeper_->addMaxItemCount(gener.getItemCount(), name_);
+	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU), DX_PLAYTYPE_LOOP);
 
 }
 
@@ -84,6 +85,7 @@ void BonusStage::update()
 				points_.push_back(point_ / num % 10);
 				num *= 10;
 			}
+			//PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL), DX_PLAYTYPE_LOOP);
 			pointDrawFlag_ = true;
 		}
 		else {
@@ -92,7 +94,9 @@ void BonusStage::update()
 			pointRandomTime_ += Time::GetInstance().deltaTime();
 			if (pointDrawTime_ >= 1.5f&&points_.size()>pointCount_&&pointRandomTime_ >= 4.0f) {
 				pointDrawTime_ = 0.0f;
+				PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOWMAX), DX_PLAYTYPE_BACK);
 				pointCount_++;
+				if (points_.size() - 1 >= pointCount_) StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL));
 			}
 		}
 	}
@@ -145,6 +149,7 @@ void BonusStage::draw() const
 
 void BonusStage::end()
 {
+	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU));
 }
 
 bool BonusStage::isEnd() const
