@@ -225,6 +225,7 @@ void BaseBoss::onCollide(Actor & actor)
 		auto addDamage = 0.0f;
 		if (allStarCount_ != 0)
 			addDamage = starCount_ / (float)allStarCount_;
+		addDamage = min(addDamage, 1.0f);
 		auto d = (int)(3 + 27 * addDamage);
 		if (attackCount_ == 1)
 			d /= 2;
@@ -288,7 +289,7 @@ bool BaseBoss::isMovePosition()
 void BaseBoss::updateState(float deltaTime)
 {
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::G)) {
-		attackCount_ = 1;
+		hp_ = 0;
 	}
 
 	player_ = world_->findActor("PlayerBody1");
@@ -1094,6 +1095,9 @@ void BaseBoss::createMiniBoss()
 	// ミニボス(浮遊)の生成
 	auto miniBoss = std::make_shared<FlyingMiniBoss>(world_, pos);
 	world_->addActor(ActorGroup::Enemy, miniBoss);
+	PlaySoundMem(
+		ResourceLoader::GetInstance().getSoundID(SoundID::SE_MINIBOSS_CRY),
+		DX_PLAYTYPE_BACK);
 }
 
 // ランダムの値を取得します
