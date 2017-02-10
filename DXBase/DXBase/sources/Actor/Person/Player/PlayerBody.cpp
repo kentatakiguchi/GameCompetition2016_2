@@ -101,9 +101,10 @@ void PlayerBody::commonCollide(Actor & other){
 	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" ||
-		other.getName() == "Door" || other.getName() == "MovelessFloorBreak" ||
-		other.getName() == "Tubo") {
-		auto pos = body_.GetCircle().previousPosition_;
+		other.getName() == "Door" || other.getName() == "MovelessFloorBreak"/* ||
+		other.getName() == "Tubo"*/) {
+		auto p_pos = body_.GetCircle().previousPosition_;
+		auto c_pos = body_.GetCircle().previousPosition_;
 
 		auto t_left = other.getBody().GetBox().component_.point[0];
 		auto t_right = other.getBody().GetBox().component_.point[1];
@@ -112,27 +113,50 @@ void PlayerBody::commonCollide(Actor & other){
 
 		auto center = t_left + other.getBody().GetBox().getSize() / 2;
 
-		auto top = Vector2::Cross((t_left - t_right).Normalize(), (pos - t_right));
-		auto right = Vector2::Cross((t_right - b_right).Normalize(), (pos - b_right));
-		auto bottom = Vector2::Cross((b_right - b_left).Normalize(), (pos - b_left));
-		auto left = Vector2::Cross((b_left - t_left).Normalize(), (pos - t_left));
+		auto c_top = Vector2::Cross((t_left - t_right).Normalize(), (c_pos - t_right));
+		auto c_right = Vector2::Cross((t_right - b_right).Normalize(), (c_pos - b_right));
+		auto c_bottom = Vector2::Cross((b_right - b_left).Normalize(), (c_pos - b_left));
+		auto c_left = Vector2::Cross((b_left - t_left).Normalize(), (c_pos - t_left));
+		
+		auto p_top = Vector2::Cross((t_left - t_right).Normalize(), (p_pos - t_right));
+		auto p_right = Vector2::Cross((t_right - b_right).Normalize(), (p_pos - b_right));
+		auto p_bottom = Vector2::Cross((b_right - b_left).Normalize(), (p_pos - b_left));
+		auto p_left = Vector2::Cross((b_left - t_left).Normalize(), (p_pos - t_left));
 
 		opponent_ = HitOpponent::FLOOR_HIT;
 
-		if (top >= 0 && left <= 0 && right <= 0) {
+		if (c_top >= 0 && c_left <= 0 && c_right <= 0) {
 			velocity_.y = 0;
 			position_.y = t_left.y - PLAYER_RADIUS;
 			opponent_ = HitOpponent::FLOOR_TOP;
 		}
-		else if (bottom >= 0 && left <= 0 && right <= 0) {
+		else if (c_bottom >= 0 && c_left <= 0 && c_right <= 0) {
 			velocity_.y = 0;
 			position_.y = b_right.y + PLAYER_RADIUS;
 		}
-		else if (right >= 0 && top <= 0 && bottom <= 0) {
+		else if (c_right >= 0 && c_top <= 0 && c_bottom <= 0) {
 			velocity_.x = 0;
 			position_.x = t_right.x + PLAYER_RADIUS;
 		}
-		else if (left >= 0 && top <= 0 && bottom <= 0) {
+		else if (c_left >= 0 && c_top <= 0 && c_bottom <= 0) {
+			velocity_.x = 0;
+			position_.x = b_left.x - PLAYER_RADIUS;
+		}
+
+		if (p_top >= 0 && p_left <= 0 && p_right <= 0) {
+			velocity_.y = 0;
+			position_.y = t_left.y - PLAYER_RADIUS;
+			opponent_ = HitOpponent::FLOOR_TOP;
+		}
+		else if (p_bottom >= 0 && p_left <= 0 && p_right <= 0) {
+			velocity_.y = 0;
+			position_.y = b_right.y + PLAYER_RADIUS;
+		}
+		else if (p_right >= 0 && p_top <= 0 && p_bottom <= 0) {
+			velocity_.x = 0;
+			position_.x = t_right.x + PLAYER_RADIUS;
+		}
+		else if (p_left >= 0 && p_top <= 0 && p_bottom <= 0) {
 			velocity_.x = 0;
 			position_.x = b_left.x - PLAYER_RADIUS;
 		}

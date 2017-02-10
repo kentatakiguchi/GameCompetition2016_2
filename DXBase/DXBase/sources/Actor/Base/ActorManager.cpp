@@ -104,10 +104,6 @@ void ActorManager::UiUpdate(float delta)
 	for (auto& i : uiActors_)
 	{
 		i->update(delta);
-
-		if (i->isDead()) {
-			uiActors_.remove(i);
-		}
 	}
 
 }

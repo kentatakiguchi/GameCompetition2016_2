@@ -1,7 +1,6 @@
 #include "PlayerState_Single_Idle.h"
 
 #include "../../../../Effect/PlayerEffectObj.h"
-#include "../../../../../../UIActor/HurryUpUI/HurryUpUI.h"
 #include "../../../../../../../Input/InputMgr.h"
 #include "../../../../../../../Define.h"
 #include "../../../../../../../Scene/Base/SceneDataKeeper.h"
@@ -23,8 +22,6 @@ void PlayerState_Single_Idle::unique_init(){
 	}
 
 	if (is_butty())return;
-
-	body_->getWorld()->addUIActor(std::make_shared<HurryUpUI>(body_->getWorld()));
 }
 
 void PlayerState_Single_Idle::update(float deltaTime){

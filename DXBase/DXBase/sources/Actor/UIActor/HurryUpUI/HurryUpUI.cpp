@@ -51,11 +51,15 @@ void HurryUpUI::onUpdate(float deltaTime){
 	}
 
 	auto cntr = world_->findActor(std::string("PlayerConnector"));
-	if (cntr == nullptr)return;
-		dead();
+	if (cntr != nullptr && timer_ != 0.0f) {
+		timer_ = 0.0f;
+	}
 }
 
 void HurryUpUI::onDraw() const{
+	auto cntr = world_->findActor(std::string("PlayerConnector"));
+	if (cntr != nullptr)return;
+
 	int graphNum = (int)ceil(PLAYER_DEAD_LIMIT - timer_);
 	graphNum = min((int)PLAYER_DEAD_LIMIT, max(0, graphNum));
 

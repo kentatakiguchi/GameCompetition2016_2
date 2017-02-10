@@ -17,6 +17,7 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	create_bodys();
 	// コネクタの生成
 	connect();
+
 }
 
 // デストラクタ

@@ -66,8 +66,8 @@ void PlayerConnector::onUpdate(float deltaTime) {
 
 	if (is_damaged()) {
 		world_->GetKeeper()->addDamageCount(1);
-		world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_EXP, 5.0f, 3.0f));
 		dead();
+		world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_EXP, 5.0f, 3.0f));
 	}
 	if (is_cleared()) world_->clear(true);
 
