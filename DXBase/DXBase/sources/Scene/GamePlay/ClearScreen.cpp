@@ -57,11 +57,11 @@ ClearScreen::ClearScreen(SceneDataKeeper* keeper):keeper_(keeper), drawNumberCon
 	
 	int leftDefPosCount = 0;
 	int rightDefPosCount = 0;
-	int basePos = 200;
-	textPositions["stageclear"] = Vector2(center, -40);
-	textPositions["getStar"] = Vector2(80, 100);
-	textPositions["getStarStar"] = Vector2(520, 100);
-	textPositions["getStarStarCount"] = Vector2(700, 100);
+	int basePos = 240;
+	textPositions["stageclear"] = Vector2(center, -5);
+	textPositions["getStar"] = Vector2(80, 140);
+	textPositions["getStarStar"] = Vector2(520, 140);
+	textPositions["getStarStarCount"] = Vector2(700, 140);
 	textPositions["maxDash"] = Vector2(80, basePos+leftDefPosCount*LeftSpaceSize);
 	textPositions["maxDashMult"] = Vector2(600, basePos + leftDefPosCount*LeftSpaceSize);
 	textPositions["maxDashMultCount"] = Vector2(700, basePos + leftDefPosCount*LeftSpaceSize);

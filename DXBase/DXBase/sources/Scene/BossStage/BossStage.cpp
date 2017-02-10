@@ -31,6 +31,8 @@ BossStage::~BossStage()
 }
 
 void BossStage::start() {
+	keeper_->setCurrentSceneName(name_);
+
 	mIvemtTime = 0.0f;
 
 	deltaTime_ = Time::GetInstance().deltaTime();
