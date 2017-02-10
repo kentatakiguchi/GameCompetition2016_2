@@ -11,7 +11,7 @@ private:
 		FloorSearch,
 		FloorGetOff,
 		WallMove,
-		WallAttack
+		WallAttackMove
 	};
 
 public:
@@ -30,7 +30,7 @@ private:
 	// •ÇˆÚ“®ó‘Ô‚Å‚·
 	void wallMove(float deltaTime);
 	// •ÇUŒ‚ó‘Ô‚Å‚·
-	void wallAttack(float deltaTime);
+	void wallAttackMove(float deltaTime);
 	// •ÇˆÚ“®‚·‚éŠÔ‚ğŒˆ’è‚µ‚Ü‚·
 	void setAttackSecond();
 	// ó‘Ô‚Ì•ÏX‚ğs‚¢‚Ü‚·

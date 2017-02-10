@@ -53,7 +53,7 @@ void WallAttack::attack(float deltaTime)
 	case State::FloorSearch: floorSearch(deltaTime); break;
 	case State::FloorGetOff: floorGetOff(deltaTime); break;
 	case State::WallMove: wallMove(deltaTime); break;
-	case State::WallAttack: wallAttack(deltaTime); break;
+	case State::WallAttackMove: wallAttackMove(deltaTime); break;
 	}
 }
 
@@ -139,7 +139,7 @@ void WallAttack::wallMove(float deltaTime)
 	}
 	// 一定時間経過で、壁攻撃に遷移
 	if (timer_ >= aSecond_) {
-		changeState(State::WallAttack, WALLATTACK_DASHJUMP_NUMBER);
+		changeState(State::WallAttackMove, WALLATTACK_DASHJUMP_NUMBER);
 		isAnimaLoop_ = false;
 		prevPlayerDistance_ = pNormDirection_;
 		// プレイヤーの方向を向く
@@ -156,7 +156,7 @@ void WallAttack::wallMove(float deltaTime)
 }
 
 // 壁攻撃状態です
-void WallAttack::wallAttack(float deltaTime)
+void WallAttack::wallAttackMove(float deltaTime)
 {
 	auto speed = speed_ * 7.0f;
 	isAnimaLoop_ = false;
