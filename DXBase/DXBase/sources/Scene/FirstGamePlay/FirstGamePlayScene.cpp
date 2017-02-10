@@ -77,60 +77,39 @@ void FirstGamePlayScene::start() {
 	keeper_->setCurrentSceneName(name_);
 
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
+	world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
 
 	backManager = new BackGraundManager(world_.get());
-	if (name_ == "stage01" || name_ == "stage02") {
-		float graundPos = -(world_->GetScreenPlayerPos().y);
-		//先にセットされたテクスチャほど奥に描写される
-		//backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX,graundPos);
-		backManager->BossFlag(true);
+	float graundPos = -(world_->GetScreenPlayerPos().y);
+	backManager->BossFlag(true);
 
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_1_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX, graundPos*1.5f);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, graundPos*2.5f, true);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_1_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX, graundPos);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX, graundPos*1.5f);
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, graundPos*2.5f, true);
 
-		backManager->AddKonoha(TextureID::HAPPA1_1_TEX);
-		backManager->AddKonoha(TextureID::HAPPA1_2_TEX);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE1_1_TEX, 8);
-
-		//backManager->SetUpBackGraund(TextureID::BACKGRAUND_TOP_TEX);
-		//backManager->SetDownBackGraund(TextureID::BACKGRAUND_BOT_TEX);
-	}
-	else if (name_ == "stage03")
-	{
-		backManager->BossFlag(true);
-		float graundPos = csvSize.y*CHIPSIZE - world_->GetScreenPlayerPos().y / 2;
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX, graundPos, false, true);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX, graundPos, false, true);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_3_TEX, TextureID::BACKSTAGE2_3_TEX, graundPos, false, true);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_4_TEX, TextureID::BACKSTAGE2_4_TEX, graundPos, false, true);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_5_TEX, TextureID::BACKSTAGE2_5_TEX, graundPos, false, true);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_6_TEX, TextureID::BACKSTAGE2_6_TEX, graundPos, false, true);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_7_TEX, TextureID::BACKSTAGE2_7_TEX, graundPos, false, true);
-		backManager->SetBackGraund(TextureID::BACKSTAGE2_8_TEX, TextureID::BACKSTAGE2_8_TEX, graundPos, false, true);
-		//backManager->SetBackGraund(TextureID::BACKSTAGE2_9_TEX, TextureID::BACKSTAGE2_9_TEX, graundPos, false, true);
-		//backManager->SetBackGraund(TextureID::BACKSTAGE2_10_TEX, TextureID::BACKSTAGE2_10_TEX, graundPos, false, true);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP1_TEX, 8);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP2_TEX, 4);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP3_TEX, 1);
-
-		backManager->AddKonoha(TextureID::HAPPA3_1_TEX);
-		backManager->AddKonoha(TextureID::HAPPA3_2_TEX);
-	}
-	else if (name_ == "stage04")
-	{
-		backManager->SetBackGraund(TextureID::BACKSTAGE4_1_TEX, TextureID::BACKSTAGE4_1_TEX);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE4_1_TEX, 1);
-	}
+	backManager->AddKonoha(TextureID::HAPPA1_1_TEX);
+	backManager->AddKonoha(TextureID::HAPPA1_2_TEX);
+	backManager->SetUpBackGraund(TextureID::BACKSTAGE1_1_TEX, 8);
 	world_->clear(false);
 
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123), DX_PLAYTYPE_LOOP);
+	playerFont_ = new PlayerFont(world_.get(), Vector2::Zero);
 
+	playerFont_->AddEvent(TxtEvent::START_EVENT, "./resources/file/Txt/Start.txt", 5);
+	playerFont_->AddEvent(TxtEvent::STARGET_EVENT, "./resources/file/Txt/StarGet.txt", 2);
+	playerFont_->AddEvent(TxtEvent::GOOL_EVENT, "./resources/file/Txt/Gool.txt", 4);
+
+	playerFont_->ChangeFont(TxtEvent::START_EVENT);
+	playerFont_->StartFont();
+
+	world_->PlayerNotMove(true);
+	eventFlag1_ = true;
+	eventFlag2_ = true;
 }
 
 void FirstGamePlayScene::update() {
@@ -141,6 +120,21 @@ void FirstGamePlayScene::update() {
 		};
 		return;
 	}
+	if (!playerFont_->GetEndFont()) world_->PlayerNotMove(false);
+	if (keeper_->GetItemCount() >= 1 && eventFlag1_) {
+		eventFlag1_ = false;
+		playerFont_->ChangeFont(TxtEvent::STARGET_EVENT);
+		playerFont_->StartFont();
+	}
+	if (world_->is_clear() && eventFlag2_) {
+		eventFlag2_ = false;
+		playerFont_->ChangeFont(TxtEvent::GOOL_EVENT);
+		playerFont_->StartFont();
+	}
+	if (!eventFlag2_&&!playerFont_->GetEndFont()) {
+		isClearStage_ = world_->is_clear();
+	}
+
 
 	if (stageFlag_) {
 		stageAlpha_ += Time::GetInstance().deltaTime();
@@ -166,7 +160,7 @@ void FirstGamePlayScene::update() {
 	//ここからゲームが終了しているかの判別
 	auto player = world_->findActor("Player");
 
-	isClearStage_ = world_->is_clear();
+
 
 	if (player == nullptr) {
 		isEnd_ = true;
@@ -175,11 +169,14 @@ void FirstGamePlayScene::update() {
 	if (world_->is_clear()) {
 		nextScene_ = Scene::StageClear;
 	}
+
+
 	if (!isEnd_) {
 		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_, isClearStage_);
 	}
 	keeper_->setItemCount(world_->getCount());
 	//ここまでゲームが終了しているかの判別
+	playerFont_->Update();
 }
 
 void FirstGamePlayScene::draw() const {
@@ -188,6 +185,7 @@ void FirstGamePlayScene::draw() const {
 	world_->draw();
 
 	backManager->BackDraw();
+	playerFont_->Draw();
 
 	//クリア時はClear専用のシーンを表示
 	if (isClearStage_) {
@@ -240,6 +238,7 @@ void FirstGamePlayScene::draw() const {
 
 void FirstGamePlayScene::end() {
 	delete backManager;
+	delete playerFont_;
 	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_STAGE_123));
 }
 

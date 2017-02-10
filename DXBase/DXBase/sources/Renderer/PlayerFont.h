@@ -9,9 +9,9 @@
 #include "../Actor/Base/Actor.h"
 enum TxtEvent
 {
-	ONE_EVENT,
-	TWO_EVENT,
-	SURI_EVENT
+	START_EVENT,
+	STARGET_EVENT,
+	GOOL_EVENT
 };
 class PlayerFont {
 
@@ -30,6 +30,7 @@ public:
 	void ChangeFont(TxtEvent txtEvent);
 	//イベントを追加する 引数: イベントID　イベントのテキストファイルパス ファイルの改行数
 	void AddEvent(TxtEvent txtEvent, char* txtFile, int lineNum);
+	bool GetEndFont();
 private:
 
 	IWorld* world_;

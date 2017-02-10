@@ -20,8 +20,8 @@ PlayerFont::~PlayerFont()
 
 void PlayerFont::Update()
 {
-	playerPosB = playerB->getPosition() - Vector2(0, 516)*world_->GetInv();
-	playerPosR = playerR->getPosition() - Vector2(0, 516)*world_->GetInv();
+	playerPosB = (playerB->getPosition() - Vector2(0, 516))*world_->GetInv();
+	playerPosR = (playerR->getPosition() - Vector2(0, 516))*world_->GetInv();
 	if (!isPlayFont_) {
 		alphaB_ -= 3.0f*Time::GetInstance().deltaTime();
 		alphaR_ -= 3.0f*Time::GetInstance().deltaTime();
@@ -38,9 +38,11 @@ void PlayerFont::Update()
 		alphaB_ -= 3.0f*Time::GetInstance().deltaTime();
 		alphaR_ += 3.0f*Time::GetInstance().deltaTime();
 	}
-	alphaB_=MathHelper::Clamp(alphaB_, 0.0f, 1.0f);
+	alphaB_ = MathHelper::Clamp(alphaB_, 0.0f, 1.0f);
 	alphaR_ = MathHelper::Clamp(alphaR_, 0.0f, 1.0f);
-	if (eventFonts_[nowEvent_]->isEndEvent()) isPlayFont_ = false;
+	if (eventFonts_[nowEvent_]->isEndEvent()) {
+		isPlayFont_ = false;
+	}
 
 }
 
@@ -48,12 +50,12 @@ void PlayerFont::Draw()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0.0f, 255.0f, alphaB_));
 	DrawRotaGraph(playerPosB.x, playerPosB.y, MathHelper::Lerp(0.0f, 2.0f, alphaB_), 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::HUKIDASI_TEX), true);
-	eventFonts_[nowEvent_]->Draw(playerPosB-textSize_+Vector2(64,96),64);
+	eventFonts_[nowEvent_]->Draw(playerPosB - textSize_ + Vector2(96, 96), 64);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, MathHelper::Lerp(0.0f, 255.0f, alphaR_));
-	DrawRotaGraph(playerPosR.x, playerPosR.y, MathHelper::Lerp(0.0f,2.0f,alphaR_), 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::HUKIDASI_TEX), true);
-	eventFonts_[nowEvent_]->Draw(playerPosR - textSize_ + Vector2(64,96), 64);
+	DrawRotaGraph(playerPosR.x, playerPosR.y, MathHelper::Lerp(0.0f, 2.0f, alphaR_), 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::HUKIDASI_TEX), true);
+	eventFonts_[nowEvent_]->Draw(playerPosR - textSize_ + Vector2(96, 96), 64);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
 }
 
@@ -70,4 +72,9 @@ void PlayerFont::ChangeFont(TxtEvent txtEvent)
 void PlayerFont::AddEvent(TxtEvent txtEvent, char* txtFile, int lineNum)
 {
 	eventFonts_[txtEvent] = std::make_shared<PlayerTxt>(txtFile, lineNum);
+}
+
+bool PlayerFont::GetEndFont()
+{
+	return isPlayFont_;
 }

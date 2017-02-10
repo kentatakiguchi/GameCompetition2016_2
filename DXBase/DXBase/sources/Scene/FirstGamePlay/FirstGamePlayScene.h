@@ -7,6 +7,7 @@
 #include"../GamePlay/MoveScreen.h"
 #include "../../ResourceLoader/ResourceLoader.h"
 #include"../GamePlay/ClearScreen.h"
+#include "../../Renderer/PlayerFont.h"
 
 class World;
 class BackGraundManager;
@@ -38,7 +39,10 @@ private:
 	PauseScreen pause_;
 	MoveScreen move_;
 	ClearScreen clear_;
+	PlayerFont* playerFont_;
 
+	bool eventFlag1_;
+	bool eventFlag2_;
 	//ステージ紹介のα
 	float stageAlpha_;
 	float stageTime_;

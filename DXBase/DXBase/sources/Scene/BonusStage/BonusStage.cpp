@@ -33,7 +33,7 @@ void BonusStage::start()
 	world_->CollisitionOffOn(true);
 	MapGenerator gener = MapGenerator(world_.get());
 	int stg = keeper_->getNextSceneName(name_);
-	name_ = "tutoreal01";
+	name_ = "clear_stage";
 	gener.create("./resources/file/" + name_ + ".csv", 0, 0, stg);
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
@@ -43,12 +43,7 @@ void BonusStage::start()
 
 	creditSize_ = ResourceLoader::GetInstance().GetTextureSize(TextureID::CREDIT_TEX);
 
-	playerFont_ = std::make_shared<PlayerFont>(world_.get(), Vector2::Zero);
-	
-	playerFont_->AddEvent(TxtEvent::ONE_EVENT, "./resources/file/Txt/Stage01.txt", 4);
-	playerFont_->AddEvent(TxtEvent::TWO_EVENT, "./resources/file/Txt/Stage02.txt", 4);
 
-	playerFont_->ChangeFont(TxtEvent::ONE_EVENT);
 	creditPos_ = Vector2(0.0f, creditSize_.y);
 	//”wŒiÝ’è
 	float graundPos = csvSize.y*CHIPSIZE - world_->GetScreenPlayerPos().y / 2;
@@ -71,35 +66,27 @@ void BonusStage::start()
 
 void BonusStage::update()
 {
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J)) {
-		playerFont_->StartFont();
+	if (!isResult_)
+		creditPos_.y -= 1000.0f*Time::GetInstance().deltaTime();
+	else {
+		pointTime_ += Time::GetInstance().deltaTime();
+		point_ = GetRand(9999);
+		resultAlpha_ += Time::GetInstance().deltaTime();
+		if (pointTime_ >= 4.0f)
+			point_ = keeper_->GetMaxItemCount();
+		if (pointTime_ >= 8.0f) {
+			isEnd_ = true;
+		}
 	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::K)) {
-		playerFont_->ChangeFont(TxtEvent::TWO_EVENT);
-		playerFont_->StartFont();
-	}
-	//if (!isResult_)
-	//	creditPos_.y -= 1000.0f*Time::GetInstance().deltaTime();
-	//else {
-	//	pointTime_ += Time::GetInstance().deltaTime();
-	//	point_ = GetRand(9999);
-	//	resultAlpha_ += Time::GetInstance().deltaTime();
-	//	if (pointTime_ >= 4.0f)
-	//		point_ = keeper_->GetMaxItemCount();
-	//	if (pointTime_ >= 8.0f) {
-	//		isEnd_ = true;
-	//	}
-	//}
 
 
-	//if (creditPos_.y <= -creditSize_.y) {
-	//	isResult_ = true;
-	//	world_->PlayerNotMove(true);
-	//}
+	if (creditPos_.y <= -creditSize_.y) {
+		isResult_ = true;
+		world_->PlayerNotMove(true);
+	}
 
 	world_->update(Time::GetInstance().deltaTime());
 	backManager->Update(Time::GetInstance().deltaTime());
-	playerFont_->Update();
 }
 
 void BonusStage::draw() const
@@ -124,8 +111,6 @@ void BonusStage::draw() const
 		//DrawGraph(SCREEN_SIZE.x -kiriTexSize_.x- 300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
-	playerFont_->Draw();
-
 }
 
 void BonusStage::end()

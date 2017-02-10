@@ -65,6 +65,10 @@ void PlayerTxt::Update()
 				return;
 			}
 			if (txts_[speekCount_ + 1].lineFlag) speekCount_++;
+			if (speekCount_ >= speedEndCount_ - 1) {
+				isAllSpeekEnd_ = true;
+				return;
+			}
 			speekCount_++;
 			nowPlayer_ = txts_[speekCount_].speekPlayer;
 			speekTimer_ = 0.0f;

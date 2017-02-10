@@ -2,7 +2,6 @@
 
 #include "../Base/IScene.h"
 #include <memory>
-#include "../../Renderer/PlayerFont.h"
 class World;
 class BackGraundManager;
 class BonusStage : public IScene {
@@ -20,9 +19,6 @@ private:
 	using WorldPtr = std::shared_ptr<World>;
 	// ƒ[ƒ‹ƒh
 	WorldPtr	world_;
-
-	using PlayerFontPtr = std::shared_ptr<PlayerFont>;
-	PlayerFontPtr playerFont_;
 
 	BackGraundManager* backManager;
 	Scene nextScene_;
