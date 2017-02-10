@@ -17,7 +17,7 @@
 #include"../Scene/TeamLogoScene/TeamLogoScene.h"
 #include"../Scene/GameEnd/GameEndScene.h"
 #include "../Scene/Tutoreal/TutorealScene.h"
-
+#include "../Scene/BonusStage/BonusStage.h"
 MyGame::MyGame() : 
 	Game(WINDOW_NAME, static_cast<int>(SCREEN_SIZE.x), static_cast<int>(SCREEN_SIZE.y), WINDOW_RATE, WINDOW_MODE),
 	dataKeeper_(), 
@@ -40,6 +40,7 @@ void MyGame::start(){
 	sceneMgr_.add(Scene::GameEnd, std::make_shared<GameEndScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Logo, std::make_shared<TeamLogoScene>(&dataKeeper_));
 	sceneMgr_.add(Scene::Tutoreal, std::make_shared<TutorealScene>());
+	sceneMgr_.add(Scene::Bonus, std::make_shared<BonusStage>(&dataKeeper_));
 	sceneMgr_.change(Scene::Loading);
 }
 

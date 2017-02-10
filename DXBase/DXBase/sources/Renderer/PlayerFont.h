@@ -3,8 +3,10 @@
 #include "../Math/Vector2.h"
 #include "../World/IWorld.h"
 #include "PlayerTxt.h"
+#include "../Math/MathHelper.h"
 #include <memory>
 #include <map>
+#include "../Actor/Base/Actor.h"
 enum TxtEvent
 {
 	ONE_EVENT,
