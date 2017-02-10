@@ -46,7 +46,7 @@ void BonusStage::start()
 
 	creditPos_ = Vector2(0.0f, creditSize_.y);
 	//”wŒiÝ’è
-	float graundPos = csvSize.y*CHIPSIZE - world_->GetScreenPlayerPos().y / 2;
+	float graundPos = -(world_->GetScreenPlayerPos().y);
 	backManager = new BackGraundManager(world_.get());
 	backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos);
 	backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos);
@@ -62,6 +62,9 @@ void BonusStage::start()
 	backManager->SetUpBackGraund(TextureID::BACKSTAGE1_1_TEX, 8);
 
 	kiriTexSize_ = ResourceLoader::GetInstance().GetTextureSize(TextureID::KIRIKABU_TEX);
+	
+	keeper_->addMaxItemCount(gener.getItemCount(), name_);
+	keeper_->setCurrentSceneName(name_);
 }
 
 void BonusStage::update()
@@ -70,10 +73,10 @@ void BonusStage::update()
 		creditPos_.y -= 1000.0f*Time::GetInstance().deltaTime();
 	else {
 		pointTime_ += Time::GetInstance().deltaTime();
-		point_ = GetRand(9999);
+		point_ = GetRand(99999999);
 		resultAlpha_ += Time::GetInstance().deltaTime();
 		if (pointTime_ >= 4.0f)
-			point_ = keeper_->GetMaxItemCount();
+			point_ = keeper_->GetMaxItemCount("All");
 		if (pointTime_ >= 8.0f) {
 			isEnd_ = true;
 		}
@@ -104,7 +107,7 @@ void BonusStage::draw() const
 		//NumberTexture bonus = NumberTexture(TextureID::NUMBERS_TEX, 96, 96);
 		//bonus.draw2(Vector2(SCREEN_SIZE.x / 2 - 182, SCREEN_SIZE.y / 2 + 128), bonusPoint_, 4, Vector3(255, 255, 255));
 		NumberTexture all = NumberTexture(TextureID::NUMBERS_TEX, 96, 96);
-		all.draw2(Vector2(SCREEN_SIZE.x / 2 - 192, SCREEN_SIZE.y / 2), point_, 4, Vector3(255, 255, 255));
+		all.draw2(Vector2(SCREEN_SIZE.x / 2 - 192, SCREEN_SIZE.y / 2), point_, 8, Vector3(255, 255, 255));
 		Vector2 size = Vector2(SCREEN_SIZE.x / 2 - 192 - 96, SCREEN_SIZE.y / 2);
 		DrawGraph(size.x, size.y, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), true);
 		//DrawGraph(300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);
