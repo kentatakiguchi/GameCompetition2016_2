@@ -115,6 +115,8 @@ void TutorealScene::start()
 	//補間初期化
 	size_ = 0.2f;
 	movieMoveTime_ = 0.0f;
+	Movie::GetInstance().Load(tutorels_[tutorealRoopCount_].movieID, tutorels_[tutorealRoopCount_].moviePas);
+
 	//動画サイズ取得
 	Vector2 movieSize = Movie::GetInstance().GetMovieSize(tutorels_[tutorealRoopCount_].movieID)*0.1f;
 	//動画の位置設定
@@ -128,7 +130,6 @@ void TutorealScene::start()
 	//ポーズしない
 	isStopped_ = false;
 	//
-	Movie::GetInstance().Load(tutorels_[tutorealRoopCount_].movieID,tutorels_[tutorealRoopCount_].moviePas);
 	//ワールド
 	world_ = std::make_shared<World>(keeper_);
 	MapGenerator gener = MapGenerator(world_.get());

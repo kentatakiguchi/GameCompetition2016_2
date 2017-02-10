@@ -77,10 +77,11 @@ void FirstGamePlayScene::start() {
 	keeper_->setCurrentSceneName(name_);
 
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
-	world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
+	world_->SetScreenPlayerPos(SCREEN_SIZE / 2);
+	world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - (SCREEN_SIZE.x - world_->GetScreenPlayerPos().x), csvSize.y*CHIPSIZE - (SCREEN_SIZE.y - world_->GetScreenPlayerPos().y)));
 
 	backManager = new BackGraundManager(world_.get());
-	float graundPos = -(world_->GetScreenPlayerPos().y);
+	float graundPos = -(world_->GetScreenPlayerPos().y)*1.5f;
 	backManager->BossFlag(true);
 
 	backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos);

@@ -83,14 +83,16 @@ void GamePlayScene::start() {
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	if (name_ == "stage01") {
 		stageNum_ = 1;
-		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
-		
+		world_->SetScreenPlayerPos(SCREEN_SIZE / 2);
+		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - (SCREEN_SIZE.x - world_->GetScreenPlayerPos().x), csvSize.y*CHIPSIZE - (SCREEN_SIZE.y - world_->GetScreenPlayerPos().y)));
+
 		keeper_->setMaxItemCount(gener.getItemCount(), name_);
 	}
 	else if (name_ == "stage02") {
 		stageNum_ = 2;
-		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
-	
+		world_->SetScreenPlayerPos(SCREEN_SIZE / 2);
+		world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - (SCREEN_SIZE.x - world_->GetScreenPlayerPos().x), csvSize.y*CHIPSIZE - (SCREEN_SIZE.y - world_->GetScreenPlayerPos().y)));
+
 		keeper_->setMaxItemCount(gener.getItemCount(), name_);
 	}
 	else if (name_ == "stage03") {
@@ -110,7 +112,7 @@ void GamePlayScene::start() {
 
 	backManager = new BackGraundManager(world_.get());
 	if (name_ == "stage01" || name_ == "stage02") {
-		float graundPos = -(world_->GetScreenPlayerPos().y);
+		float graundPos = -(world_->GetScreenPlayerPos().y*1.5f);
 		//先にセットされたテクスチャほど奥に描写される
 		//backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX,graundPos);
 		backManager->BossFlag(true);
