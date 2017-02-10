@@ -378,5 +378,8 @@ void LoadingScene::load_se_res(){
 	SetCreateSoundPitchRate(0.0f);
 
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_GETCOIN, "./resources/sounds/coin.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_RESULT_ROLL, "./resources/sounds/score_up.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_RESULT_SHOW, "./resources/sounds/score_den.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_RESULT_SHOWMAX, "./resources/sounds/score_den.mp3");
 
 }

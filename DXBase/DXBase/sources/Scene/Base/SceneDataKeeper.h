@@ -44,6 +44,13 @@ public:
 	void ItemMinus(int minusCount);
 	int GetItemCount();
 	int GetItemCount(std::string stage) {
+		if (stage == "All") {
+			int num = 0;
+			for (auto i:datas_) {
+				num += i.second.itemCount_;
+			}
+			return num;
+		}
 		return datas_[stage].itemCount_;
 	}
 	//0‚È‚ç‘S•”‚Ì‡Œv
