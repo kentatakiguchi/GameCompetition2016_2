@@ -12,7 +12,7 @@ BonusStage::BonusStage(SceneDataKeeper * keeper)
 {
 	isEnd_ = false;
 	keeper_ = keeper;
-	name_ = "tutoreal01";
+	name_ = "clear_stage";
 
 }
 
@@ -37,7 +37,7 @@ void BonusStage::start()
 	world_->CollisitionOffOn(true);
 	MapGenerator gener = MapGenerator(world_.get());
 	int stg = keeper_->getNextSceneName(name_);
-	name_ = "clear_stage";
+
 	gener.create("./resources/file/" + name_ + ".csv", 0, 0, stg);
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
