@@ -433,7 +433,7 @@ void BaseEnemy::updateState(float deltaTime)
 	}
 
 	// スクリーンの幅の半分 + 敵の大きさより大きいなら待機状態にする
-	if (!isScreen())
+	if (!isScreen() && state_ != State::Dead)
 		changeState(State::Idel, ENEMY_WALK);
 	prevDirection_ = direction_;
 	stateTimer_ += deltaTime;
