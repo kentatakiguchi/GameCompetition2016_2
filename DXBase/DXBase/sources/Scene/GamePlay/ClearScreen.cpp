@@ -22,13 +22,16 @@ static const int StarPos2_Lx = 750;
 static const int StarPos2_Ly = 1000;
 static const int StarPos3_Lx = 850;
 static const int StarPos3_Ly = 1000;
+
+static const float LastSTime = 0.4f;
 ClearScreen::ClearScreen(SceneDataKeeper* keeper):keeper_(keeper), drawNumberController_(0), isMaxDraw_(false),baseLastDraw_(0),drawLastDraw_(0),isMusic_(false)
 {
 	ints = 0;
 	usingIntCount = 0;
 	usingBaseIntCount = 2;
 	anmer_ = StageClearTextAnm();
-	
+	lastScoreTime = LastSTime;
+	isLastScoreDCou = 1;
 	numberTexes_.resize(2);
 
 	numberTexes_[0].push_back(TextureID::NUMBER_ZERO_TEX);
@@ -283,7 +286,7 @@ ClearScreen::ClearScreen(SceneDataKeeper* keeper):keeper_(keeper), drawNumberCon
 	isBaseDraw_[nameList[0]] = true;
 	isBaseDraw_[nameList[1]] = true;
 
-	Count_ = nameBaseList.size()+300.f;
+	Count_ = 3600;
 	isFirst_ = true;
 
 	buttonLock_=true;
@@ -295,12 +298,68 @@ ClearScreen::ClearScreen(SceneDataKeeper* keeper):keeper_(keeper), drawNumberCon
 	isRankDraw_ = false;
 
 	isSoundFirst_ = true;
-	isRankSoundCheckFirst_ = true;
+	isRankSoundCheckFirst_ = false;
 	rankSoundCheckCount_ = 0;
+
+	FullStarCountVec.clear();
+	FullStarCountVec.resize(11);
+	int starCou = 0;
+	for (int i = 0; i < FullStarCountVec.size(); i++) {
+		FullStarCountVec[i]=starCou;
+		starCou++;
+		if (starCou > 9) {
+			starCou = 0;
+		}
+	}
+	numberDrawMaster_.clear();
+	numberDrawMaster_.resize(11);
+	for (int i = 0; i < numberDrawMaster_.size();i++) {
+		numberDrawMaster_[i] = false;
+	}
+	isMyssFirst_ = true;
+	isMusLastFirst_ = true;
+	isEnterDraw_ = false;
+	isEnterDrawNum_ = 0;
 }
 
 bool ClearScreen::update(std::string name, Scene& next)
 {
+	for (int i = 0; i < FullStarCountVec.size(); i++) {
+		FullStarCountVec[i]++;
+		if (FullStarCountVec[i] > 9) {
+			FullStarCountVec[i] = 0;
+		}
+	}
+
+	if (usingIntCount >= nameList.size() - 1)
+	{
+		lastScoreTime -= 0.016;
+		useCount -= 0.016;
+		int myss = countNumber(1, keeper_->GetStageScore(name), keeper_->GetStageScore(name),
+			textPositions.at("TotalGetStarCount").x - (ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x * 11), textPositions.at("TotalGetStarCount").y, 0, 11);
+		if (lastScoreTime <= 0){
+			if (isMyssFirst_) {
+				numberDrawMaster_[isLastScoreDCou - 1] = true;
+				isLastScoreDCou++;
+				if (isLastScoreDCou >= myss) {
+					isLastScoreDCou = myss;
+					drawNumberController_ = 1;
+					isMyssFirst_ = false;
+					if(myss!=1)useCount = LastSTime;
+					else useCount = 0;
+				}
+				PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOW), DX_PLAYTYPE_BACK);
+			}
+			lastScoreTime = LastSTime;
+		}
+		if (!isMyssFirst_&&useCount <= 0)
+		{
+			isDraw_["TotalGetStarCount"] = true;
+			if(isMusLastFirst_&&myss != 1)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOW), DX_PLAYTYPE_BACK);
+			isEnterDraw_ = true;
+			isMusLastFirst_ = false;
+		}
+	}
 	rankSoundCheckCount_--;
 	if (rankSoundCheckCount_ <= 0) {
 		isRankSoundCheckFirst_ = false;
@@ -311,8 +370,8 @@ bool ClearScreen::update(std::string name, Scene& next)
 		isMusic_ = true;
 	}
 	buttonLockCount_ -= Time::GetInstance().deltaTime();
-	if (isMaxDraw_) {
-		drawNumberController_ += 0.016f;
+	if (isEnterDraw_) {
+		isEnterDrawNum_ += 0.016f;
 		//if (drawNumberController_ > 0.3f&&!isRankDraw_) {
 			//PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOW), DX_PLAYTYPE_BACK);
 			//isRankDraw_ = true;
@@ -325,19 +384,22 @@ bool ClearScreen::update(std::string name, Scene& next)
 			//PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOW), DX_PLAYTYPE_BACK);
 			//isStarDraw_[1] = true;
 		//}
-		if (drawNumberController_ > 1.8&&!isStarDraw_[2]) {
+		if (isEnterDrawNum_ > 1.f&&!isStarDraw_[2]) {
 			isRankDraw_ = true;
 			isStarDraw_[0] = true;
 			isStarDraw_[1] = true;
 			isStarDraw_[2] = true;
 			rankSoundCheckCount_ = 1;
 			isRankSoundCheckFirst_ = true;
+			Count_ = 120;
 		}
 	}
 	if (buttonLockCount_ <= 0)buttonLock_ = false;
 
-	if (InputMgr::GetInstance().IsPushButton()&&isFirst_&&!buttonLock_) {
+	if (InputMgr::GetInstance().IsPushButton()&&isFirst_&&!buttonLock_&&!isRankDraw_) {
 		isFirst_ = false;
+		rankSoundCheckCount_ = 1;
+		isRankSoundCheckFirst_ = true;
 		Count_ = 120;
 		for (auto i : isBaseDraw_) {
 			isBaseDraw_[i.first] = true;
@@ -349,18 +411,29 @@ bool ClearScreen::update(std::string name, Scene& next)
 			isStarDraw_[i] = true;
 		}
 		isRankDraw_ = true;
-		if(isSoundFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOWMAX), DX_PLAYTYPE_BACK);
+		//if(isSoundFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOWMAX), DX_PLAYTYPE_BACK);
 		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL));
 		ChangeVolumeSoundMem(0, ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOW));
 		isSoundFirst_ = false;
-
+		buttonLockCount_ = 30;
+		buttonLock_ = true;
+		isEnterDrawNum_ = 2;
+		isEnterDraw_ = true;
+	}
+	else if (InputMgr::GetInstance().IsPushButton() && !buttonLock_ && isRankDraw_) {
+		return true;
 	}
 	drawNumberController_ += 0.016f;
 
 	if (drawNumberController_>0.2f&&!isMaxDraw_) {
 		isBaseDraw_[nameBaseList[usingBaseIntCount]] = true;
 		isDraw_[nameList[usingIntCount]]=true;
-		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOW),DX_PLAYTYPE_BACK);
+		if (nameList[usingIntCount] == "TotalGetStarCount") {
+			isDraw_[nameList[usingIntCount]] = false;
+		}
+		else {
+			PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOW), DX_PLAYTYPE_BACK);
+		}
 		usingIntCount++;
 		usingBaseIntCount++;
 		if (usingIntCount >= nameList.size()) {
@@ -369,8 +442,16 @@ bool ClearScreen::update(std::string name, Scene& next)
 			StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL));
 			isSoundFirst_ = false;
 		}
+
+		//if (usingIntCount >= nameList.size()) {
+		//	usingIntCount = nameList.size() - 1;
+		//	isMaxDraw_ = true;
+		//	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL));
+		//	isSoundFirst_ = false;
+		//}
 		if (usingBaseIntCount >= nameBaseList.size())usingBaseIntCount = nameBaseList.size() - 1;
 		drawNumberController_ = 0;
+		//if (usingIntCount >= nameList.size()-1)drawNumberController_ = -1;
 	}
 	for (int i = 0; i < NumberForLoop_.size(); i++) {
 		NumberForLoop_[i]++;
@@ -675,9 +756,19 @@ void ClearScreen::draw() const
 			DrawGraph(textPositions.at("TotalGetStar").x - (ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x * drawPNum), textPositions.at("TotalGetStar").y, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
 		}
 		else {
-			LoopNumber(textPositions.at("TotalGetStarCount").x - (ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x * 11), textPositions.at("TotalGetStarCount").y, setLoopNum, 0, 11);
-
-			//DrawGraph(textPositions.at("TotalGetStar").x-(ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x*11), textPositions.at("TotalGetStar").y, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
+			//LoopNumber(textPositions.at("TotalGetStarCount").x - (ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x * 11), textPositions.at("TotalGetStarCount").y, setLoopNum, 0, 11);
+			//LoopPointNumber(textPositions.at("TotalGetStar").x, textPositions.at("TotalGetStar").y, FullStarCountVec.at(0),10,)
+			for(int i=0;i<isLastScoreDCou;i++)
+			{
+				if (numberDrawMaster_[i]) {
+					countNumber(i, drawNum, baseNum,
+						textPositions.at("TotalGetStarCount").x - (ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x * 11), textPositions.at("TotalGetStarCount").y, 0, 11);
+				}
+				else
+				{
+				DrawGraph(textPositions.at("TotalGetStarCount").x - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x * (i+1), textPositions.at("TotalGetStarCount").y, ResourceLoader::GetInstance().getTextureID(numberTexes_[0].at(FullStarCountVec[i])), TRUE);
+				}
+			}//DrawGraph(textPositions.at("TotalGetStar").x-(ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x*11), textPositions.at("TotalGetStar").y, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
 
 			setLoopNum++;
 			if (setLoopNum > 9) {
@@ -686,8 +777,8 @@ void ClearScreen::draw() const
 		}
 	}
 	if (baseNum < 100000) {
+		if (isRankSoundCheckFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_RANKC), DX_PLAYTYPE_BACK);
 		if (isRankDraw_) {
-			if (isRankSoundCheckFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_RANKC), DX_PLAYTYPE_BACK);
 			DrawGraph(RankPosx, RankPosy, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_RANK_C_TEX), TRUE);
 		}
 		if (isStarDraw_[0]) {
@@ -695,9 +786,9 @@ void ClearScreen::draw() const
 			DrawRotaGraph2(StarPosx, StarPosy, cent.x, cent.y, 1, 0, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
 		}
 	}
-	else if (baseNum < 500000) {
+	else if (baseNum < 200000) {
+		if (isRankSoundCheckFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_RANKB), DX_PLAYTYPE_BACK);
 		if (isRankDraw_) {
-			if (isRankSoundCheckFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_RANKB), DX_PLAYTYPE_BACK);
 			DrawGraph(RankPosx, RankPosy, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_RANK_B_TEX), TRUE);
 		}
 		if (isStarDraw_[0]) {
@@ -710,8 +801,8 @@ void ClearScreen::draw() const
 		}
 	}
 	else {
+		if (isRankSoundCheckFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_RANKA), DX_PLAYTYPE_BACK);
 		if (isRankDraw_) {
-			if (isRankSoundCheckFirst_)PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_RANKA), DX_PLAYTYPE_BACK);
 			DrawGraph(RankPosx, RankPosy, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_RANK_A_TEX), TRUE);
 		}
 		if (isStarDraw_[0]) {
@@ -727,154 +818,5 @@ void ClearScreen::draw() const
 			DrawRotaGraph2(StarPos3_Lx, StarPos3_Ly, cent.x, cent.y, 0.5, 0, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
 		}
 
-		//	}
-
-			//int posCount = 0;
-			//std::vector<int> drawNumberList;
-
-			//drawNumber(drawNum, baseNum,
-			//	(SCREEN_SIZE.x / 2), 750);
-
-			//for (int i = 0;;) {
-
-			//	if (baseNum < 10) {
-			//		drawNumberList.push_back(baseNum);
-			//		//DrawGraph((SCREEN_SIZE.x - CountPos)
-			//		//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[baseNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[baseNum]), TRUE);
-			//		break;
-			//	}
-
-			//	drawNum = (int)(baseNum*0.1);
-			//	drawNum = drawNum * 10;
-			//	int textNum = baseNum - drawNum;
-
-			//	drawNumberList.push_back(textNum);
-			//	//DrawGraph((SCREEN_SIZE.x - CountPos) 
-			//	//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[textNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[textNum]), TRUE);
-
-			//	baseNum = (int)(baseNum*0.1);
-			//	posCount++;
-			//	//DrawFormatString(SCREEN_SIZE.x - 100, 50, GetColor(0, 0, 0), "%d", );
-			//}
-			//int drawPosCount = drawNumberList.size() - 1;
-			//for (int i = 0; i < (int)drawNumberList.size(); i++) {
-
-			//	DrawGraph((int)((SCREEN_SIZE.x - CountPos)
-			//		+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount), 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
-
-			//	drawPosCount--;
-			//}
-
-
-			//drawNum = keeper_->getJumpCount();
-			//baseNum = keeper_->getJumpCount();
-			//posCount = 0;
-			//drawNumberList.clear();
-
-			//for (int i = 0;;) {
-
-			//	if (baseNum < 10) {
-			//		drawNumberList.push_back(baseNum);
-			//		//DrawGraph((SCREEN_SIZE.x - CountPos)
-			//		//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[baseNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[baseNum]), TRUE);
-			//		break;
-			//	}
-
-			//	drawNum = (int)(baseNum*0.1);
-			//	drawNum = drawNum * 10;
-			//	int textNum = baseNum - drawNum;
-
-			//	drawNumberList.push_back(textNum);
-			//	//DrawGraph((SCREEN_SIZE.x - CountPos) 
-			//	//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[textNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[textNum]), TRUE);
-
-			//	baseNum = (int)(baseNum*0.1);
-			//	posCount++;
-			//	//DrawFormatString(SCREEN_SIZE.x - 100, 50, GetColor(0, 0, 0), "%d", );
-			//}
-			//drawPosCount = drawNumberList.size() - 1;
-			//for (int i = 0; i < (int)drawNumberList.size(); i++) {
-
-			//	DrawGraph((int)((SCREEN_SIZE.x / 2)
-			//		+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount), 600, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
-
-			//	drawPosCount--;
-			//}
-
-			//drawNum = keeper_->getDamageCount();
-			//baseNum = keeper_->getDamageCount();
-			//posCount = 0;
-			//drawNumberList.clear();
-
-			//for (int i = 0;;) {
-
-			//	if (baseNum < 10) {
-			//		drawNumberList.push_back(baseNum);
-			//		//DrawGraph((SCREEN_SIZE.x - CountPos)
-			//		//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[baseNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[baseNum]), TRUE);
-			//		break;
-			//	}
-
-			//	drawNum = (int)(baseNum*0.1);
-			//	drawNum = drawNum * 10;
-			//	int textNum = baseNum - drawNum;
-
-			//	drawNumberList.push_back(textNum);
-			//	//DrawGraph((SCREEN_SIZE.x - CountPos) 
-			//	//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[textNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[textNum]), TRUE);
-
-			//	baseNum = (int)(baseNum*0.1);
-			//	posCount++;
-			//	//DrawFormatString(SCREEN_SIZE.x - 100, 50, GetColor(0, 0, 0), "%d", );
-			//}
-			//drawPosCount = drawNumberList.size() - 1;
-			//for (int i = 0; i < (int)drawNumberList.size(); i++) {
-
-			//	DrawGraph((int)((SCREEN_SIZE.x / 2)
-			//		+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount), 750, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
-
-			//	drawPosCount--;
-			//}
-
-			//DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(1)), TRUE);
-			//DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y + 160), ResourceLoader::GetInstance().getTextureID(textIDs.at(2)), TRUE);
-
-			//for (auto lists : listBase) {
-			//	for (auto my : lists) {
-			//		if (count == 0)break;
-
-			//		strLen = strlen(my.c_str());
-			//		strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-
-			//		//if (forcount == targetPoint && forcount != 0)SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(abs(sin(sinCount*MathHelper::Pi / 180)) * 255));
-			//		//DrawStringToHandle(center - (strWidth / 2), textPosList.at(count).y + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-
-
-			//		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			//		heightPoint++;
-			//	}
-			//	forcount++;
-			//	count++;
-			//	heightPoint = 0;
-			//}
-
-
-			//int strLen, strWidth, center, count, heightPoint;
-			//count = 0;
-			//heightPoint = 0;
-			//for (auto lists : listBase) {
-			//	for (auto my : lists) {
-			//		strLen = strlen(my.c_str());
-			//		strWidth = GetDrawStringWidthToHandle(my.c_str(), strLen, FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			//		center = static_cast<int>(SCREEN_SIZE.x) / 2;
-			//		//DrawStringToHandle(center - (strWidth / 2), static_cast<int>(textPosList.at(count).y) + ((FontManager::GetInstance().GetFontSize(FontName::GamePlayFont))*heightPoint), my.c_str(), GetColor(255, 255, 255), FontManager::GetInstance().ChangeFont(FontName::GamePlayFont));
-			//		
-			//		DrawGraph(center - 320, static_cast<int>(textPosList.at(count).y), ResourceLoader::GetInstance().getTextureID(textIDs.at(count)), TRUE);
-
-			//		heightPoint++;
-			//	}
-			//	count++;
-			//	heightPoint = 0;
-			//}
 	}
 }
