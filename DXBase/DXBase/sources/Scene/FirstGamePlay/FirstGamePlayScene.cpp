@@ -113,7 +113,7 @@ void FirstGamePlayScene::start() {
 	eventFlag2_ = true;
 
 	tutorialMgr_.load_csv("./resources/file/stage00_come.csv");
-	tutorialMgr_.init(world_.get());
+	tutorialMgr_.init();
 }
 
 void FirstGamePlayScene::update() {

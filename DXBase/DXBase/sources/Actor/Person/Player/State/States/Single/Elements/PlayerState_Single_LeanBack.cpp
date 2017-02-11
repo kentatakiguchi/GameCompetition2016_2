@@ -1,6 +1,7 @@
 #include "PlayerState_Single_LeanBack.h"
 
 #include "../../../../../../../Define.h"
+#include "../../../../Effect/PlayerEffectObj.h"
 
 PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(const Keys& keys) : PlayerState_Single(keys) {}
 
@@ -8,6 +9,8 @@ void PlayerState_Single_LeanBack::unique_init(){
 	body_->animation().change(PlayerAnimID::DAMAGE);
 
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BUNRI) ,DX_PLAYTYPE_BACK);
+
+	if(is_butty())body_->world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(body_->world_, body_->getPosition(), PlayerEffectID::SEP_EXP, 5.0f, 3.0f));
 
 	body_->reset_opponent();
 

@@ -8,19 +8,23 @@
 #include "../../Input/InputMgr.h"
 #include "../../Define.h"
 
+#include "../../Math/Easing.h"
+
 #include <algorithm>
 
 TutorialManager::TutorialManager() :
 	timer_(0),
 	textIndex_(0),
-	currentTutorial_(0),
+	currentTutorial_(1),
 	currentTurn_(0),
-	alpha_(255),
+	drawY_(0),
 	color_(GetColor(255, 255, 255)),
 	text1_(""),
 	text2_(""),
-	buttyPos_(Vector2(0, 0)),
-	rettyPos_(Vector2(0, 0)){}
+	scale_(0),
+	state_(TutoState::POP_UP),
+	sound_(0){
+}
 
 TutorialManager::~TutorialManager(){}
 
@@ -40,74 +44,167 @@ void TutorialManager::load_csv(const std::string& file_name){
 	}
 }
 
-void TutorialManager::init(IWorld* world){
+void TutorialManager::init(){
+	timer_ = 0;
+	textIndex_ = 0;
+	currentTutorial_ = 1;
+	currentTurn_ = 0;
+	drawY_ = 100;
+	color_ = GetColor(0, 0, 255);
+	sound_ = ResourceLoader::GetInstance().getSoundID(SoundID::SE_BUDDY);
+	text1_ = "";
+	text2_ = "";
+	scale_ = 0;
+	state_ = TutoState::POP_UP;
 }
 
 void TutorialManager::update(IWorld* world, float deltaTime){
+
+	tutoStateUpdate(world, deltaTime);
 
 	auto butty = world->findActor("PlayerBody1");
 	auto retty = world->findActor("PlayerBody2");
 
 	if (butty == nullptr || retty == nullptr)return;
 
-	
+	if (contents_[currentTutorial_][currentTurn_].speaker == "b") {
+		drawPos_ = butty->getPosition() * world->GetInv() - Vector2(-100, 300);
+	}
+	else if (contents_[currentTutorial_][currentTurn_].speaker == "r") {
+		drawPos_ = retty->getPosition() * world->GetInv() - Vector2(-100, 300);
+	}
+}
+
+void TutorialManager::tutoStateUpdate(IWorld * world, float deltaTime) {
+	switch (state_) {
+	case TutoState::POP_UP:popUp(world, deltaTime);
+		break;
+	case TutoState::TEXT:stepText(deltaTime);
+		break;
+	case TutoState::POP_BACK:popBack(world, deltaTime);
+		break;
+	case TutoState::CHANGE:change(world, deltaTime);
+		break;
+	case TutoState::MOVE:move(world, deltaTime);
+		break;
+	default:
+		break;
+	}
+}
+
+void TutorialManager::popUp(IWorld * world, float deltaTime){
+	scale_ = MathHelper::Lerp(scale_, 2.0f, 0.7f);
+	if (scale_ >= 2.0f) {
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_KAIWA), DX_PLAYTYPE_BACK);
+
+		state_ = TutoState::TEXT;
+		timer_ = 0;
+	}
+}
+
+void TutorialManager::popBack(IWorld * world, float deltaTime){
+	scale_ = MathHelper::Lerp(scale_, 0.0f, 0.7f);
+	if (scale_ >= 0.0f) {
+		state_ = TutoState::CHANGE;
+		timer_ = 0;
+	}
+}
+
+void TutorialManager::change(IWorld * world, float deltaTime) {
+	if (currentTurn_ >= contents_[currentTutorial_].size() - 1) {
+		world->PlayerNotMove(false);
+		state_ = TutoState::MOVE;
+	}
+	else {
+		changeTurn(world);
+	}
+}
+
+void TutorialManager::move(IWorld * world, float deltaTime){
+	auto butty = world->findActor("PlayerBody1");
+	auto retty = world->findActor("PlayerBody2");
+
+	if (butty == nullptr || retty == nullptr)return;
+
 	if (butty->getPosition().x > contents_[std::min<int>(currentTutorial_ + 1, contents_.size())][0].posX * CHIPSIZE &&
 		retty->getPosition().x > contents_[std::min<int>(currentTutorial_ + 1, contents_.size())][0].posX * CHIPSIZE) {
 
 		if (currentTutorial_ != contents_.size()) {
-			changeTutorial();
+			changeTutorial(world);
 			world->PlayerNotMove(true);
 		}
-	}
-
-	if (contents_[currentTutorial_][currentTurn_].text1.size() <= text1_.size() && 
-		contents_[currentTutorial_][currentTurn_].text2.size() <= text2_.size() && 
-		timer_ >= 5.0f) {
-		if (currentTurn_ >= contents_[currentTutorial_].size() - 1) {
-			world->PlayerNotMove(false);
-		}
-		else {
-			changeTurn();
-		}
-	}
-
-	stepText(deltaTime);
-
-	if (contents_[currentTutorial_][currentTurn_].speaker == "b") {
-		drawPos_ = butty->getPosition() * world->GetInv() - Vector2(-100, 300);
-		color_ = GetColor(0, 0, 255);
-	}
-	else if (contents_[currentTutorial_][currentTurn_].speaker == "r") {
-		drawPos_ = retty->getPosition() * world->GetInv() - Vector2(-100, 300);
-		color_ = GetColor(255, 0, 0);
 	}
 }
 
 void TutorialManager::draw() const{
+
+	if (state_ == TutoState::MOVE)return;
+	DrawRotaGraph(drawPos_.x, drawPos_.y, scale_, 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::HUKIDASI_TEX), true);
+
 	int size = 64;
 	SetFontSize(size);
-
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);//MathHelper::Lerp(0.0f, 255.0f, alpha_));
-	DrawRotaGraph(drawPos_.x, drawPos_.y, 2.0f/*MathHelper::Lerp(0.0f, 2.0f, alpha_)*/, 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::HUKIDASI_TEX), true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0.0f);
-
-	DrawFormatString(drawPos_.x - 375, drawPos_.y - 100, color_, text1_.c_str());
-	DrawFormatString(drawPos_.x - 375, drawPos_.y - 100 + size, color_, text2_.c_str());
+	DrawFormatString(drawPos_.x - 425, drawPos_.y - drawY_, color_, text1_.c_str());
+	DrawFormatString(drawPos_.x - 425, drawPos_.y - drawY_ + size, color_, text2_.c_str());
 }
 
-void TutorialManager::changeTutorial(){
+void TutorialManager::changeTutorial(IWorld* world){
 	currentTurn_ = 0;
 	textIndex_ = 0;
 	text1_ = "";
 	text2_ = "";
 	currentTutorial_ = std::min<int>(currentTutorial_ + 1, contents_.size());
+
+	state_ = TutoState::POP_UP;
+
+	if (contents_[currentTutorial_][currentTurn_].text2.size() <= 0) {
+		drawY_ = 55;
+	}
+	else {
+		drawY_ = 100;
+	}
+	auto butty = world->findActor("PlayerBody1");
+	auto retty = world->findActor("PlayerBody2");
+
+	if (butty == nullptr || retty == nullptr)return;
+
+	if (contents_[currentTutorial_][currentTurn_].speaker == "b") {
+		color_ = GetColor(0, 0, 255);
+		sound_ = ResourceLoader::GetInstance().getSoundID(SoundID::SE_BUDDY);
+	}
+	else if (contents_[currentTutorial_][currentTurn_].speaker == "r") {
+		color_ = GetColor(255, 0, 0);
+		sound_ = ResourceLoader::GetInstance().getSoundID(SoundID::SE_REDDY);
+	}
 }
 
-void TutorialManager::changeTurn(){
+void TutorialManager::changeTurn(IWorld* world){
 	text1_ = "";
 	text2_ = "";
 	textIndex_ = 0;
 	currentTurn_ = std::min<int>(currentTurn_ + 1, contents_[currentTutorial_].size() - 1);
+
+	state_ = TutoState::POP_UP;
+
+	if (contents_[currentTutorial_][currentTurn_].text2.size() <= 0) {
+		drawY_ = 60;
+	}
+	else {
+		drawY_ = 110;
+	}
+	
+	auto butty = world->findActor("PlayerBody1");
+	auto retty = world->findActor("PlayerBody2");
+
+	if (butty == nullptr || retty == nullptr)return;
+
+	if (contents_[currentTutorial_][currentTurn_].speaker == "b") {
+		color_ = GetColor(0, 0, 255);
+		sound_ = ResourceLoader::GetInstance().getSoundID(SoundID::SE_BUDDY);
+	}
+	else if (contents_[currentTutorial_][currentTurn_].speaker == "r") {
+		color_ = GetColor(255, 0, 0);
+		sound_ = ResourceLoader::GetInstance().getSoundID(SoundID::SE_REDDY);
+	}
 }
 
 bool TutorialManager::isTutorialEnd(){
@@ -119,32 +216,40 @@ bool TutorialManager::isTutorialEnd(){
 
 void TutorialManager::stepText(float deltaTime){
 	timer_ += deltaTime * 10;
-
-
-
+	
 	if (contents_[currentTutorial_][currentTurn_].text1.size() <= text1_.size() &&
-		contents_[currentTutorial_][currentTurn_].text2.size() <= text2_.size()) return;
-		
-	if (timer_ > 1.0f) {
-		if (contents_[currentTutorial_][currentTurn_].text1.size() > text1_.size()) {
-			if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE) ||
-				InputMgr::GetInstance().IsKeyDown(KeyCode::W)) {
-				textIndex_ = contents_[currentTutorial_][currentTurn_].text1.size() / 2;
-			}
-			
-			text1_ = contents_[currentTutorial_][currentTurn_].text1.substr(0, textIndex_ * 2);
+		contents_[currentTutorial_][currentTurn_].text2.size() <= text2_.size()) {
+		if (timer_ >= 10.0f) {
+			state_ = TutoState::POP_BACK;
+			timer_ = 0.0f;
 		}
-		else {
-			if (text2_.size() == 0) {
-				textIndex_ = 1;
+	}
+	else {
+		if (timer_ > 1.0f) {
+			if (contents_[currentTutorial_][currentTurn_].text1.size() > text1_.size()) {
+				if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE) ||
+					InputMgr::GetInstance().IsKeyDown(KeyCode::W)) {
+					textIndex_ = contents_[currentTutorial_][currentTurn_].text1.size() / 2;
+				}
+
+				text1_ = contents_[currentTutorial_][currentTurn_].text1.substr(0, textIndex_ * 2);
+				PlaySoundMem(sound_, DX_PLAYTYPE_BACK);
 			}
-			if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE) ||
-				InputMgr::GetInstance().IsKeyDown(KeyCode::W)) {
-				textIndex_ = contents_[currentTutorial_][currentTurn_].text2.size() / 2;
+			else {
+				if (text2_.size() == 0) {
+					textIndex_ = 1;
+				}
+				if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE) ||
+					InputMgr::GetInstance().IsKeyDown(KeyCode::W)) {
+					textIndex_ = contents_[currentTutorial_][currentTurn_].text2.size() / 2;
+				}
+				text2_ = contents_[currentTutorial_][currentTurn_].text2.substr(0, textIndex_ * 2);
+				PlaySoundMem(sound_, DX_PLAYTYPE_BACK);
 			}
-			text2_ = contents_[currentTutorial_][currentTurn_].text2.substr(0, textIndex_ * 2);
+			textIndex_++;
+			timer_ = 0.0f;
 		}
-		textIndex_++;
-		timer_ = 0.0f;
 	}
 }
+
+
