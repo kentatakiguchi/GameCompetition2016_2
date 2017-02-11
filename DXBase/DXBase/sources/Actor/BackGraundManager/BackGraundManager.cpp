@@ -9,9 +9,12 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 	mWorld(world),
 	konohaTimer(0.0f),
 	konohaRandTime(1.0f),
-	bossCount(60.0f),
+	bossCount(20.0f),
 	bossTimer(0.0f),
-	bossFlag(false)
+	bossFlag(false),
+	bossTurn(true),
+	bossTurnCount(0.0f),
+	bossTurnTime(0.0f)
 {
 	////ƒvƒŒƒCƒ„[•ÏŠ·
 	//mPlayer = dynamic_cast<PlayerBody*>(world->findActor("Player").get());
@@ -101,7 +104,7 @@ void BackGraundManager::SetTateYokoBackGraund(TextureID id)
 
 }
 
-void BackGraundManager::SetUpBackGraund(TextureID id, int layer)
+void BackGraundManager::SetUpBackGraund(TextureID id, int layer,bool flag)
 {
 	BackGraundState state;
 
@@ -112,7 +115,7 @@ void BackGraundManager::SetUpBackGraund(TextureID id, int layer)
 
 	IndexPos indexPos;
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id);
-
+	state.frontGraundFlag = flag;
 	indexPos.position = Vector2::Zero;
 	state.indexPos.push_back(indexPos);
 	indexPos.position = Vector2(0, -size.y);
@@ -309,15 +312,20 @@ void BackGraundManager::Draw(bool title) const
 	for (auto& i : upBackStates)
 	{
 		count++;
-		for (auto& j : i.indexPos)
-		{
-			DrawGraph(j.position.x, j.position.y, j.index, true);
-			if (count == 1 && bossFlag) {
-				if (mChildFlag == 1)
-					for (const auto& i : mBossChilds) {
-						childanim.draw_e(bossPos + i, Vector2::Zero, 0.2f, 0.0f);
+		if (!i.frontGraundFlag) {
+			for (auto& j : i.indexPos)
+			{
+				DrawGraph(j.position.x, j.position.y, j.index, true);
+				if (count == 1 && bossFlag) {
+					if (mChildFlag == 1) {
+						for (const auto& i : mBossChilds) {
+							childanim.draw_e(bossPos + i, Vector2::Zero, 0.2f, 0.0f);
+						}
+						anim.drawTurn(bossPos, Vector2::Zero, 0.75f, 0.0f, Vector3(255, 255, 255), bossTurnFlag);
 					}
-				anim.draw_e(bossPos, Vector2::Zero, 0.75f, 0.0f);
+					else
+						anim.draw_e(bossPos, Vector2::Zero, 0.75f, 0.0f);
+				}
 			}
 		}
 	}
@@ -328,6 +336,13 @@ void BackGraundManager::Draw(bool title) const
 		{
 			if (!i.frontGraundFlag)
 				DrawGraph(j.position.x, j.position.y, j.index, true);
+		}
+	}
+	for (auto& i : upBackStates) {
+		if (i.frontGraundFlag) {
+			for (auto& j : i.indexPos) {
+				DrawGraph(j.position.x, j.position.y, j.index, true);
+			}
 		}
 	}
 
@@ -430,10 +445,21 @@ void BackGraundManager::BossUpdate()
 	if (bossPos.x >= SCREEN_SIZE.x + 256.0f && (bossTimer >= bossCount)) {
 		bossPos.x = -128.0f;
 		mChildFlag = rand() % 3;
+		bossTurnTime = GetRand(3) + 5;
 		bossTimer = 0.0f;
+		bossTurnCount = 0.0f;
 	}
 
-	bossPos -= mWorld->GetInvVelo() / 20.0f;
+	bossTurnFlag = true;
+	if (bossTimer >= bossTurnTime) {
+		bossTurnCount += Time::GetInstance().deltaTime();
+		bossTurnFlag = false;
+		if (bossTurnCount >= 4.0f) {
+			bossTurnFlag = true;
+		}
+	}
+
+	bossPos += -mWorld->GetInvVelo() / 20.0f;
 
 	anim.update_e(Time::GetInstance().deltaTime());
 	childanim.update_e(Time::GetInstance().deltaTime()*3.0f);

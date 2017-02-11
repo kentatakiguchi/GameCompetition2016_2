@@ -78,7 +78,7 @@ void BonusStage::update()
 		creditPos_.y -= 400.0f*Time::GetInstance().deltaTime();
 	else {
 		if (!pointDrawFlag_) {
-			point_ = keeper_->GetItemCount("All")+ world_->getCount();
+			point_ = keeper_->GetStageScore();
 			int pointLeng = std::to_string(point_).length();
 			int num = 1;
 			for (int i = 0; i < pointLeng; i++) {
@@ -92,7 +92,7 @@ void BonusStage::update()
 			resultAlpha_ += Time::GetInstance().deltaTime();
 			pointDrawTime_ += Time::GetInstance().deltaTime();
 			pointRandomTime_ += Time::GetInstance().deltaTime();
-			if (pointDrawTime_ >= 1.5f&&points_.size()>pointCount_&&pointRandomTime_ >= 4.0f) {
+			if (pointDrawTime_ >= 1.0f&&points_.size()>pointCount_&&pointRandomTime_ >= 4.0f) {
 				pointDrawTime_ = 0.0f;
 				PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOWMAX), DX_PLAYTYPE_BACK);
 				pointCount_++;
@@ -127,19 +127,19 @@ void BonusStage::draw() const
 		//NumberTexture bonus = NumberTexture(TextureID::NUMBERS_TEX, 96, 96);
 		//bonus.draw2(Vector2(SCREEN_SIZE.x / 2 - 182, SCREEN_SIZE.y / 2 + 128), bonusPoint_, 4, Vector3(255, 255, 255));
 		NumberTexture all = NumberTexture(TextureID::NUMBERS_TEX, 96, 96);
-		int size = 4;
+		int size = 9;
 		for (int i = 0; i < size - pointCount_; i++) {
-			Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 192, SCREEN_SIZE.y / 2) + Vector2(96 * i, 0);
+			Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 192*2, SCREEN_SIZE.y / 2) + Vector2(96 * i, 0);
 			if (points_.size() - 1 >= pointCount_)
 				all.draw2(pos, GetRand(9), 1, Vector3(255, 255, 255));
 			else
 				all.draw2(pos, 0, 1, Vector3(255, 255, 255));
 		}
 		for (int i = 0; i < pointCount_; i++) {
-			Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 192, SCREEN_SIZE.y / 2) + Vector2(96 * ((size - i) - 1), 0);
+			Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 192*2, SCREEN_SIZE.y / 2) + Vector2(96 * ((size - i) - 1), 0);
 			all.draw2(pos, points_[i], 1, Vector3(255, 255, 255), 1.0f);
 		}
-		Vector2 sizetext = Vector2(SCREEN_SIZE.x / 2 - 192 - 96, SCREEN_SIZE.y / 2);
+		Vector2 sizetext = Vector2(SCREEN_SIZE.x / 2 - 192*2 - 96, SCREEN_SIZE.y / 2);
 		DrawGraph(sizetext.x, sizetext.y, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), true);
 		//DrawGraph(300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);
 		//DrawGraph(SCREEN_SIZE.x -kiriTexSize_.x- 300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);

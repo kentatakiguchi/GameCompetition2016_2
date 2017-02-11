@@ -53,7 +53,7 @@ public:
 	//縦の横の背景を設定する(ロードしたテクスチャ限定)
 	void SetTateYokoBackGraund(TextureID id1);
 	//背景（空）を設定する（ロードしたテクスチャ限定）
-	void SetUpBackGraund(TextureID id, int layer);
+	void SetUpBackGraund(TextureID id, int layer,bool flag=false);
 	//地面を設定する(ロードしたテクスチャ限定)
 	void SetDownBackGraund(TextureID id);
 
@@ -118,4 +118,10 @@ private:
 	std::vector<Vector2> mBossChilds;
 	//子分が出現するかフラグ
 	int mChildFlag;
+	//子分がいたときボスが振り向く時間
+	float bossTurn;
+	//子分がいたときにボスが振り向いている時間
+	float bossTurnTime;
+	float bossTurnCount;
+	bool bossTurnFlag;
 };

@@ -136,7 +136,7 @@ void GamePlayScene::start() {
 	else if (name_ == "stage03")
 	{
 		backManager->BossFlag(true);
-		float graundPos = csvSize.y*CHIPSIZE-world_->GetScreenPlayerPos().y/2;
+		float graundPos = (csvSize.y*CHIPSIZE-world_->GetScreenPlayerPos().y)*0.95f;
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_3_TEX, TextureID::BACKSTAGE2_3_TEX, graundPos, false, true);
@@ -148,8 +148,8 @@ void GamePlayScene::start() {
 		//backManager->SetBackGraund(TextureID::BACKSTAGE2_9_TEX, TextureID::BACKSTAGE2_9_TEX, graundPos, false, true);
 		//backManager->SetBackGraund(TextureID::BACKSTAGE2_10_TEX, TextureID::BACKSTAGE2_10_TEX, graundPos, false, true);
 		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP1_TEX, 8);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP2_TEX, 4);
-		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP3_TEX, 1);
+		//backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP2_TEX, 2,true);
+		backManager->SetUpBackGraund(TextureID::BACKSTAGE2_TOP3_TEX, 1,true);
 
 		backManager->AddKonoha(TextureID::HAPPA3_1_TEX);
 		backManager->AddKonoha(TextureID::HAPPA3_2_TEX);
