@@ -36,9 +36,8 @@ void BonusStage::start()
 	world_ = std::make_shared<World>(keeper_);
 	world_->CollisitionOffOn(true);
 	MapGenerator gener = MapGenerator(world_.get());
-	int stg = keeper_->getNextSceneName(name_);
 
-	gener.create("./resources/file/" + name_ + ".csv", 0, 0, stg);
+	gener.create("./resources/file/" + name_ + ".csv", 0, 0,1);
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
 	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
