@@ -261,8 +261,8 @@ void TutorealScene::update()
 		feedAlpha_ = MathHelper::Clamp(feedAlpha_, 0.0f, 1.0f);
 	}
 
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
-		isClear_ = true;
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::J))
+	//	isClear_ = true;
 
 	if (!isClear_)
 		EndTutoreal(endTutorealCount_);

@@ -225,10 +225,20 @@ void TutorialManager::stepText(float deltaTime){
 		}
 	}
 	else {
+		if (contents_[currentTutorial_][currentTurn_].text1.size() > text1_.size()) {
+			if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE)) {
+				textIndex_ = contents_[currentTutorial_][currentTurn_].text1.size() / 2;
+			}
+		}
+		else {
+			if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE)) {
+				textIndex_ = contents_[currentTutorial_][currentTurn_].text2.size() / 2;
+			}
+		}
+
 		if (timer_ > 1.0f) {
 			if (contents_[currentTutorial_][currentTurn_].text1.size() > text1_.size()) {
-				if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE) ||
-					InputMgr::GetInstance().IsKeyDown(KeyCode::W)) {
+				if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE)) {
 					textIndex_ = contents_[currentTutorial_][currentTurn_].text1.size() / 2;
 				}
 
@@ -239,8 +249,7 @@ void TutorialManager::stepText(float deltaTime){
 				if (text2_.size() == 0) {
 					textIndex_ = 1;
 				}
-				if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE) ||
-					InputMgr::GetInstance().IsKeyDown(KeyCode::W)) {
+				if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_CIRCLE)) {
 					textIndex_ = contents_[currentTutorial_][currentTurn_].text2.size() / 2;
 				}
 				text2_ = contents_[currentTutorial_][currentTurn_].text2.substr(0, textIndex_ * 2);

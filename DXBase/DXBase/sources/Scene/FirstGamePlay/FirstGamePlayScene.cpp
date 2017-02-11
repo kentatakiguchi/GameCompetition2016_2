@@ -82,7 +82,7 @@ void FirstGamePlayScene::start() {
 
 	backManager = new BackGraundManager(world_.get());
 	float graundPos = -(world_->GetScreenPlayerPos().y)*1.5f;
-	backManager->BossFlag(true);
+	backManager->BossFlag(false);
 
 	backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos);
 	backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos);
