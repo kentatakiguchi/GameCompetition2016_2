@@ -29,6 +29,8 @@ TutorialManager::TutorialManager() :
 TutorialManager::~TutorialManager(){}
 
 void TutorialManager::load_csv(const std::string& file_name){
+	contents_.clear();
+
 	CsvReader reader;
 	reader.load(file_name);
 
