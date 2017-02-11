@@ -37,8 +37,6 @@ void LoadingScene::start(){
 	load_boss_res();
 	load_ui_res();
 
-
-	ResourceLoader::GetInstance().loadTexture(TextureID::RESULT_BACL_TEX, "./resources/sprite/ResultBack.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::KIRIKABU_TEX, "./resources/sprite/kirikabu.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::HUKIDASI_TEX, "./resources/sprite/hukidasi.png");
 
@@ -81,8 +79,6 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_6_TEX, "./resources/sprite/BackGraund/Stage2-6.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_7_TEX, "./resources/sprite/BackGraund/Stage2-7.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_8_TEX, "./resources/sprite/BackGraund/Stage2-8.png");
-	//ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_9_TEX, "./resources/sprite/BackGraund/Stage2-9.png");
-	//ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_10_TEX, "./resources/sprite/BackGraund/Stage2-10.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP1_TEX, "./resources/sprite/BackGraund/Stage2-Top1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP2_TEX, "./resources/sprite/BackGraund/Stage2-Top2.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE2_TOP3_TEX, "./resources/sprite/BackGraund/Stage2-Top3.png");
@@ -91,9 +87,6 @@ void LoadingScene::start(){
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::MOVIEBACK_TEX, "./resources/sprite/Tutoreal/MovieBack.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TUTOREAL_BACK_TEX, "./resources/sprite/Tutoreal/tutorealFlame.png");
-
-	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE3_1_TEX, "./resources/sprite/BackGraund/Stage3-1.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE3_2_TEX, "./resources/sprite/BackGraund/Stage3-2.png");
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE4_1_TEX, "./resources/sprite/BackGraund/Stage4-1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BACKSTAGE4_2_TEX, "./resources/sprite/BackGraund/Stage4-2.png");
@@ -115,17 +108,11 @@ void LoadingScene::start(){
 
 	ResourceLoader::GetInstance().loadTexture(TextureID::CHIP1_TEX, "./resources/sprite/chip1.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::CHIP2_TEX, "./resources/sprite/chip2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::CHIP3_TEX, "./resources/sprite/chip3.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::CHIP4_TEX, "./resources/sprite/chip4.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::SEGMENT_TRI_TEX, "./resources/sprite/segchip.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::SEGMENT_TRI2_TEX, "./resources/sprite/segchip2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::SELECT_TARGET_TEX, "./resources/sprite/SelTarget.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_ALPHA_TEX, "./resources/sprite/TextAlphaMask.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::CHANGE_SCENE_TEX, "./resources/sprite/ChangeS.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::BLACK_BACK_TEX, "./resources/sprite/blackBack.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TITLE_BACK_TEX, "./resources/sprite/TitleBack.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TITLE_BACK2_TEX, "./resources/sprite/TitleBack2.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TITLE_BACK3_TEX, "./resources/sprite/TitleBack3.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TITLE_BACK4_TEX, "./resources/sprite/TitleBack4.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TITLE_BACK_ALPHA_TEX, "./resources/sprite/TitleBackAlpha.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEAM_LOGO_TEX, "./resources/sprite/Logo.png");
@@ -142,7 +129,6 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_GAMESTART_TEX, "./resources/sprite/Text/gamestart.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MARU_TEX, "./resources/sprite/Text/maru.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MENUBACK_TEX, "./resources/sprite/Text/menuback.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_NEXTSTAGE_TEX, "./resources/sprite/Text/nextstage.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_TUTORIAL_TEX, "./resources/sprite/Text/tutorial.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_GAMEOVER_TEX, "./resources/sprite/Text/gameover.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_RETRY_TEX, "./resources/sprite/Text/retry.png");
@@ -206,7 +192,6 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MINUS_MULT_TEX, "./resources/sprite/result/minus.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MULTIPLY_TEX, "./resources/sprite/result/Multiply.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_NoENEMY_DEATH_TEX, "./resources/sprite/result/noenemydeath.png");
-	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_MINUS_STAR_COUNT_TEX, "./resources/sprite/result/purplestar_count.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_STAR_COUNT_TEX, "./resources/sprite/result/yellowstar_count.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_DAMAGE_COUNT_TEX, "./resources/sprite/result/sprit_count.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_STICK_COUNT_TEX, "./resources/sprite/result/stick_count.png");
@@ -346,6 +331,9 @@ void LoadingScene::load_bgm_res(){
 }
 
 void LoadingScene::load_se_res(){
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_BUDDY, "./resources/sounds/buddy.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_REDDY, "./resources/sounds/reddy.mp3");
+	ResourceLoader::GetInstance().loadSound(SoundID::SE_KAIWA, "./resources/sounds/kaiwa.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_BUNRI, "./resources/sounds/bunri.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_NOBI, "./resources/sounds/nobi.mp3");
 	ResourceLoader::GetInstance().loadSound(SoundID::SE_NOBI_FULL, "./resources/sounds/nobi_full.mp3");

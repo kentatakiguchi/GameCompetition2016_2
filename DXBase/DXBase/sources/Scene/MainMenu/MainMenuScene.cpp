@@ -171,8 +171,8 @@ void MainMenuScene::start() {
 	id2.push_back(TextureID::BACKSTAGE2_6_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_7_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_8_TEX);
-	id2.push_back(TextureID::BACKSTAGE2_9_TEX);
-	id2.push_back(TextureID::BACKSTAGE2_10_TEX);
+	/*id2.push_back(TextureID::BACKSTAGE2_9_TEX);
+	id2.push_back(TextureID::BACKSTAGE2_10_TEX);*/
 	BackTitles id3;
 	id3.push_back(TextureID::BACKSTAGE4_1_TEX);
 	id3.push_back(TextureID::BACKSTAGE4_2_TEX);
