@@ -9,7 +9,7 @@ BackGraundManager::BackGraundManager(IWorld * world) :
 	mWorld(world),
 	konohaTimer(0.0f),
 	konohaRandTime(1.0f),
-	bossCount(20.0f),
+	bossCount(60.0f),
 	bossTimer(0.0f),
 	bossFlag(false),
 	bossTurn(true),
