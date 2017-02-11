@@ -188,6 +188,31 @@ public:
 			datas_[stage].comboCount_.resize(6);
 		}
 	}
+	int GetStageScore() {
+		int ans = 0;
+		for (auto i : datas_) {
+			ans += GetStageScore(i.first);
+		}
+		return ans;
+	}
+	int GetStageScore(std::string stage) {
+		int baseStar = datas_[stage].itemCount_;
+
+		int multAddCount = 0;
+		multAddCount += datas_[stage].maxCombo_;
+		multAddCount += (datas_[stage].moveDistance_ / 96);
+		multAddCount += datas_[stage].comboCount_[5];
+		multAddCount += (float)datas_[stage].plusStar_ / datas_[stage].maxItemCount_ * 10;
+		multAddCount += datas_[stage].comboCount_[4];
+		multAddCount += datas_[stage].comboCount_[3];
+		multAddCount += datas_[stage].holdCount_;
+		multAddCount += datas_[stage].comboCount_[2];
+		if (datas_[stage].enemyCount_ == 0)multAddCount += 100;
+		multAddCount -= datas_[stage].damageCount_;
+		multAddCount -= datas_[stage].chargeTime_;
+		int ans= baseStar*multAddCount;
+		return ans;
+	}
 private:
 	std::map<std::string,StageDatas> datas_;
 
