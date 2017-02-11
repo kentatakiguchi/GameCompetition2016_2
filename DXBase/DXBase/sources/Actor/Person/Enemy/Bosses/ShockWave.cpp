@@ -1,4 +1,5 @@
 #include "ShockWave.h"
+#include "../../../../World/IWorld.h"
 
 ShockWave::ShockWave(
 	IWorld * world,

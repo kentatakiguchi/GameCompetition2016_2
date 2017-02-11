@@ -2,8 +2,6 @@
 #define PLAYER_SEARCH_OBJ_H_
 
 #include "../../Base/Actor.h"
-#include "../../../World/IWorld.h"
-#include "../../../Math/Math.h"
 
 class PlayerSearchObj : public Actor {
 public:

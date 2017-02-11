@@ -2,9 +2,6 @@
 #define BASE_BOSS_H_
 
 #include "../../../Base/Actor.h"
-#include "../../../../World/IWorld.h"
-#include "../../../../Math/Math.h"
-#include "../../../../Define.h"
 #include "../../../../Animation/Enemy/EnemyAnimation2D.h"
 #include "BossAnimationNumber.h"
 #include "BossManager.h"
@@ -18,13 +15,6 @@ class BossGaugeUI;
 // ボスクラス
 class BaseBoss : public Actor {
 protected:
-	//// モーション番号
-	//enum {
-	//	BOSS_IDLE = 0,
-	//	BOSS_ATTACK = 1,
-	//	BOSS_FLINCH = 2,
-	//	BOSS_DEAD = 3,
-	//};
 	// 攻撃行動の番号
 	enum {
 		ATTACK_JUMPATTACK_NUMBER = 0,

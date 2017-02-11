@@ -360,12 +360,6 @@
     <ClInclude Include="sources\Actor\Person\Player\PlayerPtr.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Tornado.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\bossAttack\DysonAttack.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\Rock.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -457,9 +451,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\DashEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\PiyoriEffect.h">
@@ -887,12 +878,6 @@
     <ClCompile Include="sources\Actor\Person\Player\PlayerBodyPoint.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Tornado.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\bossAttack\DysonAttack.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Rock.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -966,9 +951,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\DashEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\PiyoriEffect.cpp">

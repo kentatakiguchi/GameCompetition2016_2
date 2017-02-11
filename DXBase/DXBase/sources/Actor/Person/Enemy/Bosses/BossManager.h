@@ -2,7 +2,6 @@
 #define BOSS_MANAGER_H_
 
 #include "bossAttack/BossAttack.h"
-#include "../../../../Math/Math.h"
 #include <vector>
 #include <memory>
 

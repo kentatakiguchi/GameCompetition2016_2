@@ -9,6 +9,8 @@
 #include "MiniBoss/FlyingMiniBoss.h"
 #include "bossAttack/importBossAttack.h"
 #include "Effect/ImportEffects.h"
+#include "../../../../World/IWorld.h"
+#include "../../../../Math/Math.h"
 // É{ÉXÇÃëÃóÕï\é¶
 #include "../../../UIActor/BossGaugeUI/BossGaugeUI.h"
 #include "../../../../Define.h"
@@ -523,9 +525,10 @@ void BaseBoss::deadMove(float deltaTime)
 			world_, Vector2(position_.x, 1020), (float)getRandomInt(40, 80) / 100);
 		world_->addActor(ActorGroup::EnemyBullet, miniBoss);
 		mbManager_.addMiniBoss(miniBoss.get());
-		PlaySoundMem(
-			ResourceLoader::GetInstance().getSoundID(SoundID::SE_MINIBOSS_CRY),
-			DX_PLAYTYPE_BACK);
+		if (miniBossCreateCount_ % 2 == 0)
+			PlaySoundMem(
+				ResourceLoader::GetInstance().getSoundID(SoundID::SE_MINIBOSS_CRY),
+				DX_PLAYTYPE_BACK);
 		miniBossCreateCount_++;
 		isEffectCreate_ = false;
 	}
@@ -646,6 +649,9 @@ void BaseBoss::liftIdel(float deltaTime)
 	}
 	if (mbManager_.isLiftEnd()) {
 		changeState(State::LiftMove, DEATH_NUMBER);
+		PlaySoundMem(
+			ResourceLoader::GetInstance().getSoundID(SoundID::SE_MINIBOSS_CRY),
+			DX_PLAYTYPE_BACK);
 	}
 }
 
@@ -977,23 +983,10 @@ void BaseBoss::addAnimation()
 		static_cast<int>(WALLATTACK_DASHJUMP_STOP_NUMBER),
 		ResourceLoader::GetInstance().getAnimationIDs(
 			AnimationID::BOSS_WALLATTACK_DASHJUMP_STOP_TEX));
-	// ãzÇ¢çûÇ›çUåÇ
-	animation_.addAnimation(
-		static_cast<int>(BREATH_NUMBER),
-		ResourceLoader::GetInstance().getAnimationIDs(
-			AnimationID::BOSS_BREATH_TEX));
-	animation_.addAnimation(
-		static_cast<int>(BREATH_TURN_NUMBER),
-		ResourceLoader::GetInstance().getAnimationIDs(
-			AnimationID::BOSS_BREATH_TURN_TEX));
 	animation_.addAnimation(
 		static_cast<int>(BREATH_DYSFUNCTION_NUMBER),
 		ResourceLoader::GetInstance().getAnimationIDs(
 			AnimationID::BOSS_BREATH_DYSFUNCTION_TEX));
-	animation_.addAnimation(
-		static_cast<int>(BREATH_LESS_NUMBER),
-		ResourceLoader::GetInstance().getAnimationIDs(
-			AnimationID::BOSS_BREATH_LESS_TEX));
 	// ãØÇ›
 	animation_.addAnimation(
 		static_cast<int>(PIYO_NUMBER),

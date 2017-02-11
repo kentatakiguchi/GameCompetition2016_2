@@ -1,7 +1,6 @@
 #ifndef NEEDLE_ENEMY_H_
 #define NEEDLE_ENEMY_H_
 
-//#include "../BaseEnemy.h"
 #include "../../../Base/Actor.h"
 
 // jƒNƒ‰ƒX(‰½‚à‚µ‚È‚¢BáŠQ•¨)

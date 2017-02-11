@@ -1,6 +1,7 @@
 #include "BossManager.h"
 #include "bossAttack/BossAttack.h"
 #include "../../../../World/IWorld.h"
+#include "../../../../Math/Math.h"
 
 BossManager::BossManager() : 
 	attackNumber_(0),

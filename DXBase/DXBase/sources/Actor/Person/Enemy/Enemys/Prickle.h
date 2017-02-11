@@ -3,8 +3,6 @@
 
 #include "../../../Base/Actor.h"
 #include "../../../../Animation/Base/Animation2D.h"
-#include "../../../../World/IWorld.h"
-#include "../../../../Math/Math.h"
 
 // トゲクラス (エネミーの所持している武器)
 class Prickle : public Actor {

@@ -4,6 +4,6 @@
 // ボス攻撃クラスの派生クラスの追加
 #include "ThreeJumpAttack.h"
 #include "WallAttack.h"
-#include "DysonAttack.h"
+//#include "DysonAttack.h"
 
 #endif

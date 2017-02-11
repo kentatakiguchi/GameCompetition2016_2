@@ -2,6 +2,8 @@
 #include "FloorSearchPoint.h"
 #include "PlayerSearchObj.h"
 #include "../../Base/ActorGroup.h"
+#include "../../../World/IWorld.h"
+#include "../../../Math/Math.h"
 
 EnemyManager::EnemyManager(
 	IWorld * world, 

@@ -2,6 +2,8 @@
 #include "../../../Base/ActorGroup.h"
 #include "../../../../ResourceLoader/ResourceLoader.h"
 #include "../FloorSearchPoint.h"
+#include "../../../../World/IWorld.h"
+#include "../../../../Math/Math.h"
 #include <random>
 
 MiniBoss::MiniBoss(

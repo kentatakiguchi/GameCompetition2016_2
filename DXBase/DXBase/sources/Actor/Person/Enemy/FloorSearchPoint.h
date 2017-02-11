@@ -2,9 +2,6 @@
 #define FLOOR_SEARCH_POINT_H_
 
 #include "../../Base/Actor.h"
-#include "../../../World/IWorld.h"
-#include "../../../Math/Math.h"
-#include "../../../Define.h"
 
 class FloorSearchPoint : public Actor {
 public:
