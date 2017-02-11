@@ -421,6 +421,7 @@ bool ClearScreen::update(std::string name, Scene& next)
 		isEnterDraw_ = true;
 	}
 	else if (InputMgr::GetInstance().IsPushButton() && !buttonLock_ && isRankDraw_) {
+		next = Scene::StageClear;
 		return true;
 	}
 	drawNumberController_ += 0.016f;
