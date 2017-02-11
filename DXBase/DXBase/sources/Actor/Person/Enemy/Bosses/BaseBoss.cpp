@@ -93,6 +93,8 @@ BaseBoss::BaseBoss(
 	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_JUMP));
 	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_WALLATTACK));
 	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO));
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_DEAD));
+	seHandles_.push_back(ResourceLoader::GetInstance().getSoundID(SoundID::SE_MINIBOSS_CRY));
 	// アニメーションの追加
 	addAnimation();
 	animation_.changeAnimation(
