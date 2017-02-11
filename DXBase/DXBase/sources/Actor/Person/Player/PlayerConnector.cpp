@@ -111,7 +111,7 @@ bool PlayerConnector::is_damaged() {
 	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY ||
 								retty_->hit_enemy() == HitOpponent::BOSS;
 
-	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
+	bool for_debug = false;//InputMgr::GetInstance().IsKeyDown(KeyCode::P);
 	if (timer_ <= 3.0f) {
 		butty_->reset_enemy();
 		retty_->reset_enemy();

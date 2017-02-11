@@ -27,52 +27,52 @@ MoveScreen::MoveScreen()
 
 bool MoveScreen::update(std::string name, Scene & next)
 {
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN))
-	{
-		next = Scene::GameOver;
-		return true;
-	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::Y))
-	{
-		if (name == "bossStage01") {
-			next = Scene::GameClear;
-			return true;
-		}
-		//if (name != "stage04")
-		//{
-		next = Scene::StageClear;
-		//}
-		//else
-		//{
-		//	next = Scene::GameClear;
-		//}
-		return true;
-	}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN))
+	//{
+	//	next = Scene::GameOver;
+	//	return true;
+	//}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::Y))
+	//{
+	//	if (name == "bossStage01") {
+	//		next = Scene::GameClear;
+	//		return true;
+	//	}
+	//	//if (name != "stage04")
+	//	//{
+	//	next = Scene::StageClear;
+	//	//}
+	//	//else
+	//	//{
+	//	//	next = Scene::GameClear;
+	//	//}
+	//	return true;
+	//}
 	return false;
 }
 bool MoveScreen::update(std::string name, Scene & next, bool& isClear)
 {
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN))
-	{
-		next = Scene::GameOver;
-		return true;
-	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::Y))
-	{
-		if (name == "bossStage01") {
-			next = Scene::GameClear;
-			return true;
-		}
-		//if (name != "stage04")
-		//{
-		next = Scene::StageClear;
-		//}
-		//else
-		//{
-		//	next = Scene::GameClear;
-		//}
-		isClear = true;
-	}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::RETURN))
+	//{
+	//	next = Scene::GameOver;
+	//	return true;
+	//}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::Y))
+	//{
+	//	if (name == "bossStage01") {
+	//		next = Scene::GameClear;
+	//		return true;
+	//	}
+	//	//if (name != "stage04")
+	//	//{
+	//	next = Scene::StageClear;
+	//	//}
+	//	//else
+	//	//{
+	//	//	next = Scene::GameClear;
+	//	//}
+	//	isClear = true;
+	//}
 	return false;
 }
 
