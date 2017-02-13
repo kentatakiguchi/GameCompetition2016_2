@@ -9,5 +9,6 @@ Release/
 *.sdf
 *.suo
 *.VC.opendb
+*.wmv
 
 /Log.txt
