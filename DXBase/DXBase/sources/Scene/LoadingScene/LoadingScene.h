@@ -25,7 +25,7 @@ private:
 	void load_bgm_res();
 	void load_se_res();
 private:
-	bool isEnd_;
+	////bool isEnd_;
 	Vector2 mPosition;
 	float mAngle;
 	Animation2D mLoadAnim;

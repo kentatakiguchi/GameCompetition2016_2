@@ -15,7 +15,7 @@ const static float		SCREEN_ASPECT = SCREEN_SIZE.x / SCREEN_SIZE.y;
 // ウインドウの表示倍率(おそらくデバック時のみ)
 const static float		WINDOW_RATE = 0.5f;
 // ウインドウモードにするかしないか(TRUE : FALSE)
-const static int		WINDOW_MODE = FALSE;
+const static int		WINDOW_MODE = TRUE;
 
 
 //追加する定数は自分の名前の下に書いてください。

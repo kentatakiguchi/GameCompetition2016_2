@@ -3,7 +3,9 @@
 #include "../../../../../../../Define.h"
 #include "../../../../Effect/PlayerEffectObj.h"
 
-PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(const Keys& keys) : PlayerState_Single(keys) {}
+PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(const Keys& keys) :
+	PlayerState_Single(keys),
+	dir_(Vector2::Zero), power_(0), firstPos_(Vector2::Zero){}
 
 void PlayerState_Single_LeanBack::unique_init(){
 	body_->animation().change(PlayerAnimID::DAMAGE);

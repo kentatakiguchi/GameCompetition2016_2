@@ -47,7 +47,6 @@ void ActorManager::update(float deltaTime) {
 	root_.update(deltaTime);
 	collide();
 	root_.late_update(deltaTime);
-	//MoveActor();
 	root_.removeChildren();
 	UiUpdate(deltaTime);
 }
@@ -62,8 +61,7 @@ void ActorManager::draw() const {
 void ActorManager::addActor(ActorGroup group, const ActorPtr& actor) {
 	actors_[group]->addChild(actor);
 }
-void ActorManager::addUIActor(const ActorUIPtr & actor)
-{
+void ActorManager::addUIActor(const ActorUIPtr & actor){
 	uiActors_.push_back(actor);
 }
 
@@ -77,8 +75,7 @@ void ActorManager::handleMessage(EventMessage message, void* param) {
 	root_.handleMessage(message, param);
 }
 
-std::forward_list<ActorPtr> ActorManager::GetActors(const ActorGroup group)
-{
+std::forward_list<ActorPtr> ActorManager::GetActors(const ActorGroup group){
 	return actors_[group]->getChildren();
 }
 
@@ -86,7 +83,6 @@ std::forward_list<ActorPtr> ActorManager::GetActors(const ActorGroup group)
 void ActorManager::collide() {
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Player_Collider]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy]);
-	//actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::EnemyBullet]);
 	actors_[ActorGroup::Player_Collider]->collideChildren(*actors_[ActorGroup::Field]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Enemy_AttackRange]);
 	actors_[ActorGroup::Player]->collideChildren(*actors_[ActorGroup::Field]);
@@ -99,19 +95,14 @@ void ActorManager::collide() {
 	actors_[ActorGroup::Item]->collideChildren(*actors_[ActorGroup::Player_Collider]);
 }
 
-void ActorManager::UiUpdate(float delta)
-{
-	for (auto& i : uiActors_)
-	{
+void ActorManager::UiUpdate(float delta){
+	for (auto& i : uiActors_)	{
 		i->update(delta);
 	}
-
 }
 
-void ActorManager::UIDraw() const
-{
-	for (auto& i : uiActors_)
-	{
+void ActorManager::UIDraw() const{
+	for (auto& i : uiActors_)	{
 		i->draw();
 	}
 }

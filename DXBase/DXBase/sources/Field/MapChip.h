@@ -21,7 +21,7 @@ public:
 		auto player = world_->findActor("PlayerBody1");
 		if (player == nullptr)return true;
 		//Vector2 pos = ((world_->findActor("PlayerBody1")->position_ + world_->findActor("PlayerBody2")->position_) / 2) + Vector2(CHIPSIZE / 2, 0);
-		Vector2 pos = player->position_ + Vector2(CHIPSIZE / 2, 0);
+		Vector2 pos = player->position_ + Vector2(CHIPSIZE / 2, 0.0f);
 
 		if (pos.x - (30 * CHIPSIZE)>position_.x || pos.x + (30 * CHIPSIZE)<position_.x) {
 			return true;

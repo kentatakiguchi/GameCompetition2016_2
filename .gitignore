@@ -10,5 +10,6 @@ Release/
 *.suo
 *.VC.opendb
 *.wmv
+*.exe
 
 /Log.txt

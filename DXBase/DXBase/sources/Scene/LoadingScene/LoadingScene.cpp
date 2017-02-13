@@ -6,8 +6,7 @@
 
 #include "../../Renderer/NumberTexture.h"
 
-LoadingScene::LoadingScene(SceneDataKeeper* keeper):
-isEnd_(false){
+LoadingScene::LoadingScene(SceneDataKeeper* keeper){
 }
 
 LoadingScene::~LoadingScene(){

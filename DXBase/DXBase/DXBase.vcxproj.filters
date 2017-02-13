@@ -348,9 +348,6 @@
     <ClInclude Include="sources\Animation\Base\Animation2D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="sources\Animation\Base\Animation.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sources\Animation\Player\PlayerAnimation2D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -864,9 +861,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\NeedleEnemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\Animation\Base\Animation.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Animation\Base\Animation2D.cpp">

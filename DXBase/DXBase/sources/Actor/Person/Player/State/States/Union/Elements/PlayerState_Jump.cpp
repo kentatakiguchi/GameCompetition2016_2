@@ -5,7 +5,9 @@
 
 #include <algorithm>
 
-PlayerState_Jump::PlayerState_Jump(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
+PlayerState_Jump::PlayerState_Jump(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : 
+	PlayerState_Union(butty, retty), 
+	dir_(Vector2::Zero), power_(0), gra_easeing_(0) {}
 
 void PlayerState_Jump::unique_init(){
 	butty_->reset_opponent();

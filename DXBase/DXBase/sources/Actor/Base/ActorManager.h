@@ -46,11 +46,8 @@ private:
 	Actor root_;
 	// アクターグループ
 	std::unordered_map<ActorGroup, ActorPtr> actors_;
-
 	//UIアクター
 	std::list<ActorUIPtr> uiActors_;
-	//using CollideFunc = std::unordered_map < ShapeType, std::function<bool(Collider&, Collider&)> >;
-	//std::unordered_map<ShapeType, CollideFunc> collision;
 };
 
 #endif
