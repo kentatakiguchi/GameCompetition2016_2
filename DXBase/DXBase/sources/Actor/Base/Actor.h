@@ -10,7 +10,8 @@
 #include "../Body/BoundingCapsule.h"
 #include "../Body/BoundingCircle.h"
 #include "../Body/BoundingSegment.h"
-#include"..//Body/CollisionBase.h"
+#include "../Body/CollisionBase.h"
+#include "../Person/Player/HitOpponent.h"
 #include <string>
 #include <functional>
 #include <forward_list>
@@ -79,6 +80,8 @@ public:
 	CollisionBase getBody();
 	// メッセージ処理
 	void handleMessage(EventMessage message, void* param);
+	// 衝突対象の取得
+	HitOpponent getOpponent()const;
 	// コピー禁止
 	Actor(const Actor& other) = delete;
 	Actor& operator = (const Actor& other) = delete;
@@ -117,6 +120,8 @@ public:
 	float				alpha_;
 
 	Matrix inv_;
+
+	HitOpponent opponent_;
 
 private:
 	// 子アクター

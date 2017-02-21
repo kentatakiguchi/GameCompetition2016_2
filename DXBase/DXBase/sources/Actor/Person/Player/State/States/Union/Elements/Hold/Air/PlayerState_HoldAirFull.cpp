@@ -30,20 +30,20 @@ void PlayerState_HoldAirFull::onEnd() {}
 // キー入力処理
 void PlayerState_HoldAirFull::onKeyInput(float deltaTime) {
 	if (!InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && element_.type_ == ActionType::Right) {
-		change(PlayerState_Enum_Union::ATTACK, ActionType::Right);
+		change(PlayerState_Enum_Union::ATTACK_R);
 	}
 	if (!InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && element_.type_ == ActionType::Left) {
-		change(PlayerState_Enum_Union::ATTACK, ActionType::Left);
+		change(PlayerState_Enum_Union::ATTACK_L);
 	}
 }
 
 // パッド入力処理
 void PlayerState_HoldAirFull::onPadInput(float deltaTime) {
 	if (!InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && element_.type_ == ActionType::Right) {
-		change(PlayerState_Enum_Union::ATTACK, ActionType::Right);
+		change(PlayerState_Enum_Union::ATTACK_R);
 	}
 	if (!InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1) && element_.type_ == ActionType::Left) {
-		change(PlayerState_Enum_Union::ATTACK, ActionType::Left);
+		change(PlayerState_Enum_Union::ATTACK_L);
 	}
 }
 

@@ -20,8 +20,10 @@ PlayerBodyPoint::~PlayerBodyPoint(){}
 
 // XVˆ—
 void PlayerBodyPoint::onUpdate(float deltaTime) {
-	//if (world_->getField() == nullptr)return;
-		//world_->getField()->calcColl(position_, body_.GetCircle().previousPosition_);
+	if (world_->getField() == nullptr)return;
+		//world_->getField()->calcColl(position_, pre_);
+
+		pre_ = position_;
 }
 
 // •`‰æˆ—

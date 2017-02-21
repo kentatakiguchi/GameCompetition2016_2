@@ -70,10 +70,10 @@ void TutorialManager::update(IWorld* world, float deltaTime){
 	if (butty == nullptr || retty == nullptr)return;
 
 	if (contents_[currentTutorial_][currentTurn_].speaker == "b") {
-		drawPos_ = butty->getPosition() * world->GetInv() - Vector2(-100, 300);
+		drawPos_ = Vector2::Clamp(butty->getPosition() * world->GetInv() - Vector2(-100, 300), Vector2(600, 200), Vector2(1300, 800));
 	}
 	else if (contents_[currentTutorial_][currentTurn_].speaker == "r") {
-		drawPos_ = retty->getPosition() * world->GetInv() - Vector2(-100, 300);
+		drawPos_ = Vector2::Clamp(retty->getPosition() * world->GetInv() - Vector2(-100, 300), Vector2(600, 200), Vector2(1300, 800));
 	}
 }
 

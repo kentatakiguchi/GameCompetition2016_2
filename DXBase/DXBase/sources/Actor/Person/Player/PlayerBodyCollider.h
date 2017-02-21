@@ -11,7 +11,7 @@
 // ÉvÉåÅ[ÉÑÅ[
 class PlayerBodyCollider : public Actor {
 public:
-	PlayerBodyCollider(IWorld* world, std::string& name);
+	PlayerBodyCollider(IWorld* world, std::string& name, const Vector2& position = Vector2::Zero);
 	~PlayerBodyCollider();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onCollide(Actor& other) override;
@@ -23,9 +23,7 @@ public:
 	void reset_velocity();
 	Vector2& other_velocity();
 	Vector2 other_position();
-	HitOpponent opponent();
 private:
-	HitOpponent opponent_;
 	Vector2 other_velocity_;
 	Vector2 other_position_;
 

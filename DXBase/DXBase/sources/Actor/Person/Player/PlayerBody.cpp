@@ -41,18 +41,7 @@ PlayerBody::~PlayerBody() {
 
 void PlayerBody::onUpdate(float deltaTime) {
 
-	//position_ += velocity_;
-
-	//velocity_ = (input_ * PLAYER_SPEED + launch_ + gravity_ + slope_ + collider_->other_velocity()) * deltaTime * static_cast<float>(GetRefreshRate());
-	//slope_.Length() > 0 ? slope_ -= slope_ / 20 : slope_ = Vector2::Zero;
-
-	//opponent_ = HitOpponent::NONE;
-
 	animation_.update(deltaTime);
-
-	if (!stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) {
-
-	}
 
 	if (bodyDump_ != 1.0f) {
 		dumpTimer_ += deltaTime * static_cast<float>(GetRefreshRate());
@@ -63,12 +52,12 @@ void PlayerBody::onUpdate(float deltaTime) {
 		}
 	}
 
+	//world_->getField()->calcColl(position_, pre_);
+	pre_ = position_;
 }
 
 void PlayerBody::onDraw() const {
 	//DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_RADIUS, GetColor(255, 255, 255), 0);
-
-	//body_.draw(inv_);
 
 	if (world_->isEntered())return;
 	if (stateMgr_.currentState((unsigned int)PlayerState_Enum_Single::STAND_BY)) return;
@@ -241,7 +230,7 @@ float & PlayerBody::dump(){
 }
 
 bool PlayerBody::able_to_hold() {
-	return	collider_->opponent() == HitOpponent::FLOOR_HIT;
+	return	collider_->getOpponent() == HitOpponent::FLOOR_HIT;
 }
 
 bool PlayerBody::able_to_jump() {
@@ -250,10 +239,6 @@ bool PlayerBody::able_to_jump() {
 
 bool PlayerBody::is_hit() {
 	return opponent_ == HitOpponent::FLOOR_TOP || opponent_ == HitOpponent::FLOOR_HIT;
-}
-
-HitOpponent PlayerBody::hitOpponent() {
-	return opponent_;
 }
 
 HitOpponent PlayerBody::hit_enemy() {

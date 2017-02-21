@@ -5,7 +5,8 @@
 PlayerStateMgr_Union::PlayerStateMgr_Union(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty){
 	add(PlayerState_Enum_Union::STAND_BY, std::make_shared<PlayerState_StandBy>(butty, retty));
 	add(PlayerState_Enum_Union::IDLE, std::make_shared<PlayerState_Idle>(butty, retty));
-	add(PlayerState_Enum_Union::MOVE, std::make_shared<PlayerState_MoveEach>(butty, retty));
+	add(PlayerState_Enum_Union::MOVE_R, std::make_shared<PlayerState_MoveEachR>(butty, retty));
+	add(PlayerState_Enum_Union::MOVE_L, std::make_shared<PlayerState_MoveEachL>(butty, retty));
 	add(PlayerState_Enum_Union::MOVE_BOTH, std::make_shared<PlayerState_MoveBoth>(butty, retty));
 	add(PlayerState_Enum_Union::JUMP, std::make_shared<PlayerState_Jump>(butty, retty));
 	add(PlayerState_Enum_Union::HOLD, std::make_shared<PlayerState_HoldBegin>(butty, retty));
@@ -15,7 +16,9 @@ PlayerStateMgr_Union::PlayerStateMgr_Union(const PlayerBodyPtr& butty, const Pla
 	add(PlayerState_Enum_Union::HOLD_AIR_SWIM, std::make_shared<PlayerState_HoldAirSwim>(butty, retty));
 	add(PlayerState_Enum_Union::HOLD_AIR_FULL, std::make_shared<PlayerState_HoldAirFull>(butty, retty));
 	add(PlayerState_Enum_Union::HOLD_BOTH, std::make_shared<PlayerState_HoldBoth>(butty, retty));
-	add(PlayerState_Enum_Union::ATTACK, std::make_shared<PlayerState_Attack>(butty, retty));
+	add(PlayerState_Enum_Union::HOLD_ITEM, std::make_shared<PlayerState_HoldItem>(butty, retty));
+	add(PlayerState_Enum_Union::ATTACK_R, std::make_shared<PlayerState_AttackR>(butty, retty));
+	add(PlayerState_Enum_Union::ATTACK_L, std::make_shared<PlayerState_AttackL>(butty, retty));
 	add(PlayerState_Enum_Union::FREEZE, std::make_shared<PlayerState_Freeze>(butty, retty));
 	add(PlayerState_Enum_Union::LEAN_BACK, std::make_shared<PlayerState_LeanBack>(butty, retty));
 	add(PlayerState_Enum_Union::EVENT, std::make_shared<PlayerState_EventTime>(butty, retty));

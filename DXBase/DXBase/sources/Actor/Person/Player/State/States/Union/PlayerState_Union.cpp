@@ -2,7 +2,6 @@
 
 #include "../../../../../../Define.h"
 #include "../../../../../../Input/InputMgr.h"
-#include "../../../../../UIActor/HurryUpUI/HurryUpUI.h"
 
 // コンストラクタ
 PlayerState_Union::PlayerState_Union(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) :
@@ -12,9 +11,6 @@ PlayerState_Union::PlayerState_Union(const PlayerBodyPtr& butty, const PlayerBod
 	isEnd_(false),
 	butty_(butty),
 	retty_(retty){
-
-	butty_->getWorld()->addUIActor(std::make_shared<HurryUpUI>(butty_->getWorld()));
-
 }
 
 // 全てのステートに共通する初期化処理

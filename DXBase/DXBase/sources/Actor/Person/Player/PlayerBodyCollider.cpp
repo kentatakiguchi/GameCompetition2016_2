@@ -4,7 +4,7 @@
 
 #include "../../../Define.h"
 
-PlayerBodyCollider::PlayerBodyCollider(IWorld * world, std::string& name):
+PlayerBodyCollider::PlayerBodyCollider(IWorld * world, std::string& name, const Vector2& position):
 	Actor(world, name + "Collider", Vector2::Zero, CollisionBase(Vector2(0, 0), PLAYER_COLLIDER_RADIUS)){
 }
 
@@ -33,12 +33,15 @@ void PlayerBodyCollider::onCollide(Actor & other) {
 	if (other.getName() == "SegmentCollider") {
 		opponent_ = HitOpponent::FLOOR_HIT;
 	}
+	if (other.getName() == "DeadEnemy") {
+		opponent_ = HitOpponent::ITEM;
+	}
 }
 
 void PlayerBodyCollider::onDraw() const{
 	//DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_COLLIDER_RADIUS, GetColor(255, 255, 255), 0);
-	//
-	//if(name_ == "PlayerAttackCollider")DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_COLLIDER_RADIUS, GetColor(255, 255, 255));
+	
+	if(name_ == "PlayerHoldCollider")DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_COLLIDER_RADIUS, GetColor(255, 255, 255));
 }
 
 void PlayerBodyCollider::reset_param(){
@@ -60,6 +63,3 @@ Vector2 PlayerBodyCollider::other_position(){
 	return other_position_;
 }
 
-HitOpponent PlayerBodyCollider::opponent(){
-	return opponent_;
-}

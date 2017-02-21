@@ -102,7 +102,7 @@ void PlayerConnector::create_point(int point_num) {
 }
 
 bool PlayerConnector::is_damaged() {
-	bool is_attack_state = stateMgr_.get_state(PlayerState_Enum_Union::ATTACK);
+	bool is_attack_state = stateMgr_.get_state(PlayerState_Enum_Union::ATTACK_R) || stateMgr_.get_state(PlayerState_Enum_Union::ATTACK_L);
 	bool is_event_state = stateMgr_.get_state(PlayerState_Enum_Union::EVENT);
 	bool is_leanback_state = stateMgr_.get_state(PlayerState_Enum_Union::LEAN_BACK);
 

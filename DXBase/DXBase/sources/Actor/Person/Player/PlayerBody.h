@@ -36,7 +36,6 @@ public:
 	bool able_to_jump();
 	bool is_hit();
 
-	HitOpponent hitOpponent();
 	HitOpponent hit_enemy();
 	void reset_opponent();
 	void reset_enemy();
@@ -62,12 +61,12 @@ private:
 	Vector2 velocity_;
 	Vector2 slope_;
 	PlayerBodyPtr partner_;
-	HitOpponent opponent_;
 	HitOpponent hit_enemy_;
 
 	float timer_;
 	PlayerBodyCollPtr collider_;
-	//PlayerBodyCollPtr attack_collider_;
+
+	Vector2 pre_;
 
 	ActorPtr cntr_;
 

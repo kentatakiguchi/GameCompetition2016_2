@@ -9,6 +9,8 @@
  
 #include "../../../Scene/Base/SceneDataKeeper.h"
 
+#include "../../UIActor/HurryUpUI/HurryUpUI.h"
+
 // コンストラクタ
 Player::Player(IWorld * world, const Vector2 & position) :
 	Actor(world, "Player", position, CollisionBase()),
@@ -17,6 +19,8 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	create_bodys();
 	// コネクタの生成
 	connect();
+
+	world_->addUIActor(std::make_shared<HurryUpUI>(world_));
 
 }
 

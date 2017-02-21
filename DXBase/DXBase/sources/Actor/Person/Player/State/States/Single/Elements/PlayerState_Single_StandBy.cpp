@@ -1,6 +1,9 @@
 #include "PlayerState_Single_StandBy.h"
 
-PlayerState_Single_StandBy::PlayerState_Single_StandBy(const Keys& keys) : PlayerState_Single(keys) {}
+
+PlayerState_Single_StandBy::PlayerState_Single_StandBy(const Keys& keys) : PlayerState_Single(keys) {
+
+}
 
 void PlayerState_Single_StandBy::unique_init() {
 	body_->reset_enemy();

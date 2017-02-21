@@ -56,19 +56,19 @@ void PlayerState_Single_Idle::end(){
 
 void PlayerState_Single_Idle::key_input(float deltaTime){
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT)) {
-		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 3) * deltaTime * static_cast<float>(GetRefreshRate());
+		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 10) * deltaTime * static_cast<float>(GetRefreshRate());
 	}
 	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT)) {
-		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 3) * deltaTime * static_cast<float>(GetRefreshRate());
+		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 10) * deltaTime * static_cast<float>(GetRefreshRate());
 	}
 }
 
 void PlayerState_Single_Idle::pad_input(float deltaTime) {
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1)) {
-		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 3) * deltaTime * static_cast<float>(GetRefreshRate());
+		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 10) * deltaTime * static_cast<float>(GetRefreshRate());
 	}
 	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1)) {
-		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 3) * deltaTime * static_cast<float>(GetRefreshRate());
+		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 10) * deltaTime * static_cast<float>(GetRefreshRate());
 	}
 }
 

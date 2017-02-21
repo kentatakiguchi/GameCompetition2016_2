@@ -15,7 +15,8 @@ Actor::Actor(IWorld* world, const std::string& name, const Vector2& position, co
 	rotation_(Matrix::Identity),
 	body_(body),
 	dead_(false),
-	alpha_(255.0f){
+	alpha_(255.0f),
+	opponent_(HitOpponent::NONE){
 	inv_ = world_->GetInv();
 	body_.setPosition(position_);
 }
@@ -26,7 +27,8 @@ Actor::Actor(const std::string& name) :
 	name_(name),
 	position_(0.0f, 0.0f),
 	rotation_(Matrix::Identity),
-	dead_(false) {
+	dead_(false),
+	opponent_(HitOpponent::NONE) {
 }
 
 // 更新
@@ -183,6 +185,10 @@ CollisionBase Actor::getBody(){
 void Actor::handleMessage(EventMessage message, void* param) {
 	onMessage(message, param);
 	eachChildren([&](Actor& child) { child.handleMessage(message, param); });
+}
+
+HitOpponent Actor::getOpponent() const{
+	return opponent_;
 }
 
 // メッセージ処理

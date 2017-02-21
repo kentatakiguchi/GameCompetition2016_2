@@ -66,14 +66,13 @@ FieldEnum Field::calcColl(Vector2& curPos, const Vector2& prePos, Vector2& veloc
 	
 	calcPreColl(curPos, prePos, fieldEnum, velocity);
 
-if(fieldEnum == FieldEnum::None)	calcCurColl(curPos, prePos, fieldEnum, velocity);
-
+	if(fieldEnum == FieldEnum::None)	calcCurColl(curPos, prePos, fieldEnum, velocity);
 
 	return fieldEnum;
 }
 
 void Field::calcCurColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& field, Vector2& velocity){
-	int column_p = MathHelper::Clamp(static_cast<int>(curPos.x) / CHIPSIZE, 0, field_[0].size() - 1);
+	int column_p = MathHelper::Clamp(static_cast<int>(curPos.x) / CHIPSIZE, 0,  field_[0].size() - 1);
 	int row_p = MathHelper::Clamp(static_cast<int>(curPos.y) / CHIPSIZE, 0, field_.size() - 1);
 
 	int row_t = std::max<int>(row_p - 1, 0);
@@ -91,7 +90,7 @@ void Field::calcCurColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//下
-	if (existCheck(row_b, column_p) && !existCheck(row_p, column_p)) {
+	else if (existCheck(row_b, column_p) && !existCheck(row_p, column_p)) {
 		float cellY = row_b * CHIPSIZE;
 		if (MathHelper::Distance(cellY, curPos.y) < PLAYER_RADIUS) {
 			velocity.y = 0;
@@ -100,7 +99,7 @@ void Field::calcCurColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//左
-	if (existCheck(row_p, column_l) && !existCheck(row_p, column_p)) {
+	else if (existCheck(row_p, column_l) && !existCheck(row_p, column_p)) {
 		float cellX = (column_l + 1) * CHIPSIZE;
 		if (MathHelper::Distance(cellX, curPos.x) < PLAYER_RADIUS) {
 			velocity.x = 0;
@@ -109,7 +108,7 @@ void Field::calcCurColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//右
-	if (existCheck(row_p, column_r) && !existCheck(row_p, column_p)) {
+	else if (existCheck(row_p, column_r) && !existCheck(row_p, column_p)) {
 		float cellX = column_r * CHIPSIZE;
 		if (MathHelper::Distance(cellX, curPos.x) < PLAYER_RADIUS) {
 			velocity.x = 0;
@@ -148,8 +147,8 @@ void Field::calcCurColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 }
 
 void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& field, Vector2& velocity) {
-	int column_p = MathHelper::Clamp(static_cast<int>(prePos.x) / CHIPSIZE, 0, field_[0].size() - 1);
-	int row_p    = MathHelper::Clamp(static_cast<int>(prePos.y) / CHIPSIZE, 0, field_.size() - 1);
+	int column_p = MathHelper::Clamp(static_cast<int>(prePos.x) / CHIPSIZE, 0.0f, static_cast<float>(field_[0].size() - 1));
+	int row_p    = MathHelper::Clamp(static_cast<int>(prePos.y) / CHIPSIZE, 0.0f, static_cast<float>(field_.size() - 1));
 
 	int row_t = std::max<int>(row_p - 1, 0);
 	int row_b = std::min<int>(row_p + 1, field_.size() - 1);
@@ -171,7 +170,7 @@ void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//下
-	if (existCheck(row_b, column_p) && !existCheck(row_p, column_p)) {
+	else if (existCheck(row_b, column_p) && !existCheck(row_p, column_p)) {
 		Vector2 top_l = Vector2(column_p, row_p + 1) * CHIPSIZE;
 		Vector2 top_r = Vector2(column_p + 1, row_p + 1) * CHIPSIZE;
 		if (Collision::seg_seg(curPos, prePos, top_l, top_r)) {
@@ -181,7 +180,7 @@ void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//左
-	if (existCheck(row_p, column_l) && !existCheck(row_p, column_p)) {
+	else if (existCheck(row_p, column_l) && !existCheck(row_p, column_p)) {
 		Vector2 right_t = Vector2(column_p, row_p) * CHIPSIZE;
 		Vector2 right_b = Vector2(column_p, row_p + 1) * CHIPSIZE;
 		if (Collision::seg_seg(curPos, prePos, right_t, right_b)) {
@@ -191,7 +190,7 @@ void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//右
-	if (existCheck(row_p, column_r) && !existCheck(row_p, column_p)) {
+	else if (existCheck(row_p, column_r) && !existCheck(row_p, column_p)) {
 		Vector2 left_t = Vector2(column_p + 1, row_p) * CHIPSIZE;
 		Vector2 left_b = Vector2(column_p + 1, row_p + 1) * CHIPSIZE;
 		if (Collision::seg_seg(curPos, prePos, left_t, left_b)) {
@@ -201,7 +200,7 @@ void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//左上
-	if (existCheck(row_t, column_l)) {
+	else if (existCheck(row_t, column_l)) {
 		if ((curPos - prePos).y < 0) {
 			Vector2 bottom_l = Vector2(column_l, row_p) * CHIPSIZE;
 			Vector2 bottom_r = Vector2(column_l + 1, row_p) * CHIPSIZE;
@@ -222,7 +221,7 @@ void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//右上
-	if (existCheck(row_t, column_r)) {
+	else if (existCheck(row_t, column_r)) {
 		if ((curPos - prePos).y < 0) {
 			Vector2 bottom_l = Vector2(column_r, row_p) * CHIPSIZE;
 			Vector2 bottom_r = Vector2(column_r + 1, row_p) * CHIPSIZE;
@@ -243,7 +242,7 @@ void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//左下
-	if (existCheck(row_b, column_l)) {
+	else if (existCheck(row_b, column_l)) {
 		if ((curPos - prePos).y > 0) {
 			Vector2 top_l = Vector2(column_l, row_p + 1) * CHIPSIZE;
 			Vector2 top_r = Vector2(column_l + 1, row_p + 1) * CHIPSIZE;
@@ -254,8 +253,8 @@ void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 			}
 		}
 		if ((curPos - prePos).x < 0) {
-			Vector2 right_t = Vector2(column_p, row_t) * CHIPSIZE;
-			Vector2 right_b = Vector2(column_p, row_t + 1) * CHIPSIZE;
+			Vector2 right_t = Vector2(static_cast<float>(column_p), static_cast<float>(row_t)) * CHIPSIZE;
+			Vector2 right_b = Vector2(static_cast<float>(column_p), static_cast<float>(row_t) + 1.0f) * CHIPSIZE;
 			if (Collision::seg_seg(curPos, prePos, right_t, right_b)) {
 				velocity.x = 0;
 				curPos.x = right_t.x + PLAYER_RADIUS;
@@ -264,10 +263,10 @@ void Field::calcPreColl(Vector2 & curPos, const Vector2 & prePos, FieldEnum& fie
 		}
 	}
 	//右下
-	if (existCheck(row_t, column_r)) {
+	else if (existCheck(row_t, column_r)) {
 		if ((curPos - prePos).y > 0) {
-			Vector2 top_l = Vector2(column_r, row_p + 1) * CHIPSIZE;
-			Vector2 top_r = Vector2(column_r + 1, row_p + 1) * CHIPSIZE;
+			Vector2 top_l = Vector2(static_cast<float>(column_r), static_cast<float>(row_p + 1)) * CHIPSIZE;
+			Vector2 top_r = Vector2(static_cast<float>(column_r) + 1.0f, static_cast<float>(row_p + 1)) * CHIPSIZE;
 			if (Collision::seg_seg(curPos, prePos, top_l, top_r)) {
 				velocity.y = 0;
 				curPos.y = top_l.y - PLAYER_RADIUS;
