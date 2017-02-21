@@ -22,6 +22,9 @@ public:
 	virtual bool isEnd() const override;
 	virtual Scene next() const override;
 private:
+	void updateCombo();
+	void drawCombo() const;
+private:
 	using WorldPtr = std::shared_ptr<World>;
 	// ƒ[ƒ‹ƒh
 	WorldPtr	world_;
@@ -47,6 +50,7 @@ private:
 	std::vector<TextureID> stageTexs_;
 	int stageNum_;
 	std::vector<TextureID> numberTexes_;
+
 };
 
 #endif

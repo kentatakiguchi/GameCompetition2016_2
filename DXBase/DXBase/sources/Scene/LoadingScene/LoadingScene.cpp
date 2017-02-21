@@ -200,6 +200,8 @@ void LoadingScene::start(){
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_RANK_B_TEX, "./resources/sprite/result/rank_b.png");
 	ResourceLoader::GetInstance().loadTexture(TextureID::TEXT_RANK_C_TEX, "./resources/sprite/result/rank_c.png");
 
+	ResourceLoader::GetInstance().loadTexture(TextureID::COMBO_TEX, "./resources/sprite/combo.png");
+
 	load_bgm_res();
 	load_se_res();
 

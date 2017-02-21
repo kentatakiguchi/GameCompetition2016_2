@@ -174,20 +174,21 @@ void GamePlayScene::start() {
 	world_->setCount(keeper_->GetItemCount());
 	//keeper_->jumpReset();
 	//keeper_->DamageReset();
+	keeper_->start();
 }
 
 void GamePlayScene::update() {
 	//keeper_->addJumpCount(1);
 	//world_->keeper_->addDamageCount(1);
 
-	
-
 	if (isClearStage_) {
+		clear_.start(name_);
 		if (clear_.update(name_, nextScene_)) {
 			isEnd_ = true;
 		};
 		return;
 	}
+	keeper_->update(deltaTime_);
 
 	if (stageFlag_) {
 		stageAlpha_ += Time::GetInstance().deltaTime();
@@ -255,42 +256,36 @@ void GamePlayScene::draw() const {
 		return;
 	}
 
-	DrawGraph((int)(SCREEN_SIZE.x - CountPos - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x), 50, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
-
 	int drawNum = keeper_->GetItemCount();
 	int baseNum = keeper_->GetItemCount();
 	int posCount = 0;
 	std::vector<int> drawNumberList;
-
-	for (int i = 0;;) {
+	drawNumberList.clear();
+	for (;;) {
 
 		if (baseNum < 10) {
 			drawNumberList.push_back(baseNum);
-			//DrawGraph((SCREEN_SIZE.x - CountPos)
-			//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[baseNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[baseNum]), TRUE);
 			break;
 		}
-
 		drawNum = (int)(baseNum*0.1);
 		drawNum = drawNum * 10;
 		int textNum = baseNum - drawNum;
 
 		drawNumberList.push_back(textNum);
-		//DrawGraph((SCREEN_SIZE.x - CountPos) 
-		//	- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[textNum]).x*posCount, 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[textNum]), TRUE);
-
 		baseNum = (int)(baseNum*0.1);
 		posCount++;
-		//DrawFormatString(SCREEN_SIZE.x - 100, 50, GetColor(0, 0, 0), "%d", );
 	}
-	int drawPosCount = drawNumberList.size() - 1;
 	for (int i = 0; i < (int)drawNumberList.size(); i++) {
-
-		DrawGraph((int)((SCREEN_SIZE.x - CountPos)
-			+ ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*drawPosCount), 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
-
-		drawPosCount--;
+		DrawGraph((int)((SCREEN_SIZE.x)
+			- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*(i+1)), 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
 	}
+
+	int ans = (int)log10(keeper_->GetItemCount()) + 1;
+	if (keeper_->GetItemCount() == 0)ans = 1;
+
+	DrawGraph((int)(SCREEN_SIZE.x - (ResourceLoader::GetInstance().GetTextureSize(TextureID::NUMBER_ZERO_TEX).x)*(ans+1)), 50, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
+
+	if (keeper_->getComboLimit() > 0)drawCombo();
 
 	isStopped_ ? pause_.draw() : move_.draw();
 }
@@ -323,3 +318,55 @@ Scene GamePlayScene::next() const {
 	return nextScene_;
 }
 
+void GamePlayScene::updateCombo()
+{
+
+}
+
+void GamePlayScene::drawCombo() const
+{
+	//int drawNumber(int targetNum, int posx, int posy, int NumTexType = 1, int maxSize = 3, float drawSize = 1.f) const {
+	int targetNum = keeper_->getComboCount();
+	int posx = SCREEN_SIZE.x - ((ResourceLoader::GetInstance().GetTextureSize(TextureID::COMBO_TEX).x))- ((ResourceLoader::GetInstance().GetTextureSize(TextureID::NUMBER_ZERO_TEX).x/2));
+	int posy = 200;
+	int maxSize = 4;
+	float drawSize = 1.f;
+	if (keeper_->getComboLimit() >= 3.f)drawSize = 1.5f;
+
+	int drawNum = targetNum;
+	int baseNum = targetNum;
+	int posCount = 0;
+	std::vector<int> drawNumberList;
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)MathHelper::Lerp(0.f, 255.f, keeper_->getComboLimit()/3));
+	for (int i = 0; i < maxSize; i++) {
+
+		if (baseNum < 10) {
+			drawNumberList.push_back(baseNum);
+			break;
+		}
+
+		drawNum = (int)(baseNum*0.1);
+		drawNum = drawNum * 10;
+		int textNum = baseNum - drawNum;
+		drawNumberList.push_back(textNum);
+		baseNum = (int)(baseNum*0.1);
+		posCount++;
+	}
+
+	int drawx = posx;// +ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[0]]).x*(maxSize - 1);
+
+	for (int i = 0; i < maxSize; i++) {
+		//drawNumberListの桁数がmaxSizeを下回っていた場合、桁数以上のloopをカットする
+		if (i >= drawNumberList.size()) {
+			continue;
+		}
+		DrawRotaGraph2(drawx - (ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*i*drawSize), posy, ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x/2, ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).y/2, drawSize, 0, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
+	}
+
+	DrawRotaGraph2((int)(SCREEN_SIZE.x - (ResourceLoader::GetInstance().GetTextureSize(TextureID::COMBO_TEX).x/2)), posy,
+		ResourceLoader::GetInstance().GetTextureSize(TextureID::COMBO_TEX).x/2, ResourceLoader::GetInstance().GetTextureSize(TextureID::COMBO_TEX).y/2, drawSize,0, ResourceLoader::GetInstance().getTextureID(TextureID::COMBO_TEX), TRUE);
+	
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+}

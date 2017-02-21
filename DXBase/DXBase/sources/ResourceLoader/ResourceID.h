@@ -188,7 +188,8 @@ enum class TextureID {
 		TEXT_RANK_C_TEX,
 	KIRIKABU_TEX,
 	HUKIDASI_TEX,
-	NUMBERS_TEX
+	NUMBERS_TEX,
+	COMBO_TEX
 };
 
 enum class AnimationID {

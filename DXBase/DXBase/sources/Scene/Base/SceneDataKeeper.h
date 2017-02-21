@@ -35,6 +35,26 @@ public:
 	void setCurrentSceneName(std::string name) {
 		currentSceneName_ = name;
 	}
+	void start() {
+		comboLimit_ = 0;
+		comboCount_ = 0;
+	}
+	void update(float deltaTime) {
+		comboLimit_ -= deltaTime;
+		if (comboLimit_ <= 0) {
+			comboCount_ = 0;
+		}
+	}
+	void addComboCount() {
+		comboCount_++;
+		comboLimit_ = 3.f;
+	}
+	int getComboCount()const {
+		return comboCount_;
+	}
+	float getComboLimit()const {
+		return comboLimit_;
+	}
 	void setPlayerHP(int hp);
 	int getPlayerHP() const;
 	int getInt();
@@ -215,6 +235,9 @@ public:
 	}
 private:
 	std::map<std::string,StageDatas> datas_;
+
+	float comboLimit_;
+	int comboCount_;
 
 	std::string previousSceneName_;
 	std::string currentSceneName_;

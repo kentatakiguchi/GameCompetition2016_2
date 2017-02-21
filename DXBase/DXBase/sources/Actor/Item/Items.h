@@ -44,7 +44,7 @@ public:
 		//Vector3 center = Vector3(drawPos.x,drawPos.y)*inv_;
 		//Vector3 center = Vector3(position_.x- ResourceLoader::GetInstance().GetTextureSize(spriteType_).x/2, position_.y- ResourceLoader::GetInstance().GetTextureSize(spriteType_).y/2)*inv_;
 		Vector3 drawPos = Vector3(position_.x, position_.y)*inv_;
-		Vector2 itemDefPos = Vector2(SCREEN_SIZE.x - CountPos - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x / 2, 50);
+		Vector2 itemDefPos = Vector2(SCREEN_SIZE.x - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x / 2, 50);
 		Vector3 ItemPos = Vector3(itemDefPos.x,itemDefPos.y);
 		Vector3 center = center.Lerp(drawPos,ItemPos,lCount);
 		//Vector3 center= Vector3(position_.Lerp(position_, Vector2(SCREEN_SIZE.x - 100 - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x / 2, 50), lCount).x, position_.Lerp(position_, Vector2(SCREEN_SIZE.x - 100 - ResourceLoader::GetInstance().GetTextureSize(TextureID::ITEM_TEX).x / 2, 50), lCount).y)*inv_;
@@ -60,6 +60,7 @@ public:
 		ismyHit_ = true;
 		ChangeNextPlayVolumeSoundMem(180, ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN));
 		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN), DX_PLAYTYPE_BACK);
+		world_->GetKeeper()->addComboCount();
 	}
 	int spriteID_;
 	float size_;

@@ -23,6 +23,9 @@ public:
 	virtual bool isEnd() const override;
 	virtual Scene next() const override;
 private:
+	void drawCombo() const;
+
+private:
 	using WorldPtr = std::shared_ptr<World>;
 	// ƒ[ƒ‹ƒh
 	WorldPtr	world_;
