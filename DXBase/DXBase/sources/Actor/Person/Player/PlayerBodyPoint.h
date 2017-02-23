@@ -2,7 +2,6 @@
 
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
-//#include "EventMessage.h"
 
 // プレーヤー連結用Body
 class PlayerBodyPoint : public Actor {
@@ -21,8 +20,6 @@ public:
 	void attract_update(float deltaTime);
 	// 引力更新処理
 	void clamp_update(int index);
-	// ばねテスト処理
-	void spring_test();
 private:
 	// 自身のindex番号
 	int index_;

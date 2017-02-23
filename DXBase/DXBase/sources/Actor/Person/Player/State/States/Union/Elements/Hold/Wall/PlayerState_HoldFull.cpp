@@ -40,14 +40,14 @@ void PlayerState_HoldFull::onKeyInput(float deltaTime){
 		if (butty_->getColliderOpponent() == HitOpponent::ITEM) {
 		change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
 		}
-		else if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
+		else if (butty_->getColliderOpponent() == HitOpponent::FLOOR_HIT) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
 
 	}
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && element_.type_ == ActionType::Right) {
 		if (retty_->getColliderOpponent() == HitOpponent::ITEM) {
 		change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
 		}
-		else if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
+		else if (retty_->getColliderOpponent() == HitOpponent::FLOOR_HIT) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
 	}
 }
 
@@ -64,13 +64,13 @@ void PlayerState_HoldFull::onPadInput(float deltaTime){
 		if (butty_->getColliderOpponent() == HitOpponent::ITEM) {
 		change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
 		}
-		else if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
+		else if (butty_->getColliderOpponent() == HitOpponent::FLOOR_HIT) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
 	}
 	if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1) && element_.type_ == ActionType::Right) {
 		if (retty_->getColliderOpponent() == HitOpponent::ITEM) {
 		change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
 		}
-		else if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
+		else if (retty_->getColliderOpponent() == HitOpponent::FLOOR_HIT) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
 
 	}
 }

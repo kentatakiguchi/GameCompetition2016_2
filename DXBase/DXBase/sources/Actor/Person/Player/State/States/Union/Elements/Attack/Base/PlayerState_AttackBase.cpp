@@ -43,7 +43,7 @@ void PlayerState_AttackBase::update(float deltaTime) {
 	chase_dir_easeing_ = EasingSinCurve(std::max<float>(timer_ - 0.1f, 0) * 3.0f);
 	gra_easeing_ = std::min<float>(EasingInExpo(timer_ * 0.8f), 1);
 	
-	if (butty_->able_to_hold() && retty_->able_to_hold()) {
+	if (butty_->getColliderOpponent() == HitOpponent::FLOOR_HIT && retty_->getColliderOpponent() == HitOpponent::FLOOR_HIT) {
 		change(PlayerState_Enum_Union::IDLE);
 	}
 

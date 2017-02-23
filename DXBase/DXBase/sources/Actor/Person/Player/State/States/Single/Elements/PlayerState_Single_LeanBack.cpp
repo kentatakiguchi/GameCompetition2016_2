@@ -29,7 +29,7 @@ void PlayerState_Single_LeanBack::unique_init(){
 void PlayerState_Single_LeanBack::update(float deltaTime) {
 	dir_.y += 0.1f;
 	body_->position() += dir_ * body_->velocity() * power_ * deltaTime * static_cast<float>(GetRefreshRate());
-	if ((body_->getPosition().y > firstPos_.y || body_->able_to_jump()) && dir_.y > 0) {
+	if ((body_->getPosition().y > firstPos_.y || body_->getOpponent() == HitOpponent::FLOOR_TOP) && dir_.y > 0) {
 		change(StateElement((unsigned int)PlayerState_Enum_Single::IDLE));
 	}
 }

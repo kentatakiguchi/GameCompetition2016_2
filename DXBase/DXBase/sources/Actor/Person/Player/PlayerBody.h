@@ -33,10 +33,6 @@ public:
 	Vector2& velocity();
 	float& dump();
 
-	bool able_to_hold();
-	bool able_to_jump();
-	bool is_hit();
-
 	HitOpponent hit_enemy();
 	void reset_opponent();
 	void reset_enemy();

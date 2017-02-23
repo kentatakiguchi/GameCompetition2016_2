@@ -2,7 +2,6 @@
 
 #include "../../Base/Actor.h"
 #include "../../../World/IWorld.h"
-//#include "EventMessage.h"
 
 #include "PlayerPtr.h"
 #include "State/States/Union/PlayerStateMgr_Union.h"
@@ -23,8 +22,6 @@ public:
 	// 描画処理
 	virtual void onDraw() const override;
 
-	void drawCntr() const;
-
 	void create_point(int point_num = 0);
 
 	Vector2 get_point(int index);
@@ -43,6 +40,7 @@ private:
 	PlayerBodyPtr butty_;
 	PlayerBodyPtr retty_;
 	std::vector<PlayerBodyPointPtr> points;
+
 	//ぷよテクスチャ
 	PuyoTextureK* mPuyo;
 	//ひっぱる力

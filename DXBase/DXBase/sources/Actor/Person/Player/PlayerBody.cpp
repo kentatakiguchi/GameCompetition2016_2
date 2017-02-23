@@ -233,18 +233,6 @@ float & PlayerBody::dump(){
 	return bodyDump_;
 }
 
-bool PlayerBody::able_to_hold() {
-	return	collider_->getOpponent() == HitOpponent::FLOOR_HIT;
-}
-
-bool PlayerBody::able_to_jump() {
-	return opponent_ == HitOpponent::FLOOR_TOP;
-}
-
-bool PlayerBody::is_hit() {
-	return opponent_ == HitOpponent::FLOOR_TOP || opponent_ == HitOpponent::FLOOR_HIT;
-}
-
 HitOpponent PlayerBody::hit_enemy() {
 	return hit_enemy_;
 }

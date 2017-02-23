@@ -14,7 +14,7 @@
 #include "../../../Scene/Base/SceneDataKeeper.h"
 
 PlayerConnector::PlayerConnector(IWorld * world, const Vector2 & position, PlayerBodyPtr& butty, PlayerBodyPtr& retty) :
-	Actor(world, "PlayerConnector", position, CollisionBase()), butty_(butty), retty_(retty),
+	Actor(world, "PlayerConnector", position), butty_(butty), retty_(retty),
 	mPower(0.0f),
 	mPuyoTimer(0.0f),
 	mPuyoFlag(false),

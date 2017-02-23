@@ -56,6 +56,8 @@ protected:
 	Vector2 speed_r(float deltaTime);
 	void chase(Vector2 &position, int pointIndex);
 	Vector2 clamp(const Vector2 &position, int pointIndex);
+
+	bool isOnFloor();
 protected:
 	// ステートの要素
 	StateElement element_;

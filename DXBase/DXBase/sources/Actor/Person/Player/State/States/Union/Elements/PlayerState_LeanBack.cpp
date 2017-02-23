@@ -24,7 +24,7 @@ void PlayerState_LeanBack::update(float deltaTime){
 	butty_->position() += dir_ * power_ * deltaTime * static_cast<float>(GetRefreshRate());
 	retty_->position() += dir_ * power_ * deltaTime * static_cast<float>(GetRefreshRate());
 
-	if (butty_->is_hit() && retty_->is_hit()) {
+	if (isOnFloor()) {
 		change(PlayerState_Enum_Union::IDLE);
 	}
 }

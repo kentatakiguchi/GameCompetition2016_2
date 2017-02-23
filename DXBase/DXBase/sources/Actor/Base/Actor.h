@@ -23,7 +23,7 @@ enum class EventMessage;
 class Actor {
 public:
 	// コンストラクタ
-	Actor(IWorld* world, const std::string& name, const Vector2& position, const CollisionBase& body);
+	Actor(IWorld* world, const std::string& name, const Vector2& position, const CollisionBase& body = CollisionBase());
 	// コンストラクタ
 	explicit Actor(const std::string& name = "none");
 	// 仮想デストラクタ

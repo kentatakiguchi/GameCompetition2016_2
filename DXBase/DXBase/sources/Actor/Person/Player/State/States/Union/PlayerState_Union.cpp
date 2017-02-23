@@ -68,11 +68,11 @@ void PlayerState_Union::pad_input(float deltaTime){}
 
 // キー系フラグ
 bool PlayerState_Union::holdable_keyR(){
-	return InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && butty_->able_to_hold();
+	return InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && butty_->getColliderOpponent() == HitOpponent::FLOOR_HIT;
 }
 
 bool PlayerState_Union::holdable_keyL() {
-	return InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && retty_->able_to_hold();
+	return InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && retty_->getColliderOpponent() == HitOpponent::FLOOR_HIT;
 }
 
 bool PlayerState_Union::move_keyR(){
@@ -89,11 +89,11 @@ bool PlayerState_Union::jump_key(){
 
 // パッド系フラグ
 bool PlayerState_Union::holdable_padR() {
-	return InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && butty_->able_to_hold();
+	return InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && butty_->getColliderOpponent() == HitOpponent::FLOOR_HIT;
 }
 
 bool PlayerState_Union::holdable_padL() {
-	return InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1) && retty_->able_to_hold();
+	return InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1) && retty_->getColliderOpponent() == HitOpponent::FLOOR_HIT;
 }
 
 bool PlayerState_Union::move_padR() {
@@ -122,4 +122,9 @@ void PlayerState_Union::chase(Vector2 &position, int pointIndex){
 
 Vector2 PlayerState_Union::clamp(const Vector2 &position, int pointIndex) {
 	return Vector2::ClampTarget(position, cntr_->get_point(pointIndex), PLAYER_MAX_DIV_LENGTH);
+}
+
+bool PlayerState_Union::isOnFloor() {
+	return  (butty_->getOpponent() == HitOpponent::FLOOR_TOP || butty_->getOpponent() == HitOpponent::FLOOR_HIT) &&
+			(retty_->getOpponent() == HitOpponent::FLOOR_TOP || retty_->getOpponent() == HitOpponent::FLOOR_HIT);
 }

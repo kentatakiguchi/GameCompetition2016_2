@@ -162,7 +162,7 @@ void TutorialManager::changeTutorial(IWorld* world){
 		drawY_ = 55;
 	}
 	else {
-		drawY_ = 100;
+		drawY_ = 105;
 	}
 	auto butty = world->findActor("PlayerBody1");
 	auto retty = world->findActor("PlayerBody2");
