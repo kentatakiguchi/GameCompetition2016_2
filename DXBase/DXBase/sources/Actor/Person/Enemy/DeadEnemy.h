@@ -11,6 +11,7 @@ private:
 	enum class State {
 		Dead,
 		Hold,
+		Throw,
 		Delete,
 	};
 
@@ -35,6 +36,8 @@ private:
 	void deadMove();
 	// 持ち上げ状態
 	void holdMove(float deltaTime);
+	// 投げ状態
+	void throwMove(float deltaTime);
 	// 消滅状態
 	void deleteMove(float deltaTime);
 	// 衝突判定の更新
@@ -53,9 +56,12 @@ private:
 	int starCount_;
 	float playerSpeed_;				// プレイヤーの移動速度
 	float holdLength_;				// つかまれた位置との距離
+	float throwDegree_;				// 投げられた時の角度
 	Vector2 playerPravPosition_;	// プレイヤーの前回の位置
 	Vector2 holdPosition_;			// つかまれた位置
 	Vector2 prevPosition_;			// 前回の位置
+	Vector2 throwVector_;			// 投げられたときのベクトル
+	bool isHold_;					// つかまっているか
 	std::string playerName_;		// つかんだ相手の名前
 	std::string otherName_;			// もう片方の名前
 

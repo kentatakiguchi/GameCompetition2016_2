@@ -86,6 +86,7 @@ void BossStage::start() {
 
 	// ¯ŠÖ˜A
 	starEffectManager_ = StarEffectManager(world_.get());
+	starEffectManager_.setStartPosition(Vector2(CHIPSIZE * 9, 500.0f) , 200);
 
 	anmer_ = ItemAnm();
 
@@ -189,6 +190,7 @@ void BossStage::end() {
 	boss_->onEnd();
 	boss_->dead();
 	boss_ = nullptr;
+	starEffectManager_.end();
 }
 
 bool BossStage::isEnd() const {

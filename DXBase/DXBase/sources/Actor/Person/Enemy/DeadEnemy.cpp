@@ -25,9 +25,12 @@ DeadEnemy::DeadEnemy(
 	playerSpeed_(0.0f),
 	isGround_(false),
 	holdLength_(0.0f),
+	throwDegree_(0.0f),
 	playerPravPosition_(Vector2::Zero),
 	holdPosition_(Vector2::Zero),
 	prevPosition_(position),
+	throwVector_(Vector2::Zero),
+	isHold_(false),
 	playerName_(""),
 	otherName_(""),
 	isBlockCollideBegin_(false),
@@ -90,8 +93,10 @@ void DeadEnemy::onCollide(Actor & actor)
 		}
 		return;
 	}
+	if (state_ == State::Throw || state_ == State::Delete) return;
 	// プレイヤーのつかみ判定に衝突したら、つかみ状態に遷移
 	if (actorName == "PlayerHoldCollider") {
+		isHold_ = true;
 		if (state_ == State::Hold) return;
 		changeState(State::Hold);
 		holdPosition_ = position_;
@@ -111,6 +116,7 @@ void DeadEnemy::updateState(float deltaTime)
 	{
 	case State::Dead: deadMove(); break;
 	case State::Hold: holdMove(deltaTime); break;
+	case State::Throw: throwMove(deltaTime); break;
 	case State::Delete: deleteMove(deltaTime); break;
 	}
 	// 重力
@@ -151,6 +157,13 @@ void DeadEnemy::holdMove(float deltaTime)
 	auto direction = Vector2(playerVector).Normalize();
 	// 角度の計算
 	auto degree = std::atan2(direction.y, direction.x) * 180.0f / MathHelper::Pi;
+	// ホールドコライダに当たっていない場合は、投げ状態に遷移
+	if (!isHold_) {
+		changeState(State::Throw);
+		throwVector_ = Vector2(prevPosition_ - position_);
+		throwDegree_ = degree;
+		return;
+	}
 	/*if (isGround_)
 		degree = MathHelper::Clamp(degree, 0.0f, 180.0f / MathHelper::Pi);*/
 	auto degreePos = Vector2(
@@ -168,6 +181,21 @@ void DeadEnemy::holdMove(float deltaTime)
 			changeState(State::Delete);
 	}
 	prevPosition_ = position_;
+}
+
+// 投げ状態
+void DeadEnemy::throwMove(float deltaTime)
+{
+	auto timer = 0.0f;
+	auto power = 15.0f;
+	//position_.y += (power + stateTimer_) * (deltaTime * 60.0f);
+	//position_ += throwVector_ * 2.0f;
+	position_ += Vector2(
+		MathHelper::Cos(throwDegree_), MathHelper::Sin(throwDegree_)) *
+		(power + throwVector_.Length() / 10.0f);
+	position_.y += stateTimer_ * 9.8f * (deltaTime * 60.0f);
+	if (isGround_)
+		changeState(State::Delete);
 }
 
 // 消滅状態
@@ -193,6 +221,7 @@ void DeadEnemy::updateCollide()
 	// bool系列
 	// 接地をfalseにする
 	isGround_ = false;
+	isHold_ = false;
 	// 最初に衝突直後と衝突後の判定をfalseにする
 	isBlockCollideBegin_ = false;
 	isBlockCollideExit_ = false;
