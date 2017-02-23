@@ -71,12 +71,14 @@ void PuyoCollision::onLateUpdate(float deltaTime)
 
 void PuyoCollision::onDraw() const
 {
+	//DrawCircle((position_ * inv_).x, (position_ * inv_).y, 5, GetColor(0, 0, 255));
+	DrawLine((position_ * inv_).x, (position_ * inv_).y, (mCenter*inv_).x, (mCenter*inv_).y, GetColor(255, 0, 0));
 	//for (int i = 0; i < 3; i++) {
 	//	DrawCircle((mIntersections[i] *inv_).x, (mIntersections[i] *inv_).y, 5, GetColor(0, 0, 255));
 	//}
 	//for (auto i : mIntersectionsVector) {
 	//	DrawCircle((i * inv_).x, (i * inv_).y, 5, GetColor(0, 0, 255));
-	//	DrawLine((mCenter*inv_).x, (mCenter*inv_).y, (i*inv_).x, (i*inv_).y, GetColor(255, 0, 0));
+	//	DrawLine((mCenter*inv_).x, (mCenter*inv_).y, (i*inv_).x, (i*inv_).y, GetColor(255, 255, 0));
 	//}
 	//DrawFormatString(25, 500, GetColor(0, 0, 0), "Œð·‚µ‚Ä‚¢‚éŒð“_‚Ì”:%d", mIntersectionsVector.size());
 	//if (mIntersectionsVector.empty())return;
@@ -110,8 +112,8 @@ void PuyoCollision::onCollide(Actor & other)
 
 		//ü‚Ì‚ ‚½‚è”»’è•Œð“_‚ð‹‚ß‚éŠÖ”
 		SegmentCol(mCenter, position_, t_left, t_right, mIntersections[0], false);
-		SegmentCol(mCenter, position_, b_right, b_left, mIntersections[2], false);
-		SegmentCol(mCenter, position_, b_right, t_right, mIntersections[1], true);
+		SegmentCol(mCenter, position_, b_right, b_left, mIntersections[1], false);
+		SegmentCol(mCenter, position_, b_right, t_right, mIntersections[2], true);
 		SegmentCol(mCenter, position_, b_left, t_left, mIntersections[3], true);
 
 		if (mIntersections[0].x != Vector2::Zero.x&&

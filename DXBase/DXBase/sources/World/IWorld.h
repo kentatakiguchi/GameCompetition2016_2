@@ -67,8 +67,11 @@ public:
 	virtual void CollisitionOffOn(bool col)=0;
 	virtual bool GetCollisitionOffOn()=0;
 
-	virtual void inv() = 0;
+	virtual void inv(const Matrix& mat) = 0;
 	//
+
+	//座標を指定するとそこにスクロールする（毎フレーム呼ぶこと）
+	virtual void SetScroolPos(const Vector2& pos)=0;
 
 	virtual Vector2 GetInvVelo() = 0;
 	//

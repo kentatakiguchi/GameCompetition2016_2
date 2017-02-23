@@ -1,7 +1,6 @@
 #include "World.h"
 
 #include "../Field/Field.h"
-#include "../Actor/ScroolStop/ScroolStop.h"
 #include "../Define.h"
 
 // コンストラクタ
@@ -20,7 +19,11 @@ World::World(SceneDataKeeper* keeper) :
 // 更新
 void World::update(float deltaTime) {
 	//field_->update(deltaTime);
-	inv();
+	auto player = findActor("Player");
+	if (player != nullptr) {
+		inv(playerMat_);
+		playerMat_ = player->getPose();
+	}
 	deltaTime_ = deltaTime;
 	if (isStopTime_) deltaTime = 0.0f;
 	actors_.update(deltaTime);
@@ -162,15 +165,13 @@ ScroolJudge World::GetScroolJudge() {
 	return scrool_;
 }
 
-void World::inv() {
-	auto player = findActor("Player");
-	if (player == nullptr)return;
+void World::inv(const Matrix& mat) {
 	ScroolJudge scrool = GetScroolJudge();
 	//1フレーム前の座標
 	mPrePos = Vector2(inv_.Translation().x, inv_.Translation().y);
 	//スクロールストップ処理
 	Matrix playerMat;
-	playerMat = player->getPose();
+	playerMat = mat;
 
 	float clampPosX = MathHelper::Clamp(playerMat.Translation().x, scrool.scroolStopMin.x, scrool.scroolStopMax.x);
 	float clampPosY = MathHelper::Clamp(playerMat.Translation().y, scrool.scroolStopMin.y, scrool.scroolStopMax.y);
@@ -220,6 +221,11 @@ Matrix World::InitializeInv(Vector2 position)
 	//移動量を計算
 	//mVelo = mPrePos - mCurPos;
 	return inv_;
+}
+
+void World::SetScroolPos(const Vector2 & pos)
+{
+	playerMat_.Translation(Vector3(pos.x, pos.y, 0));
 }
 
 void World::Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness, float friction, float mass) const

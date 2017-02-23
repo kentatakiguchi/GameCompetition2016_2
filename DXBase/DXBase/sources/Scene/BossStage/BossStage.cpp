@@ -153,7 +153,7 @@ void BossStage::update() {
 
 
 	// ボスが死亡したら、クリアする
-	if (boss_->isSceneEnd()/*||InputMgr::GetInstance().IsKeyDown(KeyCode::J)*/)
+	if (boss_->isSceneEnd()||InputMgr::GetInstance().IsKeyDown(KeyCode::J))
 		world_->clear(true);
 
 	player = world_->findActor("Player");
@@ -180,7 +180,7 @@ void BossStage::update() {
 }
 
 void BossStage::draw() const {
-	backManager->Draw();
+	backManager->Draw(true);
 	//world描画
 	world_->draw();
 	// プレイヤーが消えてら返す

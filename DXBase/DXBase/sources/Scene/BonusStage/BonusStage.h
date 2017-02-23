@@ -41,6 +41,9 @@ private:
 
 	bool pointDrawFlag_;
 
+	bool scoreEndFlag_;
+	bool rankFlag_;
+	bool thankFlag_;
 	//Ç©ÇØÇÈî{êî
 	int scaleNum;
 };

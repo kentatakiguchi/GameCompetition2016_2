@@ -45,23 +45,23 @@ BackGraundManager::~BackGraundManager()
 {
 }
 
-void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2, float heightY, bool frontGraund, bool stage2)
+void BackGraundManager::SetBackGraund(TextureID id1, TextureID id2, float heightY, bool frontGraund, bool stage2, const Vector2& scale)
 {
 	BackGraundState backState;
 	backState.stage2 = stage2;
 	//サイズを追加
-	backState.size = ResourceLoader::GetInstance().GetTextureSize(id1);
+	backState.size = ResourceLoader::GetInstance().GetTextureSize(id1)*scale;
 	Vector2 size = backState.size;
 	//手前に表示するか
 	backState.frontGraundFlag = frontGraund;
-
+	backState.scale = scale;
 	//ポジションと番号を設定
 	IndexPos indexPos;
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id1);
-	indexPos.position = Vector2(0, heightY);
+	indexPos.position = Vector2(0, heightY*scale.y);
 	backState.indexPos.push_back(indexPos);
 	indexPos.index = ResourceLoader::GetInstance().getTextureID(id2);
-	indexPos.position = Vector2(size.x, heightY);
+	indexPos.position = Vector2(size.x, heightY*scale.y);
 	backState.indexPos.push_back(indexPos);
 	//入れる
 	backStates.push_back(backState);
@@ -307,6 +307,9 @@ void BackGraundManager::TateUpdate(float deltaTime)
 
 void BackGraundManager::Draw(bool title) const
 {
+	int wari = 1;
+	if (title) wari = 2;
+
 	//空の描写
 	int count = 0;
 	for (auto& i : upBackStates)
@@ -335,7 +338,7 @@ void BackGraundManager::Draw(bool title) const
 		for (auto& j : i.indexPos)
 		{
 			if (!i.frontGraundFlag)
-				DrawGraph(j.position.x, j.position.y, j.index, true);
+				DrawRotaGraph(j.position.x + i.size.x / 2, j.position.y + i.size.y/wari, i.scale.x, 0, j.index, true);
 		}
 	}
 	for (auto& i : upBackStates) {
@@ -371,7 +374,7 @@ void BackGraundManager::BackDraw() const
 		for (auto& j : i.indexPos)
 		{
 			if (i.frontGraundFlag)
-				DrawGraph(j.position.x, j.position.y, j.index, true);
+				DrawRotaGraph(j.position.x + i.size.x / 2, j.position.y + i.size.y, i.scale.x, 0, j.index, true);
 		}
 	}
 }

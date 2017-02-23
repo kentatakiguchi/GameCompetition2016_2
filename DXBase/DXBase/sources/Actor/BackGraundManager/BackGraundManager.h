@@ -47,7 +47,7 @@ public:
 	BackGraundManager();
 	~BackGraundManager();
 	//背景を設定する（ロードしたテクスチャ限定）
-	void SetBackGraund(TextureID id1, TextureID id2, float heightY = 0.0f, bool frontGraund = false, bool stage2 = false);
+	void SetBackGraund(TextureID id1, TextureID id2, float heightY = 0.0f, bool frontGraund = false, bool stage2 = false,const Vector2& scale=Vector2(1,1));
 	//縦の背景を設定する（ロードしたテクスチャ限定）
 	void SetTateBackGraund(TextureID id1, TextureID id2, const Vector2& scale=Vector2(1.0f,1.0f));
 	//縦の横の背景を設定する(ロードしたテクスチャ限定)

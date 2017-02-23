@@ -63,5 +63,8 @@ private:
 	bool right;
 	bool bot;
 	bool left;
+
+
+	bool testFlag;
 };
 

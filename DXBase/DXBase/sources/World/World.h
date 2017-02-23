@@ -93,7 +93,7 @@ public:
 	}
 
 	// IWorld を介して継承されました
-	virtual void inv() override;
+	virtual void inv(const Matrix& mat) override;
 
 	virtual Vector2 GetInvVelo() override {
 		return mVelo;
@@ -104,7 +104,8 @@ public:
 	}
 
 	virtual Matrix InitializeInv(Vector2 position) override;
-
+	////座標を指定するとそこにスクロールする（毎フレーム呼ぶこと）
+	virtual void SetScroolPos(const Vector2& pos) override;
 	virtual void Spring(Vector2 & pos, Vector2 & resPos, Vector2 & velo, float stiffness = 0.1f, float friction = 0.5f, float mass = 2.0f) const override;
 
 	// コピー禁止
@@ -174,6 +175,9 @@ public:
 
 	Matrix inv_;
 	Matrix resInv_;
+	//プレイヤーのマトリクス
+	Matrix playerMat_;
+
 	//補正された速度
 	Vector2 mVelo;
 
@@ -185,6 +189,8 @@ public:
 	Vector2 mCurPos;
 	
 	SceneDataKeeper* keeper_;
+
+
 };
 
 #endif

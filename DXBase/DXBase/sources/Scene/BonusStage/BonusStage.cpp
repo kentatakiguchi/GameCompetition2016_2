@@ -25,6 +25,9 @@ void BonusStage::start()
 	keeper_->setCurrentSceneName(name_);
 	isResult_ = false;
 	pointDrawFlag_ = false;
+	scoreEndFlag_ = false;
+	rankFlag_ = false;
+	thankFlag_ = false;
 	drawPoint_ = 0;
 	resultAlpha_ = 0.0f;
 	point_ = 0;
@@ -37,7 +40,7 @@ void BonusStage::start()
 	world_->CollisitionOffOn(true);
 	MapGenerator gener = MapGenerator(world_.get());
 
-	gener.create("./resources/file/" + name_ + ".csv", 0, 0,1);
+	gener.create("./resources/file/" + name_ + ".csv", 0, 0, 1);
 	Vector2 csvSize = gener.GetCellSize();// Vector2(gener.GetColumnSize(), gener.GetRowSize());
 	world_->SetScroolJudge(Vector2(1, 1), world_->GetScreenPlayerPos(), Vector2(csvSize.x*CHIPSIZE - SCREEN_SIZE.x / 2, (csvSize.y*CHIPSIZE) + (SCREEN_SIZE.y / 2 - world_->GetScreenPlayerPos().y)));
 	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv"));
@@ -46,19 +49,22 @@ void BonusStage::start()
 
 	creditSize_ = ResourceLoader::GetInstance().GetTextureSize(TextureID::CREDIT_TEX);
 
-
+	backManager = new BackGraundManager(world_.get());
 	creditPos_ = Vector2(0.0f, creditSize_.y);
 	//背景設定
-	float graundPos = -(world_->GetScreenPlayerPos().y);
-	backManager = new BackGraundManager(world_.get());
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_1_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX, graundPos);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX, graundPos*1.5f);
-	backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, graundPos*2.5f, true);
+	float graundPos = -(world_->GetScreenPlayerPos().y*1.2f);
+	//先にセットされたテクスチャほど奥に描写される
+	//backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX,graundPos);
+	backManager->BossFlag(false);
+
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_1_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX, graundPos*1.4f, false, false, Vector2(2.0f, 2.0f));
+	backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, graundPos*1.9f, true, false, Vector2(2.0f, 2.0f));
 
 	backManager->AddKonoha(TextureID::HAPPA1_1_TEX);
 	backManager->AddKonoha(TextureID::HAPPA1_2_TEX);
@@ -84,7 +90,7 @@ void BonusStage::update()
 				points_.push_back(point_ / num % 10);
 				num *= 10;
 			}
-			//PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL), DX_PLAYTYPE_LOOP);
+			PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL), DX_PLAYTYPE_LOOP);
 			pointDrawFlag_ = true;
 		}
 		else {
@@ -95,18 +101,35 @@ void BonusStage::update()
 				pointDrawTime_ = 0.0f;
 				PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOWMAX), DX_PLAYTYPE_BACK);
 				pointCount_++;
-				if (points_.size() - 1 >= pointCount_) StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL));
+				if (points_.size() <= pointCount_) {
+					scoreEndFlag_ = true;
+					StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_ROLL));
+				}
 			}
 		}
 	}
-	if (resultAlpha_ >= 13.0f) {
-		isEnd_ = true;
-	}
+
+	//クレジットが終わったら
 	if (creditPos_.y <= -creditSize_.y) {
 		isResult_ = true;
 		world_->PlayerNotMove(true);
 	}
-	
+
+	//スコアの表示が終わったら
+	if (scoreEndFlag_) {
+		if (pointDrawTime_ >= 1.0f&&!rankFlag_) {
+			PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOWMAX), DX_PLAYTYPE_BACK);
+			rankFlag_ = true;
+		}
+		if (pointDrawTime_ >= 2.0f&&!thankFlag_) {
+			PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_RESULT_SHOWMAX), DX_PLAYTYPE_BACK);
+			thankFlag_ = true;
+		}
+		if (pointDrawTime_ >= 7.0f) {
+			isEnd_ = true;
+		}
+	}
+
 	world_->update(Time::GetInstance().deltaTime());
 	backManager->Update(Time::GetInstance().deltaTime());
 }
@@ -127,19 +150,42 @@ void BonusStage::draw() const
 		//bonus.draw2(Vector2(SCREEN_SIZE.x / 2 - 182, SCREEN_SIZE.y / 2 + 128), bonusPoint_, 4, Vector3(255, 255, 255));
 		NumberTexture all = NumberTexture(TextureID::NUMBERS_TEX, 96, 96);
 		int size = 9;
-		for (int i = 0; i < size - pointCount_; i++) {
-			Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 192*2, SCREEN_SIZE.y / 2) + Vector2(96 * i, 0);
-			if (points_.size() - 1 >= pointCount_)
-				all.draw2(pos, GetRand(9), 1, Vector3(255, 255, 255));
-			else
-				all.draw2(pos, 0, 1, Vector3(255, 255, 255));
+		if (points_.size() > pointCount_) {
+			for (int i = 0; i < size - pointCount_; i++) {
+				Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 192 * 2, SCREEN_SIZE.y / 2) + Vector2(96 * i, 0);
+				if (points_.size() - 1 >= pointCount_)
+					all.draw2(pos, GetRand(9), 1, Vector3(255, 255, 255));
+				else
+					all.draw2(pos, 0, 1, Vector3(255, 255, 255));
+			}
+			for (int i = 0; i < pointCount_; i++) {
+				Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 192 * 2, SCREEN_SIZE.y / 2) + Vector2(96 * ((size - i) - 1), 0);
+				all.draw2(pos, points_[i], 1, Vector3(255, 255, 255), 1.0f);
+			}
 		}
-		for (int i = 0; i < pointCount_; i++) {
-			Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 192*2, SCREEN_SIZE.y / 2) + Vector2(96 * ((size - i) - 1), 0);
-			all.draw2(pos, points_[i], 1, Vector3(255, 255, 255), 1.0f);
+		else {
+			Vector2 sizetext = Vector2(SCREEN_SIZE.x / 2 - 192 * 2 + ((size - points_.size()) * 96)-96, SCREEN_SIZE.y / 2);
+			DrawGraph(sizetext.x, sizetext.y, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), true);
+			Vector2 pos = Vector2(SCREEN_SIZE.x / 2 - 192 * 2+((size-points_.size())*96), SCREEN_SIZE.y / 2);
+			all.draw(pos, point_, Vector3(255, 255, 255), 1.0f);
 		}
-		Vector2 sizetext = Vector2(SCREEN_SIZE.x / 2 - 192*2 - 96, SCREEN_SIZE.y / 2);
-		DrawGraph(sizetext.x, sizetext.y, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), true);
+
+		if (rankFlag_) {
+			Vector2 pos = SCREEN_SIZE / 2 + Vector2(0, 256);
+			if (point_ >= 1000000) {
+				DrawRotaGraph(pos.x, pos.y, 1.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_RANK_A_TEX), true);
+			}
+			else if (point_ >= 500000) {
+				DrawRotaGraph(pos.x, pos.y, 1.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_RANK_B_TEX), true);
+			}
+			else {
+				DrawRotaGraph(pos.x, pos.y, 1.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::TEXT_RANK_C_TEX), true);
+			}
+		}
+		if (thankFlag_) {
+			Vector2 pos = SCREEN_SIZE / 2 - Vector2(0, 256);
+			DrawRotaGraph(pos.x, pos.y, 1.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::THANK_TEX), true);
+		}
 		//DrawGraph(300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);
 		//DrawGraph(SCREEN_SIZE.x -kiriTexSize_.x- 300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

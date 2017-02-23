@@ -13,6 +13,23 @@ SceneDataKeeper::SceneDataKeeper() :currentSceneName_("stage00"),previousSceneNa
 	datas_["stage04"].comboCount_.resize(6);
 	datas_["bossStage01"].comboCount_.resize(6);
 	datas_["clear_stage"].comboCount_.resize(6);
+
+	//‰Šú‰»ˆ—
+	for (auto& i : datas_) {
+		i.second.chargeTime_ = 0;
+		i.second.comboCount_.clear();
+		i.second.currentCombo_ = 0;
+		i.second.damageCount_ = 0;
+		i.second.enemyCount_ = 0;
+		i.second.holdCount_ = 0;
+		i.second.hp_ = 0;
+		i.second.itemCount_ = 0;
+		i.second.maxCombo_ = 0;
+		i.second.maxItemCount_ = 0;
+		i.second.minusStar_ = 0;
+		i.second.moveDistance_ = 0;
+		i.second.plusStar_ = 0;
+	}
 }
 
 SceneDataKeeper::SceneDataKeeper(std::string name):previousSceneName_(name),hp_(0), itemCount_(0), jumpCount_(0), damageCount_(0){

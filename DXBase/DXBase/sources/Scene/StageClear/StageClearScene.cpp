@@ -44,15 +44,15 @@ void StageClearScene::start() {
 	isFirstJump = true;
 
 	BackTitles id;
-	id.push_back(TextureID::MGR_BACKSTAGE1_1_TEX);
-	id.push_back(TextureID::MGR_BACKSTAGE1_2_TEX);
-	id.push_back(TextureID::MGR_BACKSTAGE1_3_TEX);
-	id.push_back(TextureID::MGR_BACKSTAGE1_4_TEX);
-	id.push_back(TextureID::MGR_BACKSTAGE1_5_TEX);
-	id.push_back(TextureID::MGR_BACKSTAGE1_6_1_TEX);
-	id.push_back(TextureID::MGR_BACKSTAGE1_6_1_TEX);
-	id.push_back(TextureID::MGR_BACKSTAGE1_7_TEX);
-	id.push_back(TextureID::MGR_BACKSTAGE1_8_TEX);
+	id.push_back(TextureID::BACKSTAGE1_1_TEX);
+	id.push_back(TextureID::BACKSTAGE1_2_TEX);
+	id.push_back(TextureID::BACKSTAGE1_3_TEX);
+	id.push_back(TextureID::BACKSTAGE1_4_TEX);
+	id.push_back(TextureID::BACKSTAGE1_5_TEX);
+	id.push_back(TextureID::BACKSTAGE1_6_1_TEX);
+	id.push_back(TextureID::BACKSTAGE1_6_1_TEX);
+	id.push_back(TextureID::BACKSTAGE1_7_TEX);
+	id.push_back(TextureID::BACKSTAGE1_8_TEX);
 	BackTitles id2;
 	id2.push_back(TextureID::BACKSTAGE2_TOP1_TEX);
 	id2.push_back(TextureID::BACKSTAGE2_1_TEX);
@@ -233,7 +233,7 @@ void StageClearScene::update() {
 
 void StageClearScene::draw() const {
 	//World(ƒvƒŒƒCƒ„[)‚Ì•`‰æ
-	backManager->Draw();
+	backManager->Draw(true);
 	
 	for (int i = 0; i < blockCount; i++)
 	{
