@@ -4,6 +4,7 @@
 #include "../../Base/Actor.h"
 #include "EnemyManager.h"
 #include "../../../Animation/Enemy/EnemyAnimation2D.h"
+#include "../../../ResourceLoader/ResourceLoader.h"
 #include <vector>
 
 class CollisionBase;
@@ -21,10 +22,10 @@ protected:
 		ENEMY_ATTACKTURN = 5,
 		ENEMY_DAMAGE = 2,
 	};
-	// エフェクトID
-	enum {
-		EFFECT_DEAD = 0
-	};
+	//// エフェクトID
+	//enum {
+	//	EFFECT_DEAD = 0
+	//};
 	// SEID
 	enum {
 		SE_HAKKEN = 0,
@@ -142,7 +143,7 @@ protected:
 	float playerLength_;			// プレイヤーとの距離
 	float discoveryLenght_;			// プレイヤーに気づく距離
 	float playerLostLenght_;		// プレイヤーを見失う距離
-	float TexDegress_;				// テクスチャの角度
+	float texDegress_;				// テクスチャの角度
 	float hitTimer_;				// 衝突時の時間
 	Vector2 direction_;				// 方向
 	Vector2 prevDirection_;			// 過去の方向
@@ -167,6 +168,7 @@ protected:
 	FloorSearchPoint* wsScript_;		// 壁捜索オブジェクト
 	Prickle* pricleObj_;			// トゲのオブジェクト
 	EnemyAnimation2D animation_;	// アニメーション
+	AnimationID deadAnimaID_;		// 死亡時のアニメーション
 	// 捜索オブジェクトの位置コンテナ
 	typedef std::vector<Vector2> FSPPositionContainer;
 	FSPPositionContainer fspPositionContainer_;

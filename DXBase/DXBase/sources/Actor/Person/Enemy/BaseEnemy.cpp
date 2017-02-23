@@ -1,16 +1,15 @@
 #include "BaseEnemy.h"
-#include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../Base/ActorGroup.h"
 #include "../../Body/CollisionBase.h"
 #include "FloorSearchPoint.h"
 #include "PlayerSearchObj.h"
-#include "Bosses/Effect/EnemyDeadEffect.h"
+#include "DeadEnemy.h"
 #include "Bosses/Effect/EnemyCollideEffect.h"
-#include "../../../Scene/Base/SceneDataKeeper.h"
 #include "EnemyHeaderImport.h"
+#include "../../../Scene/Base/SceneDataKeeper.h"
 
 // アイテム
-#include "../../Item/Items.h"
+//#include "../../Item/Items.h"
 #include <cmath>
 
 BaseEnemy::BaseEnemy(
@@ -36,7 +35,7 @@ BaseEnemy::BaseEnemy(
 	direction_(direction),
 	prevDirection_(direction),
 	playerLength_(0.0f),
-	TexDegress_(0),
+	texDegress_(0),
 	hitTimer_(0.0f),
 	isPlayer_(false),
 	isMove_(false),
@@ -58,7 +57,8 @@ BaseEnemy::BaseEnemy(
 	wsScript_(nullptr),
 	pricleObj_(nullptr),
 	enemyManager_(EnemyManager(world, position, direction)),
-	animation_(EnemyAnimation2D())
+	animation_(EnemyAnimation2D()),
+	deadAnimaID_(AnimationID::ENEMY_EGGENEMY_DAMAGE_TEX)
 {
 	// rayオブジェクトの追加
 	enemyManager_.setPSObj(PLAYER_RED_NUMBER, position_);
@@ -143,7 +143,7 @@ void BaseEnemy::onDraw() const
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	animation_.draw(
 		pos, Vector2::One * (body_.GetBox().getWidth() * 2) + addTexPosition_,
-		0.5f, TexDegress_);
+		0.5f, texDegress_);
 }
 
 void BaseEnemy::onCollide(Actor & actor)
@@ -185,6 +185,7 @@ void BaseEnemy::onCollide(Actor & actor)
 			actor.getBody().GetCircle().getRadius() + scale_) return;
 		// 死亡
 		changeState(State::Dead, ENEMY_DAMAGE);
+		animation_.stopAnime();
 		// 関数の追加
 		world_->GetKeeper()->addEnemyCount(1);
 		// エフェクトの追加
@@ -192,7 +193,7 @@ void BaseEnemy::onCollide(Actor & actor)
 			std::make_shared<EnemyCollideEffect>(world_, position_));
 		PlaySoundMem(seHandles_[SE_HITSTOP], DX_PLAYTYPE_BACK);
 		world_->setIsStopTime(true);
-		TexDegress_ = 0.0f;
+		texDegress_ = 0.0f;
 		isUseGravity_ = true;
 		return;
 	}
@@ -305,27 +306,36 @@ void BaseEnemy::deadMove()
 	if (hitTimer_ > 0.1f)
 		world_->setIsStopTime(false);
 	else {
+		// ヒットストップ
 		world_->setIsStopTime(true);
 		// ポーズ中に止める処理
 		if (deltaTimer_ == 0.0f && world_->isStopTime())
 			hitTimer_ += world_->getDeltaTime();
 		return;
 	}
-	if (!animation_.isEndAnimation()) return;
+	// ヒットストップ終了
+	//if (!animation_.isEndAnimation()) return;
 	// 所持しているオブジェクトの削除
 	for (auto i = objContainer_.begin(); i != objContainer_.end(); i++) {
 		auto a = *i;
 		a->dead();
 	}
 	enemyManager_.deleteObj();
-	// 死亡エフェクトの追加
-	world_->addActor(ActorGroup::Effect,
-		std::make_shared<EnemyDeadEffect>(
-			world_, position_ - Vector2::Up * 325.0f, EFFECT_DEAD));
-	// アイテムの生成
-	world_->addActor(ActorGroup::Item,
-		std::make_shared<Items>(world_, position_));
-	PlaySoundMem(seHandles_[SE_DEAD], DX_PLAYTYPE_BACK);
+	//// 死亡エフェクトの追加
+	//world_->addActor(ActorGroup::Effect,
+	//	std::make_shared<EnemyDeadEffect>(
+	//		world_, position_ - Vector2::Up * 325.0f, EFFECT_DEAD));
+
+	// 死亡エネミーの追加
+	world_->addActor(ActorGroup::Enemy,
+		std::make_shared<DeadEnemy>(
+			world_, position_, body_.GetBox().getWidth(),
+			direction_, deadAnimaID_));
+
+	//// アイテムの生成
+	/*world_->addActor(ActorGroup::Item,
+		std::make_shared<Items>(world_, position_));*/
+	//PlaySoundMem(seHandles_[SE_DEAD], DX_PLAYTYPE_BACK);
 	dead();
 }
 

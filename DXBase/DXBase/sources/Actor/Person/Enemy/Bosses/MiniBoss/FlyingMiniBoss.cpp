@@ -1,4 +1,5 @@
 #include "FlyingMiniBoss.h"
+#include "ImportAnimationNumber.h"
 
 FlyingMiniBoss::FlyingMiniBoss(
 	IWorld * world,

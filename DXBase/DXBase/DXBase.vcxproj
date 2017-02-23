@@ -177,6 +177,7 @@
     <ClInclude Include="sources\Actor\Item\ItemAnm.h" />
     <ClInclude Include="sources\Actor\Item\Items.h" />
     <ClInclude Include="sources\Actor\Item\StarEffect.h" />
+    <ClInclude Include="sources\Actor\Item\StarEffectManager.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossAnimationNumber.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.h" />
@@ -192,8 +193,13 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\AdhereMiniBoss.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FighterMiniBossh.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FlyingMiniBoss.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\ImportAnimationNumber.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\TrackingMiniBoss.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\WingAttackMiniBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ShockWave.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bullet\WingBullet.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\EnemyHeaderImport.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.h" />
     <ClInclude Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.h" />
@@ -378,6 +384,7 @@
     <ClCompile Include="sources\Actor\Item\BadItemAnm.cpp" />
     <ClCompile Include="sources\Actor\Item\ItemAnm.cpp" />
     <ClCompile Include="sources\Actor\Item\StarEffect.cpp" />
+    <ClCompile Include="sources\Actor\Item\StarEffectManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\AttackEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BokoEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\BossEffect.cpp" />
@@ -390,8 +397,12 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\AdhereMiniBoss.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FighterMiniBossh.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FlyingMiniBoss.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\TrackingMiniBoss.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\WingAttackMiniBoss.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\ShockWave.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bullet\WingBullet.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\BaseEnemy.cpp" />

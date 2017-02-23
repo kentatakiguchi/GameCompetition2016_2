@@ -1,78 +1,76 @@
 #ifndef ADHERE_MINI_BOSS_H_
 #define ADHERE_MINI_BOSS_H_
 
-#include "../../../../Base/Actor.h"
+//#include "../../../../Base/Actor.h"
+#include "FighterMiniBossh.h"
 #include "../../../../../Animation/Enemy/EnemyAnimation2D.h"
 
-class AdhereMiniBoss : public Actor {
+class AdhereMiniBoss : public FighterMiniBoss {
 protected:
-	enum class State {
+	/*enum class State {
 		Idel,
 		Move,
 		Adhere,
-		Dead,
+		Dead
+	};*/
+	// 死亡状態
+	enum class DeadState {
+		HitDead,
 		AdhereDead
 	};
-	// アニメーション番号
-	enum {
-		WAIT_NUMBER = 0,
-		RUN_NUMBER = 1,
-		ADHERE_NUMBER = 2,
-		DEAD_NUMBER = 3
-	};
+	//// アニメーション番号
+	//enum {
+	//	WAIT_NUMBER = 0,
+	//	RUN_NUMBER = 1,
+	//	ADHERE_NUMBER = 2,
+	//	DEAD_NUMBER = 3
+	//};
 
 public:
-	AdhereMiniBoss(IWorld* world, const Vector2&  position, const float bodyScale = 64.0f);
-	void onUpdate(float deltaTime) override;
-	void onDraw() const override;
-	void onCollide(Actor& actor) override;
-	void onMessage(EventMessage event, void*) override;
+	AdhereMiniBoss(
+		IWorld* world, 
+		const Vector2&  position, 
+		const float bodyScale = 64.0f);
+	/*void onUpdate(float deltaTime) override;
+	void onDraw() const override;*/
+	/*void onCollide(Actor& actor) override;
+	void onMessage(EventMessage event, void*) override;*/
 
 protected:
 	// 状態の変更
-	void changeState(State state, int animation);
-	// 状態の更新
-	void updateState(float deltaTime);
+	void changeDeadState(DeadState dState, int animation);
+	//// 状態の更新
+	//void updateState(float deltaTime);
 	// 待機状態
-	void idel(float deltaTime);
+	void idel(float deltaTime) override;
 	// 移動状態
-	virtual void move(float deltaTime);
+	virtual void move(float deltaTime) override;
 	// くっつき状態
-	void adhere(float deltaTime);
+	virtual void attack(float deltaTime) override;
 	// 死亡状態
-	virtual void deadMove(float deltaTime);
+	virtual void deadMove(float deltaTime) override;
 	// くっつき死亡状態
 	void adhereDead(float deltaTime);
 	// 床に当たった時の処理
-	virtual void floorHit();
+	virtual void floorHit() override;
+	// プレイヤーと当たった時の処理
+	void playerHit(Actor& actor) override;
 
 protected:
-	// プレイヤーとの方向を返します
-	Vector2 getPlayerDirection();
-	// テクスチャの位置を設定します
-	void setTexPosition(float up);
-	// アニメーションの追加
-	void addAnimation();
+	//// プレイヤーとの方向を返します(単位ベクトル)
+	//Vector2 getPlayerDirection();
+	//// テクスチャの位置を設定します
+	//void setTexPosition(float up);
+	//// アニメーションの追加
+	virtual void addAnimation() override;
 	// ランダムの角度を取得します
 	float getRandomDegree();
-	// 地面の位置に補正します
-	void groundClamp(Actor& actor);
+	//// 地面の位置に補正します
+	//void groundClamp(Actor& actor);
 
 protected:
-	int animeNum_;					// アニメーション番号
-	float speed_;					// 速度
-	float timer_;					// 時間
-	float size_;					// 大きさ
-	float degree_;					// 角度
-	bool isClamp_;					// 地面の位置に補間するか
-	bool isTop_, isBottom_;			// 床の上下に当たったか
-	bool isLeft_, isRight_;			// 床の左右に当たったか
-	std::string playerName_;		// プレイヤーの名前
-	Vector2 texPos_;				// テクスチャの位置
-	Vector2 orizin_;				// 中点
-	Vector2 prevPlayerDirection_;	// プレイヤーとの過去の方向
-	State state_;					// 状態
-	EnemyAnimation2D animation_;	// アニメーション
+	float adhereDeadTime_;	// くっつき時の死亡時間
+	DeadState dState_;		// 死亡状態
 };
 
 #endif

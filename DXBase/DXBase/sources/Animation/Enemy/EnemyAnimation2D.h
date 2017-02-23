@@ -38,6 +38,8 @@ public:
 	void timeRandom();
 	// アニメーションの向きを変えたかを返します(1f)
 	bool isBeginTurn();
+	// 現在の再生フレームを取得します
+	unsigned int getFrame();
 
 public:
 	int prevFrame_;			// 1f前のフレーム

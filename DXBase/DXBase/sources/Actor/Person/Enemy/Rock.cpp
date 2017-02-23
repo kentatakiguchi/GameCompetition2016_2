@@ -1,4 +1,5 @@
 #include "Rock.h"
+#include "Bosses/MiniBoss/ImportAnimationNumber.h"
 #include "../../../ResourceLoader/ResourceLoader.h"
 #include "../../../Define.h"
 #include "../../../World/IWorld.h"
@@ -13,7 +14,7 @@ Rock::Rock(IWorld * world, const Vector2 & position, const float bodyScale) :
 void Rock::move(float deltaTime)
 {
 	// —‰º
-	position_.y += speed_ * timer_  * 9.8f * (deltaTime * 60.0f);
+	position_.y += speed_ * stateTimer_  * 9.8f * (deltaTime * 60.0f);
 	setTexPosition(10.0f);
 	// ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğŒü‚­
 	animation_.changeDirType(-getPlayerDirection().x);

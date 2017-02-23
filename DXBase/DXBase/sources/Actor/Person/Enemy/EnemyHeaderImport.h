@@ -4,6 +4,5 @@
 #include "../../../World/IWorld.h"
 #include "../../../Math/Math.h"
 #include "../../../Define.h"
-#include "../../../ResourceLoader/ResourceLoader.h"
 
 #endif

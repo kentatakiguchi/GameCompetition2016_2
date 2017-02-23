@@ -132,6 +132,10 @@ private:
 	void createMiniBoss();
 	// ランダムの値を取得します
 	int getRandomInt(const int min, const int max);
+	// コンテナの初期化
+	void initContainer();
+	// オブジェクトの生成
+	void createObject();
 
 protected:
 	int dp_;						// 耐久値
@@ -142,13 +146,11 @@ protected:
 	int piyoriCount_;				// ぴよる回数
 	int bokoCreateCount_;			// ボコエフェクト生成回数
 	int miniBossCreateCount_;		// ミニボス生成回数
-	//int alpha_;						// ボスのα値
 	int starCount_;					// プレイヤーの取得している星の合計数
 	int allStarCount_;				// 全体での星の合計数
 	float stateTimer_;				// 状態の時間
 	float timer_;					// 現在の時間(最大値 1)
 	float deltaTimer_;				// 現在の時間(補間)
-	float damageTimer_;				// 次に被弾までの時間
 	float liftMoveTiemr_;			// 持ち上げ時の時間
 	float angle_;					// 角度(時計周り)
 	float effectCreateTimer_;		// エフェクト生成時間(間隔)
@@ -162,6 +164,8 @@ protected:
 	bool isBattle_;					// 戦闘を行うか
 	bool isEffectCreate_;			// エフェクトを生成するか
 	bool isACountDecision_;			// 
+	bool isPlayerCollide_;			// プレイヤーを衝突判定を行うか
+	bool isBossDead_;				// 死亡したか
 	FloorSearchPoint* wspObj_;		// 壁捜索オブジェクト
 	BossEntry* entryObj_;			// ボス入口オブジェクト
 	MiniBossManager mbManager_;

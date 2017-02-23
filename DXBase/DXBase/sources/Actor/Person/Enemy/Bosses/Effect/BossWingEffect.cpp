@@ -52,6 +52,11 @@ void BossWingEffect::onUpdate(float deltaTime)
 	case State::Fall: fall(deltaTime); break;
 	case State::Dead: deadMove(deltaTime); break;
 	}
+	// “§–¾ˆ—
+	alpha_ -= 255 * deltaTime;
+	alpha_ = max(alpha_, 0.0f);
+	if (alpha_ <= 0.0f)
+		dead();
 
 	stateTimer_ += deltaTime;
 }
@@ -132,10 +137,10 @@ void BossWingEffect::fall(float deltaTime)
 // €–Só‘Ô
 void BossWingEffect::deadMove(float deltaTime)
 {
-	alpha_ -= 255 * (deltaTime / 2);
+	/*alpha_ -= 255 * (deltaTime / 2);
 	alpha_ = max(alpha_, 0.0f);
 	if (alpha_ <= 0.0f)
-		dead();
+		dead();*/
 	//dead();
 }
 

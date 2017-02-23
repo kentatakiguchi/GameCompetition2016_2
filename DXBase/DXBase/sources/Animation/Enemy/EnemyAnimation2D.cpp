@@ -157,3 +157,9 @@ bool EnemyAnimation2D::isBeginTurn()
 {
 	return isBeginTurn_;
 }
+
+// Œ»İ‚ÌÄ¶ƒtƒŒ[ƒ€‚ğæ“¾‚µ‚Ü‚·
+unsigned int EnemyAnimation2D::getFrame()
+{
+	return frame_;
+}

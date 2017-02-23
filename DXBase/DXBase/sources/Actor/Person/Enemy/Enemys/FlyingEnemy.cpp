@@ -19,6 +19,7 @@ FlyingEnemy::FlyingEnemy(
 	BaseEnemy::Initialize();
 
 	isUseGravity_ = false;
+	deadAnimaID_ = AnimationID::ENEMY_FLYINGENEMY_DAMAGE_TEX;
 	// 壁捜索オブジェクトの生成
 	auto wsObj = std::make_shared<FloorSearchPoint>(
 		world_, position_,
@@ -87,8 +88,8 @@ void FlyingEnemy::search()
 			pricleObj_->setDirection(enemyManager_.getDirection(pastPosition_));
 			// 回転
 			if (enemyManager_.getDirection(pastPosition_).x < 0)
-				TexDegress_ = 90;
-			else TexDegress_ = 270;
+				texDegress_ = 90;
+			else texDegress_ = 270;
 			break;
 		}
 	}
@@ -139,7 +140,7 @@ void FlyingEnemy::chaseMove()
 	if (length <= 15) {
 		//changeState(State::Lost, ENEMY_LOST);
 		changeState(State::Lost, ENEMY_WALK);
-		TexDegress_ = 0.0f;
+		texDegress_ = 0.0f;
 		return;
 	}
 	// 接地していたら、yベクトルを 0 にする

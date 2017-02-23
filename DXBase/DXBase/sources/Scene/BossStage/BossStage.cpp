@@ -85,12 +85,7 @@ void BossStage::start() {
 	hatenaAnm_.change_param(0, 0.0f);
 
 	// 星関連
-	startPositiones_.clear();
-	stars_.clear();
-	starCount_ = (int)(keeper_->GetItemCount("All") / 100);
-	starCount_ = (int)MathHelper::Clamp((float)starCount_, 1.0f, 5.0f);
-	isCreateStar_ = false;
-	isIdelEnd_ = false;
+	starEffectManager_ = StarEffectManager(world_.get());
 
 	anmer_ = ItemAnm();
 
@@ -132,11 +127,9 @@ void BossStage::update() {
 		else if (mIvemtTime >= 15.0f&&mIvemtTime <= 17.0f) {
 			mIvemtTime = 15.0f;
 			// 星の生成
-			if (!isCreateStar_) {
-				createStars();
-			}
-			// 星の更新
-			updateStars();
+			starEffectManager_.update();
+			if (starEffectManager_.isEffectEnd())
+				mIvemtTime = 17.0f;
 		}
 		else if (boss_->isMovePosition() && mIvemtTime >= 17.0f) {
 			boss_->setIsBattle(true);
@@ -205,86 +198,4 @@ bool BossStage::isEnd() const {
 
 Scene BossStage::next() const {
 	return nextScene_;
-}
-
-// 星の位置の設定
-void BossStage::setStartPosition(const Vector2 & position)
-{
-	auto addX = 200.0f;
-	// 1
-	startPositiones_.push_back(position);
-	// 2
-	startPositiones_.push_back(position + Vector2::Right * addX);
-	// 3
-	startPositiones_.push_back(position + Vector2::Left * addX);
-	// 4
-	startPositiones_.push_back(position + Vector2::Right * addX * 2);
-	// 5
-	startPositiones_.push_back(position + Vector2::Left * addX * 2);
-}
-
-void BossStage::createStars()
-{
-	auto pos = Vector2(CHIPSIZE * 9, 500.0f);
-	setStartPosition(pos);
-	auto players = world_->findActor("Player");
-	auto startPos = Vector2::Zero;
-	auto movePos = Vector2::Zero;
-	auto rotatePos = Vector2::Zero;
-	if (players != nullptr) {
-		movePos = players->getPosition() - Vector2(-5.0f, 140.0f);
-		rotatePos = players->getPosition();
-	}
-	for (auto i = 0; i != starCount_; i++) {
-		auto star = std::make_shared<StarEffect>(
-			world_.get(), startPositiones_[i] - Vector2::Up * 500.0f -
-			(Vector2::Up * 100.0f * i),
-			startPositiones_[i],
-			movePos, rotatePos, i * 0.83f / starCount_);
-		world_->addActor(ActorGroup::Effect, star);
-		stars_.push_front(star.get());
-		//pos += Vector2::Right * 150.0f;
-	}
-	isCreateStar_ = true;
-}
-
-void BossStage::updateStars()
-{
-	// 待機状態が終わっていない場合
-	if (!isIdelEnd_) {
-		auto isIdelEnd = true;
-		// 星を確かめる
-		for (auto j = stars_.begin(); j != stars_.end(); j++) {
-			auto star = *j;
-			if (!star->isIdelTimeEnd(2.0f)) {
-				isIdelEnd = false;
-			}
-		}
-		// 待機状態で、一定時間経過したら、指定の位置に移動
-		if (isIdelEnd)
-			isIdelEnd_ = true;
-	}
-	else {
-		auto isRotateEnd = true;
-		auto isStop = true;
-		auto count = 0.0f;
-		for (auto k = stars_.begin(); k != stars_.end(); k++) {
-			auto star = *k;
-			star->setIsNotIdel();
-			if (star->isRotateTimeEnd(2.0f + count)) {
-				star->changeImbide();
-			}
-			count += 0.5f;
-			if (!star->isStop())
-				isStop = false;
-		}
-		if (isStop) {
-			mIvemtTime = 17.0f;
-			for (auto i = stars_.begin(); i != stars_.end(); i++) {
-				auto star = *i;
-				star->dead();
-			}
-			stars_.clear();
-		}
-	}
 }
