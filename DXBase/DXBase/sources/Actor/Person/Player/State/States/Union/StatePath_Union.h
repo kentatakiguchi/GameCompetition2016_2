@@ -6,6 +6,7 @@
 #include "Elements/Move/PlayerState_MoveEachL.h"
 #include "Elements/Move/PlayerState_MoveBoth.h"
 #include "Elements/PlayerState_Jump.h"
+#include "Elements/Hold/Wall/PlayerState_HoldInit.h"
 #include "Elements/Hold/Wall/PlayerState_HoldBegin.h"
 #include "Elements/Hold/Wall/PlayerState_HoldSwim.h"
 #include "Elements/Hold/Wall/PlayerState_HoldFull.h"

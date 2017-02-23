@@ -221,6 +221,10 @@ void PlayerBody::collider(){
 	collider_->position() = position_;
 }
 
+HitOpponent PlayerBody::getColliderOpponent(){
+	return	collider_->getOpponent();
+}
+
 Vector2& PlayerBody::velocity() {
 	return velocity_;
 }

@@ -53,7 +53,7 @@ void PlayerState_MoveEachR::onKeyInput(float deltaTime){
 	// 移動入力がない場合IDLEに変更
 	else if (!move_keyR() && !move_keyL()) change(PlayerState_Enum_Union::IDLE);
 	// 両移動キーが入力された場合状態をMOVE_BOTHに変更
-	else if (element_.type_ == ActionType::Right && move_keyL()) change(PlayerState_Enum_Union::MOVE_BOTH);
+	else if (move_keyL()) change(PlayerState_Enum_Union::MOVE_BOTH);
 	else if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 	else if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 
@@ -72,7 +72,7 @@ void PlayerState_MoveEachR::onPadInput(float deltaTime){
 	// 移動入力がない場合IDLEに変更
 	else if (!move_padR() && !move_padL()) change(PlayerState_Enum_Union::IDLE);
 	// 両移動スティックが入力された場合状態をMOVE_BOTHに変更
-	else if (element_.type_ == ActionType::Right && move_padL()) change(PlayerState_Enum_Union::MOVE_BOTH);
+	else if (move_padL()) change(PlayerState_Enum_Union::MOVE_BOTH);
 	else if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 	else if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 

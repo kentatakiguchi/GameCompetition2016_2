@@ -11,7 +11,7 @@
 // ÉvÉåÅ[ÉÑÅ[
 class PlayerBodyCollider : public Actor {
 public:
-	PlayerBodyCollider(IWorld* world, std::string& name, const Vector2& position = Vector2::Zero);
+	PlayerBodyCollider(IWorld* world, std::string& name);
 	~PlayerBodyCollider();
 	virtual void onUpdate(float deltaTime) override;
 	virtual void onCollide(Actor& other) override;

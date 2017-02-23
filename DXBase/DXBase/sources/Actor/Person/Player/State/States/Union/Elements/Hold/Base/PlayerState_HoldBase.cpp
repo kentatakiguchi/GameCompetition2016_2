@@ -32,13 +32,6 @@ void PlayerState_HoldBase::key_input(float deltaTime){
 		if (InputMgr::GetInstance().KeyVector_R().x < 0) butty_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Left);
 	}
 
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && element_.type_ == ActionType::Left) {
-	//	if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
-	//}
-	//if (InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && element_.type_ == ActionType::Right) {
-	//	if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
-	//}
-
 	onKeyInput(deltaTime);
 }
 
@@ -54,17 +47,6 @@ void PlayerState_HoldBase::pad_input(float deltaTime){
 		if (InputMgr::GetInstance().AnalogPadVectorR().x > 0) butty_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Right);
 		if (InputMgr::GetInstance().AnalogPadVectorR().x < 0) butty_->animation().change_dir(PlayerAnimID::SWIM_TURN, ActionType::Left);
 	}
-
-	//if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && element_.type_ == ActionType::Left) {
-	//	if (butty_->able_to_hold()) {
-	//		change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
-	//	}
-	//}
-	//if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1) && element_.type_ == ActionType::Right) {
-	//	if (retty_->able_to_hold()) {
-	//		change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
-	//	}
-	//}
 
 	onPadInput(deltaTime);
 }

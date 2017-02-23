@@ -67,22 +67,8 @@ void PlayerConnector::onUpdate(float deltaTime) {
 	if (is_damaged()) {
 		world_->GetKeeper()->addDamageCount(1);
 		dead();
-		//world_->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(world_, position_, PlayerEffectID::SEP_EXP, 5.0f, 3.0f));
 	}
 	if (is_cleared()) world_->clear(true);
-
-	//if (timer_ <= 3.0f) {
-	//	if (timer_ > 0) {
-	//		if ((int)(timer_ * 10) % 2 < 1) alpha_ -= (int)(Time::GetInstance().deltaTime() * 60 * 20);
-	//		else alpha_ += (int)(Time::GetInstance().deltaTime() * 60 * 20);
-	//		butty_->alpha_ = (int)(MathHelper::Clamp((float)alpha_, 100, 255));
-	//		retty_->alpha_ = (int)(MathHelper::Clamp((float)alpha_, 100, 255));
-	//	}
-	//	else {
-	//		butty_->alpha_ = 255;
-	//		retty_->alpha_ = 255;
-	//	}
-	//}
 }
 
 void PlayerConnector::onDraw() const {
@@ -111,7 +97,7 @@ bool PlayerConnector::is_damaged() {
 	bool is_sub_target_enemy = retty_->hit_enemy() == HitOpponent::ENEMY ||
 								retty_->hit_enemy() == HitOpponent::BOSS;
 
-	bool for_debug = false;//InputMgr::GetInstance().IsKeyDown(KeyCode::P);
+	bool for_debug = InputMgr::GetInstance().IsKeyDown(KeyCode::P);
 	if (timer_ <= 3.0f) {
 		butty_->reset_enemy();
 		retty_->reset_enemy();

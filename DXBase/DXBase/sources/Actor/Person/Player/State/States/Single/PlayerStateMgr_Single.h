@@ -1,9 +1,11 @@
 #pragma once
 
 #include "../../Base/StateMgr.h"
-#include "../../PlayerState_Enum.h"
 
-// ステートの処理管理
+// 先行宣言
+enum class PlayerState_Enum_Single;
+
+// 分離時のステート管理
 class PlayerStateMgr_Single : public StateMgr {
 public:
 	// コンストラクタ

@@ -4,8 +4,6 @@
 
 #include "../../PlayerState_Enum.h"
 
-#include "../../../PlayerPtr.h"
-#include "../../../Player.h"
 #include "../../../PlayerBody.h"
 
 #include "../../../../../../Input/KeyCode.h"

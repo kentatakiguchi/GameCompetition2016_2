@@ -8,22 +8,7 @@
 PlayerState_HoldBegin::PlayerState_HoldBegin(const PlayerBodyPtr & butty, const PlayerBodyPtr & retty) : PlayerState_HoldBase(butty, retty) {}
 
 // 状態固有の初期化
-void PlayerState_HoldBegin::onInit(){
-	// アニメーションの変更
-	if (element_.type_ == ActionType::Right) {
-		butty_->animation().change(PlayerAnimID::HOLD);
-		retty_->animation().change(PlayerAnimID::SWIM);
-	}
-	if (element_.type_ == ActionType::Left) {
-		retty_->animation().change(PlayerAnimID::HOLD);
-		butty_->animation().change(PlayerAnimID::SWIM);
-	}
-
-	// くっつき時効果音再生
-	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_SYOUTOTU), DX_PLAYTYPE_BACK);
-
-	cntr_->getWorld()->GetKeeper()->addHoldCount(1);
-}
+void PlayerState_HoldBegin::onInit(){}
 
 // 更新処理	
 void PlayerState_HoldBegin::onUpdate(float deltaTime){
@@ -45,10 +30,17 @@ void PlayerState_HoldBegin::onKeyInput(float deltaTime){
 	}
 
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && element_.type_ == ActionType::Left) {
-		if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
+		if (butty_->getColliderOpponent() == HitOpponent::ITEM) {
+			change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
+		}
+		else if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
+
 	}
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && element_.type_ == ActionType::Right) {
-		if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
+		if (retty_->getColliderOpponent() == HitOpponent::ITEM) {
+			change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
+		}
+		else if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
 	}
 }
 
@@ -61,14 +53,16 @@ void PlayerState_HoldBegin::onPadInput(float deltaTime){
 	}
 
 	if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && element_.type_ == ActionType::Left) {
-		if (butty_->able_to_hold()) {
-			change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
+		if (butty_->getColliderOpponent() == HitOpponent::ITEM) {
+			change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
 		}
+		else if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
 	}
 	if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1) && element_.type_ == ActionType::Right) {
-		if (retty_->able_to_hold()) {
-			change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
+		if (retty_->getColliderOpponent() == HitOpponent::ITEM) {
+			change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
 		}
+		else if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
 	}
 }
 

@@ -19,9 +19,8 @@ Player::Player(IWorld * world, const Vector2 & position) :
 	create_bodys();
 	// コネクタの生成
 	connect();
-
+	// 
 	world_->addUIActor(std::make_shared<HurryUpUI>(world_));
-
 }
 
 // デストラクタ

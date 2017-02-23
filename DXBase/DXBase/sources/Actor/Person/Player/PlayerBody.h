@@ -28,6 +28,7 @@ public:
 	PlayerStateMgr_Single& stateMgr();
 
 	void collider();
+	HitOpponent getColliderOpponent();
 
 	Vector2& velocity();
 	float& dump();

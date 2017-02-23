@@ -3,8 +3,7 @@
 #include "../../../../../../../Define.h"
 
 // コンストラクタ
-PlayerState_Idle::PlayerState_Idle(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {
-}
+PlayerState_Idle::PlayerState_Idle(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
 
 // 状態固有の初期化
 void PlayerState_Idle::unique_init(){

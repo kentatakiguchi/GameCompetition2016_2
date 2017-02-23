@@ -37,11 +37,9 @@ void PlayerState_Union::common_update(float deltaTime){
 }
 
 // 衝突処理
-
 void PlayerState_Union::collide(const Actor & other) {}
 
 // 描画処理
-
 void PlayerState_Union::draw() const {}
 
 // ステートの変更処理

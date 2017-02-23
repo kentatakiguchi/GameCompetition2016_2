@@ -17,7 +17,7 @@ void PlayerState_HoldSwim::onUpdate(float deltaTime){
 	cntr_->getWorld()->GetKeeper()->addChargeTime(deltaTime);
 
 	if (retty_->distance() < PLAYER_SWIM_LENGTH) {
-		change(PlayerState_Enum_Union::HOLD, element_.type_);
+		change(PlayerState_Enum_Union::HOLD_BEGIN, element_.type_);
 	}
 	else if (retty_->distance() > PLAYER_MAX_STRETCH_LENGTH * 0.8f) {
 		change(PlayerState_Enum_Union::HOLD_FULL, element_.type_);
@@ -37,10 +37,17 @@ void PlayerState_HoldSwim::onKeyInput(float deltaTime){
 	}
 
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && element_.type_ == ActionType::Left) {
-		if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
+		if (butty_->getColliderOpponent() == HitOpponent::ITEM) {
+		change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
+		}
+		else if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
+
 	}
 	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && element_.type_ == ActionType::Right) {
-		if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
+		if (retty_->getColliderOpponent() == HitOpponent::ITEM) {
+		change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
+		}
+		else if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
 	}
 }
 
@@ -52,10 +59,17 @@ void PlayerState_HoldSwim::onPadInput(float deltaTime){
 	}
 
 	if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && element_.type_ == ActionType::Left) {
-		if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
+		if (butty_->getColliderOpponent() == HitOpponent::ITEM) {
+		change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
+		}
+		else if (butty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
 	}
 	if (InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1) && element_.type_ == ActionType::Right) {
-		if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Right);
+		if (retty_->getColliderOpponent() == HitOpponent::ITEM) {
+		change(PlayerState_Enum_Union::HOLD_ITEM, element_.type_);
+		}
+		else if (retty_->able_to_hold()) change(PlayerState_Enum_Union::HOLD_BOTH, ActionType::Left);
+
 	}
 }
 
