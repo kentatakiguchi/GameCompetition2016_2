@@ -31,7 +31,7 @@ public:
 
 			if (lCount >= 1)
 			{
-				world_->addCount();
+				world_->GetKeeper()->addCount(1);
 				world_->GetKeeper()->addPlusStar(1);
 				dead();
 			}
@@ -61,6 +61,7 @@ public:
 		ChangeNextPlayVolumeSoundMem(180, ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN));
 		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN), DX_PLAYTYPE_BACK);
 		world_->GetKeeper()->addComboCount();
+		world_->GetKeeper()->addKeepCount(1);
 	}
 	int spriteID_;
 	float size_;

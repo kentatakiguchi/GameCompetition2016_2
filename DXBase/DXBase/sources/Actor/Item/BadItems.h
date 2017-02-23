@@ -32,7 +32,7 @@ public:
 
 			if (lCount >= 1)
 			{
-				world_->addCount(-10);
+				world_->GetKeeper()->addCount(-10);
 				dead();
 			}
 		}
@@ -60,6 +60,7 @@ public:
 		ismyHit_ = true;
 		ChangeNextPlayVolumeSoundMem(180, ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN));
 		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN), DX_PLAYTYPE_BACK);
+		world_->GetKeeper()->addKeepCount(-10);
 	}
 	int spriteID_;
 	float size_;

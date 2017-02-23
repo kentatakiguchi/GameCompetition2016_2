@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-SceneDataKeeper::SceneDataKeeper() :currentSceneName_("stage00"),previousSceneName_("stage04"), hp_(0),itemCount_(0),jumpCount_(0),damageCount_(0)
+SceneDataKeeper::SceneDataKeeper() :currentSceneName_("stage00"),previousSceneName_("stage04"), hp_(0),itemCount_(0),jumpCount_(0),damageCount_(0),isAddCountBonus_(false),keepItemCount_(0)
 {
 	maxItemCount_.resize(7);
 	datas_.clear();
@@ -107,7 +107,12 @@ void SceneDataKeeper::setItemCount(int itemCount) {
 
 void SceneDataKeeper::addCount(int adds) {
 	//itemCount_ += adds;
+	keepItemCount_ -= adds;
 	datas_[currentSceneName_].itemCount_ += adds;
+	if (datas_[currentSceneName_].itemCount_ < 0) {
+		keepItemCount_ -= datas_[currentSceneName_].itemCount_;
+		datas_[currentSceneName_].itemCount_ = 0;
+	}
 }
 
 void SceneDataKeeper::ItemReset() {

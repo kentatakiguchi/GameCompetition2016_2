@@ -113,6 +113,7 @@ void FirstGamePlayScene::start() {
 
 	tutorialMgr_.load_csv("./resources/file/stage00_come.csv");
 	tutorialMgr_.init();
+	keeper_->start();
 }
 
 void FirstGamePlayScene::update() {
@@ -179,7 +180,7 @@ void FirstGamePlayScene::update() {
 	if (!isEnd_) {
 		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_, isClearStage_);
 	}
-	keeper_->setItemCount(world_->getCount());
+	//keeper_->setItemCount(world_->getCount());
 	//‚±‚±‚Ü‚ÅƒQ[ƒ€‚ªI—¹‚µ‚Ä‚¢‚é‚©‚Ì”»•Ê
 	//playerFont_->Update();
 

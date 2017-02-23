@@ -38,14 +38,53 @@ public:
 	void start() {
 		comboLimit_ = 0;
 		comboCount_ = 0;
+		keepItemCount_ = 0;
+		isAddCountBonus_ = false;
 	}
 	void update(float deltaTime) {
 		comboLimit_ -= deltaTime;
-		if (comboLimit_ <= 0) {
+		if (comboLimit_ <= 0&& isAddCountBonus_) {
+			isAddCountBonus_ = false;
+			if (comboCount_ >= 30) {
+				datas_[currentSceneName_].itemCount_ += ((comboCount_*0.1f) * (2*3));
+
+			}
+			else {
+				datas_[currentSceneName_].itemCount_ += ((comboCount_*0.1f) * 2);
+			}
 			comboCount_ = 0;
 		}
 	}
+	void clear() {
+		datas_[currentSceneName_].itemCount_ += keepItemCount_;
+		keepItemCount_ = 0;
+		if (comboCount_ >= 30) {
+			datas_[currentSceneName_].itemCount_ += ((comboCount_*0.1f) * (2 * 3));
+
+		}
+		else {
+			datas_[currentSceneName_].itemCount_ += ((comboCount_*0.1f) * 2);
+		}
+		comboCount_ = 0;
+	}
+	int getKeepCount() {
+		return keepItemCount_;
+	}
+	void setKeepCount(int co) {
+		keepItemCount_ = co;
+	}
+	void addKeepCount(int co) {
+		keepItemCount_ += co;
+	}
+	void minusKeepCount(int co) {
+		keepItemCount_ -= co;
+	}
+	void resetKeepCount() {
+		keepItemCount_ = 0;
+	}
+
 	void addComboCount() {
+		isAddCountBonus_ = true;
 		comboCount_++;
 		comboLimit_ = 3.f;
 	}
@@ -238,6 +277,7 @@ private:
 
 	float comboLimit_;
 	int comboCount_;
+	bool isAddCountBonus_;
 
 	std::string previousSceneName_;
 	std::string currentSceneName_;
@@ -248,6 +288,9 @@ private:
 	int jumpCountResult_;
 	int damageCount_;
 	int damageCountResult_;
+
+	int keepItemCount_;
+
 };
 
 #endif

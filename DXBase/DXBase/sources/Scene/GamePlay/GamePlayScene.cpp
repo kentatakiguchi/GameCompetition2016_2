@@ -188,6 +188,7 @@ void GamePlayScene::update() {
 	}
 
 	if (isClearStage_) {
+		keeper_->clear();
 		clear_.start(name_);
 		if (clear_.update(name_, nextScene_)) {
 			isEnd_ = true;
@@ -241,7 +242,7 @@ void GamePlayScene::update() {
 		isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_, isClearStage_);
 		//isStopped_ ? isEnd_ = pause_.update(nextScene_) : isEnd_ = move_.update(name_, nextScene_);
 	}
-	keeper_->setItemCount(world_->getCount());
+	//keeper_->setItemCount(world_->getCount());
 }
 
 void GamePlayScene::draw() const {
