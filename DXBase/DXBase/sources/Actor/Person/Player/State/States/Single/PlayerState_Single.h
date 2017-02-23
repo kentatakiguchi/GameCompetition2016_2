@@ -24,7 +24,7 @@ public:
 	// コンストラクタ
 	PlayerState_Single(const Keys& keys);
 	// 全てのステートに共通する初期化処理
-	virtual void common_init(Actor& actor, const ActionType& type) override;
+	virtual void common_init(Actor& actor, const StateElement& element) override;
 	// 入力処理
 	virtual void input(float deltaTime) override;
 	// 入力処理

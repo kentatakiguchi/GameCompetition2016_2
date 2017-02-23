@@ -14,8 +14,8 @@ PlayerState_Union::PlayerState_Union(const PlayerBodyPtr& butty, const PlayerBod
 }
 
 // 全てのステートに共通する初期化処理
-void PlayerState_Union::common_init(Actor& actor, const ActionType& type){
-	element_ = StateElement(-1, type);
+void PlayerState_Union::common_init(Actor& actor, const StateElement& element){
+	element_ = element;
 	timer_ = 0;
 	isEnd_ = false;
 
@@ -44,6 +44,7 @@ void PlayerState_Union::draw() const {}
 
 // ステートの変更処理
 void PlayerState_Union::change(const StateElement& element){
+	if (element_.state_ == element.state_)return;
 	next_element_ = element;
 	isEnd_ = true;
 }
@@ -76,15 +77,15 @@ bool PlayerState_Union::holdable_keyL() {
 }
 
 bool PlayerState_Union::move_keyR(){
-	return InputMgr::GetInstance().KeyVector_R().Length() > 0/* && butty_->able_to_jump()*/;
+	return InputMgr::GetInstance().KeyVectorR().Length() > 0/* && butty_->able_to_jump()*/;
 }
 
 bool PlayerState_Union::move_keyL(){
-	return InputMgr::GetInstance().KeyVector_L().Length() > 0/* && retty_->able_to_jump()*/;
+	return InputMgr::GetInstance().KeyVectorL().Length() > 0/* && retty_->able_to_jump()*/;
 }
 
 bool PlayerState_Union::jump_key(){
-	return InputMgr::GetInstance().KeyVector_R().y <= Vector2::Down.y && InputMgr::GetInstance().KeyVector_L().y <= Vector2::Down.y;
+	return InputMgr::GetInstance().KeyVectorR().y <= Vector2::Down.y && InputMgr::GetInstance().KeyVectorL().y <= Vector2::Down.y;
 }
 
 // パッド系フラグ

@@ -15,7 +15,7 @@ public:
 	// コンストラクタ
 	PlayerState_Union(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty);
 	// 全てのステートに共通する初期化処理
-	virtual void common_init(Actor& actor, const ActionType& type) override;
+	virtual void common_init(Actor& actor, const StateElement& element) override;
 	// 入力処理
 	virtual void input(float deltaTime) override;
 	// 入力処理

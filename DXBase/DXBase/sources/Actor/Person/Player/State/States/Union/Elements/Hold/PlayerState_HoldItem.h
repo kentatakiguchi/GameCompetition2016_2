@@ -19,4 +19,9 @@ private:
 	virtual void onPadInput(float deltaTime)override;
 	// 移動処理
 	virtual void onMove(float deltaTime)override;
+private:
+	// プレイヤーポインタ
+	PlayerBodyPtr holdBody_;
+	// プレイヤーポインタ
+	PlayerBodyPtr moveBody_;
 };

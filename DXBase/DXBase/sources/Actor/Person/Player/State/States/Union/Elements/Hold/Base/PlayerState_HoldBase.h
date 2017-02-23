@@ -23,15 +23,20 @@ private:
 	void move(float deltaTime);
 private:
 	// 初期化
-	virtual void onInit();
+	virtual void onInit() = 0;
 	// 更新処理	
-	virtual void onUpdate(float deltaTime);
+	virtual void onUpdate(float deltaTime) = 0;
 	// 終了時処理
-	virtual void onEnd();
+	virtual void onEnd() = 0;
 	// キー入力処理
-	virtual void onKeyInput(float deltaTime);
+	virtual void onKeyInput(float deltaTime) = 0;
 	// パッド入力処理
-	virtual void onPadInput(float deltaTime);
+	virtual void onPadInput(float deltaTime) = 0;
 	// 移動処理
-	virtual void onMove(float deltaTime);
+	virtual void onMove(float deltaTime) = 0;
+protected:
+	// プレイヤーポインタ
+	PlayerBodyPtr holdBody_;
+	// プレイヤーポインタ
+	PlayerBodyPtr moveBody_;
 };

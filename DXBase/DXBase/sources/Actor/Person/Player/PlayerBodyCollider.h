@@ -6,8 +6,6 @@
 
 #include "Player.h"
 
-#include "HitOpponent.h"
-
 // ƒvƒŒ[ƒ„[
 class PlayerBodyCollider : public Actor {
 public:

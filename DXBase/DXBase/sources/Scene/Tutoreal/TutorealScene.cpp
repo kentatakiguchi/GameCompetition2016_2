@@ -422,8 +422,8 @@ bool TutorealScene::Tutoreal2()
 bool TutorealScene::Tutoreal3()
 {
 	//ラグタイムがないと一瞬で終わるため
-	if ((playerConnector_->stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::ATTACK_R) ||
-		playerConnector_->stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::ATTACK_L)) &&
+	if ((playerConnector_->stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::ATTACK/*_R) ||
+		playerConnector_->stateMgr_.currentState((unsigned int)PlayerState_Enum_Union::ATTACK_L*/)) &&
 		!attackRagFalg) {
 		endCount_--;
 		attackRagFalg = true;

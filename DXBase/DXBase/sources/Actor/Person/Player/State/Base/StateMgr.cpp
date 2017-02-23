@@ -47,7 +47,7 @@ void StateMgr::changeState(Actor& actor, const IState::StateElement& element) {
 	// 実行ステートを変更
 	currentState_ = states_[element_.state_];
 	// 共通の初期化
-	currentState_->common_init(actor, element_.type_);
+	currentState_->common_init(actor, element_);
 	// 固有の初期化
 	currentState_->unique_init();
 }

@@ -25,12 +25,12 @@ void PlayerState_Freeze::update(float deltaTime){
 void PlayerState_Freeze::end(){}
 
 void PlayerState_Freeze::key_input(float deltaTime){ 
-	if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
-	if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
+	if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
+	if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 }
 
 void PlayerState_Freeze::pad_input(float deltaTime){
-	if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
-	if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
+	if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
+	if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 }
 

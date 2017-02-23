@@ -1,6 +1,8 @@
 #include "InputMgr.h"
 #include "DxLib.h"
 
+#include "../Actor/Person/Player/State/Base/ActionType.h"
+
 static const int MAX_BUTTON_NUM = 11;
 
 InputMgr::InputMgr(){
@@ -273,13 +275,26 @@ Vector2 InputMgr::KeyVector(KeyCode right, KeyCode left, KeyCode up, KeyCode dow
 }
 
 // âEóp
-Vector2 InputMgr::KeyVector_L(KeyCode right, KeyCode left, KeyCode up, KeyCode down) {
+Vector2 InputMgr::KeyVectorL(KeyCode right, KeyCode left, KeyCode up, KeyCode down) {
 	return KeyVector(right, left, up, down);
 }
 
 // ç∂óp
-Vector2 InputMgr::KeyVector_R(KeyCode right, KeyCode left, KeyCode up, KeyCode down){
+Vector2 InputMgr::KeyVectorR(KeyCode right, KeyCode left, KeyCode up, KeyCode down){
 	return KeyVector(right, left, up, down);
 }
+
+Vector2 InputMgr::KeyVector(const ActionType & type){
+	if (type == ActionType::Right) return KeyVectorR();
+	if (type == ActionType::Left)  return KeyVectorL();
+	return Vector2::Zero;
+}
+
+Vector2 InputMgr::PadVector(const ActionType & type) {
+	if (type == ActionType::Right) return AnalogPadVectorR();
+	if (type == ActionType::Left)  return AnalogPadVectorL();
+	return Vector2::Zero;
+}
+
 
 

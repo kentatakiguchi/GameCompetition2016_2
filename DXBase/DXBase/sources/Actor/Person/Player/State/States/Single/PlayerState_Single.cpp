@@ -14,8 +14,8 @@ PlayerState_Single::PlayerState_Single(const Keys& keys) :
 }
 
 // 全てのステートに共通する初期化処理
-void PlayerState_Single::common_init(Actor& actor, const ActionType& type) {
-	element_ = StateElement(-1, type);
+void PlayerState_Single::common_init(Actor & actor, const StateElement & element){
+	element_ = element;
 	timer_ = 0;
 	isEnd_ = false;
 

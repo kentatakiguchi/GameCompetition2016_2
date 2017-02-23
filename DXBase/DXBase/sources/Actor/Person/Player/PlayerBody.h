@@ -4,7 +4,6 @@
 #include "../../../World/IWorld.h"
 #include "State/States/Single/PlayerStateMgr_Single.h"
 #include "PlayerPtr.h"
-#include "HitOpponent.h"
 #include "../../../Animation/Player/PlayerAnimation2D.h"
 #include"../../../ResourceLoader/ResourceLoader.h"
 

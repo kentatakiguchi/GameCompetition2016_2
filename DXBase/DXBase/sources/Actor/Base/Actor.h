@@ -4,6 +4,7 @@
 #include "DxLib.h"
 
 #include "ActorPtr.h"
+#include "HitOpponent.h"
 #include "../../Field/FieldPtr.h"
 #include "../../Math/Math.h"
 #include "../Body/BoundingBox.h"
@@ -11,7 +12,6 @@
 #include "../Body/BoundingCircle.h"
 #include "../Body/BoundingSegment.h"
 #include "../Body/CollisionBase.h"
-#include "../Person/Player/HitOpponent.h"
 #include <string>
 #include <functional>
 #include <forward_list>

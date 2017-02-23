@@ -21,7 +21,7 @@ public:
 	// 仮想デストラクタ
 	virtual ~IState() {}
 	// 全状態共通の初期化
-	virtual void common_init(Actor& actor, const ActionType& type = ActionType::None) = 0;
+	virtual void common_init(Actor& actor, const StateElement& element = StateElement({ -1, ActionType::None })) = 0;
 	// 各状態独自の初期化
 	virtual void unique_init() = 0;
 	// 入力処理

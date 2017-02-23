@@ -33,14 +33,14 @@ void PlayerState_Idle::key_input(float deltaTime){
 	if (jump_key()) change(PlayerState_Enum_Union::JUMP);
 
 	// butty移動キー入力時にbutty移動状態に変更
-	else if (move_keyR()) change(PlayerState_Enum_Union::MOVE_R, ActionType::Right);
+	else if (move_keyR()) change(PlayerState_Enum_Union::MOVE, ActionType::Right);
 	// retty移動キー入力時にretty移動状態に変更
-	else if (move_keyL()) change(PlayerState_Enum_Union::MOVE_L, ActionType::Left );
+	else if (move_keyL()) change(PlayerState_Enum_Union::MOVE, ActionType::Left );
 
 	// buttyくっつき可能時に右シフトキーでくっつき状態に変更
-	else if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
+	else if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 	// rettyくっつき可能時に左シフトキーでくっつき状態に変更
-	else if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
+	else if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 }
 
 // パッド入力処理
@@ -49,14 +49,14 @@ void PlayerState_Idle::pad_input(float deltaTime){
 	if (jump_pad()) change(PlayerState_Enum_Union::JUMP);
 
 	// 右スティック入力時にbutty移動状態に変更
-	else if (move_padR()) change(PlayerState_Enum_Union::MOVE_R, ActionType::Right);
+	else if (move_padR()) change(PlayerState_Enum_Union::MOVE, ActionType::Right);
 	// 左スティック入力時にbutty移動状態に変更
-	else if (move_padL()) change(PlayerState_Enum_Union::MOVE_L, ActionType::Left);
+	else if (move_padL()) change(PlayerState_Enum_Union::MOVE, ActionType::Left);
 
 	// buttyくっつき可能時にR1ボタンでくっつき状態に変更
-	else if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
+	else if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 	// rettyくっつき可能時にR1ボタンでくっつき状態に変更
-	else if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
+	else if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 }
 
 // 移動処理

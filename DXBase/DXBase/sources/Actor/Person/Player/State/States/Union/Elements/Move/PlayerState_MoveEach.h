@@ -25,4 +25,9 @@ private:
 	void move(float deltaTime);
 	// アニメーション反転
 	void flip_animation();
+private:
+	// プレイヤーポインタ
+	PlayerBodyPtr manuBody_;
+	// プレイヤーポインタ
+	PlayerBodyPtr autoBody_;
 };

@@ -6,6 +6,8 @@
 #include <string>
 #include"../Math/Vector2.h"
 
+enum class ActionType;
+
 class InputMgr{
 private:
 	InputMgr();
@@ -34,8 +36,11 @@ public:
 	Vector2 XPadVector();
 
 	Vector2 KeyVector(KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT, KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN);
-	Vector2 KeyVector_L(KeyCode right = KeyCode::D, KeyCode left = KeyCode::A, KeyCode up = KeyCode::W, KeyCode down = KeyCode::S);
-	Vector2 KeyVector_R(KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT, KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN);
+	Vector2 KeyVectorL(KeyCode right = KeyCode::D, KeyCode left = KeyCode::A, KeyCode up = KeyCode::W, KeyCode down = KeyCode::S);
+	Vector2 KeyVectorR(KeyCode right = KeyCode::RIGHT, KeyCode left = KeyCode::LEFT, KeyCode up = KeyCode::UP, KeyCode down = KeyCode::DOWN);
+	
+	Vector2 KeyVector(const ActionType& type);
+	Vector2 PadVector(const ActionType& type);
 
 private:
 	static const int MAX_KEY_NUM = 256;
