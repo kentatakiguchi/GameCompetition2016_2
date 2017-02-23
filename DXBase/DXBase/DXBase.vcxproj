@@ -270,7 +270,6 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\State_Dammy.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\StatePath_Union.h" />
-    <ClInclude Include="sources\Actor\ScroolStop\ScroolStop.h" />
     <ClInclude Include="sources\Actor\Tubo\Tubo.h" />
     <ClInclude Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.h" />
     <ClInclude Include="sources\Actor\UIActor\HelperUI\HelperUI.h" />
@@ -453,7 +452,6 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Idle.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.cpp" />
-    <ClCompile Include="sources\Actor\ScroolStop\ScroolStop.cpp" />
     <ClCompile Include="sources\Actor\Tubo\Tubo.cpp" />
     <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
     <ClCompile Include="sources\Actor\UIActor\HelperUI\HelperUI.cpp" />

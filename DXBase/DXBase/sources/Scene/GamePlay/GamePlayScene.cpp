@@ -117,14 +117,15 @@ void GamePlayScene::start() {
 		//backManager->SetBackGraund(TextureID::BACKSTAGE1_1_TEX, TextureID::BACKSTAGE1_1_TEX,graundPos);
 		backManager->BossFlag(true);
 
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_1_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX, graundPos);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX, graundPos*1.5f);
-		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, graundPos*2.5f, true);
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_2_TEX, TextureID::BACKSTAGE1_2_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_3_TEX, TextureID::BACKSTAGE1_3_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_4_TEX, TextureID::BACKSTAGE1_4_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_5_TEX, TextureID::BACKSTAGE1_5_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_1_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_6_1_TEX, TextureID::BACKSTAGE1_6_2_TEX, graundPos, false, false, Vector2(2.0f, 2.0f));
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_7_TEX, TextureID::BACKSTAGE1_7_TEX, graundPos*1.4f, false, false, Vector2(2.0f, 2.0f));
+		backManager->SetBackGraund(TextureID::BACKSTAGE1_8_TEX, TextureID::BACKSTAGE1_8_TEX, graundPos*1.9f, true, false, Vector2(2.0f, 2.0f));
+
 
 		backManager->AddKonoha(TextureID::HAPPA1_1_TEX);
 		backManager->AddKonoha(TextureID::HAPPA1_2_TEX);
@@ -136,7 +137,7 @@ void GamePlayScene::start() {
 	else if (name_ == "stage03")
 	{
 		backManager->BossFlag(true);
-		float graundPos = (csvSize.y*CHIPSIZE-world_->GetScreenPlayerPos().y)*0.95f;
+		float graundPos = (csvSize.y*CHIPSIZE - world_->GetScreenPlayerPos().y)*0.8f;
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_1_TEX, TextureID::BACKSTAGE2_1_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_2_TEX, TextureID::BACKSTAGE2_2_TEX, graundPos, false, true);
 		backManager->SetBackGraund(TextureID::BACKSTAGE2_3_TEX, TextureID::BACKSTAGE2_3_TEX, graundPos, false, true);
@@ -180,6 +181,11 @@ void GamePlayScene::start() {
 void GamePlayScene::update() {
 	//keeper_->addJumpCount(1);
 	//world_->keeper_->addDamageCount(1);
+
+	//この関数はワールドアップデート前に呼んでね
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::Y)) {
+		world_->SetScroolPos(Vector2::Zero);
+	}
 
 	if (isClearStage_) {
 		clear_.start(name_);
