@@ -18,6 +18,7 @@ SceneDataKeeper::SceneDataKeeper() :currentSceneName_("stage00"),previousSceneNa
 	for (auto& i : datas_) {
 		i.second.chargeTime_ = 0;
 		i.second.comboCount_.clear();
+		i.second.comboCount_.resize(6,0);
 		i.second.currentCombo_ = 0;
 		i.second.damageCount_ = 0;
 		i.second.enemyCount_ = 0;
@@ -110,7 +111,7 @@ void SceneDataKeeper::addCount(int adds) {
 	keepItemCount_ -= adds;
 	datas_[currentSceneName_].itemCount_ += adds;
 	if (datas_[currentSceneName_].itemCount_ < 0) {
-		keepItemCount_ -= datas_[currentSceneName_].itemCount_;
+		keepItemCount_ += adds-datas_[currentSceneName_].itemCount_;
 		datas_[currentSceneName_].itemCount_ = 0;
 	}
 }

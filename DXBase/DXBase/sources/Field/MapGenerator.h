@@ -198,6 +198,12 @@ public:
 						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}
+				if (reader_.geti(rowN, colN) == 13) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					continue;
+				}
+
 				if (reader_.geti(rowN, colN) == 15) {
 					world_->addActor(ActorGroup::Item, std::make_shared<BadItems>(
 						world_, Vector2(colN*CHIPSIZE + 48, rowN*CHIPSIZE + 48)));

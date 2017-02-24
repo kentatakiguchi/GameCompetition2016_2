@@ -32,6 +32,9 @@ Door::~Door()
 
 void Door::onUpdate(float deltaTime)
 {
+	if (mCloseFlag)body_.enabled(true);
+	if (mOpenFlag)body_.enabled(false);
+
 	if (mDoorFlag) {
 		mCloseFlag = false;
 		mLoadAnim.change_param(0, 1.0f);

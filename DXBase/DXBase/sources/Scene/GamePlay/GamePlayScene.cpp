@@ -290,6 +290,9 @@ void GamePlayScene::draw() const {
 	if (previousScoreKeeper_ < keeper_->GetItemCount()) {
 		starScoreSize = 1.5f;
 	}
+	if (previousScoreKeeper_ > keeper_->GetItemCount()) {
+		starScoreSize = 0.5f;
+	}
 	for (int i = 0; i < (int)drawNumberList.size(); i++) {
 		DrawRotaGraph2((int)((SCREEN_SIZE.x)
 			- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*(i+1))+ (ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x/2), 50+(ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).y/2), ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x/2, ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).y/2, starScoreSize,0, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);

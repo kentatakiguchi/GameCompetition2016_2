@@ -59,7 +59,7 @@ public:
 		body_.enabled(false);
 		ismyHit_ = true;
 		ChangeNextPlayVolumeSoundMem(180, ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN));
-		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETCOIN), DX_PLAYTYPE_BACK);
+		PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_GETMINUSCOIN), DX_PLAYTYPE_BACK);
 		world_->GetKeeper()->addKeepCount(-10);
 	}
 	int spriteID_;

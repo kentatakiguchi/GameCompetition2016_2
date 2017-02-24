@@ -77,7 +77,7 @@ void BossStage::start() {
 	door_ = dynamic_cast<Door*>(world_->findActor("Door").get());
 
 	world_->PlayerNotMove(true);
-	world_->CollisitionOffOn(false);
+	//world_->CollisitionOffOn(false);
 	world_->clear(false);
 	door_->DoorOpen(true);
 
@@ -102,7 +102,8 @@ void BossStage::start() {
 	myStarCount_ += keeper_->GetItemCount("stage03");
 	myStarCount_ += keeper_->GetItemCount("stage04");
 
-	
+	world_->CollisitionOffOn(true);
+
 }
 
 void BossStage::update() {
@@ -135,7 +136,6 @@ void BossStage::update() {
 		else if (boss_->isMovePosition() && mIvemtTime >= 17.0f) {
 			boss_->setIsBattle(true);
 			world_->PlayerNotMove(false);
-			world_->CollisitionOffOn(true);
 		}
 	}
 

@@ -57,6 +57,7 @@ public:
 	}
 	void clear() {
 		datas_[currentSceneName_].itemCount_ += keepItemCount_;
+		datas_[currentSceneName_].itemCount_ = max(datas_[currentSceneName_].itemCount_,0);
 		keepItemCount_ = 0;
 		if (comboCount_ >= 30) {
 			datas_[currentSceneName_].itemCount_ += ((comboCount_*0.1f) * (2 * 3));
@@ -239,12 +240,12 @@ public:
 		if (stage == "") {
 			for (auto i : datas_) {
 				datas_[i.first] = StageDatas();
-				datas_[i.first].comboCount_.resize(6);
+				datas_[i.first].comboCount_.resize(6,0);
 			}
 		}
 		else {
 			datas_[stage] = StageDatas();
-			datas_[stage].comboCount_.resize(6);
+			datas_[stage].comboCount_.resize(6,0);
 		}
 	}
 	int GetStageScore() {
