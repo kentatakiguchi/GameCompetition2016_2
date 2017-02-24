@@ -54,5 +54,8 @@ private:
 	std::vector<TextureID> numberTexes_;
 
 	TutorialManager tutorialMgr_;
+
+	int previousScoreKeeper_;
+	int currentScoreKeeper_;
 };
 

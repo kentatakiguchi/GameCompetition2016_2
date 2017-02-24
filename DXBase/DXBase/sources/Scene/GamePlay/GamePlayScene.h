@@ -51,6 +51,8 @@ private:
 	int stageNum_;
 	std::vector<TextureID> numberTexes_;
 
+	int previousScoreKeeper_;
+	int currentScoreKeeper_;
 };
 
 #endif

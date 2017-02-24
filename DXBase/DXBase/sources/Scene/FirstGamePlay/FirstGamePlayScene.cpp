@@ -114,6 +114,8 @@ void FirstGamePlayScene::start() {
 	tutorialMgr_.load_csv("./resources/file/stage00_come.csv");
 	tutorialMgr_.init();
 	keeper_->start();
+	previousScoreKeeper_ = 0;
+	currentScoreKeeper_ = 0;
 }
 
 void FirstGamePlayScene::update() {
@@ -189,6 +191,8 @@ void FirstGamePlayScene::update() {
 	if (tutorialMgr_.isTutorialEnd()) {
 		isClearStage_ = true;
 	}
+	previousScoreKeeper_ = currentScoreKeeper_;
+	currentScoreKeeper_ = keeper_->GetItemCount();
 }
 
 void FirstGamePlayScene::draw() const {
@@ -227,15 +231,20 @@ void FirstGamePlayScene::draw() const {
 		baseNum = (int)(baseNum*0.1);
 		posCount++;
 	}
+	float starScoreSize = 1;
+	if (previousScoreKeeper_ < keeper_->GetItemCount()) {
+		starScoreSize = 1.5f;
+	}
 	for (int i = 0; i < (int)drawNumberList.size(); i++) {
-		DrawGraph((int)((SCREEN_SIZE.x)
-			- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*(i + 1)), 50, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
+		DrawRotaGraph2((int)((SCREEN_SIZE.x)
+			- ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x*(i + 1)) + (ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x / 2), 50 + (ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).y / 2), ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).x / 2, ResourceLoader::GetInstance().GetTextureSize(numberTexes_[drawNumberList[i]]).y / 2, starScoreSize, 0, ResourceLoader::GetInstance().getTextureID(numberTexes_[drawNumberList[i]]), TRUE);
 	}
 
 	int ans = (int)log10(keeper_->GetItemCount()) + 1;
 	if (keeper_->GetItemCount() == 0)ans = 1;
 
-	DrawGraph((int)(SCREEN_SIZE.x - (ResourceLoader::GetInstance().GetTextureSize(TextureID::NUMBER_ZERO_TEX).x)*(ans + 1)), 50, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
+	DrawRotaGraph2((int)(SCREEN_SIZE.x - (ResourceLoader::GetInstance().GetTextureSize(TextureID::NUMBER_ZERO_TEX).x)*(ans + 1)) + (ResourceLoader::GetInstance().GetTextureSize(TextureID::NUMBER_ZERO_TEX).x / 2), 50 + (ResourceLoader::GetInstance().GetTextureSize(TextureID::NUMBER_ZERO_TEX).y / 2), (ResourceLoader::GetInstance().GetTextureSize(TextureID::NUMBER_ZERO_TEX).x / 2), (ResourceLoader::GetInstance().GetTextureSize(TextureID::NUMBER_ZERO_TEX).y / 2), starScoreSize, 0, ResourceLoader::GetInstance().getTextureID(TextureID::ITEM_TEX), TRUE);
+
 	//‚±‚±‚Ü‚ÅƒAƒCƒeƒ€”‚Ì•`‰æ
 	if (keeper_->getComboLimit() > 0)drawCombo();
 
