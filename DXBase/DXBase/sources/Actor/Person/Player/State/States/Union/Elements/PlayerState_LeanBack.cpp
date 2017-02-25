@@ -34,6 +34,4 @@ void PlayerState_LeanBack::end(){
 	retty_->reset_enemy();
 }
 
-void PlayerState_LeanBack::key_input(float deltaTime){}
-
-void PlayerState_LeanBack::pad_input(float deltaTime){}
+void PlayerState_LeanBack::input(float deltaTime){}

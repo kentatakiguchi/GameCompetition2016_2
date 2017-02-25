@@ -15,16 +15,7 @@ void PlayerState_HoldBoth::update(float deltaTime) {}
 
 void PlayerState_HoldBoth::end() {}
 
-void PlayerState_HoldBoth::key_input(float deltaTime){
-	if (!InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT)) {
-		change(PlayerState_Enum_Union::HOLD_BEGIN, ActionType::Right);
-	}
-	if (!InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT)) {
-		change(PlayerState_Enum_Union::HOLD_BEGIN, ActionType::Left);
-	}
-}
-
-void PlayerState_HoldBoth::pad_input(float deltaTime){
+void PlayerState_HoldBoth::input(float deltaTime){
 	if (!InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1)) {
 		change(PlayerState_Enum_Union::HOLD_BEGIN, ActionType::Right);
 	}

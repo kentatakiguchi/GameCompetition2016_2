@@ -18,6 +18,4 @@ void PlayerState_EventTime::end(){
 	retty_->reset_enemy();
 }
 
-void PlayerState_EventTime::key_input(float deltaTime){}
-
-void PlayerState_EventTime::pad_input(float deltaTime){}
+void PlayerState_EventTime::input(float deltaTime){}

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Base/PlayerState_HoldBase.h"
+#include "Base/PlayerState_HoldBase_Wall.h"
 
-class PlayerState_HoldItem : public PlayerState_HoldBase {
+class PlayerState_HoldItem : public PlayerState_HoldBase_Wall {
 public:
 	// コンストラクタ
 	PlayerState_HoldItem(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty);
@@ -13,15 +13,6 @@ private:
 	virtual void onUpdate(float deltaTime)override;
 	// 終了時処理
 	virtual void onEnd()override;
-	// キー入力処理
-	virtual void onKeyInput(float deltaTime)override;
 	// パッド入力処理
-	virtual void onPadInput(float deltaTime)override;
-	// 移動処理
-	virtual void onMove(float deltaTime)override;
-private:
-	// プレイヤーポインタ
-	PlayerBodyPtr holdBody_;
-	// プレイヤーポインタ
-	PlayerBodyPtr moveBody_;
+	virtual void onInput(float deltaTime)override;
 };

@@ -24,8 +24,6 @@ void PlayerState_HoldInit::onUpdate(float deltaTime){
 
 void PlayerState_HoldInit::onEnd(){}
 
-void PlayerState_HoldInit::onKeyInput(float deltaTime){}
-
-void PlayerState_HoldInit::onPadInput(float deltaTime){}
+void PlayerState_HoldInit::onInput(float deltaTime){}
 
 void PlayerState_HoldInit::onMove(float deltaTime){}

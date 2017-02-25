@@ -2,7 +2,7 @@
 
 #include "../Base/PlayerState_HoldBase.h"
 
-// プレイヤー片方くっつき状態
+// プレイヤー空中でのくっつき状態ベース
 class PlayerState_HoldBase_Air : public virtual PlayerState_HoldBase {
 public:
 	// コンストラクタ

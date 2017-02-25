@@ -42,6 +42,8 @@ public:
 protected:
 	bool is_butty() const;
 	bool is_retty() const;
+	// d—Í
+	Vector2 gravity(float deltaTime) const;
 private:
 	// ƒL[“ü—Íˆ—
 	virtual void key_input(float deltaTime);

@@ -22,9 +22,7 @@ void PlayerState_Union::common_init(Actor& actor, const StateElement& element){
 	cntr_ = dynamic_cast<PlayerConnector*>(&actor);
 }
 
-void PlayerState_Union::input(float deltaTime){
-	InputMgr::GetInstance().isConnectGamePad() ? pad_input(deltaTime) : key_input(deltaTime);
-}
+void PlayerState_Union::input(float deltaTime){}
 
 void PlayerState_Union::common_update(float deltaTime){
 	butty_->position() += butty_->hit_vector();
@@ -63,9 +61,9 @@ void PlayerState_Union::change(const PlayerState_Enum_Union & id, const ActionTy
 	change(StateElement(static_cast<int>(id), type));
 }
 
-void PlayerState_Union::key_input(float deltaTime){}
-
-void PlayerState_Union::pad_input(float deltaTime){}
+//void PlayerState_Union::key_input(float deltaTime){}
+//
+//void PlayerState_Union::pad_input(float deltaTime){}
 
 // キー系フラグ
 bool PlayerState_Union::holdable_keyR(){
@@ -128,4 +126,8 @@ Vector2 PlayerState_Union::clamp(const Vector2 &position, int pointIndex) {
 bool PlayerState_Union::isOnFloor() {
 	return  (butty_->getOpponent() == HitOpponent::FLOOR_TOP || butty_->getOpponent() == HitOpponent::FLOOR_HIT) &&
 			(retty_->getOpponent() == HitOpponent::FLOOR_TOP || retty_->getOpponent() == HitOpponent::FLOOR_HIT);
+}
+
+Vector2 PlayerState_Union::gravity(float deltaTime) const{
+	return 	Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
 }

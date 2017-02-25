@@ -16,10 +16,8 @@ private:
 	virtual void collide(const Actor & other) override {}
 	// 終了時処理
 	virtual void end() override;
-	// キー入力処理
-	virtual void key_input(float deltaTime) override;
-	// パッド入力処理
-	virtual void pad_input(float deltaTime) override;
+	// 入力処理
+	virtual void input(float deltaTime) override;
 private:
 	// 移動処理
 	void move(float deltaTime);

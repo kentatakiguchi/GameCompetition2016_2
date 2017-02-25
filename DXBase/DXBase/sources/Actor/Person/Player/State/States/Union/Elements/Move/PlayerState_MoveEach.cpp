@@ -39,27 +39,8 @@ void PlayerState_MoveEach::update(float deltaTime){
 // 終了時処理
 void PlayerState_MoveEach::end(){}
 
-// キー入力処理
-void PlayerState_MoveEach::key_input(float deltaTime){
-	// buttyの入力による反転処理
-	if (InputMgr::GetInstance().KeyVector(element_.type_).x > 0) manuBody_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
-	if (InputMgr::GetInstance().KeyVector(element_.type_).x < 0) manuBody_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
-
-	// 入力による移動処理
-	manuBody_->position() += InputMgr::GetInstance().KeyVector(element_.type_).Horizontal() * manuBody_->velocity() * PLAYER_SPEED * manuBody_->dump() * deltaTime * static_cast<float>(GetRefreshRate());
-
-	// ジャンプ処理
-	if (jump_key()) change(PlayerState_Enum_Union::JUMP);
-	// 移動入力がない場合IDLEに変更
-	else if (!move_keyR() && !move_keyL()) change(PlayerState_Enum_Union::IDLE);
-	// 両移動キーが入力された場合状態をMOVE_BOTHに変更
-	else if (InputMgr::GetInstance().KeyVectorR().Length() > 0 && InputMgr::GetInstance().KeyVectorL().Length() > 0)change(PlayerState_Enum_Union::MOVE_BOTH);
-	else if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
-	else if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
-}
-
 // パッド入力処理
-void PlayerState_MoveEach::pad_input(float deltaTime){
+void PlayerState_MoveEach::input(float deltaTime){
 	// buttyの入力による反転処理
 	if (InputMgr::GetInstance().PadVector(element_.type_).x > 0) manuBody_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
 	if (InputMgr::GetInstance().PadVector(element_.type_).x < 0) manuBody_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
@@ -79,12 +60,10 @@ void PlayerState_MoveEach::pad_input(float deltaTime){
 
 // 移動処理
 void PlayerState_MoveEach::move(float deltaTime) {
-	// 重力の計算
-	Vector2 gravity = Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());;
 	// buttyに重力を掛ける
-	butty_->position() += gravity * butty_->velocity();
+	butty_->position() += gravity(deltaTime) * butty_->velocity();
 	// rettyに重力を掛ける
-	retty_->position() += gravity * retty_->velocity();
+	retty_->position() += gravity(deltaTime) * retty_->velocity();
 
 	// buttyの追跡計算
 	if (element_.type_ == ActionType::Right) chase(retty_->position(), PLAYER_CNTR_DIV_NUM - 1);

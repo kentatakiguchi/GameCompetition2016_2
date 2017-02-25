@@ -1,7 +1,7 @@
 #include "PlayerState_Single.h"
 
 #include "../../../../../../Input/InputMgr.h"
-
+#include "../../../../../../Define.h"
 #include "../../../Effect/PlayerEffectObj.h"
 
 // コンストラクタ
@@ -65,6 +65,10 @@ bool PlayerState_Single::is_butty() const{
 
 bool PlayerState_Single::is_retty()const {
 	return keys_.right == KeyCode::D;
+}
+
+Vector2 PlayerState_Single::gravity(float deltaTime) const{
+	return 	Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
 }
 
 void PlayerState_Single::key_input(float deltaTime){}

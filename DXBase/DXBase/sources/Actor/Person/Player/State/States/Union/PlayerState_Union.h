@@ -31,10 +31,6 @@ public:
 private:
 	// ステートの変更処理
 	virtual void change(const StateElement& element) override;
-	// キー入力処理
-	virtual void key_input(float deltaTime);
-	// パッド入力処理
-	virtual void pad_input(float deltaTime);
 protected:
 	// ステートの変更処理
 	void change(const PlayerState_Enum_Union& id, const ActionType& type = ActionType::None);
@@ -58,6 +54,9 @@ protected:
 	Vector2 clamp(const Vector2 &position, int pointIndex);
 
 	bool isOnFloor();
+
+	// 重力
+	Vector2 gravity(float deltaTime) const;
 protected:
 	// ステートの要素
 	StateElement element_;

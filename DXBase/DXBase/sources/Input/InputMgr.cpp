@@ -105,8 +105,10 @@ void InputMgr::RegistKeyCode(){
 	ButtonName[Buttons::BUTTON_RIGHT] = PAD_INPUT_RIGHT;
 	ButtonName[Buttons::BUTTON_LEFT] = PAD_INPUT_LEFT;
 	//ボタンとキーボードの関連付け
-	ConnectInputName[BUTTON_L1] = KeyCode::L;
-	ConnectInputName[BUTTON_R1] = KeyCode::R;
+	ConnectInputName[BUTTON_L1] = KeyCode::L_SHIFT;
+	ConnectInputName[BUTTON_R1] = KeyCode::R_SHIFT;
+	ConnectInputName[BUTTON_L2] = KeyCode::Q;
+	ConnectInputName[BUTTON_R2] = KeyCode::L;
 	ConnectInputName[BUTTON_CIRCLE] = KeyCode::SPACE;
 	ConnectInputName[BUTTON_CROSS] = KeyCode::X;
 	ConnectInputName[BUTTON_START] = KeyCode::T;
@@ -157,7 +159,7 @@ bool InputMgr::IsButtonDown(Buttons handle)
 
 bool InputMgr::IsButtonOn(Buttons handle)
 {
-	if ((previous_button_state&ButtonName[handle]) != 0 && (current_button_state&ButtonName[handle]) != 0) {
+	if ((previous_button_state & ButtonName[handle]) != 0 && (current_button_state & ButtonName[handle]) != 0) {
 		return true;
 	}
 	else {
@@ -167,7 +169,7 @@ bool InputMgr::IsButtonOn(Buttons handle)
 
 bool InputMgr::IsButtonUp(Buttons handle)
 {
-	if ((previous_button_state&ButtonName[handle]) != 0 && (current_button_state&ButtonName[handle]) == 0) {
+	if ((previous_button_state & ButtonName[handle]) != 0 && (current_button_state & ButtonName[handle]) == 0) {
 		return true;
 	}
 	else {
@@ -187,7 +189,9 @@ Vector2 InputMgr::AnalogPadVectorL(){
 	int horizontal;
 	int vertical;
 	GetJoypadAnalogInput(&horizontal, &vertical, DX_INPUT_PAD1);
-	return Vector2(static_cast<float>(horizontal), static_cast<float>(vertical)) / 1000.0f;
+	Vector2 input = Vector2(static_cast<float>(horizontal), static_cast<float>(vertical)) / 1000.0f;
+	if (input.LengthSquared() > 0) return input;
+	return KeyVectorL();
 }
 
 Vector2 InputMgr::AnalogPadVectorR(){
@@ -200,7 +204,9 @@ Vector2 InputMgr::AnalogPadVectorR(){
 	horizontal = joy.Z;
 	vertical = joy.Rz;
 
-	return Vector2(static_cast<float>(horizontal), static_cast<float>(vertical)) / 1000.0f;
+	Vector2 input = Vector2(static_cast<float>(horizontal), static_cast<float>(vertical)) / 1000.0f;
+	if (input.LengthSquared() > 0) return input;
+	return KeyVectorR();
 }
 
 Vector2 InputMgr::DirectPadVector() {

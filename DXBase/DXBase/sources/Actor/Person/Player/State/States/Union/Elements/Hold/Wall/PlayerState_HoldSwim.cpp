@@ -6,16 +6,27 @@ PlayerState_HoldSwim::PlayerState_HoldSwim(const PlayerBodyPtr & butty, const Pl
 	PlayerState_HoldBase_Wall(butty, retty),
 	PlayerState_HoldBase_Swim(butty, retty) {}
 
-// キー入力処理
-void PlayerState_HoldSwim::onKeyInput(float deltaTime){
-	PlayerState_HoldBase_Swim::onKeyInput(deltaTime);
-	PlayerState_HoldBase_Wall::onKeyInput(deltaTime);
+void PlayerState_HoldSwim::onInit(){
+	PlayerState_HoldBase_Swim::onInit();
+
+}
+
+void PlayerState_HoldSwim::onUpdate(float deltaTime){
+	PlayerState_HoldBase_Wall::onUpdate(deltaTime);
+}
+
+void PlayerState_HoldSwim::onEnd(){
+	PlayerState_HoldBase_Swim::onEnd();
 }
 
 // パッド入力処理
-void PlayerState_HoldSwim::onPadInput(float deltaTime){
-	PlayerState_HoldBase_Swim::onPadInput(deltaTime);
-	PlayerState_HoldBase_Wall::onPadInput(deltaTime);
+void PlayerState_HoldSwim::onInput(float deltaTime){
+	PlayerState_HoldBase_Swim::onInput(deltaTime);
+	PlayerState_HoldBase_Wall::onInput(deltaTime);
+}
+
+void PlayerState_HoldSwim::onMove(float deltaTime){
+	PlayerState_HoldBase_Wall::onMove(deltaTime);
 }
 
 

@@ -74,8 +74,7 @@ void PlayerState_Single_Idle::pad_input(float deltaTime) {
 
 void PlayerState_Single_Idle::move(float deltaTime){
 	body_->position().x = MathHelper::Lerp(body_->position().x, target_.x, 0.2f);
-	Vector2 gravity = Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
-	body_->position() += gravity;
+	body_->position() += gravity(deltaTime);
 }
 
 

@@ -1,30 +1,24 @@
 #include "PlayerState_HoldBase_Swim.h"
 
-#include "../../../../../../../../../Define.h"
 #include "../../../../../../../../../Input/InputMgr.h"
 
+// コンストラクタ
 PlayerState_HoldBase_Swim::PlayerState_HoldBase_Swim(const PlayerBodyPtr & butty, const PlayerBodyPtr & retty) : PlayerState_HoldBase(butty, retty) {}
 
+// 状態固有の初期化
 void PlayerState_HoldBase_Swim::onInit(){
+	// くっつき移動中効果音再生
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_NOBI), DX_PLAYTYPE_LOOP);
 }
 
+// 終了時処理
 void PlayerState_HoldBase_Swim::onEnd(){
+	// くっつき移動中効果音停止
 	StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_NOBI));
 }
 
-void PlayerState_HoldBase_Swim::onKeyInput(float deltaTime){
-	// 移動の入力がなくなった場合IDLE状態に遷移
-	if ((!InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && element_.type_ == ActionType::Left) ||
-		(!InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && element_.type_ == ActionType::Right)) {
-		change(PlayerState_Enum_Union::IDLE);
-	}
-}
-
-void PlayerState_HoldBase_Swim::onPadInput(float deltaTime){
-	// 移動の入力がなくなった場合IDLE状態に遷移
-	if ((!InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && element_.type_ == ActionType::Left) ||
-		(!InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_L1) && element_.type_ == ActionType::Right)) {
-		change(PlayerState_Enum_Union::IDLE);
-	}
+// パッド入力処理
+void PlayerState_HoldBase_Swim::onInput(float deltaTime){
+	// くっつきボタンが離れた場合IDLE状態に遷移
+	if (hold_released()) change(PlayerState_Enum_Union::IDLE);
 }

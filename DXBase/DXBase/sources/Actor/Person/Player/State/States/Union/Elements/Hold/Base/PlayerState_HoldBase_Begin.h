@@ -2,7 +2,7 @@
 
 #include "../Base/PlayerState_HoldBase.h"
 
-// プレイヤー伸び最大状態
+// プレイヤー伸び始めの状態
 class PlayerState_HoldBase_Begin : public virtual PlayerState_HoldBase {
 public:
 	// コンストラクタ
@@ -12,8 +12,6 @@ protected:
 	virtual void onInit() override;
 	// 終了時処理
 	virtual void onEnd()override;
-	// キー入力処理
-	virtual void onKeyInput(float deltaTime)override;
 	// パッド入力処理
-	virtual void onPadInput(float deltaTime)override;
+	virtual void onInput(float deltaTime)override;
 };

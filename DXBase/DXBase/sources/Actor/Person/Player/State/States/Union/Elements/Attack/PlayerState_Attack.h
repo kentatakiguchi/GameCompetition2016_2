@@ -14,8 +14,7 @@ private:
 	virtual void update(float deltaTime) override;
 	virtual void collide(const Actor & other) override;
 	virtual void end() override;
-	virtual void key_input(float deltaTime) override;
-	virtual void pad_input(float deltaTime) override;
+	virtual void input(float deltaTime) override;
 private:
 	Vector2 dir_;
 	Vector2 launch_dir_;

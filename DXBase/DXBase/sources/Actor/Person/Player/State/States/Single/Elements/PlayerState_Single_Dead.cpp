@@ -11,9 +11,7 @@ void PlayerState_Single_Dead::unique_init(){
 void PlayerState_Single_Dead::update(float deltaTime){
 	if (body_->animation().end_anim())body_->dead();
 
-	Vector2 gravity = Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
-
-	body_->position() += gravity;
+	body_->position() += gravity(deltaTime);
 }
 
 void PlayerState_Single_Dead::end(){}

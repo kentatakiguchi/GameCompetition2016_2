@@ -21,33 +21,8 @@ void PlayerState_MoveBoth::update(float deltaTime){
 // 終了時処理
 void PlayerState_MoveBoth::end(){}
 
-// キー入力処理
-void PlayerState_MoveBoth::key_input(float deltaTime){
-	// buttyの入力による反転処理
-	if (InputMgr::GetInstance().KeyVectorR().x > 0) butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
-	if (InputMgr::GetInstance().KeyVectorR().x < 0) butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
-
-	// rettyの入力による反転処理
-	if (InputMgr::GetInstance().KeyVectorL().x > 0) retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
-	if (InputMgr::GetInstance().KeyVectorL().x < 0) retty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
-	
-	// 入力による移動処理
-	butty_->position() += InputMgr::GetInstance().KeyVectorR().Horizontal() * speed_b(deltaTime);
-	retty_->position() += InputMgr::GetInstance().KeyVectorL().Horizontal() * speed_r(deltaTime);
-
-	// ジャンプ処理
-	if (jump_key()) change(PlayerState_Enum_Union::JUMP);
-	// 片方の入力がない場合MOVEに変更
-	//else if (!move_keyR()) change(PlayerState_Enum_Union::MOVE_L, ActionType::Left);
-	//else if (!move_keyL()) change(PlayerState_Enum_Union::MOVE_R, ActionType::Right);
-	else if (!move_keyR()) change(PlayerState_Enum_Union::MOVE, ActionType::Left);
-	else if (!move_keyL()) change(PlayerState_Enum_Union::MOVE, ActionType::Right);
-	else if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
-	else if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
-}
-
-// パッド入力処理
-void PlayerState_MoveBoth::pad_input(float deltaTime) {
+// 入力処理
+void PlayerState_MoveBoth::input(float deltaTime) {
 	// buttyの入力による反転処理
 	if (InputMgr::GetInstance().AnalogPadVectorR().x > 0) butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Right);
 	if (InputMgr::GetInstance().AnalogPadVectorR().x < 0) butty_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
@@ -74,12 +49,10 @@ void PlayerState_MoveBoth::pad_input(float deltaTime) {
 
 // 移動処理
 void PlayerState_MoveBoth::move(float deltaTime){
-	// 重力の計算
-	Vector2 gravity = Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
 	// buttyに重力を掛ける
-	butty_->position() += gravity * butty_->velocity();
+	butty_->position() += gravity(deltaTime) * butty_->velocity();
 	// rettyに重力を掛ける
-	retty_->position() += gravity * retty_->velocity();
+	retty_->position() += gravity(deltaTime) * retty_->velocity();
 	// buttyの移動制限
 	butty_->position() = clamp(butty_->position(), 0);
 	// rettyの移動制限

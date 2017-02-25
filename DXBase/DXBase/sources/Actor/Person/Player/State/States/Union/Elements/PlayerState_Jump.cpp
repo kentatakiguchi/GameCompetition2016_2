@@ -38,12 +38,7 @@ void PlayerState_Jump::end(){
 	retty_->reset_slope();
 }
 
-void PlayerState_Jump::key_input(float deltaTime){
-	butty_->position() += InputMgr::GetInstance().KeyVectorR().Horizontal() / 2 * speed_b(deltaTime);
-	retty_->position() += InputMgr::GetInstance().KeyVectorL().Horizontal() / 2 * speed_r(deltaTime);
-}
-
-void PlayerState_Jump::pad_input(float deltaTime){
+void PlayerState_Jump::input(float deltaTime){
 	butty_->position() += InputMgr::GetInstance().AnalogPadVectorR().Horizontal() / 2 * speed_b(deltaTime);
 	retty_->position() += InputMgr::GetInstance().AnalogPadVectorL().Horizontal() / 2 * speed_r(deltaTime);
 }

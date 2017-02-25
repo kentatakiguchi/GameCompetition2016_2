@@ -12,8 +12,6 @@ protected:
 	virtual void onInit() override;
 	// 終了時処理
 	virtual void onEnd()override;
-	// キー入力処理
-	virtual void onKeyInput(float deltaTime)override;
 	// パッド入力処理
-	virtual void onPadInput(float deltaTime)override;
+	virtual void onInput(float deltaTime)override;
 };

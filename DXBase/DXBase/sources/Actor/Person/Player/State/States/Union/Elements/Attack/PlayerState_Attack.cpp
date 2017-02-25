@@ -88,17 +88,7 @@ void PlayerState_Attack::end(){
 	retty_->reset_enemy();
 }
 
-void PlayerState_Attack::key_input(float deltaTime){
-	if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
-	if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
-
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && element_.type_ == ActionType::Left) change(PlayerState_Enum_Union::HOLD_AIR, element_.type_);
-
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && element_.type_ == ActionType::Right) change(PlayerState_Enum_Union::HOLD_AIR, element_.type_);
-
-}
-
-void PlayerState_Attack::pad_input(float deltaTime){
+void PlayerState_Attack::input(float deltaTime){
 	if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
 	if (holdable_padL()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
 

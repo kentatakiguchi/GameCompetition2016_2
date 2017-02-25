@@ -27,24 +27,8 @@ void PlayerState_Idle::update(float deltaTime) {
 // 終了時処理
 void PlayerState_Idle::end(){}
 
-// キー入力処理
-void PlayerState_Idle::key_input(float deltaTime){
-	// ジャンプキー入力時にジャンプ状態に変更
-	if (jump_key()) change(PlayerState_Enum_Union::JUMP);
-
-	// butty移動キー入力時にbutty移動状態に変更
-	else if (move_keyR()) change(PlayerState_Enum_Union::MOVE, ActionType::Right);
-	// retty移動キー入力時にretty移動状態に変更
-	else if (move_keyL()) change(PlayerState_Enum_Union::MOVE, ActionType::Left );
-
-	// buttyくっつき可能時に右シフトキーでくっつき状態に変更
-	else if (holdable_keyR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);
-	// rettyくっつき可能時に左シフトキーでくっつき状態に変更
-	else if (holdable_keyL()) change(PlayerState_Enum_Union::HOLD, ActionType::Right);
-}
-
-// パッド入力処理
-void PlayerState_Idle::pad_input(float deltaTime){
+// 入力処理
+void PlayerState_Idle::input(float deltaTime){
 	// ジャンプボタン入力時にジャンプ状態に変更
 	if (jump_pad()) change(PlayerState_Enum_Union::JUMP);
 
@@ -61,12 +45,10 @@ void PlayerState_Idle::pad_input(float deltaTime){
 
 // 移動処理
 void PlayerState_Idle::move(float deltaTime) {
-	// 重力の計算
-	Vector2 gravity = Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
 	// buttyに重力を掛ける
-	butty_->position() += gravity * butty_->velocity();
+	butty_->position() += gravity(deltaTime) * butty_->velocity();
 	// rettyに重力を掛ける
-	retty_->position() += gravity * retty_->velocity();
+	retty_->position() += gravity(deltaTime) * retty_->velocity();
 
 	// buttyの追跡計算
 	chase(butty_->position(), 0);
