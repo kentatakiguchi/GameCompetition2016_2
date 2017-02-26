@@ -2,6 +2,8 @@
 
 #include "../../../../../../../Define.h"
 #include "../../../../Effect/PlayerEffectObj.h"
+#include "../../../../../../Base/ActorGroup.h"
+#include "../../../PlayerState_Enum.h"
 
 PlayerState_Single_LeanBack::PlayerState_Single_LeanBack(const Keys& keys) :
 	PlayerState_Single(keys),
@@ -30,7 +32,7 @@ void PlayerState_Single_LeanBack::update(float deltaTime) {
 	dir_.y += 0.1f;
 	body_->position() += dir_ * body_->velocity() * power_ * deltaTime * static_cast<float>(GetRefreshRate());
 	if ((body_->getPosition().y > firstPos_.y || body_->getOpponent() == HitOpponent::FLOOR_TOP) && dir_.y > 0) {
-		change(StateElement((unsigned int)PlayerState_Enum_Single::IDLE));
+		request(StateElement((unsigned int)PlayerState_Enum_Single::IDLE));
 	}
 }
 

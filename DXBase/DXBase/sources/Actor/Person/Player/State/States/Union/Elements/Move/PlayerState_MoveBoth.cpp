@@ -38,8 +38,6 @@ void PlayerState_MoveBoth::input(float deltaTime) {
 	// ƒWƒƒƒ“ƒvˆ—
 	if (jump_pad()) change(PlayerState_Enum_Union::JUMP);
 	// •Ğ•û‚Ì“ü—Í‚ª‚È‚¢ê‡MOVE‚É•ÏX
-	//else if (!move_padR()) change(PlayerState_Enum_Union::MOVE_L, ActionType::Left);
-	//else if (!move_padL()) change(PlayerState_Enum_Union::MOVE_R, ActionType::Right);
 	else if (!move_padR()) change(PlayerState_Enum_Union::MOVE, ActionType::Left);
 	else if (!move_padL()) change(PlayerState_Enum_Union::MOVE, ActionType::Right);
 	else if (holdable_padR()) change(PlayerState_Enum_Union::HOLD, ActionType::Left);

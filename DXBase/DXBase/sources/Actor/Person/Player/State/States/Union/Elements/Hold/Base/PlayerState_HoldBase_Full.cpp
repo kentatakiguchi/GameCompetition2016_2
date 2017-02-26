@@ -3,6 +3,7 @@
 #include "../../../../../../../../../Input/InputMgr.h"
 
 #include "../../../../../../Effect/PlayerEffectObj.h"
+#include "../../../../../../../../Base/ActorGroup.h"
 
 // コンストラクタ
 PlayerState_HoldBase_Full::PlayerState_HoldBase_Full(const PlayerBodyPtr & butty, const PlayerBodyPtr & retty) : PlayerState_HoldBase(butty, retty) {}

@@ -6,10 +6,6 @@
 
 // コンストラクタ
 PlayerState_Single::PlayerState_Single(const Keys& keys) :
-	element_(-1),
-	next_element_(-1),
-	timer_(0),
-	isEnd_(false),
 	keys_(keys) {
 }
 
@@ -43,32 +39,12 @@ void PlayerState_Single::collide(const Actor & other) {}
 
 void PlayerState_Single::draw() const {}
 
-// ステートの変更処理
-void PlayerState_Single::change(const StateElement& element) {
-	next_element_ = element;
-	isEnd_ = true;
-}
-
-// ステートが終了したか否か
-bool PlayerState_Single::isEnd() {
-	return isEnd_;
-}
-
-// 次のステートの要素
-IState::StateElement PlayerState_Single::next() const {
-	return next_element_;
-}
-
 bool PlayerState_Single::is_butty() const{
 	return keys_.right == KeyCode::RIGHT;
 }
 
 bool PlayerState_Single::is_retty()const {
 	return keys_.right == KeyCode::D;
-}
-
-Vector2 PlayerState_Single::gravity(float deltaTime) const{
-	return 	Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
 }
 
 void PlayerState_Single::key_input(float deltaTime){}

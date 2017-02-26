@@ -2,6 +2,7 @@
 
 #include "../../../../../../../../Input/InputMgr.h"
 #include "../../../../../../../../Define.h"
+#include "../../../../../../../Base/ActorGroup.h"
 
 #include "../../../../../PlayerBodyCollider.h"
 

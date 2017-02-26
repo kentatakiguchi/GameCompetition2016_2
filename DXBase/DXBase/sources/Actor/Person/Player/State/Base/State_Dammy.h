@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IState.h"
+#include "State.h"
 
-class State_Dammy : public IState {
+class State_Dammy : public State {
 public:
 	// コンストラクタ
 	State_Dammy(){}
@@ -10,12 +10,6 @@ public:
 	virtual void common_init(Actor& actor, const StateElement& element) override {}
 	// 入力処理
 	virtual void input(float deltaTime) override {}
-	// ステートの変更処理
-	virtual void change(const StateElement& element) override {}
-	// ステートが終了したか否か
-	virtual bool isEnd() override { return false; }
-	// 次のステートの要素
-	virtual StateElement next() const override { return StateElement(-1); }
 	// 各状態独自の初期化
 	virtual void unique_init() override{}
 	// 更新処理

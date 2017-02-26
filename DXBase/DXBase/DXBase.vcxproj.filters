@@ -654,6 +654,9 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\Hold\Base\PlayerState_HoldBase_Begin.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Player\State\Base\State.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -1152,6 +1155,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\Move\PlayerState_MoveBoth.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Player\State\Base\State.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

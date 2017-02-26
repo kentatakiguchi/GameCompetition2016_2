@@ -237,6 +237,7 @@
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IState.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\IStatePtr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\PlayerStatePtr.h" />
+    <ClInclude Include="sources\Actor\Person\Player\State\Base\State.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\StateMgr.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Dead.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.h" />
@@ -430,6 +431,7 @@
     <ClCompile Include="sources\Actor\Person\Player\PlayerBodyPoint.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PlayerConnector.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\PuyoCollision.cpp" />
+    <ClCompile Include="sources\Actor\Person\Player\State\Base\State.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\Base\StateMgr.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Dead.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_LeanBack.cpp" />

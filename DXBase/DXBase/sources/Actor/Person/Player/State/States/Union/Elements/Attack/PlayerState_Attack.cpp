@@ -3,6 +3,7 @@
 #include "../../../../../../../../Define.h"
 #include "../../../../../../../../Input/InputMgr.h"
 #include "../../../../../../../../Scene/Base/SceneDataKeeper.h"
+#include "../../../../../../../Base/ActorGroup.h"
 
 #include <algorithm>
 

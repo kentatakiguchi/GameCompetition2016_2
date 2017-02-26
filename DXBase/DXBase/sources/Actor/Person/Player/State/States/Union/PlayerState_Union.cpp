@@ -5,13 +5,8 @@
 
 // コンストラクタ
 PlayerState_Union::PlayerState_Union(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) :
-	element_(-1),
-	next_element_(-1),
-	timer_(0),
-	isEnd_(false),
 	butty_(butty),
-	retty_(retty){
-}
+	retty_(retty){}
 
 // 全てのステートに共通する初期化処理
 void PlayerState_Union::common_init(Actor& actor, const StateElement& element){
@@ -40,30 +35,9 @@ void PlayerState_Union::collide(const Actor & other) {}
 // 描画処理
 void PlayerState_Union::draw() const {}
 
-// ステートの変更処理
-void PlayerState_Union::change(const StateElement& element){
-	if (element_.state_ == element.state_)return;
-	next_element_ = element;
-	isEnd_ = true;
-}
-
-// ステートが終了したか否か
-bool PlayerState_Union::isEnd(){
-	return isEnd_;
-}
-
-// 次のステートの要素
-IState::StateElement PlayerState_Union::next() const{
-	return next_element_;
-}
-
 void PlayerState_Union::change(const PlayerState_Enum_Union & id, const ActionType & type){
-	change(StateElement(static_cast<int>(id), type));
+	request(StateElement(static_cast<int>(id), type));
 }
-
-//void PlayerState_Union::key_input(float deltaTime){}
-//
-//void PlayerState_Union::pad_input(float deltaTime){}
 
 // キー系フラグ
 bool PlayerState_Union::holdable_keyR(){
@@ -128,6 +102,3 @@ bool PlayerState_Union::isOnFloor() {
 			(retty_->getOpponent() == HitOpponent::FLOOR_TOP || retty_->getOpponent() == HitOpponent::FLOOR_HIT);
 }
 
-Vector2 PlayerState_Union::gravity(float deltaTime) const{
-	return 	Vector2::Up * GRAVITY * deltaTime * static_cast<float>(GetRefreshRate());
-}

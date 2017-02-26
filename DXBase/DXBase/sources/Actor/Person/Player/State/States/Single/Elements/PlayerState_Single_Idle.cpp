@@ -4,7 +4,8 @@
 #include "../../../../../../../Input/InputMgr.h"
 #include "../../../../../../../Define.h"
 #include "../../../../../../../Scene/Base/SceneDataKeeper.h"
-
+#include "../../../../../../Base/ActorGroup.h"
+#include "../../../PlayerState_Enum.h"
 #include <algorithm>
 
 PlayerState_Single_Idle::PlayerState_Single_Idle(const Keys& keys) : PlayerState_Single(keys) {}
@@ -28,7 +29,7 @@ void PlayerState_Single_Idle::unique_init(){
 
 void PlayerState_Single_Idle::update(float deltaTime){
 	if (timer_ >= PLAYER_DEAD_LIMIT) {
-		change(StateElement((unsigned int)PlayerState_Enum_Single::DEAD));
+		request(StateElement((unsigned int)PlayerState_Enum_Single::DEAD));
 	}
 	if (static_cast<int>(timer_ * 60) % 60 == 0) {
 		body_->getWorld()->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(body_->getWorld(), body_->getPosition(), PlayerEffectID::SEP_MOVE, 5.0f, 0.5f));
@@ -43,7 +44,7 @@ void PlayerState_Single_Idle::update(float deltaTime){
 void PlayerState_Single_Idle::collide(const Actor & other){
 	if ((body_->getName() == "PlayerBody1" && other.getName() == "PlayerBody2Collider") ||
 		(body_->getName() == "PlayerBody2" && other.getName() == "PlayerBody1Collider")) {
-		change(StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
+		request(StateElement((unsigned int)PlayerState_Enum_Single::STAND_BY));
 	}
 }
 

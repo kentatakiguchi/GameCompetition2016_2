@@ -1,9 +1,10 @@
 #include "StageClearScene.h"
-#include"../../ResourceLoader/ResourceLoader.h"
+#include "../../ResourceLoader/ResourceLoader.h"
 #include "../../Actor/Person/Player/Player.h"
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
-#include"../../Actor/Person/Player/PlayerBody.h"
-#include"../../Actor/Base/ActorPtr.h"
+#include "../../Actor/Person/Player/PlayerBody.h"
+#include "../../Actor/Base/ActorPtr.h"
+#include "../../Actor/Base/ActorGroup.h"
 
 static const Vector2 BaseBossPosition = Vector2(-250, 500);
 static const int MaxRotate = 60;

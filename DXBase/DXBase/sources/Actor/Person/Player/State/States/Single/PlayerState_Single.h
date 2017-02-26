@@ -1,15 +1,13 @@
 #pragma once
 
-#include "../../Base/IState.h"
-
-#include "../../PlayerState_Enum.h"
+#include "../../Base/State.h"
 
 #include "../../../PlayerBody.h"
 
 #include "../../../../../../Input/KeyCode.h"
 
 // 各プレイヤーステートの基底クラス
-class PlayerState_Single : public IState {
+class PlayerState_Single : public State {
 public:
 	struct Keys {
 	public:
@@ -33,31 +31,15 @@ public:
 	virtual void collide(const Actor & other) override;
 	// 描画処理
 	virtual void draw()const override;
-	// ステートの変更処理
-	virtual void change(const StateElement& element) override;
-	// ステートが終了したか否か
-	virtual bool isEnd() override;
-	// 次のステートの要素
-	virtual StateElement next() const override;
 protected:
 	bool is_butty() const;
 	bool is_retty() const;
-	// 重力
-	Vector2 gravity(float deltaTime) const;
 private:
 	// キー入力処理
 	virtual void key_input(float deltaTime);
 	// パッド入力処理
 	virtual void pad_input(float deltaTime);
 protected:
-	// ステートの要素
-	StateElement element_;
-	// ステートの要素
-	StateElement next_element_;
-	// ステートが終了したか否か
-	bool isEnd_;
-	// タイマー
-	float timer_;
 	// プレイヤーポインタ
 	PlayerBody* body_;
 	// キー

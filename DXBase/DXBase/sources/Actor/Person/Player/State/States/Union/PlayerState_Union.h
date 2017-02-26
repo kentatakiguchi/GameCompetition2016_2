@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Base/IState.h"
+#include "../../Base/State.h"
 
 #include "../../PlayerState_Enum.h"
 
@@ -10,7 +10,7 @@
 #include "../../../PlayerBody.h"
 
 // 各プレイヤーステートの基底クラス
-class PlayerState_Union : public IState {
+class PlayerState_Union : public State {
 public:
 	// コンストラクタ
 	PlayerState_Union(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty);
@@ -24,13 +24,6 @@ public:
 	virtual void collide(const Actor & other) override;
 	// 描画処理
 	virtual void draw()const override;
-	// ステートが終了したか否か
-	virtual bool isEnd() override;
-	// 次のステートの要素
-	virtual StateElement next() const override;
-private:
-	// ステートの変更処理
-	virtual void change(const StateElement& element) override;
 protected:
 	// ステートの変更処理
 	void change(const PlayerState_Enum_Union& id, const ActionType& type = ActionType::None);
@@ -54,18 +47,7 @@ protected:
 	Vector2 clamp(const Vector2 &position, int pointIndex);
 
 	bool isOnFloor();
-
-	// 重力
-	Vector2 gravity(float deltaTime) const;
 protected:
-	// ステートの要素
-	StateElement element_;
-	// ステートの要素
-	StateElement next_element_;
-	// ステートが終了したか否か
-	bool isEnd_;
-	// タイマー
-	float timer_;
 	// ばね補正速度
 	Vector2 velocity_;
 	// プレイヤーポインタ

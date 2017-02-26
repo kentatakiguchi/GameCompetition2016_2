@@ -9,6 +9,7 @@
 #include "../../../Game/Time.h"
 
 #include "../../../Define.h"
+#include "../../Base/ActorGroup.h"
 
 #include <algorithm>
 
