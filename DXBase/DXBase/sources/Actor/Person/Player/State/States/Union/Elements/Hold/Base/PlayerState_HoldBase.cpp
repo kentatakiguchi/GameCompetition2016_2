@@ -59,8 +59,6 @@ void PlayerState_HoldBase::input(float deltaTime){
 // 移動処理
 void PlayerState_HoldBase::move(float deltaTime) {
 	
-	// 継承先の移動処理
-	onMove(deltaTime);
 
 	// プレイヤーの移動制限
 	if (element_.type_ == ActionType::Right) {
@@ -70,8 +68,8 @@ void PlayerState_HoldBase::move(float deltaTime) {
 		retty_->position() = clamp(retty_->position(), PLAYER_CNTR_DIV_NUM - 1);
 	}
 
-	retty_->reset_slope();
-	butty_->reset_slope();
+	// 継承先の移動処理
+	onMove(deltaTime);
 }
 
 // 移動速度計算

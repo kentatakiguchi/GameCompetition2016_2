@@ -34,9 +34,6 @@ void PlayerState_Single_LeanBack::update(float deltaTime) {
 	}
 }
 
-void PlayerState_Single_LeanBack::end(){
-	body_->reset_enemy();
-	body_->reset_slope();
-}
+void PlayerState_Single_LeanBack::end(){}
 
 

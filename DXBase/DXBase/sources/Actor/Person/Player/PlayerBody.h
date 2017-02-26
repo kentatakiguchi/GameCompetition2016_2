@@ -35,7 +35,6 @@ public:
 	HitOpponent hit_enemy();
 	void reset_opponent();
 	void reset_enemy();
-	void reset_slope();
 	float distance();
 	void set_partner(PlayerBodyPtr partner);
 	void set_hold_point();
@@ -55,7 +54,6 @@ private:
 	PlayerAnimation2D animation_;
 
 	Vector2 velocity_;
-	Vector2 slope_;
 	PlayerBodyPtr partner_;
 	HitOpponent hit_enemy_;
 

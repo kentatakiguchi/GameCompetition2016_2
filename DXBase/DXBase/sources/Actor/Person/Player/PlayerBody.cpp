@@ -184,10 +184,6 @@ void PlayerBody::commonCollide(Actor & other){
 		if (moves.y > 0)speed = 50.0f;
 		position_ = Vector2::Lerp(position_, (segCenter + positionPoint) + (targetVec * body_.GetCircle().component_.radius) + vec.Normalize() * speed, 0.7f);
 		//if (moves.y > 0)position_ = Vector2::Lerp(position_, position_ + vec.Normalize() * 50, 0.7f);
-
-		//if (moves.y > 0)slope_ = SLIP_SPEED * (positionPoint - targetPoint).Normalize();
-		//if (moves.y > 0)position_ += 40 * (positionPoint - targetPoint).Normalize();
-		//if (moves.y > 0)slope_ = SLIP_SPEED * segPoint;
 	}
 }
 
@@ -243,10 +239,6 @@ void PlayerBody::reset_opponent() {
 
 void PlayerBody::reset_enemy() {
 	hit_enemy_ = HitOpponent::NONE;
-}
-
-void PlayerBody::reset_slope() {
-	slope_ = Vector2::Zero;
 }
 
 float PlayerBody::distance() {
