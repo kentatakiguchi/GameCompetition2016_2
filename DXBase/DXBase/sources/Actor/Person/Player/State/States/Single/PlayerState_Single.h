@@ -34,11 +34,6 @@ public:
 protected:
 	bool is_butty() const;
 	bool is_retty() const;
-private:
-	// キー入力処理
-	virtual void key_input(float deltaTime);
-	// パッド入力処理
-	virtual void pad_input(float deltaTime);
 protected:
 	// プレイヤーポインタ
 	PlayerBody* body_;

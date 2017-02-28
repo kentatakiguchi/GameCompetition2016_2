@@ -39,27 +39,6 @@ void PlayerState_Union::change(const PlayerState_Enum_Union & id, const ActionTy
 	request(StateElement(static_cast<int>(id), type));
 }
 
-// キー系フラグ
-bool PlayerState_Union::holdable_keyR(){
-	return InputMgr::GetInstance().IsKeyOn(KeyCode::R_SHIFT) && butty_->getColliderOpponent() == HitOpponent::FLOOR_HIT;
-}
-
-bool PlayerState_Union::holdable_keyL() {
-	return InputMgr::GetInstance().IsKeyOn(KeyCode::L_SHIFT) && retty_->getColliderOpponent() == HitOpponent::FLOOR_HIT;
-}
-
-bool PlayerState_Union::move_keyR(){
-	return InputMgr::GetInstance().KeyVectorR().Length() > 0/* && butty_->able_to_jump()*/;
-}
-
-bool PlayerState_Union::move_keyL(){
-	return InputMgr::GetInstance().KeyVectorL().Length() > 0/* && retty_->able_to_jump()*/;
-}
-
-bool PlayerState_Union::jump_key(){
-	return InputMgr::GetInstance().KeyVectorR().y <= Vector2::Down.y && InputMgr::GetInstance().KeyVectorL().y <= Vector2::Down.y;
-}
-
 // パッド系フラグ
 bool PlayerState_Union::holdable_padR() {
 	return InputMgr::GetInstance().IsButtonOn(Buttons::BUTTON_R1) && butty_->getColliderOpponent() == HitOpponent::FLOOR_HIT;
@@ -82,11 +61,11 @@ bool PlayerState_Union::jump_pad() {
 }
 
 Vector2 PlayerState_Union::speed_b(float deltaTime){
-	return butty_->velocity() * PLAYER_SPEED * butty_->dump() * deltaTime * static_cast<float>(GetRefreshRate());
+	return butty_->velocity() * PLAYER_SPEED * butty_->dump() * time(deltaTime);
 }
 
 Vector2 PlayerState_Union::speed_r(float deltaTime){
-	return retty_->velocity() * PLAYER_SPEED * retty_->dump() * deltaTime * static_cast<float>(GetRefreshRate());
+	return retty_->velocity() * PLAYER_SPEED * retty_->dump() * time(deltaTime);
 }
 
 void PlayerState_Union::chase(Vector2 &position, int pointIndex){

@@ -34,8 +34,8 @@ void PlayerState_Single_Idle::update(float deltaTime){
 	if (static_cast<int>(timer_ * 60) % 60 == 0) {
 		body_->getWorld()->addActor(ActorGroup::Effect, std::make_shared<PlayerEffectObj>(body_->getWorld(), body_->getPosition(), PlayerEffectID::SEP_MOVE, 5.0f, 0.5f));
 	}
-	if ((int)(timer_ * 10) % 2 < 1) body_->alpha_ -= (int)(deltaTime * static_cast<float>(GetRefreshRate()) * 20);
-	else body_->alpha_ += deltaTime * static_cast<float>(GetRefreshRate()) * 20;
+	if ((int)(timer_ * 10) % 2 < 1) body_->alpha_ -= (int)(time(deltaTime) * 20);
+	else body_->alpha_ += time(deltaTime) * 20;
 	body_->alpha_ = MathHelper::Clamp(body_->alpha_, 100, 255);
 
 	move(deltaTime);
@@ -55,21 +55,9 @@ void PlayerState_Single_Idle::end(){
 	body_->alpha_ = 255.0f;
 }
 
-void PlayerState_Single_Idle::key_input(float deltaTime){
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::L_SHIFT)) {
-		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 10) * deltaTime * static_cast<float>(GetRefreshRate());
-	}
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::R_SHIFT)) {
-		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 10) * deltaTime * static_cast<float>(GetRefreshRate());
-	}
-}
-
-void PlayerState_Single_Idle::pad_input(float deltaTime) {
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1)) {
-		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 10) * deltaTime * static_cast<float>(GetRefreshRate());
-	}
-	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1)) {
-		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 10) * deltaTime * static_cast<float>(GetRefreshRate());
+void PlayerState_Single_Idle::input(float deltaTime) {
+	if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_L1) || InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_R1)) {
+		target_ += body_->get_partner_vector() * std::max<float>(20.0f - body_->getWorld()->GetKeeper()->getDamageCount() * 2, 10) * time(deltaTime);
 	}
 }
 

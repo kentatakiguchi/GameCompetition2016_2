@@ -8,9 +8,10 @@ class IState {
 public:
 	// ステートの要素
 	struct StateElement {
+		// ステート
 		int state_;
+		// タイプ
 		ActionType type_;
-
 		// コンストラクタ
 		StateElement(const int& state, const ActionType& type = ActionType::None) : state_(state), type_(type){}
 	};

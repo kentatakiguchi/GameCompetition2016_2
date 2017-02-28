@@ -18,16 +18,6 @@ PlayerStateMgr_Single::PlayerStateMgr_Single(const std::string& name){
 	add(PlayerState_Enum_Single::DEAD, std::make_shared<PlayerState_Single_Dead>(keys));
 }
 
-// ステートの追加
-void PlayerStateMgr_Single::add(const PlayerState_Enum_Single & id, const IStatePtr & state) {
-	addState(static_cast<int>(id), state);
-}
-
-// ステートの変更処理
-void PlayerStateMgr_Single::change(Actor & actor, const PlayerState_Enum_Single & id, const ActionType & type){
-	changeState(actor, IState::StateElement(static_cast<int>(id), type));
-}
-
 // 現在のステート
 bool PlayerStateMgr_Single::get_state(const PlayerState_Enum_Single & id){
 	return currentState(static_cast<int>(id));

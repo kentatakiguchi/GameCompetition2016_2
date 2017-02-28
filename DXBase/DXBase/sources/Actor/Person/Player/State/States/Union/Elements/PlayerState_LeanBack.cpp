@@ -21,8 +21,8 @@ void PlayerState_LeanBack::unique_init(){
 void PlayerState_LeanBack::update(float deltaTime){
 	dir_.y += 0.1f;
 
-	butty_->position() += dir_ * power_ * deltaTime * static_cast<float>(GetRefreshRate());
-	retty_->position() += dir_ * power_ * deltaTime * static_cast<float>(GetRefreshRate());
+	butty_->position() += dir_ * power_ * time(deltaTime);
+	retty_->position() += dir_ * power_ * time(deltaTime);
 
 	if (isOnFloor()) {
 		change(PlayerState_Enum_Union::IDLE);

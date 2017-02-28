@@ -46,7 +46,7 @@ void PlayerState_MoveEach::input(float deltaTime){
 	if (InputMgr::GetInstance().PadVector(element_.type_).x < 0) manuBody_->animation().change_dir(PlayerAnimID::TURN, ActionType::Left);
 
 	// “ü—Í‚É‚æ‚éˆÚ“®ˆ—
-	manuBody_->position() += InputMgr::GetInstance().PadVector(element_.type_).Horizontal() * manuBody_->velocity() * PLAYER_SPEED * manuBody_->dump() * deltaTime * static_cast<float>(GetRefreshRate());
+	manuBody_->position() += InputMgr::GetInstance().PadVector(element_.type_).Horizontal() * manuBody_->velocity() * PLAYER_SPEED * manuBody_->dump() * time(deltaTime);
 
 	// ƒWƒƒƒ“ƒvˆ—
 	if (jump_pad()) change(PlayerState_Enum_Union::JUMP);

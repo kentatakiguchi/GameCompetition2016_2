@@ -70,8 +70,8 @@ void PlayerState_Attack::update(float deltaTime){
 		}
 	}
 
-	launchBody_->position() += (launch_dir_ * launch_dir_easeing_ * launch_power_ + Vector2::Up * GRAVITY * gra_easeing_) * launchBody_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
-	chaseBody_->position() += (chase_dir_ * chase_dir_easeing_ * chase_power_ + Vector2::Up * GRAVITY * gra_easeing_) * chaseBody_->velocity() * deltaTime * static_cast<float>(GetRefreshRate());
+	launchBody_->position() += (launch_dir_ * launch_dir_easeing_ * launch_power_ + Vector2::Up * GRAVITY * gra_easeing_) * launchBody_->velocity() * time(deltaTime);
+	chaseBody_->position() += (chase_dir_ * chase_dir_easeing_ * chase_power_ + Vector2::Up * GRAVITY * gra_easeing_) * chaseBody_->velocity() * time(deltaTime);
 
 	attackColl_->position() = launchBody_->getPosition();
 

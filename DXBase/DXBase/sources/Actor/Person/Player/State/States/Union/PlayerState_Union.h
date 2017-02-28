@@ -28,12 +28,6 @@ protected:
 	// ステートの変更処理
 	void change(const PlayerState_Enum_Union& id, const ActionType& type = ActionType::None);
 protected:
-	// キー系フラグ
-	bool holdable_keyR();
-	bool holdable_keyL();
-	bool move_keyR();
-	bool move_keyL();
-	bool jump_key();
 	// パッド系フラグ
 	bool holdable_padR();
 	bool holdable_padL();

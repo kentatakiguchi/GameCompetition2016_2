@@ -19,7 +19,7 @@ void PlayerState_Single::common_init(Actor & actor, const StateElement & element
 }
 
 void PlayerState_Single::input(float deltaTime){
-	InputMgr::GetInstance().isConnectGamePad() ? pad_input(deltaTime) : key_input(deltaTime);
+	//InputMgr::GetInstance().isConnectGamePad() ? pad_input(deltaTime) : key_input(deltaTime);
 }
 
 void PlayerState_Single::common_update(float deltaTime){
@@ -36,7 +36,6 @@ void PlayerState_Single::common_update(float deltaTime){
 void PlayerState_Single::collide(const Actor & other) {}
 
 // ï`âÊèàóù
-
 void PlayerState_Single::draw() const {}
 
 bool PlayerState_Single::is_butty() const{
@@ -46,8 +45,3 @@ bool PlayerState_Single::is_butty() const{
 bool PlayerState_Single::is_retty()const {
 	return keys_.right == KeyCode::D;
 }
-
-void PlayerState_Single::key_input(float deltaTime){}
-
-void PlayerState_Single::pad_input(float deltaTime){}
-

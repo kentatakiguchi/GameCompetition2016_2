@@ -74,7 +74,7 @@ void PlayerState_HoldBase::move(float deltaTime) {
 
 // 移動速度計算
 Vector2 PlayerState_HoldBase::input_vector(const Vector2 & input, float deltaTime){
-	return input * 7.5f * moveBody_->velocity() * PLAYER_SPEED * moveBody_->dump() * deltaTime * static_cast<float>(GetRefreshRate());
+	return input * 7.5f * moveBody_->velocity() * PLAYER_SPEED * moveBody_->dump() * time(deltaTime);
 }
 
 // くっつきボタンが離れた場合

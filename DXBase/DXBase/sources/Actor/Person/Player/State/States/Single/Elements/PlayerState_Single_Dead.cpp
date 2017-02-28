@@ -16,7 +16,6 @@ void PlayerState_Single_Dead::update(float deltaTime){
 
 void PlayerState_Single_Dead::end(){}
 
-void PlayerState_Single_Dead::key_input(float deltaTime){}
+void PlayerState_Single_Dead::input(float deltaTime){}
 
-void PlayerState_Single_Dead::pad_input(float deltaTime){}
 

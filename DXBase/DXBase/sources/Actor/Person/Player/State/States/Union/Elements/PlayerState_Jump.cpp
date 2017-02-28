@@ -23,8 +23,8 @@ void PlayerState_Jump::update(float deltaTime) {
 
 	dir_.y = std::min<float>(dir_.y + 0.1f, 1);
 
-	butty_->position() += dir_ * power_ * deltaTime * static_cast<float>(GetRefreshRate());
-	retty_->position() += dir_ * power_ * deltaTime * static_cast<float>(GetRefreshRate());
+	butty_->position() += dir_ * power_ * time(deltaTime);
+	retty_->position() += dir_ * power_ * time(deltaTime);
 
 	if (butty_->getOpponent() == HitOpponent::FLOOR_TOP || retty_->getOpponent() == HitOpponent::FLOOR_TOP) {
 		change(PlayerState_Enum_Union::IDLE);

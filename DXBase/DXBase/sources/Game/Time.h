@@ -6,8 +6,6 @@ public:
 	static Time &GetInstance();
 	void update();
 	float deltaTime();
-	float refreshRate();
-	float correctionTime();
 	void draw_fps();
 private:
 	float m_LastFrame;
