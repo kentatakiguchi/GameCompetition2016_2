@@ -1,24 +1,28 @@
 #include "FighterMiniBossh.h"
 #include "ImportAnimationNumber.h"
 #include "../../../../../ResourceLoader/ResourceLoader.h"
-#include "../../../../../Define.h"
 #include "../../../../../World/IWorld.h"
+#include "../../../../../Math/Math.h"
+#include "../../../../../Define.h"
 
 FighterMiniBoss::FighterMiniBoss(
 	IWorld * world, 
-	const Vector2 & position, 
-	const float bodyScale) :
-	Actor(world, "MiniBoss", position,
+	const Vector2 & position,
+	const float bodyScale,
+	const std::string name) :
+	Actor(world, name, position,
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
 	animeNum_(WAIT_NUMBER),
 	stateTimer_(0.0f),
 	speed_(4.0f),
 	size_(0.0f),
 	degree_(90.0f),
+	damegeTimer_(0.0f),
 	isClamp_(false),
+	isGround_(false),
 	isInvincible_(false),
 	playerName_(""),
-	texPos_(Vector2::Zero),
+	addTexPos_(Vector2::Zero),
 	orizin_(Vector2::One * (256 / 2)),
 	prevPlayerDirection_(Vector2::Zero),
 	state_(State::Idel),
@@ -28,7 +32,8 @@ FighterMiniBoss::FighterMiniBoss(
 	animation_.changeAnimation(WAIT_NUMBER);
 	animation_.timeRandom();
 	// テクスチャの位置の設定
-	setTexPosition(10.0f);
+	//setTexPosition(10.0f);
+	addTexPos_ = Vector2::Up * 10.0f;
 	// サイズの設定
 	size_ = body_.GetCircle().getRadius() / (128.0f / 1.5f);
 	// プレイヤーの方向を向く
@@ -42,7 +47,7 @@ void FighterMiniBoss::onUpdate(float deltaTime)
 	// アニメーションの更新
 	animation_.update(deltaTime);
 
-	isTop_ = false;
+	isGround_ = false;
 	isBottom_ = false;
 	isLeft_ = false;
 	isRight_ = false;
@@ -50,8 +55,13 @@ void FighterMiniBoss::onUpdate(float deltaTime)
 
 void FighterMiniBoss::onDraw() const
 {
+	auto position = position_ + -addTexPos_;
+	//auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
+	auto vec3Pos = Vector3(position.x, position.y, 0.0f);
+	vec3Pos = vec3Pos * inv_;
+
 	animation_.draw(
-		texPos_,
+		Vector2(vec3Pos.x, vec3Pos.y),
 		orizin_,
 		size_,
 		degree_ + 270.0f);
@@ -59,22 +69,11 @@ void FighterMiniBoss::onDraw() const
 
 void FighterMiniBoss::onCollide(Actor & actor)
 {
-	// 死亡状態なら返す 
-	if (state_ == State::Dead) return;
 	auto actorName = actor.getName();
 	auto getPlayerName = strstr(actorName.c_str(), "PlayerBody");
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
-	// プレイヤーの攻撃に当たったら死亡
-	if (actorName == "PlayerAttackCollider") {
-		if (isInvincible_) return;
-		changeState(State::Dead, DEAD_NUMBER);
-		body_.enabled(false);
-		return;
-	}
 	// くっつき状態なら返す
-	//if (state_ == State::Adhere) return;
-	if (state_ == State::Attack) return;
-	// 床に当たったら、消滅
+	// 床に当たった時の処理
 	if (getFloorName != NULL) {
 		groundClamp(actor);
 		floorHit();
@@ -83,6 +82,15 @@ void FighterMiniBoss::onCollide(Actor & actor)
 	// プレイヤー関連のオブジェクトに当たったら
 	if (getPlayerName != NULL) {
 		playerHit(actor);
+		return;
+	}
+	// 死亡状態なら返す 
+	if (state_ == State::Dead) return;
+	// プレイヤーの攻撃に当たったら、処理を行う
+	if (actorName == "PlayerAttackCollider") {
+		// 無敵か、ダメージタイマが０でないなら返す
+		if (isInvincible_ || damegeTimer_ > 0.0f) return;
+		playerAttackHit();
 		return;
 	}
 }
@@ -105,9 +113,12 @@ void FighterMiniBoss::updateState(float deltaTime)
 	// プレイヤーが口の中に入ったら死亡
 	if (world_->isEntered())
 		changeState(State::Dead, DEAD_NUMBER);
+	if (damegeTimer_ > 0.0f)
+		damegeTimer_ = max(damegeTimer_ -= deltaTime, 0.0f);
 
 	switch (state_)
 	{
+	case State::BattleIdel: battleIdel(deltaTime); break;
 	case State::Idel: idel(deltaTime); break;
 	case State::Move: move(deltaTime); break;
 	case State::Attack: attack(deltaTime); break;
@@ -115,6 +126,10 @@ void FighterMiniBoss::updateState(float deltaTime)
 	}
 
 	stateTimer_ += deltaTime;
+}
+
+void FighterMiniBoss::battleIdel(float deltaTime)
+{
 }
 
 void FighterMiniBoss::idel(float deltaTime)
@@ -147,6 +162,13 @@ void FighterMiniBoss::playerHit(Actor & actor)
 {
 }
 
+// プレイヤーの攻撃に当たった時の処理
+void FighterMiniBoss::playerAttackHit()
+{
+	changeState(State::Dead, DEAD_NUMBER);
+	body_.enabled(false);
+}
+
 Vector2 FighterMiniBoss::getPlayerDirection()
 {
 	auto player = world_->findActor("PlayerBody1");
@@ -171,13 +193,6 @@ Vector2 FighterMiniBoss::getPlayerDirection()
 	return direction;
 }
 
-void FighterMiniBoss::setTexPosition(float up)
-{
-	auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
-	vec3Pos = vec3Pos * inv_;
-	texPos_ = Vector2(vec3Pos.x, vec3Pos.y) - Vector2::Up * up;
-}
-
 void FighterMiniBoss::addAnimation()
 {
 	animation_.addAnimation(
@@ -200,6 +215,14 @@ void FighterMiniBoss::addAnimation()
 		WING_ATTACK_NUMBER,
 		ResourceLoader::GetInstance().getAnimationIDs(
 			AnimationID::BOSS_JUMP_DOWN_TEX));
+	animation_.addAnimation(
+		WALL_ATTACK_NUMBER,
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_WALLATTACK_DASHJUMP_TEX));
+	animation_.addAnimation(
+		PIYORI_NUMBER,
+		ResourceLoader::GetInstance().getAnimationIDs(
+			AnimationID::BOSS_PIYO_TEX));
 }
 
 void FighterMiniBoss::groundClamp(Actor & actor)
@@ -230,7 +253,7 @@ void FighterMiniBoss::groundClamp(Actor & actor)
 		// 上に補間
 		if (top > -actor.getBody().GetBox().getHeight() / 3) {
 			position_.y = topLeft.y - body_.GetCircle().getRadius();
-			isTop_ = true;
+			isGround_ = true;
 			isHit = true;
 		}
 		// 下に補間
@@ -276,7 +299,7 @@ void FighterMiniBoss::groundClamp(Actor & actor)
 		// 上に補間
 		if (top > -actor.getBody().GetBox().getHeight() / 2.0f) {
 			position_.y = topLeft.y - body_.GetCircle().getRadius();
-			isTop_ = true;
+			isGround_ = true;
 		}
 		// 下に補間
 		if (bottom > -actor.getBody().GetBox().getHeight() / 2.0f) {

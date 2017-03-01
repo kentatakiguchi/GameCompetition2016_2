@@ -23,6 +23,7 @@ FloorSearchPoint::FloorSearchPoint(
 	turnCount_(0),
 	isFloor_(false),
 	isGround_(false),
+	isGroundBegin_(false),
 	direction_(1.0f, 1.0f),
 	enemyPosition_(enemyPosition),
 	addPosition_(addPosition),
@@ -31,15 +32,16 @@ FloorSearchPoint::FloorSearchPoint(
 }
 
 FloorSearchPoint::FloorSearchPoint(
-	IWorld * world, 
+	IWorld * world,
 	const Vector2 & enemyPosition,
 	const Vector2 & addPosition,
-	const float radius) : 
+	const float radius) :
 	Actor(world, "FSP", enemyPosition + addPosition,
 		CollisionBase(position_, radius)),
 	turnCount_(0),
 	isFloor_(false),
 	isGround_(false),
+	isGroundBegin_(false),
 	direction_(1.0f, 1.0f),
 	enemyPosition_(enemyPosition),
 	addPosition_(addPosition),
@@ -56,6 +58,7 @@ void FloorSearchPoint::onUpdate(float deltaTime)
 
 	isFloor_ = false;
 	isGround_ = false;
+	isGroundBegin_ = false;
 }
 
 void FloorSearchPoint::onDraw() const{

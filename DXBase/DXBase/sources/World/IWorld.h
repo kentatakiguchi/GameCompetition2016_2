@@ -45,6 +45,10 @@ public:
 	virtual void setIsStopTime(const bool isTime) = 0;
 	// デルタタイムを取得します(元のタイムクラスから取得)
 	virtual float getDeltaTime() = 0;
+	// 中ボスのステージ内に入ったかを設定します
+	virtual void setIsMBossStage(bool isStage) = 0;
+	// 中ボスのステージ内に入ったかを返します
+	virtual bool isMBossStage() = 0;
 	virtual void SetPlayerPos(Vector2 pos) = 0;
 	// 縦スクロール横スクロールするかどうか(引数 軸ごとにスクロールする場合は1、しない場合は0)
 	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos, bool flag = false) =0;

@@ -9,6 +9,7 @@ public:
 		IWorld* world,
 		const Vector2& position,
 		const float degree = 0.0f,
+		const float speed = 4.0f,
 		const float bodyScale = 16.0f);
 	void onUpdate(float deltaTime) override;
 	void onDraw() const override;

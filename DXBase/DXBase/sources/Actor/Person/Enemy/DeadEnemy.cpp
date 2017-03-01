@@ -25,6 +25,7 @@ DeadEnemy::DeadEnemy(
 	playerSpeed_(0.0f),
 	isGround_(false),
 	holdLength_(0.0f),
+	prevHoldDegree_(0.0f),
 	throwDegree_(0.0f),
 	playerPravPosition_(Vector2::Zero),
 	holdPosition_(Vector2::Zero),
@@ -164,8 +165,14 @@ void DeadEnemy::holdMove(float deltaTime)
 		throwDegree_ = degree;
 		return;
 	}
-	/*if (isGround_)
-		degree = MathHelper::Clamp(degree, 0.0f, 180.0f / MathHelper::Pi);*/
+	if (degree < 0) degree += 360.0f;
+	// è∞Ç…êGÇÍÇƒÇ¢ÇÈÇ∆Ç´ÇÕäpìxÇÃèCê≥
+	if (isGround_) {
+		if (degree > 180)
+			degree = prevHoldDegree_;
+		//degree = MathHelper::Clamp(degree, 0.0f, 180.0f);
+	}
+		
 	auto degreePos = Vector2(
 		MathHelper::Cos(degree),
 		MathHelper::Sin(degree));
@@ -173,7 +180,7 @@ void DeadEnemy::holdMove(float deltaTime)
 	position_ = player->getPosition() + degreePos * holdLength_;
 	// êØÇÃê∂ê¨
 	auto length = Vector2(position_ - prevPosition_).Length();
-	if (isBlockCollideBegin_ && length >= 25.0f) {
+	if (isBlockCollideBegin_ && length >= 20.0f) {
 		auto star = std::make_shared<Items>(world_, position_);
 		world_->addActor(ActorGroup::Item, star);
 		starCount_++;
@@ -181,6 +188,7 @@ void DeadEnemy::holdMove(float deltaTime)
 			changeState(State::Delete);
 	}
 	prevPosition_ = position_;
+	prevHoldDegree_ = degree;
 }
 
 // ìäÇ∞èÛë‘

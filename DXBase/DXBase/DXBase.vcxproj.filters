@@ -657,6 +657,42 @@
     <ClInclude Include="sources\Actor\Person\Player\State\Base\State.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\BossScrollPoint.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\ImportMediumBosses.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\MediumBoss.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\Stage1MiniBoss.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\Stage2MiniBoss.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\Stage3MiniBoss.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossMoves\BossMove.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BossMoves\PiyoriMove.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Item\MoveItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Item\Effect\PowerUpEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Item\Effect\PowerUpFontEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\Actor\Item\Effect\StarPowerUpEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\Game\GameDevice.cpp">
@@ -1158,6 +1194,36 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="sources\Actor\Person\Player\State\Base\State.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\BossScrollPoint.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\MediumBoss.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\Stage1MiniBoss.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\Stage2MiniBoss.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\MediumBoss\Stage3MiniBoss.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BossMoves\BossMove.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\BossMoves\PiyoriMove.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Item\Effect\PowerUpEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Item\Effect\PowerUpFontEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Actor\Item\Effect\StarPowerUpEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

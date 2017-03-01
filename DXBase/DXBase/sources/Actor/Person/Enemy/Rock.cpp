@@ -15,7 +15,7 @@ void Rock::move(float deltaTime)
 {
 	// 落下
 	position_.y += speed_ * stateTimer_  * 9.8f * (deltaTime * 60.0f);
-	setTexPosition(10.0f);
+	addTexPos_ = Vector2::Up * 10.0f;
 	// プレイヤーの方向を向く
 	animation_.changeDirType(-getPlayerDirection().x);
 }
@@ -29,9 +29,10 @@ void Rock::deadMove(float deltaTime)
 // 床に当たった時の処理
 void Rock::floorHit()
 {
+	if (state_ == State::Attack || state_ == State::Dead) return;
 	changeState(State::Dead, RUN_NUMBER);
 	// 位置の更新
-	setTexPosition(-50.0f);
+	addTexPos_ = Vector2::Up * -50.0f;
 	// 中点を下にする
 	orizin_ = Vector2::One * (256.0f / 2.0f) + Vector2::Up * 100.0f;
 	// プレイヤーと逆の方向を向く

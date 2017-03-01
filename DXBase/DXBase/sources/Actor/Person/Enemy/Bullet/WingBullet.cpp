@@ -5,10 +5,11 @@ WingBullet::WingBullet(
 	IWorld * world, 
 	const Vector2 & position, 
 	const float degree, 
+	const float speed,
 	const float bodyScale) : 
 	Actor(world, "WingBulletEnemy", position, 
 		CollisionBase(const_cast<Vector2&>(position), bodyScale)),
-	speed_(10.0f),
+	speed_(speed),
 	degree_(degree),
 	direction_(
 		Vector2(MathHelper::Cos(degree), 

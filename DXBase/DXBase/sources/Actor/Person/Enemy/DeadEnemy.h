@@ -56,6 +56,7 @@ private:
 	int starCount_;
 	float playerSpeed_;				// プレイヤーの移動速度
 	float holdLength_;				// つかまれた位置との距離
+	float prevHoldDegree_;			// つかまれた時の前回の角度
 	float throwDegree_;				// 投げられた時の角度
 	Vector2 playerPravPosition_;	// プレイヤーの前回の位置
 	Vector2 holdPosition_;			// つかまれた位置

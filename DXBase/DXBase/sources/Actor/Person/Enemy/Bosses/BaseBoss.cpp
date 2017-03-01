@@ -186,20 +186,18 @@ void BaseBoss::onCollide(Actor & actor)
 	//if (!isAttackHit_ || !isPlayerCollide_) return;
 	// if (damageTimer_ > 0)
 	if (!isAttackHit_ || state_ == State::Flinch || isBossDead_) return;
-	/*if () return;
-	if (hp_ <= 0) return;*/
 	// ƒvƒŒƒCƒ„[‚ÌUŒ‚”ÍˆÍ‚É“–‚½‚Á‚½ê‡‚Ìˆ—
 	if (actorName == "PlayerAttackCollider") {
-		//// ƒ_ƒ[ƒWˆ—
-		//auto addDamage = 0.0f;
-		//// ƒ[ƒœŽZ–hŽ~
-		//if (allStarCount_ != 0)
-		//	addDamage = starCount_ / (float)allStarCount_;
-		//addDamage = min(addDamage, 1.0f);
+		// ƒ_ƒ[ƒWˆ—
+		auto addDamage = 0.0f;
+		// ƒ[ƒœŽZ–hŽ~
+		if (allStarCount_ != 0)
+			addDamage = starCount_ / (float)allStarCount_;
+		addDamage = min(addDamage, 1.0f);
 
-		// //‰¼
-		auto addDamage = 1.0f;
-		// // ‰¼I‚í‚è
+		//// //‰¼
+		//auto addDamage = 1.0f;
+		//// // ‰¼I‚í‚è
 
 		auto d = (int)(3 + 27 * addDamage);
 		// “ñ’iŠK–Ú‚È‚çAƒ_ƒ[ƒW”¼Œ¸

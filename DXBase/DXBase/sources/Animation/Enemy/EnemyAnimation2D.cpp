@@ -123,6 +123,7 @@ void EnemyAnimation2D::setIsLoop(bool isLoop)
 void EnemyAnimation2D::setIsReverse(bool isReverse)
 {
 	isReverse_ = isReverse;
+	isStop_ = false;
 }
 
 void EnemyAnimation2D::preMotion()

@@ -1,5 +1,6 @@
 #include "StarEffectManager.h"
 #include "StarEffect.h"
+#include "Effect/StarPowerUpEffect.h"
 #include "../Base/ActorGroup.h"
 #include "../../World/IWorld.h"
 #include "../../Scene/Base/SceneDataKeeper.h"
@@ -7,12 +8,14 @@
 
 StarEffectManager::StarEffectManager() : 
 	world_(nullptr),
+	isPowerUpCreate_(false),
 	isEffectEnd_(true)
 {
 }
 
 StarEffectManager::StarEffectManager(IWorld* world) :
 	world_(world),
+	isPowerUpCreate_(false),
 	isEffectEnd_(false)
 {
 	initialeze();
@@ -99,6 +102,17 @@ void StarEffectManager::createStars()
 // 星の更新
 void StarEffectManager::updateStars()
 {
+	// isEffectEnd_ = true;
+	if (!isPowerUpCreate_) moveStars();
+	else {
+		auto effect = world_->findActor("StarPowerUpEffect");
+		if (effect == nullptr) isEffectEnd_ = true;
+	}
+}
+
+// 星を動かします
+void StarEffectManager::moveStars()
+{
 	// 待機状態が終わっていない場合
 	if (!isIdelEnd_) {
 		auto isIdelEnd = true;
@@ -131,12 +145,19 @@ void StarEffectManager::updateStars()
 		// 全員止まっていたら、終了処理を行う
 		if (isStop) {
 			// 削除する
-			isEffectEnd_ = true;
 			for (auto i = stars_.begin(); i != stars_.end(); i++) {
 				auto star = *i;
 				star->dead();
 			}
 			stars_.clear();
+			// パワーアップエフェクトの生成
+			auto players = world_->findActor("Player");
+			auto movePos = Vector2::Zero;
+			if (players != nullptr)
+				movePos = players->getPosition();// -Vector2(-5.0f, 140.0f);
+			auto effect = std::make_shared<StarPowerUpEffect>(world_, movePos);
+			world_->addActor(ActorGroup::Effect, effect);
+			isPowerUpCreate_ = true;
 		}
 	}
 }

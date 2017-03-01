@@ -7,7 +7,8 @@ class PiyoriEffect : public BossEffect {
 public:
 	PiyoriEffect(
 		IWorld* world,
-		const Vector2&  position);
+		const Vector2&  position,
+		const float scale = 1.0f);
 	void onUpdate(float deltaTime) override;
 };
 

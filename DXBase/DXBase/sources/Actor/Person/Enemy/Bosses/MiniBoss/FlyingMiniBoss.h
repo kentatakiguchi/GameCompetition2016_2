@@ -16,6 +16,8 @@ private:
 	void move(float deltaTime) override;
 	// 床に当たった時の処理
 	void floorHit() override;
+	// プレイヤーの攻撃に当たった時の処理
+	void playerAttackHit() override;
 
 private:
 	float deg_;				// 角度(親の変数名も変更する)

@@ -9,7 +9,8 @@ AdhereMiniBoss::AdhereMiniBoss(
 	IWorld * world, const Vector2 & position, 
 	const float bodyScale) :
 	FighterMiniBoss(world, position, bodyScale),
-	adhereDeadTime_(4.0f)
+	adhereDeadTime_(4.0f),
+	dState_(DeadState::HitDead)
 {
 }
 
@@ -36,7 +37,6 @@ void AdhereMiniBoss::attack(float deltaTime)
 	auto player = world_->findActor(playerName_);
 	// プレイヤーがいないなら死亡
 	if (player == nullptr) {
-		//changeState(State::Dead, DEAD_NUMBER);
 		changeDeadState(DeadState::HitDead, DEAD_NUMBER);
 		body_.enabled(false);
 		return;
@@ -45,9 +45,8 @@ void AdhereMiniBoss::attack(float deltaTime)
 		100.0f * MathHelper::Cos(degree_),
 		100.0f * MathHelper::Sin(degree_));
 	position_ = player->getPosition() + addPos;
-	setTexPosition(10.0f);
+	addTexPos_ = Vector2::Up * 10.0f;
 	if (stateTimer_ < adhereDeadTime_) return;
-	//changeState(State::AdhereDead, DEAD_NUMBER);
 	changeDeadState(DeadState::AdhereDead, DEAD_NUMBER);
 	body_.enabled(false);
 }
@@ -77,6 +76,7 @@ void AdhereMiniBoss::floorHit(){}
 // プレイヤーと当たった時の処理
 void AdhereMiniBoss::playerHit(Actor & actor)
 {
+	if (state_ == State::Attack || state_ == State::Dead) return;
 	changeState(State::Attack, ADHERE_NUMBER);
 	animation_.setIsLoop(false);
 	playerName_ = actor.getName();

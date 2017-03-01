@@ -19,6 +19,6 @@ void TrackingMiniBoss::move(float deltaTime)
 	auto dir = distance.Normalize();
 	position_ += speed_ * dir * (deltaTime * 60.0f);
 
-	setTexPosition(10.0f);
+	addTexPos_ = Vector2::Up * 10.0f;
 	animation_.changeDirType(dir.x);
 }

@@ -37,6 +37,7 @@ private:
 	int turnCount_;			// U‚èŒü‚«‰ñ”
 	bool isFloor_;
 	bool isGround_;
+	bool isGroundBegin_;
 	Vector2 direction_;		// •ûŒü
 	Vector2 enemyPosition_;
 	Vector2 addPosition_;
