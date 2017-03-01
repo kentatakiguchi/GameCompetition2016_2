@@ -13,13 +13,17 @@
 #include "../../Input/InputMgr.h"
 #include "../../Actor/Person/Player/PlayerBody.h"
 
+#include "../../Actor/Person/Enemy/Bosses/MiniBossRepair.h"
+#include "../../Actor/BlockParticle/BlockParticle.h"
+#include "../../Actor/Smoke/Smoke.h"
+
 //const Vector2 START_POS = Vector2(300, 900);
 static const int rotateSpeed = 10;
 
 BossStage::BossStage(SceneDataKeeper* keeper) :
 	nextScene_(Scene::GameOver),
 	isStopped_(false),
-	boss_(nullptr){
+	boss_(nullptr) {
 	isEnd_ = false;
 	keeper_ = keeper;
 	name_ = "bossStage01";
@@ -34,13 +38,14 @@ void BossStage::start() {
 	keeper_->setCurrentSceneName(name_);
 
 	mIvemtTime = 0.0f;
+	bossChildTimer_ = 0.0f;
 
 	deltaTime_ = Time::GetInstance().deltaTime();
 	isStopped_ = false;
 	SetDrawScreen(DX_SCREEN_BACK);
 	world_ = std::make_shared<World>(keeper_);
 
-	world_->SetScroolJudge(Vector2(1, 1),Vector2::Zero, Vector2(3000, 8000));
+	world_->SetScroolJudge(Vector2(1, 1), Vector2::Zero, Vector2(3000, 8000));
 	MapGenerator gener = MapGenerator(world_.get());
 
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(),
@@ -60,7 +65,7 @@ void BossStage::start() {
 	// ボスの位置を設定
 	boss_->setMovePosition(Vector2(CHIPSIZE * 16 + 50, -150.0f), 0.0f);
 	boss->setStarCount(keeper_->GetItemCount("All"), 500);
-	world_->SetScroolJudge(Vector2(0, 0),Vector2::Zero, Vector2(99999, 99999));
+	world_->SetScroolJudge(Vector2(0, 0), Vector2::Zero, Vector2(99999, 99999));
 
 
 	//gener.create("./resources/file/boss01/boss01BodyStage01.csv", 1, 15);
@@ -77,7 +82,6 @@ void BossStage::start() {
 	door_ = dynamic_cast<Door*>(world_->findActor("Door").get());
 
 	world_->PlayerNotMove(true);
-	//world_->CollisitionOffOn(false);
 	world_->clear(false);
 	door_->DoorOpen(true);
 
@@ -86,7 +90,7 @@ void BossStage::start() {
 
 	// 星関連
 	starEffectManager_ = StarEffectManager(world_.get());
-	starEffectManager_.setStartPosition(Vector2(CHIPSIZE * 9, 500.0f) , 200);
+	starEffectManager_.setStartPosition(Vector2(CHIPSIZE * 9, 500.0f), 200);
 
 	anmer_ = ItemAnm();
 
@@ -101,9 +105,18 @@ void BossStage::start() {
 	myStarCount_ += keeper_->GetItemCount("stage02");
 	myStarCount_ += keeper_->GetItemCount("stage03");
 	myStarCount_ += keeper_->GetItemCount("stage04");
-
+	for (int i = 0; i <= 5; i++) {
+		auto actor = std::make_shared<BlockParticle>(world_.get(), Vector2(CHIPSIZE*(13 + i), 0.0f));
+		world_->addActor(ActorGroup::Field, actor);
+		blocks_.push_back(actor);
+	}
+	for (int i = 0; i <= 5; i++) {
+		auto actor = std::make_shared<MiniBossRepair>(world_.get(), Vector2::Zero, i);
+		world_->addActor(ActorGroup::Enemy, actor);
+		repairs_.push_back(actor);
+	}
+	world_->addActor(ActorGroup::Effect, std::make_shared<Smoke>(world_.get(), Vector2(CHIPSIZE * 13)));
 	world_->CollisitionOffOn(true);
-
 }
 
 void BossStage::update() {
@@ -112,6 +125,14 @@ void BossStage::update() {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 	}
+	if (InputMgr::GetInstance().IsKeyOn(KeyCode::G)) {
+	}
+
+
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::H)) {
+
+	}
+	BossChildUpdate();
 	//イベント関係
 	if (!isStopped_) {
 		mIvemtTime += deltaTime_;
@@ -139,6 +160,7 @@ void BossStage::update() {
 		}
 	}
 
+
 	if (hatenaAnm_.end_anim()) hatenaAnm_.change_param(0, 0.0f);
 
 	world_->update(deltaTime_);
@@ -147,7 +169,7 @@ void BossStage::update() {
 
 
 	// ボスが死亡したら、クリアする
-	if (boss_->isSceneEnd()||InputMgr::GetInstance().IsKeyDown(KeyCode::J))
+	if (boss_->isSceneEnd() || InputMgr::GetInstance().IsKeyDown(KeyCode::J))
 		world_->clear(true);
 
 	player = world_->findActor("Player");
@@ -164,7 +186,7 @@ void BossStage::update() {
 		//}
 		//else
 		//{
-			nextScene_ = Scene::Bonus;
+		nextScene_ = Scene::Bonus;
 		//}
 	}
 	if (!isEnd_) {
@@ -179,8 +201,8 @@ void BossStage::draw() const {
 	world_->draw();
 	// プレイヤーが消えてら返す
 	if (player == nullptr) return;
-	Vector2 pos = player->getPosition()-Vector2(0,256+128);
-	hatenaAnm_.draw(pos,Vector2::Zero,Vector2(0.7,0.7),0);
+	Vector2 pos = player->getPosition() - Vector2(0, 256 + 128);
+	hatenaAnm_.draw(pos, Vector2::Zero, Vector2(0.7, 0.7), 0);
 	isStopped_ ? pause_.draw() : move_.draw();
 
 }
@@ -200,4 +222,33 @@ bool BossStage::isEnd() const {
 
 Scene BossStage::next() const {
 	return nextScene_;
+}
+
+void BossStage::BossChildUpdate()
+{
+	bossChildTimer_ += Time::GetInstance().deltaTime();
+	if (bossChildTimer_ >= 9.0f) {
+		for (auto& i : blocks_) {
+			dynamic_cast<BlockParticle*>(i.get())->Break(true);
+		}
+	}
+	if (bossChildTimer_ >= 11.0f) {
+		for (auto& i : repairs_) {
+			dynamic_cast<MiniBossRepair*>(i.get())->Repair(true);
+		}
+	}
+	if (bossChildTimer_ >= 13.0f) {
+		dynamic_cast<Smoke*>(world_->findActor("Smoke").get())->SmokeFlag(true);
+	}
+	if (bossChildTimer_ >= 15.0f) {
+		dynamic_cast<Smoke*>(world_->findActor("Smoke").get())->SmokeFlag(false);
+		for (auto& i : blocks_) {
+			dynamic_cast<BlockParticle*>(i.get())->RepairBlock(true);
+		}
+	}
+	if (bossChildTimer_ >= 17.0f) {
+		for (auto& i : repairs_) {
+			dynamic_cast<MiniBossRepair*>(i.get())->Repair(false);
+		}
+	}
 }

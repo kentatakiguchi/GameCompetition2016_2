@@ -91,8 +91,8 @@ void PlayerBody::commonCollide(Actor & other){
 	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
 		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" ||
-		other.getName() == "Door" || other.getName() == "MovelessFloorBreak"/* ||
-		other.getName() == "Tubo"*/) {
+		other.getName() == "Door" || other.getName() == "MovelessFloorBreak" ||
+		other.getName() == "BlockParticle") {
 		auto p_pos = body_.GetCircle().previousPosition_;
 		auto c_pos = body_.GetCircle().previousPosition_;
 

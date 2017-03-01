@@ -161,6 +161,7 @@
     <ClInclude Include="sources\Actor\Base\ActorManager.h" />
     <ClInclude Include="sources\Actor\Base\ActorPtr.h" />
     <ClInclude Include="sources\Actor\Base\ActorUI.h" />
+    <ClInclude Include="sources\Actor\BlockParticle\BlockParticle.h" />
     <ClInclude Include="sources\Actor\Body\Body.h" />
     <ClInclude Include="sources\Actor\Body\BoundingBox.h" />
     <ClInclude Include="sources\Actor\Body\BoundingCapsule.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\ImportBosses.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.h" />
+    <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBossRepair.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\AdhereMiniBoss.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FighterMiniBossh.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FlyingMiniBoss.h" />
@@ -214,6 +216,7 @@
     <ClInclude Include="sources\Actor\Person\Enemy\Bullet\WingBullet.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\EnemyHeaderImport.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Enemys\EnemyCreateBox.h" />
+    <ClInclude Include="sources\Actor\Person\Player\Body\PlayerBodyBase.h" />
     <ClInclude Include="sources\Actor\Person\Player\Effect\PlayerEffectObj.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\BaseEnemy.h" />
     <ClInclude Include="sources\Actor\Person\Enemy\Bosses\BaseBoss.h" />
@@ -289,6 +292,7 @@
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\Base\State_Dammy.h" />
     <ClInclude Include="sources\Actor\Person\Player\State\States\Union\StatePath_Union.h" />
+    <ClInclude Include="sources\Actor\Smoke\Smoke.h" />
     <ClInclude Include="sources\Actor\Tubo\Tubo.h" />
     <ClInclude Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.h" />
     <ClInclude Include="sources\Actor\UIActor\HelperUI\HelperUI.h" />
@@ -387,6 +391,7 @@
     <ClCompile Include="sources\Actor\Base\Actor.cpp" />
     <ClCompile Include="sources\Actor\Base\ActorManager.cpp" />
     <ClCompile Include="sources\Actor\Base\ActorUI.cpp" />
+    <ClCompile Include="sources\Actor\BlockParticle\BlockParticle.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingBox.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingCapsule.cpp" />
     <ClCompile Include="sources\Actor\Body\BoundingCircle.cpp" />
@@ -414,6 +419,7 @@
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\Effect\ScatterWingEffect.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBossManager.cpp" />
+    <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBossRepair.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\AdhereMiniBoss.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FighterMiniBossh.cpp" />
     <ClCompile Include="sources\Actor\Person\Enemy\Bosses\MiniBoss\FlyingMiniBoss.cpp" />
@@ -487,6 +493,7 @@
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_Idle.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Single\Elements\PlayerState_Single_Idle.cpp" />
     <ClCompile Include="sources\Actor\Person\Player\State\States\Union\Elements\PlayerState_StandBy.cpp" />
+    <ClCompile Include="sources\Actor\Smoke\Smoke.cpp" />
     <ClCompile Include="sources\Actor\Tubo\Tubo.cpp" />
     <ClCompile Include="sources\Actor\UIActor\BossGaugeUI\BossGaugeUI.cpp" />
     <ClCompile Include="sources\Actor\UIActor\HelperUI\HelperUI.cpp" />

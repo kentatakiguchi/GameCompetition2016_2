@@ -86,16 +86,8 @@ void BonusStage::start()
 
 void BonusStage::update()
 {
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::H)) {
-		for (auto& i : breakBlocks_) {
-			dynamic_cast<BlockParticle*>(i.get())->Break(true);
-		}
-	}
-
-
-
 	if (!isResult_)
-		creditPos_.y -= 1.0f*Time::GetInstance().deltaTime();
+		creditPos_.y -= 500.0f*Time::GetInstance().deltaTime();
 	else {
 		if (!pointDrawFlag_) {
 			point_ = keeper_->GetStageScore();
