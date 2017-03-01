@@ -8,6 +8,7 @@
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
 #include "../../Renderer/NumberTexture.h"
 #include "../../Input/InputMgr.h"
+#include "../../Actor/BlockParticle/BlockParticle.h"
 BonusStage::BonusStage(SceneDataKeeper * keeper)
 {
 	isEnd_ = false;
@@ -75,12 +76,26 @@ void BonusStage::start()
 	keeper_->addMaxItemCount(gener.getItemCount(), name_);
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU), DX_PLAYTYPE_LOOP);
 
+
+	for (int i = 0; i <= 5; i++) {
+		auto block = std::make_shared<BlockParticle>(world_.get(), Vector2(500 + CHIPSIZE*i, 500));
+		breakBlocks_.push_back(block);
+		world_->addActor(ActorGroup::Field,block);
+	}
 }
 
 void BonusStage::update()
 {
+	if (InputMgr::GetInstance().IsKeyDown(KeyCode::H)) {
+		for (auto& i : breakBlocks_) {
+			dynamic_cast<BlockParticle*>(i.get())->Break(true);
+		}
+	}
+
+
+
 	if (!isResult_)
-		creditPos_.y -= 400.0f*Time::GetInstance().deltaTime();
+		creditPos_.y -= 1.0f*Time::GetInstance().deltaTime();
 	else {
 		if (!pointDrawFlag_) {
 			point_ = keeper_->GetStageScore();

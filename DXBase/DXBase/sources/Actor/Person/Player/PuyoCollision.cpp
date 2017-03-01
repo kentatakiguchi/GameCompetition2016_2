@@ -100,7 +100,8 @@ void PuyoCollision::onCollide(Actor & other)
 {
 	if (other.getName() == "MovelessFloor" || other.getName() == "SticklessFloor" ||
 		other.getName() == "MoveFloorUpDown" || other.getName() == "MoveFloorRightLeft" ||
-		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" || other.getName() == "Door") {
+		other.getName() == "TurnFloor" || other.getName() == "TranslessTurnFloor" || other.getName() == "Door"
+		|| other.getName() == "BlockParticle") {
 
 		//“–‚½‚Á‚Ä‚¢‚éƒtƒ‰ƒO
 		mIsCol = true;

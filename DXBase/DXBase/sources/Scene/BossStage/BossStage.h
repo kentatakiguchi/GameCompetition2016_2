@@ -28,6 +28,7 @@ public:
 	virtual bool isEnd() const override;
 	virtual Scene next() const override;
 
+	void BossChildUpdate();
 private:
 	using WorldPtr = std::shared_ptr<World>;
 	// ƒ[ƒ‹ƒh
@@ -59,6 +60,11 @@ private:
 
 	int maxStarCount_;
 	int myStarCount_;
+
+	//q•ªŠÖŒW
+	float bossChildTimer_;
+	std::vector<ActorPtr> repairs_;
+	std::vector<ActorPtr> blocks_;
 };
 
 #endif

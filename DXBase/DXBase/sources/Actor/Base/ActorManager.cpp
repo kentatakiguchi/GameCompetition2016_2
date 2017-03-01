@@ -2,6 +2,8 @@
 #include "ActorGroup.h"
 
 #include "../Body/ShapeType.h"
+
+#include <algorithm>
 // コンストラクタ
 ActorManager::ActorManager() {
 	initialize();
@@ -61,7 +63,7 @@ void ActorManager::draw() const {
 void ActorManager::addActor(ActorGroup group, const ActorPtr& actor) {
 	actors_[group]->addChild(actor);
 }
-void ActorManager::addUIActor(const ActorUIPtr & actor){
+void ActorManager::addUIActor(const ActorUIPtr & actor) {
 	uiActors_.push_back(actor);
 }
 
@@ -75,7 +77,7 @@ void ActorManager::handleMessage(EventMessage message, void* param) {
 	root_.handleMessage(message, param);
 }
 
-std::forward_list<ActorPtr> ActorManager::GetActors(const ActorGroup group){
+std::forward_list<ActorPtr> ActorManager::GetActors(const ActorGroup group) {
 	return actors_[group]->getChildren();
 }
 
@@ -95,14 +97,16 @@ void ActorManager::collide() {
 	actors_[ActorGroup::Item]->collideChildren(*actors_[ActorGroup::Player_Collider]);
 }
 
-void ActorManager::UiUpdate(float delta){
-	for (auto& i : uiActors_)	{
+void ActorManager::UiUpdate(float delta) {
+	for (auto& i : uiActors_) {
 		i->update(delta);
 	}
+	uiActors_.erase(std::remove_if(uiActors_.begin(), uiActors_.end(), [](ActorUIPtr ui)
+	{return ui->isDead(); }), uiActors_.end());
 }
 
-void ActorManager::UIDraw() const{
-	for (auto& i : uiActors_)	{
+void ActorManager::UIDraw() const {
+	for (auto& i : uiActors_) {
 		i->draw();
 	}
 }

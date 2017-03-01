@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Base/IScene.h"
+#include "../../Actor/Base/ActorPtr.h"
 #include <memory>
 #include <vector>
 class World;
@@ -46,5 +47,9 @@ private:
 	bool thankFlag_;
 	//‚©‚¯‚é”{”
 	int scaleNum;
+
+
+	//‰ó‚ê‚éƒuƒƒbƒN
+	std::vector<ActorPtr>breakBlocks_;
 };
 
