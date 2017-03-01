@@ -22,6 +22,8 @@ public:
 	// •`‰æˆ—
 	virtual void onDraw() const override;
 
+	void point_chase(float deltaTime);
+
 	void create_point(int point_num = 0);
 
 	Vector2 get_point(int index);

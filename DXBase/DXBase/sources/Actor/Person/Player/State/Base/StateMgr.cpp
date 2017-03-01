@@ -2,6 +2,8 @@
 
 #include "State_Dammy.h"
 
+#include "../../../../../World/IWorld.h"
+
 // コンストラクタ
 StateMgr::StateMgr() : currentState_(std::make_shared<State_Dammy>()), element_(-1){}
 
@@ -10,7 +12,7 @@ StateMgr::~StateMgr(){}
 // 更新処理
 void StateMgr::action(Actor& actor, float deltaTime) {
 	// 入力処理
-	currentState_->input(deltaTime);
+	if(!actor.getWorld()->GetPlayerNotMove()) currentState_->input(deltaTime);
 	// 更新処理
 	currentState_->update(deltaTime);
 	// 更新処理

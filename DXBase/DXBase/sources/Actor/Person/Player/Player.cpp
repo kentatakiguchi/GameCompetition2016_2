@@ -35,9 +35,9 @@ void Player::onUpdate(float deltaTime) {
 
 	prePos_ = position_;
 	// 指定stateの更新
-	if (!world_->GetPlayerNotMove()) {
+	//if (!world_->GetPlayerNotMove()) {
 		update_state(deltaTime);
-	}
+	//}
 }
 
 // body中心座標

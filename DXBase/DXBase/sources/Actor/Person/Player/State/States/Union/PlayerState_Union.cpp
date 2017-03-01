@@ -20,6 +20,13 @@ void PlayerState_Union::common_init(Actor& actor, const StateElement& element){
 void PlayerState_Union::input(float deltaTime){}
 
 void PlayerState_Union::common_update(float deltaTime){
+
+	cntr_->point_chase(deltaTime);
+	
+	if (cntr_->getWorld()->GetPlayerNotMove()) {
+		change(PlayerState_Enum_Union::IDLE);
+	}
+
 	butty_->position() += butty_->hit_vector();
 	retty_->position() += retty_->hit_vector();
 

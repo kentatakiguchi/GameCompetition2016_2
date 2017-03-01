@@ -38,25 +38,10 @@ void PlayerConnector::onUpdate(float deltaTime) {
 	//ぷよテクスチャUPdate
 	puyoUpdate();
 	
-	if (world_->GetPlayerNotMove()) return;
+	//if (world_->GetPlayerNotMove()) return;
 
 	timer_ += deltaTime;
 	position_ = (butty_->getPosition() + retty_->getPosition()) / 2;
-
-	for (int i = 0; i < points.size(); i++) {
-		if (stateMgr_.currentActionType(ActionType::Left)) {
-			auto point = std::dynamic_pointer_cast<PlayerBodyPoint>(points[i]);
-			point->attract_update(deltaTime);
-			point->clamp_update(SIGN_MINUS);
-			point->clamp_update(SIGN_PLUS);
-		}
-		else {
-			auto point = std::dynamic_pointer_cast<PlayerBodyPoint>(points[points.size() - 1 - i]);
-			point->attract_update(deltaTime);
-			point->clamp_update(SIGN_PLUS);
-			point->clamp_update(SIGN_MINUS);
-		}
-	}
 
 	butty_->collider();
 	retty_->collider();
@@ -77,6 +62,23 @@ void PlayerConnector::onDraw() const {
 	retty_->drawBody();
 	butty_->drawBody();
 	mPuyo->PuyoDraw();
+}
+
+void PlayerConnector::point_chase(float deltaTime){
+	for (int i = 0; i < points.size(); i++) {
+		if (stateMgr_.currentActionType(ActionType::Right)) {
+			auto point = std::dynamic_pointer_cast<PlayerBodyPoint>(points[i]);
+			point->attract_update(deltaTime);
+			point->clamp_update(SIGN_MINUS);
+			point->clamp_update(SIGN_PLUS);
+		}
+		else {
+			auto point = std::dynamic_pointer_cast<PlayerBodyPoint>(points[points.size() - 1 - i]);
+			point->attract_update(deltaTime);
+			point->clamp_update(SIGN_PLUS);
+			point->clamp_update(SIGN_MINUS);
+		}
+	}
 }
 
 void PlayerConnector::create_point(int point_num) {
