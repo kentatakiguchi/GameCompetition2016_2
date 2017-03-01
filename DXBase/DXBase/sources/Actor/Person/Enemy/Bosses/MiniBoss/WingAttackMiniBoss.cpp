@@ -35,7 +35,6 @@ WingAttackMiniBoss::WingAttackMiniBoss(
 
 void WingAttackMiniBoss::idel(float deltaTime)
 {
-	setTexPosition(10.0f);
 	if (stateTimer_ < 2.0f) return;
 	changeState(State::Attack, WING_ATTACK_NUMBER);
 }
@@ -46,7 +45,6 @@ void WingAttackMiniBoss::move(float deltaTime)
 
 void WingAttackMiniBoss::attack(float deltaTime)
 {
-	setTexPosition(10.0f);
 	if (!isAttack_) {
 		if (animation_.getFrame() < 25) return;
 		wingAttack();

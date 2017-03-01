@@ -22,6 +22,7 @@
 #include"SticklessFloor.h"
 #include"BossAreaFloor.h"
 #include"../Actor/Person/Enemy/ImportEnemys.h"
+#include"../Actor/Person/Enemy/Bosses/MiniBoss/MediumBoss/ImportMediumBosses.h"
 #include"../ResourceLoader/ResourceLoader.h"
 #include "../Actor/Door/Door.h"
 #include "MovelessFloorBreak.h"
@@ -314,6 +315,21 @@ public:
 					world_->addActor(ActorGroup::Enemy, std::make_shared<NeedleEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2), 270.0f));
 					continue;
 				}
+				if (reader_.geti(rowN, colN) == 62) {
+					// 中ボス１
+					world_->addActor(ActorGroup::Enemy, std::make_shared<Stage1MiniBoss>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 63) {
+					// 中ボス２
+					world_->addActor(ActorGroup::Enemy, std::make_shared<Stage2MiniBoss>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 64) {
+					// 中ボス３
+					world_->addActor(ActorGroup::Enemy, std::make_shared<Stage3MiniBoss>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
+					continue;
+				}
 				if (reader_.geti(rowN, colN) == 65) {
 					world_->addActor(ActorGroup::Enemy, std::make_shared<BaseBoss>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
 					continue;
@@ -328,11 +344,11 @@ public:
 					world_->addActor(ActorGroup::Enemy, std::make_shared<WallMoveEnemy>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2) + Vector2::One * (CHIPSIZE - 64.0f) / 2, Vector2(1.f, 1.f)));
 					continue;
 				}
-
-				//if (reader_.geti(rowN, colN) == 66) {
-				//	world_->addActor(ActorGroup::Enemy, std::make_shared<BossBody>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2)));
-				//	continue;
-				//}
+				if (reader_.geti(rowN, colN) == 68) {
+					// スクロールポイント
+					world_->addActor(ActorGroup::Effect, std::make_shared<BossScrollPoint>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE) + (Vector2::One*CHIPSIZE / 2) + Vector2::One * (CHIPSIZE - 64.0f) / 2));
+					continue;
+				}
 				if (reader_.geti(rowN, colN) == 70) {
 					world_->addActor(ActorGroup::Field, std::make_shared<Door>(world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;

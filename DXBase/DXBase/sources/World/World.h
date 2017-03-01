@@ -56,6 +56,10 @@ public:
 	void setIsStopTime(const bool isTime) override;
 	// デルタタイムを取得します(元のタイムクラスから取得)
 	float getDeltaTime() override;
+	// 中ボスのステージ内に入ったかを設定します
+	void setIsMBossStage(bool isStage) override;
+	// 中ボスのステージ内に入ったかを返します
+	bool isMBossStage() override;
 	virtual void SetScroolJudge(const Vector2& scroolJudge, const Vector2& scroolMinPos, const Vector2& scroolMaxPos,bool flag=false) override;
 	virtual Vector2 GetScreenPlayerPos() override
 	{
@@ -157,6 +161,8 @@ private:
 	bool isEntered_, isLetOuted_;
 	// 時間を止めるか
 	bool isStopTime_;
+	// 中ボスのステージ内か
+	bool isMBossStage_;
 	// 現在の時間
 	float deltaTime_;
 

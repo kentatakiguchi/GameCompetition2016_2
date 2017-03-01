@@ -29,14 +29,17 @@ private:
 	void createStars();
 	// 星の更新
 	void updateStars();
+	// 星を動かします
+	void moveStars();
 
 private:
 	// 星関連
-	int starCount_;			// 星の生成数
-	bool isCreateStar_;		// 星を生成したか
-	bool isIdelEnd_;		// 待機状態が終了しているか
-	bool isEffectEnd_;		// 演出が終了したか
-	IWorld* world_;			// ワールド
+	int starCount_;						// 星の生成数
+	bool isCreateStar_;					// 星を生成したか
+	bool isIdelEnd_;					// 待機状態が終了しているか
+	bool isPowerUpCreate_;				// エフェクトを生成したか
+	bool isEffectEnd_;					// 演出が終了したか
+	IWorld* world_;						// ワールド
 	// 星の生成位置コンテナ
 	std::vector<Vector2> startPositiones_;
 	// 星格納コンテナ

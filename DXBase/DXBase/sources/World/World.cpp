@@ -11,6 +11,7 @@ World::World(SceneDataKeeper* keeper) :
 	isEntered_(false),
 	isLetOuted_(false),
 	isStopTime_(false),
+	isMBossStage_(false),
 	mNoPlayerMove(false),itemCount_(0),getCount_(0),
 	playerScreenPos_(PLAYER_SCREEN_POSITION),
 	keeper_(keeper){
@@ -148,6 +149,17 @@ void World::setIsStopTime(const bool isTime)
 float World::getDeltaTime()
 {
 	return deltaTime_;
+}
+
+// 中ボスのステージ内に入ったかを設定します
+void World::setIsMBossStage(bool isStage)
+{
+	isMBossStage_ = isStage;
+}
+
+bool World::isMBossStage()
+{
+	return isMBossStage_;
 }
 
 void World::SetScroolJudge(const Vector2& scroolJudge,const Vector2& scroolMinPos,const Vector2& scroolMaxPos, bool flag)
