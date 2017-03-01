@@ -13,6 +13,7 @@
 #include"MoveFloorCenterRightLeft.h"
 #include"TurnFloor.h"
 #include"MovelessFloor.h"
+#include"MovelessFloorInvis.h"
 #include"NavChip.h"
 #include"TranslessTurnFloor.h"
 #include"StageClearPoint.h"
@@ -201,6 +202,11 @@ public:
 				}
 				if (reader_.geti(rowN, colN) == 13) {
 					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
+					continue;
+				}
+				if (reader_.geti(rowN, colN) == 14) {
+					world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloorInvis>(
 						ResourceLoader::GetInstance().getTextureID(stagetexes[stagenum]), world_, Vector2(colN*CHIPSIZE, rowN*CHIPSIZE)));
 					continue;
 				}

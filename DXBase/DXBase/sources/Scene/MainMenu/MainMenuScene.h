@@ -30,6 +30,8 @@ public:
 private:
 	bool isTitle_;
 	bool isDrawAlphaBack_;
+	bool isSelectGamePlay_;
+	Vector2 gamePlaySlimePos_;
 	//チェンジするカウント
 	float alphaSlideCount_;
 	//一回しか入らないようにするフラグ

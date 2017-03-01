@@ -144,6 +144,10 @@ public:
 	virtual SceneDataKeeper* GetKeeper()override {
 		return keeper_;
 	}
+	virtual std::string getCurrentSceneName() override{
+		return currentSceneName_;
+	}
+
 private:
 	// アクターマネージャー
 	ActorManager	actors_;
@@ -177,6 +181,7 @@ private:
 
 	int itemCount_;
 	int getCount_;
+
 public:
 
 	Matrix inv_;
@@ -196,7 +201,7 @@ public:
 	
 	SceneDataKeeper* keeper_;
 
-
+	std::string currentSceneName_;
 };
 
 #endif

@@ -82,6 +82,7 @@ void BonusStage::start()
 		breakBlocks_.push_back(block);
 		world_->addActor(ActorGroup::Field,block);
 	}
+	world_->currentSceneName_ = name_;
 }
 
 void BonusStage::update()

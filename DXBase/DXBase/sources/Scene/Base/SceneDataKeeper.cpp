@@ -109,9 +109,10 @@ void SceneDataKeeper::setItemCount(int itemCount) {
 void SceneDataKeeper::addCount(int adds) {
 	//itemCount_ += adds;
 	keepItemCount_ -= adds;
+	int subKeep = datas_[currentSceneName_].itemCount_;
 	datas_[currentSceneName_].itemCount_ += adds;
 	if (datas_[currentSceneName_].itemCount_ < 0) {
-		keepItemCount_ += adds-datas_[currentSceneName_].itemCount_;
+		keepItemCount_ += subKeep-abs(adds);
 		datas_[currentSceneName_].itemCount_ = 0;
 	}
 }

@@ -117,6 +117,8 @@ void BossStage::start() {
 	}
 	world_->addActor(ActorGroup::Effect, std::make_shared<Smoke>(world_.get(), Vector2(CHIPSIZE * 13)));
 	world_->CollisitionOffOn(true);
+
+	world_->currentSceneName_ = name_;
 }
 
 void BossStage::update() {

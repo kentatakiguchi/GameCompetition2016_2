@@ -146,7 +146,7 @@ void StageClearScene::start() {
 			//ResourceLoader::GetInstance().getTextureID(TextureID::GOAL_TEX), world_.get(), Vector2(i*CHIPSIZE, 950)));
 			ResourceLoader::GetInstance().getTextureID(TextureID::BOARD_NULL_TEX), world_.get(), Vector2(i*CHIPSIZE, 950)));
 	}
-
+	world_->currentSceneName_ = name_;
 }
 void StageClearScene::update() {
 

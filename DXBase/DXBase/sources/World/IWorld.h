@@ -91,6 +91,7 @@ public:
 	virtual void resetGetCount() = 0;
 	virtual int getCount() = 0;
 	virtual int getGetCount() = 0;
+	virtual std::string getCurrentSceneName() = 0;
 
 };
 

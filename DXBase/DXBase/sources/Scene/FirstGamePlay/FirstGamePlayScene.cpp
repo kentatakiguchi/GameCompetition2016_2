@@ -116,6 +116,8 @@ void FirstGamePlayScene::start() {
 	keeper_->start();
 	previousScoreKeeper_ = 0;
 	currentScoreKeeper_ = 0;
+
+	world_->currentSceneName_ = name_;
 }
 
 void FirstGamePlayScene::update() {

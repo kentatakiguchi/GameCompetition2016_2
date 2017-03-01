@@ -178,9 +178,12 @@ void GamePlayScene::start() {
 	keeper_->start();
 	previousScoreKeeper_ = 0;
 	currentScoreKeeper_ = 0;
+
+	world_->currentSceneName_ = name_;
 }
 
 void GamePlayScene::update() {
+	//world_->setIsMBossStage(InputMgr::GetInstance().IsKeyOn(KeyCode::Z));
 	//keeper_->addJumpCount(1);
 	//world_->keeper_->addDamageCount(1);
 
