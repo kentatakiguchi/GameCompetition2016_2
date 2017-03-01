@@ -17,12 +17,13 @@ Stage2MiniBoss::Stage2MiniBoss(
 	prevAttackPosition_(position_)
 {
 	direction_ = Vector2::Left;
+	color_ = Vector3(180.0f, 250.0f, 0.0f);
 	stars_.clear();
 }
 
 void Stage2MiniBoss::idel(float deltaTime)
 {
-	auto speed = 4.0f;
+	auto speed = 6.0f;
 	auto addPos = speed * direction_.x * (deltaTime * 60.0f);
 	position_.x += addPos;
 	movePositionCount_ += std::abs(addPos);

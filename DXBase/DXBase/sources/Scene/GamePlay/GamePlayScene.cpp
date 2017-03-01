@@ -188,8 +188,9 @@ void GamePlayScene::update() {
 	//world_->keeper_->addDamageCount(1);
 
 	//この関数はワールドアップデート前に呼んでね
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::Y)) {
-		world_->SetScroolPos(Vector2::Zero);
+	auto scrollPoint = world_->findActor("BossScrollPoint");
+	if (world_->isMBossStage()) {
+		world_->SetScroolPos(scrollPoint->getPosition());
 	}
 
 	if (isClearStage_) {

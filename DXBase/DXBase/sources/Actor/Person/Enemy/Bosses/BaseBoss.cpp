@@ -158,8 +158,10 @@ void BaseBoss::onCollide(Actor & actor)
 	auto actorName = actor.getName();
 	//床関連のオブジェクトに当たっているなら
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
+	auto getBlockname = strstr(actorName.c_str(), "Block");
 	// バトル待機状態なら、触れた壁を壊す
-	if (state_ == State::BattleIdel && getFloorName != NULL) {
+	if (state_ == State::BattleIdel && 
+		(getFloorName != NULL || getBlockname != NULL)) {
 		actor.dead();
 		auto se =
 			ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_CHAKUCHI);

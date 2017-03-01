@@ -9,7 +9,7 @@ public:
 	Stage1MiniBoss(
 		IWorld* world,
 		const Vector2& position,
-		const float bodyScale = 64.0f);
+		const float bodyScale = 96.0f);
 
 private:
 	// ë“ã@èÛë‘

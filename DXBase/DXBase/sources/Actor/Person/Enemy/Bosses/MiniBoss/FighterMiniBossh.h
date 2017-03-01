@@ -45,7 +45,7 @@ protected:
 	// プレイヤーに当たった時の処理	
 	virtual void playerHit(Actor& actor);
 	// プレイヤーの攻撃に当たった時の処理
-	virtual void playerAttackHit();
+	virtual void playerAttackHit(Actor& actor);
 
 protected:
 	// プレイヤーとの方向を返します(単位ベクトル)
@@ -71,6 +71,7 @@ protected:
 	Vector2 addTexPos_;				// テクスチャの位置
 	Vector2 orizin_;				// 中点
 	Vector2 prevPlayerDirection_;	// プレイヤーとの過去の方向
+	Vector3 color_;					// 色
 	State state_;					// 状態
 	EnemyAnimation2D animation_;	// アニメーション
 };

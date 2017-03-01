@@ -22,6 +22,7 @@ Stage3MiniBoss::Stage3MiniBoss(
 	prevAttackPosition_(position),
 	wspObj_(nullptr)
 {
+	color_ = Vector3(240.0f, 80.0f, 0.0f);
 	// 床捜索オブジェクト
 	auto wspObj = std::make_shared<FloorSearchPoint>(
 		world_, position_, Vector2::One * body_.GetCircle().getRadius(), 10.0f);
@@ -72,6 +73,19 @@ void Stage3MiniBoss::attack(float deltaTime)
 	createMiniBoss(deltaTime);
 }
 
+void Stage3MiniBoss::deadMove(float deltaTime)
+{
+	// スターの削除
+	if (stars_.size() != 0) {
+		for (auto i = stars_.begin(); i != stars_.end(); i++) {
+			auto star = *i;
+			star->dead();
+		}
+		stars_.clear();
+	}
+	MediumBoss::deadMove(deltaTime);
+}
+
 void Stage3MiniBoss::piyoriMove(float deltaTime)
 {
 	auto dir = direction_;
@@ -119,9 +133,9 @@ void Stage3MiniBoss::restMove(float deltaTime)
 	changeState(State::Idel, WAIT_NUMBER);
 }
 
-void Stage3MiniBoss::playerAttackHit()
+void Stage3MiniBoss::playerAttackHit(Actor & actor)
 {
-	MediumBoss::playerAttackHit();
+	MediumBoss::playerAttackHit(actor);
 	// 特定の位置に居る場合は、ぴより状態に遷移
 	if (state_ == State::Attack) {
 		if (wallCount_ % 4 != 0) {
@@ -140,15 +154,12 @@ void Stage3MiniBoss::wallAttack(float deltaTime)
 	auto speed = 10.0f * (deltaTime * 60.0f);
 	if (wspObj_->isGround() && isPrevWspHit_ != wspObj_->isGround()) wallCount_++;
 	isPrevWspHit_ = wspObj_->isGround();
-	/*if (isWspHit_ && isPrevWspHit_ != isWspHit_) count_++;
-	isPrevWspHit_ = isWspHit_;*/
 	auto direction = Vector2(
 		moveDirections_[(wallCount_ + 1) % 4],
 		moveDirections_[wallCount_ % 4]
 		);
 	direction_ = direction;
 	wspObj_->setDirection(direction_);
-	//animeAngle_ = (float)((count_ * 90) % 360);
 	degree_ = (float)(wallCount_ * 90 % 360) + 90.0f;
 	auto pos = direction * speed * (deltaTime * 60.0f);
 	position_ += pos;
@@ -181,7 +192,7 @@ void Stage3MiniBoss::createMiniBoss(float deltaTime)
 	auto scrollPoint = world_->findActor("BossScrollPoint");
 	if (scrollPoint != nullptr)
 		position = scrollPoint->getPosition() -
-		Vector2(chipsize * 8, chipsize * 5);
+		Vector2(chipsize * 10, chipsize * 6);
 	auto miniBoss = std::make_shared<FlyingMiniBoss>(world_, pos + position);
 	world_->addActor(ActorGroup::Enemy, miniBoss);
 	PlaySoundMem(

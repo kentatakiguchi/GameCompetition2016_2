@@ -27,6 +27,14 @@ public:
 	}
 
 	void onCollide(Actor& other) override {
+		// •Ç‚É“–‚½‚Á‚½‚çA€–S‚·‚é
+		auto actorName = other.getName();
+		if (actorName == "Boss") return;
+		auto getFloorName = strstr(actorName.c_str(), "Floor");
+		if (getFloorName != NULL) {
+			dead();
+			return;
+		}
 		Items::onCollide(other);
 		// °‚É“–‚½‚Á‚½‚Ìˆ—
 		// groundClamp();

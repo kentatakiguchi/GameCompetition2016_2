@@ -11,7 +11,7 @@ public:
 	Stage3MiniBoss(
 		IWorld* world,
 		const Vector2&  position,
-		const float bodyScale = 64.0f);
+		const float bodyScale = 96.0f);
 	void onUpdate(float deltaTime) override;
 
 private:
@@ -23,12 +23,14 @@ private:
 	void move(float deltaTime) override;
 	// 攻撃状態
 	void attack(float deltaTime) override;
+	// 死亡状態
+	void deadMove(float deltaTime) override;
 	// ぴより行動
 	void piyoriMove(float deltaTime);
 	// 休み行動
 	void restMove(float deltaTime);
 	// プレイヤーの攻撃に当たった時の処理
-	void playerAttackHit() override;
+	void playerAttackHit(Actor& actor) override;
 	// 壁移動攻撃処理
 	void wallAttack(float deltaTime);
 	// 浮遊ミニボスの生成を行います

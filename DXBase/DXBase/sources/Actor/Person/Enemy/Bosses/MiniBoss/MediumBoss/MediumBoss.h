@@ -11,8 +11,9 @@ public:
 	MediumBoss(
 		IWorld* world,
 		const Vector2&  position,
-		const float bodyScale = 96.0f);
+		const float bodyScale = 64.0f);
 	virtual void onUpdate(float deltaTime) override;
+	void onDraw()const override;
 
 protected:
 	// 勝負待機状態
@@ -28,7 +29,7 @@ protected:
 	// 床に当たった時の処理
 	virtual void floorHit() override;
 	// プレイヤーの攻撃に当たった時の処理
-	virtual void playerAttackHit() override;
+	virtual void playerAttackHit(Actor & actor) override;
 	// ランダムの値を取得します
 	int getRandomInt(const int min, const int max);
 

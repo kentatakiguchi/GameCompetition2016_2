@@ -17,7 +17,7 @@ private:
 	// 床に当たった時の処理
 	void floorHit() override;
 	// プレイヤーの攻撃に当たった時の処理
-	void playerAttackHit() override;
+	void playerAttackHit(Actor& actor) override;
 
 private:
 	float deg_;				// 角度(親の変数名も変更する)

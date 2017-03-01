@@ -25,6 +25,7 @@ FighterMiniBoss::FighterMiniBoss(
 	addTexPos_(Vector2::Zero),
 	orizin_(Vector2::One * (256 / 2)),
 	prevPlayerDirection_(Vector2::Zero),
+	color_(Vector3::One * 255.0f),
 	state_(State::Idel),
 	animation_(EnemyAnimation2D())
 {
@@ -59,12 +60,13 @@ void FighterMiniBoss::onDraw() const
 	//auto vec3Pos = Vector3(position_.x, position_.y, 0.0f);
 	auto vec3Pos = Vector3(position.x, position.y, 0.0f);
 	vec3Pos = vec3Pos * inv_;
-
+	// size_
 	animation_.draw(
 		Vector2(vec3Pos.x, vec3Pos.y),
 		orizin_,
 		size_,
-		degree_ + 270.0f);
+		degree_ + 270.0f,
+		color_);
 }
 
 void FighterMiniBoss::onCollide(Actor & actor)
@@ -90,7 +92,7 @@ void FighterMiniBoss::onCollide(Actor & actor)
 	if (actorName == "PlayerAttackCollider") {
 		// 無敵か、ダメージタイマが０でないなら返す
 		if (isInvincible_ || damegeTimer_ > 0.0f) return;
-		playerAttackHit();
+		playerAttackHit(actor);
 		return;
 	}
 }
@@ -163,7 +165,7 @@ void FighterMiniBoss::playerHit(Actor & actor)
 }
 
 // プレイヤーの攻撃に当たった時の処理
-void FighterMiniBoss::playerAttackHit()
+void FighterMiniBoss::playerAttackHit(Actor & actor)
 {
 	changeState(State::Dead, DEAD_NUMBER);
 	body_.enabled(false);

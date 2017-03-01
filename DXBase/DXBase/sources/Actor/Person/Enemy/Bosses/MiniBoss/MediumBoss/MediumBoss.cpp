@@ -1,13 +1,15 @@
 #include "MediumBoss.h"
 #include "../ImportAnimationNumber.h"
+#include "../../Effect/AttackEffect.h"
 #include "../../../../../UIActor/BossGaugeUI/BossGaugeUI.h"
+#include "../../../../../Base/ActorGroup.h"
 #include "../../../../../../World/IWorld.h"
 
 MediumBoss::MediumBoss(
 	IWorld * world, 
 	const Vector2 & position, 
 	const float bodyScale) : 
-	FighterMiniBoss(world, position, bodyScale, "MediumBoss"),
+	FighterMiniBoss(world, position, bodyScale, "Boss"),
 	hp_(100),
 	damage_(20),
 	direction_(Vector2::One),
@@ -26,6 +28,13 @@ MediumBoss::MediumBoss(
 void MediumBoss::onUpdate(float deltaTime)
 {
 	FighterMiniBoss::onUpdate(deltaTime);
+}
+
+void MediumBoss::onDraw() const
+{
+	SetDrawBright((int)color_.x, (int)color_.y, (int)color_.z);
+	FighterMiniBoss::onDraw();
+	SetDrawBright(255, 255, 255);
 }
 
 void MediumBoss::battleIdel(float deltaTime)
@@ -75,13 +84,19 @@ void MediumBoss::floorHit()
 }
 
 // プレイヤーの攻撃に当たった時の処理
-void MediumBoss::playerAttackHit()
+void MediumBoss::playerAttackHit(Actor & actor)
 {
 	hp_ -= damage_;
 	damegeTimer_ = 2.0f;
 	bossGaugeUI_->SetHp(hp_);
+	// エフェクトの生成
+	world_->addActor(ActorGroup::Effect,
+		std::make_shared<AttackEffect>(world_, actor.getPosition(), 1.0f));
 	if (hp_ < 0) {
 		changeState(State::Dead, DEAD_NUMBER);
+		PlaySoundMem(
+			ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_DEAD),
+			DX_PLAYTYPE_BACK);
 		animation_.setIsLoop(false);
 		body_.enabled(false);
 	}

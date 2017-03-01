@@ -31,7 +31,7 @@ void FlyingMiniBoss::floorHit()
 }
 
 // ƒvƒŒƒCƒ„[‚ÌUŒ‚‚É“–‚½‚Á‚½‚Ìˆ—
-void FlyingMiniBoss::playerAttackHit()
+void FlyingMiniBoss::playerAttackHit(Actor & actor)
 {
 	changeDeadState(DeadState::HitDead, DEAD_NUMBER);
 	body_.enabled(false);

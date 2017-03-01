@@ -22,7 +22,7 @@ void BossScrollPoint::onUpdate(float deltaTime)
 	}
 	else return;
 
-	auto boss = world_->findActor("MediumBoss");
+	auto boss = world_->findActor("Boss");
 	// ’†ƒ{ƒX‚ª‚¢‚È‚¢‚È‚çAíœ‚·‚é
 	if (boss == nullptr) {
 		world_->setIsMBossStage(false);

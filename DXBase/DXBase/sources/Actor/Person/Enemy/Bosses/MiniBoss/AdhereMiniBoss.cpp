@@ -16,8 +16,8 @@ AdhereMiniBoss::AdhereMiniBoss(
 
 void AdhereMiniBoss::changeDeadState(DeadState dState, int animation)
 {
-	if (dState_ == dState) return;
 	changeState(State::Dead, animation);
+	if (dState_ == dState) return;
 	dState_ = dState;
 }
 
