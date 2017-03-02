@@ -114,10 +114,14 @@ void StageClearScene::start() {
 
 	//Worldを生成し、プレイヤーを追加
 	world_ = std::make_shared<World>(keeper_);
-	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), Vector2(-400, 850)));
+	player_ = std::make_shared<Player>(world_.get(), Vector2(-400, 850));
+	world_->addActor(ActorGroup::Player, player_);
+	Vector2 clampPoint = Vector2(-400, 0);
+	player_->setClampPoint(clampPoint);
+	//world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), Vector2(-400, 850)));
 
 	//プレイヤーは自動での移動、判定等は行わないようにする
-	world_->PlayerNotMove(true);
+	//world_->PlayerNotMove(true);
 	world_->CollisitionOffOn(true);
 
 	//経過時間の初期化
@@ -141,12 +145,13 @@ void StageClearScene::start() {
 
 	BoardPosition = SCREEN_SIZE-Vector2(0,ResourceLoader::GetInstance().GetTextureSize(BoardTexes[boardNum_]).y);
 
-	for (int i = 0; i < 30; i++) {
+	for (int i = -10; i < 30; i++) {
 		world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
 			//ResourceLoader::GetInstance().getTextureID(TextureID::GOAL_TEX), world_.get(), Vector2(i*CHIPSIZE, 950)));
 			ResourceLoader::GetInstance().getTextureID(TextureID::BOARD_NULL_TEX), world_.get(), Vector2(i*CHIPSIZE, 950)));
 	}
 	world_->currentSceneName_ = name_;
+	
 }
 void StageClearScene::update() {
 
@@ -197,8 +202,8 @@ void StageClearScene::update() {
 	}
 	else if (mIvemtTime <= 5) {
 
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(400, 0.0f));
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(400.0f, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(2400.f, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(2400.f, 0.0f));
 	}
 	else if (mIvemtTime <= 7.f) {
 	}
@@ -218,8 +223,8 @@ void StageClearScene::update() {
 
 	}
 	else if(mIvemtTime <= 12.0f) {
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(800, 0.0f));
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(800.0f, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(4000, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(4000.0f, 0.0f));
 
 		isArrive_ = true;
 	}

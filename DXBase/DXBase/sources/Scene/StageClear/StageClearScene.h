@@ -8,6 +8,7 @@
 #include "../../Animation/Player/PlayerAnimation2D.h"
 #include "SceneChangeBossAnm.h"
 #include"../../World/World.h"
+#include"../../Actor/Person/Player/PlayerPtr.h"
 
 class BackGraundManager;
 
@@ -59,6 +60,7 @@ private:
 	bool isArrive_;
 	bool isFirstIdle;
 	bool isFirstJump;
+	PlayerPtr player_;
 };
 
 #endif

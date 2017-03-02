@@ -49,6 +49,9 @@ public:
 
 	//ã≠êßà⁄ìÆä÷êî(ë¨ìxî≈)
 	void ForcedMove(Vector2 velocity);
+
+	void setClampPoint(Vector2 point);
+	const Vector2& getClampPoint_()const;
 private:
 	PlayerStateMgr_Single stateMgr_;
 	PlayerAnimation2D animation_;
@@ -71,6 +74,8 @@ private:
 	float stiffness_;
 	float friction_;
 	float mass_;
+
+	Vector2 playerClampPoint_;
 };
 
 

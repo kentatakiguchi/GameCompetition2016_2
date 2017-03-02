@@ -93,8 +93,8 @@ bool Player::is_dead() {
 	return butty_->isDead() && retty_->isDead();
 }
 
-
-
-
-
-
+void Player::setClampPoint(Vector2 point)
+{
+	butty_->setClampPoint(point);
+	retty_->setClampPoint(point);
+}

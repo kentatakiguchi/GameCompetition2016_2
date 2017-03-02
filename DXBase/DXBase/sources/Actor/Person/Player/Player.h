@@ -14,6 +14,7 @@ public:
 	~Player();
 	// 更新処理
 	virtual void onUpdate(float deltaTime) override;
+	void setClampPoint(Vector2 point);
 private:
 	// body中心座標
 	Vector2 center();

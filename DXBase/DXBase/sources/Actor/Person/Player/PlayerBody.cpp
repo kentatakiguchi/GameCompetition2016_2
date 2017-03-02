@@ -22,7 +22,8 @@ PlayerBody::PlayerBody(IWorld * world, const std::string name, const Vector2 & p
 	friction_(0.1f),
 	mass_(0.8f),
 	stateMgr_(name),
-	bodyDump_(1){
+	bodyDump_(1),
+	playerClampPoint_(Vector2::One * PLAYER_RADIUS){
 	change_state(PlayerState_Enum_Single::STAND_BY);
 
 	auto collider = std::make_shared<PlayerBodyCollider>(world_, name_);
@@ -273,6 +274,16 @@ PlayerAnimation2D & PlayerBody::animation() {
 
 void PlayerBody::ForcedMove(Vector2 velocity) {
 	position_ += velocity*Time::GetInstance().deltaTime();
+}
+
+void PlayerBody::setClampPoint(Vector2 point)
+{
+	playerClampPoint_ = point;
+}
+
+const Vector2 & PlayerBody::getClampPoint_() const
+{
+	return playerClampPoint_;
 }
 
 

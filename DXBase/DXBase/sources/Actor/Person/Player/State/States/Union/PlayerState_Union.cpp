@@ -32,8 +32,10 @@ void PlayerState_Union::common_update(float deltaTime){
 
 	butty_->velocity() = Vector2::One;
 	retty_->velocity() = Vector2::One;
-	butty_->position() = Vector2::Clamp(butty_->position(), Vector2::One * PLAYER_RADIUS, Vector2::One * 50000);
-	retty_->position() = Vector2::Clamp(retty_->position(), Vector2::One * PLAYER_RADIUS, Vector2::One * 50000);
+	butty_->position() = Vector2::Clamp(butty_->position(), butty_->getClampPoint_(), Vector2::One * 50000);
+	retty_->position() = Vector2::Clamp(retty_->position(), butty_->getClampPoint_(), Vector2::One * 50000);
+	//butty_->position() = Vector2::Clamp(butty_->position(), Vector2::One * PLAYER_RADIUS, Vector2::One * 50000);
+	//retty_->position() = Vector2::Clamp(retty_->position(), Vector2::One * PLAYER_RADIUS, Vector2::One * 50000);
 }
 
 // Õ“Ëˆ—
