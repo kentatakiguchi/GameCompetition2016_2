@@ -20,6 +20,10 @@ PlayerBodyPoint::~PlayerBodyPoint(){}
 
 // XVˆ—
 void PlayerBodyPoint::onUpdate(float deltaTime) {
+	if (world_->getCurrentSceneName() == "bossStage01") {
+		position_.y = MathHelper::Clamp(position_.y, 0, CHIPSIZE * 10);
+	}
+
 	if (world_->getField() == nullptr)return;
 		//world_->getField()->calcColl(position_, pre_);
 
