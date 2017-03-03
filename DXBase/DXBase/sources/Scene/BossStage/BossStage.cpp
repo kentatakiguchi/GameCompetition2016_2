@@ -12,6 +12,7 @@
 
 #include "../../Input/InputMgr.h"
 #include "../../Actor/Person/Player/PlayerBody.h"
+#include "../../Actor/Person/Player/PlayerConnector.h"
 
 #include "../../Actor/Person/Enemy/Bosses/MiniBossRepair.h"
 #include "../../Actor/BlockParticle/BlockParticle.h"
@@ -52,6 +53,9 @@ void BossStage::start() {
 
 	world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(),
 		gener.findStartPoint("./resources/file/" + name_ + ".csv") - Vector2(400, 0)));
+
+	dynamic_cast<Player*>(world_->findActor("Player").get())->setClampPoint(Vector2(-400, 0.0f));
+
 	//プレイヤーのスタート位置を設定
 	world_->SetPlayerPos(gener.findStartPoint("./resources/file/" + name_ + ".csv") - Vector2(400, 0));
 
@@ -120,6 +124,11 @@ void BossStage::start() {
 	world_->addActor(ActorGroup::Effect, std::make_shared<Smoke>(world_.get(), Vector2(CHIPSIZE * 13)));
 	world_->CollisitionOffOn(true);
 
+	for (int i = -10; i < 0; i++) {
+		world_->addActor(ActorGroup::Field, std::make_shared<MovelessFloor>(
+			ResourceLoader::GetInstance().getTextureID(TextureID::BOARD_NULL_TEX), world_.get(), Vector2(i*CHIPSIZE, CHIPSIZE * 11)));
+	}
+
 	world_->currentSceneName_ = name_;
 }
 
@@ -137,6 +146,8 @@ void BossStage::update() {
 		if (mIvemtTime <= 7.0f) {
 			dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(150.0f, 0.0f));
 			dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(150.0f, 0.0f));
+			auto conn = world_->findActor("PlayerConnector").get();
+			if (conn != nullptr) dynamic_cast<PlayerConnector*>(world_->findActor("PlayerConnector").get())->ForcedMove(Vector2(150.0f, 0.0f));
 		}
 		else if (mIvemtTime > 7.0f&&mIvemtTime <= 8) {
 			door_->DoorOpen(false);
@@ -155,6 +166,7 @@ void BossStage::update() {
 		else if (boss_->isMovePosition() && mIvemtTime >= 17.0f) {
 			boss_->setIsBattle(true);
 			world_->PlayerNotMove(false);
+			dynamic_cast<Player*>(world_->findActor("Player").get())->setClampPoint(Vector2(0, 0));
 		}
 	}
 

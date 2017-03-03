@@ -1,6 +1,7 @@
 #include "PlayerState_Idle.h"
 
 #include "../../../../../../../Define.h"
+#include "../../../../../../../Scene/Base/SceneDataKeeper.h"
 
 // コンストラクタ
 PlayerState_Idle::PlayerState_Idle(const PlayerBodyPtr& butty, const PlayerBodyPtr& retty) : PlayerState_Union(butty, retty) {}
@@ -13,6 +14,7 @@ void PlayerState_Idle::unique_init(){
 	retty_->animation().change(PlayerAnimID::IDLE);
 
 	//cntr_->getWorld()->GetKeeper()->setJumpCount(0);
+	cntr_->getWorld()->GetKeeper()->comboReset(0);
 }
 
 // 更新処理
@@ -55,10 +57,12 @@ void PlayerState_Idle::move(float deltaTime) {
 	// rettyの追跡計算
 	chase(retty_->position(), PLAYER_CNTR_DIV_NUM - 1);
 
-	// buttyの移動制限
-	butty_->position() = clamp(butty_->position(), 0);
-	// rettyの移動制限
-	retty_->position() = clamp(retty_->position(), PLAYER_CNTR_DIV_NUM - 1);
+	//if (!cntr_->getWorld()->GetPlayerNotMove()) {
+		// buttyの移動制限
+		butty_->position() = clamp(butty_->position(), 0);
+		// rettyの移動制限
+		retty_->position() = clamp(retty_->position(), PLAYER_CNTR_DIV_NUM - 1);
+	//}
 }
 
 

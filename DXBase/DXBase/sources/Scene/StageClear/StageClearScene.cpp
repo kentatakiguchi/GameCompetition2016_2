@@ -3,6 +3,7 @@
 #include "../../Actor/Person/Player/Player.h"
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
 #include "../../Actor/Person/Player/PlayerBody.h"
+#include "../../Actor/Person/Player/PlayerConnector.h"
 #include "../../Actor/Base/ActorPtr.h"
 #include "../../Actor/Base/ActorGroup.h"
 
@@ -202,8 +203,10 @@ void StageClearScene::update() {
 	}
 	else if (mIvemtTime <= 5) {
 
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(2400.f, 0.0f));
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(2400.f, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(400.f, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(400.f, 0.0f));
+		auto conn = world_->findActor("PlayerConnector").get();
+		if (conn != nullptr) dynamic_cast<PlayerConnector*>(world_->findActor("PlayerConnector").get())->ForcedMove(Vector2(400.0f, 0.0f));
 	}
 	else if (mIvemtTime <= 7.f) {
 	}
@@ -223,8 +226,10 @@ void StageClearScene::update() {
 
 	}
 	else if(mIvemtTime <= 12.0f) {
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(4000, 0.0f));
-		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(4000.0f, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(800, 0.0f));
+		dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody2").get())->ForcedMove(Vector2(800.0f, 0.0f));
+		auto conn = world_->findActor("PlayerConnector").get();
+		if (conn != nullptr) dynamic_cast<PlayerConnector*>(world_->findActor("PlayerConnector").get())->ForcedMove(Vector2(800.0f, 0.0f));
 
 		isArrive_ = true;
 	}

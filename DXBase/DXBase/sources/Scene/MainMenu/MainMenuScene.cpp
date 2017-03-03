@@ -234,7 +234,7 @@ void MainMenuScene::start() {
 	//keeper_->resultDamageReset();
 	keeper_->resetDatas();
 
-	gamePlaySlimePos_ = Vector2(center, 700);
+	gamePlaySlimePos_ = Vector2(center, 500);
 }
 
 void MainMenuScene::update() {
@@ -282,14 +282,14 @@ void MainMenuScene::update() {
 	{
 		if (isSelectGamePlay_) {
 			if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_UP)) {
-				targetPoint=5;
+				targetPoint=1;
 				sinCount = 0;
 				PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
 			
 				gamePlaySlimePos_ = Vector2(center, 500);
 			}
 			if (InputMgr::GetInstance().IsButtonDown(Buttons::BUTTON_DOWN)) {
-				targetPoint=1;
+				targetPoint=5;
 				sinCount = 0;
 				PlaySound("./resources/sounds/menuse/menu_cursor.mp3", DX_PLAYTYPE_BACK);
 			
@@ -421,11 +421,11 @@ void MainMenuScene::draw() const {
 
 	if (isSelectGamePlay_) {
 		float sizeList[2];
-		if (targetPoint == 5) {
+		if (targetPoint == 1) {
 			sizeList[0] = 1.f;
 			sizeList[1] = 0.7f;
 		}
-		if (targetPoint == 1) {
+		if (targetPoint == 5) {
 			sizeList[0] = 0.7f;
 			sizeList[1] = 1.f;
 

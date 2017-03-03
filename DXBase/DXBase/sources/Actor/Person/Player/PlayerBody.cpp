@@ -53,9 +53,9 @@ void PlayerBody::onUpdate(float deltaTime) {
 			animation_.change(PlayerAnimID::IDLE);
 		}
 	}
-	if (world_->getCurrentSceneName() == "bossStage01") {
-		position_.y = MathHelper::Clamp(position_.y, 0, CHIPSIZE * 10);
-	}
+	//if (world_->getCurrentSceneName() == "bossStage01") {
+	//	position_.y = MathHelper::Clamp(position_.y, 0, CHIPSIZE * 10);
+	//}
 	//world_->getField()->calcColl(position_, pre_);
 	pre_ = position_;
 }

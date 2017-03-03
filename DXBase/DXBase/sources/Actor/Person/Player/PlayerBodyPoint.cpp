@@ -20,9 +20,9 @@ PlayerBodyPoint::~PlayerBodyPoint(){}
 
 // XVˆ—
 void PlayerBodyPoint::onUpdate(float deltaTime) {
-	if (world_->getCurrentSceneName() == "bossStage01") {
-		position_.y = MathHelper::Clamp(position_.y, 0, CHIPSIZE * 10);
-	}
+	//if (world_->getCurrentSceneName() == "bossStage01") {
+	//	position_.y = MathHelper::Clamp(position_.y, 0, CHIPSIZE * 10);
+	//}
 
 	if (world_->getField() == nullptr)return;
 		//world_->getField()->calcColl(position_, pre_);
@@ -80,12 +80,12 @@ void PlayerBodyPoint::attract_update(float deltaTime){
 	v1_ = Vector2::Spring_v(position_, cntr->get_point(index_ + 1), v1_, stiffness_, friction_, mass_);
 	v2_ = Vector2::Spring_v(position_, cntr->get_point(index_ - 1), v2_, stiffness_, friction_, mass_);
 	
-	if (!world_->GetPlayerNotMove()) {
+	//if (!world_->GetPlayerNotMove()) {
 		position_ += (v1_ + v2_ + Vector2::Up * GRAVITY / 5) * deltaTime * static_cast<float>(GetRefreshRate());
-	}
-	else {
-		position_ += (Vector2::Up * GRAVITY / 5) * deltaTime * static_cast<float>(GetRefreshRate());
-	}
+	//}
+	//else {
+		//position_ += (Vector2::Up * GRAVITY / 5) * deltaTime * static_cast<float>(GetRefreshRate());
+	//}
 }
 
 void PlayerBodyPoint::clamp_update(int sign){
