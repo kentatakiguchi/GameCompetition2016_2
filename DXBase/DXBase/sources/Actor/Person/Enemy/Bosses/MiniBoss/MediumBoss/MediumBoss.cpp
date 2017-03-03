@@ -1,6 +1,7 @@
 #include "MediumBoss.h"
 #include "../ImportAnimationNumber.h"
 #include "../../Effect/AttackEffect.h"
+//#include "../../../DeadEnemy.h"
 #include "../../../../../UIActor/BossGaugeUI/BossGaugeUI.h"
 #include "../../../../../Base/ActorGroup.h"
 #include "../../../../../../World/IWorld.h"
@@ -47,6 +48,8 @@ void MediumBoss::battleIdel(float deltaTime)
 		return;
 	}
 	if (stateTimer_ < 2.0f) return;
+	// プレイヤーを動ける状態にする
+	world_->PlayerNotMove(false);
 	// ボスの体力ゲージ
 	auto bossUI = std::make_shared<BossGaugeUI>(world_, Vector2(64, -256));
 	world_->addUIActor(bossUI);
@@ -78,6 +81,12 @@ void MediumBoss::deadMove(float deltaTime)
 		bossGaugeUI_->dead();
 		bossGaugeUI_ = nullptr;
 	}
+	// 死亡している中ボスの追加
+	/*auto deadBoss = std::make_shared<DeadEnemy>(
+		world_, position_, body_.GetBox().getWidth(),
+		direction_, AnimationID::BOSS_DEATH_TEX);
+	world_->addActor(ActorGroup::Enemy, deadBoss);
+	deadBoss->setColor(color_);*/
 	//dead();
 }
 

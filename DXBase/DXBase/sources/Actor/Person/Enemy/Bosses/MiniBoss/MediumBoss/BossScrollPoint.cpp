@@ -22,23 +22,6 @@ void BossScrollPoint::onUpdate(float deltaTime)
 	if (!isPlayerIn_) return;
 	scrollMove(deltaTime);
 
-	/*auto player1 = dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get());
-	if (player1 == nullptr) return;*/
-	//player1->ForcedMove()
-	//dynamic_cast<PlayerBody*>(world_->findActor("PlayerBody1").get())->ForcedMove(Vector2(150.0f, 0.0f));
-
-	//auto player = world_->findActor("PlayerBody1");
-	//if (player != nullptr) {
-	//	// 範囲外に居た場合は返す
-	//	auto distance = Vector2(position_ - player->getPosition());
-	//	if (std::abs(distance.x) > CHIPSIZE * 9.5f || 
-	//		std::abs(distance.y) > CHIPSIZE * 5.5f) return;
-	//	// 範囲内にいる処理
-	//	world_->PlayerNotMove(true);
-	//	scrollMove(deltaTime);
-	//}
-	//else return;
-
 	auto boss = world_->findActor("Boss");
 	// 中ボスがいないなら、削除する
 	if (boss == nullptr) {
@@ -89,7 +72,7 @@ void BossScrollPoint::scrollMove(float deltaTime)
 	// 指定の位置に着いた場合は返す
 	if (player_->getPosition().x == scroolPos.x) {
 		world_->setIsMBossStage(true);
-		world_->PlayerNotMove(false);
+		//world_->PlayerNotMove(false);
 		return;
 	}
 	// プレイヤーを動かす
@@ -100,7 +83,7 @@ void BossScrollPoint::scrollMove(float deltaTime)
 		std::abs(scroolPos.x - player_->getPosition().x) / 60.0f);
 	if (speed < 250.0f / 60.0f) {
 		world_->setIsMBossStage(true);
-		world_->PlayerNotMove(false);
+		//world_->PlayerNotMove(false);
 		return;
 	}
 	auto velocity = direction * -(speed * 60.0f);

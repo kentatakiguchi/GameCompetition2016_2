@@ -31,6 +31,7 @@ DeadEnemy::DeadEnemy(
 	holdPosition_(Vector2::Zero),
 	prevPosition_(position),
 	throwVector_(Vector2::Zero),
+	color_(Vector3::One * 255.0f),
 	isHold_(false),
 	playerName_(""),
 	otherName_(""),
@@ -64,9 +65,11 @@ void DeadEnemy::onDraw() const
 	// アニメーションの描画
 	auto pos = Vector2(vec3Pos.x, vec3Pos.y);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_);
+	SetDrawBright((int)color_.x, (int)color_.y, (int)color_.z);
 	animation_.draw(
 		pos, Vector2::One * (body_.GetBox().getWidth() * 2) + Vector2(0.0f, 40.0f),
 		0.5f);
+	SetDrawBright(255, 255, 255);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }
 
@@ -316,5 +319,11 @@ void DeadEnemy::setPlayerName()
 	}
 	//// つかまれた位置との距離を計算
 	//holdLength_ = Vector2(position_ - holdPosition_).Length();
+}
+
+// 色の変更を行います
+void DeadEnemy::setColor(Vector3 color)
+{
+	color_ = color;
 }
 

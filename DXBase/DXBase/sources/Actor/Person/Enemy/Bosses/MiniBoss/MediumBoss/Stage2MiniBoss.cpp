@@ -62,7 +62,7 @@ void Stage2MiniBoss::move(float deltaTime)
 
 void Stage2MiniBoss::attack(float deltaTime)
 {
-	auto speed = 14.0f;
+	auto speed = 18.0f;
 	position_ += speed * prevPlayerDirection_ * (deltaTime * 60.0f);
 }
 

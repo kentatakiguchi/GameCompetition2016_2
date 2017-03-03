@@ -47,6 +47,10 @@ private:
 	// プレイヤーの名前を設定します
 	void setPlayerName();
 
+public:
+	// 色の変更を行います
+	void setColor(Vector3 color);
+
 private:
 	float stateTimer_;				// 状態タイマ
 	bool isGround_;					// 接地しているか
@@ -62,6 +66,7 @@ private:
 	Vector2 holdPosition_;			// つかまれた位置
 	Vector2 prevPosition_;			// 前回の位置
 	Vector2 throwVector_;			// 投げられたときのベクトル
+	Vector3 color_;					// 色
 	bool isHold_;					// つかまっているか
 	std::string playerName_;		// つかんだ相手の名前
 	std::string otherName_;			// もう片方の名前
