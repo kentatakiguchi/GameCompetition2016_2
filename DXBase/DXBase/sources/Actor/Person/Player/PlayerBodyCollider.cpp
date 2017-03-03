@@ -41,7 +41,7 @@ void PlayerBodyCollider::onCollide(Actor & other) {
 void PlayerBodyCollider::onDraw() const{
 	//DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_COLLIDER_RADIUS, GetColor(255, 255, 255), 0);
 	
-	if(name_ == "PlayerHoldCollider")DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_COLLIDER_RADIUS, GetColor(255, 255, 255));
+	//if(name_ == "PlayerHoldCollider")DrawCircle((position_ * inv_).x, (position_ * inv_).y, PLAYER_COLLIDER_RADIUS, GetColor(255, 255, 255));
 }
 
 void PlayerBodyCollider::reset_param(){

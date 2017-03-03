@@ -57,7 +57,7 @@ void PlayerState_Attack::update(float deltaTime){
 	gra_easeing_ = std::min<float>(EasingInExpo(timer_ * 0.8f), 1);
 
 	if (butty_->getColliderOpponent() == HitOpponent::FLOOR_HIT && retty_->getColliderOpponent() == HitOpponent::FLOOR_HIT) {
-		change(PlayerState_Enum_Union::IDLE);
+		change(PlayerState_Enum_Union::FREEZE);
 	}
 
 
