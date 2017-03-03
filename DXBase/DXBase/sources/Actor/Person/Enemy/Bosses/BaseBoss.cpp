@@ -266,9 +266,9 @@ bool BaseBoss::isMovePosition()
 
 void BaseBoss::updateState(float deltaTime)
 {
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::G)) {
-		attackCount_ = 1;
-	}
+	//if (InputMgr::GetInstance().IsKeyDown(KeyCode::G)) {
+	//	attackCount_ = 1;
+	//}
 
 	player_ = world_->findActor("PlayerBody1");
 	// ‘Ì—Í‚ª0ˆÈ‰º‚É‚È‚Á‚½‚çŽ€–S

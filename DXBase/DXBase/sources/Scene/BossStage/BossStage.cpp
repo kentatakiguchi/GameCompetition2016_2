@@ -179,7 +179,7 @@ void BossStage::update() {
 
 
 	// ボスが死亡したら、クリアする
-	if (boss_->isSceneEnd() || InputMgr::GetInstance().IsKeyDown(KeyCode::J))
+	if (boss_->isSceneEnd()/* || InputMgr::GetInstance().IsKeyDown(KeyCode::J)*/)
 		world_->clear(true);
 
 	player = world_->findActor("Player");
