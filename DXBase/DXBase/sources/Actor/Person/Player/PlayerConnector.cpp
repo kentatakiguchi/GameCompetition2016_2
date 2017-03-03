@@ -120,6 +120,12 @@ Vector2 PlayerConnector::get_point(int index) {
 	return points[index]->getPosition();
 }
 
+void PlayerConnector::ForcedMove(Vector2 velocity){
+	for (int i = 0; i < points.size(); i++) {
+		points[i]->position() += velocity * Time::GetInstance().deltaTime();
+	}
+}
+
 void PlayerConnector::puyoUpdate() {
 	float x = ((butty_->getPosition() + retty_->getPosition()) / 2).x;
 	float y = ((butty_->getPosition() + retty_->getPosition()) / 2).y;

@@ -27,6 +27,10 @@ public:
 	void create_point(int point_num = 0);
 
 	Vector2 get_point(int index);
+
+	//‹­§ˆÚ“®ŠÖ”(‘¬“x”Å)
+	void ForcedMove(Vector2 velocity)
+
 public:
 	PlayerStateMgr_Union stateMgr_;
 private:
