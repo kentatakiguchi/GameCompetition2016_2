@@ -65,6 +65,9 @@ private:
 	float bossChildTimer_;
 	std::vector<ActorPtr> repairs_;
 	std::vector<ActorPtr> blocks_;
+
+	bool seBokoFlag_;
+	bool seBreakFlag_;
 };
 
 #endif

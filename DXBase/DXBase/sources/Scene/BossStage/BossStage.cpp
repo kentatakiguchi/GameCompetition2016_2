@@ -36,6 +36,8 @@ BossStage::~BossStage()
 
 void BossStage::start() {
 	keeper_->setCurrentSceneName(name_);
+	seBokoFlag_ = true;
+	seBreakFlag_ = true;
 
 	mIvemtTime = 0.0f;
 	bossChildTimer_ = 0.0f;
@@ -127,13 +129,7 @@ void BossStage::update() {
 		isStopped_ ? deltaTime_ = Time::GetInstance().deltaTime() : deltaTime_ = 0;
 		isStopped_ = !isStopped_;
 	}
-	if (InputMgr::GetInstance().IsKeyOn(KeyCode::G)) {
-	}
 
-
-	if (InputMgr::GetInstance().IsKeyDown(KeyCode::H)) {
-
-	}
 	BossChildUpdate();
 	//ƒCƒxƒ“ƒgŠÖŒW
 	if (!isStopped_) {
@@ -233,6 +229,10 @@ void BossStage::BossChildUpdate()
 		for (auto& i : blocks_) {
 			dynamic_cast<BlockParticle*>(i.get())->Break(true);
 		}
+		if (seBreakFlag_) {
+			PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_CHAKUCHI), DX_PLAYTYPE_BACK);
+			seBreakFlag_ = false;
+		}
 	}
 	if (bossChildTimer_ >= 11.0f) {
 		for (auto& i : repairs_) {
@@ -241,6 +241,10 @@ void BossStage::BossChildUpdate()
 	}
 	if (bossChildTimer_ >= 13.0f) {
 		dynamic_cast<Smoke*>(world_->findActor("Smoke").get())->SmokeFlag(true);
+		if (seBokoFlag_) {
+			PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO), DX_PLAYTYPE_LOOP);
+			seBokoFlag_ = false;
+		}
 	}
 	if (bossChildTimer_ >= 15.0f) {
 		dynamic_cast<Smoke*>(world_->findActor("Smoke").get())->SmokeFlag(false);
@@ -249,6 +253,7 @@ void BossStage::BossChildUpdate()
 		}
 	}
 	if (bossChildTimer_ >= 17.0f) {
+		StopSoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_POKO));
 		for (auto& i : repairs_) {
 			dynamic_cast<MiniBossRepair*>(i.get())->Repair(false);
 		}
