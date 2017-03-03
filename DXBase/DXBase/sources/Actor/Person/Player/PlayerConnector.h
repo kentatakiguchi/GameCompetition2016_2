@@ -29,7 +29,7 @@ public:
 	Vector2 get_point(int index);
 
 	//‹­§ˆÚ“®ŠÖ”(‘¬“x”Å)
-	void ForcedMove(Vector2 velocity)
+	void ForcedMove(Vector2 velocity);
 
 public:
 	PlayerStateMgr_Union stateMgr_;
