@@ -244,7 +244,7 @@ bool LoadingScene::isEnd() const{
 }
 
 Scene LoadingScene::next() const{
-	return Scene::Logo;
+	return Scene::Bonus;
 }
 
 void LoadingScene::load_player_res(){

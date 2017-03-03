@@ -8,7 +8,6 @@
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
 #include "../../Renderer/NumberTexture.h"
 #include "../../Input/InputMgr.h"
-#include "../../Actor/BlockParticle/BlockParticle.h"
 BonusStage::BonusStage(SceneDataKeeper * keeper)
 {
 	isEnd_ = false;
@@ -76,12 +75,6 @@ void BonusStage::start()
 	keeper_->addMaxItemCount(gener.getItemCount(), name_);
 	PlaySoundMem(ResourceLoader::GetInstance().getSoundID(SoundID::BGM_MENU), DX_PLAYTYPE_LOOP);
 
-
-	for (int i = 0; i <= 5; i++) {
-		auto block = std::make_shared<BlockParticle>(world_.get(), Vector2(500 + CHIPSIZE*i, 500));
-		breakBlocks_.push_back(block);
-		world_->addActor(ActorGroup::Field,block);
-	}
 	world_->currentSceneName_ = name_;
 }
 
@@ -192,7 +185,7 @@ void BonusStage::draw() const
 		}
 		if (thankFlag_) {
 			Vector2 pos = SCREEN_SIZE / 2 - Vector2(0, 256);
-			DrawRotaGraph(pos.x, pos.y, 1.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::THANK_TEX), true);
+			DrawRotaGraph(pos.x, pos.y, 2.0f, 0.0f, ResourceLoader::GetInstance().getTextureID(TextureID::THANK_TEX), true);
 		}
 		//DrawGraph(300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);
 		//DrawGraph(SCREEN_SIZE.x -kiriTexSize_.x- 300, 900, ResourceLoader::GetInstance().getTextureID(TextureID::KIRIKABU_TEX), true);
