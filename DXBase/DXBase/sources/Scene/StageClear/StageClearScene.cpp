@@ -122,7 +122,7 @@ void StageClearScene::start() {
 	//world_->addActor(ActorGroup::Player, std::make_shared<Player>(world_.get(), Vector2(-400, 850)));
 
 	//プレイヤーは自動での移動、判定等は行わないようにする
-	//world_->PlayerNotMove(true);
+	world_->PlayerNotMove(true);
 	world_->CollisitionOffOn(true);
 
 	//経過時間の初期化
