@@ -25,8 +25,7 @@ void FlyingMiniBoss::move(float deltaTime)
 // °‚É“–‚½‚Á‚½‚Ìˆ—
 void FlyingMiniBoss::floorHit()
 {
-	//changeState(State::Dead, WAIT_NUMBER);
-	if (state_ == State::Dead) return;
+	if (state_ == State::Attack || state_ == State::Dead) return;
 	changeDeadState(DeadState::HitDead, WAIT_NUMBER);
 }
 

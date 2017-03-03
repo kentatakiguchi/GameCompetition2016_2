@@ -32,9 +32,12 @@ void MediumBoss::onUpdate(float deltaTime)
 
 void MediumBoss::onDraw() const
 {
+	// αブレンドの設定
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_);
 	SetDrawBright((int)color_.x, (int)color_.y, (int)color_.z);
 	FighterMiniBoss::onDraw();
 	SetDrawBright(255, 255, 255);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }
 
 void MediumBoss::battleIdel(float deltaTime)
@@ -88,6 +91,7 @@ void MediumBoss::playerAttackHit(Actor & actor)
 {
 	hp_ -= damage_;
 	damegeTimer_ = 2.0f;
+	isAttackHit_ = true;
 	bossGaugeUI_->SetHp(hp_);
 	// エフェクトの生成
 	world_->addActor(ActorGroup::Effect,

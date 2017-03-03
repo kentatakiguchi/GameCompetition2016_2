@@ -9,6 +9,7 @@
 
 #include "../../Actor/Person/Enemy/Enemys/FloorTurnEnemy.h"
 #include "../../Actor/Person/Enemy/Enemys/WallTurnEnemy.h"
+#include "../../Actor/Person/Enemy/Bosses/MiniBoss/MediumBoss/BossScrollPoint.h"
 #include "../../Field/MapGenerator.h"
 #include "../../Actor/BackGraundManager/BackGraundManager.h"
 #include <memory>
@@ -188,9 +189,14 @@ void GamePlayScene::update() {
 	//world_->keeper_->addDamageCount(1);
 
 	//この関数はワールドアップデート前に呼んでね
-	auto scrollPoint = world_->findActor("BossScrollPoint");
-	if (world_->isMBossStage()) {
-		world_->SetScroolPos(scrollPoint->getPosition());
+	auto scrollPoint = 
+		dynamic_cast<BossScrollPoint*>(world_->findActor("BossScrollPoint").get());
+	//auto scrollPoint = world_->findActor("BossScrollPoint");
+	if (scrollPoint != nullptr) {
+		// if (world_->isMBossStage())
+		if (scrollPoint->isInMBossStage()) {
+			world_->SetScroolPos(scrollPoint->getPosition());
+		}
 	}
 
 	if (isClearStage_) {

@@ -158,10 +158,10 @@ void BaseBoss::onCollide(Actor & actor)
 	auto actorName = actor.getName();
 	//床関連のオブジェクトに当たっているなら
 	auto getFloorName = strstr(actorName.c_str(), "Floor");
-	auto getBlockname = strstr(actorName.c_str(), "Block");
+	auto getBlockName = strstr(actorName.c_str(), "Block");
 	// バトル待機状態なら、触れた壁を壊す
 	if (state_ == State::BattleIdel && 
-		(getFloorName != NULL || getBlockname != NULL)) {
+		(getFloorName != NULL)) {
 		actor.dead();
 		auto se =
 			ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_CHAKUCHI);
@@ -178,8 +178,9 @@ void BaseBoss::onCollide(Actor & actor)
 		return;
 	}
 	// マップのブロックに当たったら、補間処理を行う
-	if (getFloorName != NULL || actorName == "Door") {
+	if (getFloorName != NULL || getBlockName != NULL || actorName == "Door") {
 		// 位置の補間
+		if (state_ == State::BattleIdel) return;
 		groundClamp(actor);
 		bossManager_.setFloorName(actorName.c_str());
 		return;

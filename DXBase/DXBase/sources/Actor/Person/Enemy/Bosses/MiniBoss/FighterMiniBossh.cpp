@@ -20,6 +20,7 @@ FighterMiniBoss::FighterMiniBoss(
 	damegeTimer_(0.0f),
 	isClamp_(false),
 	isGround_(false),
+	isAttackHit_(false),
 	isInvincible_(false),
 	playerName_(""),
 	addTexPos_(Vector2::Zero),
@@ -47,6 +48,8 @@ void FighterMiniBoss::onUpdate(float deltaTime)
 	updateState(deltaTime);
 	// アニメーションの更新
 	animation_.update(deltaTime);
+	// テクスチャのアルファ設定
+	texAlpha(deltaTime);
 
 	isGround_ = false;
 	isBottom_ = false;
@@ -117,6 +120,7 @@ void FighterMiniBoss::updateState(float deltaTime)
 		changeState(State::Dead, DEAD_NUMBER);
 	if (damegeTimer_ > 0.0f)
 		damegeTimer_ = max(damegeTimer_ -= deltaTime, 0.0f);
+	else isAttackHit_ = false;
 
 	switch (state_)
 	{
@@ -225,6 +229,17 @@ void FighterMiniBoss::addAnimation()
 		PIYORI_NUMBER,
 		ResourceLoader::GetInstance().getAnimationIDs(
 			AnimationID::BOSS_PIYO_TEX));
+}
+
+// ボスのアルファ値を設定します
+void FighterMiniBoss::texAlpha(float deltaTime)
+{
+	if (isAttackHit_) {
+		if ((int)(stateTimer_ * 10) % 2 < 1) alpha_ -= (int)(deltaTime * 750);
+		else alpha_ += deltaTime * 750;
+		alpha_ = MathHelper::Clamp((float)alpha_, 100, 255);
+	}
+	else alpha_ = 255;
 }
 
 void FighterMiniBoss::groundClamp(Actor & actor)

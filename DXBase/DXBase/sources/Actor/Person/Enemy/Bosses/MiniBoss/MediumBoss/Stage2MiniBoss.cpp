@@ -38,6 +38,10 @@ void Stage2MiniBoss::idel(float deltaTime)
 	changeState(State::Attack, WALL_ATTACK_NUMBER);
 	prevAttackPosition_ = position_;
 	animation_.setIsLoop(false);
+	// SEの再生
+	PlaySoundMem(
+		ResourceLoader::GetInstance().getSoundID(SoundID::SE_BOSS_WALLATTACK),
+		DX_PLAYTYPE_BACK);
 	auto player = world_->findActor("PlayerBody1");
 	if (player == nullptr) return;
 	// プレイヤーが居た場所との距離を計算

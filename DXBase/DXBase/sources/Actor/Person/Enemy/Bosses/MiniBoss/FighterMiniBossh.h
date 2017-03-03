@@ -52,6 +52,8 @@ protected:
 	Vector2 getPlayerDirection();
 	// アニメーションの追加
 	virtual void addAnimation();
+	// ボスのアルファ値を設定します
+	void texAlpha(float deltaTime);
 	// 地面の位置に補正します
 	void groundClamp(Actor& actor);
 
@@ -64,8 +66,9 @@ protected:
 	float damegeTimer_;
 	//float adhereDeadTime_;			// くっつき時の死亡時間
 	bool isClamp_;					// 地面の位置に補間するか
-	bool isGround_, isBottom_;			// 床の上下に当たったか
+	bool isGround_, isBottom_;		// 床の上下に当たったか
 	bool isLeft_, isRight_;			// 床の左右に当たったか
+	bool isAttackHit_;				// 攻撃に当たったか
 	bool isInvincible_;				// 無敵か
 	std::string playerName_;		// プレイヤーの名前
 	Vector2 addTexPos_;				// テクスチャの位置

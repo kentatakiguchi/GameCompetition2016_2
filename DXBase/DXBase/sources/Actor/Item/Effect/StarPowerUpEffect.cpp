@@ -11,7 +11,7 @@ StarPowerUpEffect::StarPowerUpEffect(
 	isReverse_(false),
 	fontEffect_(nullptr)
 {
-	scale_ = Vector2(3.0f, 2.0f);
+	scale_ = Vector2(2.25f, 2.0f);
 	auto effect = std::make_shared<PowerUpFontEffect>(world, position - Vector2::Up * 200.0f);
 	world_->addActor(ActorGroup::Effect, effect);
 	fontEffect_ = effect.get();
